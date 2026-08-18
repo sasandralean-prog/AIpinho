@@ -1,0 +1,638 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_18_MEDIA_IDENTITY_GOVERNED_RESOLUTION_READY",
+  "observed_blocker": "MEDIA_INVENTORY_IDENTITY_COVERAGE_INSUFFICIENT",
+  "baseline_wave": "FIRETEST5_H1C0_R2_17_CSV_CELL_VALUE_INDEXED_LOOKUP_READY",
+  "source_observation": "reports\\runtime_consolidation\\firetest5_h1c0_r2_17_clean_phase0_to_6_validation_rerun.json",
+  "before_state": {
+    "task_run_id": "task_run_72568219bfbf4ab8ac11f048e44dd4b8",
+    "result_status": "blocked",
+    "result_reason_code": "MEDIA_INVENTORY_IDENTITY_COVERAGE_INSUFFICIENT",
+    "speaker_truth_safe_to_report_success": false,
+    "queue_runtime_status": 200,
+    "phase2_to_6_skipped": null
+  },
+  "reason_origin": {
+    "component": "MediaInventorySufficiencyService.evaluate",
+    "condition": "policy.require_full_identity_coverage and selected_rows > 0 and rows_with_required_identity / selected_rows < 1.0",
+    "source_file": "src/aipinho/services/artifacts/media_inventory_sufficiency_service.py",
+    "source_lines": [
+      63,
+      86,
+      87
+    ]
+  },
+  "coverage_computation_observed": {
+    "selected_rows_denominator": 2272,
+    "row_validation_row_count": 2230,
+    "rows_with_required_identity": 2230,
+    "rows_missing_required_identity": 0,
+    "identity_coverage_ratio": 0.9815,
+    "row_model_domain_gap": {
+      "selected_rows": 2272,
+      "bound_rows": 2272,
+      "rendered_rows": 2230,
+      "domain_mismatch": true
+    }
+  },
+  "current_identity_model": {
+    "row_validator_identity_fields": [
+      "entity_id",
+      "relative_path",
+      "filename",
+      "name"
+    ],
+    "selection_safe_to_use_minimum": [
+      "entity_id",
+      "source_root_role",
+      "evidence_refs"
+    ],
+    "semantic_contract_identity_fields": [
+      "entity_id",
+      "relative_path",
+      "name"
+    ],
+    "classification_issue": "relative_path/name/filename are locator/display hints, not semantic media identity truth."
+  },
+  "public_row_semantics": {
+    "value_counts_by_column": {
+      "entity_id": 2230,
+      "source_root_role": 2230,
+      "relative_path": 2230,
+      "name": 2230,
+      "extension": 2230,
+      "media_type": 2230,
+      "size_bytes": 2230,
+      "probe_status": 2230,
+      "evidence_ref": 2230,
+      "limitations": 2230,
+      "validation_status": 2230
+    },
+    "absence_counts_by_column": {
+      "track_title": {
+        "": 2230
+      },
+      "artist": {
+        "": 2230
+      },
+      "album": {
+        "": 2230
+      },
+      "album_artist": {
+        "": 2230
+      },
+      "duration": {
+        "": 2230
+      },
+      "codec": {
+        "": 2230
+      },
+      "container": {
+        "": 2230
+      },
+      "bitrate": {
+        "": 2230
+      },
+      "sample_rate": {
+        "": 2230
+      },
+      "channels": {
+        "": 2230
+      },
+      "artwork": {
+        "": 2230
+      },
+      "metadata_status": {
+        "not_observed": 2230
+      },
+      "metadata_source": {
+        "not_configured": 2230
+      },
+      "relationship_candidate_refs": {
+        "": 2230
+      }
+    },
+    "row_evidence_coverage": {
+      "total_rows": 2230,
+      "rows_with_evidence_ref": 2272,
+      "rows_without_evidence_ref": 0,
+      "evidence_ref_count": 2272,
+      "evidence_refs_sample": [
+        "file:D:\\rafa\\pinho music\\505 - 2.m4a",
+        "file:D:\\rafa\\pinho music\\505.m4a",
+        "file:D:\\rafa\\pinho music\\A Certain Romance.m4a",
+        "file:D:\\rafa\\pinho music\\A Day To Remember - All I Want.m4a",
+        "file:D:\\rafa\\pinho music\\A Day To Remember - I'm Made of Wax, Larry, What Are You Made Of Official Vide.m4a",
+        "file:D:\\rafa\\pinho music\\A Day To Remember - If it means a lot to you.m4a",
+        "file:D:\\rafa\\pinho music\\A Dozen Roses.m4a",
+        "file:D:\\rafa\\pinho music\\A Fantastica Vida De Romantica.m4a",
+        "file:D:\\rafa\\pinho music\\A Little Death.m4a",
+        "file:D:\\rafa\\pinho music\\A Pearl - 2.m4a",
+        "file:D:\\rafa\\pinho music\\A Pearl.m4a",
+        "file:D:\\rafa\\pinho music\\A Skylit Drive - Love The Way You Lie Punk Goes Pop 4.m4a",
+        "file:D:\\rafa\\pinho music\\A Ultima Noite.m4a",
+        "file:D:\\rafa\\pinho music\\Abandono.m4a",
+        "file:D:\\rafa\\pinho music\\Acustico 1Kilo - Deixe-me Ir Baviera, Knust e Pablo Martins.m4a",
+        "file:D:\\rafa\\pinho music\\Afraid - 2.m4a",
+        "file:D:\\rafa\\pinho music\\Afraid.m4a",
+        "file:D:\\rafa\\pinho music\\After Dark - 2.m4a",
+        "file:D:\\rafa\\pinho music\\After Dark.m4a",
+        "file:D:\\rafa\\pinho music\\Ainda Te Amo.m4a"
+      ],
+      "status": "satisfied",
+      "reason_code": null
+    },
+    "metadata_status": "not_configured",
+    "metadata_observation_ratio": 0.0,
+    "metadata_files_attempted": 2230,
+    "metadata_files_succeeded": 0
+  },
+  "hypotheses": {
+    "H_A_policy_requires_non_identity_fields": {
+      "verdict": "proven",
+      "supporting_evidence": [
+        "RowLevelSemanticValidationService.IDENTITY_FIELDS includes relative_path, filename and name.",
+        "ArtifactSemanticContractService treats relative_path/name as identity schema fields."
+      ],
+      "disconfirming_evidence": []
+    },
+    "H_B_evidence_exists_but_not_bound": {
+      "verdict": "refuted_for_row_evidence_binding",
+      "supporting_evidence": [],
+      "disconfirming_evidence": [
+        "row_evidence_coverage.status=satisfied",
+        "evidence_ref_count=2272"
+      ]
+    },
+    "H_C_metadata_observations_classified_incorrectly": {
+      "verdict": "not_yet_proven",
+      "supporting_evidence": [
+        "metadata_status=not_configured and metadata_source=not_configured for rendered rows"
+      ],
+      "disconfirming_evidence": [
+        "No evidence in the public report that a configured capability produced governed metadata observations."
+      ]
+    },
+    "H_H_identity_requirement_conflates_semantic_identity_and_inventory_metadata_coverage": {
+      "verdict": "proven",
+      "supporting_evidence": [
+        "The top reason says identity coverage, while row validation identity rows are complete for rendered rows and metadata capability is not configured."
+      ],
+      "disconfirming_evidence": []
+    },
+    "H_J_identity_coverage_is_correct": {
+      "verdict": "probable_with_evidence_for_semantic_media_identity_only",
+      "supporting_evidence": [
+        "track_title/artist/album and technical metadata columns are empty/not_observed/not_configured for all rendered rows."
+      ],
+      "disconfirming_evidence": [
+        "The existing reason/code path measures row identity/domain coverage, not explicit semantic media identity evidence."
+      ]
+    }
+  },
+  "root_cause_status": "proven",
+  "primary_root_cause": "Identity coverage currently conflates row/entity binding identity, locator/display fields, and semantic media identity evidence, then computes the ratio against selected_rows instead of the rendered row identity domain.",
+  "patch_plan": [
+    "Introduce bounded row identity coverage summary that separates stable entity identity, locator/display context, and semantic media identity evidence.",
+    "Make sufficiency evaluate stable row identity against rendered rows, not selected_rows.",
+    "Use a generic MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT reason when semantic media identity evidence is missing, while preserving metadata capability reasons.",
+    "Preserve filename/path/extension as non-truth locator/routing/display context."
+  ],
+  "created_at": "2026-08-18T12:00:44.328991+00:00",
+  "root_cause_after_patch": "Old identity coverage reason was a structural bug: it conflated stable entity identity/domain coverage with semantic media identity evidence. After patch, stable row identity is complete while semantic identity evidence remains legitimately insufficient because metadata capability is not configured.",
+  "call_chain": [
+    "RowLevelSemanticValidationService.validate",
+    "MediaInventorySufficiencyService.evaluate",
+    "PhaseSemanticCompletionPolicy",
+    "TaskRunResult persistence"
+  ],
+  "public_A": {
+    "label": "A",
+    "task_run_id": "task_run_ab7899daf6e54fa7bd5624a70916a7bf",
+    "operation_id": "op_01073a3c135646718466e0b1e62386d9",
+    "phase0": {
+      "runtime_executed": false,
+      "task_created": false,
+      "task_run_created": false,
+      "operation_created": false,
+      "operational_artifacts_created": false,
+      "predicted_frontier": "MEDIA_IDENTITY_EVIDENCE_SUFFICIENCY",
+      "predicted_component": "MediaInventorySufficiencyService",
+      "predicted_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+    },
+    "client_response_status": "accepted_running",
+    "project_analysis_reason_code": "MEDIA_CORPUS_ROOT_HANDOFF_READY",
+    "music_inventory": {
+      "reached": true,
+      "status": "blocked",
+      "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "semantic_contract_status": "partial",
+      "row_validation_status": "satisfied",
+      "row_identity_coverage": {
+        "total_rows": 1051,
+        "rows_with_stable_entity_identity": 1051,
+        "rows_without_stable_entity_identity": 0,
+        "rows_with_locator_context": 1051,
+        "rows_with_semantic_identity_evidence": 0,
+        "rows_without_semantic_identity_evidence": 1051,
+        "stable_entity_identity_ratio": 1.0,
+        "semantic_identity_evidence_ratio": 0.0,
+        "observed_semantic_identity_fields": [],
+        "locator_context_fields": [
+          "name",
+          "relative_path"
+        ],
+        "routing_hint_fields": [
+          "extension",
+          "media_type",
+          "source_root_role"
+        ],
+        "status": "insufficient_evidence",
+        "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+        "truth_eligible_rows": 0,
+        "metadata": {
+          "source": "row_level_semantic_validation",
+          "stable_identity_authority": [
+            "entity_id"
+          ],
+          "locator_context_not_truth": [
+            "name",
+            "relative_path"
+          ],
+          "routing_hint_not_truth": [
+            "extension",
+            "media_type",
+            "source_root_role"
+          ],
+          "filename_path_extension_truth_authority": false,
+          "semantic_identity_requires_governed_observation": true
+        }
+      },
+      "inventory_sufficiency_status": "blocked",
+      "inventory_sufficiency_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "coverage_summary": {
+        "expected_entities": 1051,
+        "selected_entities": 1051,
+        "bound_rows": 1051,
+        "rows_rendered": 1051,
+        "rows_with_evidence_ref": 1051,
+        "evidence_ref_count": 1051,
+        "rows_with_required_identity": 1051,
+        "rows_with_stable_entity_identity": 1051,
+        "rows_with_semantic_identity_evidence": 0,
+        "rows_without_semantic_identity_evidence": 1051,
+        "selection_coverage_ratio": 1.0,
+        "evidence_coverage_ratio": 1.0,
+        "identity_coverage_ratio": 1.0,
+        "stable_entity_identity_ratio": 1.0,
+        "semantic_identity_evidence_ratio": 0.0,
+        "identity_status": "insufficient_evidence",
+        "identity_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+        "identity_observed_semantic_fields": [],
+        "identity_locator_context_fields": [
+          "name",
+          "relative_path"
+        ],
+        "identity_routing_hint_fields": [
+          "extension",
+          "media_type",
+          "source_root_role"
+        ],
+        "metadata_observation_ratio": 0.0,
+        "metadata_status": "not_configured",
+        "metadata_files_attempted": 1051,
+        "metadata_files_succeeded": 0,
+        "metadata_files_failed": 1051,
+        "unsupported_count": 0,
+        "read_error_count": 0,
+        "schema_status": "satisfied"
+      },
+      "reason_codes": [
+        "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+        "MEDIA_METADATA_OBSERVATION_INCOMPLETE",
+        "MEDIA_METADATA_CAPABILITY_NOT_CONFIGURED"
+      ]
+    },
+    "terminal_result": {
+      "result_json_exists": true,
+      "result_endpoint_status": 200,
+      "status": "blocked",
+      "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "finished_at": "2026-08-18T11:52:53.095224+00:00",
+      "terminal_event_count": 1,
+      "safe_to_report_success": false,
+      "events_count": 232
+    },
+    "truth": {
+      "status": "blocked",
+      "reason_code": "runtime_status:blocked",
+      "safe_to_report_success": false
+    },
+    "capability_observation": {
+      "media_metadata_capability_status": "not_configured",
+      "metadata_status": "not_configured",
+      "metadata_observation_ratio": 0.0,
+      "metadata_files_attempted": 1051,
+      "metadata_files_succeeded": 0,
+      "metadata_files_failed": 1051,
+      "unsupported_count": 0,
+      "read_error_count": 0
+    },
+    "artifact_reach": {
+      "phase1_discovery": true,
+      "project_inventory": true,
+      "evidence_phase1": true
+    },
+    "phase2_to_6": {
+      "phase_2": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_3": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_4": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_5": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_6": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      }
+    },
+    "endpoint_health": {
+      "summary": {
+        "status_code": 200,
+        "elapsed_ms": 60
+      },
+      "events": {
+        "status_code": 200,
+        "elapsed_ms": 134
+      },
+      "result": {
+        "status_code": 200,
+        "elapsed_ms": 30
+      },
+      "task_run_result": {
+        "status_code": 200,
+        "elapsed_ms": 75
+      },
+      "truth": {
+        "status_code": 200,
+        "elapsed_ms": 545
+      },
+      "artifacts": {
+        "status_code": 200,
+        "elapsed_ms": 31
+      },
+      "queue_hygiene": {
+        "status_code": 200,
+        "elapsed_ms": 0
+      },
+      "queue_runtime": {
+        "status_code": 200,
+        "elapsed_ms": 77
+      },
+      "session": {
+        "status_code": 200,
+        "elapsed_ms": 62
+      }
+    },
+    "queue_runtime": {
+      "status_code": 200,
+      "elapsed_ms": 77,
+      "status": "ok"
+    },
+    "identity_assessment_digest": "5315f6e6ad22b81ef8c6c02f101b5a900db61b72a7b111d0be6b36ca47db4fb8"
+  },
+  "public_B": {
+    "label": "B",
+    "task_run_id": "task_run_ebd877e91f6a4b86b3ae9a40bc39a339",
+    "operation_id": "op_f1c931fdb7454f2a92e2409597801d32",
+    "phase0": {
+      "runtime_executed": false,
+      "task_created": false,
+      "task_run_created": false,
+      "operation_created": false,
+      "operational_artifacts_created": false,
+      "predicted_frontier": "MEDIA_IDENTITY_EVIDENCE_SUFFICIENCY",
+      "predicted_component": "MediaInventorySufficiencyService",
+      "predicted_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+    },
+    "client_response_status": "accepted_running",
+    "project_analysis_reason_code": "MEDIA_CORPUS_ROOT_HANDOFF_READY",
+    "music_inventory": {
+      "reached": true,
+      "status": "blocked",
+      "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "semantic_contract_status": "partial",
+      "row_validation_status": "satisfied",
+      "row_identity_coverage": {
+        "total_rows": 1051,
+        "rows_with_stable_entity_identity": 1051,
+        "rows_without_stable_entity_identity": 0,
+        "rows_with_locator_context": 1051,
+        "rows_with_semantic_identity_evidence": 0,
+        "rows_without_semantic_identity_evidence": 1051,
+        "stable_entity_identity_ratio": 1.0,
+        "semantic_identity_evidence_ratio": 0.0,
+        "observed_semantic_identity_fields": [],
+        "locator_context_fields": [
+          "name",
+          "relative_path"
+        ],
+        "routing_hint_fields": [
+          "extension",
+          "media_type",
+          "source_root_role"
+        ],
+        "status": "insufficient_evidence",
+        "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+        "truth_eligible_rows": 0,
+        "metadata": {
+          "source": "row_level_semantic_validation",
+          "stable_identity_authority": [
+            "entity_id"
+          ],
+          "locator_context_not_truth": [
+            "name",
+            "relative_path"
+          ],
+          "routing_hint_not_truth": [
+            "extension",
+            "media_type",
+            "source_root_role"
+          ],
+          "filename_path_extension_truth_authority": false,
+          "semantic_identity_requires_governed_observation": true
+        }
+      },
+      "inventory_sufficiency_status": "blocked",
+      "inventory_sufficiency_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "coverage_summary": {
+        "expected_entities": 1051,
+        "selected_entities": 1051,
+        "bound_rows": 1051,
+        "rows_rendered": 1051,
+        "rows_with_evidence_ref": 1051,
+        "evidence_ref_count": 1051,
+        "rows_with_required_identity": 1051,
+        "rows_with_stable_entity_identity": 1051,
+        "rows_with_semantic_identity_evidence": 0,
+        "rows_without_semantic_identity_evidence": 1051,
+        "selection_coverage_ratio": 1.0,
+        "evidence_coverage_ratio": 1.0,
+        "identity_coverage_ratio": 1.0,
+        "stable_entity_identity_ratio": 1.0,
+        "semantic_identity_evidence_ratio": 0.0,
+        "identity_status": "insufficient_evidence",
+        "identity_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+        "identity_observed_semantic_fields": [],
+        "identity_locator_context_fields": [
+          "name",
+          "relative_path"
+        ],
+        "identity_routing_hint_fields": [
+          "extension",
+          "media_type",
+          "source_root_role"
+        ],
+        "metadata_observation_ratio": 0.0,
+        "metadata_status": "not_configured",
+        "metadata_files_attempted": 1051,
+        "metadata_files_succeeded": 0,
+        "metadata_files_failed": 1051,
+        "unsupported_count": 0,
+        "read_error_count": 0,
+        "schema_status": "satisfied"
+      },
+      "reason_codes": [
+        "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+        "MEDIA_METADATA_OBSERVATION_INCOMPLETE",
+        "MEDIA_METADATA_CAPABILITY_NOT_CONFIGURED"
+      ]
+    },
+    "terminal_result": {
+      "result_json_exists": true,
+      "result_endpoint_status": 200,
+      "status": "blocked",
+      "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "finished_at": "2026-08-18T11:54:39.850881+00:00",
+      "terminal_event_count": 1,
+      "safe_to_report_success": false,
+      "events_count": 232
+    },
+    "truth": {
+      "status": "blocked",
+      "reason_code": "runtime_status:blocked",
+      "safe_to_report_success": false
+    },
+    "capability_observation": {
+      "media_metadata_capability_status": "not_configured",
+      "metadata_status": "not_configured",
+      "metadata_observation_ratio": 0.0,
+      "metadata_files_attempted": 1051,
+      "metadata_files_succeeded": 0,
+      "metadata_files_failed": 1051,
+      "unsupported_count": 0,
+      "read_error_count": 0
+    },
+    "artifact_reach": {
+      "phase1_discovery": true,
+      "project_inventory": true,
+      "evidence_phase1": true
+    },
+    "phase2_to_6": {
+      "phase_2": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_3": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_4": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_5": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_6": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      }
+    },
+    "endpoint_health": {
+      "summary": {
+        "status_code": 200,
+        "elapsed_ms": 55
+      },
+      "events": {
+        "status_code": 200,
+        "elapsed_ms": 2393
+      },
+      "result": {
+        "status_code": 200,
+        "elapsed_ms": 1994
+      },
+      "task_run_result": {
+        "status_code": 200,
+        "elapsed_ms": 18
+      },
+      "truth": {
+        "status_code": 200,
+        "elapsed_ms": 17
+      },
+      "artifacts": {
+        "status_code": 200,
+        "elapsed_ms": 59
+      },
+      "queue_hygiene": {
+        "status_code": 200,
+        "elapsed_ms": 31
+      },
+      "queue_runtime": {
+        "status_code": 200,
+        "elapsed_ms": 601
+      },
+      "session": {
+        "status_code": 200,
+        "elapsed_ms": 63
+      }
+    },
+    "queue_runtime": {
+      "status_code": 200,
+      "elapsed_ms": 601,
+      "status": "ok"
+    },
+    "identity_assessment_digest": "5315f6e6ad22b81ef8c6c02f101b5a900db61b72a7b111d0be6b36ca47db4fb8"
+  },
+  "hypotheses_verdict": {
+    "H-A coverage_policy_requires_non_identity_fields": "proven_and_fixed",
+    "H-B evidence_exists_but_not_bound": "refuted_for_public_run: semantic identity evidence count is zero and capability is not configured",
+    "H-C metadata_status_misclassified": "not_proven",
+    "H-D metadata_capability_not_triggered_due_to_bug": "refuted_by_not_configured_status in public runtime",
+    "H-E capability_really_unavailable": "proven_for_public_run",
+    "H-F duplicate_entity_fragmentation": "not_proven",
+    "H-G candidate_discarded_before_assessment": "not_proven",
+    "H-H identity_requirement_conflates_metadata_completeness": "proven_and_fixed",
+    "H-I threshold_policy_incorrect": "not_proven",
+    "H-J identity_coverage_correct": "true_after_patch for stable identity; semantic evidence insufficiency remains legitimate"
+  }
+}

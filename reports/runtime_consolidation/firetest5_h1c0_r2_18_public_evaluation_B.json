@@ -1,0 +1,209 @@
+{
+  "label": "B",
+  "task_run_id": "task_run_ebd877e91f6a4b86b3ae9a40bc39a339",
+  "operation_id": "op_f1c931fdb7454f2a92e2409597801d32",
+  "phase0": {
+    "runtime_executed": false,
+    "task_created": false,
+    "task_run_created": false,
+    "operation_created": false,
+    "operational_artifacts_created": false,
+    "predicted_frontier": "MEDIA_IDENTITY_EVIDENCE_SUFFICIENCY",
+    "predicted_component": "MediaInventorySufficiencyService",
+    "predicted_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+  },
+  "client_response_status": "accepted_running",
+  "project_analysis_reason_code": "MEDIA_CORPUS_ROOT_HANDOFF_READY",
+  "music_inventory": {
+    "reached": true,
+    "status": "blocked",
+    "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "semantic_contract_status": "partial",
+    "row_validation_status": "satisfied",
+    "row_identity_coverage": {
+      "total_rows": 1051,
+      "rows_with_stable_entity_identity": 1051,
+      "rows_without_stable_entity_identity": 0,
+      "rows_with_locator_context": 1051,
+      "rows_with_semantic_identity_evidence": 0,
+      "rows_without_semantic_identity_evidence": 1051,
+      "stable_entity_identity_ratio": 1.0,
+      "semantic_identity_evidence_ratio": 0.0,
+      "observed_semantic_identity_fields": [],
+      "locator_context_fields": [
+        "name",
+        "relative_path"
+      ],
+      "routing_hint_fields": [
+        "extension",
+        "media_type",
+        "source_root_role"
+      ],
+      "status": "insufficient_evidence",
+      "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "truth_eligible_rows": 0,
+      "metadata": {
+        "source": "row_level_semantic_validation",
+        "stable_identity_authority": [
+          "entity_id"
+        ],
+        "locator_context_not_truth": [
+          "name",
+          "relative_path"
+        ],
+        "routing_hint_not_truth": [
+          "extension",
+          "media_type",
+          "source_root_role"
+        ],
+        "filename_path_extension_truth_authority": false,
+        "semantic_identity_requires_governed_observation": true
+      }
+    },
+    "inventory_sufficiency_status": "blocked",
+    "inventory_sufficiency_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "coverage_summary": {
+      "expected_entities": 1051,
+      "selected_entities": 1051,
+      "bound_rows": 1051,
+      "rows_rendered": 1051,
+      "rows_with_evidence_ref": 1051,
+      "evidence_ref_count": 1051,
+      "rows_with_required_identity": 1051,
+      "rows_with_stable_entity_identity": 1051,
+      "rows_with_semantic_identity_evidence": 0,
+      "rows_without_semantic_identity_evidence": 1051,
+      "selection_coverage_ratio": 1.0,
+      "evidence_coverage_ratio": 1.0,
+      "identity_coverage_ratio": 1.0,
+      "stable_entity_identity_ratio": 1.0,
+      "semantic_identity_evidence_ratio": 0.0,
+      "identity_status": "insufficient_evidence",
+      "identity_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "identity_observed_semantic_fields": [],
+      "identity_locator_context_fields": [
+        "name",
+        "relative_path"
+      ],
+      "identity_routing_hint_fields": [
+        "extension",
+        "media_type",
+        "source_root_role"
+      ],
+      "metadata_observation_ratio": 0.0,
+      "metadata_status": "not_configured",
+      "metadata_files_attempted": 1051,
+      "metadata_files_succeeded": 0,
+      "metadata_files_failed": 1051,
+      "unsupported_count": 0,
+      "read_error_count": 0,
+      "schema_status": "satisfied"
+    },
+    "reason_codes": [
+      "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "MEDIA_METADATA_OBSERVATION_INCOMPLETE",
+      "MEDIA_METADATA_CAPABILITY_NOT_CONFIGURED"
+    ]
+  },
+  "terminal_result": {
+    "result_json_exists": true,
+    "result_endpoint_status": 200,
+    "status": "blocked",
+    "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "finished_at": "2026-08-18T11:54:39.850881+00:00",
+    "terminal_event_count": 1,
+    "safe_to_report_success": false,
+    "events_count": 232
+  },
+  "truth": {
+    "status": "blocked",
+    "reason_code": "runtime_status:blocked",
+    "safe_to_report_success": false
+  },
+  "capability_observation": {
+    "media_metadata_capability_status": "not_configured",
+    "metadata_status": "not_configured",
+    "metadata_observation_ratio": 0.0,
+    "metadata_files_attempted": 1051,
+    "metadata_files_succeeded": 0,
+    "metadata_files_failed": 1051,
+    "unsupported_count": 0,
+    "read_error_count": 0
+  },
+  "artifact_reach": {
+    "phase1_discovery": true,
+    "project_inventory": true,
+    "evidence_phase1": true
+  },
+  "phase2_to_6": {
+    "phase_2": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "phase1_not_success_or_truth_safe"
+    },
+    "phase_3": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "phase1_not_success_or_truth_safe"
+    },
+    "phase_4": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "phase1_not_success_or_truth_safe"
+    },
+    "phase_5": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "phase1_not_success_or_truth_safe"
+    },
+    "phase_6": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "phase1_not_success_or_truth_safe"
+    }
+  },
+  "endpoint_health": {
+    "summary": {
+      "status_code": 200,
+      "elapsed_ms": 55
+    },
+    "events": {
+      "status_code": 200,
+      "elapsed_ms": 2393
+    },
+    "result": {
+      "status_code": 200,
+      "elapsed_ms": 1994
+    },
+    "task_run_result": {
+      "status_code": 200,
+      "elapsed_ms": 18
+    },
+    "truth": {
+      "status_code": 200,
+      "elapsed_ms": 17
+    },
+    "artifacts": {
+      "status_code": 200,
+      "elapsed_ms": 59
+    },
+    "queue_hygiene": {
+      "status_code": 200,
+      "elapsed_ms": 31
+    },
+    "queue_runtime": {
+      "status_code": 200,
+      "elapsed_ms": 601
+    },
+    "session": {
+      "status_code": 200,
+      "elapsed_ms": 63
+    }
+  },
+  "queue_runtime": {
+    "status_code": 200,
+    "elapsed_ms": 601,
+    "status": "ok"
+  },
+  "identity_assessment_digest": "5315f6e6ad22b81ef8c6c02f101b5a900db61b72a7b111d0be6b36ca47db4fb8"
+}

@@ -586,7 +586,7 @@ class ArtifactSemanticContractService:
         non_empty = observed_semantics.get("non_empty_by_field") if isinstance(observed_semantics.get("non_empty_by_field"), dict) else {}
         gaps: list[ArtifactSemanticGap] = []
         findings_shape = {self._normalize(item) for item in ("severity", "title", "summary")}
-        identity_fields = {self._normalize(item) for item in ("entity_id", "relative_path", "name")}
+        identity_fields = {self._normalize("entity_id")}
         source_root_role = self._normalize("source_root_role")
         evidence_ref = self._normalize("evidence_ref")
         limitations = self._normalize("limitations")

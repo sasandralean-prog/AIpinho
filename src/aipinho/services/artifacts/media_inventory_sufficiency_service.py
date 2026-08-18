@@ -60,7 +60,17 @@ class MediaInventorySufficiencyService:
         bound = max(0, int(bound_rows or 0))
         evidence_refs = max(0, int(evidence_ref_count or 0))
         row_evidence = row_validation.get("row_evidence_coverage") if isinstance(row_validation.get("row_evidence_coverage"), dict) else {}
-        identity_ratio = self._ratio(int(row_validation.get("rows_with_required_identity") or 0), selected)
+        row_identity = row_validation.get("row_identity_coverage") if isinstance(row_validation.get("row_identity_coverage"), dict) else {}
+        rendered = max(0, int(row_validation.get("row_count") or 0))
+        stable_identity_rows = int(
+            row_identity.get("rows_with_stable_entity_identity")
+            if row_identity
+            else row_validation.get("rows_with_required_identity")
+            or 0
+        )
+        semantic_identity_rows = int(row_identity.get("rows_with_semantic_identity_evidence") or 0)
+        stable_identity_ratio = self._ratio(stable_identity_rows, rendered)
+        semantic_identity_ratio = self._ratio(semantic_identity_rows, rendered)
         evidence_ratio = self._ratio(int(row_evidence.get("rows_with_evidence_ref") or evidence_refs), selected)
         selection_ratio = self._ratio(selected, expected)
         metadata_ratio = float(metadata_coverage.get("coverage_ratio") or 0.0)
@@ -83,9 +93,12 @@ class MediaInventorySufficiencyService:
         if self.policy.require_full_evidence_coverage and selected and (bound < selected or evidence_ratio < 1.0):
             reason_codes.append("ARTIFACT_EVIDENCE_BINDING_MISSING")
             limitations.append("row_evidence_coverage_incomplete")
-        if self.policy.require_full_identity_coverage and selected and identity_ratio < 1.0:
-            reason_codes.append("MEDIA_INVENTORY_IDENTITY_COVERAGE_INSUFFICIENT")
-            limitations.append("row_identity_coverage_incomplete")
+        if self.policy.require_full_identity_coverage and rendered and stable_identity_ratio < 1.0:
+            reason_codes.append("MEDIA_IDENTITY_BINDING_INCOMPLETE")
+            limitations.append("stable_entity_identity_binding_incomplete")
+        if self.policy.require_full_identity_coverage and rendered and semantic_identity_ratio < 1.0:
+            reason_codes.append("MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT")
+            limitations.append("semantic_media_identity_evidence_incomplete")
         if schema_status != "satisfied":
             reason_codes.append("MEDIA_INVENTORY_SCHEMA_INSUFFICIENT")
             limitations.append("schema_or_alias_validation_not_satisfied")
@@ -131,13 +144,23 @@ class MediaInventorySufficiencyService:
                 "expected_entities": expected,
                 "selected_entities": selected,
                 "bound_rows": bound,
-                "rows_rendered": selected,
+                "rows_rendered": rendered if rendered else selected,
                 "rows_with_evidence_ref": int(row_evidence.get("rows_with_evidence_ref") or evidence_refs),
                 "evidence_ref_count": evidence_refs,
-                "rows_with_required_identity": int(row_validation.get("rows_with_required_identity") or 0),
+                "rows_with_required_identity": stable_identity_rows,
+                "rows_with_stable_entity_identity": stable_identity_rows,
+                "rows_with_semantic_identity_evidence": semantic_identity_rows,
+                "rows_without_semantic_identity_evidence": int(row_identity.get("rows_without_semantic_identity_evidence") or 0),
                 "selection_coverage_ratio": round(selection_ratio, 4),
                 "evidence_coverage_ratio": round(evidence_ratio, 4),
-                "identity_coverage_ratio": round(identity_ratio, 4),
+                "identity_coverage_ratio": round(stable_identity_ratio, 4),
+                "stable_entity_identity_ratio": round(stable_identity_ratio, 4),
+                "semantic_identity_evidence_ratio": round(semantic_identity_ratio, 4),
+                "identity_status": row_identity.get("status") if row_identity else None,
+                "identity_reason_code": row_identity.get("reason_code") if row_identity else None,
+                "identity_observed_semantic_fields": list(row_identity.get("observed_semantic_identity_fields") or []),
+                "identity_locator_context_fields": list(row_identity.get("locator_context_fields") or []),
+                "identity_routing_hint_fields": list(row_identity.get("routing_hint_fields") or []),
                 "metadata_observation_ratio": round(metadata_ratio, 4),
                 "metadata_status": capability_status,
                 "metadata_files_attempted": attempted,

@@ -8,6 +8,7 @@ from typing import Any
 from aipinho.schemas.artifacts.row_semantic_validation import (
     ArtifactRowValidationSummary,
     RowEvidenceCoverage,
+    RowIdentityCoverage,
     SemanticColumnCoverage,
 )
 
@@ -28,7 +29,10 @@ class RowLevelSemanticValidationService:
         "blocked",
     }
 
-    IDENTITY_FIELDS = {"entity_id", "relative_path", "filename", "name"}
+    STABLE_ENTITY_IDENTITY_FIELDS = {"entity_id"}
+    LOCATOR_CONTEXT_FIELDS = {"relative_path", "filename", "name"}
+    ROUTING_HINT_FIELDS = {"extension", "media_type", "source_root_role"}
+    SEMANTIC_IDENTITY_FIELDS = {"track_title", "artist", "album", "album_artist"}
     COLUMN_ALIASES = {
         "name": {"filename"},
         "filename": {"name"},
@@ -67,17 +71,34 @@ class RowLevelSemanticValidationService:
         value_counts: dict[str, int] = {}
         absence_counts: dict[str, dict[str, int]] = {}
         missing_required_values: dict[str, int] = {}
-        rows_with_identity = 0
-        rows_missing_identity = 0
+        rows_with_stable_identity = 0
+        rows_missing_stable_identity = 0
+        rows_with_locator_context = 0
+        rows_with_semantic_identity = 0
         evidence_refs: list[str] = []
         evidence_key = self._canonical(evidence_ref_column)
-        identity_keys = self.IDENTITY_FIELDS.intersection(set(rendered))
+        stable_identity_keys = self.STABLE_ENTITY_IDENTITY_FIELDS.intersection(set(rendered))
+        locator_keys = self.LOCATOR_CONTEXT_FIELDS.intersection(set(rendered))
+        routing_hint_keys = self.ROUTING_HINT_FIELDS.intersection(set(rendered))
+        semantic_identity_keys = self.SEMANTIC_IDENTITY_FIELDS.intersection(set(rendered))
+        observed_semantic_identity_fields: set[str] = set()
         for row in rows:
             canonical_row = {self._canonical(key): "" if value is None else str(value) for key, value in row.items()}
-            if any(canonical_row.get(key, "").strip() for key in identity_keys):
-                rows_with_identity += 1
+            row_refs = self._split_refs(canonical_row.get(evidence_key, ""))
+            if any(self._has_material_value(canonical_row.get(key, "")) for key in stable_identity_keys):
+                rows_with_stable_identity += 1
             else:
-                rows_missing_identity += 1
+                rows_missing_stable_identity += 1
+            if any(self._has_material_value(canonical_row.get(key, "")) for key in locator_keys):
+                rows_with_locator_context += 1
+            row_semantic_fields = [
+                key
+                for key in semantic_identity_keys
+                if self._has_material_value(canonical_row.get(key, ""))
+            ]
+            if row_semantic_fields and row_refs:
+                rows_with_semantic_identity += 1
+                observed_semantic_identity_fields.update(row_semantic_fields)
             for column in rendered:
                 normalized_value = self._absence_key(canonical_row.get(column, ""))
                 if normalized_value is None:
@@ -107,7 +128,22 @@ class RowLevelSemanticValidationService:
                 rows_with_evidence,
                 len([row for row in row_bindings if isinstance(row, dict) and row.get("evidence_refs")]),
             )
+        rows_with_evidence = min(len(rows), rows_with_evidence)
         evidence_status = "satisfied" if rows and rows_with_evidence >= len(rows) else "partial" if rows_with_evidence else "missing"
+        stable_identity_status = (
+            "satisfied"
+            if rows and rows_with_stable_identity >= len(rows)
+            else "partial"
+            if rows_with_stable_identity
+            else "missing"
+        )
+        semantic_identity_status = (
+            "satisfied"
+            if rows and rows_with_semantic_identity >= len(rows)
+            else "insufficient_evidence"
+            if rows
+            else "missing"
+        )
         reason_codes: list[str] = []
         limitations: list[str] = []
         if missing_columns:
@@ -115,6 +151,9 @@ class RowLevelSemanticValidationService:
         if rows and evidence_status != "satisfied":
             reason_codes.append("ARTIFACT_ROW_EVIDENCE_PARTIAL")
             limitations.append("row_evidence_refs_not_complete")
+        if rows and stable_identity_status != "satisfied":
+            reason_codes.append("MEDIA_IDENTITY_BINDING_INCOMPLETE")
+            limitations.append("stable_entity_identity_binding_incomplete")
         if not rows:
             reason_codes.append("ARTIFACT_ROWS_MISSING")
         if missing_required_values:
@@ -140,8 +179,38 @@ class RowLevelSemanticValidationService:
                 status=evidence_status,
                 reason_code=None if evidence_status == "satisfied" else "ARTIFACT_EVIDENCE_BINDING_MISSING",
             ),
-            rows_with_required_identity=rows_with_identity,
-            rows_missing_required_identity=rows_missing_identity,
+            row_identity_coverage=RowIdentityCoverage(
+                total_rows=len(rows),
+                rows_with_stable_entity_identity=rows_with_stable_identity,
+                rows_without_stable_entity_identity=max(0, len(rows) - rows_with_stable_identity),
+                rows_with_locator_context=rows_with_locator_context,
+                rows_with_semantic_identity_evidence=rows_with_semantic_identity,
+                rows_without_semantic_identity_evidence=max(0, len(rows) - rows_with_semantic_identity),
+                stable_entity_identity_ratio=round(self._ratio(rows_with_stable_identity, len(rows)), 4),
+                semantic_identity_evidence_ratio=round(self._ratio(rows_with_semantic_identity, len(rows)), 4),
+                observed_semantic_identity_fields=sorted(observed_semantic_identity_fields),
+                locator_context_fields=sorted(locator_keys),
+                routing_hint_fields=sorted(routing_hint_keys),
+                status=semantic_identity_status if stable_identity_status == "satisfied" else stable_identity_status,
+                reason_code=(
+                    None
+                    if stable_identity_status == "satisfied" and semantic_identity_status == "satisfied"
+                    else "MEDIA_IDENTITY_BINDING_INCOMPLETE"
+                    if stable_identity_status != "satisfied"
+                    else "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+                ),
+                truth_eligible_rows=0,
+                metadata={
+                    "source": "row_level_semantic_validation",
+                    "stable_identity_authority": ["entity_id"],
+                    "locator_context_not_truth": sorted(locator_keys),
+                    "routing_hint_not_truth": sorted(routing_hint_keys),
+                    "filename_path_extension_truth_authority": False,
+                    "semantic_identity_requires_governed_observation": True,
+                },
+            ),
+            rows_with_required_identity=rows_with_stable_identity,
+            rows_missing_required_identity=rows_missing_stable_identity,
             value_counts_by_column=value_counts,
             absence_counts_by_column=absence_counts,
             missing_required_row_values=missing_required_values,
@@ -180,6 +249,13 @@ class RowLevelSemanticValidationService:
     def _absence_key(self, value: Any) -> str | None:
         normalized = str(value or "").strip().lower()
         return normalized if normalized in self.ABSENCE_VALUES else None
+
+    def _has_material_value(self, value: Any) -> bool:
+        text = str(value or "").strip()
+        return bool(text) and self._absence_key(text) is None
+
+    def _ratio(self, numerator: int, denominator: int) -> float:
+        return 1.0 if denominator <= 0 and numerator <= 0 else max(0.0, min(1.0, numerator / max(1, denominator)))
 
     def _column_available(self, column: str, available: set[str]) -> bool:
         return column in available or bool(self.COLUMN_ALIASES.get(column, set()).intersection(available))
