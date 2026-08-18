@@ -1,0 +1,15 @@
+{
+  "created_at": "2026-08-18T12:00:44.328991+00:00",
+  "old_reason": "MEDIA_INVENTORY_IDENTITY_COVERAGE_INSUFFICIENT",
+  "old_reason_problem": "conflated row identity binding/domain mismatch with semantic media identity evidence sufficiency",
+  "new_reasons": {
+    "MEDIA_IDENTITY_BINDING_INCOMPLETE": "Stable governed entity identity is missing for one or more rendered rows.",
+    "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT": "Rows have stable entity identity, but governed semantic media identity evidence is incomplete.",
+    "MEDIA_METADATA_OBSERVATION_INCOMPLETE": "Metadata observation coverage is below required policy threshold.",
+    "MEDIA_METADATA_CAPABILITY_NOT_CONFIGURED": "The media metadata observation capability is unavailable/not configured in public runtime."
+  },
+  "observed_public_reason": {
+    "A": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "B": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+  }
+}

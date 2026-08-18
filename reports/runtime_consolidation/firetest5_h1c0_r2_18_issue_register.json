@@ -1,0 +1,37 @@
+{
+  "created_at": "2026-08-18T12:00:44.328991+00:00",
+  "verdict": "FIRETEST5_H1C0_R2_18_MEDIA_IDENTITY_GOVERNED_RESOLUTION_READY",
+  "issues": [
+    {
+      "issue_id": "R2_18_P0_FALSE_IDENTITY_PROMOTION",
+      "priority": "P0",
+      "status": "RESOLVED",
+      "title": "Filename/path/extension locator fields must not satisfy semantic identity truth.",
+      "evidence": "Production row identity coverage now separates stable entity identity, semantic evidence, locator context, and routing hints. Tests cover filename/path/extension not truth."
+    },
+    {
+      "issue_id": "R2_18_P1_IDENTITY_DOMAIN_CONFLATION",
+      "priority": "P1",
+      "status": "RESOLVED_AND_PUBLIC_VALIDATED",
+      "title": "Identity coverage used selected entity domain and conflated row binding with semantic identity evidence.",
+      "evidence": "A/B stable identity ratio 1.0, semantic evidence ratio 0.0, public reason MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT."
+    },
+    {
+      "issue_id": "R2_18_P2_REASON_TAXONOMY_CONFLATION",
+      "priority": "P2",
+      "status": "RESOLVED",
+      "title": "Generic MEDIA_INVENTORY_IDENTITY_COVERAGE_INSUFFICIENT was too ambiguous.",
+      "evidence": "Specific reasons MEDIA_IDENTITY_BINDING_INCOMPLETE and MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT added/used."
+    },
+    {
+      "issue_id": "R2_18_R3_FRONTIER_MEDIA_METADATA_CAPABILITY_NOT_CONFIGURED",
+      "priority": "R3_FRONTIER",
+      "status": "LEGITIMATE_LIMITATION",
+      "title": "Public runtime lacks configured governed media metadata capability for semantic identity evidence acquisition.",
+      "evidence": "A/B media_metadata_capability.status = not_configured, semantic identity evidence ratio = 0.0, no false success."
+    }
+  ],
+  "open_P0": 0,
+  "open_P1": 0,
+  "open_P2_relevant_to_R2": 0
+}

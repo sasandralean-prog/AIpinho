@@ -1,0 +1,200 @@
+{
+  "verdict": null,
+  "observed_blocker": "MEDIA_INVENTORY_IDENTITY_COVERAGE_INSUFFICIENT",
+  "baseline_wave": "FIRETEST5_H1C0_R2_17_CSV_CELL_VALUE_INDEXED_LOOKUP_READY",
+  "source_observation": "reports\\runtime_consolidation\\firetest5_h1c0_r2_17_clean_phase0_to_6_validation_rerun.json",
+  "before_state": {
+    "task_run_id": "task_run_72568219bfbf4ab8ac11f048e44dd4b8",
+    "result_status": "blocked",
+    "result_reason_code": "MEDIA_INVENTORY_IDENTITY_COVERAGE_INSUFFICIENT",
+    "speaker_truth_safe_to_report_success": false,
+    "queue_runtime_status": 200,
+    "phase2_to_6_skipped": null
+  },
+  "reason_origin": {
+    "component": "MediaInventorySufficiencyService.evaluate",
+    "condition": "policy.require_full_identity_coverage and selected_rows > 0 and rows_with_required_identity / selected_rows < 1.0",
+    "source_file": "src/aipinho/services/artifacts/media_inventory_sufficiency_service.py",
+    "source_lines": [
+      63,
+      86,
+      87
+    ]
+  },
+  "coverage_computation_observed": {
+    "selected_rows_denominator": 2272,
+    "row_validation_row_count": 2230,
+    "rows_with_required_identity": 2230,
+    "rows_missing_required_identity": 0,
+    "identity_coverage_ratio": 0.9815,
+    "row_model_domain_gap": {
+      "selected_rows": 2272,
+      "bound_rows": 2272,
+      "rendered_rows": 2230,
+      "domain_mismatch": true
+    }
+  },
+  "current_identity_model": {
+    "row_validator_identity_fields": [
+      "entity_id",
+      "relative_path",
+      "filename",
+      "name"
+    ],
+    "selection_safe_to_use_minimum": [
+      "entity_id",
+      "source_root_role",
+      "evidence_refs"
+    ],
+    "semantic_contract_identity_fields": [
+      "entity_id",
+      "relative_path",
+      "name"
+    ],
+    "classification_issue": "relative_path/name/filename are locator/display hints, not semantic media identity truth."
+  },
+  "public_row_semantics": {
+    "value_counts_by_column": {
+      "entity_id": 2230,
+      "source_root_role": 2230,
+      "relative_path": 2230,
+      "name": 2230,
+      "extension": 2230,
+      "media_type": 2230,
+      "size_bytes": 2230,
+      "probe_status": 2230,
+      "evidence_ref": 2230,
+      "limitations": 2230,
+      "validation_status": 2230
+    },
+    "absence_counts_by_column": {
+      "track_title": {
+        "": 2230
+      },
+      "artist": {
+        "": 2230
+      },
+      "album": {
+        "": 2230
+      },
+      "album_artist": {
+        "": 2230
+      },
+      "duration": {
+        "": 2230
+      },
+      "codec": {
+        "": 2230
+      },
+      "container": {
+        "": 2230
+      },
+      "bitrate": {
+        "": 2230
+      },
+      "sample_rate": {
+        "": 2230
+      },
+      "channels": {
+        "": 2230
+      },
+      "artwork": {
+        "": 2230
+      },
+      "metadata_status": {
+        "not_observed": 2230
+      },
+      "metadata_source": {
+        "not_configured": 2230
+      },
+      "relationship_candidate_refs": {
+        "": 2230
+      }
+    },
+    "row_evidence_coverage": {
+      "total_rows": 2230,
+      "rows_with_evidence_ref": 2272,
+      "rows_without_evidence_ref": 0,
+      "evidence_ref_count": 2272,
+      "evidence_refs_sample": [
+        "file:D:\\rafa\\pinho music\\505 - 2.m4a",
+        "file:D:\\rafa\\pinho music\\505.m4a",
+        "file:D:\\rafa\\pinho music\\A Certain Romance.m4a",
+        "file:D:\\rafa\\pinho music\\A Day To Remember - All I Want.m4a",
+        "file:D:\\rafa\\pinho music\\A Day To Remember - I'm Made of Wax, Larry, What Are You Made Of Official Vide.m4a",
+        "file:D:\\rafa\\pinho music\\A Day To Remember - If it means a lot to you.m4a",
+        "file:D:\\rafa\\pinho music\\A Dozen Roses.m4a",
+        "file:D:\\rafa\\pinho music\\A Fantastica Vida De Romantica.m4a",
+        "file:D:\\rafa\\pinho music\\A Little Death.m4a",
+        "file:D:\\rafa\\pinho music\\A Pearl - 2.m4a",
+        "file:D:\\rafa\\pinho music\\A Pearl.m4a",
+        "file:D:\\rafa\\pinho music\\A Skylit Drive - Love The Way You Lie Punk Goes Pop 4.m4a",
+        "file:D:\\rafa\\pinho music\\A Ultima Noite.m4a",
+        "file:D:\\rafa\\pinho music\\Abandono.m4a",
+        "file:D:\\rafa\\pinho music\\Acustico 1Kilo - Deixe-me Ir Baviera, Knust e Pablo Martins.m4a",
+        "file:D:\\rafa\\pinho music\\Afraid - 2.m4a",
+        "file:D:\\rafa\\pinho music\\Afraid.m4a",
+        "file:D:\\rafa\\pinho music\\After Dark - 2.m4a",
+        "file:D:\\rafa\\pinho music\\After Dark.m4a",
+        "file:D:\\rafa\\pinho music\\Ainda Te Amo.m4a"
+      ],
+      "status": "satisfied",
+      "reason_code": null
+    },
+    "metadata_status": "not_configured",
+    "metadata_observation_ratio": 0.0,
+    "metadata_files_attempted": 2230,
+    "metadata_files_succeeded": 0
+  },
+  "hypotheses": {
+    "H_A_policy_requires_non_identity_fields": {
+      "verdict": "proven",
+      "supporting_evidence": [
+        "RowLevelSemanticValidationService.IDENTITY_FIELDS includes relative_path, filename and name.",
+        "ArtifactSemanticContractService treats relative_path/name as identity schema fields."
+      ],
+      "disconfirming_evidence": []
+    },
+    "H_B_evidence_exists_but_not_bound": {
+      "verdict": "refuted_for_row_evidence_binding",
+      "supporting_evidence": [],
+      "disconfirming_evidence": [
+        "row_evidence_coverage.status=satisfied",
+        "evidence_ref_count=2272"
+      ]
+    },
+    "H_C_metadata_observations_classified_incorrectly": {
+      "verdict": "not_yet_proven",
+      "supporting_evidence": [
+        "metadata_status=not_configured and metadata_source=not_configured for rendered rows"
+      ],
+      "disconfirming_evidence": [
+        "No evidence in the public report that a configured capability produced governed metadata observations."
+      ]
+    },
+    "H_H_identity_requirement_conflates_semantic_identity_and_inventory_metadata_coverage": {
+      "verdict": "proven",
+      "supporting_evidence": [
+        "The top reason says identity coverage, while row validation identity rows are complete for rendered rows and metadata capability is not configured."
+      ],
+      "disconfirming_evidence": []
+    },
+    "H_J_identity_coverage_is_correct": {
+      "verdict": "probable_with_evidence_for_semantic_media_identity_only",
+      "supporting_evidence": [
+        "track_title/artist/album and technical metadata columns are empty/not_observed/not_configured for all rendered rows."
+      ],
+      "disconfirming_evidence": [
+        "The existing reason/code path measures row identity/domain coverage, not explicit semantic media identity evidence."
+      ]
+    }
+  },
+  "root_cause_status": "proven",
+  "primary_root_cause": "Identity coverage currently conflates row/entity binding identity, locator/display fields, and semantic media identity evidence, then computes the ratio against selected_rows instead of the rendered row identity domain.",
+  "patch_plan": [
+    "Introduce bounded row identity coverage summary that separates stable entity identity, locator/display context, and semantic media identity evidence.",
+    "Make sufficiency evaluate stable row identity against rendered rows, not selected_rows.",
+    "Use a generic MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT reason when semantic media identity evidence is missing, while preserving metadata capability reasons.",
+    "Preserve filename/path/extension as non-truth locator/routing/display context."
+  ]
+}

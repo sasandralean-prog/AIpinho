@@ -1,0 +1,183 @@
+{
+  "created_at": "2026-08-18T12:00:44.328991+00:00",
+  "status": "validated",
+  "identity_dimensions": {
+    "canonical_identity": [
+      "entity_id"
+    ],
+    "semantic_media_identity_evidence": [
+      "track_title",
+      "artist",
+      "album",
+      "album_artist"
+    ],
+    "locator_context": [
+      "name",
+      "relative_path"
+    ],
+    "routing_hints": [
+      "extension",
+      "media_type",
+      "source_root_role"
+    ],
+    "display_fields": [
+      "name",
+      "filename"
+    ]
+  },
+  "A": {
+    "expected_entities": 1051,
+    "selected_entities": 1051,
+    "bound_rows": 1051,
+    "rows_rendered": 1051,
+    "rows_with_evidence_ref": 1051,
+    "evidence_ref_count": 1051,
+    "rows_with_required_identity": 1051,
+    "rows_with_stable_entity_identity": 1051,
+    "rows_with_semantic_identity_evidence": 0,
+    "rows_without_semantic_identity_evidence": 1051,
+    "selection_coverage_ratio": 1.0,
+    "evidence_coverage_ratio": 1.0,
+    "identity_coverage_ratio": 1.0,
+    "stable_entity_identity_ratio": 1.0,
+    "semantic_identity_evidence_ratio": 0.0,
+    "identity_status": "insufficient_evidence",
+    "identity_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "identity_observed_semantic_fields": [],
+    "identity_locator_context_fields": [
+      "name",
+      "relative_path"
+    ],
+    "identity_routing_hint_fields": [
+      "extension",
+      "media_type",
+      "source_root_role"
+    ],
+    "metadata_observation_ratio": 0.0,
+    "metadata_status": "not_configured",
+    "metadata_files_attempted": 1051,
+    "metadata_files_succeeded": 0,
+    "metadata_files_failed": 1051,
+    "unsupported_count": 0,
+    "read_error_count": 0,
+    "schema_status": "satisfied"
+  },
+  "B": {
+    "expected_entities": 1051,
+    "selected_entities": 1051,
+    "bound_rows": 1051,
+    "rows_rendered": 1051,
+    "rows_with_evidence_ref": 1051,
+    "evidence_ref_count": 1051,
+    "rows_with_required_identity": 1051,
+    "rows_with_stable_entity_identity": 1051,
+    "rows_with_semantic_identity_evidence": 0,
+    "rows_without_semantic_identity_evidence": 1051,
+    "selection_coverage_ratio": 1.0,
+    "evidence_coverage_ratio": 1.0,
+    "identity_coverage_ratio": 1.0,
+    "stable_entity_identity_ratio": 1.0,
+    "semantic_identity_evidence_ratio": 0.0,
+    "identity_status": "insufficient_evidence",
+    "identity_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "identity_observed_semantic_fields": [],
+    "identity_locator_context_fields": [
+      "name",
+      "relative_path"
+    ],
+    "identity_routing_hint_fields": [
+      "extension",
+      "media_type",
+      "source_root_role"
+    ],
+    "metadata_observation_ratio": 0.0,
+    "metadata_status": "not_configured",
+    "metadata_files_attempted": 1051,
+    "metadata_files_succeeded": 0,
+    "metadata_files_failed": 1051,
+    "unsupported_count": 0,
+    "read_error_count": 0,
+    "schema_status": "satisfied"
+  },
+  "A_row_identity": {
+    "total_rows": 1051,
+    "rows_with_stable_entity_identity": 1051,
+    "rows_without_stable_entity_identity": 0,
+    "rows_with_locator_context": 1051,
+    "rows_with_semantic_identity_evidence": 0,
+    "rows_without_semantic_identity_evidence": 1051,
+    "stable_entity_identity_ratio": 1.0,
+    "semantic_identity_evidence_ratio": 0.0,
+    "observed_semantic_identity_fields": [],
+    "locator_context_fields": [
+      "name",
+      "relative_path"
+    ],
+    "routing_hint_fields": [
+      "extension",
+      "media_type",
+      "source_root_role"
+    ],
+    "status": "insufficient_evidence",
+    "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "truth_eligible_rows": 0,
+    "metadata": {
+      "source": "row_level_semantic_validation",
+      "stable_identity_authority": [
+        "entity_id"
+      ],
+      "locator_context_not_truth": [
+        "name",
+        "relative_path"
+      ],
+      "routing_hint_not_truth": [
+        "extension",
+        "media_type",
+        "source_root_role"
+      ],
+      "filename_path_extension_truth_authority": false,
+      "semantic_identity_requires_governed_observation": true
+    }
+  },
+  "B_row_identity": {
+    "total_rows": 1051,
+    "rows_with_stable_entity_identity": 1051,
+    "rows_without_stable_entity_identity": 0,
+    "rows_with_locator_context": 1051,
+    "rows_with_semantic_identity_evidence": 0,
+    "rows_without_semantic_identity_evidence": 1051,
+    "stable_entity_identity_ratio": 1.0,
+    "semantic_identity_evidence_ratio": 0.0,
+    "observed_semantic_identity_fields": [],
+    "locator_context_fields": [
+      "name",
+      "relative_path"
+    ],
+    "routing_hint_fields": [
+      "extension",
+      "media_type",
+      "source_root_role"
+    ],
+    "status": "insufficient_evidence",
+    "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "truth_eligible_rows": 0,
+    "metadata": {
+      "source": "row_level_semantic_validation",
+      "stable_identity_authority": [
+        "entity_id"
+      ],
+      "locator_context_not_truth": [
+        "name",
+        "relative_path"
+      ],
+      "routing_hint_not_truth": [
+        "extension",
+        "media_type",
+        "source_root_role"
+      ],
+      "filename_path_extension_truth_authority": false,
+      "semantic_identity_requires_governed_observation": true
+    }
+  },
+  "semantic_equivalent": true
+}

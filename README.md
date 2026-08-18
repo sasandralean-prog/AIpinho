@@ -5,7 +5,7 @@ to "look intelligent" by filling fields or hiding failures. Its focus is to turn
 language into governed work with explicit contracts, evidence, validation,
 terminal state, and user-facing truth boundaries.
 
-The project is still experimental. FireTest 5 is not ready as of H1C0.R2.17.
+The project is still experimental. FireTest 5 is not ready as of H1C0.R2.18.
 
 ## Core Idea
 
@@ -174,9 +174,42 @@ sufficiency evaluation, then blocked semantically with:
 MEDIA_INVENTORY_IDENTITY_COVERAGE_INSUFFICIENT
 ```
 
-This is the current frontier. It is semantic inventory coverage, not CSV
-serialization, not row cardinality, and not indexed cell lookup. FireTest
+This was the frontier entering R2.18. It was semantic inventory coverage, not
+CSV serialization, not row cardinality, and not indexed cell lookup. FireTest
 numbers remain evidence, not production thresholds.
+
+R2.18 validated:
+
+```text
+H1C0.R2.18 =
+FIRETEST5_H1C0_R2_18_MEDIA_IDENTITY_GOVERNED_RESOLUTION_READY
+
+H1C0.R2 =
+H1C0_R2_READY_FOR_R3
+
+FireTest 5 = NOT_READY
+```
+
+The identity coverage boundary was fixed by separating stable row/entity
+identity from semantic media identity evidence:
+
+- `entity_id` is stable entity identity;
+- filename/path/name are locator or display context;
+- extension/media type/root role are routing hints;
+- title/artist/album-style media identity requires governed observation
+  evidence.
+
+The final public A+B evaluation blocked honestly with:
+
+```text
+MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT
+```
+
+A+B agreed that stable row identity was complete, semantic media identity
+evidence was absent, and the media metadata capability was `not_configured`.
+This is no longer an H1C0.R2 structural runtime/governance defect. The next
+frontier is H1C0.R3.01: governed media metadata capability configuration,
+observation execution, and semantic identity evidence acquisition.
 
 ## FireTest 5
 
@@ -265,15 +298,21 @@ persistence, and CSV streaming observability.
 
 It is not yet ready for FireTest 5.
 
+H1C0.R2 is consolidated and ready for the next architectural frontier. That
+does not mean FireTest 5 is ready; it means the remaining blocker is now a
+capability/evidence acquisition frontier rather than an R2 runtime governance
+defect.
+
 ## Roadmap
 
 Immediate next frontier:
 
 ```text
-Media inventory identity coverage sufficiency
+H1C0.R3.01 — Governed Media Metadata Capability Configuration,
+Observation Execution & Semantic Identity Evidence Acquisition
 ```
 
-R2.17 moved the public boundary past CSV cell lookup. The next work should
-explain why the publicly rendered inventory still lacks sufficient governed
-identity coverage without fabricating metadata, relaxing truth, or treating file
-names/extensions as semantic facts.
+R2.18 moved the public boundary past identity coverage conflation. The next
+work should acquire or configure governed media metadata observations and bind
+their evidence into semantic identity without fabricating metadata, relaxing
+truth, or treating filenames/extensions as semantic facts.

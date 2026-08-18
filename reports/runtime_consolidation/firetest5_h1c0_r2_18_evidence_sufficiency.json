@@ -1,0 +1,38 @@
+{
+  "created_at": "2026-08-18T12:00:44.328991+00:00",
+  "status": "insufficient_evidence_observed",
+  "bug_or_legitimate_limitation": "legitimate_limitation_after_identity_boundary_fix",
+  "stable_entity_identity": {
+    "A": 1.0,
+    "B": 1.0
+  },
+  "semantic_identity_evidence": {
+    "A": 0.0,
+    "B": 0.0
+  },
+  "evidence_refs": {
+    "A": 1051,
+    "B": 1051
+  },
+  "observed_semantic_identity_fields": {
+    "A": [],
+    "B": []
+  },
+  "reason_codes": {
+    "A": [
+      "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "MEDIA_METADATA_OBSERVATION_INCOMPLETE",
+      "MEDIA_METADATA_CAPABILITY_NOT_CONFIGURED"
+    ],
+    "B": [
+      "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "MEDIA_METADATA_OBSERVATION_INCOMPLETE",
+      "MEDIA_METADATA_CAPABILITY_NOT_CONFIGURED"
+    ]
+  },
+  "truth_boundary": {
+    "candidate_promoted_to_truth": false,
+    "filename_path_extension_promoted_to_truth": false,
+    "unknown_preserved_as_insufficient_evidence": true
+  }
+}

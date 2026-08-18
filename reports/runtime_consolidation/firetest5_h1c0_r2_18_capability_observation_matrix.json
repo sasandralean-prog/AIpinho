@@ -1,0 +1,32 @@
+{
+  "created_at": "2026-08-18T12:00:44.328991+00:00",
+  "media_metadata_capability": {
+    "A": {
+      "media_metadata_capability_status": "not_configured",
+      "metadata_status": "not_configured",
+      "metadata_observation_ratio": 0.0,
+      "metadata_files_attempted": 1051,
+      "metadata_files_succeeded": 0,
+      "metadata_files_failed": 1051,
+      "unsupported_count": 0,
+      "read_error_count": 0
+    },
+    "B": {
+      "media_metadata_capability_status": "not_configured",
+      "metadata_status": "not_configured",
+      "metadata_observation_ratio": 0.0,
+      "metadata_files_attempted": 1051,
+      "metadata_files_succeeded": 0,
+      "metadata_files_failed": 1051,
+      "unsupported_count": 0,
+      "read_error_count": 0
+    }
+  },
+  "capability_executed": false,
+  "capability_available": false,
+  "capability_configured": false,
+  "attributes_observed": [],
+  "evidence_emitted": false,
+  "provenance_emitted": false,
+  "limitation": "Public runtime reports media metadata capability not_configured; identity evidence was therefore not observed."
+}

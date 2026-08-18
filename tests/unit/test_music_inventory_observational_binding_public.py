@@ -116,8 +116,7 @@ def test_metadata_not_configured_is_rendered_as_limitation_not_fake_metadata(tmp
     assert "media_metadata_capability_not_configured" in render.content
     assert render.bound_rows == 1
     assert render.safe_to_use is False
-    assert render.reason_code in {
-        "MEDIA_METADATA_OBSERVATION_INCOMPLETE",
-        "MEDIA_METADATA_PROBE_NOT_RUN",
-        "MEDIA_METADATA_CAPABILITY_NOT_CONFIGURED",
-    }
+    assert render.reason_code == "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+    sufficiency = render.entity_summary["inventory_sufficiency_summary"]
+    assert "MEDIA_METADATA_CAPABILITY_NOT_CONFIGURED" in sufficiency["reason_codes"]
+    assert "MEDIA_METADATA_OBSERVATION_INCOMPLETE" in sufficiency["reason_codes"]

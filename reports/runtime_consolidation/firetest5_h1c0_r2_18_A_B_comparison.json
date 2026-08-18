@@ -1,0 +1,151 @@
+{
+  "created_at": "2026-08-18T12:00:44.328991+00:00",
+  "A": {
+    "task_run_id": "task_run_ab7899daf6e54fa7bd5624a70916a7bf",
+    "status": "blocked",
+    "reason": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "identity_digest": "5315f6e6ad22b81ef8c6c02f101b5a900db61b72a7b111d0be6b36ca47db4fb8",
+    "identity_counts": {
+      "expected_entities": 1051,
+      "selected_entities": 1051,
+      "bound_rows": 1051,
+      "rows_rendered": 1051,
+      "rows_with_evidence_ref": 1051,
+      "evidence_ref_count": 1051,
+      "rows_with_required_identity": 1051,
+      "rows_with_stable_entity_identity": 1051,
+      "rows_with_semantic_identity_evidence": 0,
+      "rows_without_semantic_identity_evidence": 1051,
+      "selection_coverage_ratio": 1.0,
+      "evidence_coverage_ratio": 1.0,
+      "identity_coverage_ratio": 1.0,
+      "stable_entity_identity_ratio": 1.0,
+      "semantic_identity_evidence_ratio": 0.0,
+      "identity_status": "insufficient_evidence",
+      "identity_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "identity_observed_semantic_fields": [],
+      "identity_locator_context_fields": [
+        "name",
+        "relative_path"
+      ],
+      "identity_routing_hint_fields": [
+        "extension",
+        "media_type",
+        "source_root_role"
+      ],
+      "metadata_observation_ratio": 0.0,
+      "metadata_status": "not_configured",
+      "metadata_files_attempted": 1051,
+      "metadata_files_succeeded": 0,
+      "metadata_files_failed": 1051,
+      "unsupported_count": 0,
+      "read_error_count": 0,
+      "schema_status": "satisfied"
+    },
+    "truth_safe": false,
+    "terminal_count": 1,
+    "phase_progression": {
+      "phase_2": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_3": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_4": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_5": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_6": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      }
+    },
+    "current_frontier": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+  },
+  "B": {
+    "task_run_id": "task_run_ebd877e91f6a4b86b3ae9a40bc39a339",
+    "status": "blocked",
+    "reason": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "identity_digest": "5315f6e6ad22b81ef8c6c02f101b5a900db61b72a7b111d0be6b36ca47db4fb8",
+    "identity_counts": {
+      "expected_entities": 1051,
+      "selected_entities": 1051,
+      "bound_rows": 1051,
+      "rows_rendered": 1051,
+      "rows_with_evidence_ref": 1051,
+      "evidence_ref_count": 1051,
+      "rows_with_required_identity": 1051,
+      "rows_with_stable_entity_identity": 1051,
+      "rows_with_semantic_identity_evidence": 0,
+      "rows_without_semantic_identity_evidence": 1051,
+      "selection_coverage_ratio": 1.0,
+      "evidence_coverage_ratio": 1.0,
+      "identity_coverage_ratio": 1.0,
+      "stable_entity_identity_ratio": 1.0,
+      "semantic_identity_evidence_ratio": 0.0,
+      "identity_status": "insufficient_evidence",
+      "identity_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "identity_observed_semantic_fields": [],
+      "identity_locator_context_fields": [
+        "name",
+        "relative_path"
+      ],
+      "identity_routing_hint_fields": [
+        "extension",
+        "media_type",
+        "source_root_role"
+      ],
+      "metadata_observation_ratio": 0.0,
+      "metadata_status": "not_configured",
+      "metadata_files_attempted": 1051,
+      "metadata_files_succeeded": 0,
+      "metadata_files_failed": 1051,
+      "unsupported_count": 0,
+      "read_error_count": 0,
+      "schema_status": "satisfied"
+    },
+    "truth_safe": false,
+    "terminal_count": 1,
+    "phase_progression": {
+      "phase_2": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_3": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_4": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_5": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      },
+      "phase_6": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "phase1_not_success_or_truth_safe"
+      }
+    },
+    "current_frontier": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+  },
+  "semantic_equivalent": true,
+  "divergences": []
+}

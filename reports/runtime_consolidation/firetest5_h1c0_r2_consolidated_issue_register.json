@@ -1,0 +1,88 @@
+{
+  "created_at": "2026-08-18T12:00:44.328991+00:00",
+  "verdict": "H1C0_R2_READY_FOR_R3",
+  "scope": "H1C0.R2.8 through H1C0.R2.18 consolidated reliability/governance boundary",
+  "issues": [
+    {
+      "wave": "R2.8",
+      "issue": "Artifact registry monolith in hot persist/write path",
+      "resolution_status": "RESOLVED",
+      "validation_scope": "public frontier moved past registry"
+    },
+    {
+      "wave": "R2.9",
+      "issue": "ProjectAnalysis media corpus handoff blocked source-unreadable media roots",
+      "resolution_status": "RESOLVED",
+      "validation_scope": "public handoff MEDIA_CORPUS_ROOT_HANDOFF_READY preserved"
+    },
+    {
+      "wave": "R2.10",
+      "issue": "music_inventory artifact started without terminal result",
+      "resolution_status": "RESOLVED",
+      "validation_scope": "terminality preserved through R2.18"
+    },
+    {
+      "wave": "R2.11",
+      "issue": "post-selection compile frontier opaque and queue_runtime residual timeout",
+      "resolution_status": "RESOLVED",
+      "validation_scope": "queue_runtime 200 without restart in A/B"
+    },
+    {
+      "wave": "R2.12",
+      "issue": "perception compile boundary contamination",
+      "resolution_status": "RESOLVED",
+      "validation_scope": "compile_only preserved; no observer execution in tests"
+    },
+    {
+      "wave": "R2.13",
+      "issue": "fact projection semantics/provenance boundary",
+      "resolution_status": "RESOLVED",
+      "validation_scope": "regression tests passed"
+    },
+    {
+      "wave": "R2.14",
+      "issue": "fact source binding monolith/reason/guard race",
+      "resolution_status": "RESOLVED",
+      "validation_scope": "regression tests passed"
+    },
+    {
+      "wave": "R2.15",
+      "issue": "artifact persist payload ref/large materialization boundary",
+      "resolution_status": "RESOLVED",
+      "validation_scope": "R2.17/R2.18 public runs reached evidence zip and terminal result"
+    },
+    {
+      "wave": "R2.16",
+      "issue": "CSV cardinality and streaming determinism",
+      "resolution_status": "RESOLVED",
+      "validation_scope": "R2.17 public CSV completed; regressions passed"
+    },
+    {
+      "wave": "R2.17",
+      "issue": "CSV cell value extraction indexed lookup cost",
+      "resolution_status": "RESOLVED",
+      "validation_scope": "baseline READY and R2.18 public runs preserve CSV completion path"
+    },
+    {
+      "wave": "R2.18",
+      "issue": "Media identity coverage conflation",
+      "resolution_status": "RESOLVED",
+      "validation_scope": "A/B semantic consistency PASS"
+    },
+    {
+      "wave": "R3.01",
+      "issue": "Governed media metadata capability configuration/execution for semantic identity evidence",
+      "resolution_status": "LEGITIMATE_NEXT_FRONTIER",
+      "validation_scope": "not an R2 structural debt after identity model separation"
+    }
+  ],
+  "open_P0": 0,
+  "open_P1": 0,
+  "open_P2_relevant_to_R2": 0,
+  "A_B_semantic_consistency": true,
+  "terminality_pass": true,
+  "speaker_truth_pass": true,
+  "no_false_success_pass": true,
+  "r2_debt_pushed_forward": false,
+  "next_frontier": "H1C0.R3.01 — Governed Media Metadata Capability Configuration, Observation Execution & Semantic Identity Evidence Acquisition"
+}
