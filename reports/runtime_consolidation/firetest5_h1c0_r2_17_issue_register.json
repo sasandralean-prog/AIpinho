@@ -1,0 +1,44 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_17_CSV_CELL_VALUE_INDEXED_LOOKUP_READY",
+  "firetest5_status": "NOT_READY",
+  "issues": [
+    {
+      "issue_id": "R2_17_P0_CELL_LOOKUP_LINEAR_SCAN",
+      "priority": "P0",
+      "status": "proven_fixed_public_validated",
+      "title": "metadata cell value lookup scanned all attribute observations per entity/cell",
+      "supporting_evidence": [
+        "R2.16 validation B: csv_cell_render_elapsed_ms=239110, csv_cell_serialization_elapsed_ms=16",
+        "source path: metadata status/source/probe resolved via full attribute_observations scan per entity/cell",
+        "R2.17 public validation: cell_fallback_scan_count=0, index_build_elapsed_ms=61, cell_value_lookup_elapsed_ms=17165"
+      ],
+      "fix_in_this_wave": true,
+      "public_validation": "PASS"
+    },
+    {
+      "issue_id": "R2_17_P1_AB_TIMING_SEMANTICS_AMBIGUITY",
+      "priority": "P1",
+      "status": "resolved",
+      "title": "A/B csv_cell_render_elapsed_ms had different timer coverage semantics",
+      "fix_in_this_wave": true,
+      "public_validation": "PASS"
+    },
+    {
+      "issue_id": "R2_15_P1_PAYLOAD_REF_SEMANTIC_SUBTREE_AMPLIFICATION",
+      "priority": "P1",
+      "status": "public_reached_no_duplicate_hash_groups_observed",
+      "title": "payload-ref dedup carry-in reached artifact persistence publicly",
+      "supporting_evidence": [
+        "physical_ref_count=3",
+        "unique_hash_count=3",
+        "duplicate_hash_groups=0"
+      ],
+      "fix_in_this_wave": false,
+      "public_validation": "PASS"
+    }
+  ],
+  "open_p0": 0,
+  "open_p1_current_boundary": 0,
+  "open_p2": 0,
+  "new_frontier": "MEDIA_INVENTORY_IDENTITY_COVERAGE_INSUFFICIENT"
+}

@@ -4,12 +4,15 @@
 
 Repository bootstrap local: completed before R2.17 runtime patching.
 
-GitHub baseline publication: blocked.
+GitHub baseline publication: completed after official GitHub CLI authentication.
 
-Reason:
+Initial blocker resolved:
 
-- `gh` CLI is not installed in the local environment.
-- `git ls-remote https://github.com/sasandralean-prog/AIpinho` returned `Repository not found`.
+- bundled PATH did not initially expose `gh`;
+- `git ls-remote https://github.com/sasandralean-prog/AIpinho` initially returned `Repository not found`;
+- a portable official GitHub CLI release was downloaded outside the repository, checksum-verified, and authenticated through the official device flow;
+- authenticated account verified as `sasandralean-prog`;
+- no Personal Access Token was manually generated, printed, written to a repository file, or stored in `.env`.
 
 No force push was attempted.
 
@@ -17,8 +20,8 @@ No force push was attempted.
 
 - target remote: `https://github.com/sasandralean-prog/AIpinho`
 - local branch: `main`
-- local baseline commit: finalized after this report content is committed; verify with `git rev-parse HEAD`
-- push result: pending / blocked until remote/auth is available
+- local baseline commit: `8c8914b79c9faf28c81d91138b3672581b453563`
+- push result: published to `origin/main`
 
 ## Inventory
 
@@ -102,17 +105,18 @@ Commit message:
 
 Commit hash:
 
-The final baseline commit hash cannot be embedded in the committed copy of this report without changing the commit itself. The authoritative hash is the value returned by `git rev-parse HEAD` after the baseline commit is finalized and is reported in the R2.17 final response.
+`8c8914b79c9faf28c81d91138b3672581b453563`
 
 ## Push
 
-GITHUB_BASELINE_PUBLISHED=false
+GITHUB_BASELINE_PUBLISHED=true
 
-Blocking reason:
+Verification:
+
+- `git ls-remote origin refs/heads/main` returned `8c8914b79c9faf28c81d91138b3672581b453563`.
+- `gh repo view sasandralean-prog/AIpinho` returned `defaultBranchRef.name = main`.
+- repository visibility observed as `PRIVATE`.
+
+Initial blocker reason, now resolved:
 
 `GITHUB_REMOTE_NOT_FOUND_OR_AUTH_REQUIRED`
-
-Operator action needed:
-
-- create or grant access to `https://github.com/sasandralean-prog/AIpinho`;
-- install/authenticate GitHub CLI if draft PR workflow is desired, or configure Git credential manager for HTTPS push.

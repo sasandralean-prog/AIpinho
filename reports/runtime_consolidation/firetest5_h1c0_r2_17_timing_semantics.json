@@ -1,0 +1,18 @@
+{
+  "ambiguity_resolved": true,
+  "diagnostic_a": {
+    "csv_cell_render_elapsed_ms": 47,
+    "semantics": "R2.16 diagnostic A carried the pre-refinement/partial cell timer semantics; the metric did not cover the full value lookup and serialization boundary used in validation B."
+  },
+  "validation_b": {
+    "csv_cell_render_elapsed_ms": 239110,
+    "csv_cell_serialization_elapsed_ms": 16,
+    "semantics": "Validation B measured full cell processing from before relationship/semantic/entity lookup through cell rendering; serialization itself was separately measured and negligible."
+  },
+  "r2_17_contract": {
+    "cell_value_lookup_elapsed_ms": "value source identification and governed lookup before serialization",
+    "cell_normalization_elapsed_ms": "cell normalization/render/spill-to-ref call",
+    "csv_cell_serialization_elapsed_ms": "legacy-compatible name for cell normalization/render time",
+    "column_cost_summary": "bounded per-column aggregate generated generically from contract columns"
+  }
+}

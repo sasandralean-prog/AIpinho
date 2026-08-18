@@ -2942,16 +2942,16 @@ class ReadonlyAnalysisArtifactRuntimeService:
             cells_rendered=len(render_columns),
             extra_metadata=row_model_metrics,
         )
-        observed_values: dict[tuple[str, str], Any] = {}
-        for observation in perception_payload.get("attribute_observations") or []:
-            if not isinstance(observation, dict) or observation.get("observation_state") != "observed":
-                continue
-            observed_values[
-                (
-                    str(observation.get("entity_id") or ""),
-                    str(observation.get("canonical_key") or observation.get("attribute_name") or ""),
-                )
-            ] = observation.get("observed_value")
+        lookup_context = self._build_csv_cell_lookup_context(
+            perception_payload=perception_payload,
+            selected_entities=selected_entities,
+            render_columns=render_columns,
+        )
+        cell_lookup_metrics = self._new_csv_cell_lookup_metrics(lookup_context)
+
+        def cell_lookup_metrics_snapshot() -> dict[str, Any]:
+            return self._csv_cell_lookup_metrics_snapshot(cell_lookup_metrics)
+
         cells_rendered = len(render_columns)
         csv_cells_expected = len(selected_entities) * len(render_columns)
         stream = io.StringIO()
@@ -3040,6 +3040,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
                         "csv_cell_serialization_elapsed_ms": int(csv_cell_serialization_elapsed_ms),
                         "max_batch_elapsed_ms": max_batch_elapsed_ms,
                         "progress_semantics": "progressing",
+                        **cell_lookup_metrics_snapshot(),
                     },
                 )
             row_started = time.monotonic()
@@ -3090,12 +3091,33 @@ class ReadonlyAnalysisArtifactRuntimeService:
                             "csv_cell_render_elapsed_ms": int(csv_cell_render_elapsed_ms),
                             "csv_cell_serialization_elapsed_ms": int(csv_cell_serialization_elapsed_ms),
                             "progress_semantics": "progressing",
+                            **cell_lookup_metrics_snapshot(),
                         },
                     )
-                relationship_value, relationship_present = self._relationship_render_field_value(
+                lookup_started = time.monotonic()
+                cell_lookup_metrics["cell_value_lookup_count"] += 1
+                column_metrics = cell_lookup_metrics["column_cost_summary"].setdefault(
                     field,
-                    perception_payload=perception_payload,
+                    {
+                        "lookup_count": 0,
+                        "total_elapsed_ms": 0.0,
+                        "index_hit_count": 0,
+                        "index_miss_count": 0,
+                        "fallback_scan_count": 0,
+                    },
                 )
+                column_metrics["lookup_count"] += 1
+                relationship_values = lookup_context.get("relationship_values") if isinstance(lookup_context.get("relationship_values"), dict) else {}
+                relationship_value = relationship_values.get(field)
+                relationship_present = field in relationship_values
+                if str(field or "").startswith("relationship_"):
+                    cell_lookup_metrics["cell_index_lookup_count"] += 1
+                    if relationship_present:
+                        cell_lookup_metrics["cell_index_hit_count"] += 1
+                        column_metrics["index_hit_count"] += 1
+                    else:
+                        cell_lookup_metrics["cell_index_miss_count"] += 1
+                        column_metrics["index_miss_count"] += 1
                 if relationship_present:
                     value = relationship_value
                     present = True
@@ -3105,15 +3127,43 @@ class ReadonlyAnalysisArtifactRuntimeService:
                         field,
                         perception_payload=perception_payload,
                         semantic_gaps=semantic_gaps,
+                        lookup_context=lookup_context,
                     )
                     if not present:
-                        value, present = self.observed_entities.value_for_field(entity, field)
+                        entity_id = str(entity.get("entity_id") or "")
+                        entity_values = lookup_context.get("entity_field_values") if isinstance(lookup_context.get("entity_field_values"), dict) else {}
+                        direct_values = entity_values.get(entity_id) if isinstance(entity_values.get(entity_id), dict) else {}
+                        cell_lookup_metrics["cell_direct_lookup_count"] += 1
+                        if field in direct_values:
+                            value = direct_values.get(field)
+                            present = True
+                            cell_lookup_metrics["cell_index_hit_count"] += 1
+                            column_metrics["index_hit_count"] += 1
+                        else:
+                            cell_lookup_metrics["cell_index_miss_count"] += 1
+                            column_metrics["index_miss_count"] += 1
+                            if not bool(lookup_context.get("entity_field_values_complete")):
+                                cell_lookup_metrics["cell_fallback_scan_count"] += 1
+                                cell_lookup_metrics["cell_fallback_scan_items_examined"] += 2
+                                column_metrics["fallback_scan_count"] += 1
+                                value, present = self.observed_entities.value_for_field(entity, field)
                 if not present:
+                    observed_values = lookup_context.get("observed_values") if isinstance(lookup_context.get("observed_values"), dict) else {}
                     derived_value = observed_values.get((str(entity.get("entity_id") or ""), field))
+                    cell_lookup_metrics["cell_index_lookup_count"] += 1
                     if derived_value not in (None, ""):
                         value = derived_value
                         present = True
+                        cell_lookup_metrics["cell_index_hit_count"] += 1
+                        column_metrics["index_hit_count"] += 1
+                    else:
+                        cell_lookup_metrics["cell_index_miss_count"] += 1
+                        column_metrics["index_miss_count"] += 1
+                lookup_elapsed_ms = max(0.0, (time.monotonic() - lookup_started) * 1000)
+                cell_lookup_metrics["cell_value_lookup_elapsed_ms"] += lookup_elapsed_ms
+                column_metrics["total_elapsed_ms"] += lookup_elapsed_ms
                 cell_started = time.monotonic()
+                cell_lookup_metrics["cell_normalization_count"] += 1
                 rendered_cell = (
                     ""
                     if value is None
@@ -3123,7 +3173,9 @@ class ReadonlyAnalysisArtifactRuntimeService:
                         task_run_id=str((declared_contract or {}).get("task_run_id") or "unbound"),
                     )
                 )
-                csv_cell_serialization_elapsed_ms += max(0.0, (time.monotonic() - cell_started) * 1000)
+                normalization_elapsed_ms = max(0.0, (time.monotonic() - cell_started) * 1000)
+                csv_cell_serialization_elapsed_ms += normalization_elapsed_ms
+                cell_lookup_metrics["cell_normalization_elapsed_ms"] += normalization_elapsed_ms
                 csv_cell_render_elapsed_ms += max(0.0, (time.monotonic() - full_cell_started) * 1000)
                 row.append(rendered_cell)
                 if column["required"] and not present and field not in missing_fields_seen:
@@ -3180,6 +3232,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
                         "cells_per_second": round(max(0, cells_rendered - len(render_columns)) / max(0.001, time.monotonic() - csv_stream_started), 3),
                         "average_cell_us": round((csv_cell_render_elapsed_ms * 1000) / max(1, cells_rendered - len(render_columns)), 3),
                         "progress_semantics": "progressing",
+                        **cell_lookup_metrics_snapshot(),
                     },
                 )
         self._check_artifact_render_checkpoint(
@@ -3213,6 +3266,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 "cells_per_second": round(max(0, cells_rendered - len(render_columns)) / max(0.001, time.monotonic() - csv_stream_started), 3),
                 "average_cell_us": round((csv_cell_render_elapsed_ms * 1000) / max(1, cells_rendered - len(render_columns)), 3),
                 "progress_semantics": "completed",
+                **cell_lookup_metrics_snapshot(),
             },
         )
         self._check_artifact_render_checkpoint(
@@ -3241,6 +3295,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 "csv_cell_render_elapsed_ms": int(csv_cell_render_elapsed_ms),
                 "csv_cell_serialization_elapsed_ms": int(csv_cell_serialization_elapsed_ms),
                 "progress_semantics": "completed",
+                **cell_lookup_metrics_snapshot(),
             },
         )
         finalize_started = time.monotonic()
@@ -3273,6 +3328,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 "csv_cell_serialization_elapsed_ms": int(csv_cell_serialization_elapsed_ms),
                 "csv_finalize_elapsed_ms": csv_finalize_elapsed_ms,
                 "progress_semantics": "completed",
+                **cell_lookup_metrics_snapshot(),
             },
         )
         if len(csv_content.encode("utf-8")) > self.budget.max_csv_total_bytes:
@@ -3603,6 +3659,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
         *,
         perception_payload: dict[str, Any],
         semantic_gaps: list[dict[str, Any]],
+        lookup_context: dict[str, Any] | None = None,
     ) -> tuple[Any | None, bool]:
         canonical = self.observed_entities.canonical_attribute_name(field)
         canonical_key = str(canonical or "").replace(" ", "_")
@@ -3613,11 +3670,11 @@ class ReadonlyAnalysisArtifactRuntimeService:
             max_refs = int(getattr(self.budget, "max_evidence_refs_inline", 20) or 20)
             return ";".join(refs[:max_refs]), bool(refs)
         if canonical_key == "metadata_status":
-            return self._metadata_status_for_entity(entity, perception_payload=perception_payload), True
+            return self._metadata_status_for_entity(entity, perception_payload=perception_payload, lookup_context=lookup_context), True
         if canonical_key == "metadata_source":
-            return self._metadata_source_for_entity(entity, perception_payload=perception_payload), True
+            return self._metadata_source_for_entity(entity, perception_payload=perception_payload, lookup_context=lookup_context), True
         if canonical_key == "probe_status":
-            return self._metadata_probe_status_for_entity(entity, perception_payload=perception_payload), True
+            return self._metadata_probe_status_for_entity(entity, perception_payload=perception_payload, lookup_context=lookup_context), True
         if canonical_key == "validation_status":
             return "semantic_validation_required", True
         if canonical_key == "limitations":
@@ -3666,9 +3723,183 @@ class ReadonlyAnalysisArtifactRuntimeService:
             return "not_observed", True
         return None, False
 
-    def _metadata_status_for_entity(self, entity: dict[str, Any], *, perception_payload: dict[str, Any]) -> str:
+    def _build_csv_cell_lookup_context(
+        self,
+        *,
+        perception_payload: dict[str, Any],
+        selected_entities: list[dict[str, Any]],
+        render_columns: list[dict[str, Any]],
+    ) -> dict[str, Any]:
+        started = time.monotonic()
+        observed_values: dict[tuple[str, str], Any] = {}
+        media_metadata_by_entity: dict[str, list[dict[str, Any]]] = {}
+        attribute_observations = perception_payload.get("attribute_observations")
+        if not isinstance(attribute_observations, list):
+            attribute_observations = []
+        for observation in attribute_observations:
+            if not isinstance(observation, dict):
+                continue
+            entity_id = str(observation.get("entity_id") or "")
+            key = str(observation.get("canonical_key") or observation.get("attribute_name") or "")
+            if observation.get("observation_state") == "observed":
+                observed_values[(entity_id, key)] = observation.get("observed_value")
+            if str(observation.get("capability_id") or "") == "media_metadata_reader":
+                media_metadata_by_entity.setdefault(entity_id, []).append(observation)
+
+        canonical_cache: dict[str, str] = {}
+
+        def canonical_name(value: str) -> str:
+            key = str(value or "")
+            cached = canonical_cache.get(key)
+            if cached is not None:
+                return cached
+            canonical = self.observed_entities.canonical_attribute_name(key)
+            canonical_cache[key] = canonical
+            return canonical
+
+        entity_field_values: dict[str, dict[str, Any]] = {}
+        render_field_keys = [str(column.get("canonical_key") or "") for column in render_columns if isinstance(column, dict)]
+        render_field_aliases = {
+            field: (canonical_name(field), canonical_name(field).replace(" ", "_"))
+            for field in render_field_keys
+        }
+        needed_value_keys = set(render_field_keys)
+        for canonical, compact in render_field_aliases.values():
+            needed_value_keys.add(canonical)
+            needed_value_keys.add(compact)
+        for entity in selected_entities:
+            if not isinstance(entity, dict):
+                continue
+            entity_id = str(entity.get("entity_id") or "")
+            if not entity_id:
+                continue
+            values: dict[str, Any] = {}
+            for container_name in ("observed_attributes", "inferred_attributes"):
+                container = entity.get(container_name)
+                if not isinstance(container, dict):
+                    continue
+                for raw_key, raw_value in container.items():
+                    if not isinstance(raw_value, dict) or raw_value.get("status") not in {"observed", "inferred"}:
+                        continue
+                    value = raw_value.get("value")
+                    raw_key_text = str(raw_key)
+                    compact_raw_key = raw_key_text.replace(" ", "_")
+                    if raw_key_text in needed_value_keys:
+                        values.setdefault(raw_key_text, value)
+                    if compact_raw_key in needed_value_keys:
+                        values.setdefault(compact_raw_key, value)
+                    canonical = canonical_name(raw_key_text)
+                    compact_canonical = canonical.replace(" ", "_")
+                    if canonical in needed_value_keys:
+                        values.setdefault(canonical, value)
+                    if compact_canonical in needed_value_keys:
+                        values.setdefault(compact_canonical, value)
+            for field in render_field_keys:
+                canonical, compact_canonical = render_field_aliases[field]
+                if canonical in values:
+                    values.setdefault(field, values[canonical])
+                elif compact_canonical in values:
+                    values.setdefault(field, values[compact_canonical])
+            entity_field_values[entity_id] = values
+
+        relationship_values = self._relationship_render_values(perception_payload)
+        index_entry_count = (
+            len(observed_values)
+            + sum(len(items) for items in media_metadata_by_entity.values())
+            + sum(len(values) for values in entity_field_values.values())
+            + len(relationship_values)
+        )
+        return {
+            "observed_values": observed_values,
+            "media_metadata_by_entity": media_metadata_by_entity,
+            "entity_field_values": entity_field_values,
+            "entity_field_values_complete": True,
+            "relationship_values": relationship_values,
+            "index_build_elapsed_ms": max(0.0, (time.monotonic() - started) * 1000),
+            "index_entry_count": index_entry_count,
+            "index_bytes_estimate": self._bounded_size_estimate(
+                {
+                    "observed_value_count": len(observed_values),
+                    "media_metadata_entity_count": len(media_metadata_by_entity),
+                    "media_metadata_observation_count": sum(len(items) for items in media_metadata_by_entity.values()),
+                    "entity_field_value_count": sum(len(values) for values in entity_field_values.values()),
+                    "relationship_value_count": len(relationship_values),
+                }
+            ),
+        }
+
+    def _new_csv_cell_lookup_metrics(self, lookup_context: dict[str, Any]) -> dict[str, Any]:
+        return {
+            "cell_value_lookup_count": 0,
+            "cell_value_lookup_elapsed_ms": 0.0,
+            "cell_direct_lookup_count": 0,
+            "cell_index_lookup_count": 0,
+            "cell_index_hit_count": 0,
+            "cell_index_miss_count": 0,
+            "cell_fallback_scan_count": 0,
+            "cell_fallback_scan_items_examined": 0,
+            "cell_provenance_lookup_count": 0,
+            "cell_provenance_lookup_elapsed_ms": 0.0,
+            "cell_evidence_lookup_count": 0,
+            "cell_evidence_lookup_elapsed_ms": 0.0,
+            "cell_fact_lookup_count": 0,
+            "cell_fact_lookup_elapsed_ms": 0.0,
+            "cell_normalization_count": 0,
+            "cell_normalization_elapsed_ms": 0.0,
+            "index_build_elapsed_ms": float(lookup_context.get("index_build_elapsed_ms") or 0.0),
+            "index_entry_count": int(lookup_context.get("index_entry_count") or 0),
+            "index_bytes_estimate": int(lookup_context.get("index_bytes_estimate") or 0),
+            "max_lookup_depth": 2,
+            "column_cost_summary": {},
+        }
+
+    def _csv_cell_lookup_metrics_snapshot(self, metrics: dict[str, Any]) -> dict[str, Any]:
+        snapshot: dict[str, Any] = {}
+        for key, value in metrics.items():
+            if key == "column_cost_summary":
+                snapshot[key] = self._bounded_column_cost_summary(value)
+            elif key.endswith("_elapsed_ms") or key == "index_build_elapsed_ms":
+                snapshot[key] = int(float(value or 0.0))
+            elif isinstance(value, (int, float, str, bool)) or value is None:
+                snapshot[key] = int(value) if isinstance(value, bool) is False and isinstance(value, int) else value
+        lookup_count = int(metrics.get("cell_value_lookup_count") or 0)
+        snapshot["average_lookup_us"] = round((float(metrics.get("cell_value_lookup_elapsed_ms") or 0.0) * 1000) / max(1, lookup_count), 3)
+        return snapshot
+
+    def _bounded_column_cost_summary(self, value: Any) -> dict[str, Any]:
+        if not isinstance(value, dict):
+            return {}
+        summary: dict[str, Any] = {}
+        for raw_field, raw_metrics in list(value.items())[: max(1, int(self.budget.max_artifact_columns or 1))]:
+            if not isinstance(raw_metrics, dict):
+                continue
+            lookup_count = int(raw_metrics.get("lookup_count") or 0)
+            elapsed_ms = float(raw_metrics.get("total_elapsed_ms") or 0.0)
+            summary[str(raw_field)[:120]] = {
+                "lookup_count": lookup_count,
+                "total_elapsed_ms": int(elapsed_ms),
+                "avg_us": round((elapsed_ms * 1000) / max(1, lookup_count), 3),
+                "index_hit_count": int(raw_metrics.get("index_hit_count") or 0),
+                "index_miss_count": int(raw_metrics.get("index_miss_count") or 0),
+                "fallback_scan_count": int(raw_metrics.get("fallback_scan_count") or 0),
+            }
+        return summary
+
+    def _bounded_size_estimate(self, value: Any) -> int:
+        try:
+            return len(json.dumps(value, ensure_ascii=False, default=str).encode("utf-8"))
+        except Exception:
+            return 0
+
+    def _metadata_status_for_entity(
+        self,
+        entity: dict[str, Any],
+        *,
+        perception_payload: dict[str, Any],
+        lookup_context: dict[str, Any] | None = None,
+    ) -> str:
         entity_id = str(entity.get("entity_id") or "")
-        observations = self._media_metadata_observations_for_entity(entity_id, perception_payload=perception_payload)
+        observations = self._media_metadata_observations_for_entity(entity_id, perception_payload=perception_payload, lookup_context=lookup_context)
         if any(item.get("observation_state") == "observed" for item in observations):
             observed_keys = {
                 str(item.get("canonical_key") or item.get("attribute_name") or "")
@@ -3684,9 +3915,15 @@ class ReadonlyAnalysisArtifactRuntimeService:
             return "not_configured" if status in {"not_configured", "missing_dependency", "unavailable"} else status
         return "not_observed"
 
-    def _metadata_source_for_entity(self, entity: dict[str, Any], *, perception_payload: dict[str, Any]) -> str:
+    def _metadata_source_for_entity(
+        self,
+        entity: dict[str, Any],
+        *,
+        perception_payload: dict[str, Any],
+        lookup_context: dict[str, Any] | None = None,
+    ) -> str:
         entity_id = str(entity.get("entity_id") or "")
-        observations = self._media_metadata_observations_for_entity(entity_id, perception_payload=perception_payload)
+        observations = self._media_metadata_observations_for_entity(entity_id, perception_payload=perception_payload, lookup_context=lookup_context)
         backends = sorted({
             str(((item.get("provenance") or {}).get("backend_id") or (item.get("evidence") or {}).get("backend_id") or ""))
             for item in observations
@@ -3699,9 +3936,15 @@ class ReadonlyAnalysisArtifactRuntimeService:
         selected = str((media or {}).get("selected_backend") or "") if isinstance(media, dict) else ""
         return selected or "not_configured"
 
-    def _metadata_probe_status_for_entity(self, entity: dict[str, Any], *, perception_payload: dict[str, Any]) -> str:
+    def _metadata_probe_status_for_entity(
+        self,
+        entity: dict[str, Any],
+        *,
+        perception_payload: dict[str, Any],
+        lookup_context: dict[str, Any] | None = None,
+    ) -> str:
         entity_id = str(entity.get("entity_id") or "")
-        observations = self._media_metadata_observations_for_entity(entity_id, perception_payload=perception_payload)
+        observations = self._media_metadata_observations_for_entity(entity_id, perception_payload=perception_payload, lookup_context=lookup_context)
         if any(item.get("observation_state") == "observed" for item in observations):
             return "executed"
         if observations:
@@ -3710,9 +3953,20 @@ class ReadonlyAnalysisArtifactRuntimeService:
         status = str((media or {}).get("status") or "") if isinstance(media, dict) else ""
         return "not_configured" if status in {"", "not_configured", "missing_dependency", "unavailable"} else "not_observed"
 
-    def _media_metadata_observations_for_entity(self, entity_id: str, *, perception_payload: dict[str, Any]) -> list[dict[str, Any]]:
+    def _media_metadata_observations_for_entity(
+        self,
+        entity_id: str,
+        *,
+        perception_payload: dict[str, Any],
+        lookup_context: dict[str, Any] | None = None,
+    ) -> list[dict[str, Any]]:
         if not entity_id:
             return []
+        if isinstance(lookup_context, dict):
+            media_by_entity = lookup_context.get("media_metadata_by_entity")
+            if isinstance(media_by_entity, dict):
+                rows = media_by_entity.get(entity_id)
+                return list(rows) if isinstance(rows, list) else []
         rows = perception_payload.get("attribute_observations") if isinstance(perception_payload.get("attribute_observations"), list) else []
         return [
             item
@@ -3813,6 +4067,12 @@ class ReadonlyAnalysisArtifactRuntimeService:
     def _relationship_render_field_value(self, field: str, *, perception_payload: dict[str, Any]) -> tuple[Any, bool]:
         if not str(field or "").startswith("relationship_"):
             return None, False
+        values = self._relationship_render_values(perception_payload)
+        if field not in values:
+            return None, False
+        return values[field], True
+
+    def _relationship_render_values(self, perception_payload: dict[str, Any]) -> dict[str, Any]:
         summary = perception_payload.get("relationship_summary") if isinstance(perception_payload.get("relationship_summary"), dict) else {}
         observations = perception_payload.get("relationship_observations") if isinstance(perception_payload.get("relationship_observations"), list) else []
         candidates = perception_payload.get("relationship_candidates") if isinstance(perception_payload.get("relationship_candidates"), list) else []
@@ -3884,9 +4144,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 "truth_eligible": False,
             },
         }
-        if field not in values:
-            return None, False
-        return values[field], True
+        return values
 
     def _relationship_rendering_summary(self, perception_payload: dict[str, Any]) -> dict[str, Any]:
         fields = [
@@ -5812,6 +6070,27 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "cells_per_second",
             "average_cell_us",
             "max_batch_elapsed_ms",
+            "cell_value_lookup_count",
+            "cell_value_lookup_elapsed_ms",
+            "cell_direct_lookup_count",
+            "cell_index_lookup_count",
+            "cell_index_hit_count",
+            "cell_index_miss_count",
+            "cell_fallback_scan_count",
+            "cell_fallback_scan_items_examined",
+            "cell_provenance_lookup_count",
+            "cell_provenance_lookup_elapsed_ms",
+            "cell_evidence_lookup_count",
+            "cell_evidence_lookup_elapsed_ms",
+            "cell_fact_lookup_count",
+            "cell_fact_lookup_elapsed_ms",
+            "cell_normalization_count",
+            "cell_normalization_elapsed_ms",
+            "index_build_elapsed_ms",
+            "index_entry_count",
+            "index_bytes_estimate",
+            "max_lookup_depth",
+            "average_lookup_us",
             "input_entity_set_digest",
             "projected_entity_set_digest",
             "row_model_digest",
@@ -5825,6 +6104,9 @@ class ReadonlyAnalysisArtifactRuntimeService:
             value = metadata.get(key)
             if isinstance(value, (str, int, float, bool)) or value is None:
                 bounded[key] = value
+        column_cost_summary = metadata.get("column_cost_summary")
+        if isinstance(column_cost_summary, dict):
+            bounded["column_cost_summary"] = self._bounded_column_cost_summary(column_cost_summary)
         payload_metrics = metadata.get("payload_metrics")
         if isinstance(payload_metrics, dict):
             bounded["payload_metrics"] = self._bounded_perception_payload_metrics(payload_metrics)

@@ -1,0 +1,206 @@
+{
+  "task_run_id": "task_run_033998b4118145af9f2ea1d7ad014b6e",
+  "operation_id": "op_89679f86f3504812851fc96eddf30c4a",
+  "column_cost_summary": {
+    "entity_id": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 1485,
+      "avg_us": 665.919,
+      "index_hit_count": 0,
+      "index_miss_count": 0,
+      "fallback_scan_count": 0
+    },
+    "source_root_role": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 14,
+      "avg_us": 6.278,
+      "index_hit_count": 2230,
+      "index_miss_count": 0,
+      "fallback_scan_count": 0
+    },
+    "relative_path": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 14,
+      "avg_us": 6.278,
+      "index_hit_count": 2230,
+      "index_miss_count": 0,
+      "fallback_scan_count": 0
+    },
+    "name": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 15,
+      "avg_us": 6.726,
+      "index_hit_count": 2230,
+      "index_miss_count": 0,
+      "fallback_scan_count": 0
+    },
+    "extension": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 0,
+      "avg_us": 0.0,
+      "index_hit_count": 2230,
+      "index_miss_count": 0,
+      "fallback_scan_count": 0
+    },
+    "media_type": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 1565,
+      "avg_us": 701.794,
+      "index_hit_count": 0,
+      "index_miss_count": 0,
+      "fallback_scan_count": 0
+    },
+    "size_bytes": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 31,
+      "avg_us": 13.901,
+      "index_hit_count": 2230,
+      "index_miss_count": 0,
+      "fallback_scan_count": 0
+    },
+    "track_title": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 1443,
+      "avg_us": 647.085,
+      "index_hit_count": 0,
+      "index_miss_count": 4460,
+      "fallback_scan_count": 0
+    },
+    "artist": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 1174,
+      "avg_us": 526.457,
+      "index_hit_count": 0,
+      "index_miss_count": 4460,
+      "fallback_scan_count": 0
+    },
+    "album": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 975,
+      "avg_us": 437.22,
+      "index_hit_count": 0,
+      "index_miss_count": 4460,
+      "fallback_scan_count": 0
+    },
+    "album_artist": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 1425,
+      "avg_us": 639.013,
+      "index_hit_count": 0,
+      "index_miss_count": 4460,
+      "fallback_scan_count": 0
+    },
+    "duration": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 15,
+      "avg_us": 6.726,
+      "index_hit_count": 0,
+      "index_miss_count": 4460,
+      "fallback_scan_count": 0
+    },
+    "codec": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 950,
+      "avg_us": 426.009,
+      "index_hit_count": 0,
+      "index_miss_count": 4460,
+      "fallback_scan_count": 0
+    },
+    "container": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 1960,
+      "avg_us": 878.924,
+      "index_hit_count": 0,
+      "index_miss_count": 4460,
+      "fallback_scan_count": 0
+    },
+    "bitrate": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 0,
+      "avg_us": 0.0,
+      "index_hit_count": 0,
+      "index_miss_count": 4460,
+      "fallback_scan_count": 0
+    },
+    "sample_rate": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 0,
+      "avg_us": 0.0,
+      "index_hit_count": 0,
+      "index_miss_count": 4460,
+      "fallback_scan_count": 0
+    },
+    "channels": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 15,
+      "avg_us": 6.726,
+      "index_hit_count": 0,
+      "index_miss_count": 4460,
+      "fallback_scan_count": 0
+    },
+    "artwork": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 30,
+      "avg_us": 13.453,
+      "index_hit_count": 0,
+      "index_miss_count": 4460,
+      "fallback_scan_count": 0
+    },
+    "metadata_status": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 1232,
+      "avg_us": 552.466,
+      "index_hit_count": 0,
+      "index_miss_count": 0,
+      "fallback_scan_count": 0
+    },
+    "metadata_source": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 15,
+      "avg_us": 6.726,
+      "index_hit_count": 0,
+      "index_miss_count": 0,
+      "fallback_scan_count": 0
+    },
+    "probe_status": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 47,
+      "avg_us": 21.076,
+      "index_hit_count": 0,
+      "index_miss_count": 0,
+      "fallback_scan_count": 0
+    },
+    "evidence_ref": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 1437,
+      "avg_us": 644.395,
+      "index_hit_count": 0,
+      "index_miss_count": 0,
+      "fallback_scan_count": 0
+    },
+    "limitations": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 1501,
+      "avg_us": 673.094,
+      "index_hit_count": 0,
+      "index_miss_count": 0,
+      "fallback_scan_count": 0
+    },
+    "relationship_candidate_refs": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 985,
+      "avg_us": 441.704,
+      "index_hit_count": 0,
+      "index_miss_count": 6690,
+      "fallback_scan_count": 0
+    },
+    "validation_status": {
+      "lookup_count": 2230,
+      "total_elapsed_ms": 823,
+      "avg_us": 369.058,
+      "index_hit_count": 0,
+      "index_miss_count": 0,
+      "fallback_scan_count": 0
+    }
+  }
+}

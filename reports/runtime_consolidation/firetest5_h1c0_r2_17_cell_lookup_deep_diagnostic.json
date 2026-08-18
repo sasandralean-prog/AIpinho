@@ -1,0 +1,38 @@
+{
+  "verdict": null,
+  "root_cause_status": "proven",
+  "call_graph_real": [
+    "row model entity",
+    "contract column definition",
+    "relationship render value lookup",
+    "semantic inventory field value",
+    "metadata status/source/probe lookup",
+    "observed entity field lookup fallback",
+    "attribute_observation observed value fallback",
+    "_render_csv_cell normalization/spill-to-ref",
+    "csv.writer.writerow"
+  ],
+  "cell_structures_traversed_before_patch": {
+    "metadata_status_source_probe": "full perception_payload.attribute_observations list per call",
+    "relationship_fields": "relationship observations/candidates/traces per field call",
+    "observed_entity_fallback": "observed/inferred attribute containers per fallback"
+  },
+  "root_cause": "media metadata observation lookup was linear per metadata cell and repeated across rows",
+  "hypotheses": {
+    "H-A linear scan per cell": "proven for metadata status/source/probe columns",
+    "H-B provenance graph traversal": "not_proven",
+    "H-C fact resolution semantic matching": "not_proven",
+    "H-D evidence ref repeated": "not_proven for current hot path",
+    "H-E deep path traversal": "not_proven",
+    "H-F model materialization": "not_proven",
+    "H-H instrumentation dominates": "weakened; serialization timer remained 16ms while lookup path was separate",
+    "H-I A/B metric mismatch": "proven_resolved"
+  },
+  "patch_plan": [
+    "build immutable per-render lookup context",
+    "route metadata lookup through media_metadata_by_entity index",
+    "route observed entity field fallback through entity_field_values index",
+    "precompute relationship values once",
+    "emit bounded aggregate lookup metrics"
+  ]
+}

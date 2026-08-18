@@ -1,0 +1,62 @@
+{
+  "root_cause_status": "proven",
+  "generic_scale_validation": [
+    {
+      "entities": 100,
+      "observations": 2500,
+      "lookup_calls": 300,
+      "old_scan_items_estimate": 750000,
+      "old_elapsed_ms": 47.739,
+      "index_build_elapsed_ms": 0.0,
+      "index_build_wall_ms": 4.461,
+      "indexed_lookup_elapsed_ms": 0.794,
+      "indexed_total_elapsed_ms": 5.255,
+      "speedup_x_including_build": 9.085,
+      "index_entry_count": 2513,
+      "index_bytes_estimate": 168
+    },
+    {
+      "entities": 400,
+      "observations": 10000,
+      "lookup_calls": 1200,
+      "old_scan_items_estimate": 12000000,
+      "old_elapsed_ms": 719.275,
+      "index_build_elapsed_ms": 15.0,
+      "index_build_wall_ms": 6.449,
+      "indexed_lookup_elapsed_ms": 3.177,
+      "indexed_total_elapsed_ms": 9.626,
+      "speedup_x_including_build": 74.72,
+      "index_entry_count": 10013,
+      "index_bytes_estimate": 169
+    },
+    {
+      "entities": 1000,
+      "observations": 25000,
+      "lookup_calls": 3000,
+      "old_scan_items_estimate": 75000000,
+      "old_elapsed_ms": 5484.56,
+      "index_build_elapsed_ms": 15.0,
+      "index_build_wall_ms": 10.704,
+      "indexed_lookup_elapsed_ms": 8.063,
+      "indexed_total_elapsed_ms": 18.767,
+      "speedup_x_including_build": 292.251,
+      "index_entry_count": 25013,
+      "index_bytes_estimate": 170
+    },
+    {
+      "entities": 2500,
+      "observations": 62500,
+      "lookup_calls": 7500,
+      "old_scan_items_estimate": 468750000,
+      "old_elapsed_ms": 35354.591,
+      "index_build_elapsed_ms": 15.0,
+      "index_build_wall_ms": 23.126,
+      "indexed_lookup_elapsed_ms": 20.508,
+      "indexed_total_elapsed_ms": 43.635,
+      "speedup_x_including_build": 810.244,
+      "index_entry_count": 62513,
+      "index_bytes_estimate": 170
+    }
+  ],
+  "canonicalization_cache_refinement": "validated"
+}

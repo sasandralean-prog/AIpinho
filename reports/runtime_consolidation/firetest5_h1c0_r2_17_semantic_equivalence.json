@@ -1,0 +1,11 @@
+{
+  "semantic_equivalence": "PASS",
+  "validated_by": [
+    "tests/unit/test_csv_cell_value_indexed_lookup.py::test_indexed_metadata_lookup_matches_reference_semantics",
+    "tests/unit/test_csv_cell_value_indexed_lookup.py::test_csv_render_emits_bounded_lookup_metrics_and_column_cost"
+  ],
+  "truth_semantics_changed": false,
+  "candidate_to_truth_promotion": false,
+  "filesystem_scan_added": false,
+  "renderer_observer_added": false
+}

@@ -5,7 +5,7 @@ to "look intelligent" by filling fields or hiding failures. Its focus is to turn
 language into governed work with explicit contracts, evidence, validation,
 terminal state, and user-facing truth boundaries.
 
-The project is still experimental. FireTest 5 is not ready as of H1C0.R2.16.
+The project is still experimental. FireTest 5 is not ready as of H1C0.R2.17.
 
 ## Core Idea
 
@@ -127,7 +127,7 @@ current code, current configs, or validated runtime evidence.
 
 ## Current Frontier
 
-Baseline:
+Published baseline:
 
 ```text
 H1C0.R2.16 =
@@ -156,14 +156,27 @@ csv_cell_render_elapsed_ms = 239110
 csv_cell_serialization_elapsed_ms = 16
 ```
 
-The current frontier for R2.17 is:
+R2.17 validated:
 
 ```text
-CSV Cell Value Extraction / Indexed Lookup Cost Boundary
+H1C0.R2.17 =
+FIRETEST5_H1C0_R2_17_CSV_CELL_VALUE_INDEXED_LOOKUP_READY
+
+FireTest 5 = NOT_READY
 ```
 
-These numbers are FireTest evidence. They are not production thresholds and
-must not become hardcoded logic.
+The CSV cell value extraction frontier was fixed with a generic per-render
+lookup context. The public validation run reached CSV completion, artifact
+persistence/registry, evidence phase 1, metadata coverage, and inventory
+sufficiency evaluation, then blocked semantically with:
+
+```text
+MEDIA_INVENTORY_IDENTITY_COVERAGE_INSUFFICIENT
+```
+
+This is the current frontier. It is semantic inventory coverage, not CSV
+serialization, not row cardinality, and not indexed cell lookup. FireTest
+numbers remain evidence, not production thresholds.
 
 ## FireTest 5
 
@@ -257,9 +270,10 @@ It is not yet ready for FireTest 5.
 Immediate next frontier:
 
 ```text
-H1C0.R2.17 - CSV Cell Value Extraction / Indexed Lookup Cost Boundary
+Media inventory identity coverage sufficiency
 ```
 
-The goal is to discover where cell value extraction spends time and to make any
-indexed lookup optimization preserve evidence, provenance, missing/unknown
-semantics, validation boundaries, and SpeakerTruth.
+R2.17 moved the public boundary past CSV cell lookup. The next work should
+explain why the publicly rendered inventory still lacks sufficient governed
+identity coverage without fabricating metadata, relaxing truth, or treating file
+names/extensions as semantic facts.
