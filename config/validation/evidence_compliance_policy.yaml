@@ -1,0 +1,22 @@
+﻿schema_version: 1
+
+evidence_compliance:
+  enabled: true
+  require_evidence_for_findings: true
+  require_valid_evidence_ids: true
+  require_source_path_for_file_evidence: true
+  require_excerpt_or_line_range: true
+  reject_evidence_from_blocked_files: true
+  reject_secret_evidence: true
+  reject_unseen_file_citations: true
+  allow_absence_evidence: true
+  allow_tree_metadata_evidence: true
+
+confidence:
+  high_requires_evidence_count: 2
+  medium_requires_evidence_count: 1
+  low_allows_single_evidence: true
+retrieval:
+  require_citations: true
+  require_source_ref: true
+  reject_uncited_context: true

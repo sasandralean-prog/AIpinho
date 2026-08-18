@@ -1,0 +1,14 @@
+schema_version: 1
+architecture_analysis:
+  enabled: true
+  detect:
+    - python_project
+    - fastapi_project
+    - package_src_layout
+    - api_routes_present
+    - services_present
+    - schemas_present
+    - config_first_layout
+    - tests_present
+    - docs_present
+  finding_severity_default: info

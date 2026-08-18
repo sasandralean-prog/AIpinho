@@ -1,0 +1,46 @@
+schema_version: 1
+
+source_policy:
+  require_registered_source: true
+  require_source_enabled: true
+  require_read_only_source: true
+  require_source_scope_match: true
+  reject_disabled_source: true
+  reject_unregistered_source: true
+  reject_legacy_vectorstore: true
+  reject_network_source: true
+  reject_raw_log_source: true
+
+source_requirements:
+  file:
+    require_workspace: true
+    require_path_guard: true
+    require_allowed_extension: true
+    reject_binary: true
+    reject_secret: true
+    reject_forbidden_root: true
+
+  project_report:
+    require_report_exists: true
+    allow_quality_status:
+      - passed
+      - passed_with_warnings
+      - needs_review
+
+  task_run_result:
+    require_run_exists: true
+    allow_validation_status:
+      - passed
+      - passed_with_warnings
+      - needs_review
+
+  validation_result:
+    require_validation_exists: true
+
+  patch_apply_result:
+    require_apply_run_exists: true
+
+  curated_memory:
+    require_explicit_request: true
+    require_status_active: true
+    require_read_policy: true

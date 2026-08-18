@@ -1,0 +1,62 @@
+schema_version: 1
+workflows_enabled: true
+autopilot_v2_enabled: true
+requirements:
+  require_workflow_plan: true
+  require_checkpoints: true
+  require_policy_decisions: true
+  require_validation_gates: true
+  require_final_report: true
+  require_evidence_refs: true
+  require_artifact_library_indexing: true
+  require_memory_candidates_as_candidates_only: true
+execution:
+  allow_pause_resume: true
+  allow_cancel: true
+  allow_recovery: true
+  allow_partial_reports: true
+  allow_sandbox_workflows: true
+  allow_target_mutable_workflows: true
+  deny_source_readonly_write: true
+limits:
+  max_phases: 8
+  max_steps_per_phase: 12
+  max_total_steps: 50
+  max_tool_invocations: 120
+  max_skill_executions: 30
+  max_files_changed: 40
+  max_correction_cycles_per_phase: 2
+  max_recovery_attempts: 2
+  timeout_seconds: 7200
+approval:
+  require_approval_for_medium_risk: true
+  require_approval_for_high_risk: true
+  block_critical_risk: true
+  require_approval_for_promotion_apply: true
+  require_approval_for_config_changes: true
+  require_approval_for_build_files: true
+  require_approval_for_cleanup_apply: true
+checkpoints:
+  create_before_side_effect: true
+  create_after_phase: true
+  create_after_validation: true
+  create_before_promotion: true
+  create_before_cleanup: true
+  preserve_evidence: true
+recovery:
+  enable_recovery_plans: true
+  allow_retry_low_risk_steps: true
+  allow_skip_optional_steps: true
+  allow_rollback_when_available: true
+  require_report_on_recovery: true
+memory:
+  generate_learning_summary: true
+  generate_memory_candidates: true
+  never_auto_accept_global_memory: true
+  require_evidence_for_candidates: true
+artifacts:
+  generate_workflow_plan_artifact: true
+  generate_checkpoint_artifacts: true
+  generate_final_report_artifact: true
+  require_authorization_header_for_download: true
+  token_in_url: false

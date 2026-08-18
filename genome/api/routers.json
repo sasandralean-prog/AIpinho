@@ -1,0 +1,226 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "routers": [
+    {
+      "router": "health_router",
+      "path": "src/aipinho/api/routers/health_router.py",
+      "prefix": "/health",
+      "service": "services.health",
+      "critical": true
+    },
+    {
+      "router": "chat_router",
+      "path": "src/aipinho/api/routers/chat_router.py",
+      "prefix": "/chat",
+      "service": "services.chat",
+      "critical": true
+    },
+    {
+      "router": "task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "prefix": "/tasks",
+      "service": "services.runtime",
+      "critical": true
+    },
+    {
+      "router": "tool_router",
+      "path": "src/aipinho/api/routers/tool_router.py",
+      "prefix": "/tools",
+      "service": "services.tools",
+      "critical": true
+    },
+    {
+      "router": "model_router",
+      "path": "src/aipinho/api/routers/model_router.py",
+      "prefix": "/models",
+      "service": "services.models",
+      "critical": true
+    },
+    {
+      "router": "artifact_router",
+      "path": "src/aipinho/api/routers/artifact_router.py",
+      "prefix": "/artifacts",
+      "service": "services.artifacts",
+      "critical": true
+    },
+    {
+      "router": "agent_router",
+      "path": "src/aipinho/api/routers/agent_router.py",
+      "prefix": "/agents",
+      "service": "services.agents",
+      "critical": true
+    },
+    {
+      "router": "policy_router",
+      "path": "src/aipinho/api/routers/policy_router.py",
+      "prefix": "/policy",
+      "service": "services.policy_kernel",
+      "critical": true
+    },
+    {
+      "router": "config_router",
+      "path": "src/aipinho/api/routers/config_router.py",
+      "prefix": "/config",
+      "service": "services.config",
+      "critical": false
+    },
+    {
+      "router": "approval_router",
+      "path": "src/aipinho/api/routers/approval_router.py",
+      "prefix": "/approvals",
+      "service": "services.approval",
+      "critical": true
+    },
+    {
+      "router": "agent_tool_gateway_router",
+      "path": "src/aipinho/api/routers/agent_tool_gateway_router.py",
+      "prefix": "/agent/tool-gateway",
+      "service": "services.agents",
+      "critical": true
+    },
+    {
+      "router": "agent_memory_gateway_router",
+      "path": "src/aipinho/api/routers/agent_memory_gateway_router.py",
+      "prefix": "/agent/memory-gateway",
+      "service": "services.agents",
+      "critical": true
+    },
+    {
+      "router": "agent_marketplace_router",
+      "path": "src/aipinho/api/routers/agent_marketplace_router.py",
+      "prefix": "/agent/marketplace",
+      "service": "services.agents",
+      "critical": false
+    },
+    {
+      "router": "agent_kernel_router",
+      "path": "src/aipinho/api/routers/agent_kernel_router.py",
+      "prefix": "/agent/kernel",
+      "service": "services.agents",
+      "critical": true
+    },
+    {
+      "router": "agent_delegation_router",
+      "path": "src/aipinho/api/routers/agent_delegation_router.py",
+      "prefix": "/agent/delegation",
+      "service": "services.agents",
+      "critical": true
+    },
+    {
+      "router": "agent_bridge_router",
+      "path": "src/aipinho/api/routers/agent_bridge_router.py",
+      "prefix": "/agent/bridge",
+      "service": "services.agents",
+      "critical": false
+    },
+    {
+      "router": "admin_router",
+      "path": "src/aipinho/api/routers/admin_router.py",
+      "prefix": "/admin",
+      "service": "services.admin",
+      "critical": false
+    },
+    {
+      "router": "governance_lifecycle_router",
+      "path": "src/aipinho/api/routers/governance_lifecycle_router.py",
+      "prefix": "/governance/lifecycle",
+      "service": "services.governance",
+      "critical": false
+    },
+    {
+      "router": "gemini_executor_router",
+      "path": "src/aipinho/api/routers/gemini_executor_router.py",
+      "prefix": "/gemini/executor",
+      "service": "services.models",
+      "critical": false
+    },
+    {
+      "router": "feedback_router",
+      "path": "src/aipinho/api/routers/feedback_router.py",
+      "prefix": "/feedback",
+      "service": "services.feedback",
+      "critical": false
+    },
+    {
+      "router": "external_workspaces_router",
+      "path": "src/aipinho/api/routers/external_workspaces_router.py",
+      "prefix": "/external/workspaces",
+      "service": "services.workspaces",
+      "critical": false
+    },
+    {
+      "router": "external_gateway_router",
+      "path": "src/aipinho/api/routers/external_gateway_router.py",
+      "prefix": "/external/gateway",
+      "service": "services.external",
+      "critical": false
+    },
+    {
+      "router": "external_collaboration_router",
+      "path": "src/aipinho/api/routers/external_collaboration_router.py",
+      "prefix": "/external/collaboration",
+      "service": "services.external",
+      "critical": false
+    },
+    {
+      "router": "event_search_router",
+      "path": "src/aipinho/api/routers/event_search_router.py",
+      "prefix": "/events/search",
+      "service": "services.events",
+      "critical": false
+    },
+    {
+      "router": "event_router",
+      "path": "src/aipinho/api/routers/event_router.py",
+      "prefix": "/events",
+      "service": "services.events",
+      "critical": false
+    },
+    {
+      "router": "event_contract_router",
+      "path": "src/aipinho/api/routers/event_contract_router.py",
+      "prefix": "/events/contracts",
+      "service": "services.events",
+      "critical": false
+    },
+    {
+      "router": "eval_reports_router",
+      "path": "src/aipinho/api/routers/eval_reports_router.py",
+      "prefix": "/eval/reports",
+      "service": "services.evaluation",
+      "critical": false
+    },
+    {
+      "router": "evaluation_router",
+      "path": "src/aipinho/api/routers/evaluation_router.py",
+      "prefix": "/evaluation",
+      "service": "services.evaluation",
+      "critical": false
+    },
+    {
+      "router": "evals_router",
+      "path": "src/aipinho/api/routers/evals_router.py",
+      "prefix": "/evals",
+      "service": "services.evaluation",
+      "critical": false
+    },
+    {
+      "router": "debug_trace_router",
+      "path": "src/aipinho/api/routers/debug_trace_router.py",
+      "prefix": "/debug/trace",
+      "service": "services.debugger",
+      "critical": false
+    },
+    {
+      "router": "debugger_router",
+      "path": "src/aipinho/api/routers/debugger_router.py",
+      "prefix": "/debugger",
+      "service": "services.debugger",
+      "critical": false
+    }
+  ],
+  "total_routers": 30,
+  "critical_routers": 10,
+  "non_critical_routers": 20
+}

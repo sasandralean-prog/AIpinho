@@ -1,0 +1,27 @@
+﻿schema_version: 1
+
+process:
+  use_shell: false
+  allow_arbitrary_command: false
+  allow_env_override: false
+  sanitize_environment: true
+  capture_stdout: true
+  capture_stderr: true
+  isolate_process_group: true
+  no_window: true
+  kill_child_on_timeout: true
+  kill_process_tree_on_timeout: false
+  encoding: utf-8
+  errors: replace
+
+blocked:
+  network_server_mode: true
+  interactive_mode: true
+  file_prompt_mode: true
+  custom_unvalidated_args: true
+
+audit:
+  log_invocation_metadata: true
+  log_sanitized_command: true
+  do_not_log_full_prompt_by_default: true
+  do_not_log_secrets: true

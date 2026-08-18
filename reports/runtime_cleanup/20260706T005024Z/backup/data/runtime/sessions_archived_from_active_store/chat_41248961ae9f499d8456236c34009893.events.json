@@ -1,0 +1,35 @@
+[
+  {
+    "event_id": "session_event_017e971cf57c412982c0c3e0c66542ea",
+    "session_id": "chat_41248961ae9f499d8456236c34009893",
+    "event_type": "session_created",
+    "created_at": "2026-06-18T18:34:22.670906+00:00",
+    "summary": "Sessao criada.",
+    "data": {},
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_3a7865d2a67d44fbbcfeb19a5edb4835",
+    "session_id": "chat_41248961ae9f499d8456236c34009893",
+    "event_type": "chat_message",
+    "created_at": "2026-06-18T18:34:25.016412+00:00",
+    "summary": "Mensagem processada com status ready.",
+    "data": {
+      "intent_type": "unknown",
+      "task_draft_id": "sandbox_run_ffecb9d7821d400794bba81756e54e9e"
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_379e6a8da1a042d7aca405f3b62e69a6",
+    "session_id": "chat_41248961ae9f499d8456236c34009893",
+    "event_type": "operational_context_updated",
+    "created_at": "2026-06-18T18:34:25.023413+00:00",
+    "summary": "Contexto operacional recente atualizado.",
+    "data": {
+      "operation_type": "sandbox_batch_artifact_request",
+      "path": "C:\\Dev\\AIpinho\\sandboxes\\vitoria_02\\vitoria_02.zip"
+    },
+    "warnings": []
+  }
+]

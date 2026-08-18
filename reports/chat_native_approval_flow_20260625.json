@@ -1,0 +1,41 @@
+﻿{
+    "security":  {
+                     "refresh_policy_preserved":  true,
+                     "no_direct_write":  true,
+                     "ambiguous_approval_blocked":  true,
+                     "approval_request_required":  true,
+                     "no_direct_shell":  true
+                 },
+    "verdict":  "CHAT_NATIVE_APPROVAL_READY_WITH_WARNINGS",
+    "tests":  [
+                  {
+                      "command":  "python -m py_compile changed files",
+                      "status":  "passed"
+                  },
+                  {
+                      "status":  "passed",
+                      "command":  "python -m pytest tests\\\\unit\\\\test_governed_approval_continuation.py -q",
+                      "passed":  12
+                  },
+                  {
+                      "status":  "passed",
+                      "command":  "python -m pytest tests\\\\integration\\\\test_continue_openai_compat_api.py -q",
+                      "passed":  33
+                  }
+              ],
+    "date":  "2026-06-25",
+    "warnings":  [
+                     "ConfigChangeRequest apply-by-chat not implemented in this hotfix",
+                     "read_file/list_files approval not expanded because current lifecycle policy does not approve those actions",
+                     "Continue-created approval records decision but does not execute write/shell without a governed runtime run"
+                 ],
+    "files_changed":  [
+                          "src/aipinho/services/chat/chat_approval_command_service.py",
+                          "src/aipinho/api/routers/chat_router.py",
+                          "src/aipinho/services/chat/chat_service.py",
+                          "src/aipinho/api/routers/continue_integration_router.py",
+                          "src/aipinho/schemas/approvals/approval_event.py",
+                          "tests/unit/test_governed_approval_continuation.py",
+                          "tests/integration/test_continue_openai_compat_api.py"
+                      ]
+}

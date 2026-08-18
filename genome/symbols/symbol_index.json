@@ -1,0 +1,146 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "symbols": [
+    {
+      "symbol": "create_app",
+      "file": "src/aipinho/app_factory.py",
+      "class": "UNKNOWN",
+      "function": "create_app",
+      "signature": "() -> FastAPI",
+      "visibility": "public",
+      "who_calls": ["main"],
+      "who_uses": ["main"]
+    },
+    {
+      "symbol": "PolicyKernelService",
+      "file": "src/aipinho/services/policy_kernel/policy_kernel_service.py",
+      "class": "PolicyKernelService",
+      "function": "UNKNOWN",
+      "signature": "UNKNOWN",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"]
+    },
+    {
+      "symbol": "CapabilityGateService",
+      "file": "src/aipinho/services/policy_kernel/capability_gate_service.py",
+      "class": "CapabilityGateService",
+      "function": "UNKNOWN",
+      "signature": "UNKNOWN",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"]
+    },
+    {
+      "symbol": "TaskRuntimeService",
+      "file": "src/aipinho/services/runtime/task_runtime_service.py",
+      "class": "TaskRuntimeService",
+      "function": "UNKNOWN",
+      "signature": "UNKNOWN",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"]
+    },
+    {
+      "symbol": "ExecutionGraphService",
+      "file": "src/aipinho/services/runtime/execution_graph_service.py",
+      "class": "ExecutionGraphService",
+      "function": "UNKNOWN",
+      "signature": "UNKNOWN",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"]
+    },
+    {
+      "symbol": "IntelligentPlannerService",
+      "file": "src/aipinho/services/runtime/intelligent_planner_service.py",
+      "class": "IntelligentPlannerService",
+      "function": "UNKNOWN",
+      "signature": "UNKNOWN",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"]
+    },
+    {
+      "symbol": "ChatService",
+      "file": "src/aipinho/services/chat/chat_service.py",
+      "class": "ChatService",
+      "function": "UNKNOWN",
+      "signature": "UNKNOWN",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"]
+    },
+    {
+      "symbol": "ChatOperationRouterService",
+      "file": "src/aipinho/services/chat/chat_operation_router_service.py",
+      "class": "ChatOperationRouterService",
+      "function": "UNKNOWN",
+      "signature": "UNKNOWN",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"]
+    },
+    {
+      "symbol": "AgentToolGatewayService",
+      "file": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+      "class": "AgentToolGatewayService",
+      "function": "UNKNOWN",
+      "signature": "UNKNOWN",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"]
+    },
+    {
+      "symbol": "AgentLocalActionPlanner",
+      "file": "src/aipinho/services/agents/agent_local_action_planner.py",
+      "class": "AgentLocalActionPlanner",
+      "function": "UNKNOWN",
+      "signature": "UNKNOWN",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"]
+    },
+    {
+      "symbol": "LlamaCppProvider",
+      "file": "src/aipinho/services/models/llama_cpp_provider.py",
+      "class": "LlamaCppProvider",
+      "function": "UNKNOWN",
+      "signature": "UNKNOWN",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"]
+    },
+    {
+      "symbol": "GovernedToolExecutionService",
+      "file": "src/aipinho/services/tools/governed_tool_execution_service.py",
+      "class": "GovernedToolExecutionService",
+      "function": "UNKNOWN",
+      "signature": "UNKNOWN",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"]
+    },
+    {
+      "symbol": "ValidationGateService",
+      "file": "src/aipinho/services/validation/validation_gate_service.py",
+      "class": "ValidationGateService",
+      "function": "UNKNOWN",
+      "signature": "UNKNOWN",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"]
+    }
+  ],
+  "total_symbols": 13,
+  "symbol_types": {
+    "function": 1,
+    "class": 12
+  },
+  "visibility": {
+    "public": 13,
+    "private": 0,
+    "protected": 0
+  }
+}

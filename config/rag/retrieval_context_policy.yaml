@@ -1,0 +1,27 @@
+schema_version: 1
+
+integration:
+  direct_prompt_injection_allowed: false
+  context_injection_plan_required: true
+  citations_required: true
+  provenance_required: true
+
+context_bundle:
+  enabled: true
+  require_citations: true
+  require_source_refs: true
+  require_budget_summary: true
+  require_scope_summary: true
+  require_warnings: true
+  include_source_metadata: true
+  include_evidence_bundle: true
+  allow_empty_bundle: true
+  empty_bundle_status: no_results
+  reject_uncited_context: true
+
+prompt_assembly:
+  allow_explicit_context_bundle: false
+  auto_inject_retrieval_context: false
+  require_user_or_service_explicit_request: true
+  require_context_injection_plan: true
+  include_retrieval_trace_ref: true

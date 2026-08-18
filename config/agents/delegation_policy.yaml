@@ -1,0 +1,69 @@
+version: 1
+defaults:
+  max_depth: 3
+  max_child_runs_per_parent: 10
+  default_timeout_seconds: 900
+  max_timeout_seconds: 1800
+  enable_cycle_detection: true
+  execution_modes:
+    - safe_chat
+    - assisted_execution
+    - governed_autorun
+    - power_user
+routes:
+  - parent_agent_id: lucio
+    target_agent_id: codex
+    enabled: true
+    autoapprove: true
+    execution_modes: [assisted_execution, governed_autorun, power_user]
+    operations: [technical_analysis, coding, code_review, refactor, shell, build, test]
+    capabilities: [read_workspace, code_review, workspace_write, create_file, modify_file, shell, validation, report_generate]
+    workspace_policy: governed
+  - parent_agent_id: lucio
+    target_agent_id: aipinho
+    enabled: true
+    autoapprove: true
+    execution_modes: [assisted_execution, governed_autorun, power_user]
+    operations: [local_execution, readonly_analysis, artifact_request, validation, report_generate, workspace_operation, delegated_governed_execution, operational_task_request, build, test]
+    capabilities: [read_workspace, search_workspace, artifact_create, validation, report_generate, workspace_write, create_file, modify_file, shell, build, test]
+    workspace_policy: governed
+  - parent_agent_id: gemini
+    target_agent_id: aipinho
+    enabled: true
+    autoapprove: true
+    execution_modes: [assisted_execution, governed_autorun, power_user]
+    operations: [local_execution, readonly_analysis, artifact_request, validation, report_generate, workspace_operation, delegated_governed_execution, operational_task_request, build, test]
+    capabilities: [read_workspace, search_workspace, artifact_create, validation, report_generate, workspace_write, create_file, modify_file, shell, build, test]
+    workspace_policy: governed
+  - parent_agent_id: aipinho
+    target_agent_id: codex
+    enabled: true
+    autoapprove: true
+    execution_modes: [assisted_execution, governed_autorun, power_user]
+    operations: [technical_analysis, coding, code_review, refactor, shell, build, test]
+    capabilities: [read_workspace, code_review, workspace_write, create_file, modify_file, shell, validation, report_generate]
+    workspace_policy: governed
+  - parent_agent_id: codex
+    target_agent_id: aipinho
+    enabled: true
+    autoapprove: true
+    execution_modes: [assisted_execution, governed_autorun, power_user]
+    operations: [local_execution, readonly_analysis, artifact_request, validation, report_generate, workspace_operation, delegated_governed_execution, operational_task_request, build, test]
+    capabilities: [read_workspace, search_workspace, artifact_create, validation, report_generate, workspace_write, create_file, modify_file, shell, build, test]
+    workspace_policy: governed
+  - parent_agent_id: gemini
+    target_agent_id: codex
+    enabled: false
+    autoapprove: false
+    execution_modes: [assisted_execution]
+    operations: []
+    capabilities: []
+    workspace_policy: deny
+  - parent_agent_id: codex
+    target_agent_id: gemini
+    enabled: false
+    autoapprove: false
+    execution_modes: [assisted_execution]
+    operations: []
+    capabilities: []
+    workspace_policy: deny

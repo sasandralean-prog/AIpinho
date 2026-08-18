@@ -1,0 +1,11 @@
+schema_version: 1
+
+execution_audit:
+  enabled: true
+  log_allowed_reads: true
+  log_blocked_attempts: true
+  log_content: false
+  log_raw_user_message: false
+  retention_days: 14
+  result_store: data/runtime/executions
+  audit_log: data/logs/audit/executions.jsonl

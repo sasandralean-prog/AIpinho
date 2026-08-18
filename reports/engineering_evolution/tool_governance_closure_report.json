@@ -1,0 +1,61 @@
+{
+  "program": "AIpinho Engineering Evolution Program",
+  "scope": "Tool Governance Closure",
+  "date": "2026-07-02",
+  "verdict": "TOOL_GOVERNANCE_CLOSURE_READY",
+  "canonical_chain": [
+    "intent",
+    "planner",
+    "contract",
+    "capability",
+    "policy",
+    "approval",
+    "tool_router",
+    "execution",
+    "validation",
+    "artifacts",
+    "report"
+  ],
+  "files_changed": [
+    "src/aipinho/schemas/runtime/tool_governance.py",
+    "src/aipinho/services/runtime/tool_governance_service.py",
+    "src/aipinho/services/runtime/task_runtime_service.py",
+    "tests/unit/test_tool_governance_service.py",
+    "reports/engineering_evolution/engineering_evolution_g_l_consolidated_report.md",
+    "reports/engineering_evolution/engineering_evolution_g_l_consolidated_report.json"
+  ],
+  "smoke": {
+    "run_id": "task_run_942abbc0de34425b80710ba6ec41faaf",
+    "trail_status": "ready",
+    "audit_status": "passed",
+    "checkpoints": [
+      "intent:present",
+      "planner:present",
+      "contract:present",
+      "capability:present",
+      "policy:present",
+      "approval:not_required",
+      "tool_router:present",
+      "execution:present",
+      "validation:pending",
+      "artifacts:pending",
+      "report:pending"
+    ]
+  },
+  "tests": {
+    "new_tests": "5 passed",
+    "focused_suite": "69 passed in 70.29s"
+  },
+  "hardcode_check": {
+    "path_specific_rules_added": false,
+    "project_specific_rules_added": false,
+    "filename_specific_rules_added": false,
+    "fire_test_specific_routes_added": false,
+    "approval_policy_bypass_added": false
+  },
+  "remaining_limits": [
+    "Tool governance is exposed as an internal service, not a public endpoint yet.",
+    "Tool governance audits the trail but does not yet gate every tool execution automatically.",
+    "Mobile/Launcher/Debugger rendering can consume the service in a later sprint."
+  ]
+}

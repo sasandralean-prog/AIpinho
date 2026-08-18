@@ -1,0 +1,40 @@
+schema_version: 1
+context_kernel:
+  enabled: true
+  mode: governed_context_assembly
+  backend_is_source_of_truth: true
+  require_context_purpose: true
+  require_context_scope: true
+  require_source_ref: true
+  require_admission_decision: true
+  require_budget: true
+  require_trace: true
+  require_rejection_reasons: true
+  require_citation_map_when_contextual: true
+  require_freshness_check: true
+  require_sensitivity_filter: true
+  require_prompt_injection_guard: true
+authority:
+  context_admission_owner: context_kernel
+  bundle_builder_owner: context_kernel
+  prompt_context_owner: context_kernel
+blocked:
+  context_without_source_ref: true
+  raw_secret_context: true
+  raw_prompt_context: true
+  raw_model_output_context: true
+  full_file_context_without_budget: true
+  expired_memory_as_active: true
+  superseded_memory_as_active: true
+  stale_rag_as_primary_source: true
+  uncited_contextual_claim_source: true
+  role_builds_own_final_context: true
+  ui_builds_prompt_context: true
+  direct_legacy_vectorstore_context: true
+  skill_builds_own_final_context: true
+  skill_bypasses_context_admission: true
+  skill_mutates_context_bundle: true
+skill_runtime:
+  purpose: skill_execution_future
+  bundle_required: true
+  owner: context_kernel

@@ -1,0 +1,22 @@
+﻿schema_version: 1
+
+precedence:
+  - forbidden_root
+  - explicit_user_denial
+  - security_policy_denial
+  - read_only_constraint
+  - success_contract_constraint
+  - capability_gate
+  - task_contract
+  - approval_policy
+  - role_declared_policy
+  - tool_default_policy
+  - default_deny
+
+rules:
+  role_cannot_expand_task_permissions: true
+  unknown_action_default: deny
+  side_effects_require_approval: true
+  patch_apply_requires_approval: true
+  shell_requires_explicit_capability: true
+  git_write_requires_explicit_capability: true

@@ -1,0 +1,44 @@
+{
+  "session_id": "chat_247e661fad4841f699e1720e6b459683",
+  "status": "active",
+  "created_at": "2026-06-24T00:32:48.493053+00:00",
+  "updated_at": "2026-06-24T00:32:48.556768+00:00",
+  "expires_at": "2026-06-24T04:32:48.493053+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Pode implementar os patchs que você recomendou em C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_2e23b55b5a95481c8c74316555fd56b9",
+    "intent_type": "filesystem_write_request",
+    "task_type": "filesystem_write",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_approval",
+    "contract_type": "filesystem_write",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [
+      "write_files"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main",
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

@@ -1,0 +1,129 @@
+{
+  "status": "blocked",
+  "verdict": "FIRETEST5_H1B4_3_2_PROJECT_ANALYSIS_BOUNDARY_READY_WITH_ARTIFACT_RENDER_LIFECYCLE_FINDING",
+  "task_run_id": "task_run_a51357625212411193db4550616125ff",
+  "client_response_status": null,
+  "client_response_time_ms": 90026,
+  "client_ok": false,
+  "client_error": "TimeoutError('timed out')",
+  "run_status": "blocked",
+  "result_status": "blocked",
+  "finished_at": "2026-08-12T11:08:50.471044+00:00",
+  "project_analysis_status": "completed",
+  "project_analysis_reason_code": null,
+  "first_artifact_event": "artifact_creation_started",
+  "artifact_count": 3,
+  "artifact_index_status": "available",
+  "artifact_logical_paths": [
+    "reports/firetest5/phase1_discovery.md",
+    "reports/firetest5/project_inventory.md",
+    "reports/firetest5/music_inventory.csv"
+  ],
+  "music_inventory_event_state": "created_after_terminal",
+  "terminal_event_count": 3,
+  "first_terminal_event": {
+    "event_id": "task_run_event_f93b737d5c694f39b57db47a37633e08",
+    "run_id": "task_run_a51357625212411193db4550616125ff",
+    "sequence": 15,
+    "type": "run_blocked",
+    "status": "blocked",
+    "message": "TaskRun blocked by governed runtime budget.",
+    "step_id": null,
+    "timestamp": "2026-08-12T11:05:52.825106+00:00",
+    "metadata": {
+      "reason_code": "TASKRUN_LIFECYCLE_TIMEOUT",
+      "elapsed_seconds": 174.671,
+      "max_runtime_seconds": 120.0
+    }
+  },
+  "post_terminal_events": [
+    {
+      "sequence": 16,
+      "type": "artifact_created",
+      "status": "completed",
+      "logical_path": "reports/firetest5/music_inventory.csv"
+    },
+    {
+      "sequence": 17,
+      "type": "run_blocked",
+      "status": "blocked",
+      "logical_path": null
+    },
+    {
+      "sequence": 18,
+      "type": "run_blocked",
+      "status": "blocked",
+      "logical_path": null
+    }
+  ],
+  "payload_sizes": {
+    "events.json": 10627,
+    "result.json": 32969,
+    "run.json": 1062828
+  },
+  "summary_snapshot": {
+    "status": "BLOCKED",
+    "phase": "blocked",
+    "artifacts": {
+      "status": "available",
+      "count": 3,
+      "artifact_ids": [
+        "artifact_2e9fbf93a2f14a3da971eaa1dcb0595f",
+        "artifact_54b76cc3bc694aeb849a115a99087ecc",
+        "artifact_a3915f6a4b3b410083e369ad40ef40c5"
+      ]
+    },
+    "validation": {
+      "status": "blocked",
+      "validation_id": null,
+      "safe_to_report_success": false,
+      "missing_outputs": [],
+      "summary": "TaskRun reached a governed runtime budget before producing a terminal result.",
+      "source": "task_run_result"
+    },
+    "result": {
+      "status": "blocked",
+      "summary": "TaskRun reached a governed runtime budget before producing a terminal result.",
+      "safe_to_display": true,
+      "safe_to_report_success": false,
+      "result_available": true,
+      "block_reason_code": null,
+      "source": "task_run_result"
+    },
+    "last_event": {
+      "event_id": "task_run_event_7df5bb158dbb4b3f8d328ea887d39638",
+      "sequence": 17,
+      "type": "run_blocked",
+      "status": "blocked",
+      "message": "Phase 1 runtime budget exceeded during before_artifact:reports/firetest5/evidence_phase1.zip.",
+      "timestamp": "2026-08-12T11:08:50.471044+00:00"
+    }
+  },
+  "event_types": [
+    "run_created",
+    "task_bootstrap_created",
+    "PlanningStarted",
+    "PlanningFinished",
+    "ExecutionPlanCreated",
+    "run_queued",
+    "run_started",
+    "project_analysis_started",
+    "project_analysis_finished",
+    "artifact_creation_started",
+    "artifact_created",
+    "artifact_creation_started",
+    "artifact_created",
+    "artifact_creation_started",
+    "run_blocked",
+    "artifact_created",
+    "run_blocked",
+    "run_blocked"
+  ],
+  "findings": [
+    "PUBLIC_CHAT_RESPONSE_BOUNDARY_STILL_SYNCHRONOUS",
+    "PROJECT_ANALYSIS_BOUNDARY_PASSED_PUBLICLY",
+    "ARTIFACT_INDEX_PUBLICLY_EXERCISED_FOR_PARTIAL_ARTIFACT_SET",
+    "ARTIFACT_RENDER_CONTINUED_AFTER_TERMINAL_BUDGET",
+    "DUPLICATE_RUN_BLOCKED_EVENTS"
+  ]
+}

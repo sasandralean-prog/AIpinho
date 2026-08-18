@@ -1,0 +1,240 @@
+{
+  "generated_at": "2026-08-17T16:47:22.674457+00:00",
+  "verdict": "passed",
+  "production_logic_depends_on_firetest_fixture": false,
+  "cases": [
+    {
+      "case": "generic_entities_with_observed_facts",
+      "status": "passed",
+      "entity_count": 1,
+      "stages": [
+        "before_fact_projection",
+        "before_fact_source_binding",
+        "after_fact_source_binding",
+        "before_fact_candidate_projection",
+        "after_fact_candidate_projection",
+        "before_fact_derivation",
+        "fact_derivation_checkpoint",
+        "after_fact_derivation",
+        "before_fact_provenance_binding",
+        "after_fact_provenance_binding",
+        "before_fact_deduplication",
+        "after_fact_deduplication",
+        "before_fact_validation_projection",
+        "after_fact_validation_projection",
+        "fact_projection_completed",
+        "after_fact_projection"
+      ],
+      "internal_reason_code": null,
+      "metrics": {
+        "projected_fact_count": 2,
+        "candidate_fact_count": 0,
+        "observed_fact_count": 2,
+        "derived_fact_count": 0,
+        "facts_with_evidence_count": 2,
+        "facts_with_provenance_count": 2,
+        "truth_eligible_count": 1,
+        "payload_item_count": 20,
+        "bound_status": "within_bounds"
+      },
+      "semantic_assertions": [
+        {
+          "kind": "observation",
+          "fact_kind": "OBSERVED_FACT",
+          "source_kind": "observed",
+          "truth_eligible": true,
+          "has_evidence": true,
+          "has_provenance": true
+        }
+      ]
+    },
+    {
+      "case": "generic_entities_with_missing_observations",
+      "status": "passed",
+      "entity_count": 1,
+      "stages": [
+        "before_fact_projection",
+        "before_fact_source_binding",
+        "after_fact_source_binding",
+        "before_fact_candidate_projection",
+        "after_fact_candidate_projection",
+        "before_fact_derivation",
+        "fact_derivation_checkpoint",
+        "after_fact_derivation",
+        "before_fact_provenance_binding",
+        "after_fact_provenance_binding",
+        "before_fact_deduplication",
+        "after_fact_deduplication",
+        "before_fact_validation_projection",
+        "after_fact_validation_projection",
+        "fact_projection_completed",
+        "after_fact_projection"
+      ],
+      "internal_reason_code": null,
+      "metrics": {
+        "projected_fact_count": 3,
+        "candidate_fact_count": 1,
+        "observed_fact_count": 2,
+        "derived_fact_count": 0,
+        "facts_with_evidence_count": 2,
+        "facts_with_provenance_count": 3,
+        "truth_eligible_count": 1,
+        "payload_item_count": 34,
+        "bound_status": "within_bounds"
+      },
+      "semantic_assertions": [
+        {
+          "kind": "observation",
+          "fact_kind": "OBSERVED_FACT",
+          "source_kind": "observed",
+          "truth_eligible": true,
+          "has_evidence": true,
+          "has_provenance": true
+        },
+        {
+          "kind": "hypothesis",
+          "fact_kind": "CANDIDATE_FACT",
+          "source_kind": "candidate",
+          "truth_eligible": false,
+          "has_evidence": false,
+          "has_provenance": false
+        }
+      ]
+    },
+    {
+      "case": "generic_entities_without_paths",
+      "status": "passed",
+      "entity_count": 1,
+      "stages": [
+        "before_fact_projection",
+        "before_fact_source_binding",
+        "after_fact_source_binding",
+        "before_fact_candidate_projection",
+        "after_fact_candidate_projection",
+        "before_fact_derivation",
+        "fact_derivation_checkpoint",
+        "after_fact_derivation",
+        "before_fact_provenance_binding",
+        "after_fact_provenance_binding",
+        "before_fact_deduplication",
+        "after_fact_deduplication",
+        "before_fact_validation_projection",
+        "after_fact_validation_projection",
+        "fact_projection_completed",
+        "after_fact_projection"
+      ],
+      "internal_reason_code": null,
+      "metrics": {
+        "projected_fact_count": 2,
+        "candidate_fact_count": 0,
+        "observed_fact_count": 2,
+        "derived_fact_count": 0,
+        "facts_with_evidence_count": 2,
+        "facts_with_provenance_count": 2,
+        "truth_eligible_count": 1,
+        "payload_item_count": 20,
+        "bound_status": "within_bounds"
+      },
+      "semantic_assertions": [
+        {
+          "kind": "observation",
+          "fact_kind": "OBSERVED_FACT",
+          "source_kind": "observed",
+          "truth_eligible": true,
+          "has_evidence": true,
+          "has_provenance": true
+        }
+      ]
+    },
+    {
+      "case": "large_generic_fact_set",
+      "status": "passed",
+      "entity_count": 60,
+      "stages": [
+        "before_fact_projection",
+        "before_fact_source_binding",
+        "after_fact_source_binding",
+        "before_fact_candidate_projection",
+        "after_fact_candidate_projection",
+        "before_fact_derivation",
+        "fact_derivation_checkpoint",
+        "after_fact_derivation",
+        "before_fact_provenance_binding",
+        "after_fact_provenance_binding",
+        "before_fact_deduplication",
+        "after_fact_deduplication",
+        "before_fact_validation_projection",
+        "after_fact_validation_projection",
+        "fact_projection_completed",
+        "after_fact_projection"
+      ],
+      "internal_reason_code": null,
+      "metrics": {
+        "projected_fact_count": 61,
+        "candidate_fact_count": 0,
+        "observed_fact_count": 61,
+        "derived_fact_count": 0,
+        "facts_with_evidence_count": 61,
+        "facts_with_provenance_count": 61,
+        "truth_eligible_count": 1,
+        "payload_item_count": 610,
+        "bound_status": "within_bounds"
+      },
+      "semantic_assertions": [
+        {
+          "kind": "observation",
+          "fact_kind": "OBSERVED_FACT",
+          "source_kind": "observed",
+          "truth_eligible": true,
+          "has_evidence": true,
+          "has_provenance": true
+        }
+      ]
+    },
+    {
+      "case": "over_bound_fact_fixture",
+      "status": "passed",
+      "entity_count": 3,
+      "stages": [
+        "before_fact_projection",
+        "before_fact_source_binding",
+        "after_fact_source_binding",
+        "before_fact_candidate_projection",
+        "after_fact_candidate_projection",
+        "before_fact_derivation",
+        "fact_derivation_checkpoint",
+        "after_fact_derivation",
+        "before_fact_provenance_binding",
+        "after_fact_provenance_binding",
+        "before_fact_deduplication",
+        "after_fact_deduplication",
+        "before_fact_validation_projection",
+        "after_fact_validation_projection",
+        "fact_projection_completed",
+        "after_fact_projection"
+      ],
+      "internal_reason_code": "PERCEPTION_FACT_PROJECTION_BOUND_EXCEEDED",
+      "metrics": {
+        "projected_fact_count": 4,
+        "candidate_fact_count": 0,
+        "observed_fact_count": 4,
+        "derived_fact_count": 0,
+        "facts_with_evidence_count": 4,
+        "facts_with_provenance_count": 4,
+        "truth_eligible_count": 1,
+        "payload_item_count": 40,
+        "bound_status": "blocked"
+      },
+      "semantic_assertions": [
+        {
+          "kind": "observation",
+          "fact_kind": "OBSERVED_FACT",
+          "source_kind": "observed",
+          "truth_eligible": true,
+          "has_evidence": true,
+          "has_provenance": true
+        }
+      ]
+    }
+  ]
+}

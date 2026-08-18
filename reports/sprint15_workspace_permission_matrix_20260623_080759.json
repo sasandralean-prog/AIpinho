@@ -1,0 +1,73 @@
+{
+  "sprint": "15",
+  "name": "Workspace Registry e Permission Matrix",
+  "timestamp": "20260623_080759",
+  "verdict": "READY_WITH_WARNINGS",
+  "roles": [
+    "source_readonly",
+    "target_mutable",
+    "external_inbox",
+    "artifact_output",
+    "system_mutable",
+    "protected",
+    "temp_staging",
+    "forbidden"
+  ],
+  "permissions": [
+    "read_file",
+    "list_files",
+    "create_file",
+    "modify_file",
+    "apply_patch",
+    "artifact_create",
+    "copy_from",
+    "copy_to",
+    "move_from",
+    "move_to",
+    "delete_file",
+    "shell_readonly",
+    "shell_build",
+    "shell_test",
+    "script_execution",
+    "network_download",
+    "git_commit",
+    "git_push"
+  ],
+  "decision_values": [
+    "allowed",
+    "ask",
+    "denied"
+  ],
+  "runtime_integration": {
+    "service": "TaskRunGuard",
+    "status": "integrated",
+    "reason_codes": [
+      "workspace_not_registered",
+      "workspace_disabled",
+      "permission_allowed",
+      "permission_requires_approval",
+      "permission_denied"
+    ]
+  },
+  "files_changed": [
+    "src/aipinho/schemas/config_governance/workspace_permission.py",
+    "src/aipinho/services/config_governance/workspace_permission_matrix_service.py",
+    "src/aipinho/schemas/policy/workspace_role_contract.py",
+    "src/aipinho/services/policy_kernel/workspace_role_contract_service.py",
+    "src/aipinho/services/runtime/task_run_guard.py",
+    "src/aipinho/api/routers/config_governance_router.py",
+    "tests/unit/test_workspace_permission_matrix_service.py"
+  ],
+  "tests": {
+    "py_compile": "passed",
+    "focused_pytest": "17 passed",
+    "app_import_routes": "passed",
+    "effective_policy_smoke": "passed",
+    "api_token_gate_smoke": "passed"
+  },
+  "warnings": [
+    "permission defaults are conservative by design",
+    "mutable workspace config APIs require bearer token",
+    "some domain-specific services may still need later migration to consult the matrix directly"
+  ]
+}

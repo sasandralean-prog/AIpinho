@@ -1,0 +1,15 @@
+schema_version: 1
+profile:
+  id: readonly_analysis
+  operation_types: [analysis_readonly, readonly_analysis, workspace_analysis_readonly, readonly_analysis_with_artifact_output, project_analysis, report_generation]
+  allowed_step_types: [validate_runtime, validate_workspace, build_project_tree, build_file_context, run_project_analysis, generate_project_report, run_role_pipeline, compose_final_result]
+  steps: [validate_runtime, validate_workspace, build_project_tree, build_file_context, run_project_analysis, generate_project_report, run_role_pipeline, compose_final_result]
+  allowed_side_effects: []
+  allowed_actions: [read_files]
+  required_capabilities: [read_workspace]
+  approval_scope: null
+  workspace_requirements: {required: true, allowed_roles: [source_readonly, target_mutable, system_mutable]}
+  max_duration_seconds: 180
+  output_validation_required: true
+  artifact_registration_required: false
+  default_safe_to_execute_policy: policy_allowed

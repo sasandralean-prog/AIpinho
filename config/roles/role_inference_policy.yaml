@@ -1,0 +1,41 @@
+schema_version: 1
+
+role_inference:
+  enabled: true
+  mode: controlled_real_inference_per_role
+  require_role_model_binding: true
+  require_model_doctor_status: true
+  require_model_gate: true
+  require_prompt_contract: true
+  require_output_contract: true
+  require_model_response_evaluation: true
+  require_trace: true
+  require_audit: true
+  allow_chat_auto_role_inference: true
+  allow_role_pipeline_controlled_inference: true
+  allow_direct_role_run_endpoint: true
+  degraded_provider_fallback_allowed: true
+
+blocked:
+  tool_calling: true
+  model_selected_tools: true
+  workspace_write: true
+  patch_apply: true
+  shell: true
+  git_write: true
+  network: true
+  model_download: true
+  vectorstore: true
+  embedding_runtime: false
+  reranker_runtime: false
+  vision_runtime: false
+  ocr_runtime: false
+  unregistered_model: true
+  model_without_doctor: true
+  model_health_blocked: true
+  capability_mismatch: true
+  role_expands_policy: true
+  raw_prompt_logging: true
+
+allowed_runtime_types: [llama_cpp_text, llama_cpp_vision, llama_cpp_ocr, llama_cpp_embedding, llama_cpp_reranker]
+disabled_runtime_types: []

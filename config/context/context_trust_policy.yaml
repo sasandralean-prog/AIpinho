@@ -1,0 +1,8 @@
+schema_version: 1
+trust:
+  levels: [untrusted, candidate, derived, cited, verified]
+  candidate_memory_status: degraded
+  untrusted_default: rejected
+
+legacy_pinhoabacaxi_curated:
+  current_truth_allowed: false

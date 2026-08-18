@@ -1,0 +1,524 @@
+{
+  "generated_at": "2026-06-28T16:12:45.318086+00:00",
+  "route_import_error": null,
+  "routes": [
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/agent-tool-gateway/tools",
+      "endpoint_name": "list_tools"
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/agent-tool-gateway/tools/{tool_name}",
+      "endpoint_name": "get_tool"
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/tools/invocations/{tool_invocation_id}",
+      "endpoint_name": "get_invocation"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tools/invocations/{tool_invocation_id}/cancel",
+      "endpoint_name": "cancel_invocation"
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/tools/execution-status",
+      "endpoint_name": "get_execution_status"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tools/execute-readonly",
+      "endpoint_name": "execute_readonly"
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/tools/governed/status",
+      "endpoint_name": "get_governed_execution_status"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tools/governed/request-approval",
+      "endpoint_name": "request_governed_tool_approval"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tools/governed/execute",
+      "endpoint_name": "execute_governed_tool"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tools/execute-readonly/from-preview/{preview_id}",
+      "endpoint_name": "execute_readonly_from_preview"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tools/execute-readonly/from-draft/{draft_id}",
+      "endpoint_name": "execute_readonly_from_draft"
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/tools/executions/{execution_id}",
+      "endpoint_name": "get_execution"
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/tools/executions/{execution_id}/events",
+      "endpoint_name": "get_execution_events"
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/tool-registry/status",
+      "endpoint_name": "governed_tool_status"
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/tool-registry/catalog",
+      "endpoint_name": "tool_catalog"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tool-registry/permission/preview",
+      "endpoint_name": "tool_permission_preview"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tool-registry/invocation/preview",
+      "endpoint_name": "tool_invocation_preview"
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/tool-registry/{tool_id}",
+      "endpoint_name": "governed_tool_detail"
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/tools",
+      "endpoint_name": "list_tools"
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/tools/status",
+      "endpoint_name": "get_tools_status"
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/tools/catalog",
+      "endpoint_name": "tool_catalog"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tools/permission/preview",
+      "endpoint_name": "tool_permission_preview"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tools/invocation/preview",
+      "endpoint_name": "tool_invocation_preview"
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/v1/tools/{tool_id}",
+      "endpoint_name": "get_tool"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tools/validate",
+      "endpoint_name": "validate_tool"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tools/preview",
+      "endpoint_name": "preview_tools"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tools/dry-run",
+      "endpoint_name": "dry_run_tools"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tools/dry-run/from-preview/{preview_id}",
+      "endpoint_name": "dry_run_from_preview"
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/v1/tools/dry-run/from-draft/{draft_id}",
+      "endpoint_name": "dry_run_from_draft"
+    }
+  ],
+  "public_tool_duplicate_counts": {
+    "GET /api/v1/tools": 1,
+    "GET /api/v1/tools/status": 1,
+    "GET /api/v1/tools/{tool_id}": 1
+  },
+  "artifact_evidence": {
+    "text_artifact_id": "agent_artifact_9652fb4246f445aaa4640729cefefa4a",
+    "binary_artifact_id": "agent_artifact_8e3244ceefde4ac285c37000b075eeca",
+    "bundle_artifact_id": "agent_artifact_c552dda86f984e2b9285396ba3588995",
+    "bundle_download_endpoint": "/api/v1/artifacts/agent_artifact_c552dda86f984e2b9285396ba3588995/download",
+    "bundle_requires_token": true,
+    "bundle_zip_entries": [
+      {
+        "filename": "BUNDLE_MANIFEST.json",
+        "size": 260,
+        "unsafe_path": false
+      },
+      {
+        "filename": "block_f_p1_artifact_report.txt",
+        "size": 61,
+        "unsafe_path": false
+      },
+      {
+        "filename": "block_f_p1_payload.bin",
+        "size": 13,
+        "unsafe_path": false
+      }
+    ],
+    "binary_preview_warnings": [
+      "binary_preview_metadata_only"
+    ],
+    "token_in_url": false
+  },
+  "role_model_smoke": {
+    "run_id": "role_model_run_7ee74d95422a45689a4fa78ad233b9c1",
+    "status": "completed",
+    "selected_model_id": "qwen3_1_7b_q6_k",
+    "provider_id": "llama_cpp_text",
+    "output": "OK",
+    "fallback_used": false,
+    "stub_used": false,
+    "real_inference_attempted": true,
+    "real_inference_completed": true,
+    "model_response_status": "completed",
+    "duration_ms": 3200,
+    "warnings": []
+  },
+  "detector_matrix": {
+    "routes": [
+      {
+        "method": "GET",
+        "endpoint": "/api/v1/agent-tool-gateway/tools",
+        "owner": "list_tools",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "GET",
+        "endpoint": "/api/v1/agent-tool-gateway/tools/{tool_name}",
+        "owner": "get_tool",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "GET",
+        "endpoint": "/api/v1/tools/invocations/{tool_invocation_id}",
+        "owner": "get_invocation",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tools/invocations/{tool_invocation_id}/cancel",
+        "owner": "cancel_invocation",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "GET",
+        "endpoint": "/api/v1/tools/execution-status",
+        "owner": "get_execution_status",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tools/execute-readonly",
+        "owner": "execute_readonly",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "GET",
+        "endpoint": "/api/v1/tools/governed/status",
+        "owner": "get_governed_execution_status",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tools/governed/request-approval",
+        "owner": "request_governed_tool_approval",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tools/governed/execute",
+        "owner": "execute_governed_tool",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tools/execute-readonly/from-preview/{preview_id}",
+        "owner": "execute_readonly_from_preview",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tools/execute-readonly/from-draft/{draft_id}",
+        "owner": "execute_readonly_from_draft",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "GET",
+        "endpoint": "/api/v1/tools/executions/{execution_id}",
+        "owner": "get_execution",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "GET",
+        "endpoint": "/api/v1/tools/executions/{execution_id}/events",
+        "owner": "get_execution_events",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "GET",
+        "endpoint": "/api/v1/tool-registry/status",
+        "owner": "governed_tool_status",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "GET",
+        "endpoint": "/api/v1/tool-registry/catalog",
+        "owner": "tool_catalog",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tool-registry/permission/preview",
+        "owner": "tool_permission_preview",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tool-registry/invocation/preview",
+        "owner": "tool_invocation_preview",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "GET",
+        "endpoint": "/api/v1/tool-registry/{tool_id}",
+        "owner": "governed_tool_detail",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "GET",
+        "endpoint": "/api/v1/tools",
+        "owner": "list_tools",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "GET",
+        "endpoint": "/api/v1/tools/status",
+        "owner": "get_tools_status",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "GET",
+        "endpoint": "/api/v1/tools/catalog",
+        "owner": "tool_catalog",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tools/permission/preview",
+        "owner": "tool_permission_preview",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tools/invocation/preview",
+        "owner": "tool_invocation_preview",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "GET",
+        "endpoint": "/api/v1/tools/{tool_id}",
+        "owner": "get_tool",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tools/validate",
+        "owner": "validate_tool",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tools/preview",
+        "owner": "preview_tools",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tools/dry-run",
+        "owner": "dry_run_tools",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tools/dry-run/from-preview/{preview_id}",
+        "owner": "dry_run_from_preview",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      },
+      {
+        "method": "POST",
+        "endpoint": "/api/v1/tools/dry-run/from-draft/{draft_id}",
+        "owner": "dry_run_from_draft",
+        "classification": "LIVE_CANONICAL",
+        "actions": [
+          "tool_registry"
+        ]
+      }
+    ],
+    "qa": {
+      "pipeline_status": "passed",
+      "mobile_launcher_visual_status": "build_and_contract_passed_emulator_unavailable"
+    },
+    "artifacts": [
+      {
+        "artifact_id": "agent_artifact_9652fb4246f445aaa4640729cefefa4a",
+        "required": true,
+        "registered": true
+      },
+      {
+        "artifact_id": "agent_artifact_8e3244ceefde4ac285c37000b075eeca",
+        "required": true,
+        "registered": true
+      },
+      {
+        "artifact_id": "agent_artifact_c552dda86f984e2b9285396ba3588995",
+        "required": true,
+        "registered": true
+      }
+    ],
+    "roles": [
+      {
+        "role_id": "speaker",
+        "requires_real_model": true,
+        "model_configured": true,
+        "real_inference": true,
+        "health": "healthy",
+        "fallback_possible": true,
+        "fallback_disclosure_required": true,
+        "stub_used": false,
+        "claims_real": true
+      }
+    ]
+  },
+  "conflicts": [],
+  "severity_counts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 0,
+    "UNKNOWN": 0
+  },
+  "routes_updated_at": "2026-06-28T16:13:37.861079+00:00",
+  "ui_qa": {
+    "mobile": {
+      "status": "build_and_contract_tests_passed_emulator_visual_blocked_by_environment",
+      "adb_path": "C:\\Dev\\Dependencias\\Android\\Sdk\\platform-tools\\adb.exe",
+      "adb_devices": [],
+      "avd": "Pixel_4_API_33",
+      "avd_status": "broken_missing_system_image",
+      "sdkmanager_install_attempt": "failed_manifest_download_package_not_found",
+      "assemble_debug": "passed",
+      "apk_path": "C:\\Dev\\AIpinho\\apps\\mobile\\android\\app\\build\\outputs\\apk\\debug\\app-debug.apk",
+      "focused_tests": "passed"
+    },
+    "launcher": {
+      "status": "syntax_and_boot_tests_passed",
+      "py_compile": "passed",
+      "focused_tests": "passed",
+      "visual_window_screenshot": "not_run_in_this_pass"
+    }
+  }
+}

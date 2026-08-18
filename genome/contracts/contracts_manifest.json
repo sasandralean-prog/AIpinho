@@ -1,0 +1,120 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "contracts": [
+    {
+      "contract": "ChatRequest",
+      "path": "src/aipinho/schemas/chat/",
+      "who_produces": ["api.routers.chat_router"],
+      "who_consumes": ["services.chat.chat_service"],
+      "fields": ["message", "session_id", "context"],
+      "type": "pydantic_model",
+      "critical": true
+    },
+    {
+      "contract": "ChatResponse",
+      "path": "src/aipinho/schemas/chat/",
+      "who_produces": ["services.chat.chat_service"],
+      "who_consumes": ["api.routers.chat_router"],
+      "fields": ["response", "session_id", "metadata"],
+      "type": "pydantic_model",
+      "critical": true
+    },
+    {
+      "contract": "TaskRequest",
+      "path": "src/aipinho/schemas/tasks/",
+      "who_produces": ["api.routers.task_runtime_router"],
+      "who_consumes": ["services.runtime.task_runtime_service"],
+      "fields": ["task_type", "parameters", "workspace_id"],
+      "type": "pydantic_model",
+      "critical": true
+    },
+    {
+      "contract": "TaskResponse",
+      "path": "src/aipinho/schemas/tasks/",
+      "who_produces": ["services.runtime.task_runtime_service"],
+      "who_consumes": ["api.routers.task_runtime_router"],
+      "fields": ["task_id", "status", "result"],
+      "type": "pydantic_model",
+      "critical": true
+    },
+    {
+      "contract": "ToolRequest",
+      "path": "src/aipinho/schemas/tools/",
+      "who_produces": ["api.routers.tool_router"],
+      "who_consumes": ["services.tools.governed_tool_execution_service"],
+      "fields": ["tool_id", "parameters", "workspace_id"],
+      "type": "pydantic_model",
+      "critical": true
+    },
+    {
+      "contract": "ToolResponse",
+      "path": "src/aipinho/schemas/tools/",
+      "who_produces": ["services.tools.governed_tool_execution_service"],
+      "who_consumes": ["api.routers.tool_router"],
+      "fields": ["result", "status", "metadata"],
+      "type": "pydantic_model",
+      "critical": true
+    },
+    {
+      "contract": "ModelRequest",
+      "path": "src/aipinho/schemas/models/",
+      "who_produces": ["api.routers.model_router"],
+      "who_consumes": ["services.models.llama_cpp_provider"],
+      "fields": ["model_id", "prompt", "parameters"],
+      "type": "pydantic_model",
+      "critical": true
+    },
+    {
+      "contract": "ModelResponse",
+      "path": "src/aipinho/schemas/models/",
+      "who_produces": ["services.models.llama_cpp_provider"],
+      "who_consumes": ["api.routers.model_router"],
+      "fields": ["response", "tokens_used", "metadata"],
+      "type": "pydantic_model",
+      "critical": true
+    },
+    {
+      "contract": "ArtifactRequest",
+      "path": "src/aipinho/schemas/artifacts/",
+      "who_produces": ["api.routers.artifact_router"],
+      "who_consumes": ["services.artifacts.artifact_generator_service"],
+      "fields": ["artifact_type", "content", "workspace_id"],
+      "type": "pydantic_model",
+      "critical": true
+    },
+    {
+      "contract": "ArtifactResponse",
+      "path": "src/aipinho/schemas/artifacts/",
+      "who_produces": ["services.artifacts.artifact_generator_service"],
+      "who_consumes": ["api.routers.artifact_router"],
+      "fields": ["artifact_id", "status", "metadata"],
+      "type": "pydantic_model",
+      "critical": true
+    },
+    {
+      "contract": "PolicyRequest",
+      "path": "src/aipinho/schemas/policy/",
+      "who_produces": ["api.routers.policy_router"],
+      "who_consumes": ["services.policy_kernel.policy_kernel_service"],
+      "fields": ["policy_id", "context", "action"],
+      "type": "pydantic_model",
+      "critical": true
+    },
+    {
+      "contract": "PolicyResponse",
+      "path": "src/aipinho/schemas/policy/",
+      "who_produces": ["services.policy_kernel.policy_kernel_service"],
+      "who_consumes": ["api.routers.policy_router"],
+      "fields": ["allowed", "reason", "metadata"],
+      "type": "pydantic_model",
+      "critical": true
+    }
+  ],
+  "total_contracts": 12,
+  "contract_types": {
+    "pydantic_model": 12,
+    "json_schema": 0,
+    "protobuf": 0
+  }
+}

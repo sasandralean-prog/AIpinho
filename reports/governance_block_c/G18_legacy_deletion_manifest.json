@@ -1,0 +1,50 @@
+{
+  "checkpoint": "G18_LEGACY_DELETION_PREFLIGHT_READY",
+  "items": [
+    {
+      "quarantine_path": "C:\\Dev\\AIpinho\\quarantine\\legacy\\governance\\2026-06-26\\src\\aipinho\\api\\routers\\chat_router.py",
+      "original_path": "src/aipinho/api/routers/chat_router.py",
+      "delete_decision": "keep_archived_for_now",
+      "reason": "Large rollback artifact; reports/tests still mention it. Not imported by active runtime.",
+      "replacement": "src/aipinho/api/routers/governance_lifecycle_router.py",
+      "import_refs": [],
+      "config_refs": [],
+      "route_refs": [],
+      "test_refs": [
+        "tests/certification/test_operational_contract_inventory.py name reference"
+      ],
+      "doc_refs": [
+        "historical reports"
+      ],
+      "rollback_note": "Restore file and router registration only if canonical router regression requires rollback."
+    },
+    {
+      "quarantine_path": "C:\\Dev\\AIpinho\\quarantine\\legacy\\governance\\2026-06-26\\src\\aipinho\\api\\routers\\continue_integration_router.py",
+      "original_path": "src/aipinho/api/routers/continue_integration_router.py",
+      "delete_decision": "keep_archived_for_now",
+      "reason": "Large rollback artifact; not imported by active runtime, but useful until next full-suite cleanup.",
+      "replacement": "src/aipinho/api/routers/governance_lifecycle_router.py",
+      "import_refs": [],
+      "config_refs": [],
+      "route_refs": [],
+      "test_refs": [],
+      "doc_refs": [
+        "historical reports"
+      ],
+      "rollback_note": "Restore file and router registration only if canonical Continue route regression requires rollback."
+    },
+    {
+      "quarantine_path": "C:\\Dev\\AIpinho\\quarantine\\legacy\\governance\\2026-06-26\\config\\runtime\\runtime_profiles.yaml",
+      "original_path": "config/runtime/runtime_profiles.yaml",
+      "delete_decision": "delete_ready",
+      "reason": "Canonical replacement exists and active refs are zero.",
+      "replacement": "config/governance/runtime_profiles.yaml",
+      "import_refs": [],
+      "config_refs": [],
+      "route_refs": [],
+      "test_refs": [],
+      "doc_refs": [],
+      "rollback_note": "Recover from VCS/backup if old diagnostic inventory is needed."
+    }
+  ]
+}

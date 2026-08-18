@@ -1,0 +1,41 @@
+{
+  "task_run_id": "task_run_0b0cbc1d3a74411a9fd47b751039e45c",
+  "bounded_metric_count": 29,
+  "projection_sources": {
+    "phase1_music_inventory_checkpoints": "compact projection intentionally sparse",
+    "events_endpoint": "bounded full metric source used for R2.16 reports",
+    "result_artifact_projection": "terminal/result state, not full diagnostic metric authority"
+  },
+  "bounded_metrics": {
+    "source_input_entity_count": 2286,
+    "selected_entity_count": 2272,
+    "projected_entity_count": 2272,
+    "row_model_candidate_count": 2230,
+    "row_model_accepted_count": 2230,
+    "row_model_rejected_count": 0,
+    "row_model_skipped_count": 42,
+    "csv_rows_expected_at_stream_start": 2230,
+    "csv_rows_attempted": 1743,
+    "csv_rows_rendered": 1742,
+    "csv_rows_written": 1742,
+    "csv_rows_failed": 0,
+    "csv_cells_expected": 55750,
+    "csv_cells_attempted": 43575,
+    "csv_cells_rendered": 43575,
+    "csv_cells_written": 43550,
+    "row_model_build_elapsed_ms": 0,
+    "row_order_elapsed_ms": 0,
+    "csv_stream_elapsed_ms": 258030,
+    "csv_row_render_elapsed_ms": 238141,
+    "csv_cell_render_elapsed_ms": 239110,
+    "csv_cell_serialization_elapsed_ms": 16,
+    "rows_per_second": 6.675,
+    "cells_per_second": 166.878,
+    "average_cell_us": 5538.642,
+    "max_batch_elapsed_ms": 18109,
+    "payload_ref_count": 0,
+    "estimated_payload_bytes": 17194840,
+    "materialized_payload_bytes": 17194840
+  },
+  "p1_metrics_projection_sparse_status": "resolved_for_events_and_reports; compact phase1 checkpoint projection remains intentionally bounded"
+}

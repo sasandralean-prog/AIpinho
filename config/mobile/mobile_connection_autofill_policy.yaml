@@ -1,0 +1,21 @@
+schema_version: 1
+policy_id: mobile_connection_autofill_policy
+profile_priority:
+  - pairing_payload
+  - /api/v1/connection/suggestions
+  - /api/v1/connection/profiles
+  - last_valid_host
+aggressive_network_scan_allowed: false
+adb_reverse:
+  host: 127.0.0.1
+  ports:
+    core_backend: 9088
+    realtime: 9089
+    artifacts: 9098
+    monitor: 9099
+wifi_lan:
+  auto_fill_enabled: true
+tailscale:
+  auto_fill_enabled: true
+manual:
+  editable: true

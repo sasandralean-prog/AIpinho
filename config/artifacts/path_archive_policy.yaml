@@ -1,0 +1,79 @@
+schema_version: 1
+
+path_archive:
+  enabled: true
+  store_subdir: path_archives
+  default_filename: paths.zip
+  preserve_source_root: true
+  max_files: 20000
+  max_total_bytes: 536870912
+  max_file_bytes: 104857600
+  content_secret_scan_max_bytes: 1048576
+  block_if_no_allowed_files: true
+
+  excluded_directories:
+    - .git
+    - .hg
+    - .svn
+    - .idea
+    - .vscode
+    - __pycache__
+    - .pytest_cache
+    - .mypy_cache
+    - .ruff_cache
+    - .gradle
+    - build
+    - dist
+    - node_modules
+    - venv
+    - .venv
+
+  excluded_globs:
+    - "*.pyc"
+    - "*.pyo"
+    - "*.class"
+    - "*.log"
+    - "*.tmp"
+    - "*.bak"
+    - "*.lock"
+
+  blocked_extensions:
+    - .exe
+    - .dll
+    - .bin
+    - .msi
+    - .com
+    - .scr
+    - .7z
+    - .rar
+
+  secret_filename_patterns:
+    - .env
+    - "*.pem"
+    - "*.key"
+    - credentials.*
+    - secrets.*
+
+  content_secret_scan_extensions:
+    - .txt
+    - .md
+    - .py
+    - .yaml
+    - .yml
+    - .json
+    - .toml
+    - .ini
+    - .cfg
+    - .properties
+    - .xml
+    - .html
+    - .css
+    - .js
+    - .jsx
+    - .ts
+    - .tsx
+    - .kt
+    - .java
+    - .cs
+    - .go
+    - .rs

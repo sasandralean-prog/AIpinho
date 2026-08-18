@@ -1,0 +1,20 @@
+schema_version: 1
+
+doctor:
+  enabled: true
+  metadata_probe_only_by_default: true
+  first_token_probe_enabled_by_default: false
+  require_operator_confirmation_for_first_token: true
+  include_manual_only_by_default: true
+  save_results: true
+  save_traces: true
+
+checks:
+  provider_registered: required
+  model_path_security: required
+  model_path_exists: required
+  mmproj_path_exists: required_when_configured
+  capability_provider_match: required
+  hardware_estimate: required
+  latency_estimate: warning
+  first_token_probe: skipped_by_default

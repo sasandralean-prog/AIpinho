@@ -1,0 +1,20 @@
+schema_version: 1
+skill_install:
+  enabled: true
+  mode: contract_install_preview
+  install_real_files_this_sprint: false
+  require_manifest: true
+  require_contract_validation: true
+  require_policy_validation: true
+  require_approval_for_install: true
+  require_audit: true
+allowed_install_targets:
+- data/runtime/skills/install_previews
+blocked:
+  write_src_directly: true
+  write_config_directly_without_approval: true
+  install_dependency: true
+  pip_install: true
+  npm_install: true
+  download_external_code: true
+  execute_installed_skill: true

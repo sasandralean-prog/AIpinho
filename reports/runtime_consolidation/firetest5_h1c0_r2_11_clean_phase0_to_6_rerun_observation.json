@@ -1,0 +1,245 @@
+{
+  "verdict": null,
+  "capture_dir": "reports\\firetest5\\firetest5_h1c0_r2_11_clean_phase0_to_6_20260817_084952",
+  "phase0": {
+    "runtime_executed": false,
+    "task_created": false,
+    "task_run_created": false,
+    "operation_created": false,
+    "operational_artifacts_created": false,
+    "predicted_frontier": "MUSIC_INVENTORY_POST_SELECTION_RENDER_PERCEPTION_STALL",
+    "predicted_component": "ReadonlyAnalysisArtifactRuntimeService",
+    "predicted_reason_code": "MUSIC_INVENTORY_POST_SELECTION_RENDER_PERCEPTION_STALL"
+  },
+  "precheck": {
+    "health": {
+      "ok": true,
+      "status_code": 200,
+      "elapsed_ms": 17,
+      "body": {
+        "status": "ok",
+        "service": "AIpinho",
+        "version": "0.1.0",
+        "runtime": "local"
+      }
+    },
+    "queue_hygiene": {
+      "ok": true,
+      "status_code": 200,
+      "elapsed_ms": 15,
+      "body": {
+        "status": "ok",
+        "active_runs": 0,
+        "queued_runs": 0,
+        "stale_runs": 0,
+        "pending_approvals": 0,
+        "active_sessions": 0,
+        "dispatcher_status": "available",
+        "worker_pool_capacity": 8,
+        "worker_pool_available_slots": 8,
+        "stale_run_ids": [],
+        "backpressure_required": false,
+        "reason_code": null
+      }
+    },
+    "queue_runtime": {
+      "ok": true,
+      "status_code": 200,
+      "elapsed_ms": 20,
+      "body": {
+        "status": "ok",
+        "cancelled_run_ids": [],
+        "cancelled_approval_ids": [],
+        "warnings": [],
+        "snapshot": {
+          "status": "ok",
+          "enabled": true,
+          "max_pending_tasks": 25,
+          "max_wait_seconds": 86400,
+          "active_count": 0,
+          "pending_count": 0,
+          "requires_decision_count": 0,
+          "total_visible": 0,
+          "items": [],
+          "last_reconciled_at": "2026-08-17T11:49:52.984838+00:00",
+          "warnings": []
+        }
+      }
+    }
+  },
+  "phase1": {
+    "client_response_status": "accepted_running",
+    "client_response_status_code": 200,
+    "client_response_time_ms": 6714,
+    "task_run_id": "task_run_86fb126c4ac446c3b87d35efd0f3bda7",
+    "operation_id": "op_e2b4aaf105334ffe901b8d1769d1584c",
+    "result_json_exists": true,
+    "result_endpoint_status_code": 200,
+    "result_status": "blocked",
+    "result_reason_code": "MUSIC_INVENTORY_PERCEPTION_PAYLOAD_COMPILE_STALLED",
+    "result_source": "artifact_worker_terminalization_guard",
+    "finished_at": "2026-08-17T11:51:08.385315+00:00",
+    "truth_safe_to_report_success": false,
+    "terminal_event_count": 1,
+    "terminal_events": [
+      {
+        "sequence": 39,
+        "type": "run_blocked",
+        "reason_code": "MUSIC_INVENTORY_PERCEPTION_PAYLOAD_COMPILE_STALLED",
+        "last_checkpoint_stage": "before_perception_payload_compile"
+      }
+    ],
+    "artifact_creation_started_count": 3,
+    "artifact_created_count": 2,
+    "artifact_failed_count": 1,
+    "artifact_render_checkpoint_count": 19
+  },
+  "music_inventory": {
+    "reached": true,
+    "checkpoint_list": [
+      {
+        "sequence": 32,
+        "logical_path": "reports/firetest5/music_inventory.csv",
+        "stage": "before_artifact_render",
+        "artifact_attempt_id": "artifact_attempt_77ba3b373fcc4333836e0784b841aef1",
+        "rows_rendered": null,
+        "rows_expected": null,
+        "cells_rendered": null,
+        "bounded": true
+      },
+      {
+        "sequence": 33,
+        "logical_path": "reports/firetest5/music_inventory.csv",
+        "stage": "before_entity_iteration",
+        "artifact_attempt_id": "artifact_attempt_77ba3b373fcc4333836e0784b841aef1",
+        "rows_rendered": null,
+        "rows_expected": null,
+        "cells_rendered": null,
+        "bounded": true
+      },
+      {
+        "sequence": 34,
+        "logical_path": "reports/firetest5/music_inventory.csv",
+        "stage": "after_intent_resolution",
+        "artifact_attempt_id": "artifact_attempt_77ba3b373fcc4333836e0784b841aef1",
+        "rows_rendered": null,
+        "rows_expected": 2272,
+        "cells_rendered": null,
+        "bounded": true
+      },
+      {
+        "sequence": 35,
+        "logical_path": "reports/firetest5/music_inventory.csv",
+        "stage": "after_entity_selection",
+        "artifact_attempt_id": "artifact_attempt_77ba3b373fcc4333836e0784b841aef1",
+        "rows_rendered": 0,
+        "rows_expected": 2272,
+        "cells_rendered": null,
+        "bounded": true
+      },
+      {
+        "sequence": 36,
+        "logical_path": "reports/firetest5/music_inventory.csv",
+        "stage": "before_perception_payload_compile",
+        "artifact_attempt_id": "artifact_attempt_77ba3b373fcc4333836e0784b841aef1",
+        "rows_rendered": 0,
+        "rows_expected": 2272,
+        "cells_rendered": null,
+        "bounded": true
+      }
+    ],
+    "last_completed_stage": "before_perception_payload_compile",
+    "stage_where_stall_detected": "before_perception_payload_compile",
+    "result_reason_code": "MUSIC_INVENTORY_PERCEPTION_PAYLOAD_COMPILE_STALLED",
+    "metadata_coverage_reached": false,
+    "sufficiency_reached": false,
+    "payload_ref_count": 0
+  },
+  "evidence_phase1": {
+    "reached": false
+  },
+  "endpoints": {
+    "summary": {
+      "status_code": 200,
+      "elapsed_ms": 6397,
+      "ok": true,
+      "error_type": null
+    },
+    "events": {
+      "status_code": 200,
+      "elapsed_ms": 963,
+      "ok": true,
+      "error_type": null
+    },
+    "result": {
+      "status_code": 200,
+      "elapsed_ms": 559,
+      "ok": true,
+      "error_type": null
+    },
+    "truth": {
+      "status_code": 200,
+      "elapsed_ms": 627,
+      "ok": true,
+      "error_type": null
+    },
+    "artifacts": {
+      "status_code": 200,
+      "elapsed_ms": 1082,
+      "ok": true,
+      "error_type": null
+    },
+    "queue_hygiene": {
+      "status_code": 200,
+      "elapsed_ms": 621,
+      "ok": true,
+      "error_type": null
+    },
+    "queue_runtime": {
+      "status_code": 200,
+      "elapsed_ms": 2729,
+      "ok": true,
+      "error_type": null
+    },
+    "session": {
+      "status_code": 404,
+      "elapsed_ms": 131,
+      "ok": false,
+      "error_type": null
+    }
+  },
+  "phase2_to_6": {
+    "phase2": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "MUSIC_INVENTORY_PERCEPTION_PAYLOAD_COMPILE_STALLED"
+    },
+    "phase3": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "MUSIC_INVENTORY_PERCEPTION_PAYLOAD_COMPILE_STALLED"
+    },
+    "phase4": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "MUSIC_INVENTORY_PERCEPTION_PAYLOAD_COMPILE_STALLED"
+    },
+    "phase5": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "MUSIC_INVENTORY_PERCEPTION_PAYLOAD_COMPILE_STALLED"
+    },
+    "phase6": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "MUSIC_INVENTORY_PERCEPTION_PAYLOAD_COMPILE_STALLED"
+    }
+  },
+  "storage": {
+    "run.json_bytes": 145560,
+    "run_index.json_bytes": 775,
+    "result.json_bytes": 82376,
+    "events.json_bytes": 43951,
+    "payload_ref_count": 0
+  }
+}

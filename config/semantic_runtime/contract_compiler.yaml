@@ -1,0 +1,64 @@
+schema_version: 1
+
+semantic_contract_pipeline:
+  enabled: true
+  mode: contracts_only
+  intent_adapter_enabled: true
+
+contracts:
+  version: "1.0"
+  supported_versions: ["1.0"]
+
+intent_contracts:
+  repository_analysis:
+    contract_type: readonly_analysis
+    operation_type: project_analysis
+    runtime_profile: readonly_analysis
+    requires_task: true
+    read_only: true
+    requested_actions: []
+    required_roles: [analyst, reporter]
+    required_capabilities: [semantic_understanding, reporting]
+    required_checks: [workspace_context, artifact_expectations, speaker_truth]
+  write_patch:
+    contract_type: patch_request
+    operation_type: patch_preview
+    runtime_profile: governed_patch
+    requires_task: true
+    read_only: false
+    requested_actions: [apply_patch, write_files]
+    approval_scope: patch
+    required_roles: [planner, patch_planner, code_reviewer]
+    required_capabilities: [planning, code_generation, code_review]
+    required_checks: [workspace_context, approval_scope, executable_plan, validation_plan]
+  public_knowledge_query:
+    contract_type: web_search
+    operation_type: web_search_required
+    runtime_profile: web_search_readonly
+    requires_task: true
+    read_only: true
+    requested_actions: [web_request]
+    approval_scope: network
+    required_roles: [researcher, reporter]
+    required_capabilities: [semantic_understanding, reporting]
+    required_checks: [source_citations, answer_grounding]
+  conversation:
+    contract_type: conversation
+    operation_type: conversation
+    runtime_profile: conversation
+    requires_task: false
+    read_only: true
+    requested_actions: []
+    required_roles: [speaker]
+    required_capabilities: [conversation]
+    required_checks: [speaker_truth]
+  unknown:
+    contract_type: unknown
+    operation_type: unknown
+    runtime_profile: null
+    requires_task: false
+    read_only: true
+    requested_actions: []
+    required_roles: []
+    required_capabilities: [semantic_understanding]
+    required_checks: [clarification]

@@ -1,0 +1,21 @@
+﻿schema_version: 1
+
+fallback:
+  enabled: true
+  fallback_to_deterministic_response: true
+  fallback_to_stub: true
+  fallback_to_safe_error: true
+  never_fallback_to_unvalidated_real_model: true
+
+by_purpose:
+  chat:
+    fallback: deterministic_speaker
+
+  project_report:
+    fallback: deterministic_report
+
+  task_preview:
+    fallback: policy_preview
+
+  smoke_test:
+    fallback: safe_error

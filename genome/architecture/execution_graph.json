@@ -1,0 +1,265 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "execution_graph": {
+    "main_flow": {
+      "name": "Chat Execution Flow",
+      "steps": [
+        {
+          "step": 1,
+          "name": "Prompt",
+          "component": "UNKNOWN",
+          "path": "UNKNOWN",
+          "type": "input",
+          "status": "UNKNOWN"
+        },
+        {
+          "step": 2,
+          "name": "Router",
+          "component": "services.chat.chat_operation_router_service",
+          "path": "src/aipinho/services/chat/chat_operation_router_service.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 3,
+          "name": "Intent",
+          "component": "UNKNOWN",
+          "path": "UNKNOWN",
+          "type": "service",
+          "status": "UNKNOWN"
+        },
+        {
+          "step": 4,
+          "name": "Planner",
+          "component": "services.runtime.intelligent_planner_service",
+          "path": "src/aipinho/services/runtime/intelligent_planner_service.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 5,
+          "name": "Execution",
+          "component": "services.runtime.task_runtime_service",
+          "path": "src/aipinho/services/runtime/task_runtime_service.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 6,
+          "name": "Runtime",
+          "component": "services.runtime.execution_graph_service",
+          "path": "src/aipinho/services/runtime/execution_graph_service.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 7,
+          "name": "Artifacts",
+          "component": "UNKNOWN",
+          "path": "UNKNOWN",
+          "type": "service",
+          "status": "UNKNOWN"
+        },
+        {
+          "step": 8,
+          "name": "Speaker",
+          "component": "UNKNOWN",
+          "path": "UNKNOWN",
+          "type": "service",
+          "status": "UNKNOWN"
+        }
+      ]
+    },
+    "task_flow": {
+      "name": "Task Execution Flow",
+      "steps": [
+        {
+          "step": 1,
+          "name": "Task Request",
+          "component": "UNKNOWN",
+          "path": "UNKNOWN",
+          "type": "input",
+          "status": "UNKNOWN"
+        },
+        {
+          "step": 2,
+          "name": "Policy Check",
+          "component": "services.policy_kernel.policy_kernel_service",
+          "path": "src/aipinho/services/policy_kernel/policy_kernel_service.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 3,
+          "name": "Capability Gate",
+          "component": "services.policy_kernel.capability_gate_service",
+          "path": "src/aipinho/services/policy_kernel/capability_gate_service.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 4,
+          "name": "Planning",
+          "component": "services.runtime.intelligent_planner_service",
+          "path": "src/aipinho/services/runtime/intelligent_planner_service.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 5,
+          "name": "Execution Graph",
+          "component": "services.runtime.execution_graph_service",
+          "path": "src/aipinho/services/runtime/execution_graph_service.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 6,
+          "name": "Task Runtime",
+          "component": "services.runtime.task_runtime_service",
+          "path": "src/aipinho/services/runtime/task_runtime_service.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 7,
+          "name": "Validation",
+          "component": "services.validation.validation_gate_service",
+          "path": "src/aipinho/services/validation/validation_gate_service.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 8,
+          "name": "Result",
+          "component": "UNKNOWN",
+          "path": "UNKNOWN",
+          "type": "output",
+          "status": "UNKNOWN"
+        }
+      ]
+    },
+    "tool_flow": {
+      "name": "Tool Execution Flow",
+      "steps": [
+        {
+          "step": 1,
+          "name": "Tool Request",
+          "component": "UNKNOWN",
+          "path": "UNKNOWN",
+          "type": "input",
+          "status": "UNKNOWN"
+        },
+        {
+          "step": 2,
+          "name": "Tool Gateway",
+          "component": "services.agents.agent_tool_gateway_service",
+          "path": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 3,
+          "name": "Policy Check",
+          "component": "services.policy_kernel.capability_gate_service",
+          "path": "src/aipinho/services/policy_kernel/capability_gate_service.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 4,
+          "name": "Tool Execution",
+          "component": "services.tools.governed_tool_execution_service",
+          "path": "src/aipinho/services/tools/governed_tool_execution_service.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 5,
+          "name": "Adapter Execution",
+          "component": "adapters",
+          "path": "src/aipinho/adapters/__init__.py",
+          "type": "adapter",
+          "status": "KNOWN"
+        },
+        {
+          "step": 6,
+          "name": "Result Sanitization",
+          "component": "services.tools.tool_result_sanitizer",
+          "path": "src/aipinho/services/tools/tool_result_sanitizer.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 7,
+          "name": "Result",
+          "component": "UNKNOWN",
+          "path": "UNKNOWN",
+          "type": "output",
+          "status": "UNKNOWN"
+        }
+      ]
+    },
+    "model_flow": {
+      "name": "Model Inference Flow",
+      "steps": [
+        {
+          "step": 1,
+          "name": "Model Request",
+          "component": "UNKNOWN",
+          "path": "UNKNOWN",
+          "type": "input",
+          "status": "UNKNOWN"
+        },
+        {
+          "step": 2,
+          "name": "Model Provider",
+          "component": "services.models.llama_cpp_provider",
+          "path": "src/aipinho/services/models/llama_cpp_provider.py",
+          "type": "service",
+          "status": "KNOWN"
+        },
+        {
+          "step": 3,
+          "name": "Adapter Execution",
+          "component": "adapters.llm_providers",
+          "path": "src/aipinho/adapters/llm_providers/__init__.py",
+          "type": "adapter",
+          "status": "KNOWN"
+        },
+        {
+          "step": 4,
+          "name": "Model Response",
+          "component": "UNKNOWN",
+          "path": "UNKNOWN",
+          "type": "output",
+          "status": "UNKNOWN"
+        }
+      ]
+    }
+  },
+  "unknown_steps": [
+    "Prompt",
+    "Intent",
+    "Artifacts",
+    "Speaker",
+    "Task Request",
+    "Tool Request",
+    "Model Request"
+  ],
+  "known_components": [
+    "services.chat.chat_operation_router_service",
+    "services.runtime.intelligent_planner_service",
+    "services.runtime.task_runtime_service",
+    "services.runtime.execution_graph_service",
+    "services.policy_kernel.policy_kernel_service",
+    "services.policy_kernel.capability_gate_service",
+    "services.validation.validation_gate_service",
+    "services.agents.agent_tool_gateway_service",
+    "services.tools.governed_tool_execution_service",
+    "services.tools.tool_result_sanitizer",
+    "services.models.llama_cpp_provider",
+    "adapters.llm_providers"
+  ]
+}

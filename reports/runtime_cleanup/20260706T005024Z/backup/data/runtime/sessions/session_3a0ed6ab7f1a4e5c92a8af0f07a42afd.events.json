@@ -1,0 +1,35 @@
+[
+  {
+    "event_id": "session_event_de1c3fa00ada4abfb33b03fe7cbbbc34",
+    "session_id": "session_3a0ed6ab7f1a4e5c92a8af0f07a42afd",
+    "event_type": "session_created",
+    "created_at": "2026-06-18T19:22:57.286761+00:00",
+    "summary": "Sessao criada.",
+    "data": {},
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_48620effc7d64138b00122fc7d5e2c2e",
+    "session_id": "session_3a0ed6ab7f1a4e5c92a8af0f07a42afd",
+    "event_type": "chat_message",
+    "created_at": "2026-06-18T19:22:57.329076+00:00",
+    "summary": "Mensagem processada com status ready.",
+    "data": {
+      "intent_type": "unknown",
+      "task_draft_id": "sandbox_run_16e5b01e9f184a84ba08cd16cbd3ef4d"
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_f7b6450dbb3a4156a3f36330ff590bb8",
+    "session_id": "session_3a0ed6ab7f1a4e5c92a8af0f07a42afd",
+    "event_type": "operational_context_updated",
+    "created_at": "2026-06-18T19:22:57.334776+00:00",
+    "summary": "Contexto operacional recente atualizado.",
+    "data": {
+      "operation_type": "filesystem_write_file",
+      "path": "C:\\Dev\\AIpinho\\sandboxes\\dopamine_test\\resultado.txt"
+    },
+    "warnings": []
+  }
+]

@@ -1,0 +1,45 @@
+{
+  "session_id": "session_ca39869ffd2643eea1cafec6fd84b2d3",
+  "status": "active",
+  "created_at": "2026-06-07T23:04:22.182660+00:00",
+  "updated_at": "2026-06-07T23:04:22.202640+00:00",
+  "expires_at": "2026-06-08T03:04:22.182660+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Salve a analise do projeto C:\\Dev\\AIpinho em reports/arquitetura.md",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_5d9bada43cc4415aac2c179057073d9f",
+    "intent_type": "artifact_generation",
+    "task_type": "artifact_generation",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Dev\\AIpinho",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_approval",
+    "contract_type": "artifact_generation",
+    "allowed_actions": [],
+    "denied_actions": [
+      "apply_patch"
+    ],
+    "approval_required_for": [
+      "write_files"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Dev\\AIpinho",
+  "active_task_draft_id": "draft_ede919b88ad24e33963d9117413ecc8e",
+  "warnings": [],
+  "trace_refs": []
+}

@@ -1,0 +1,57 @@
+schema_version: 1
+prompt_injection:
+  enabled: true
+  warning_patterns: ["ignore previous", "ignore all previous", "bypass policy", "disable safety", "system prompt"]
+  default_action: degraded
+  citation_bypass:
+    enabled: true
+    citation_terms:
+      - citacao
+      - citacoes
+      - citation
+      - citations
+      - fonte
+      - fontes
+      - source
+      - sources
+    bypass_terms:
+      - ignore
+      - ignorar
+      - dispense
+      - dispensar
+      - sem
+      - nao use
+      - nao usar
+      - no sources
+      - without sources
+    block_reason_code: context_citation_bypass_blocked
+    warnings:
+      - context_citations_required
+      - citation_bypass_blocked
+    message: "Nao posso ignorar citacoes, fontes ou provenance quando contexto governado, retrieval ou memoria curada estiverem envolvidos."
+  automatic_context:
+    enabled: true
+    context_terms:
+      - rag
+      - retrieval
+      - memoria
+      - memory
+      - contexto
+      - context
+      - vectorstore
+      - embeddings
+    automatic_terms:
+      - automatico
+      - automatica
+      - automaticamente
+      - auto
+      - sempre
+      - always
+      - toda vez
+    block_reason_code: automatic_context_injection_blocked
+    warnings:
+      - auto_memory_disabled
+      - rag_disabled
+      - vectorstore_disabled
+      - prompt_memory_auto_injection_disabled
+    message: "Memoria automatica, RAG, vectorstore, embeddings e injecao automatica de contexto permanecem bloqueados. Use retrieval governado apenas por pedido explicito e com citation map."

@@ -1,0 +1,82 @@
+{
+  "created_at": "2026-08-13T00:00:00-03:00",
+  "wave": "H1B6.R1",
+  "status": "completed",
+  "public_api": {
+    "base_url": "http://127.0.0.1:9088",
+    "health": {
+      "status": "ok",
+      "service": "AIpinho",
+      "version": "0.1.0",
+      "runtime": "local"
+    }
+  },
+  "queue_health_before": {
+    "status": "ok",
+    "active_runs": 0,
+    "queued_runs": 0,
+    "stale_runs": 0,
+    "pending_approvals": 0,
+    "dispatcher_status": "available",
+    "backpressure_required": false,
+    "reason_code": null
+  },
+  "precondition_wave_a": {
+    "source_report": "reports/runtime_consolidation/firetest5_h1c0_phase1_phase2_semantic_contract_summary.md",
+    "source_observation": "reports/runtime_consolidation/firetest5_h1c0_phase1_phase2_public_rerun_observation.json",
+    "verdict": "FIRETEST5_H1C0_PHASE1_PHASE2_SEMANTIC_CONTRACT_BLOCKED",
+    "canonical_progression_allows_phase3_public_call": false,
+    "reason": "Wave A defined the Phase 1/2 semantic chain as blocked; H1B6.R1 must not call Phase 3 after prior block."
+  },
+  "progression_states": [
+    {
+      "phase": "phase_1",
+      "status": "blocked",
+      "canonical_progression_valid": true,
+      "allowed_to_start": true,
+      "safe_to_report_success": false,
+      "reason_code": "MUSIC_INVENTORY_SEMANTIC_EVIDENCE_INSUFFICIENT"
+    },
+    {
+      "phase": "phase_2",
+      "status": "skipped_due_to_prior_block",
+      "canonical_progression_valid": true,
+      "prior_phase_status": "blocked",
+      "prior_blocking_phase": "phase_1",
+      "prior_blocking_reason": "MUSIC_INVENTORY_SEMANTIC_EVIDENCE_INSUFFICIENT",
+      "allowed_to_start": false,
+      "skip_reason": "skipped_due_to_prior_block",
+      "safe_to_report_success": false,
+      "reason_code": "PHASE_SKIPPED_DUE_TO_PRIOR_BLOCK"
+    },
+    {
+      "phase": "phase_3",
+      "status": "skipped_due_to_prior_block",
+      "canonical_progression_valid": true,
+      "prior_phase_status": "skipped_due_to_prior_block",
+      "prior_blocking_phase": "phase_1",
+      "prior_blocking_reason": "MUSIC_INVENTORY_SEMANTIC_EVIDENCE_INSUFFICIENT",
+      "allowed_to_start": false,
+      "skip_reason": "skipped_due_to_prior_block",
+      "safe_to_report_success": false,
+      "reason_code": "PHASE_SKIPPED_DUE_TO_PRIOR_BLOCK"
+    }
+  ],
+  "phase3_public_call": {
+    "attempted": false,
+    "reason": "canonical progression stopped at prior block",
+    "expected_if_called_in_normal_path": "TaskRun accepted before heavy dependency semantic validation, validated by service-equivalent public-boundary tests"
+  },
+  "invalid_post_block_attempts": 0,
+  "queue_health_after": {
+    "status": "ok",
+    "active_runs": 0,
+    "queued_runs": 0,
+    "stale_runs": 0,
+    "pending_approvals": 0,
+    "dispatcher_status": "available",
+    "backpressure_required": false,
+    "reason_code": null
+  },
+  "verdict": "FIRETEST5_H1B6_R1_PHASE3_PRE_ACCEPTANCE_READY"
+}

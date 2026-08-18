@@ -1,0 +1,921 @@
+schema_version: 1
+tools:
+  filesystem.inspect_path:
+    name: Inspect Path
+    category: filesystem
+    adapter: filesystem
+    action: inspect_path
+    capability: read_workspace
+    side_effect: false
+    requires_approval: false
+    enabled: true
+    dry_run_supported: true
+    execute_supported: true
+    risk_level: low
+    description: Inspect safe path metadata inside an allowed workspace.
+    tags:
+    - filesystem
+    - inspect
+    - read_only
+    input_schema:
+      type: object
+      required:
+      - workspace
+      - path
+      properties:
+        workspace:
+          type: string
+        path:
+          type: string
+    output_schema:
+      type: object
+      properties:
+        metadata:
+          type: object
+  filesystem.list_directory:
+    name: List Directory
+    category: filesystem
+    adapter: filesystem
+    action: list_directory
+    capability: read_workspace
+    side_effect: false
+    requires_approval: false
+    enabled: true
+    dry_run_supported: true
+    execute_supported: true
+    risk_level: low
+    description: List a directory non-recursively inside an allowed workspace.
+    tags:
+    - filesystem
+    - list
+    - read_only
+    input_schema:
+      type: object
+      required:
+      - workspace
+      - path
+      properties:
+        workspace:
+          type: string
+        path:
+          type: string
+        limit:
+          type: integer
+    output_schema:
+      type: object
+      properties:
+        entries:
+          type: array
+  filesystem.read_file:
+    name: Read File
+    category: filesystem
+    adapter: filesystem
+    action: read_files
+    capability: read_workspace
+    side_effect: false
+    requires_approval: false
+    enabled: true
+    dry_run_supported: true
+    execute_supported: true
+    risk_level: low
+    description: Read a text file inside an allowed workspace through the read-only sandbox.
+    tags:
+    - filesystem
+    - read
+    - read_only
+    input_schema:
+      type: object
+      required:
+      - workspace
+      - path
+      properties:
+        workspace:
+          type: string
+        path:
+          type: string
+        max_bytes:
+          type: integer
+    output_schema:
+      type: object
+      properties:
+        content:
+          type: string
+  config.read:
+    name: Read Config
+    category: filesystem
+    adapter: filesystem
+    action: read_config
+    capability: read_workspace
+    side_effect: false
+    requires_approval: false
+    enabled: true
+    dry_run_supported: true
+    execute_supported: true
+    risk_level: low
+    description: Inspect a config file path inside an allowed workspace.
+    tags:
+    - filesystem
+    - config
+    - read_only
+    input_schema:
+      type: object
+      required:
+      - workspace
+      - path
+      properties:
+        workspace:
+          type: string
+        path:
+          type: string
+    output_schema:
+      type: object
+      properties:
+        metadata:
+          type: object
+  filesystem.write_file:
+    name: Write File
+    category: filesystem
+    adapter: filesystem
+    action: write_files
+    capability: write_workspace
+    side_effect: true
+    requires_approval: true
+    enabled: true
+    dry_run_supported: true
+    execute_supported: false
+    risk_level: medium
+    description: Simulate writing file content without writing it.
+    tags:
+    - filesystem
+    - write
+    - approval_required
+    - dry_run
+    input_schema:
+      type: object
+      required:
+      - path
+      - content_preview
+      properties:
+        path:
+          type: string
+        content_preview:
+          type: string
+    output_schema:
+      type: object
+      properties:
+        would_write:
+          type: string
+  patch.preview:
+    name: Patch Preview
+    category: patch
+    adapter: filesystem
+    action: patch_preview
+    capability: patch_preview
+    side_effect: false
+    requires_approval: false
+    enabled: true
+    dry_run_supported: true
+    execute_supported: false
+    risk_level: low
+    description: Simulate creating a patch preview without applying changes.
+    tags:
+    - patch
+    - preview
+    - dry_run
+    input_schema:
+      type: object
+      required: []
+      properties:
+        summary:
+          type: string
+    output_schema:
+      type: object
+      properties:
+        would_preview_patch:
+          type: string
+  patch.apply:
+    name: Apply Patch
+    category: patch
+    adapter: filesystem
+    action: apply_patch
+    capability: write_workspace
+    side_effect: true
+    requires_approval: true
+    enabled: true
+    dry_run_supported: true
+    execute_supported: false
+    risk_level: high
+    description: Simulate applying a patch without applying it.
+    tags:
+    - patch
+    - apply
+    - approval_required
+    - dry_run
+    input_schema:
+      type: object
+      required: []
+      properties:
+        patch_preview_id:
+          type: string
+    output_schema:
+      type: object
+      properties:
+        would_apply_patch:
+          type: string
+  shell.run_command:
+    name: Run Command
+    category: shell
+    adapter: shell
+    action: run_command
+    capability: shell
+    side_effect: true
+    requires_approval: true
+    enabled: true
+    dry_run_supported: true
+    execute_supported: true
+    risk_level: high
+    description: Run an allowlisted command only through governed approval, policy, timeout and audit.
+    tags:
+    - shell
+    - command
+    - approval_required
+    - governed
+    input_schema:
+      type: object
+      required:
+      - command
+      properties:
+        command:
+          type: string
+    output_schema:
+      type: object
+      properties:
+        would_run:
+          type: string
+  git.status:
+    name: Git Status
+    category: git
+    adapter: git
+    action: git_status
+    capability: git
+    side_effect: false
+    requires_approval: false
+    enabled: true
+    dry_run_supported: true
+    execute_supported: false
+    risk_level: low
+    description: Simulate checking git status without calling git.
+    tags:
+    - git
+    - status
+    - dry_run
+    input_schema:
+      type: object
+      required: []
+      properties:
+        workspace:
+          type: string
+    output_schema:
+      type: object
+      properties:
+        would_run_git_status:
+          type: string
+  git.commit:
+    name: Git Commit
+    category: git
+    adapter: git
+    action: git_commit
+    capability: git
+    side_effect: true
+    requires_approval: true
+    enabled: true
+    dry_run_supported: true
+    execute_supported: false
+    risk_level: high
+    description: Simulate a git commit without calling git.
+    tags:
+    - git
+    - commit
+    - approval_required
+    - dry_run
+    input_schema:
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+    output_schema:
+      type: object
+      properties:
+        would_run_git_commit:
+          type: string
+  web.request:
+    name: Web Request
+    category: web
+    adapter: web
+    action: web_request
+    capability: network
+    side_effect: true
+    requires_approval: true
+    enabled: true
+    dry_run_supported: true
+    execute_supported: true
+    risk_level: medium
+    description: Execute an allowlisted HTTP request only through governed approval, policy, timeout and audit.
+    tags:
+    - web
+    - network
+    - approval_required
+    - governed
+    input_schema:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+    output_schema:
+      type: object
+      properties:
+        would_request_url:
+          type: string
+governed_tools:
+  web.search:
+    provider: web
+    display_name: Web Search
+    capabilities:
+    - network
+    risk_level: high
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: true
+    availability: disabled
+  web.open_page:
+    provider: web
+    display_name: Web Open_Page
+    capabilities:
+    - network
+    risk_level: high
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: true
+    availability: disabled
+  web.image_search:
+    provider: web
+    display_name: Web Image_Search
+    capabilities:
+    - network
+    risk_level: high
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: true
+    availability: disabled
+  web.weather:
+    provider: web
+    display_name: Web Weather
+    capabilities:
+    - network
+    risk_level: medium
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: false
+    availability: disabled
+  web.finance:
+    provider: web
+    display_name: Web Finance
+    capabilities:
+    - network
+    risk_level: high
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: true
+    availability: disabled
+  web.sports:
+    provider: web
+    display_name: Web Sports
+    capabilities:
+    - network
+    risk_level: medium
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: false
+    availability: disabled
+  image.generate:
+    provider: image_provider
+    display_name: Image Generate
+    capabilities:
+    - network
+    - artifact_write
+    risk_level: high
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: true
+    availability: disabled
+  image.edit:
+    provider: image_provider
+    display_name: Image Edit
+    capabilities:
+    - network
+    - artifact_write
+    risk_level: high
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: true
+    availability: disabled
+  shell.powershell:
+    provider: local_shell
+    display_name: Shell Powershell
+    capabilities:
+    - shell
+    risk_level: critical
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: false
+    side_effect: true
+    availability: disabled
+  patch.apply:
+    provider: patch_pipeline
+    display_name: Patch Apply
+    capabilities:
+    - patch_apply
+    risk_level: critical
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: false
+    side_effect: true
+    availability: disabled
+  mcp.resources:
+    provider: mcp
+    display_name: Mcp Resources
+    capabilities: []
+    risk_level: medium
+    default_enabled: false
+    requires_approval: false
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: false
+    side_effect: false
+    availability: disabled
+  node.repl:
+    provider: node
+    display_name: Node Repl
+    capabilities:
+    - shell
+    risk_level: high
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: false
+    side_effect: true
+    availability: disabled
+  codex.terminal:
+    provider: codex_app
+    display_name: Codex Terminal
+    capabilities:
+    - shell
+    risk_level: high
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: false
+    side_effect: true
+    availability: disabled
+  codex.dependencies:
+    provider: codex_app
+    display_name: Codex Dependencies
+    capabilities: []
+    risk_level: low
+    default_enabled: false
+    requires_approval: false
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: false
+    side_effect: false
+    availability: disabled
+  tool.discovery:
+    provider: codex_app
+    display_name: Tool Discovery
+    capabilities: []
+    risk_level: medium
+    default_enabled: false
+    requires_approval: false
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: false
+    side_effect: false
+    availability: disabled
+  multi_tool.parallel:
+    provider: codex_app
+    display_name: Multi_Tool Parallel
+    capabilities: []
+    risk_level: critical
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: false
+    side_effect: true
+    availability: disabled
+  browser.in_app:
+    provider: browser
+    display_name: Browser In_App
+    capabilities:
+    - network
+    risk_level: high
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: true
+    availability: disabled
+  browser.chrome:
+    provider: chrome
+    display_name: Browser Chrome
+    capabilities:
+    - network
+    risk_level: critical
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: true
+    availability: disabled
+  computer.use:
+    provider: computer
+    display_name: Computer Use
+    capabilities: []
+    risk_level: critical
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: false
+    side_effect: true
+    availability: disabled
+  github.api:
+    provider: github
+    display_name: Github Api
+    capabilities:
+    - network
+    risk_level: high
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: true
+    availability: disabled
+  huggingface.cli:
+    provider: huggingface
+    display_name: Huggingface Cli
+    capabilities:
+    - network
+    - shell
+    risk_level: critical
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: true
+    availability: disabled
+  notion.api:
+    provider: notion
+    display_name: Notion Api
+    capabilities:
+    - network
+    risk_level: high
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: true
+    availability: disabled
+  canva.api:
+    provider: canva
+    display_name: Canva Api
+    capabilities:
+    - network
+    risk_level: high
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: true
+    availability: disabled
+  openai.docs:
+    provider: openai
+    display_name: Openai Docs
+    capabilities:
+    - network
+    risk_level: medium
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: true
+    side_effect: false
+    availability: disabled
+  documents.create:
+    provider: artifact_service
+    display_name: Documents Create
+    capabilities:
+    - artifact_write
+    risk_level: medium
+    default_enabled: true
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: false
+    side_effect: false
+    availability: preview_only
+  spreadsheets.create:
+    provider: artifact_service
+    display_name: Spreadsheets Create
+    capabilities:
+    - artifact_write
+    risk_level: medium
+    default_enabled: true
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: false
+    side_effect: false
+    availability: preview_only
+  presentations.create:
+    provider: artifact_service
+    display_name: Presentations Create
+    capabilities:
+    - artifact_write
+    risk_level: medium
+    default_enabled: true
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: false
+    side_effect: false
+    availability: preview_only
+  android.emulator:
+    provider: android
+    display_name: Android Emulator
+    capabilities:
+    - shell
+    risk_level: high
+    default_enabled: false
+    requires_approval: true
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: false
+    side_effect: true
+    availability: disabled
+  patch.preview:
+    provider: patch_pipeline
+    display_name: Patch Preview
+    capabilities:
+    - patch_preview
+    risk_level: medium
+    default_enabled: true
+    requires_approval: false
+    allowed_call_modes:
+    - preview_only
+    forbidden_call_modes:
+    - direct_execution
+    input_contract:
+      type: object
+    output_contract:
+      type: object
+    sanitization_required: true
+    external_network: false
+    side_effect: false
+    availability: preview_only

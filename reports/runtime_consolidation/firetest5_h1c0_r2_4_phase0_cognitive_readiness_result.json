@@ -1,0 +1,41 @@
+{
+  "readiness_id": "readiness_h1c0_r2_4_phase0",
+  "created_at": "2026-08-15T04:36:31.990148+00:00",
+  "runtime_executed": false,
+  "task_created": false,
+  "task_run_created": false,
+  "operation_created": false,
+  "operational_artifacts_created": false,
+  "prediction": {
+    "prediction_id": "prediction_a8d9e4dd48a84827916bc4d0f3927ef6",
+    "profile_id": "firetest5_h1c0_r2_4_phase0_profile",
+    "predicted_status": "blocked",
+    "probable_component": "phase_semantic_completion_policy",
+    "probable_contract": "phase_semantic_completion_policy",
+    "probable_capability": "phase_semantic_completion_policy",
+    "confidence": 0.87,
+    "dependency_chain": [
+      "pipeline:semantic_completion",
+      "pipeline:completion",
+      "pipeline:speaker_truth",
+      "pipeline:phase_dependency"
+    ],
+    "hypothesis": "A partial evidence-bound artifact is expected to need an explicit phase completion policy before the phase can complete.",
+    "reason_codes": [
+      "PARTIAL_ARTIFACT_ACCEPTANCE_REQUIRED"
+    ],
+    "evidence_refs": [
+      "profile:firetest5_h1c0_r2_4_phase0_profile",
+      "phase_semantic_completion_policy:partial_artifact_acceptance"
+    ]
+  },
+  "decision": {
+    "decision": "NO_GO_EXPECTED_BLOCK",
+    "confidence": 0.87,
+    "expected_blocking_frontier": "PARTIAL_ARTIFACT_ACCEPTANCE_REQUIRED",
+    "safe_to_start_phase1": false
+  },
+  "reason_codes": [
+    "PARTIAL_ARTIFACT_ACCEPTANCE_REQUIRED"
+  ]
+}

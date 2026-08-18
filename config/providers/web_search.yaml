@@ -1,0 +1,76 @@
+schema_version: 1
+enabled: true
+provider_id: browser_web_search
+provider_type: browser_search
+search_endpoint: https://duckduckgo.com/html/
+user_agent: AIpinhoWebSearch/1.0 (+local-governed-agent)
+browser_backends:
+  - provider_id: duckduckgo_html
+    search_endpoint: https://duckduckgo.com/html/
+    parser: duckduckgo
+  - provider_id: bing_html
+    search_endpoint: https://www.bing.com/search
+    parser: bing
+timeout_seconds: 10
+max_results: 3
+require_sources: true
+allow_public_fact_queries: true
+allow_recent_info_queries: true
+log_sources_to_debugger: true
+redact_query: false
+fallback_to_capability_missing: true
+wikipedia_fallback_enabled: true
+semantic_min_overlap: 2
+query_normalization:
+  enabled: true
+  min_terms: 2
+  stopwords:
+    - quem
+    - que
+    - qual
+    - quais
+    - quando
+    - onde
+    - como
+    - foram
+    - foi
+    - e
+    - é
+    - o
+    - a
+    - os
+    - as
+    - um
+    - uma
+    - de
+    - do
+    - da
+    - dos
+    - das
+    - no
+    - na
+    - nos
+    - nas
+    - em
+    - para
+    - sobre
+    - atual
+    - atuais
+    - ultimo
+    - últimos
+    - ultimos
+    - ltimo
+    - ltimos
+    - diferentes
+    - diferente
+    - resuma
+    - resumir
+    - cada
+    - nome
+    - liste
+    - listar
+    - use
+    - fontes
+    - fonte
+    - responda
+    - resposta

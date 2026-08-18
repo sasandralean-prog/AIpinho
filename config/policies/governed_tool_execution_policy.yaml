@@ -1,0 +1,177 @@
+schema_version: 1
+
+governed_tool_execution:
+  enabled: true
+  mode: governed
+  require_approval: true
+  require_audit: true
+  require_policy_decision: true
+  default_timeout_seconds: 30
+  max_timeout_seconds: 120
+  max_output_chars: 12000
+  allowed_actions:
+    - run_command
+    - web_request
+    - write_files
+    - apply_patch
+  denied_actions:
+    - delete_files
+    - move_files
+    - git_commit
+    - git_push
+    - write_memory
+  allowed_capabilities:
+    - shell
+    - network
+    - write_workspace
+  denied_capabilities:
+    - git
+    - memory_write
+  workspace_required_for:
+    - run_command
+  allowed_workspace_roots:
+    - C:\Users\rafae\Documents\AIpinhoTestes
+    - C:\Dev\AI\coding-brain-supervisor
+    - C:\PinhoabacaxiAI
+    - C:\Users\rafae\Documents\FashionHelper
+    - C:\Users\rafae\Documents\Fashion Helper legado
+    - C:\Users\rafae\Documents\Pinhoabacaxi-musicas-main
+    - C:\Users\rafae\Documents\TestesIALocal
+    - C:\Dev\AIpinho
+
+shell:
+  allow_shell_metacharacters: false
+  category_policy:
+    blocked_categories:
+      - destructive_shell
+      - git_write_shell
+      - unknown_shell
+    approval_required_categories:
+      - test_shell
+      - build_shell
+      - package_shell
+      - write_shell
+      - network_shell
+      - process_control_shell
+  categories:
+    destructive_shell:
+      tokens:
+        - remove-item
+        - " del "
+        - " rmdir"
+        - " rm "
+        - format
+        - erase
+    git_write_shell:
+      tokens:
+        - git commit
+        - git push
+        - git reset
+        - git checkout
+        - git clean
+    git_read_shell:
+      tokens:
+        - git status
+        - git diff
+        - git log
+        - git show
+    network_shell:
+      tokens:
+        - "http://"
+        - "https://"
+        - wget
+        - curl
+    process_control_shell:
+      tokens:
+        - start-process
+        - stop-process
+        - taskkill
+        - restart
+    test_shell:
+      executables:
+        - pytest
+        - pytest.exe
+      tokens:
+        - " -m pytest"
+        - " py_compile"
+    build_shell:
+      executables:
+        - gradle
+        - gradle.bat
+        - gradlew
+        - gradlew.bat
+      tokens:
+        - " assemble"
+        - " build"
+        - " check"
+    package_shell:
+      tokens:
+        - " package"
+        - " zip"
+        - " dist"
+    write_shell:
+      tokens:
+        - " --write"
+        - set-content
+        - out-file
+    readonly_shell:
+      tokens:
+        - " --version"
+        - " -v"
+        - " -c print"
+        - " -c \"print"
+        - " -c 'print"
+  allowed_executables:
+    - python
+    - python.exe
+    - py
+    - py.exe
+    - pytest
+    - pytest.exe
+    - gradle
+    - gradle.bat
+    - gradlew
+    - gradlew.bat
+  denied_executables:
+    - powershell
+    - powershell.exe
+    - pwsh
+    - pwsh.exe
+    - cmd
+    - cmd.exe
+    - bash
+    - bash.exe
+    - sh
+    - sh.exe
+    - git
+    - git.exe
+    - ssh
+    - ssh.exe
+    - scp
+    - scp.exe
+    - curl
+    - curl.exe
+  denied_tokens:
+    - "|"
+    - "&&"
+    - "||"
+    - ";"
+    - "<"
+    - ">"
+    - "`"
+    - "$("
+    - "%COMSPEC%"
+
+network:
+  allowed_methods:
+    - GET
+    - HEAD
+  denied_schemes:
+    - file
+    - ftp
+    - gopher
+    - data
+  denied_hosts:
+    - 0.0.0.0
+    - 169.254.169.254
+  allow_localhost: true

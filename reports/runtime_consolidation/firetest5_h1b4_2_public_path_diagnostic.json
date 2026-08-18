@@ -1,0 +1,70 @@
+{
+  "session_id": "firetest5_h1b4_2_public_validation_20260812_014412",
+  "task_run_id": "task_run_269f80dba2c94c0cb6774e47b3ea85f9",
+  "process_id": 34276,
+  "python": "C:\\Program Files\\Python311\\python.exe",
+  "mutagen_importable": true,
+  "mutagen_version": "1.48.1",
+  "ffprobe_path": null,
+  "chat_request": "reports/runtime_consolidation/firetest5_h1b4_2_public_chat_request.json",
+  "chat_response": null,
+  "chat_timeout": {
+    "session_id": "firetest5_h1b4_2_public_validation_20260812_014412",
+    "error": "O tempo limite da operação foi atingido",
+    "response_path": "reports/runtime_consolidation/firetest5_h1b4_2_public_chat_response.json"
+  },
+  "runtime_files": {
+    "run.json": {
+      "exists": true,
+      "size_bytes": 333233431
+    },
+    "result.json": {
+      "exists": false,
+      "size_bytes": 0
+    },
+    "events.json": {
+      "exists": true,
+      "size_bytes": 254224796
+    }
+  },
+  "run_state": {
+    "run_id": "task_run_269f80dba2c94c0cb6774e47b3ea85f9",
+    "task_id": "task_94ae430bdc0641c892c72ec75f171830",
+    "operation_id": "op_df1e0aa7f4f4401ca030f1ce37d4a57d",
+    "session_id": "firetest5_h1b4_2_public_validation_20260812_014412",
+    "status": "running",
+    "current_phase": "phase_1",
+    "created_at": "2026-08-12T04:45:54.095149+00:00",
+    "started_at": "2026-08-12T04:46:26.406179+00:00",
+    "finished_at": null,
+    "required_artifacts": [
+      "reports/firetest5/phase1_discovery.md",
+      "reports/firetest5/project_inventory.md",
+      "reports/firetest5/music_inventory.csv",
+      "reports/firetest5/evidence_phase1.zip"
+    ],
+    "missing_artifacts": [],
+    "workspace": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop"
+  },
+  "public_runtime": {
+    "media_metadata_capability_in_summary": false,
+    "evidence_records_in_run": null,
+    "csv_metadata_columns_nonempty": null,
+    "semantic_coverage_report": null
+  },
+  "divergence": {
+    "exists": true,
+    "likely_cause": "PUBLIC_PATH_EXECUTION_TOO_EXPENSIVE_OR_UNBOUNDED_AFTER_MEDIA_METADATA_BACKEND_ACTIVATION",
+    "evidence": [
+      "POST /api/v1/chat timed out after 1200 seconds",
+      "TaskRun remained running after client timeout",
+      "run.json reached 333233431 bytes before result.json existed",
+      "events.json reached 254224796 bytes before result.json existed"
+    ],
+    "reason_codes": [
+      "PUBLIC_CHAT_TIMEOUT",
+      "PUBLIC_SUMMARY_PAYLOAD_TOO_LARGE",
+      "OBSERVABILITY_PERFORMANCE_GAP"
+    ]
+  }
+}

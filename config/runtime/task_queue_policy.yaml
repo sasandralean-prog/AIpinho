@@ -1,0 +1,35 @@
+schema_version: 1
+
+queue:
+  enabled: true
+  max_pending_tasks: 25
+  max_wait_seconds: 86400
+  reconcile_interval_seconds: 5
+  auto_cancel_expired: true
+  cancel_linked_pending_approval: true
+  overflow_strategy: cancel_oldest_pending
+  active_states:
+    - running
+  pending_states:
+    - waiting_input
+    - queued
+    - created
+  state_priority:
+    running: 0
+    waiting_input: 1
+    queued: 2
+    created: 3
+
+auto_run:
+  enabled: true
+  require_explicit_request: true
+  max_concurrent_tasks: 1
+  require_runtime_guard: true
+  start_only_queue_head: true
+  execute_outside_event_loop: true
+
+rules:
+  preserve_terminal_history: true
+  never_auto_approve: true
+  never_expire_running_by_queue_age: true
+  reconciliation_is_idempotent: true

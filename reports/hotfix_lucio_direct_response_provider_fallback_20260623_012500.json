@@ -1,0 +1,75 @@
+{
+  "report_id": "hotfix_lucio_direct_response_provider_fallback_20260623_012500",
+  "date": "2026-06-23",
+  "verdict": "LUCIO_DIRECT_RESPONSE_FALLBACK_READY_WITH_WARNINGS",
+  "objective": "Make Lucio direct_response robust against external provider auth errors without false provider success or local tool execution.",
+  "root_cause": "Provider failures in direct_response always produced failed runs, even for safe low-risk conversation.",
+  "files_changed": [
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\lucio_agent\\lucio_safe_fallback_service.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\lucio_agent\\lucio_agent_service.py",
+    "C:\\Dev\\AIpinho\\tests\\unit\\test_lucio_agent_service.py"
+  ],
+  "fallback_policy": {
+    "allowed": [
+      "greeting",
+      "simple_social_reply",
+      "trivial_low_risk_fact",
+      "simple_help_request"
+    ],
+    "blocked": [
+      "operational_request",
+      "nontrivial_requires_model",
+      "unsafe_or_policy_sensitive",
+      "recent_or_source_required_fact",
+      "high_precision_domain_answer"
+    ]
+  },
+  "tests": [
+    {
+      "command": "python -m pytest tests\\unit\\test_lucio_agent_service.py -q",
+      "status": "passed",
+      "summary": "16 passed in 4.14s"
+    },
+    {
+      "command": "python -m pytest tests\\integration\\test_lucio_agent_api.py tests\\integration\\test_multi_island_sprint10_11_routing.py -q",
+      "status": "passed",
+      "summary": "6 passed in 11.40s"
+    }
+  ],
+  "smoke": {
+    "greeting_auth_error": {
+      "status": "completed_with_warnings",
+      "error_code": "openai_auth_error",
+      "fallback_used": true,
+      "fallback_type": "local_safe_chat",
+      "model_invoked": false,
+      "local_execution_started": false,
+      "tool_invoked": false,
+      "secret_leaked": false
+    },
+    "trivial_fact_auth_error": {
+      "status": "completed_with_warnings",
+      "text": "Branco.",
+      "fallback_used": true,
+      "fallback_category": "trivial_low_risk_fact",
+      "provider_error": "openai_auth_error"
+    },
+    "nontrivial_auth_error": {
+      "status": "completed_with_warnings",
+      "metadata_status": "provider_unavailable",
+      "fallback_used": false,
+      "local_execution_started": false,
+      "tool_invoked": false
+    }
+  },
+  "security": {
+    "no_secret_leak_in_smoke": true,
+    "no_local_tools_for_simple_chat": true,
+    "no_delegation_for_simple_chat": true,
+    "model_invoked_not_marked_success_on_auth_error": true
+  },
+  "risks_remaining": [
+    "Local fallback intentionally covers only narrow safe categories.",
+    "Complex answers still require a working external provider or another explicit governed provider fallback."
+  ]
+}

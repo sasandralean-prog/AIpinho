@@ -1,0 +1,451 @@
+{
+  "generated_at_utc": "2026-06-26T07:31:34.299Z",
+  "audit_type": "governance_topology_audit",
+  "scope": [
+    "G0",
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5"
+  ],
+  "g0_baseline_cases": [
+    {
+      "case_id": "G0-01",
+      "prompt_pattern": "planning_readonly overcaptured as permission_grant_request",
+      "current_evidence": "PermissionGrant parser now has readonly and negation guards, but it still runs before the operation router.",
+      "risk": "P0"
+    },
+    {
+      "case_id": "G0-02",
+      "prompt_pattern": "workspace permission list routed as conversation",
+      "current_evidence": "Router and ChatService now expose workspace_permission_list, but non-chat channels may still diverge.",
+      "risk": "P1"
+    },
+    {
+      "case_id": "G0-03",
+      "prompt_pattern": "folder/project creation blocked without approval_id",
+      "current_evidence": "Policy can express ask, but preview/approval depends on executable draft generation.",
+      "risk": "P0"
+    },
+    {
+      "case_id": "G0-04",
+      "prompt_pattern": "approved approval produced project_generation_plan_missing",
+      "current_evidence": "Approval now validates executable plans; runtime completion/result mapping for project_generation remains a gap.",
+      "risk": "P0"
+    },
+    {
+      "case_id": "G0-05",
+      "prompt_pattern": "old approval hash mismatch after policy/preview change",
+      "current_evidence": "Approval hash checks exist; UI must surface stale/superseded clearly.",
+      "risk": "P1"
+    },
+    {
+      "case_id": "G0-06",
+      "prompt_pattern": "read-only prompt treated as write historically",
+      "current_evidence": "Negative constraints exist, but direct chat and persistent chat are parallel paths.",
+      "risk": "P0"
+    },
+    {
+      "case_id": "G0-07",
+      "prompt_pattern": "contradictory policy message",
+      "current_evidence": "Multiple vocabularies exist: needs_approval, ask, approval_required, blocked, denied.",
+      "risk": "P1"
+    },
+    {
+      "case_id": "G0-08",
+      "prompt_pattern": "speaker claimed permission/success without real execution",
+      "current_evidence": "Approval command path improved; standalone publishers still need canonical truth.",
+      "risk": "P0"
+    },
+    {
+      "case_id": "G0-09",
+      "prompt_pattern": "validation passed with missing outcomes",
+      "current_evidence": "Completion policy does not cover project_generation/project_bootstrap.",
+      "risk": "P0"
+    },
+    {
+      "case_id": "G0-10",
+      "prompt_pattern": "preview/approval shown but list/store diverged",
+      "current_evidence": "ApprovalService is common, but UI aggregators and chat commands are separate consumers.",
+      "risk": "P1"
+    }
+  ],
+  "g1_schemas": [
+    {
+      "schema": "OperationContract",
+      "file": "src/aipinho/schemas/governance/operation_contract.py",
+      "source_of_truth_claim": "normalizes operation/actions/workspace/risk",
+      "status_fields": "approval_required, execution_allowed, execution_plan.mode",
+      "risk": "competes with PolicyDecision and TaskContractDraft for truth"
+    },
+    {
+      "schema": "PolicyDecision",
+      "file": "src/aipinho/schemas/policy/policy_decision.py",
+      "source_of_truth_claim": "Policy Kernel decision",
+      "status_fields": "status, safe_to_execute, safe_to_preview, approval_required_for",
+      "risk": "uses needs_approval while other layers use ask/approval_required"
+    },
+    {
+      "schema": "TaskContractDraft",
+      "file": "src/aipinho/schemas/tasks/task_contract_draft.py",
+      "source_of_truth_claim": "draft before preview",
+      "status_fields": "status, safe_to_execute, safe_to_preview, executable_plan_ref",
+      "risk": "can carry requested actions without executable plan unless guarded"
+    },
+    {
+      "schema": "TaskPreview",
+      "file": "src/aipinho/schemas/tasks/task_preview.py",
+      "source_of_truth_claim": "preview shown to user",
+      "status_fields": "status, executable_plan_ref, expected_outcomes",
+      "risk": "can be approval_required while warning missing_executable_plan"
+    },
+    {
+      "schema": "ApprovalRequest",
+      "file": "src/aipinho/schemas/approvals/approval_request.py",
+      "source_of_truth_claim": "persistent approval request",
+      "status_fields": "status, execution_status, resume_status, block_reason_code",
+      "risk": "mixes approval lifecycle and execution resume truth"
+    },
+    {
+      "schema": "ApprovalDecision",
+      "file": "src/aipinho/schemas/approvals/approval_decision.py",
+      "source_of_truth_claim": "human decision",
+      "status_fields": "decision, decided_at",
+      "risk": "must be the only approval decision source for command/button paths"
+    },
+    {
+      "schema": "TaskRun",
+      "file": "src/aipinho/schemas/runtime/task_run.py",
+      "source_of_truth_claim": "runtime execution",
+      "status_fields": "status, current_step_id, validation_status",
+      "risk": "can diverge from ChatResponse and ApprovalRequest.resume_status"
+    },
+    {
+      "schema": "SessionGrant",
+      "file": "src/aipinho/schemas/interaction/session_grant.py",
+      "source_of_truth_claim": "temporary permission",
+      "status_fields": "status, expires_at, remaining_uses",
+      "risk": "can be confused with ConfigChangeRequest by broad language"
+    },
+    {
+      "schema": "WorkspacePermissionDecision",
+      "file": "src/aipinho/services/config_governance/workspace_permission_matrix_service.py",
+      "source_of_truth_claim": "effective workspace/action permission",
+      "status_fields": "status, requires_approval, reason_code",
+      "risk": "parallel with WorkspaceRoleContractService"
+    },
+    {
+      "schema": "Artifact/ArtifactPreview",
+      "file": "src/aipinho/schemas/artifacts",
+      "source_of_truth_claim": "artifact evidence and downloads",
+      "status_fields": "status, validation_status, requires_token",
+      "risk": "chat links can become a parallel artifact truth"
+    },
+    {
+      "schema": "ValidationResult",
+      "file": "src/aipinho/services/validation",
+      "source_of_truth_claim": "validation evidence",
+      "status_fields": "status, score, blocking_findings",
+      "risk": "completion resolver and validation gate can disagree"
+    },
+    {
+      "schema": "ChatResponse",
+      "file": "src/aipinho/schemas/chat/chat_response.py",
+      "source_of_truth_claim": "chat answer contract",
+      "status_fields": "status, message_type, approval_required, task_id",
+      "risk": "can contain derived partial state from noncanonical sources"
+    },
+    {
+      "schema": "RuntimeProfile",
+      "file": "config/runtime/profiles/*.yaml",
+      "source_of_truth_claim": "execution profile",
+      "status_fields": "steps, allowed_actions, required_capabilities",
+      "risk": "aggregate runtime_profiles.yaml appears stale"
+    },
+    {
+      "schema": "ToolInvocation",
+      "file": "src/aipinho/schemas/agents/tool_gateway.py",
+      "source_of_truth_claim": "governed tool call",
+      "status_fields": "status, block_reason_code, validation_result",
+      "risk": "tool gateway can be invoked outside full TaskRun lifecycle"
+    }
+  ],
+  "g2_routes": [
+    {
+      "channel": "Direct chat",
+      "endpoint": "POST /api/v1/chat",
+      "handler": "chat_router.py",
+      "main_service": "ChatService.respond",
+      "creates_task": "conditional",
+      "creates_preview": "conditional",
+      "creates_approval": "conditional",
+      "risk": "different path from persistent chat"
+    },
+    {
+      "channel": "Persistent chat",
+      "endpoint": "POST /api/v1/chat/sessions/{id}/send",
+      "handler": "chat_router.py",
+      "main_service": "ApprovalCommand -> PermissionGrant -> OperationRouter -> persistent response",
+      "creates_task": "conditional",
+      "creates_preview": "conditional",
+      "creates_approval": "conditional",
+      "risk": "local branches plus partial ChatService delegation"
+    },
+    {
+      "channel": "Approvals",
+      "endpoint": "/api/v1/approvals*",
+      "handler": "approval_router.py",
+      "main_service": "ApprovalService + ApprovalTaskContinuationService",
+      "creates_task": "after approve",
+      "creates_preview": "no",
+      "creates_approval": "yes",
+      "risk": "button/chat must share one store"
+    },
+    {
+      "channel": "Continue",
+      "endpoint": "GET /v1/models, POST /v1/chat/completions",
+      "handler": "continue_integration_router.py",
+      "main_service": "Continue policy/regex + ChatService/OperationContract",
+      "creates_task": "conditional",
+      "creates_preview": "conditional",
+      "creates_approval": "conditional",
+      "risk": "separate VSCode classifier and policy"
+    },
+    {
+      "channel": "Pipeline/mobile",
+      "endpoint": "mobile view-model routes",
+      "handler": "mobile_view_model_router.py",
+      "main_service": "PipelineMobileAggregator",
+      "creates_task": "no",
+      "creates_preview": "no",
+      "creates_approval": "no",
+      "risk": "state is aggregated from task and standalone approvals"
+    },
+    {
+      "channel": "Task runtime",
+      "endpoint": "task_runtime_router.py",
+      "handler": "task runtime routes",
+      "main_service": "TaskRuntimeService/SupervisedExecutionLoop",
+      "creates_task": "yes",
+      "creates_preview": "no",
+      "creates_approval": "no",
+      "risk": "can run only safely if created from approved executable draft"
+    },
+    {
+      "channel": "Draft/preview",
+      "endpoint": "task_draft_router.py, preview_router.py",
+      "handler": "draft/preview routers",
+      "main_service": "TaskContractDraftService/TaskPreviewService",
+      "creates_task": "draft",
+      "creates_preview": "yes",
+      "creates_approval": "not directly",
+      "risk": "preview can be non-executable"
+    },
+    {
+      "channel": "Patch",
+      "endpoint": "patch_planning_router.py, patch_apply_router.py",
+      "handler": "patch routers",
+      "main_service": "Patch planning/apply services",
+      "creates_task": "conditional",
+      "creates_preview": "yes",
+      "creates_approval": "conditional",
+      "risk": "patch path can diverge from project generation"
+    },
+    {
+      "channel": "Artifacts",
+      "endpoint": "artifact routers, transfer_router.py",
+      "handler": "artifact routers",
+      "main_service": "Artifact registry/write/status services",
+      "creates_task": "conditional",
+      "creates_preview": "conditional",
+      "creates_approval": "conditional",
+      "risk": "artifact output vs workspace write distinction must hold"
+    },
+    {
+      "channel": "Workspace/config",
+      "endpoint": "config_governance_router.py, workspace_flow_router.py",
+      "handler": "governance routers",
+      "main_service": "WorkspacePermissionMatrix/ConfigChange services",
+      "creates_task": "conditional",
+      "creates_preview": "yes",
+      "creates_approval": "yes",
+      "risk": "temporary grant and permanent config change can mix"
+    },
+    {
+      "channel": "Realtime/health",
+      "endpoint": "realtime, health, monitor, supervisor",
+      "handler": "status routers",
+      "main_service": "event/status services",
+      "creates_task": "no",
+      "creates_preview": "no",
+      "creates_approval": "no",
+      "risk": "degraded can derive from stale status helpers"
+    }
+  ],
+  "g3_intent_router": [
+    {
+      "finding": "Router precedence is dispersed across ApprovalCommand, PermissionGrant, OperationRouter, PromptIntelligence, Continue regexes, and agent routers.",
+      "severity": "P0"
+    },
+    {
+      "finding": "PermissionGrant now has negation/readonly guards but still executes before the operation router.",
+      "severity": "P1"
+    },
+    {
+      "finding": "Session diagnostic must stay explicit because sprint prompts contain diagnostic/preview/evidence words.",
+      "severity": "P1"
+    },
+    {
+      "finding": "Workspace permission query exists in chat but must be mirrored by all channels.",
+      "severity": "P1"
+    },
+    {
+      "finding": "Continue has independent side-effect regexes and policy config.",
+      "severity": "P1"
+    }
+  ],
+  "g4_policy_approval": [
+    {
+      "finding": "Permission vocabulary is split across needs_approval, ask, approval_required, approval_required_for, waiting_input.",
+      "severity": "P0"
+    },
+    {
+      "finding": "ApprovalService now blocks approval creation when executable_plan_ref is missing.",
+      "severity": "P1"
+    },
+    {
+      "finding": "ApprovalRequest also stores resume/block state, coupling approval to runtime truth.",
+      "severity": "P1"
+    },
+    {
+      "finding": "WorkspacePermissionMatrixService and WorkspaceRoleContractService overlap.",
+      "severity": "P0"
+    },
+    {
+      "finding": "SessionGrant and ConfigChangeRequest need stricter source/intention separation.",
+      "severity": "P0"
+    }
+  ],
+  "g5_runtime_execution": [
+    {
+      "finding": "project_generation profile exists but task_completion_policy.yaml lacks project_generation/project_bootstrap.",
+      "severity": "P0"
+    },
+    {
+      "finding": "TaskRunResultService does not explicitly map execute_project_generation or validate_project_result step outputs.",
+      "severity": "P0"
+    },
+    {
+      "finding": "runtime_profiles.yaml aggregate says key runtime features are disabled while task_runtime_policy/profiles enable governed execution.",
+      "severity": "P1"
+    },
+    {
+      "finding": "SupervisedExecutionLoop.status reports write/patch/shell false despite governed execution paths.",
+      "severity": "P1"
+    },
+    {
+      "finding": "TaskRunChatResultPublisherService has its own final-answer truth and can render from intent_map/contract_type.",
+      "severity": "P0"
+    },
+    {
+      "finding": "ValidationGate and TaskCompletionResolver validate different layers.",
+      "severity": "P0"
+    }
+  ],
+  "duplicated_sources_of_truth": [
+    "Intent/operation truth: ChatOperationDecision, PromptIntelligence IntentMap, OperationContract, TaskContractDraft.",
+    "Policy truth: PolicyDecision, OperationPermissionDecision, WorkspacePermissionDecision, WorkspaceRoleDecision, CapabilityDecision.",
+    "Approval truth: ApprovalRequest.status, ApprovalDecision, TaskPreview.status, ChatResponse.approval_required, PipelineMobileAggregator.",
+    "Execution truth: TaskRun.status, ApprovalRequest.resume_status, TaskCompletionResolver, ValidationResult, ChatResponse.",
+    "Artifact truth: ToolInvocation outputs, artifact registry, chat_response.artifact_links, presentation artifacts.",
+    "UI truth: mobile view-model, launcher state, chat persisted messages, task_run publisher."
+  ],
+  "conflicting_configs": [
+    {
+      "config": "config/runtime/runtime_profiles.yaml",
+      "conflict": "aggregate says patch/write/rag/memory disabled",
+      "conflicts_with": "task_runtime_policy.yaml and config/runtime/profiles/*.yaml"
+    },
+    {
+      "config": "config/runtime/task_completion_policy.yaml",
+      "conflict": "missing project_generation/project_bootstrap contracts",
+      "conflicts_with": "project_generation.yaml and project_bootstrap.yaml"
+    },
+    {
+      "config": "config/policies/operation_contract_policy.yaml",
+      "conflict": "action normalization separate from workspace permission aliases",
+      "conflicts_with": "WorkspacePermissionMatrixService.ACTION_PERMISSION_ALIASES"
+    },
+    {
+      "config": "config/integrations/continue_adapter_policy.json",
+      "conflict": "Continue side-effect policy separate from chat/router",
+      "conflicts_with": "chat_operation_routing_policy and permission matrix"
+    },
+    {
+      "config": "workspace/artifact/patch target policies",
+      "conflict": "artifact output and workspace write evaluated separately",
+      "conflicts_with": "artifact/write/runtime services"
+    }
+  ],
+  "legacy_candidates": [
+    {
+      "candidate": "Direct ChatService.respond vs persistent chat _persistent_chat_response",
+      "reason": "parallel route handling"
+    },
+    {
+      "candidate": "WorkspaceRoleContractService vs WorkspacePermissionMatrixService",
+      "reason": "overlapping workspace/action decision authority"
+    },
+    {
+      "candidate": "config/runtime/runtime_profiles.yaml aggregate",
+      "reason": "stale capability status compared with per-profile runtime"
+    },
+    {
+      "candidate": "Continue adapter side-effect regex layer",
+      "reason": "parallel classifier for VSCode"
+    },
+    {
+      "candidate": "Generic TaskPreview summary renderer",
+      "reason": "obscures executable plan quality"
+    },
+    {
+      "candidate": "TaskRunChatResultPublisherService standalone truth formatting",
+      "reason": "separate final-answer truth source"
+    }
+  ],
+  "p0_findings": [
+    "No canonical lifecycle object/state enum spans intent -> operation -> preview -> approval -> run -> validation -> speaker.",
+    "project_generation runtime profile lacks matching completion/result mapping.",
+    "Policy/permission vocabularies are not normalized before rendering.",
+    "Multiple channel entrypoints can bypass fixes applied to one chat path.",
+    "Validation and completion truth can disagree about required outcomes."
+  ],
+  "p1_findings": [
+    "Runtime status/degraded can be computed from stale aggregate config/status helpers.",
+    "ApprovalRequest stores execution resume details, increasing stale UI risk.",
+    "Continue adapter uses a separate regex classifier and policy file.",
+    "Artifact lifecycle can be invoked from tool gateway/report writer outside a single runtime route.",
+    "Publisher strings show encoding/mojibake risk in user-facing text."
+  ],
+  "p2_findings": [
+    "Large router registry makes ownership ambiguous.",
+    "Report idempotency exists locally but not through a single report policy service.",
+    "Mobile and launcher can format different subsets of approval/task state."
+  ],
+  "recommended_single_flow": {
+    "block_b_goal": "Create a canonical governance lifecycle facade without deleting legacy immediately.",
+    "sequence": [
+      "Canonical IntentDecision with precedence table and negative constraints.",
+      "Canonical OperationContract normalization for action/workspace/risk.",
+      "Single permission resolver output enum: allowed, ask, denied.",
+      "Preview builder emits plan_only_preview or executable_task_preview.",
+      "ApprovalRequest targets only executable draft or explicit non-execution approval.",
+      "TaskRun starts only from approved executable draft.",
+      "Completion resolver and validation gate share required outcomes.",
+      "Speaker Truth reads only from final lifecycle snapshot.",
+      "All channels call the same facade; old routes become adapters."
+    ]
+  },
+  "verdict": "GOVERNANCE_BLOCK_A_AUDIT_READY"
+}

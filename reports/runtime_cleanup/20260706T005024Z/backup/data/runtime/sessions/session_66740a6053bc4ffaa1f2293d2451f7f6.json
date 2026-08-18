@@ -1,0 +1,41 @@
+{
+  "session_id": "session_66740a6053bc4ffaa1f2293d2451f7f6",
+  "status": "active",
+  "created_at": "2026-06-08T09:44:42.361530+00:00",
+  "updated_at": "2026-06-08T09:44:42.367483+00:00",
+  "expires_at": "2026-06-08T13:44:42.361530+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Bom dia, tudo certo?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_9c7c104492574a04af5a84189124f9a9",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

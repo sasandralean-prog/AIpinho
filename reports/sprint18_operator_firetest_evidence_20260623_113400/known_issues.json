@@ -1,0 +1,22 @@
+[
+  {
+    "id": "s18-token-http-mutation",
+    "severity": "P0 for operator UX",
+    "description": "Protected config mutation endpoints rejected the supplied local bearer token; service-level governance works, HTTP operator path needs token/pairing alignment."
+  },
+  {
+    "id": "s18-ux-real-operator-validation",
+    "severity": "P1",
+    "description": "Mobile/Launcher compiled but were not used end-to-end by a real operator in this run."
+  },
+  {
+    "id": "s18-speaker-truth-not-exercised",
+    "severity": "P1",
+    "description": "Speaker truth for full approval/task resume flow was not validated in this sprint run."
+  },
+  {
+    "id": "s18-approvalrequest-extra-fields-historical-log",
+    "severity": "P1",
+    "description": "Historical backend err log before restart showed ApprovalRequest extra-field validation failures in a previous path; no fresh recurrence after restart, but Sprint 19 should inspect schema/callers."
+  }
+]

@@ -1,0 +1,80 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "role_dependencies": {
+    "admin": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "user": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "agent": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "tool_executor": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "model_invoker": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "artifact_generator": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "memory_curator": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "rag_retriever": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "validator": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "supervisor": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "debugger": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "runtime_doctor": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "patch_planner": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "skill_executor": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "workspace_manager": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "approval_authority": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "speaker": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    },
+    "listener": {
+      "dependencies": ["UNKNOWN"],
+      "source": "config/roles/"
+    }
+  },
+  "total_roles": 18,
+  "unknown_dependencies": 18
+}

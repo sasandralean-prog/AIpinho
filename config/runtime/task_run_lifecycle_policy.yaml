@@ -1,0 +1,22 @@
+﻿schema_version: 1
+
+states: [created, queued, waiting_delegation, running, waiting_input, completed, partial, failed, cancelled, blocked, expired]
+
+transitions:
+  created: [queued, waiting_delegation, waiting_input, blocked, cancelled, expired]
+  queued: [running, waiting_input, cancelled, blocked, expired]
+  waiting_delegation: [running, waiting_input, completed, failed, cancelled, blocked, expired]
+  running: [completed, partial, failed, cancelled, waiting_input, blocked]
+  waiting_input: [running, blocked, cancelled, expired]
+  completed: []
+  partial: []
+  failed: []
+  cancelled: []
+  blocked: []
+  expired: []
+
+rules:
+  terminal_states: [completed, partial, failed, cancelled, blocked, expired]
+  start_requires_state: [created, queued]
+  cancel_allowed_from: [created, queued, waiting_delegation, running, waiting_input]
+  duplicate_start_behavior: return_existing_state

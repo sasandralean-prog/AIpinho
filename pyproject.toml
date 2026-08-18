@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aipinho"
+version = "0.1.0"
+description = "Local modular policy-driven AI runtime foundation."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.100",
+  "uvicorn>=0.23",
+  "pydantic>=1.10",
+  "PyYAML>=6.0",
+  "google-genai>=0.3.0",
+  "mutagen>=1.47,<2",
+  "openai>=2.0.0",
+]
+
+[project.optional-dependencies]
+test = [
+  "httpx>=0.24",
+  "pytest>=7.0",
+  "pytest-asyncio>=0.21",
+]
+
+[project.scripts]
+aipinho-api = "aipinho.main:app"
+aipinho-config-check = "aipinho.utils.diagnostics:critical_config_status"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"
+markers = [
+  "real_inference: tests that invoke a local real model runtime and are skipped unless explicitly enabled",
+  "manual: tests that require an explicit operator opt-in or local runtime setup",
+  "multi_agent: multi-agent regression contract tests",
+  "golden_path: multi-agent golden path regression tests",
+  "security: security and redaction regression tests",
+  "freedom: governed operational freedom regression tests",
+  "speaker_truth: tests that ensure user-facing status only claims evidenced outcomes",
+  "ui_contract: backend/mobile/launcher presentation contract tests",
+  "multimodal: multimodal agent intake, routing, privacy, and delegation regression tests",
+  "project_profiles: project profile detection, registry, workspace context, and security regression tests",
+]

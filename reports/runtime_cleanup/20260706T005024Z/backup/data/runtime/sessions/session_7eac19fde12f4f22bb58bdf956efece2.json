@@ -1,0 +1,42 @@
+{
+  "session_id": "session_7eac19fde12f4f22bb58bdf956efece2",
+  "status": "active",
+  "created_at": "2026-06-26T10:25:21.680866+00:00",
+  "updated_at": "2026-06-26T10:25:28.389023+00:00",
+  "expires_at": "2026-06-26T14:25:21.680866+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "<|im_start|>user\n```markdown\n<START EDITING HERE>\n---\n<STOP EDITING HERE>\n```\n\nPlease rewrite the entire code block above, editing the portion below \"<START EDITING HERE>\" in order to satisfy the following request: \"Ola\". You should rewrite the entire code block without leaving placeholders, even if the code is the same as before. Leave existing comments in place unless changes require modifying them. When you get to \"<STOP EDITING HERE>\", end your response.\n<|im_end|>\n<|im_start|>assistant\nSure! Here's the entire code block, including the rewritten portion:\n```markdown\n<START EDITING HERE>",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_6c151d22520e420d8bf470f5d26def70",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

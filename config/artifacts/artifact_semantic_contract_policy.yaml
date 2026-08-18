@@ -1,0 +1,255 @@
+schema_version: 1
+
+unsupported_evidence_terms:
+  - not identified
+  - not established
+  - not available
+  - insufficient evidence
+  - evidence insufficient
+  - generated only
+  - only generated
+  - not generated
+  - not concrete
+  - no concrete
+  - current implementation remains unchanged
+  - unknown
+  - nao identificado
+  - nao identificada
+  - nao estabelecido
+  - nao estabelecida
+  - nao disponivel
+  - evidencia insuficiente
+  - evidencias insuficientes
+  - sem evidencia
+  - sem evidencias
+  - indeterminado
+  - indeterminada
+
+contracts:
+  - contract_id: media_corpus_inventory_artifact
+    description: Tabular inventory of media/corpus entities with semantic evidence and explicit limitations.
+    path_token_groups:
+      - ["music", "media", "audio", "musica", "musical"]
+      - ["inventory", "inventario", "catalog", "catalogo", "corpus"]
+    expected_kind: tabular_collection
+    required_schema:
+      - entity_id
+      - source_root_role
+      - relative_path
+      - filename
+      - extension
+      - media_type
+      - size_bytes
+      - track_title
+      - artist
+      - album
+      - album_artist
+      - duration_ms
+      - codec
+      - container
+      - bitrate_bps
+      - sample_rate_hz
+      - channels
+      - artwork_present
+      - metadata_status
+      - metadata_source
+      - probe_status
+      - evidence_ref
+      - limitations
+      - relationship_candidate_refs
+      - validation_status
+    expected_semantics:
+      media_corpus_inventory_required: true
+      collection_items_required: true
+      evidence_ref_required: true
+      explicit_limitations_required: true
+      relationship_candidates_optional: true
+    relationship_goal:
+      allowed_relation_families:
+        - descriptive_sidecar_candidate
+        - visual_sidecar_candidate
+        - textual_sidecar_candidate
+        - metadata_sidecar_candidate
+        - collection_member_candidate
+        - variant_candidate
+        - derived_asset_candidate
+        - same_work_candidate
+        - unknown_related_asset_candidate
+      required_evidence_types:
+        - relationship_observation
+      truth_policy:
+        truth_eligible: false
+        validation_required: true
+    relationship_fields:
+      - relationship_candidate_count
+      - relationship_top_family
+      - relationship_confidence_band
+      - relationship_validation_status
+      - relationship_evidence_ref_count
+      - relationship_provenance_ref_count
+      - relationship_limitations_summary
+    attribute_contracts:
+      - canonical_key: entity_id
+        display_label: entity_id
+        raw_label: entity_id
+        requiredness: required
+      - canonical_key: source_root_role
+        display_label: source_root_role
+        raw_label: source_root_role
+        requiredness: required
+      - canonical_key: relative_path
+        display_label: relative_path
+        raw_label: relative_path
+        requiredness: required
+      - canonical_key: name
+        display_label: filename
+        raw_label: filename
+        aliases: ["filename", "file_name"]
+        requiredness: required
+      - canonical_key: extension
+        display_label: extension
+        raw_label: extension
+        requiredness: required
+      - canonical_key: media_type
+        display_label: media_type
+        raw_label: media_type
+        requiredness: optional
+        nullable: true
+      - canonical_key: size_bytes
+        display_label: size_bytes
+        raw_label: size_bytes
+        aliases: ["size", "tamanho"]
+        requiredness: required
+      - canonical_key: track_title
+        display_label: track_title
+        raw_label: track_title
+        aliases: ["title", "titulo"]
+        requiredness: optional
+        nullable: true
+      - canonical_key: artist
+        display_label: artist
+        raw_label: artist
+        requiredness: optional
+        nullable: true
+      - canonical_key: album
+        display_label: album
+        raw_label: album
+        requiredness: optional
+        nullable: true
+      - canonical_key: album_artist
+        display_label: album_artist
+        raw_label: album_artist
+        requiredness: optional
+        nullable: true
+      - canonical_key: duration
+        display_label: duration_ms
+        raw_label: duration_ms
+        aliases: ["duration"]
+        requiredness: optional
+        nullable: true
+      - canonical_key: codec
+        display_label: codec
+        raw_label: codec
+        requiredness: optional
+        nullable: true
+      - canonical_key: container
+        display_label: container
+        raw_label: container
+        requiredness: optional
+        nullable: true
+      - canonical_key: bitrate
+        display_label: bitrate_bps
+        raw_label: bitrate_bps
+        aliases: ["bitrate"]
+        requiredness: optional
+        nullable: true
+      - canonical_key: sample_rate
+        display_label: sample_rate_hz
+        raw_label: sample_rate_hz
+        aliases: ["sample_rate"]
+        requiredness: optional
+        nullable: true
+      - canonical_key: channels
+        display_label: channels
+        raw_label: channels
+        aliases: ["canais"]
+        requiredness: optional
+        nullable: true
+      - canonical_key: artwork
+        display_label: artwork_present
+        raw_label: artwork_present
+        aliases: ["artwork"]
+        requiredness: optional
+        nullable: true
+      - canonical_key: metadata_status
+        display_label: metadata_status
+        raw_label: metadata_status
+        requiredness: computed
+        evidence_required: false
+      - canonical_key: metadata_source
+        display_label: metadata_source
+        raw_label: metadata_source
+        requiredness: computed
+        evidence_required: false
+      - canonical_key: probe_status
+        display_label: probe_status
+        raw_label: probe_status
+        requiredness: computed
+        evidence_required: false
+      - canonical_key: evidence_ref
+        display_label: evidence_ref
+        raw_label: evidence_ref
+        requiredness: required
+      - canonical_key: limitations
+        display_label: limitations
+        raw_label: limitations
+        requiredness: required
+      - canonical_key: relationship_candidate_refs
+        display_label: relationship_candidate_refs
+        raw_label: relationship_candidate_refs
+        requiredness: optional
+        nullable: true
+      - canonical_key: validation_status
+        display_label: validation_status
+        raw_label: validation_status
+        requiredness: required
+
+  - contract_id: patch_planning_artifact
+    description: Artifact that proposes a future source-code patch without executing it.
+    path_token_groups:
+      - ["patch", "patching", "correcao", "correction"]
+      - ["plan", "planning", "plano", "planejamento"]
+    required_content_token_groups:
+      root_cause: ["root cause", "causa raiz", "cause", "causa"]
+      target_files: ["target", "targets", "arquivo", "arquivos", "file", "files"]
+      target_functions: ["function", "functions", "funcao", "funcoes", "method", "methods", "metodo", "metodos"]
+      strategy: ["strategy", "estrategia", "approach", "abordagem"]
+      rollback: ["rollback", "reversao", "reverter"]
+      alternatives: ["alternative", "alternatives", "alternativa", "alternativas"]
+      validation: ["validation", "validacao", "test", "tests", "teste", "testes"]
+      risk: ["risk", "risco", "impact", "impacto"]
+
+  - contract_id: patch_preview_artifact
+    description: Artifact that previews a future patch before approval.
+    path_token_groups:
+      - ["patch", "diff", "change", "changes", "alteracao"]
+      - ["preview", "previsualizacao", "previsao"]
+    required_content_token_groups:
+      PROPOSAL_TARGET_MISSING: ["target_file", "target symbol", "target_symbol", "symbol_kind"]
+      PROPOSAL_SYMBOLS_MISSING: ["affected symbols", "affected_symbols"]
+      PROPOSAL_CONCRETE_CHANGE_MISSING: ["objective", "current_behavior", "expected_behavior", "modification_strategy", "reasoning"]
+      PROPOSAL_IMPACT_MISSING: ["scope", "affected modules", "affected_modules", "runtime_behavior", "compatibility", "risk_level"]
+      PROPOSAL_RISK_MISSING: ["technical", "behavioral", "regression", "confidence"]
+      PROPOSAL_ROLLBACK_MISSING: ["rollback", "strategy", "side effects", "side_effects"]
+      validation: ["validation", "validacao", "test", "tests", "teste", "testes"]
+
+  - contract_id: risk_analysis_artifact
+    description: Artifact that explains risks and mitigations for a future operation.
+    path_token_groups:
+      - ["risk", "risco"]
+      - ["analysis", "analise"]
+    required_content_token_groups:
+      risk: ["risk", "risco"]
+      impact: ["impact", "impacto"]
+      mitigation: ["mitigation", "mitigacao", "mitigar"]
+      rollback: ["rollback", "reversao", "reverter"]

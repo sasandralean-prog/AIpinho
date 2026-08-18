@@ -1,0 +1,46 @@
+{
+  "report": "multi_island_sprint10_11_revalidation",
+  "timestamp": "2026-06-22T23:26:11-03:00",
+  "scope": "Revalidate Sprint 10+11 closure after pending approval and mobile dashboard warning cleanup.",
+  "feature_changes": false,
+  "base_reports": [
+    "C:\\Dev\\AIpinho\\reports\\multi_agent\\multi_island_sprint10_firetests_20260622_094737.md",
+    "C:\\Dev\\AIpinho\\reports\\multi_agent\\multi_island_sprint10_firetests_20260622_094737.json",
+    "C:\\Dev\\AIpinho\\reports\\multi_agent\\multi_island_sprint11_routing_audit_20260622_094737.md",
+    "C:\\Dev\\AIpinho\\reports\\multi_agent\\multi_island_sprint11_routing_audit_20260622_094737.json",
+    "C:\\Dev\\AIpinho\\reports\\multi_agent\\multi_island_cycle_closure_20260622_094737.md"
+  ],
+  "tests": {
+    "command": "python -m pytest tests\\integration\\test_multi_island_sprint10_11_routing.py tests\\integration\\test_agent_bridge_sprint8_9_artifacts_debugger.py tests\\integration\\test_agent_bridge_sprint6_7_hybrid_islands.py tests\\integration\\test_agent_bridge_sprint4_5_backend.py tests\\integration\\test_launcher_agent_console_contract.py -q",
+    "result": "32 passed in 10.75s"
+  },
+  "live_smoke": [
+    {"endpoint": "/api/v1/health", "ok": true, "status": "ok"},
+    {"endpoint": "/api/v1/mobile/view-model/dashboard", "ok": true, "state": "healthy"},
+    {"endpoint": "/api/v1/dashboard/multi-agent", "ok": true},
+    {"endpoint": "/api/v1/debugger/recent", "ok": true, "status": "ok"},
+    {"endpoint": "/api/v1/agent-bridge/status", "ok": true, "status": "ok"},
+    {"endpoint": "/api/v1/artifacts", "ok": true, "status": "ok"}
+  ],
+  "validated_invariants": [
+    "lucio_gemini_simple_chat_no_local_tool_execution",
+    "lucio_gemini_operational_delegate_to_aipinho",
+    "codex_mode_selection_observe_direct_delegated_hybrid",
+    "workspace_lock_blocks_conflicting_direct_write",
+    "recursion_guard_blocks_multi_island_loop",
+    "missing_or_empty_artifact_cannot_be_ready",
+    "multi_island_trace_links_source_target_bridge_run_artifact_final_answer",
+    "launcher_agent_console_trace_center_contract_present"
+  ],
+  "verdicts": {
+    "sprint10": "MULTI_ISLAND_FIRETEST_READY_WITH_WARNINGS",
+    "sprint11": "MULTI_ISLAND_ROUTING_READY_WITH_WARNINGS",
+    "cycle": "AIPINHO_MULTI_ISLAND_AGENT_SYSTEM_READY_WITH_WARNINGS"
+  },
+  "remaining_risks": [
+    "Full live A-J prompt matrix through real UI was not repeated in this pass.",
+    "Physical mobile/launcher visual QA was not repeated in this pass.",
+    "External provider smoke remains explicit/manual."
+  ],
+  "p0_p1_found": false
+}

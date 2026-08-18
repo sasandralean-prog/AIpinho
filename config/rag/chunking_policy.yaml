@@ -1,0 +1,9 @@
+schema_version: 1
+
+chunking:
+  enabled: true
+  max_chunk_chars: 900
+  min_chunk_chars: 1
+  require_citation_per_chunk: true
+  require_source_ref_per_chunk: true
+  max_chunks_per_preview: 50

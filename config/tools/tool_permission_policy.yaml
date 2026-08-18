@@ -1,0 +1,7 @@
+schema_version: 1
+permission:
+  owner: tool_policy
+  require_skill_allowed_tools: true
+  forbidden_tools_win: true
+  require_capability_subset: true
+  direct_execution: false

@@ -1,0 +1,10 @@
+schema_version: 1
+
+planner_v2:
+  enabled: true
+  legacy_planner_fallback_when_disabled: true
+
+planning_policy:
+  require_contract_bundle: true
+  add_validation_stage: true
+  add_artifact_stage_when_expected: true

@@ -1,0 +1,47 @@
+schema_version: 1
+
+vector_rag:
+  enabled: true
+  mode: governed_vector_rag
+  require_registered_namespace: true
+  require_registered_source: true
+  require_source_policy: true
+  require_citations: true
+  require_source_refs: true
+  require_ingestion_preview: true
+  require_approval_for_persistent_ingestion: true
+  require_embedding_model_doctor_passed: true
+  require_reranker_model_doctor_passed: true
+  require_context_admission: true
+  require_trace: true
+  require_audit: true
+
+models:
+  embedding_model: qwen3_embedding_4b_q5_k_m
+  reranker_model: qwen3_reranker_4b_q5_k_m
+
+disabled:
+  auto_ingest: true
+  legacy_vectorstore: true
+  unregistered_vectorstore: true
+  network_sources: true
+  web_sources: true
+  raw_log_ingestion: true
+  secret_ingestion: true
+  uncited_chunks: true
+  model_selected_namespace: true
+
+runtime:
+  embedding_runtime_enabled: true
+  reranker_runtime_enabled: true
+  vision_runtime_enabled: false
+  ocr_runtime_enabled: false
+  tool_calling_enabled: false
+  workspace_write_enabled: false
+  shell_enabled: false
+  git_enabled: false
+
+legacy_pinhoabacaxi_curated:
+  enabled: false
+  commit_requires_approval: true
+  current_truth_allowed: false

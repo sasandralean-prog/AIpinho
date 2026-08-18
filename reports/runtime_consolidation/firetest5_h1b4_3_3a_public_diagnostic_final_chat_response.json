@@ -1,0 +1,955 @@
+﻿{
+    "ok":  true,
+    "status":  200,
+    "ms":  222309,
+    "bytes":  22488,
+    "body":  {
+                 "response_id":  "chat_af8c86a69ed54021866cdb7a02129b84",
+                 "session_id":  "firetest5_h1b4_3_3a_public_diagnostic_final_20260812",
+                 "task_draft_id":  null,
+                 "preview_id":  null,
+                 "task_id":  "task_ace8e2aeb29b4f238f8bffd6c7455c08",
+                 "approval_id":  null,
+                 "task_preview_id":  null,
+                 "artifact_id":  null,
+                 "artifact_preview_id":  null,
+                 "artifact_links":  [
+
+                                    ],
+                 "result_ref_id":  "task_run_af8c86a69ed54021866cdb7a02129b84",
+                 "operation_id":  "chatop_af8c86a69ed54021866cdb7a02129b84",
+                 "operation_type":  "workspace_analysis_readonly",
+                 "message_type":  "assistant_degraded_answer",
+                 "status":  "blocked",
+                 "message":  "Nao vou declarar sucesso operacional sem evidencias completas no lifecycle canonico. Estado canonico: plan_only_preview; motivo: readonly_or_planning. Mensagem original sanitizada: RUNTIME_ANALYSIS_VERTICAL_SLICE_BLOCKED\nTaskRun read-only executada pelo runtime governado.\n\n- task_run_id: task_run_af8c86a69ed54021866cdb7a02129b84\n- workspace: C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop\n- workspace_mutation: false\n- artifact_generation: true\n- artifacts_requested: 4\n- artifacts_created: 0\n- validation_status: blocked\n- completion_status: blocked\n- safe_to_report_success: false\n\nArtifacts:\n\n\nPhase dependency validation: passed",
+                 "intent":  {
+                                "intent_type":  "workspace_analysis_readonly",
+                                "operation_type":  "workspace_analysis_readonly",
+                                "requires_task":  true,
+                                "readonly":  true,
+                                "side_effect_requested":  false,
+                                "workspace_mutation":  false,
+                                "artifact_generation":  true
+                            },
+                 "policy":  {
+                                "read_only":  true,
+                                "workspace_mutation":  false,
+                                "artifact_generation":  true,
+                                "approval_required_for":  [
+
+                                                          ],
+                                "write_allowed":  false,
+                                "shell_allowed":  false,
+                                "workspace":  "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+                                "validation_status":  "blocked",
+                                "completion_status":  "blocked",
+                                "safe_to_report_success":  false,
+                                "canonical_lifecycle":  {
+                                                            "lifecycle_id":  "life_75714c4723984ec5b89560802238fc34",
+                                                            "state":  "plan_only_preview",
+                                                            "reason_code":  "readonly_or_planning",
+                                                            "permission":  "allowed",
+                                                            "approval_gate_status":  "not_required",
+                                                            "completion_status":  "blocked",
+                                                            "safe_to_report_success":  false,
+                                                            "speaker_can_claim_success":  false
+                                                        }
+                            },
+                 "contract_preview":  {
+                                          "contract_type":  "analysis_readonly",
+                                          "runtime_profile":  "readonly_analysis",
+                                          "workspace":  "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+                                          "task_run_id":  "task_run_af8c86a69ed54021866cdb7a02129b84",
+                                          "executable_plan_ref":  "task_run_af8c86a69ed54021866cdb7a02129b84",
+                                          "expected_outputs":  [
+
+                                                               ],
+                                          "logical_artifact_paths":  [
+                                                                         "reports/firetest5/phase1_discovery.md",
+                                                                         "reports/firetest5/project_inventory.md",
+                                                                         "reports/firetest5/music_inventory.csv",
+                                                                         "reports/firetest5/evidence_phase1.zip"
+                                                                     ],
+                                          "artifact_ids":  [
+
+                                                           ],
+                                          "project_analysis_report":  {
+                                                                          "task_run_id":  "task_run_af8c86a69ed54021866cdb7a02129b84",
+                                                                          "status":  "present"
+                                                                      },
+                                          "validation_result":  {
+                                                                    "status":  "blocked",
+                                                                    "reason_code":  "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+                                                                    "missing_outputs":  [
+                                                                                            "phase1_terminal_success_contract"
+                                                                                        ],
+                                                                    "safe_to_report_success":  false,
+                                                                    "details":  {
+                                                                                    "phase":  "project_analysis",
+                                                                                    "component":  "ProjectAnalysisService",
+                                                                                    "frontier":  "PROJECT_ANALYSIS",
+                                                                                    "project_analysis_status":  "timeout",
+                                                                                    "project_analysis_reason_code":  "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+                                                                                    "error_type":  null,
+                                                                                    "error_message":  "Project analysis budget exceeded during after_file_read_item.",
+                                                                                    "safe_to_continue":  false,
+                                                                                    "artifacts_created":  0,
+                                                                                    "artifact_index_exercised":  false,
+                                                                                    "next_frontier":  "artifact_creation",
+                                                                                    "budget":  {
+                                                                                                   "max_total_seconds":  20.0,
+                                                                                                   "max_files_scanned":  5000,
+                                                                                                   "max_files_read":  80,
+                                                                                                   "max_bytes_read":  2000000,
+                                                                                                   "max_output_bytes":  1000000,
+                                                                                                   "cancel_poll_interval":  50,
+                                                                                                   "allow_partial_result":  true
+                                                                                               },
+                                                                                    "duration_ms":  20812,
+                                                                                    "last_checkpoint":  "after_file_read_item",
+                                                                                    "last_completed_checkpoint":  "after_file_read_item",
+                                                                                    "elapsed_ms_by_checkpoint":  {
+                                                                                                                     "before_path_resolution":  0,
+                                                                                                                     "after_path_resolution":  0,
+                                                                                                                     "before_workspace_root_scan":  15,
+                                                                                                                     "after_workspace_root_scan":  15,
+                                                                                                                     "before_file_enumeration":  15,
+                                                                                                                     "during_file_enumeration":  3108,
+                                                                                                                     "after_file_enumeration":  3125,
+                                                                                                                     "before_file_selection":  3125,
+                                                                                                                     "after_file_selection":  18702,
+                                                                                                                     "before_file_read_batch":  18702,
+                                                                                                                     "before_file_read_item":  19327,
+                                                                                                                     "after_file_read_item":  20812
+                                                                                                                 },
+                                                                                    "files_discovered":  76,
+                                                                                    "files_scan_attempted":  127,
+                                                                                    "files_scanned":  78,
+                                                                                    "files_read":  3,
+                                                                                    "bytes_read":  17214,
+                                                                                    "current_root":  "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+                                                                                    "current_path_sample":  "src/main/kotlin/com/pinhoabacaxi/musicasdesktop/audio/dsp/DesktopEqualizerTemplateJsonCodec.kt",
+                                                                                    "blocking_operation":  "file_read",
+                                                                                    "budget_exceeded_at":  "after_file_read_item"
+                                                                                },
+                                                                    "phase":  "project_analysis",
+                                                                    "component":  "ProjectAnalysisService",
+                                                                    "frontier":  "PROJECT_ANALYSIS",
+                                                                    "artifacts_created":  0,
+                                                                    "artifact_index_exercised":  false
+                                                                },
+                                          "completion":  {
+                                                             "status":  "blocked",
+                                                             "safe_to_report_success":  false,
+                                                             "expected_outcomes":  [
+
+                                                                                   ],
+                                                             "fulfilled_outcomes":  [
+
+                                                                                    ],
+                                                             "missing_outcomes":  [
+                                                                                      "phase1_terminal_success_contract"
+                                                                                  ],
+                                                             "criteria":  [
+
+                                                                          ],
+                                                             "warnings":  [
+
+                                                                          ],
+                                                             "limitations":  [
+                                                                                 "missing_required_expected_outcomes:phase1_terminal_success_contract"
+                                                                             ],
+                                                             "metadata":  {
+                                                                              "artifact_count":  0,
+                                                                              "logical_paths":  [
+                                                                                                    "reports/firetest5/phase1_discovery.md",
+                                                                                                    "reports/firetest5/project_inventory.md",
+                                                                                                    "reports/firetest5/music_inventory.csv",
+                                                                                                    "reports/firetest5/evidence_phase1.zip"
+                                                                                                ],
+                                                                              "artifact_semantic_profiles":  [
+
+                                                                                                             ],
+                                                                              "semantic_gaps":  [
+
+                                                                                                ]
+                                                                          }
+                                                         },
+                                          "phase_dependency_result":  {
+                                                                          "status":  "passed",
+                                                                          "dependency_phase_ids":  [
+
+                                                                                                   ],
+                                                                          "artifacts":  [
+
+                                                                                        ],
+                                                                          "missing":  [
+
+                                                                                      ]
+                                                                      }
+                                      },
+                 "actions":  [
+
+                             ],
+                 "next_actions":  [
+
+                                  ],
+                 "warnings":  [
+                                  "canonical_lifecycle:readonly_or_planning"
+                              ],
+                 "trace":  [
+
+                           ],
+                 "raw_debug_ref":  null,
+                 "model_used":  "readonly_analysis_artifact_runtime",
+                 "real_inference":  false,
+                 "model_warnings":  [
+
+                                    ],
+                 "evaluation_status":  null,
+                 "evaluation_warnings":  [
+
+                                         ],
+                 "fallback_used":  false,
+                 "context_plan_id":  null,
+                 "citation_map":  {
+
+                                  },
+                 "evidence_refs":  [
+                                       {
+                                           "kind":  "task_run",
+                                           "id":  "task_run_af8c86a69ed54021866cdb7a02129b84"
+                                       }
+                                   ],
+                 "requires_user_action":  false,
+                 "is_final_answer":  false,
+                 "grounded":  false,
+                 "grounding_required":  true,
+                 "grounding_missing_reason":  "canonical_lifecycle_missing_required_outputs",
+                 "policy_block":  null,
+                 "governance_lifecycle":  {
+                                              "lifecycle_id":  "life_75714c4723984ec5b89560802238fc34",
+                                              "state":  "plan_only_preview",
+                                              "reason_code":  "readonly_or_planning",
+                                              "intent":  {
+                                                             "intent_type":  "workspace_analysis_readonly",
+                                                             "operation_type":  "workspace_analysis_readonly",
+                                                             "requires_task":  true,
+                                                             "side_effect_requested":  false,
+                                                             "readonly":  true,
+                                                             "source_channel":  "api_chat",
+                                                             "negative_constraints":  {
+                                                                                          "write_forbidden":  true,
+                                                                                          "approval_forbidden":  true
+                                                                                      },
+                                                             "confidence":  1.0,
+                                                             "evidence":  [
+                                                                              "readonly_analysis_with_artifact_output",
+                                                                              "positive:knowledge_only",
+                                                                              "negative:workspace_mutation",
+                                                                              "readonly_contract",
+                                                                              "artifact_output",
+                                                                              "observational_intent"
+                                                                          ],
+                                                             "semantic_intent_graph":  {
+                                                                                           "observational_intent":  true,
+                                                                                           "planning_intent":  false,
+                                                                                           "mutation_intent":  false,
+                                                                                           "execution_intent":  false,
+                                                                                           "approval_intent":  false,
+                                                                                           "knowledge_output":  true,
+                                                                                           "artifact_output":  true,
+                                                                                           "readonly_contract":  true,
+                                                                                           "state_effect":  "knowledge_only",
+                                                                                           "workspace_effect":  "immutable",
+                                                                                           "filesystem_effect":  "prohibited",
+                                                                                           "runtime_effect":  "none",
+                                                                                           "prohibited_effects":  [
+                                                                                                                      "workspace_mutation"
+                                                                                                                  ],
+                                                                                           "requested_effects":  [
+                                                                                                                     "knowledge_only"
+                                                                                                                 ],
+                                                                                           "evidence":  [
+                                                                                                            "positive:knowledge_only",
+                                                                                                            "negative:workspace_mutation",
+                                                                                                            "readonly_contract",
+                                                                                                            "artifact_output",
+                                                                                                            "observational_intent"
+                                                                                                        ]
+                                                                                       }
+                                                         },
+                                              "operation_contract":  {
+                                                                         "operation_id":  "op_1e84e571a6ee4dce82e4e430167591da",
+                                                                         "session_id":  "firetest5_h1b4_3_3a_public_diagnostic_final_20260812",
+                                                                         "source_channel":  "api_chat",
+                                                                         "intent_type":  "workspace_analysis_readonly",
+                                                                         "operation_type":  "workspace_analysis_readonly",
+                                                                         "contract_type":  "workspace_analysis_readonly",
+                                                                         "runtime_profile":  "workspace_analysis_readonly",
+                                                                         "requested_actions":  [
+
+                                                                                               ],
+                                                                         "target_paths":  [
+
+                                                                                          ],
+                                                                         "workspace_path":  "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+                                                                         "risk_level":  "low",
+                                                                         "trace":  [
+                                                                                       {
+                                                                                           "stage":  "canonical_contract",
+                                                                                           "source":  "GovernanceLifecycleService"
+                                                                                       }
+                                                                                   ]
+                                                                     },
+                                              "policy":  {
+                                                             "permission":  "allowed",
+                                                             "allowed_actions":  [
+
+                                                                                 ],
+                                                             "ask_actions":  [
+
+                                                                             ],
+                                                             "denied_actions":  [
+
+                                                                                ],
+                                                             "reason_code":  "readonly_or_planning",
+                                                             "reason":  "Read-only or non-executing operation.",
+                                                             "source":  "effective_policy_decision",
+                                                             "requires_approval":  false,
+                                                             "trace":  [
+
+                                                                       ]
+                                                         },
+                                              "context_gate":  {
+                                                                   "status":  "not_required",
+                                                                   "can_create_write_approval":  true,
+                                                                   "reason_code":  "none",
+                                                                   "source_message_id":  null,
+                                                                   "context_ref":  null,
+                                                                   "workspace_snapshot_ref":  null,
+                                                                   "discovery_ref":  null,
+                                                                   "analysis_ref":  null,
+                                                                   "missing_requirements":  [
+
+                                                                                            ],
+                                                                   "trace":  [
+
+                                                                             ]
+                                                               },
+                                              "execution_plan":  {
+                                                                     "preview_kind":  "plan_only_preview",
+                                                                     "executable":  false,
+                                                                     "executable_plan_ref":  null,
+                                                                     "plan_kind":  null,
+                                                                     "expected_outputs":  [
+
+                                                                                          ],
+                                                                     "target_paths":  [
+
+                                                                                      ],
+                                                                     "blocked_reason":  "readonly_or_planning",
+                                                                     "trace":  [
+                                                                                   {
+                                                                                       "stage":  "canonical_runtime",
+                                                                                       "mode":  "plan_only"
+                                                                                   }
+                                                                               ]
+                                                                 },
+                                              "preview_quality":  {
+                                                                      "status":  "not_required",
+                                                                      "can_create_approval":  true,
+                                                                      "reason_code":  "none",
+                                                                      "missing_requirements":  [
+
+                                                                                               ],
+                                                                      "trace":  [
+
+                                                                                ]
+                                                                  },
+                                              "approval_gate":  {
+                                                                    "required":  false,
+                                                                    "can_create_approval":  false,
+                                                                    "approval_id":  null,
+                                                                    "preview_id":  null,
+                                                                    "draft_id":  null,
+                                                                    "status":  "not_required",
+                                                                    "reason_code":  "none",
+                                                                    "trace":  [
+
+                                                                              ]
+                                                                },
+                                              "validation":  {
+                                                                 "status":  "not_run",
+                                                                 "safe_to_continue":  false,
+                                                                 "missing_outputs":  [
+
+                                                                                     ],
+                                                                 "evidence_refs":  [
+
+                                                                                   ],
+                                                                 "reason_code":  "none"
+                                                             },
+                                              "completion":  {
+                                                                 "status":  "blocked",
+                                                                 "safe_to_report_success":  false,
+                                                                 "expected_outputs":  [
+
+                                                                                      ],
+                                                                 "fulfilled_outputs":  [
+
+                                                                                       ],
+                                                                 "missing_outputs":  [
+
+                                                                                     ],
+                                                                 "reason_code":  "none"
+                                                             },
+                                              "speaker_truth":  {
+                                                                    "can_claim_success":  false,
+                                                                    "message_status":  "blocked",
+                                                                    "required_disclosures":  [
+                                                                                                 "readonly_or_planning"
+                                                                                             ],
+                                                                    "forbidden_claims":  [
+                                                                                             "executed",
+                                                                                             "implemented",
+                                                                                             "created",
+                                                                                             "modified",
+                                                                                             "applied",
+                                                                                             "validated",
+                                                                                             "completed"
+                                                                                         ],
+                                                                    "reason_code":  "speaker_truth_blocked"
+                                                                },
+                                              "artifacts":  [
+
+                                                            ],
+                                              "task_run_id":  null,
+                                              "warnings":  [
+
+                                                           ],
+                                              "trace":  [
+                                                            {
+                                                                "stage":  "intent",
+                                                                "intent_type":  "workspace_analysis_readonly",
+                                                                "operation_type":  "workspace_analysis_readonly"
+                                                            },
+                                                            {
+                                                                "stage":  "policy",
+                                                                "permission":  "allowed",
+                                                                "reason_code":  "readonly_or_planning"
+                                                            },
+                                                            {
+                                                                "stage":  "context_gate",
+                                                                "status":  "not_required",
+                                                                "reason_code":  "none"
+                                                            },
+                                                            {
+                                                                "stage":  "plan",
+                                                                "preview_kind":  "plan_only_preview",
+                                                                "executable":  false
+                                                            },
+                                                            {
+                                                                "stage":  "preview_quality",
+                                                                "status":  "not_required",
+                                                                "reason_code":  "none"
+                                                            },
+                                                            {
+                                                                "stage":  "approval",
+                                                                "status":  "not_required"
+                                                            },
+                                                            {
+                                                                "stage":  "completion",
+                                                                "status":  "blocked"
+                                                            }
+                                                        ],
+                                              "semantic_ingress_doctor":  {
+                                                                              "report_id":  "semantic_ingress_49cc8caafe304a72a76b91d8a0a5c3da",
+                                                                              "status":  "complete",
+                                                                              "prompt_normalization":  {
+                                                                                                           "normalization_id":  "prompt_norm_9acbf9f31dc0429088892e7c3f6b7f43",
+                                                                                                           "original_text":  "FIRE TEST 5 - FASE 1 - Discovery Governado\n\nObjetivo\n\nExecutar uma descoberta completa do projeto Pinhoabacaxi Music Desktop e da biblioteca de musicas utilizando o Runtime Governado atual.\n\nEsta fase NAO pode modificar nenhum arquivo do projeto.\n\nO Runtime deve:\n\ncriar Task;\ncriar TaskRun;\nregistrar Operation;\nregistrar Workspace;\ngerar artifacts governados;\nvalidar outputs;\nregistrar tudo no Runtime.\n\nProjeto\n\nC:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop\n\nBiblioteca\n\nD:\\rafa\\pinho music\n\nMapear completamente:\n\nstack\nlinguagem\nframework\nplayer\ndecoder\ncodecs\nscanner\ncache\nplaylist\nmetadata\nwaveform\nimportacao\nexportacao\nDSP\nequalizador\ncompressor\nlimiter\nreverb\npipeline completo de reproducao\n\nInventariar TODAS as musicas.\n\nPara cada musica registrar:\n\nnome\nextensao\ntamanho\ncodec\ncontainer\nbitrate\nsample rate\ncanais\nduracao\nartwork\nmetadata\nobservacoes\n\nNao assumir que todos os M4A utilizam AAC.\n\nArtifacts obrigatorios\n\nreports/firetest5/phase1_discovery.md\nreports/firetest5/project_inventory.md\nreports/firetest5/music_inventory.csv\nreports/firetest5/evidence_phase1.zip\n\nSuccess Contract\n\nREADY somente se existir:\n\nTask\nTaskRun\nOperation\nArtifact IDs\nValidation PASS\nSpeaker Truth PASS\n\nSem modificar o workspace.",
+                                                                                                           "normalized_text":  "fire test 5 - fase 1 - discovery governado objetivo executar uma descoberta completa do projeto pinhoabacaxi music desktop e da biblioteca de musicas utilizando o runtime governado atual. esta fase nao pode modificar nenhum arquivo do projeto. o runtime deve: criar task; criar taskrun; registrar operation; registrar workspace; gerar artifacts governados; validar outputs; registrar tudo no runtime. projeto c:\\users\\rafae\\documents\\pinhoabacaximusicasdesktop biblioteca d:\\rafa\\pinho music mapear completamente: stack linguagem framework player decoder codecs scanner cache playlist metadata waveform importacao exportacao dsp equalizador compressor limiter reverb pipeline completo de reproducao inventariar todas as musicas. para cada musica registrar: nome extensao tamanho codec container bitrate sample rate canais duracao artwork metadata observacoes nao assumir que todos os m4a utilizam aac. artifacts obrigatorios reports/firetest5/phase1_discovery.md reports/firetest5/project_inventory.md reports/firetest5/music_inventory.csv reports/firetest5/evidence_phase1.zip success contract ready somente se existir: task taskrun operation artifact ids validation pass speaker truth pass sem modificar o workspace.",
+                                                                                                           "encoding_detected":  "unicode_text",
+                                                                                                           "encoding_issues":  [
+
+                                                                                                                               ],
+                                                                                                           "transformations":  [
+                                                                                                                                   "unicode_nfkd",
+                                                                                                                                   "casefold",
+                                                                                                                                   "whitespace_collapsed"
+                                                                                                                               ],
+                                                                                                           "text_variants":  {
+
+                                                                                                                             },
+                                                                                                           "confidence":  1.0
+                                                                                                       },
+                                                                              "semantic_propositions":  [
+                                                                                                            {
+                                                                                                                "proposition_id":  "semantic_prop_54ba0eb8e812415e965063aead1ad921",
+                                                                                                                "proposition_type":  "objective",
+                                                                                                                "subject":  "operator",
+                                                                                                                "predicate":  "submitted_prompt",
+                                                                                                                "object_value":  {
+                                                                                                                                     "prompt_chars":  1239
+                                                                                                                                 },
+                                                                                                                "polarity":  "neutral",
+                                                                                                                "confidence":  1.0,
+                                                                                                                "evidence_refs":  [
+                                                                                                                                      "prompt:original_text"
+                                                                                                                                  ]
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "proposition_id":  "semantic_prop_c718d8e6eb724537a5534e2f6d1ab5b9",
+                                                                                                                "proposition_type":  "effect_expected",
+                                                                                                                "subject":  "state",
+                                                                                                                "predicate":  "requests",
+                                                                                                                "object_value":  "knowledge_only",
+                                                                                                                "polarity":  "positive",
+                                                                                                                "confidence":  1.0,
+                                                                                                                "evidence_refs":  [
+                                                                                                                                      "semantic_graph:requested_effect:knowledge_only"
+                                                                                                                                  ]
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "proposition_id":  "semantic_prop_541d4c6a30a54302a0bd7998a039a447",
+                                                                                                                "proposition_type":  "restriction",
+                                                                                                                "subject":  "state",
+                                                                                                                "predicate":  "prohibits",
+                                                                                                                "object_value":  "workspace_mutation",
+                                                                                                                "polarity":  "negative",
+                                                                                                                "confidence":  1.0,
+                                                                                                                "evidence_refs":  [
+                                                                                                                                      "semantic_graph:prohibited_effect:workspace_mutation"
+                                                                                                                                  ]
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "proposition_id":  "semantic_prop_ad0971229a1b4592bfa7dbe9eb4d20e4",
+                                                                                                                "proposition_type":  "intent_signal",
+                                                                                                                "subject":  "semantic_graph",
+                                                                                                                "predicate":  "observational_intent",
+                                                                                                                "object_value":  true,
+                                                                                                                "polarity":  "neutral",
+                                                                                                                "confidence":  1.0,
+                                                                                                                "evidence_refs":  [
+                                                                                                                                      "semantic_graph:observational_intent"
+                                                                                                                                  ]
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "proposition_id":  "semantic_prop_0509a9a19cea4f93ade2900f26f250f7",
+                                                                                                                "proposition_type":  "intent_signal",
+                                                                                                                "subject":  "semantic_graph",
+                                                                                                                "predicate":  "knowledge_output",
+                                                                                                                "object_value":  true,
+                                                                                                                "polarity":  "neutral",
+                                                                                                                "confidence":  1.0,
+                                                                                                                "evidence_refs":  [
+                                                                                                                                      "semantic_graph:knowledge_output"
+                                                                                                                                  ]
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "proposition_id":  "semantic_prop_7f52a36a50e046348fdbc0eaeb0681bc",
+                                                                                                                "proposition_type":  "intent_signal",
+                                                                                                                "subject":  "semantic_graph",
+                                                                                                                "predicate":  "artifact_output",
+                                                                                                                "object_value":  true,
+                                                                                                                "polarity":  "neutral",
+                                                                                                                "confidence":  1.0,
+                                                                                                                "evidence_refs":  [
+                                                                                                                                      "semantic_graph:artifact_output"
+                                                                                                                                  ]
+                                                                                                            },
+                                                                                                            {
+                                                                                                                "proposition_id":  "semantic_prop_b3bb9ccbc6644fcba4b8e3ecd9177086",
+                                                                                                                "proposition_type":  "intent_signal",
+                                                                                                                "subject":  "semantic_graph",
+                                                                                                                "predicate":  "readonly_contract",
+                                                                                                                "object_value":  true,
+                                                                                                                "polarity":  "neutral",
+                                                                                                                "confidence":  1.0,
+                                                                                                                "evidence_refs":  [
+                                                                                                                                      "semantic_graph:readonly_contract"
+                                                                                                                                  ]
+                                                                                                            }
+                                                                                                        ],
+                                                                              "state_effects":  [
+                                                                                                    {
+                                                                                                        "effect_id":  "state_effect_79e5a966b92f42ae83b1161545482df0",
+                                                                                                        "target":  "workspace",
+                                                                                                        "effect":  "immutable",
+                                                                                                        "confidence":  1.0,
+                                                                                                        "evidence_refs":  [
+                                                                                                                              "semantic_graph:workspace_effect",
+                                                                                                                              "semantic_graph:evidence:positive:knowledge_only",
+                                                                                                                              "semantic_graph:evidence:negative:workspace_mutation",
+                                                                                                                              "semantic_graph:evidence:readonly_contract",
+                                                                                                                              "semantic_graph:evidence:artifact_output",
+                                                                                                                              "semantic_graph:evidence:observational_intent"
+                                                                                                                          ],
+                                                                                                        "reason_codes":  [
+
+                                                                                                                         ]
+                                                                                                    },
+                                                                                                    {
+                                                                                                        "effect_id":  "state_effect_dc8318ccc2b8469fb4896e20b8e68842",
+                                                                                                        "target":  "filesystem",
+                                                                                                        "effect":  "prohibited",
+                                                                                                        "confidence":  1.0,
+                                                                                                        "evidence_refs":  [
+                                                                                                                              "semantic_graph:filesystem_effect",
+                                                                                                                              "semantic_graph:evidence:positive:knowledge_only",
+                                                                                                                              "semantic_graph:evidence:negative:workspace_mutation",
+                                                                                                                              "semantic_graph:evidence:readonly_contract",
+                                                                                                                              "semantic_graph:evidence:artifact_output",
+                                                                                                                              "semantic_graph:evidence:observational_intent"
+                                                                                                                          ],
+                                                                                                        "reason_codes":  [
+
+                                                                                                                         ]
+                                                                                                    },
+                                                                                                    {
+                                                                                                        "effect_id":  "state_effect_0d4c29a365754f6283295a0635aeb236",
+                                                                                                        "target":  "runtime",
+                                                                                                        "effect":  "none",
+                                                                                                        "confidence":  1.0,
+                                                                                                        "evidence_refs":  [
+                                                                                                                              "semantic_graph:runtime_effect",
+                                                                                                                              "semantic_graph:evidence:positive:knowledge_only",
+                                                                                                                              "semantic_graph:evidence:negative:workspace_mutation",
+                                                                                                                              "semantic_graph:evidence:readonly_contract",
+                                                                                                                              "semantic_graph:evidence:artifact_output",
+                                                                                                                              "semantic_graph:evidence:observational_intent"
+                                                                                                                          ],
+                                                                                                        "reason_codes":  [
+
+                                                                                                                         ]
+                                                                                                    },
+                                                                                                    {
+                                                                                                        "effect_id":  "state_effect_f213a53f2e3349409b2b369569c4d365",
+                                                                                                        "target":  "knowledge",
+                                                                                                        "effect":  "read_only",
+                                                                                                        "confidence":  1.0,
+                                                                                                        "evidence_refs":  [
+                                                                                                                              "semantic_graph:knowledge_output",
+                                                                                                                              "semantic_graph:observational_intent"
+                                                                                                                          ],
+                                                                                                        "reason_codes":  [
+
+                                                                                                                         ]
+                                                                                                    }
+                                                                                                ],
+                                                                              "intent_decision":  {
+                                                                                                      "decision_id":  "intent_decision_68d8a2cd24954994b3fe2f03d926446a",
+                                                                                                      "selected_intent_id":  "workspace_analysis_readonly",
+                                                                                                      "selected_operation_type":  "workspace_analysis_readonly",
+                                                                                                      "candidates":  [
+                                                                                                                         {
+                                                                                                                             "intent_id":  "workspace_analysis_readonly",
+                                                                                                                             "operation_type":  "workspace_analysis_readonly",
+                                                                                                                             "confidence":  1.0,
+                                                                                                                             "supporting_propositions":  [
+                                                                                                                                                             "semantic_prop_54ba0eb8e812415e965063aead1ad921",
+                                                                                                                                                             "semantic_prop_c718d8e6eb724537a5534e2f6d1ab5b9",
+                                                                                                                                                             "semantic_prop_541d4c6a30a54302a0bd7998a039a447",
+                                                                                                                                                             "semantic_prop_b3bb9ccbc6644fcba4b8e3ecd9177086"
+                                                                                                                                                         ],
+                                                                                                                             "rejected_reason":  null,
+                                                                                                                             "arbitration_score":  1.0
+                                                                                                                         },
+                                                                                                                         {
+                                                                                                                             "intent_id":  "product_planning_readonly",
+                                                                                                                             "operation_type":  "product_planning_readonly",
+                                                                                                                             "confidence":  0.3,
+                                                                                                                             "supporting_propositions":  [
+
+                                                                                                                                                         ],
+                                                                                                                             "rejected_reason":  "semantic_evidence_or_state_effect_insufficient",
+                                                                                                                             "arbitration_score":  0.3
+                                                                                                                         },
+                                                                                                                         {
+                                                                                                                             "intent_id":  "proposal_only",
+                                                                                                                             "operation_type":  "patch_preview",
+                                                                                                                             "confidence":  0.0,
+                                                                                                                             "supporting_propositions":  [
+
+                                                                                                                                                         ],
+                                                                                                                             "rejected_reason":  "semantic_evidence_or_state_effect_insufficient",
+                                                                                                                             "arbitration_score":  0.0
+                                                                                                                         },
+                                                                                                                         {
+                                                                                                                             "intent_id":  "patch_or_write_request",
+                                                                                                                             "operation_type":  "patch_request",
+                                                                                                                             "confidence":  0.0,
+                                                                                                                             "supporting_propositions":  [
+
+                                                                                                                                                         ],
+                                                                                                                             "rejected_reason":  "semantic_evidence_or_state_effect_insufficient",
+                                                                                                                             "arbitration_score":  0.0
+                                                                                                                         },
+                                                                                                                         {
+                                                                                                                             "intent_id":  "governed_shell_request",
+                                                                                                                             "operation_type":  "run_command",
+                                                                                                                             "confidence":  0.0,
+                                                                                                                             "supporting_propositions":  [
+
+                                                                                                                                                         ],
+                                                                                                                             "rejected_reason":  "semantic_evidence_or_state_effect_insufficient",
+                                                                                                                             "arbitration_score":  0.0
+                                                                                                                         },
+                                                                                                                         {
+                                                                                                                             "intent_id":  "approval_command",
+                                                                                                                             "operation_type":  "approval_command",
+                                                                                                                             "confidence":  0.3,
+                                                                                                                             "supporting_propositions":  [
+
+                                                                                                                                                         ],
+                                                                                                                             "rejected_reason":  "semantic_evidence_or_state_effect_insufficient",
+                                                                                                                             "arbitration_score":  0.3
+                                                                                                                         },
+                                                                                                                         {
+                                                                                                                             "intent_id":  "conversation",
+                                                                                                                             "operation_type":  "conversation",
+                                                                                                                             "confidence":  0.3,
+                                                                                                                             "supporting_propositions":  [
+
+                                                                                                                                                         ],
+                                                                                                                             "rejected_reason":  "semantic_evidence_or_state_effect_insufficient",
+                                                                                                                             "arbitration_score":  0.3
+                                                                                                                         }
+                                                                                                                     ],
+                                                                                                      "criteria":  [
+                                                                                                                       "selected_by_existing_canonical_intent_router",
+                                                                                                                       "state_effect_observed_not_overridden",
+                                                                                                                       "readonly_constraints_preserved_when_selected"
+                                                                                                                   ],
+                                                                                                      "evidence_refs":  [
+                                                                                                                            "readonly_analysis_with_artifact_output",
+                                                                                                                            "positive:knowledge_only",
+                                                                                                                            "negative:workspace_mutation",
+                                                                                                                            "readonly_contract",
+                                                                                                                            "artifact_output",
+                                                                                                                            "observational_intent"
+                                                                                                                        ],
+                                                                                                      "confidence":  1.0,
+                                                                                                      "reason_codes":  [
+
+                                                                                                                       ],
+                                                                                                      "decision_source":  "canonical_intent_router"
+                                                                                                  },
+                                                                              "operation_contract_decision":  {
+                                                                                                                  "decision_id":  "operation_contract_decision_a91f783213224d6daf16501a7a0a1e03",
+                                                                                                                  "selected_contract_type":  "workspace_analysis_readonly",
+                                                                                                                  "selected_operation_type":  "workspace_analysis_readonly",
+                                                                                                                  "candidates":  [
+                                                                                                                                     {
+                                                                                                                                         "contract_type":  "analysis_readonly",
+                                                                                                                                         "operation_type":  "workspace_analysis_readonly",
+                                                                                                                                         "confidence":  1.0,
+                                                                                                                                         "state_effect_alignment":  "aligned",
+                                                                                                                                         "supporting_intent":  "workspace_analysis_readonly",
+                                                                                                                                         "rejected_reason":  null,
+                                                                                                                                         "evidence_refs":  [
+                                                                                                                                                               "intent_candidate:workspace_analysis_readonly"
+                                                                                                                                                           ]
+                                                                                                                                     },
+                                                                                                                                     {
+                                                                                                                                         "contract_type":  "analysis_readonly",
+                                                                                                                                         "operation_type":  "product_planning_readonly",
+                                                                                                                                         "confidence":  0.3,
+                                                                                                                                         "state_effect_alignment":  "aligned",
+                                                                                                                                         "supporting_intent":  "product_planning_readonly",
+                                                                                                                                         "rejected_reason":  "semantic_evidence_or_state_effect_insufficient",
+                                                                                                                                         "evidence_refs":  [
+                                                                                                                                                               "intent_candidate:product_planning_readonly"
+                                                                                                                                                           ]
+                                                                                                                                     },
+                                                                                                                                     {
+                                                                                                                                         "contract_type":  "patch_request",
+                                                                                                                                         "operation_type":  "patch_preview",
+                                                                                                                                         "confidence":  0.0,
+                                                                                                                                         "state_effect_alignment":  "partial",
+                                                                                                                                         "supporting_intent":  "proposal_only",
+                                                                                                                                         "rejected_reason":  "semantic_evidence_or_state_effect_insufficient",
+                                                                                                                                         "evidence_refs":  [
+                                                                                                                                                               "intent_candidate:proposal_only"
+                                                                                                                                                           ]
+                                                                                                                                     },
+                                                                                                                                     {
+                                                                                                                                         "contract_type":  "patch_request",
+                                                                                                                                         "operation_type":  "patch_request",
+                                                                                                                                         "confidence":  0.0,
+                                                                                                                                         "state_effect_alignment":  "conflict",
+                                                                                                                                         "supporting_intent":  "patch_or_write_request",
+                                                                                                                                         "rejected_reason":  "semantic_evidence_or_state_effect_insufficient",
+                                                                                                                                         "evidence_refs":  [
+                                                                                                                                                               "intent_candidate:patch_or_write_request"
+                                                                                                                                                           ]
+                                                                                                                                     },
+                                                                                                                                     {
+                                                                                                                                         "contract_type":  "shell_build_test",
+                                                                                                                                         "operation_type":  "run_command",
+                                                                                                                                         "confidence":  0.0,
+                                                                                                                                         "state_effect_alignment":  "conflict",
+                                                                                                                                         "supporting_intent":  "governed_shell_request",
+                                                                                                                                         "rejected_reason":  "semantic_evidence_or_state_effect_insufficient",
+                                                                                                                                         "evidence_refs":  [
+                                                                                                                                                               "intent_candidate:governed_shell_request"
+                                                                                                                                                           ]
+                                                                                                                                     },
+                                                                                                                                     {
+                                                                                                                                         "contract_type":  "approval_command",
+                                                                                                                                         "operation_type":  "approval_command",
+                                                                                                                                         "confidence":  0.3,
+                                                                                                                                         "state_effect_alignment":  "partial",
+                                                                                                                                         "supporting_intent":  "approval_command",
+                                                                                                                                         "rejected_reason":  "semantic_evidence_or_state_effect_insufficient",
+                                                                                                                                         "evidence_refs":  [
+                                                                                                                                                               "intent_candidate:approval_command"
+                                                                                                                                                           ]
+                                                                                                                                     },
+                                                                                                                                     {
+                                                                                                                                         "contract_type":  "conversation",
+                                                                                                                                         "operation_type":  "conversation",
+                                                                                                                                         "confidence":  0.3,
+                                                                                                                                         "state_effect_alignment":  "aligned",
+                                                                                                                                         "supporting_intent":  "conversation",
+                                                                                                                                         "rejected_reason":  "semantic_evidence_or_state_effect_insufficient",
+                                                                                                                                         "evidence_refs":  [
+                                                                                                                                                               "intent_candidate:conversation"
+                                                                                                                                                           ]
+                                                                                                                                     }
+                                                                                                                                 ],
+                                                                                                                  "relation_to_intent":  "selected_contract_derived_from_existing_intent_decision",
+                                                                                                                  "relation_to_state_effects":  "aligned",
+                                                                                                                  "evidence_refs":  [
+                                                                                                                                        "actual_operation_contract"
+                                                                                                                                    ],
+                                                                                                                  "confidence":  1.0,
+                                                                                                                  "reason_codes":  [
+
+                                                                                                                                   ],
+                                                                                                                  "decision_source":  "governance_lifecycle"
+                                                                                                              },
+                                                                              "reason_codes":  [
+
+                                                                                               ],
+                                                                              "warnings":  [
+
+                                                                                           ],
+                                                                              "trace":  [
+                                                                                            {
+                                                                                                "stage":  "PromptNormalization",
+                                                                                                "status":  "ok"
+                                                                                            },
+                                                                                            {
+                                                                                                "stage":  "SemanticPropositionExtraction",
+                                                                                                "count":  7
+                                                                                            },
+                                                                                            {
+                                                                                                "stage":  "StateEffectResolution",
+                                                                                                "state_effect":  "knowledge_only"
+                                                                                            },
+                                                                                            {
+                                                                                                "stage":  "IntentArbitration",
+                                                                                                "selected":  "workspace_analysis_readonly"
+                                                                                            },
+                                                                                            {
+                                                                                                "stage":  "OperationContractSelection",
+                                                                                                "selected":  "workspace_analysis_readonly"
+                                                                                            }
+                                                                                        ]
+                                                                          },
+                                              "pre_task_bootstrap":  {
+                                                                         "status":  "complete",
+                                                                         "requires_task":  true,
+                                                                         "task_id":  "task_ace8e2aeb29b4f238f8bffd6c7455c08",
+                                                                         "task_run_id":  "task_run_af8c86a69ed54021866cdb7a02129b84",
+                                                                         "stages":  [
+                                                                                        {
+                                                                                            "stage":  "ChatIngressReceived",
+                                                                                            "status":  "complete",
+                                                                                            "reason":  "prompt_received",
+                                                                                            "data":  {
+                                                                                                         "source_channel":  "api_chat"
+                                                                                                     }
+                                                                                        },
+                                                                                        {
+                                                                                            "stage":  "PromptNormalized",
+                                                                                            "status":  "complete",
+                                                                                            "reason":  "prompt_normalized",
+                                                                                            "data":  {
+
+                                                                                                     }
+                                                                                        },
+                                                                                        {
+                                                                                            "stage":  "PreviewStarted",
+                                                                                            "status":  "complete",
+                                                                                            "reason":  "canonical_lifecycle_preview_started",
+                                                                                            "data":  {
+                                                                                                         "mode":  "blocked"
+                                                                                                     }
+                                                                                        },
+                                                                                        {
+                                                                                            "stage":  "IntentResolutionStarted",
+                                                                                            "status":  "complete",
+                                                                                            "reason":  "canonical_intent_resolution_started",
+                                                                                            "data":  {
+
+                                                                                                     }
+                                                                                        },
+                                                                                        {
+                                                                                            "stage":  "IntentResolutionFinished",
+                                                                                            "status":  "complete",
+                                                                                            "reason":  "canonical_intent_resolved",
+                                                                                            "data":  {
+
+                                                                                                     }
+                                                                                        },
+                                                                                        {
+                                                                                            "stage":  "OperationContractSelected",
+                                                                                            "status":  "complete",
+                                                                                            "reason":  "operation_contract_selected",
+                                                                                            "data":  {
+                                                                                                         "operation_type":  "workspace_analysis_readonly"
+                                                                                                     }
+                                                                                        },
+                                                                                        {
+                                                                                            "stage":  "TaskBootstrapStarted",
+                                                                                            "status":  "complete",
+                                                                                            "reason":  "task_bootstrap_required",
+                                                                                            "data":  {
+
+                                                                                                     }
+                                                                                        },
+                                                                                        {
+                                                                                            "stage":  "TaskBootstrapFinished",
+                                                                                            "status":  "complete",
+                                                                                            "reason":  "task_bootstrap_finished",
+                                                                                            "data":  {
+                                                                                                         "task_id":  "task_ace8e2aeb29b4f238f8bffd6c7455c08"
+                                                                                                     }
+                                                                                        },
+                                                                                        {
+                                                                                            "stage":  "TaskCreated",
+                                                                                            "status":  "complete",
+                                                                                            "reason":  "task_created",
+                                                                                            "data":  {
+                                                                                                         "task_id":  "task_ace8e2aeb29b4f238f8bffd6c7455c08"
+                                                                                                     }
+                                                                                        },
+                                                                                        {
+                                                                                            "stage":  "TaskRunCreated",
+                                                                                            "status":  "complete",
+                                                                                            "reason":  "task_run_created",
+                                                                                            "data":  {
+                                                                                                         "task_run_id":  "task_run_af8c86a69ed54021866cdb7a02129b84"
+                                                                                                     }
+                                                                                        }
+                                                                                    ]
+                                                                     }
+                                          }
+             },
+    "error":  null,
+    "started_at":  "2026-08-12T11:37:30.5642699-03:00",
+    "finished_at":  "2026-08-12T11:41:12.8737220-03:00"
+}

@@ -1,0 +1,87 @@
+schema_version: 1
+
+defaults:
+  default_model: stub.default
+  real_inference_allowed_by_default: false
+  require_model_response_evaluation: true
+  require_output_contract: true
+  require_safety_envelope: true
+
+policies:
+  deterministic_only:
+    allow_model: false
+    allowed_models: []
+    real_inference: false
+
+  deterministic_or_stub:
+    allow_model: true
+    allowed_models: [stub.default]
+    real_inference: false
+
+  stub_only:
+    allow_model: true
+    allowed_models: [stub.default]
+    real_inference: false
+
+  binding_controlled:
+    allow_model: true
+    allowed_models:
+      - qwen3_1_7b_q6_k
+      - qwen2_5_7b_instruct_q5_k_m
+      - deepseek_r1_distill_qwen_7b_q5_k_m
+      - qwen3_4b_thinking_distill_q4_k_m
+      - qwen2_5_coder_1_5b_q8_0
+      - qwen2_5_coder_7b_q4_k_m
+      - starcoder2_7b_q5_k_m
+      - qwen2_5_vl_7b_q4_k_m
+      - llava_v1_6_mistral_7b_q4_k_m
+      - nanonets_ocr_s_q5_k_m
+    real_inference: true
+    manual_only: false
+
+  manual_real_allowed_future:
+    allow_model: true
+    allowed_models: [stub.default, llama.local.placeholder]
+    real_inference: false
+    manual_only: true
+    enabled: false
+
+blocked:
+  auto_real_inference: true
+  tool_calling: true
+  disabled_models: true
+  provider_disabled: true
+  missing_evaluation: true
+
+future_candidates_config:
+  source: config/models/role_model_candidates.yaml
+  active: false
+  reason: "Sprint 27 only registers candidates; roles still operate inside deterministic/stub contract."
+
+role_model_policy:
+  require_model_registered: true
+  require_model_enabled: true
+  require_provider_enabled: true
+  require_capability_match: true
+  require_hardware_policy_match: true
+  require_default_allowed_or_manual_override: true
+  require_doctor_healthy_or_degraded_allowed: true
+  allow_degraded_models: true
+  degraded_requires_warning: true
+  blocked_model_denies_run: true
+
+large_model_policy:
+  auto_select_large_models: false
+  large_models_manual_only: true
+  require_operator_confirmation: true
+  require_latency_warning_acknowledged: true
+  require_manual_escalation_endpoint: true
+
+default_coding:
+  role_id: coder
+  model_id: qwen2_5_coder_7b_q4_k_m
+  enforce: true
+
+blocked_auto_models:
+  - qwen2_5_coder_14b_q5_k_m
+  - deepseek_r1_distill_qwen_14b_q4_k_m

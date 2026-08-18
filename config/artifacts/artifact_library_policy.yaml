@@ -1,0 +1,57 @@
+artifact_library_enabled: true
+storage:
+  artifact_root: "C:\\Dev\\AIpinho\\artifacts"
+  sandbox_artifact_root: "C:\\Dev\\AIpinho\\sandboxes\\artifacts"
+  reports_root: "C:\\Dev\\AIpinho\\reports"
+  index_path: "C:\\Dev\\AIpinho\\artifacts\\ARTIFACT_INDEX.json"
+  backups_root: "C:\\Dev\\AIpinho\\artifacts\\backups"
+index:
+  auto_index_on_create: true
+  auto_repair_index: true
+  require_artifact_id: true
+  require_status: true
+  require_origin: true
+  require_evidence_refs_for_side_effects: true
+download:
+  require_authorization_header: true
+  token_in_url: false
+  allow_redownload_ready: true
+  deny_download_failed: true
+  deny_download_blocked: true
+  deny_download_expired: true
+  deny_download_deleted: true
+preview:
+  enabled: true
+  max_text_preview_kb: 256
+  max_zip_file_list: 500
+  allow_markdown_preview: true
+  allow_json_preview: true
+  allow_text_preview: true
+  allow_image_preview: true
+  allow_zip_listing: true
+  deny_binary_raw_preview: true
+  sanitize_preview: true
+  redact_secrets: true
+context_use:
+  enabled: true
+  allow_text_artifacts: true
+  allow_markdown_artifacts: true
+  allow_json_artifacts: true
+  allow_zip_manifest_only_by_default: true
+  deny_binary_context_by_default: true
+  require_sanitization: true
+retention:
+  default_policy: keep_final
+  preserve_evidence: true
+  preserve_final_reports: true
+  preserve_promotion_reports: true
+  preserve_validation_reports: true
+  cleanup_tmp_after_days: 7
+  cleanup_failed_after_days: 14
+  cleanup_requires_preview: true
+bundles:
+  enabled: true
+  require_manifest: true
+  max_bundle_size_mb: 500
+  deny_secrets: true
+  require_validation: true

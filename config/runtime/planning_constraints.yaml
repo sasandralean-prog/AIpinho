@@ -1,0 +1,22 @@
+schema_version: 1
+
+constraints:
+  providers:
+    - kind: authority
+      summary: External providers cannot create, mutate, or finish graphs.
+      applies_to:
+        - external_adapter
+      blocking: true
+  approval:
+    - kind: side_effect_gate
+      summary: Side-effect nodes require policy/approval context before execution.
+      applies_to:
+        - node_executor
+        - node_debugger
+      blocking: false
+  speaker_truth:
+    - kind: node_truth
+      summary: Node output and graph output are validated by AIpinho Speaker Truth.
+      applies_to:
+        - all_nodes
+      blocking: false

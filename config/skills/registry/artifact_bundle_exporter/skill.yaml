@@ -1,0 +1,76 @@
+skill_id: internal.artifact_bundle_exporter
+display_name: Artifact Bundle Exporter
+slug: artifact_bundle_exporter
+description: Create a governed bundle report for selected artifacts without exposing
+  tokens in URLs.
+version: 1.0.0
+status: active
+category: artifact_generation
+owner: aipinho
+created_at: '2026-06-14T12:15:25+00:00'
+updated_at: '2026-06-14T12:15:25+00:00'
+min_aipinho_version: null
+compatible_agents:
+- aipinho
+- codex
+- lucio
+- gemini
+compatible_project_stacks:
+- android_gradle
+- python
+- node
+- mixed
+- unknown
+required_capabilities:
+- artifact_download
+- artifact_create
+optional_capabilities: []
+allowed_tools:
+- download_artifact
+- create_artifact
+denied_tools:
+- run_shell
+- patch_apply
+input_schema:
+  type: object
+  properties:
+    artifact_ids:
+      type: array
+output_schema:
+  type: object
+  required:
+  - summary
+  - artifact_id
+  properties:
+    summary:
+      type: string
+    artifact_id:
+      type: string
+side_effects:
+- artifact_create
+workspace_policy:
+  source_readonly_write: false
+  requires_project_profile_for_project_scoped: false
+command_policy: {}
+artifact_policy:
+  generate_zip: true
+  requires_token: true
+  expose_in_agent_artifact_panel: true
+memory_policy:
+  mode: none
+validation_policy:
+  required: false
+  failure_policy: allow_completed_with_warnings
+speaker_truth_policy:
+  raw_hidden_by_default: true
+  must_cite_evidence: true
+risk_level: low
+approval_policy:
+  required: false
+timeout_seconds: 300
+max_steps: 8
+examples: []
+docs_ref: docs/skills/INTERNAL_SKILLS_CATALOG.md
+tests_ref: tests/skills
+evidence_refs: []
+metadata_sanitized: {}

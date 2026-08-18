@@ -1,0 +1,42 @@
+{
+  "session_id": "session_82840f6f906349f98509d2827c2be84b",
+  "status": "active",
+  "created_at": "2026-06-20T00:24:29.293292+00:00",
+  "updated_at": "2026-06-20T00:24:35.917150+00:00",
+  "expires_at": "2026-06-20T04:24:29.293292+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Ola",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_293b9d5bbcd74c8da2df62554b119368",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

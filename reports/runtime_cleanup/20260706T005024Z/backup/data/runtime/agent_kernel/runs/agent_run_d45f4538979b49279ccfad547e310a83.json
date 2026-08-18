@@ -1,0 +1,39 @@
+{
+  "run_id": "agent_run_d45f4538979b49279ccfad547e310a83",
+  "session_id": "agent_session_1c34fc646df341098623d881245afb18",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "real_project_dogfood",
+  "workspace_id": "dogfood20_target_mutable",
+  "capabilities_requested": [
+    "read_workspace",
+    "patch_preview",
+    "create_file",
+    "create_directory",
+    "shell",
+    "validation",
+    "artifact_create",
+    "report_generate"
+  ],
+  "started_at": "2026-06-13T23:04:18+00:00",
+  "completed_at": "2026-06-13T23:04:22+00:00",
+  "validation_status": "passed",
+  "artifact_ids": [
+    "agent_artifact_b61c62dc419d4b1f9ea2192cc39b67a8"
+  ],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [
+    "agent_memory_candidate_98b7efa6bda04ba99513e897422fff3a"
+  ],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "source_hash_before": "5be183b59d6e3c652a61d96b23d82cc027abe46c996da48e2f4b284c790fc655",
+    "source_hash_after": "5be183b59d6e3c652a61d96b23d82cc027abe46c996da48e2f4b284c790fc655",
+    "source_unchanged": true
+  }
+}

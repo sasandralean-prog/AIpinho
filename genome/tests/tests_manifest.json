@@ -1,0 +1,141 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "tests": [
+    {
+      "test": "test_chat_service",
+      "path": "tests/unit/test_chat_service.py",
+      "type": "unit",
+      "target": "services.chat.chat_service",
+      "critical": true
+    },
+    {
+      "test": "test_task_runtime_service",
+      "path": "tests/unit/test_task_runtime_service.py",
+      "type": "unit",
+      "target": "services.runtime.task_runtime_service",
+      "critical": true
+    },
+    {
+      "test": "test_policy_kernel_service",
+      "path": "tests/unit/test_policy_kernel_service.py",
+      "type": "unit",
+      "target": "services.policy_kernel.policy_kernel_service",
+      "critical": true
+    },
+    {
+      "test": "test_capability_gate_service",
+      "path": "tests/unit/test_capability_gate_service.py",
+      "type": "unit",
+      "target": "services.policy_kernel.capability_gate_service",
+      "critical": true
+    },
+    {
+      "test": "test_governed_tool_execution_service",
+      "path": "tests/unit/test_governed_tool_execution_service.py",
+      "type": "unit",
+      "target": "services.tools.governed_tool_execution_service",
+      "critical": true
+    },
+    {
+      "test": "test_validation_gate_service",
+      "path": "tests/unit/test_validation_gate_service.py",
+      "type": "unit",
+      "target": "services.validation.validation_gate_service",
+      "critical": true
+    },
+    {
+      "test": "test_chat_api",
+      "path": "tests/integration/test_chat_api.py",
+      "type": "integration",
+      "target": "api.routers.chat_router",
+      "critical": true
+    },
+    {
+      "test": "test_task_api",
+      "path": "tests/integration/test_task_api.py",
+      "type": "integration",
+      "target": "api.routers.task_runtime_router",
+      "critical": true
+    },
+    {
+      "test": "test_tool_api",
+      "path": "tests/integration/test_tool_api.py",
+      "type": "integration",
+      "target": "api.routers.tool_router",
+      "critical": true
+    },
+    {
+      "test": "test_chat_flow",
+      "path": "tests/integration/test_chat_flow.py",
+      "type": "integration",
+      "target": "services.chat.chat_service",
+      "critical": true
+    },
+    {
+      "test": "test_task_flow",
+      "path": "tests/integration/test_task_flow.py",
+      "type": "integration",
+      "target": "services.runtime.task_runtime_service",
+      "critical": true
+    },
+    {
+      "test": "test_tool_flow",
+      "path": "tests/integration/test_tool_flow.py",
+      "type": "integration",
+      "target": "services.tools.governed_tool_execution_service",
+      "critical": true
+    },
+    {
+      "test": "test_contracts",
+      "path": "tests/contract/test_contracts.py",
+      "type": "contract",
+      "target": "schemas",
+      "critical": true
+    },
+    {
+      "test": "test_policy_config_validity",
+      "path": "tests/contract/test_policy_config_validity.py",
+      "type": "contract",
+      "target": "config/policies",
+      "critical": true
+    },
+    {
+      "test": "test_artifact_write_flow",
+      "path": "tests/e2e/test_artifact_write_flow.py",
+      "type": "e2e",
+      "target": "services.artifacts.artifact_generator_service",
+      "critical": false
+    },
+    {
+      "test": "test_patch_apply_flow",
+      "path": "tests/e2e/test_patch_apply_flow.py",
+      "type": "e2e",
+      "target": "services.patch.patch_service",
+      "critical": false
+    },
+    {
+      "test": "test_chat_prompt_to_preview",
+      "path": "tests/e2e/test_chat_prompt_to_preview.py",
+      "type": "e2e",
+      "target": "services.chat.chat_service",
+      "critical": false
+    },
+    {
+      "test": "test_controlled_model_chat_flow",
+      "path": "tests/e2e/test_controlled_model_chat_flow.py",
+      "type": "e2e",
+      "target": "services.chat.chat_service",
+      "critical": false
+    }
+  ],
+  "total_tests": 18,
+  "test_types": {
+    "unit": 6,
+    "integration": 6,
+    "contract": 2,
+    "e2e": 4
+  },
+  "critical_tests": 12,
+  "non_critical_tests": 6
+}

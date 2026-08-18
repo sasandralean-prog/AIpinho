@@ -1,0 +1,24 @@
+schema_version: 1
+owner: GovernanceLifecycleService
+write_preview_requires:
+  - operation_type
+  - intent_type
+  - workspace
+  - source_message_id
+  - context_ref
+  - target_files
+  - concrete_file_operations_or_patch_or_project_plan
+  - executable_plan_ref
+  - expected_outputs
+  - validation_plan
+  - rollback_plan
+  - risk_level
+  - policy_decision
+reason_codes:
+  generic_write_action: PREVIEW_REJECTED_GENERIC_WRITE_ACTION
+  no_target_files: PREVIEW_REJECTED_NO_TARGET_FILES
+  no_executable_plan: PREVIEW_REJECTED_NO_EXECUTABLE_PLAN
+  no_expected_outputs: PREVIEW_REJECTED_NO_EXPECTED_OUTPUTS
+  no_validation_plan: PREVIEW_REJECTED_NO_VALIDATION_PLAN
+  no_rollback_plan: PREVIEW_REJECTED_NO_ROLLBACK_PLAN
+  no_context_ref: PREVIEW_REJECTED_NO_CONTEXT_REF

@@ -1,0 +1,7 @@
+canonical_policy:
+  vocabulary:
+    allowed: [allowed, permit, permitted, ok]
+    ask: [ask, needs_approval, approval_required, approval_required_for, waiting_input]
+    denied: [denied, blocked, forbidden, not_allowed]
+    needs_clarification: [needs_clarification, clarification_required, workspace_required]
+  side_effect_default: ask

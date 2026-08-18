@@ -1,0 +1,65 @@
+{
+  "timestamp": "2026-06-23T04:24:28-03:00",
+  "verdict": "OPENAI_LUCIO_REMOVAL_READY",
+  "default_text_agent": "gemini",
+  "openai_required": false,
+  "lucio_default_status": "disabled_by_config",
+  "lucio_provider": "disabled",
+  "backend_behavior": {
+    "lucio_health": "disabled_by_config",
+    "lucio_create_session": "blocked_agent_disabled",
+    "hybrid_lucio_chat": "blocked_agent_disabled",
+    "enabled_agents": ["aipinho", "codex", "gemini"]
+  },
+  "ux_behavior": {
+    "launcher_active_agents": ["Chat", "Gemini", "Codex"],
+    "mobile_tabs": ["Dashboard", "Chat", "Gemini", "Codex", "Pipeline", "Debugger 2.0", "Config"],
+    "lucio_active_tab": false
+  },
+  "files_changed": [
+    "src/aipinho/services/lucio_agent/lucio_agent_config_service.py",
+    "src/aipinho/schemas/lucio_agent.py",
+    "src/aipinho/services/lucio_agent/lucio_agent_service.py",
+    "src/aipinho/api/routers/lucio_agent_router.py",
+    "src/aipinho/api/routers/hybrid_agent_router.py",
+    "src/aipinho/services/agents/agent_profile_registry_service.py",
+    "src/aipinho/services/agents/hybrid_execution_policy_service.py",
+    "config/agents/lucio_agent_policy.yaml",
+    "config/agents/agent_registry.yaml",
+    "config/agents/hybrid_execution_policy.yaml",
+    ".env.example",
+    "apps/launcher/ui/launcher_app.py",
+    "apps/launcher/ui/agent_catalog.py",
+    "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/ui/navigation/MainNavigationState.kt",
+    "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/MainActivity.kt",
+    "tests/unit/test_lucio_agent_service.py",
+    "tests/integration/test_lucio_agent_api.py",
+    "tests/integration/test_agent_bridge_sprint6_7_hybrid_islands.py",
+    "tests/integration/test_multi_island_sprint10_11_routing.py",
+    "tests/unit/test_agent_session_kernel_service.py",
+    "tests/unit/test_launcher_multi_agent_client.py",
+    "tests/integration/test_launcher_multi_agent_ui_contract.py",
+    "tests/multi_agent/multimodal/test_lucio_multimodal_regression.py",
+    "apps/mobile/android/app/src/test/java/br/com/aipinho/mobile/HorizontalTabsTest.kt"
+  ],
+  "tests": [
+    {"command": "python -m py_compile focused", "result": "passed"},
+    {"command": "python -m pytest tests/unit/test_lucio_agent_service.py tests/unit/test_agent_session_kernel_service.py -q", "result": "28 passed"},
+    {"command": "python -m pytest tests/integration/test_lucio_agent_api.py tests/integration/test_multi_island_sprint10_11_routing.py tests/integration/test_agent_bridge_sprint6_7_hybrid_islands.py -q", "result": "16 passed"},
+    {"command": "python -m pytest tests/unit/test_launcher_multi_agent_client.py tests/integration/test_launcher_multi_agent_ui_contract.py -q", "result": "9 passed"},
+    {"command": "python -m pytest tests/multi_agent/multimodal/test_lucio_multimodal_regression.py -q", "result": "4 passed"},
+    {"command": "./gradlew.bat testDebugUnitTest --tests br.com.aipinho.mobile.HorizontalTabsTest", "result": "BUILD SUCCESSFUL"}
+  ],
+  "security": {
+    "api_key_in_code": false,
+    "api_key_in_android": false,
+    "api_key_in_launcher": false,
+    "provider_call_when_disabled": false,
+    "structured_disabled_response": true
+  },
+  "risks_remaining": [
+    "InterpretationAgentService keeps Lucio compatibility path but default policy/router block it when disabled.",
+    "LucioAgentScreen.kt remains as unrouted legacy source for historical compatibility.",
+    "Android status/navigation bar deprecation warnings remain unrelated to this hotfix."
+  ]
+}

@@ -1,0 +1,28 @@
+template_id: launcher_tool_demo
+display_name: Launcher Tool Demo
+slug: launcher-tool-demo
+version: "1.0.0"
+status: experimental
+category: launcher_tool
+description: Small desktop launcher tool scaffold with config and status script.
+supported_project_types: [launcher_tool_demo]
+supported_languages: [powershell, json]
+supported_platforms: [desktop, launcher]
+generator_key: launcher_tool_demo
+required_files:
+  - README.md
+  - config/tool.example.json
+  - scripts/status.ps1
+  - PROJECT_MANIFEST.json
+validation_profile:
+  structural: true
+build_profile:
+  build_required: false
+artifact_policy:
+  zip_required: true
+risk_level: low
+required_capabilities: [create_sandbox_files, create_artifact]
+compatible_skills: [sandbox_project_generation, launcher_tool_scaffold]
+compatible_autopilot_modes: [governed_autorun]
+examples:
+  - criar ferramenta para launcher

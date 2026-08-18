@@ -1,0 +1,106 @@
+schema_version: 1
+
+project_profiles:
+  python:
+    markers:
+      - pyproject.toml
+      - requirements.txt
+      - setup.py
+    source_patterns:
+      - "**/*.py"
+    manifest_patterns:
+      - pyproject.toml
+      - requirements*.txt
+      - setup.cfg
+    test_patterns:
+      - tests/**/*.py
+      - "**/test_*.py"
+
+  kotlin_gradle:
+    markers:
+      - build.gradle.kts
+      - settings.gradle.kts
+      - build.gradle
+      - settings.gradle
+    source_patterns:
+      - src/**/*.kt
+      - src/**/*.kts
+      - src/**/*.java
+    manifest_patterns:
+      - build.gradle.kts
+      - settings.gradle.kts
+      - build.gradle
+      - settings.gradle
+      - gradle.properties
+    test_patterns:
+      - src/test/**/*.kt
+      - src/test/**/*.java
+      - src/androidTest/**/*.kt
+      - src/androidTest/**/*.java
+
+  javascript_typescript:
+    markers:
+      - package.json
+    source_patterns:
+      - src/**/*.js
+      - src/**/*.jsx
+      - src/**/*.ts
+      - src/**/*.tsx
+    manifest_patterns:
+      - package.json
+      - package-lock.json
+      - pnpm-lock.yaml
+      - yarn.lock
+    test_patterns:
+      - tests/**/*.js
+      - tests/**/*.ts
+      - "**/*.test.js"
+      - "**/*.test.ts"
+      - "**/*.spec.js"
+      - "**/*.spec.ts"
+
+  dotnet:
+    marker_patterns:
+      - "*.sln"
+      - "**/*.csproj"
+    source_patterns:
+      - "**/*.cs"
+    manifest_patterns:
+      - "*.sln"
+      - "**/*.csproj"
+      - Directory.Build.props
+    test_patterns:
+      - tests/**/*.cs
+      - "**/*Tests.cs"
+
+  rust:
+    markers:
+      - Cargo.toml
+    source_patterns:
+      - src/**/*.rs
+    manifest_patterns:
+      - Cargo.toml
+      - Cargo.lock
+    test_patterns:
+      - tests/**/*.rs
+
+  go:
+    markers:
+      - go.mod
+    source_patterns:
+      - "**/*.go"
+    manifest_patterns:
+      - go.mod
+      - go.sum
+    test_patterns:
+      - "**/*_test.go"
+
+fallback:
+  source_patterns:
+    - src/**/*
+  manifest_patterns:
+    - README.md
+    - README.txt
+  test_patterns:
+    - tests/**/*
+    - test/**/*

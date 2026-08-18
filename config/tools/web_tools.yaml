@@ -1,0 +1,8 @@
+﻿schema_version: 1
+
+web:
+  dry_run_allowed: true
+  execute_allowed: true
+  require_approval: true
+  mode: governed
+  adapters: [web]

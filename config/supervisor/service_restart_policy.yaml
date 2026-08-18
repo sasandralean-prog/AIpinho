@@ -1,0 +1,28 @@
+﻿schema_version: 1
+restart:
+  enabled: true
+  require_token_auth: true
+  require_service_registered: true
+  require_service_restartable: true
+  require_port_allowed: true
+  require_command_profile: true
+  require_pre_restart_health_check: true
+  require_post_restart_health_check: true
+  require_audit: true
+  require_trace: true
+  cooldown_seconds: 5
+  timeout_seconds: 30
+  max_restart_attempts_per_service_per_hour: 10
+rules:
+  graceful_stop_first: true
+  kill_only_managed_process: true
+  do_not_kill_unknown_pid: true
+  do_not_restart_monitor_from_monitor: true
+  no_shell: true
+  no_custom_command_from_request: true
+statuses:
+  restarting: "Servico reiniciando."
+  healthy: "Servico voltou saudavel."
+  degraded: "Servico respondeu, mas com alertas."
+  failed: "Servico nao voltou dentro do tempo esperado."
+  blocked: "Reinicio bloqueado por politica."

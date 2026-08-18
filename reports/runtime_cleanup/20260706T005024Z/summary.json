@@ -1,0 +1,487 @@
+{
+  "cleanup_id": "20260706T005024Z",
+  "status": "ok",
+  "report_dir": "C:\\Dev\\AIpinho\\reports\\runtime_cleanup\\20260706T005024Z",
+  "backup_dir": "C:\\Dev\\AIpinho\\reports\\runtime_cleanup\\20260706T005024Z\\backup",
+  "before": {
+    "created_at": "2026-07-06T00:50:41+00:00",
+    "queue_snapshot": {
+      "status": "ok",
+      "enabled": true,
+      "max_pending_tasks": 25,
+      "max_wait_seconds": 86400,
+      "active_count": 0,
+      "pending_count": 0,
+      "requires_decision_count": 0,
+      "total_visible": 1,
+      "items": [
+        {
+          "run_id": "task_run_f377849a8821472ab32e93ca9237a6f0",
+          "session_id": null,
+          "status": "waiting_delegation",
+          "priority": 100,
+          "created_at": "2026-07-04T02:40:21.756199+00:00",
+          "age_seconds": 166220,
+          "approval_id": null,
+          "approval_status": null,
+          "auto_run_requested": false,
+          "requires_decision": false,
+          "expired_by_policy": false
+        }
+      ],
+      "last_reconciled_at": "2026-07-06T00:50:41.783262+00:00",
+      "warnings": []
+    },
+    "hygiene_health": {
+      "status": "ok",
+      "active_runs": 17,
+      "queued_runs": 0,
+      "stale_runs": 17,
+      "pending_approvals": 0,
+      "active_sessions": 24,
+      "dispatcher_status": "stale_runs_detected",
+      "worker_pool_capacity": 8,
+      "worker_pool_available_slots": 8,
+      "stale_run_ids": [
+        "agent_run_04cbc87110294d009623f41f8bdbe159",
+        "agent_run_18cb87a80366485b9d42f5fca987f0bd",
+        "agent_run_265faaac4d7140079ecaa54533202c96",
+        "agent_run_3dbee3fcb3cd4a54b604dfb0f28674e4",
+        "agent_run_508431bec333472ba7fde301259bb821",
+        "agent_run_5310a19fdfc74b409b9f41d73ce62703",
+        "agent_run_53113183ab4f4db79f07073eff5246fb",
+        "agent_run_65e883ec2a404c57a452dddbc3b5de73",
+        "agent_run_6ac1034dfd9c4aa9a525beab4dc9aa8c",
+        "agent_run_789dd6c9ace04b51895a5666f296e727",
+        "agent_run_79faab9f685d48f7a6ee753378c56a16",
+        "agent_run_7a885f38bc2c4dc3a417d941e846018e",
+        "agent_run_8181deb86dd7468391b927ef9f668c6f",
+        "agent_run_be4456ddfc9f4be8bdd1df6a1823d382",
+        "agent_run_e02a5b1143bf4f5f9cd1b27fd55b155b",
+        "agent_run_e9a90cbc51ca4033b5fd828f39ce43ee",
+        "agent_run_eec40282d90747a6871fe687e6374ff4"
+      ],
+      "backpressure_required": true,
+      "reason_code": "stale_runs_detected"
+    },
+    "task_run_status_counts": {
+      "blocked": 29,
+      "partial": 11,
+      "cancelled": 19,
+      "waiting_delegation": 1,
+      "completed": 29,
+      "failed": 6
+    },
+    "approval_status_counts": {
+      "expired": 307,
+      "rejected": 20,
+      "approved": 745,
+      "cancelled": 7
+    },
+    "draft_status_counts": {
+      "approval_pending": 234,
+      "approved_for_future_execution": 346,
+      "rejected": 20,
+      "approval_required": 761,
+      "blocked": 586,
+      "needs_clarification": 523,
+      "preview_ready": 578,
+      "draft": 72,
+      "cancelled": 6,
+      "ready_for_approval": 14,
+      "invalidated_by_policy_change": 8
+    },
+    "chat_session_count": 58,
+    "generic_session_file_count": 240,
+    "agent_session_count": 237
+  },
+  "after": {
+    "created_at": "2026-07-06T00:50:57+00:00",
+    "queue_snapshot": {
+      "status": "ok",
+      "enabled": true,
+      "max_pending_tasks": 25,
+      "max_wait_seconds": 86400,
+      "active_count": 0,
+      "pending_count": 0,
+      "requires_decision_count": 0,
+      "total_visible": 0,
+      "items": [],
+      "last_reconciled_at": "2026-07-06T00:50:57.113547+00:00",
+      "warnings": []
+    },
+    "hygiene_health": {
+      "status": "ok",
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0,
+      "active_sessions": 0,
+      "dispatcher_status": "available",
+      "worker_pool_capacity": 8,
+      "worker_pool_available_slots": 8,
+      "stale_run_ids": [],
+      "backpressure_required": false,
+      "reason_code": null
+    },
+    "task_run_status_counts": {
+      "blocked": 29,
+      "partial": 11,
+      "cancelled": 20,
+      "completed": 29,
+      "failed": 6
+    },
+    "approval_status_counts": {
+      "expired": 307,
+      "rejected": 20,
+      "approved": 745,
+      "cancelled": 7
+    },
+    "draft_status_counts": {
+      "cancelled": 2188,
+      "approved_for_future_execution": 346,
+      "rejected": 20,
+      "blocked": 586,
+      "invalidated_by_policy_change": 8
+    },
+    "chat_session_count": 0,
+    "generic_session_file_count": 0,
+    "agent_session_count": 237
+  },
+  "actions": {
+    "hygiene_preview_id": "cleanup_preview_8bc4ef6877564d49a5e9ca03bfdb8738",
+    "hygiene_candidates": 41,
+    "hygiene_applied": {
+      "status": "ok",
+      "preview_id": "cleanup_preview_8bc4ef6877564d49a5e9ca03bfdb8738",
+      "applied_count": 41,
+      "applied": [
+        {
+          "kind": "run",
+          "id": "agent_run_79faab9f685d48f7a6ee753378c56a16",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_e9a90cbc51ca4033b5fd828f39ce43ee",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_53113183ab4f4db79f07073eff5246fb",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_7a885f38bc2c4dc3a417d941e846018e",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_8181deb86dd7468391b927ef9f668c6f",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_5310a19fdfc74b409b9f41d73ce62703",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_be4456ddfc9f4be8bdd1df6a1823d382",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_265faaac4d7140079ecaa54533202c96",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_e02a5b1143bf4f5f9cd1b27fd55b155b",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_65e883ec2a404c57a452dddbc3b5de73",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_eec40282d90747a6871fe687e6374ff4",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_3dbee3fcb3cd4a54b604dfb0f28674e4",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_18cb87a80366485b9d42f5fca987f0bd",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_04cbc87110294d009623f41f8bdbe159",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_789dd6c9ace04b51895a5666f296e727",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_6ac1034dfd9c4aa9a525beab4dc9aa8c",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "run",
+          "id": "agent_run_508431bec333472ba7fde301259bb821",
+          "action": "mark_cancelled_stale"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_14cece459dbd4c46a0d6252e564ca082",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_1888246a4d4242b8bacaae2c0aa46711",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_83d3ba735e084406847b0911cba14ca4",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_345128727815458c8193302541c7d35e",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_2a262cf136e54505b5e6e95035cc0574",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_06a20019bc96421f96b9bfb363138376",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_d1c7ff0f9ea24c7585eb5818ac1f4c2d",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_a22aa021b78649678022ff937d75b099",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_b0b7d62745f04dc6adc34cced0c0b8c2",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_afe02e707708451fab7d1ceb065c814b",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_a153602c002b4d3ba0ddb4ee43b9b529",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_6015d8c17b3b4ca895413f2c0ca70c63",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_6ff1333bf36849b68442f889e6989d9c",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_4d962b9ebd1f4444a773ef19cd0344b0",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_27e7532a166847b59279f0785cf519db",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_6b814dabb52545589f05a0be12fa678d",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_d57b805bc19442269daa5375ad50345c",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_115ce95bdcfd4bf8b8c246d29fdd129e",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_c4b4392fcad94afca6aeea5eb346fea6",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_c17e0950b638427a964be59727007d5a",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_fcf3cda5be3e4af9b07b156020ee1146",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_fca9034ba72c4d1b976f0303d838c5ab",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_3f41f21a4bfb4acba3dee47650fd018a",
+          "action": "archive_session"
+        },
+        {
+          "kind": "session",
+          "id": "agent_session_e775ab6ddd714a34bc253116633d53b3",
+          "action": "archive_session"
+        }
+      ],
+      "deletes_evidence": false,
+      "applied_at": "2026-07-06T00:50:42+00:00"
+    },
+    "queue_reconcile": {
+      "status": "ok",
+      "cancelled_run_ids": [],
+      "cancelled_approval_ids": [],
+      "warnings": [],
+      "snapshot": {
+        "status": "ok",
+        "enabled": true,
+        "max_pending_tasks": 25,
+        "max_wait_seconds": 86400,
+        "active_count": 0,
+        "pending_count": 0,
+        "requires_decision_count": 0,
+        "total_visible": 1,
+        "items": [
+          {
+            "run_id": "task_run_f377849a8821472ab32e93ca9237a6f0",
+            "session_id": null,
+            "status": "waiting_delegation",
+            "priority": 100,
+            "created_at": "2026-07-04T02:40:21.756199+00:00",
+            "age_seconds": 166221,
+            "approval_id": null,
+            "approval_status": null,
+            "auto_run_requested": false,
+            "requires_decision": false,
+            "expired_by_policy": false
+          }
+        ],
+        "last_reconciled_at": "2026-07-06T00:50:43.108396+00:00",
+        "warnings": []
+      }
+    },
+    "cancelled_task_runs": [
+      {
+        "run_id": "task_run_f377849a8821472ab32e93ca9237a6f0",
+        "previous_status": "waiting_delegation",
+        "status": "cancelled",
+        "message": "cancellation_recorded"
+      }
+    ],
+    "cancelled_approvals": [],
+    "cleaned_task_drafts_count": 2182,
+    "cleaned_task_drafts_by_previous_status": {
+      "approval_pending": 234,
+      "approval_required": 761,
+      "needs_clarification": 523,
+      "preview_ready": 578,
+      "draft": 72,
+      "ready_for_approval": 14
+    },
+    "removed_chat_sessions_count": 58,
+    "removed_chat_messages_count": 270,
+    "archived_generic_session_files_count": 240,
+    "archived_adapter_dirs": [
+      {
+        "source": "C:\\Dev\\AIpinho\\data\\runtime\\codex_agent",
+        "archive": "C:\\Dev\\AIpinho\\reports\\runtime_cleanup\\20260706T005024Z\\backup\\data\\runtime\\codex_agent",
+        "status": "cleared_active_store"
+      },
+      {
+        "source": "C:\\Dev\\AIpinho\\data\\runtime\\gemini_executor",
+        "archive": "C:\\Dev\\AIpinho\\reports\\runtime_cleanup\\20260706T005024Z\\backup\\data\\runtime\\gemini_executor",
+        "status": "cleared_active_store"
+      }
+    ]
+  },
+  "manifest": [
+    {
+      "action": "snapshot_copy",
+      "label": "data/runtime/agent_kernel/sessions.json",
+      "source": "C:\\Dev\\AIpinho\\data\\runtime\\agent_kernel\\sessions.json",
+      "backup": "C:\\Dev\\AIpinho\\reports\\runtime_cleanup\\20260706T005024Z\\backup\\data\\runtime\\agent_kernel\\sessions.json"
+    },
+    {
+      "action": "snapshot_copy",
+      "label": "data/runtime/agent_kernel/runs",
+      "source": "C:\\Dev\\AIpinho\\data\\runtime\\agent_kernel\\runs",
+      "backup": "C:\\Dev\\AIpinho\\reports\\runtime_cleanup\\20260706T005024Z\\backup\\data\\runtime\\agent_kernel\\runs"
+    },
+    {
+      "action": "snapshot_copy",
+      "label": "data/runtime/agent_kernel/events",
+      "source": "C:\\Dev\\AIpinho\\data\\runtime\\agent_kernel\\events",
+      "backup": "C:\\Dev\\AIpinho\\reports\\runtime_cleanup\\20260706T005024Z\\backup\\data\\runtime\\agent_kernel\\events"
+    },
+    {
+      "action": "snapshot_copy",
+      "label": "data/runtime/sessions",
+      "source": "C:\\Dev\\AIpinho\\data\\runtime\\sessions",
+      "backup": "C:\\Dev\\AIpinho\\reports\\runtime_cleanup\\20260706T005024Z\\backup\\data\\runtime\\sessions"
+    },
+    {
+      "action": "snapshot_copy",
+      "label": "data/runtime/interaction/chat_sessions/sessions.json",
+      "source": "C:\\Dev\\AIpinho\\data\\runtime\\interaction\\chat_sessions\\sessions.json",
+      "backup": "C:\\Dev\\AIpinho\\reports\\runtime_cleanup\\20260706T005024Z\\backup\\data\\runtime\\interaction\\chat_sessions\\sessions.json"
+    },
+    {
+      "action": "snapshot_copy",
+      "label": "data/runtime/interaction/messages/messages.jsonl",
+      "source": "C:\\Dev\\AIpinho\\data\\runtime\\interaction\\messages\\messages.jsonl",
+      "backup": "C:\\Dev\\AIpinho\\reports\\runtime_cleanup\\20260706T005024Z\\backup\\data\\runtime\\interaction\\messages\\messages.jsonl"
+    },
+    {
+      "action": "snapshot_copy",
+      "label": "data/runtime/codex_agent/sessions.json",
+      "source": "C:\\Dev\\AIpinho\\data\\runtime\\codex_agent\\sessions.json",
+      "backup": "C:\\Dev\\AIpinho\\reports\\runtime_cleanup\\20260706T005024Z\\backup\\data\\runtime\\codex_agent\\sessions.json"
+    },
+    {
+      "action": "snapshot_copy",
+      "label": "data/runtime/gemini_executor/sessions.json",
+      "source": "C:\\Dev\\AIpinho\\data\\runtime\\gemini_executor\\sessions.json",
+      "backup": "C:\\Dev\\AIpinho\\reports\\runtime_cleanup\\20260706T005024Z\\backup\\data\\runtime\\gemini_executor\\sessions.json"
+    }
+  ],
+  "evidence_preserved": true,
+  "deleted_evidence": false
+}

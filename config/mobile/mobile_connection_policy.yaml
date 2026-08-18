@@ -1,0 +1,35 @@
+schema_version: 1
+connection_profiles:
+  adb_reverse:
+    enabled: true
+    host: "127.0.0.1"
+    ports: {core_backend: 9088, realtime: 9089, artifacts: 9098, monitor: 9099}
+    show_adb_commands: true
+    app_runs_adb: false
+  wifi_lan:
+    enabled: true
+    host_required: true
+    editable_host: true
+    ports: {core_backend: 9088, realtime: 9089, artifacts: 9098, monitor: 9099}
+  tailscale:
+    enabled: true
+    host_required: true
+    editable_host: true
+    allow_magic_dns: true
+    ports: {core_backend: 9088, realtime: 9089, artifacts: 9098, monitor: 9099}
+  manual:
+    enabled: true
+    editable_host: true
+    editable_ports: true
+connection_test:
+  test_all_ports: true
+  require_token_for_protected: true
+  show_partial_success: true
+autofill:
+  endpoint: /api/v1/connection/suggestions
+  aggressive_network_scan_allowed: false
+  priority:
+    - pairing_payload
+    - connection_suggestions
+    - connection_profiles
+    - last_valid_host

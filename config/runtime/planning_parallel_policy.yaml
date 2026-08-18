@@ -1,0 +1,19 @@
+schema_version: 1
+
+parallel_groups:
+  analysis:
+    after:
+      - node_planner
+    nodes:
+      - node_executor
+      - node_debugger
+      - node_vision
+      - node_ocr
+  review:
+    after_group: analysis
+    nodes:
+      - node_review
+
+limits:
+  max_parallel_nodes: 4
+  max_retry_per_node: 2

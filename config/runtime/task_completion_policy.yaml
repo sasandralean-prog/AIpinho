@@ -1,0 +1,41 @@
+schema_version: 1
+
+status_policy:
+  preserve_terminal_failures: true
+  completed_with_missing_required_becomes: partial
+
+contracts:
+  readonly_analysis:
+    required_outputs:
+      - project_analysis_report
+    requested_deliverables:
+      enabled: true
+      require_project_report: true
+  in_chat_final_report:
+    required_outputs:
+      - role_pipeline_run
+  validation_request:
+    required_outputs:
+      - project_analysis_report
+  artifact_generation:
+    required_outputs:
+      - artifact_records
+  patch_request:
+    required_outputs:
+      - patch_result
+      - validation_result
+  project_generation:
+    required_outputs:
+      - project_generation
+      - validation_result
+
+output_aliases:
+  project_tree_summary: [_project_tree, project_tree]
+  file_context_summary: [_file_context, file_context_bundle]
+  project_analysis_report: [_project_analysis, project_analysis_report]
+  project_report: [_project_report, project_report]
+  role_pipeline_run: [_role_pipeline, role_pipeline_run]
+  artifact_records: [_artifact_records, artifact_records, artifact_links]
+  patch_result: [_patch_result, patch_result, patch_apply_result]
+  project_generation: [_project_generation, project_generation]
+  validation_result: [_validation_result, validation_result]

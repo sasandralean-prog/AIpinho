@@ -1,0 +1,27 @@
+schema_version: 1
+
+context_injection:
+  enabled: true
+  require_context_admission_decision: true
+  require_injection_plan: true
+  require_citation_map: true
+  require_budget_summary: true
+  require_source_summary: true
+  require_trace_ref: true
+  allow_prompt_assembly_injection_when_plan_valid: true
+  allow_chat_explicit_context_use: true
+  allow_role_pipeline_context_use_when_contract_allows: true
+
+blocked:
+  direct_context_payload_without_plan: true
+  context_without_citation_map: true
+  context_from_memory_without_explicit_policy: true
+  context_from_legacy_vectorstore: true
+  model_generated_context_source: true
+
+prompt_sections:
+  include_context_header: true
+  include_source_list: true
+  include_citation_map: true
+  include_context_items: true
+  include_limitations: true

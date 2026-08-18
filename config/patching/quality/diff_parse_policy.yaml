@@ -1,0 +1,11 @@
+schema_version: 1
+
+diff_parse:
+  enabled: true
+  allow_binary: false
+  allow_rename: false
+  allow_delete: false
+
+limits:
+  max_files: 10
+  max_changed_lines: 1200

@@ -1,0 +1,16 @@
+schema_version: 1
+policy_id: mobile_ui_polish_policy
+preserve_endpoints_prefix: /api/v1
+forbidden_endpoint_prefixes:
+  - /v2
+mobile_is_backend_client: true
+direct_launcher_sync_allowed: false
+model_execution_allowed: false
+patch_apply_allowed: false
+shell_git_allowed: false
+raw_hidden_by_default: true
+copy_actions_required: true
+cards:
+  rounded: true
+  neon_border: true
+  long_cards_scrollable: true

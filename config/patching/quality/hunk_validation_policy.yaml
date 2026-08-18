@@ -1,0 +1,6 @@
+schema_version: 1
+
+hunk_validation:
+  enabled: true
+  require_removed_lines_to_match_snapshot: true
+  missing_snapshot_blocks: true

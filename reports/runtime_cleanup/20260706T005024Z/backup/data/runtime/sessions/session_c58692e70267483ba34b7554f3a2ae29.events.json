@@ -1,0 +1,35 @@
+[
+  {
+    "event_id": "session_event_a1123210cfcb476da434b785511c4b34",
+    "session_id": "session_c58692e70267483ba34b7554f3a2ae29",
+    "event_type": "session_created",
+    "created_at": "2026-06-18T02:36:38.793108+00:00",
+    "summary": "Sessao criada.",
+    "data": {},
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_947cdef03f5b4668a321337ae8dd3af0",
+    "session_id": "session_c58692e70267483ba34b7554f3a2ae29",
+    "event_type": "chat_message",
+    "created_at": "2026-06-18T02:36:38.861541+00:00",
+    "summary": "Mensagem processada com status ready.",
+    "data": {
+      "intent_type": "unknown",
+      "task_draft_id": "sandbox_run_b65559593bf54a57b405a2c511fcd209"
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_ef1cf620ce2f467a86db550853a414d6",
+    "session_id": "session_c58692e70267483ba34b7554f3a2ae29",
+    "event_type": "operational_context_updated",
+    "created_at": "2026-06-18T02:36:38.870745+00:00",
+    "summary": "Contexto operacional recente atualizado.",
+    "data": {
+      "operation_type": "filesystem_write_file",
+      "path": "C:\\Dev\\AIpinho\\sandboxes\\dopamine_test\\idempotente.txt"
+    },
+    "warnings": []
+  }
+]

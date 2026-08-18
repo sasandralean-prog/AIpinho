@@ -1,0 +1,20 @@
+schema_version: 1
+
+approval:
+  enabled: true
+  create_approval_from_quality_gate: true
+  scope: patch_apply
+  approving_does_not_apply: true
+  require_quality_gate_passed: true
+  require_patch_plan_id: true
+  require_diff_hash: true
+  require_affected_files: true
+  require_risk_summary: true
+  require_rollback_summary: true
+  require_operator_confirmation_on_execute: true
+
+blocked:
+  approve_failed_quality_gate: true
+  approve_missing_diff: true
+  approve_critical_risk: true
+  approve_forbidden_target: true

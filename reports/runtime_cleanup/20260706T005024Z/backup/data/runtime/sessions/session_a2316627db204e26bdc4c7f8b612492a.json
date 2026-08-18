@@ -1,0 +1,48 @@
+{
+  "session_id": "session_a2316627db204e26bdc4c7f8b612492a",
+  "status": "active",
+  "created_at": "2026-06-11T16:11:38.726827+00:00",
+  "updated_at": "2026-06-11T16:11:38.792168+00:00",
+  "expires_at": "2026-06-11T20:11:38.726827+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Vou propor uma tarefa read only + artifact output. que leia o projeto do sapo andando no diretorio que citei mais cedo e um output com nome sapoandando. que contenha o resumo do projeto, quais erros e problenas tem no projeto e sugestoes para corrigir e melhorar o projeto. Me mande o output do artefato",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_6471a39ed652484fb7b2cdde67c6e861",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_clarification",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": "draft_9dcbd0560de340fba6b86c860b286f0d",
+  "warnings": [
+    "requires_clarification"
+  ],
+  "trace_refs": []
+}

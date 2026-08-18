@@ -1,0 +1,12 @@
+﻿schema_version: 1
+realtime:
+  enabled: true
+  port: 9089
+  mode: event_stream
+  support_sse: true
+  support_websocket_future: true
+  require_token_auth: true
+  heartbeat_seconds: 10
+  client_session_tracking: true
+events:
+  allowed: [service_status_changed, service_restarted, backend_health_changed, port_health_changed]

@@ -1,0 +1,259 @@
+{
+  "name": "AIpinho Runtime Data",
+  "path": "C:\\Dev\\AIpinho\\data\\runtime",
+  "root_files": [
+    "agent_marketplace_runtime.json",
+    "aipinho_9088_stderr.log",
+    "aipinho_9088_stdout.log",
+    "aipinho_api_9088.pid",
+    "aipinho_bootstrap_9080.pid",
+    "aipinho_monitor_9099.pid",
+    "firetest_pinhoforge_task1_approval_recovery_response.json",
+    "firetest_pinhoforge_task1_observation.json",
+    "firetest_pinhoforge_task1_recovery_response.json",
+    "firetest_pinhoforge_task1_response.json",
+    "llama_single_turn_stderr.txt",
+    "llama_single_turn_stdout.txt",
+    "model_route_decisions.jsonl",
+    "readonly_analysis_artifact_phases.json"
+  ],
+  "structure": {
+    "agent_kernel": {
+      "sessions": {},
+      "delegations": {}
+    },
+    "agent_memory_gateway": {
+      "access.jsonl": {},
+      "candidates.json": {},
+      "namespaces.json": {}
+    },
+    "agent_tool_gateway": {
+      "artifacts.json": {}
+    },
+    "approvals": {},
+    "artifact_backups": {},
+    "artifact_previews": {},
+    "artifact_writes": {
+      "events": {},
+      "results": {},
+      "runs": {},
+      "traces": {}
+    },
+    "artifacts": {},
+    "codex_agent": {},
+    "config_governance": {
+      "backups": {},
+      "changes": {}
+    },
+    "context": {
+      "audit": {},
+      "bundles": {},
+      "cache": {},
+      "chunks": {},
+      "previews": {},
+      "rejections": {},
+      "traces": {}
+    },
+    "context_plans": {},
+    "continue": {},
+    "engineering_missions": {},
+    "evals": {},
+    "events": {
+      "audit": {},
+      "contracts": {},
+      "store": {}
+    },
+    "executions": {},
+    "external_workspaces": {},
+    "gemini_executor": {
+      "messages": {}
+    },
+    "hygiene": {
+      "applied": {},
+      "previews": {}
+    },
+    "interaction": {
+      "chat_sessions": {},
+      "feedback": {},
+      "messages": {},
+      "raw": {},
+      "result_index": {},
+      "timelines": {}
+    },
+    "launcher": {
+      "cache": {},
+      "downloads": {},
+      "download_jobs": {},
+      "event_cursors": {},
+      "logs": {},
+      "recovery": {},
+      "state": {},
+      "ui": {},
+      "upload_jobs": {},
+      "upload_queue": {}
+    },
+    "legacy_rag_import": {
+      "approved": {},
+      "audit": {},
+      "classified": {},
+      "conflicts": {},
+      "inventory": {},
+      "lessons": {},
+      "quarantine": {},
+      "regression_candidates": {},
+      "rejected": {},
+      "review_queue": {},
+      "sanitized": {}
+    },
+    "maintenance": {
+      "audit": {},
+      "config_previews": {},
+      "diagnosis": {},
+      "invariants": {},
+      "lessons": {},
+      "patch_previews": {},
+      "repair_proposals": {},
+      "rollback_plans": {},
+      "runs": {},
+      "signals": {},
+      "traces": {},
+      "validation_plans": {}
+    },
+    "memory_candidates": {},
+    "mobile": {
+      "connection_profiles": {},
+      "pairing": {},
+      "sync": {},
+      "test_reports": {}
+    },
+    "model_doctor": {},
+    "model_runs": {
+      "events": {}
+    },
+    "model_traces": {},
+    "multi_agent_policy_kernel": {},
+    "ocr": {
+      "runs": {}
+    },
+    "operational_memory": {},
+    "patch_apply_runs": {},
+    "patch_backups": {},
+    "patch_plans": {},
+    "patch_quality": {},
+    "rag": {
+      "namespaces": {
+        "legacy_pinhoabacaxi_curated": {}
+      }
+    },
+    "rag_ingestions": {
+      "approvals": {},
+      "previews": {},
+      "results": {}
+    },
+    "rag_queries": {},
+    "realtime": {
+      "cursors": {},
+      "events": {}
+    },
+    "regression": {
+      "audit": {},
+      "candidates": {},
+      "cases": {},
+      "goldens": {},
+      "reports": {},
+      "runs": {},
+      "suites": {}
+    },
+    "replay": {
+      "audit": {},
+      "cases": {},
+      "exports": {},
+      "runs": {
+        "diffs": {}
+      },
+      "snapshots": {},
+      "traces": {}
+    },
+    "retrieval": {},
+    "role_model_runs": {},
+    "role_pipeline_runs": {},
+    "sandbox": {
+      "artifact_exports": {},
+      "file_operations": {},
+      "shell_commands": {},
+      "tasks": {},
+      "traces": {},
+      "workspaces": {}
+    },
+    "security": {
+      "mobile_pairing": {}
+    },
+    "session_grants": {},
+    "skills": {
+      "audit": {},
+      "catalog": {},
+      "dry_runs": {},
+      "executions": {},
+      "install_previews": {},
+      "registry": {},
+      "traces": {}
+    },
+    "sprint26_report_fixture": {
+      "indexes": {},
+      "workspace": {
+        "src": {}
+      }
+    },
+    "supervisor": {
+      "audit": {},
+      "events": {},
+      "traces": {}
+    },
+    "task_drafts": {},
+    "task_runs": {},
+    "tasks": {},
+    "tools": {
+      "audit": {},
+      "invocation_previews": {},
+      "registry": {}
+    },
+    "traces": {},
+    "transfers": {
+      "downloads": {},
+      "integrity": {},
+      "uploads": {}
+    },
+    "uploads": {
+      "chat": {}
+    },
+    "ux": {
+      "notifications": {},
+      "preferences": {},
+      "session_recovery": {}
+    },
+    "vision": {
+      "audit": {},
+      "runs": {},
+      "traces": {}
+    },
+    "workspace_flows": {
+      "plans": {},
+      "rules": {}
+    },
+    "workspace_indexes": {
+      "index_request_5d6d4886fa4a44c586afa59a2007b5f6.json": {},
+      "index_request_7d2af999d0624525badc71dddcf25d21.json": {},
+      "index_request_8fc42b9fcfb04f4baf33647056889329.json": {},
+      "index_request_a88b003b3e18488e92f2cbe22f782c7b.json": {},
+      "index_request_b3cd9ed738b04c0e8dda4aa6731ef3e2.json": {},
+      "index_request_fccf4f6b2e4349f6abac084f2f927877.json": {}
+    }
+  },
+  "statistics": {
+    "total_directories": 93,
+    "total_files": 43352,
+    "main_categories": 30,
+    "root_files": 14
+  },
+  "tree_view": "AIpinho Runtime Data\n│\n├── [ROOT FILES]\n│   ├── agent_marketplace_runtime.json\n│   ├── aipinho_9088_stderr.log\n│   ├── aipinho_9088_stdout.log\n│   ├── aipinho_api_9088.pid\n│   ├── aipinho_bootstrap_9080.pid\n│   ├── aipinho_monitor_9099.pid\n│   ├── firetest_pinhoforge_task1_approval_recovery_response.json\n│   ├── firetest_pinhoforge_task1_observation.json\n│   ├── firetest_pinhoforge_task1_recovery_response.json\n│   ├── firetest_pinhoforge_task1_response.json\n│   ├── llama_single_turn_stderr.txt\n│   ├── llama_single_turn_stdout.txt\n│   ├── model_route_decisions.jsonl\n│   └── readonly_analysis_artifact_phases.json\n│\n├── agent_kernel\n│   ├── sessions\n│   └── delegations\n├── agent_memory_gateway\n│   ├── access.jsonl\n│   ├── candidates.json\n│   └── namespaces.json\n├── agent_tool_gateway\n│   └── artifacts.json\n├── approvals\n├── artifact_backups\n├── artifact_previews\n├── artifact_writes\n│   ├── events\n│   ├── results\n│   ├── runs\n│   └── traces\n├── artifacts\n├── codex_agent\n├── config_governance\n│   ├── backups\n│   └── changes\n├── context\n│   ├── audit\n│   ├── bundles\n│   ├── cache\n│   ├── chunks\n│   ├── previews\n│   ├── rejections\n│   └── traces\n├── context_plans\n├── continue\n├── engineering_missions\n├── evals\n├── events\n│   ├── audit\n│   ├── contracts\n│   └── store\n├── executions\n├── external_workspaces\n├── gemini_executor\n│   └── messages\n├── hygiene\n│   ├── applied\n│   └── previews\n├── interaction\n│   ├── chat_sessions\n│   ├── feedback\n│   ├── messages\n│   ├── raw\n│   ├── result_index\n│   └── timelines\n├── launcher\n│   ├── cache\n│   ├── downloads\n│   ├── download_jobs\n│   ├── event_cursors\n│   ├── logs\n│   ├── recovery\n│   ├── state\n│   ├── ui\n│   ├── upload_jobs\n│   └── upload_queue\n├── legacy_rag_import\n│   ├── approved\n│   ├── audit\n│   ├── classified\n│   ├── conflicts\n│   ├── inventory\n│   ├── lessons\n│   ├── quarantine\n│   ├── regression_candidates\n│   ├── rejected\n│   ├── review_queue\n│   └── sanitized\n├── maintenance\n│   ├── audit\n│   ├── config_previews\n│   ├── diagnosis\n│   ├── invariants\n│   ├── lessons\n│   ├── patch_previews\n│   ├── repair_proposals\n│   ├── rollback_plans\n│   ├── runs\n│   ├── signals\n│   ├── traces\n│   └── validation_plans\n├── memory_candidates\n├── mobile\n│   ├── connection_profiles\n│   ├── pairing\n│   ├── sync\n│   └── test_reports\n├── model_doctor\n├── model_runs\n│   └── events\n├── model_traces\n├── multi_agent_policy_kernel\n├── ocr\n│   └── runs\n├── operational_memory\n├── patch_apply_runs\n├── patch_backups\n├── patch_plans\n├── patch_quality\n├── rag\n│   └── namespaces\n│       └── legacy_pinhoabacaxi_curated\n├── rag_ingestions\n│   ├── approvals\n│   ├── previews\n│   └── results\n├── rag_queries\n├── realtime\n│   ├── cursors\n│   └── events\n├── regression\n│   ├── audit\n│   ├── candidates\n│   ├── cases\n│   ├── goldens\n│   ├── reports\n│   ├── runs\n│   └── suites\n├── replay\n│   ├── audit\n│   ├── cases\n│   ├── exports\n│   ├── runs\n│   │   └── diffs\n│   ├── snapshots\n│   └── traces\n├── retrieval\n├── role_model_runs\n├── role_pipeline_runs\n├── sandbox\n│   ├── artifact_exports\n│   ├── file_operations\n│   ├── shell_commands\n│   ├── tasks\n│   ├── traces\n│   └── workspaces\n├── security\n│   └── mobile_pairing\n├── session_grants\n├── skills\n│   ├── audit\n│   ├── catalog\n│   ├── dry_runs\n│   ├── executions\n│   ├── install_previews\n│   ├── registry\n│   └── traces\n├── sprint26_report_fixture\n│   ├── indexes\n│   └── workspace\n│       └── src\n├── supervisor\n│   ├── audit\n│   ├── events\n│   └── traces\n├── task_drafts\n├── task_runs\n├── tasks\n├── tools\n│   ├── audit\n│   ├── invocation_previews\n│   └── registry\n├── traces\n├── transfers\n│   ├── downloads\n│   ├── integrity\n│   └── uploads\n├── uploads\n│   └── chat\n├── ux\n│   ├── notifications\n│   ├── preferences\n│   └── session_recovery\n├── vision\n│   ├── audit\n│   ├── runs\n│   └── traces\n├── workspace_flows\n│   ├── plans\n│   └── rules\n└── workspace_indexes\n    ├── index_request_5d6d4886fa4a44c586afa59a2007b5f6.json\n    ├── index_request_7d2af999d0624525badc71dddcf25d21.json\n    ├── index_request_8fc42b9fcfb04f4baf33647056889329.json\n    ├── index_request_a88b003b3e18488e92f2cbe22f782c7b.json\n    ├── index_request_b3cd9ed738b04c0e8dda4aa6731ef3e2.json\n    └── index_request_fccf4f6b2e4349f6abac084f2f927877.json"
+}

@@ -1,0 +1,10 @@
+﻿schema_version: 1
+
+cancellation:
+  enabled: true
+  best_effort_during_step: true
+  check_before_each_step: true
+  allowed_states: [created, queued, running, waiting_input]
+  terminal_states: [completed, partial, failed, cancelled, blocked, expired]
+  generate_requested_event: true
+  generate_cancelled_event: true

@@ -1,0 +1,41 @@
+{
+  "session_id": "session_aacb52347b06425593c3cce53ee5281f",
+  "status": "active",
+  "created_at": "2026-06-18T01:27:35.442271+00:00",
+  "updated_at": "2026-06-18T01:27:46.508910+00:00",
+  "expires_at": "2026-06-18T05:27:35.442271+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Explique a diferen?a entre task_preview e task_result.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_67f0dd0c16a046beb235c95ff809ed61",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

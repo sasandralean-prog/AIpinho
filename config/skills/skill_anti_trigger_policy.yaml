@@ -1,0 +1,6 @@
+schema_version: 1
+anti_triggers:
+  credential_required: block
+  direct_execution_requested: block
+  policy_bypass_requested: block
+  context_bypass_requested: block

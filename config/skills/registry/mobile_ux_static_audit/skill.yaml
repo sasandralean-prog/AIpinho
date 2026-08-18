@@ -1,0 +1,82 @@
+skill_id: internal.mobile_ux_static_audit
+display_name: Mobile UX Static Audit
+slug: mobile_ux_static_audit
+description: Inspect mobile UI files read-only and generate a UX audit artifact.
+version: 1.0.0
+status: experimental
+category: mobile_ux
+owner: aipinho
+created_at: '2026-06-14T12:15:25+00:00'
+updated_at: '2026-06-14T12:15:25+00:00'
+min_aipinho_version: null
+compatible_agents:
+- aipinho
+- codex
+- lucio
+compatible_project_stacks:
+- android_gradle
+- kotlin_android
+- mixed
+- unknown
+required_capabilities:
+- read_workspace
+- report_generate
+- artifact_create
+optional_capabilities: []
+allowed_tools:
+- list_dir
+- search_files
+- generate_report
+denied_tools:
+- create_file
+- modify_file
+- patch_apply
+- run_shell
+input_schema:
+  type: object
+  properties:
+    workspace_id:
+      type: string
+    query:
+      type: string
+output_schema:
+  type: object
+  required:
+  - summary
+  - artifact_id
+  properties:
+    summary:
+      type: string
+    artifact_id:
+      type: string
+side_effects:
+- artifact_create
+workspace_policy:
+  source_readonly_write: false
+  requires_project_profile_for_project_scoped: false
+command_policy: {}
+artifact_policy:
+  generate_report: true
+  generate_markdown: true
+  generate_zip: false
+  requires_token: true
+  expose_in_agent_artifact_panel: true
+memory_policy:
+  mode: none
+validation_policy:
+  required: false
+  failure_policy: allow_completed_with_warnings
+speaker_truth_policy:
+  raw_hidden_by_default: true
+  must_cite_evidence: true
+risk_level: low
+approval_policy:
+  required: false
+  experimental_allowed: true
+timeout_seconds: 300
+max_steps: 8
+examples: []
+docs_ref: docs/skills/INTERNAL_SKILLS_CATALOG.md
+tests_ref: tests/skills
+evidence_refs: []
+metadata_sanitized: {}

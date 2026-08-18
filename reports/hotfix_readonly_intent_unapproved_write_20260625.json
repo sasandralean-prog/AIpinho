@@ -1,0 +1,72 @@
+{
+  "verdict": "READONLY_UNAPPROVED_WRITE_HOTFIX_READY",
+  "date": "2026-06-25",
+  "root_cause": "Read-only metadata prompt could be routed as governed write because filenames inside numbered questions were interpreted as output paths and chat workspace write was auto-approved before human approval.",
+  "bad_file_evidence": {
+    "path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main\\1. existe build.gradle",
+    "exists": true,
+    "cleanup": "Requires explicit delete_file approval or manual cleanup."
+  },
+  "fixes": [
+    "Added workspace_metadata_query route and canonical alias.",
+    "Added read-only metadata response service.",
+    "Added negative constraint flags in governed write path.",
+    "Added chat workspace write approval guard controlled by config/agents/tool_gateway_policy.yaml.",
+    "Hardened filename extraction so numbered questions are not file paths.",
+    "Updated chat direct and persistent flows to use read-only metadata service."
+  ],
+  "files_changed": [
+    "config/agents/tool_gateway_policy.yaml",
+    "config/chat/canonical_operation_map.yaml",
+    "config/chat/chat_operation_routing_policy.yaml",
+    "src/aipinho/services/chat/chat_operation_router_service.py",
+    "src/aipinho/services/chat/workspace_metadata_query_service.py",
+    "src/aipinho/api/routers/chat_router.py",
+    "src/aipinho/services/chat/chat_service.py",
+    "src/aipinho/services/chat/governed_write_chat_service.py",
+    "src/aipinho/services/agents/agent_local_action_planner.py",
+    "tests/unit/test_chat_operation_router_service.py",
+    "tests/unit/test_workspace_metadata_query_service.py",
+    "tests/unit/test_governed_write_chat_service.py"
+  ],
+  "validations": [
+    {"command": "python -m py_compile changed_python_files", "result": "passed"},
+    {"command": "python -m pytest tests\\unit\\test_chat_operation_router_service.py tests\\unit\\test_workspace_metadata_query_service.py -q", "result": "54 passed"},
+    {"command": "python -m pytest tests\\unit\\test_governed_write_chat_service.py -q", "result": "17 passed"},
+    {"command": "python -m pytest tests\\integration\\test_chat_runtime_parity_api.py -q -k \"no_silent or saturation\"", "result": "2 passed, 4 deselected"}
+  ],
+  "smoke": {
+    "router": {
+      "operation_type": "workspace_metadata_query",
+      "router_operation_type": "workspace_metadata_query",
+      "workspace_write": false,
+      "read_only": true,
+      "chat_only": true,
+      "requested_files": ["build.gradle", "package.json"]
+    },
+    "chat_service": {
+      "status": "ok",
+      "operation_type": "workspace_metadata_query",
+      "message_type": "assistant_final_answer",
+      "workspace_write": false,
+      "requires_task": false,
+      "task_id": null,
+      "approval_id": null
+    },
+    "persistent_http_after_restart": {
+      "endpoint": "POST /api/v1/chat/sessions/{session_id}/send",
+      "status": "ok",
+      "operation_type": "workspace_metadata_query",
+      "message_type": "assistant_final_answer",
+      "workspace_write": false,
+      "requires_task": false,
+      "task_id": null,
+      "approval_id": null,
+      "artifact_count": 0
+    }
+  },
+  "residual_risks": [
+    "Live backend must be restarted if it is still running old code.",
+    "Previously created bad file remains until explicit cleanup approval."
+  ]
+}

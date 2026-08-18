@@ -1,0 +1,17 @@
+schema_version: 1
+
+context_usage_validation:
+  enabled: true
+  validate_prompt_context_items: true
+  validate_output_citations: true
+  validate_no_uncited_source_claims: true
+  validate_context_not_over_budget: true
+  validate_context_sources_allowed: true
+  validate_memory_usage_explicit_or_policy_allowed: true
+
+model_output:
+  require_citations_for_contextual_claims: true
+  warn_on_claim_without_citation: true
+  reject_on_fabricated_citation: true
+  reject_on_source_not_in_context: true
+  reject_on_unsupported_file_reference: true

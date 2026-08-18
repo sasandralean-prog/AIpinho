@@ -1,0 +1,18 @@
+schema_version: 1
+
+post_write_validation:
+  enabled: true
+  require_file_exists: true
+  require_hash_match: true
+  require_size_match: true
+  require_target_path_match: true
+  require_extension_still_allowed: true
+  require_no_extra_workspace_writes: true
+  require_no_forbidden_root: true
+  require_readback: true
+  readback_max_bytes: 300000
+
+failure:
+  mark_write_failed: true
+  attempt_restore_on_overwrite_failure: true
+  require_audit_on_failure: true

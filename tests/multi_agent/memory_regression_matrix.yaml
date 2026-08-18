@@ -1,0 +1,19 @@
+version: 1
+matrix_name: memory_regression
+cases:
+  - memory_aipinho_private_namespace
+  - memory_codex_private_namespace
+  - memory_gemini_private_namespace
+  - memory_lucio_private_namespace
+  - agent_cannot_write_other_private_memory
+  - shared_memory_requires_evidence
+  - memory_candidate_lifecycle
+  - stale_memory_warning
+  - contradictory_memory_warning
+  - supersede_preserves_old_record
+  - secrets_not_saved_to_memory
+  - chain_of_thought_not_saved_to_memory
+  - memory_refs_used_are_traced
+  - delegation_does_not_pass_private_raw_memory
+  - memory_absence_does_not_block_safe_task
+

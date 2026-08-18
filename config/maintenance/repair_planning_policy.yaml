@@ -1,0 +1,27 @@
+schema_version: 1
+repair_planning:
+  enabled: true
+  require_diagnosis_result: true
+  require_invariant_results: true
+  require_evidence_refs: true
+  require_risk_assessment: true
+  require_validation_plan: true
+  require_rollback_plan_when_write_possible: true
+  require_handoff_for_execution: true
+allowed_repair_types:
+- documentation_change_preview
+- config_change_preview
+- policy_change_preview
+- patch_plan_preview
+- validation_plan
+- cache_invalidation_recommendation
+- memory_candidate_rejection_recommendation
+- skill_contract_update_preview
+- event_contract_update_preview
+blocked:
+  direct_write: true
+  direct_patch_apply: true
+  direct_policy_mutation: true
+  direct_memory_mutation: true
+  direct_skill_install: true
+  hidden_risk: true

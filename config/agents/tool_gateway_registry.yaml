@@ -1,0 +1,341 @@
+version: 1
+tools:
+  - tool_name: list_dir
+    display_name: List directory
+    description: Lists files and directories inside an authorized workspace.
+    capability: read_workspace
+    risk_level: low
+    requires_workspace: true
+  - tool_name: read_file
+    display_name: Read file
+    description: Reads a file inside an authorized workspace with sanitized output.
+    capability: read_workspace
+    risk_level: low
+    requires_workspace: true
+  - tool_name: search_files
+    display_name: Search files
+    description: Searches text or filenames inside an authorized workspace.
+    capability: read_workspace
+    risk_level: low
+    requires_workspace: true
+  - tool_name: create_file
+    display_name: Create file
+    description: Creates a file in a mutable workspace through policy.
+    capability: workspace_write
+    risk_level: medium
+    requires_workspace: true
+    can_modify_filesystem: true
+  - tool_name: modify_file
+    display_name: Modify file
+    description: Replaces file content in a mutable workspace through policy.
+    capability: workspace_write
+    risk_level: medium
+    requires_workspace: true
+    can_modify_filesystem: true
+  - tool_name: create_directory
+    display_name: Create directory
+    description: Creates a directory in a mutable workspace through policy.
+    capability: workspace_write
+    risk_level: low
+    requires_workspace: true
+    can_modify_filesystem: true
+  - tool_name: create_archive
+    display_name: Create governed archive
+    description: Creates and validates a ZIP from explicit paths inside a mutable workspace.
+    capability: workspace_write
+    risk_level: medium
+    requires_workspace: true
+    can_modify_filesystem: true
+    produces_artifacts: true
+  - tool_name: patch_preview
+    display_name: Patch preview
+    description: Creates a patch preview contract without applying changes.
+    capability: patch_preview
+    risk_level: medium
+    requires_workspace: true
+  - tool_name: patch_apply
+    display_name: Patch apply
+    description: Applies an already approved patch contract.
+    capability: patch_apply
+    risk_level: high
+    requires_workspace: true
+    can_modify_filesystem: true
+    requires_approval: true
+    supports_autoapproval: false
+  - tool_name: run_shell
+    display_name: Governed shell
+    description: Runs a categorized shell command through policy and audit.
+    capability: shell
+    risk_level: high
+    requires_workspace: true
+    can_run_shell: true
+    requires_approval: true
+  - tool_name: validate
+    display_name: Validate
+    description: Records a validation contract result.
+    capability: validation
+    risk_level: low
+  - tool_name: create_artifact
+    display_name: Create artifact
+    description: Creates a token-protected artifact.
+    capability: artifact_create
+    risk_level: low
+    produces_artifacts: true
+  - tool_name: upload_artifact
+    display_name: Upload artifact
+    description: Registers an uploaded artifact.
+    capability: artifact_upload
+    risk_level: low
+    produces_artifacts: true
+  - tool_name: download_artifact
+    display_name: Download artifact
+    description: Returns token-protected artifact metadata.
+    capability: artifact_download
+    risk_level: low
+  - tool_name: generate_report
+    display_name: Generate report
+    description: Generates a report artifact from sanitized evidence.
+    capability: report_generate
+    risk_level: low
+    produces_artifacts: true
+  - tool_name: sandbox_read_file
+    display_name: Sandbox read file
+    description: Reads a file inside the governed local sandbox.
+    capability: sandbox_file_read
+    risk_level: low
+    requires_workspace: false
+  - tool_name: sandbox_write_file
+    display_name: Sandbox write file
+    description: Writes a file inside the governed local sandbox.
+    capability: sandbox_file_write
+    risk_level: low
+    requires_workspace: false
+    can_modify_filesystem: true
+  - tool_name: sandbox_append_file
+    display_name: Sandbox append file
+    description: Appends content to a file inside the governed local sandbox.
+    capability: sandbox_file_write
+    risk_level: low
+    requires_workspace: false
+    can_modify_filesystem: true
+  - tool_name: sandbox_modify_file
+    display_name: Sandbox modify file
+    description: Modifies a file inside the governed local sandbox.
+    capability: sandbox_file_write
+    risk_level: low
+    requires_workspace: false
+    can_modify_filesystem: true
+  - tool_name: sandbox_mkdir
+    display_name: Sandbox mkdir
+    description: Creates a directory inside the governed local sandbox.
+    capability: sandbox_file_write
+    risk_level: low
+    requires_workspace: false
+    can_modify_filesystem: true
+  - tool_name: sandbox_list_files
+    display_name: Sandbox list files
+    description: Lists files inside the governed local sandbox.
+    capability: sandbox_file_read
+    risk_level: low
+    requires_workspace: false
+  - tool_name: sandbox_copy
+    display_name: Sandbox copy
+    description: Copies files inside the governed local sandbox.
+    capability: sandbox_file_write
+    risk_level: low
+    requires_workspace: false
+    can_modify_filesystem: true
+  - tool_name: sandbox_move
+    display_name: Sandbox move
+    description: Moves files inside the governed local sandbox.
+    capability: sandbox_file_write
+    risk_level: low
+    requires_workspace: false
+    can_modify_filesystem: true
+  - tool_name: sandbox_delete_safe
+    display_name: Sandbox safe delete
+    description: Moves sandbox files to governed trash instead of deleting directly.
+    capability: sandbox_file_write
+    risk_level: medium
+    requires_workspace: false
+    can_modify_filesystem: true
+  - tool_name: sandbox_run_shell
+    display_name: Sandbox safe shell
+    description: Runs safe shell categories with cwd confined to the governed sandbox.
+    capability: sandbox_shell
+    risk_level: medium
+    requires_workspace: false
+    can_run_shell: true
+  - tool_name: sandbox_zip_export
+    display_name: Sandbox zip export
+    description: Exports sandbox content as token-protected artifact.
+    capability: sandbox_artifact_export
+    risk_level: low
+    requires_workspace: false
+    produces_artifacts: true
+  - tool_name: sandbox_validate
+    display_name: Sandbox validate
+    description: Validates sandbox files and exported artifacts.
+    capability: sandbox_validation
+    risk_level: low
+    requires_workspace: false
+  - tool_name: sandbox_cleanup_preview
+    display_name: Sandbox cleanup preview
+    description: Previews safe cleanup candidates inside sandbox tmp/trash.
+    capability: sandbox_cleanup
+    risk_level: low
+    requires_workspace: false
+  - tool_name: sandbox_cleanup_apply
+    display_name: Sandbox cleanup apply
+    description: Applies a previously generated sandbox cleanup preview.
+    capability: sandbox_cleanup
+    risk_level: medium
+    requires_workspace: false
+    can_modify_filesystem: true
+  - tool_name: pinhoforge_conversion_list_capabilities
+    display_name: PinhoForge conversion capabilities
+    description: Lists PinhoForge conversion capabilities through the governed bridge provider.
+    capability: pinhoforge_conversion_read
+    risk_level: low
+    requires_workspace: false
+  - tool_name: pinhoforge_conversion_dry_run
+    display_name: PinhoForge conversion dry-run
+    description: Creates a dry-run conversion preview without producing output.
+    capability: pinhoforge_conversion_preview
+    risk_level: low
+    requires_workspace: false
+  - tool_name: pinhoforge_conversion_execute
+    display_name: PinhoForge conversion execute
+    description: Registers a provider-validated conversion output as a governed artifact.
+    capability: pinhoforge_conversion_execute
+    risk_level: medium
+    requires_workspace: false
+    produces_artifacts: true
+  - tool_name: pinhoforge_command_search
+    display_name: PinhoForge command catalog search
+    description: Searches the PinhoForge command catalog in read-only mode.
+    capability: pinhoforge_command_catalog_read
+    risk_level: low
+    requires_workspace: false
+  - tool_name: pinhoforge_command_preview
+    display_name: PinhoForge command catalog preview
+    description: Creates a sanitized command preview without execution.
+    capability: pinhoforge_command_catalog_preview
+    risk_level: low
+    requires_workspace: false
+  - tool_name: pinhoforge_command_execute
+    display_name: PinhoForge command catalog execute
+    description: Always blocks direct command catalog execution; real shell must use governed shell tools.
+    capability: pinhoforge_command_catalog_execute
+    risk_level: high
+    requires_workspace: false
+    enabled: true
+  - tool_name: pinhoforge_hardware_profile_get
+    display_name: PinhoForge hardware profile
+    description: Reads PinhoForge environment and hardware profile in read-only mode.
+    capability: pinhoforge_hardware_profile_read
+    risk_level: low
+    requires_workspace: false
+  - tool_name: pinhoforge_tool_availability_get
+    display_name: PinhoForge tool availability
+    description: Reads local tool availability through the PinhoForge hardware provider.
+    capability: pinhoforge_tool_availability_read
+    risk_level: low
+    requires_workspace: false
+  - tool_name: pinhoforge_readiness_summary_get
+    display_name: PinhoForge readiness summary
+    description: Returns readiness categories for Android, conversion, media and development.
+    capability: pinhoforge_readiness_summary_read
+    risk_level: low
+    requires_workspace: false
+  - tool_name: pinhoforge_environment_report_export
+    display_name: PinhoForge environment report export
+    description: Exports a redacted environment report as governed artifacts.
+    capability: pinhoforge_environment_report_export
+    risk_level: low
+    requires_workspace: false
+    produces_artifacts: true
+  - tool_name: pinhoforge_android_project_detect
+    display_name: PinhoForge Android project detect
+    description: Detects Android project structure in a permitted workspace.
+    capability: pinhoforge_android_project_detect
+    risk_level: low
+    requires_workspace: false
+  - tool_name: pinhoforge_android_environment_readiness
+    display_name: PinhoForge Android readiness
+    description: Reads Android environment readiness through the governed provider.
+    capability: pinhoforge_android_environment_readiness
+    risk_level: low
+    requires_workspace: false
+  - tool_name: pinhoforge_android_gradle_task_list
+    display_name: PinhoForge Android Gradle task list
+    description: Lists allowlisted Gradle tasks for Android workspaces.
+    capability: pinhoforge_android_gradle_task_list
+    risk_level: low
+    requires_workspace: false
+  - tool_name: pinhoforge_android_gradle_task_execute
+    display_name: PinhoForge Android Gradle task execute
+    description: Executes an allowlisted Gradle task through the governed Android provider.
+    capability: pinhoforge_android_gradle_task_execute
+    risk_level: medium
+    requires_workspace: false
+    produces_artifacts: true
+  - tool_name: pinhoforge_android_adb_devices
+    display_name: PinhoForge Android ADB devices
+    description: Lists ADB devices in read-only mode.
+    capability: pinhoforge_android_adb_devices
+    risk_level: low
+    requires_workspace: false
+  - tool_name: pinhoforge_android_logcat_readonly
+    display_name: PinhoForge Android logcat readonly
+    description: Captures logcat in read-only mode and exports it as artifact when available.
+    capability: pinhoforge_android_logcat_readonly
+    risk_level: low
+    requires_workspace: false
+    produces_artifacts: true
+  - tool_name: pinhoforge_android_report_export
+    display_name: PinhoForge Android report export
+    description: Exports Android Workbench reports as governed artifacts.
+    capability: pinhoforge_android_report_export
+    risk_level: low
+    requires_workspace: false
+    produces_artifacts: true
+  - tool_name: pinhoforge_media_image_operation
+    display_name: PinhoForge media image operation
+    description: Governs Image Lab bridge operations and registers validated image artifacts.
+    capability: pinhoforge_media_image_operation
+    risk_level: low
+    requires_workspace: false
+    produces_artifacts: true
+  - tool_name: pinhoforge_media_3d_operation
+    display_name: PinhoForge media 3D operation
+    description: Governs 3D Lab bridge operations and registers validated scene artifacts.
+    capability: pinhoforge_media_3d_operation
+    risk_level: low
+    requires_workspace: false
+    produces_artifacts: true
+  - tool_name: pinhoforge_terminal_preview
+    display_name: PinhoForge terminal preview
+    description: Creates a governed terminal preview for a catalog or manual command.
+    capability: pinhoforge_terminal_preview
+    risk_level: low
+    requires_workspace: false
+  - tool_name: pinhoforge_terminal_execute
+    display_name: PinhoForge terminal execute
+    description: Executes a previously previewed governed terminal command.
+    capability: pinhoforge_terminal_execute
+    risk_level: low
+    requires_workspace: false
+    produces_artifacts: true
+  - tool_name: pinhoforge_terminal_cancel
+    display_name: PinhoForge terminal cancel
+    description: Requests cancellation for a governed terminal execution.
+    capability: pinhoforge_terminal_cancel
+    risk_level: low
+    requires_workspace: false
+  - tool_name: pinhoforge_terminal_status
+    display_name: PinhoForge terminal status
+    description: Reads the current governed terminal session status.
+    capability: pinhoforge_terminal_status
+    risk_level: low
+    requires_workspace: false

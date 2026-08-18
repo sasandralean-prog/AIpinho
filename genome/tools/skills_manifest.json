@@ -1,0 +1,69 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "skills": [
+    {
+      "skill": "code_analysis",
+      "path": "config/skills/",
+      "service": "services.skills.code_analysis_service",
+      "critical": false
+    },
+    {
+      "skill": "code_generation",
+      "path": "config/skills/",
+      "service": "services.skills.code_generation_service",
+      "critical": false
+    },
+    {
+      "skill": "code_refactoring",
+      "path": "config/skills/",
+      "service": "services.skills.code_refactoring_service",
+      "critical": false
+    },
+    {
+      "skill": "debugging",
+      "path": "config/skills/",
+      "service": "services.skills.debugging_service",
+      "critical": false
+    },
+    {
+      "skill": "testing",
+      "path": "config/skills/",
+      "service": "services.skills.testing_service",
+      "critical": false
+    },
+    {
+      "skill": "documentation",
+      "path": "config/skills/",
+      "service": "services.skills.documentation_service",
+      "critical": false
+    },
+    {
+      "skill": "planning",
+      "path": "config/skills/",
+      "service": "services.skills.planning_service",
+      "critical": false
+    },
+    {
+      "skill": "analysis",
+      "path": "config/skills/",
+      "service": "services.skills.analysis_service",
+      "critical": false
+    },
+    {
+      "skill": "review",
+      "path": "config/skills/",
+      "service": "services.skills.review_service",
+      "critical": false
+    },
+    {
+      "skill": "optimization",
+      "path": "config/skills/",
+      "service": "services.skills.optimization_service",
+      "critical": false
+    }
+  ],
+  "total_skills": 10,
+  "critical_skills": 0,
+  "non_critical_skills": 10
+}

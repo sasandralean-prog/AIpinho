@@ -1,0 +1,19 @@
+schema_version: 1
+
+ocr:
+  enabled: true
+  model_id: nanonets_ocr_s_q5_k_m
+  provider: llama_cpp_ocr
+  require_model_doctor_healthy_or_degraded: true
+  require_input_validation: true
+  require_source_ref: true
+  require_ocr_citation: true
+  require_confidence: true
+  raw_output_hidden: true
+  deterministic_fallback_allowed_for_tests: true
+
+blocked:
+  ocr_model_as_speaker: true
+  ocr_model_policy_decision: true
+  ocr_without_citation: true
+  ocr_secret_indexing: true

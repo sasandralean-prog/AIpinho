@@ -1,0 +1,57 @@
+schema_version: 1
+
+intent_types:
+  conversation: conversation
+  self_analysis: conversation
+  capability_explanation: conversation
+  in_chat_final_report: report_generation
+  readonly_analysis: project_analysis
+  artifact_generation: artifact_generation
+  filesystem_write_request: filesystem_write_file
+  file_modification_request: filesystem_modify_file
+  project_generation_request: project_generation
+  android_project_generation: android_project_create
+  artifact_build_request: build_run
+  patch_request: patch_preview
+  validation_request: validation
+  public_fact_query: public_fact_query
+  memory_request: memory_curation
+  memory_write: memory_curation
+  rag_query: readonly_analysis
+  unknown: unknown
+
+router_aliases:
+  simple_conversation: conversation
+  session_execution_report: report_generation
+  workspace_metadata_query: workspace_metadata_query
+  readonly_project_analysis: project_analysis
+  readonly_analysis_with_artifact_output: report_generation
+  governed_file_write: filesystem_write_file
+  governed_shell_request: shell_execute
+  governed_change_plan: patch_preview
+  project_bootstrap: project_generation
+  governed_project_rebuild: project_generation
+  workspace_artifact_write_request: filesystem_write_file
+  filesystem_archive_request: artifact_zip_generate
+  sandbox_batch_artifact_request: artifact_zip_generate
+  workspace_evidence_bundle: workspace_evidence_bundle
+  artifact_request: artifact_generation
+  artifact_build_request: build_run
+  validation_request: validation
+  android_apk_build: android_apk_build
+  android_project_create: android_project_create
+  project_create: project_generation
+  public_fact_query: public_fact_query
+
+action_precedence:
+  apply_patch: patch_apply
+  patch_apply: patch_apply
+  patch_preview: patch_preview
+  run_tests: test_run
+  test_run: test_run
+  run_command: shell_execute
+  shell_execute: shell_execute
+  create_project: project_generation
+  write_files: filesystem_write_file
+  create_directory: filesystem_create_directory
+  web_request: web_search_required

@@ -1,0 +1,180 @@
+schema_version: 1
+routes:
+- method: GET
+  path: /api/v1/maintenance/status
+  visibility: debugger
+  dangerous: false
+  execution: read_or_preview_only
+- method: POST
+  path: /api/v1/maintenance/diagnose
+  visibility: debugger
+  dangerous: false
+  execution: read_or_preview_only
+- method: GET
+  path: /api/v1/maintenance/runs
+  visibility: debugger
+  dangerous: false
+  execution: read_or_preview_only
+- method: POST
+  path: /api/v1/maintenance/invariants/check
+  visibility: debugger
+  dangerous: false
+  execution: read_or_preview_only
+- method: GET
+  path: /api/v1/maintenance/invariants
+  visibility: debugger
+  dangerous: false
+  execution: read_or_preview_only
+- method: POST
+  path: /api/v1/maintenance/repair/propose
+  visibility: debugger
+  dangerous: false
+  execution: read_or_preview_only
+- method: GET
+  path: /api/v1/maintenance/signals
+  visibility: debugger
+  dangerous: false
+  execution: read_or_preview_only
+- method: GET
+  path: /api/v1/maintenance/lessons/candidates
+  visibility: debugger
+  dangerous: false
+  execution: read_or_preview_only
+- method: GET
+  path: /api/v1/replay/status
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: POST
+  path: /api/v1/replay/capture
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: GET
+  path: /api/v1/replay/snapshots
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: POST
+  path: /api/v1/replay/cases
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: GET
+  path: /api/v1/replay/cases
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: POST
+  path: /api/v1/replay/cases/{case_id}/run
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: GET
+  path: /api/v1/replay/runs/{run_id}
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: GET
+  path: /api/v1/replay/runs/{run_id}/diff
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: GET
+  path: /api/v1/regression/status
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: POST
+  path: /api/v1/regression/candidates
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: GET
+  path: /api/v1/regression/candidates
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: POST
+  path: /api/v1/regression/candidates/{candidate_id}/promote
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: GET
+  path: /api/v1/regression/cases
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: POST
+  path: /api/v1/regression/cases/{case_id}/run
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: GET
+  path: /api/v1/regression/suites
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+- method: POST
+  path: /api/v1/regression/suites/{suite_id}/run
+  visibility: debugger
+  dangerous: false
+  execution: dry_run_or_read_only
+context_kernel_routes:
+- GET /api/v1/context/status
+- POST /api/v1/context/preview
+- POST /api/v1/context/build
+- POST /api/v1/context/admit
+- GET /api/v1/context/bundles/{bundle_id}
+- GET /api/v1/context/bundles/{bundle_id}/explain
+- GET /api/v1/context/bundles/{bundle_id}/trace
+- POST /api/v1/context/injection-plan
+- POST /api/v1/context/chunks/classify
+- POST /api/v1/context/chunks/dedupe
+- GET /api/v1/context/cache/status
+- POST /api/v1/context/cache/invalidate
+- GET /api/v1/context/cache/entries
+mobile_routes:
+- GET /api/v1/mobile/status
+- GET /api/v1/connection/profiles
+- POST /api/v1/connection/profiles/select
+- GET /api/v1/connection/adb/reverse-commands
+- GET /api/v1/mobile/pairing/status
+- POST /api/v1/mobile/pairing/verify
+- GET /api/v1/sync/snapshot
+- GET /api/v1/sync/changes
+skill_runtime_routes:
+- GET /api/v1/skills/status
+- GET /api/v1/skills/catalog
+- GET /api/v1/skills/{skill_id}
+- POST /api/v1/skills/validate
+- POST /api/v1/skills/route
+- POST /api/v1/skills/preview
+- POST /api/v1/skills/dry-run
+- POST /api/v1/skills/compose
+- POST /api/v1/skills/output/validate
+- POST /api/v1/skills/install/preview
+- POST /api/v1/skills/install/validate
+- GET /api/v1/skills/traces/{trace_id}
+governed_tool_routes:
+- GET /api/v1/tools/status
+- GET /api/v1/tools/catalog
+- GET /api/v1/tools/{tool_id}
+- POST /api/v1/tools/permission/preview
+- POST /api/v1/tools/invocation/preview
+
+legacy_rag:
+  routes:
+    - GET /api/v1/legacy-rag/status
+    - POST /api/v1/legacy-rag/scan
+    - POST /api/v1/legacy-rag/sanitize
+    - POST /api/v1/legacy-rag/classify
+    - POST /api/v1/legacy-rag/detect-conflicts
+    - POST /api/v1/legacy-rag/review/summary
+    - POST /api/v1/legacy-rag/import/preview
+    - POST /api/v1/legacy-rag/import/commit
+    - GET /api/v1/legacy-rag/chunks
+    - GET /api/v1/legacy-rag/chunks/{chunk_id}
+    - GET /api/v1/legacy-rag/conflicts
+    - GET /api/v1/legacy-rag/regression-candidates
+    - GET /api/v1/legacy-rag/lesson-candidates

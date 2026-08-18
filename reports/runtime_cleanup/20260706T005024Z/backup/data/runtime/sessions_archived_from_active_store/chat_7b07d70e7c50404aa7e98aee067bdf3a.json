@@ -1,0 +1,29 @@
+{
+  "session_id": "chat_7b07d70e7c50404aa7e98aee067bdf3a",
+  "status": "active",
+  "created_at": "2026-06-18T03:28:42.575704+00:00",
+  "updated_at": "2026-06-18T03:28:44.755506+00:00",
+  "expires_at": "2026-06-18T07:28:42.575704+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Crie a pasta C:\\Dev\\AIpinho\\sandboxes\\vitoria_02, gere tr?s arquivos txt dentro dela, depois gere um zip chamado vitoria_02.zip contendo esses tr?s arquivos. Ao final valide que o zip existe e tem tamanho maior que zero.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {},
+  "last_policy_decision": {},
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {
+    "operation_type": "sandbox_batch_artifact_request",
+    "path": "C:\\Dev\\AIpinho\\sandboxes\\vitoria_02\\vitoria_02.zip",
+    "run_id": "sandbox_run_e596103803bd419b83b01ad65e40e34a"
+  },
+  "warnings": [
+    "active_task_draft_missing"
+  ],
+  "trace_refs": []
+}

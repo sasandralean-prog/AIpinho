@@ -1,0 +1,7 @@
+schema_version: 1
+
+legacy_rag:
+  legacy_vectorstore_enabled: false
+  legacy_vectorstore_blocked: true
+  legacy_rag_blocked: true
+  reason: "Sprint 25 uses governed deterministic read-only retrieval only."

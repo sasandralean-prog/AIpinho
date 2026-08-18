@@ -1,0 +1,165 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_13_PERCEPTION_FACT_PROJECTION_READY",
+  "firetest5_status": "NOT_READY",
+  "root_cause_status": "probable_with_evidence",
+  "root_cause_or_frontier_localized": "PERCEPTION_FACT_SOURCE_BINDING_STALLED",
+  "observed_blocker_before": "PERCEPTION_FACT_PROJECTION_STALLED",
+  "observed_blocker_after": "PERCEPTION_FACT_SOURCE_BINDING_STALLED",
+  "task_run_id": "task_run_a85129892a9d4ac29d3bfe0225de9883",
+  "operation_id": "op_2a57a1734f5949a9ae9ef8926366e048",
+  "call_graph_real": [
+    "ContractDrivenPerceptionService.compile",
+    "attribute_observations",
+    "evidence_set",
+    "semantic_coverage",
+    "semantic_coverage_report",
+    "knowledge_records",
+    "semantic_assertions",
+    "semantic_self_review",
+    "semantic_coverage_2"
+  ],
+  "last_checkpoint_before_patch": "before_fact_projection",
+  "last_checkpoint_after_patch": "before_fact_source_binding",
+  "first_non_completed_stage": "after_fact_source_binding",
+  "fact_semantic_model": {
+    "material_fact_objects": [
+      "KnowledgeRecord",
+      "SemanticAssertion"
+    ],
+    "observed_vs_derived": "explicit fact_kind/source_kind on KnowledgeRecord and SemanticAssertion",
+    "candidate_vs_fact": "unsupported requirements become CANDIDATE_FACT/hypothesis and truth_eligible=false",
+    "provenance_evidence": "evidence_ids and provenance_refs are preserved; derived facts carry derivation_rule",
+    "truth_boundary": "Projection does not decide Completion or SpeakerTruth; truth_eligible remains evidence/confidence gated"
+  },
+  "hypotheses": {
+    "candidate_promotion_leakage": "weakened_by_tests",
+    "missing_observation_fallback": "weakened_by_tests",
+    "filesystem_observation_leakage": "weakened_by_tests",
+    "relationship_detection_in_compile_only": "weakened_by_tests",
+    "fact_projection_budget_missing": "addressed_with_generic_configurable_fact_budgets",
+    "source_binding_stall": "localized_in_public_run"
+  },
+  "public_rerun": {
+    "client_status": "accepted_running",
+    "result_status": "blocked",
+    "result_reason_code": "PERCEPTION_FACT_SOURCE_BINDING_STALLED",
+    "finished_at": "2026-08-17T16:55:41.465956+00:00",
+    "terminal_event_count": 1,
+    "music_inventory_reached": true,
+    "after_fact_projection_reached": false,
+    "before_payload_assembly_reached": false,
+    "metadata_coverage_reached": false,
+    "inventory_sufficiency_reached": false,
+    "evidence_phase1_reached": false,
+    "queue_runtime": {
+      "status_code": 200,
+      "elapsed_ms": 164,
+      "ok": true
+    },
+    "endpoint_timings": {
+      "summary": {
+        "status_code": 200,
+        "elapsed_ms": 2031,
+        "ok": true
+      },
+      "events": {
+        "status_code": 200,
+        "elapsed_ms": 1412,
+        "ok": true
+      },
+      "result": {
+        "status_code": 200,
+        "elapsed_ms": 339,
+        "ok": true
+      },
+      "truth": {
+        "status_code": 200,
+        "elapsed_ms": 327,
+        "ok": true
+      },
+      "artifacts": {
+        "status_code": 200,
+        "elapsed_ms": 518,
+        "ok": true
+      },
+      "session": {
+        "status_code": 200,
+        "elapsed_ms": 75,
+        "ok": true
+      },
+      "queue_hygiene": {
+        "status_code": 200,
+        "elapsed_ms": 45,
+        "ok": true
+      },
+      "queue_runtime": {
+        "status_code": 200,
+        "elapsed_ms": 164,
+        "ok": true
+      }
+    },
+    "phase2_to_6": {
+      "phase2": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "PERCEPTION_FACT_SOURCE_BINDING_STALLED"
+      },
+      "phase3": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "PERCEPTION_FACT_SOURCE_BINDING_STALLED"
+      },
+      "phase4": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "PERCEPTION_FACT_SOURCE_BINDING_STALLED"
+      },
+      "phase5": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "PERCEPTION_FACT_SOURCE_BINDING_STALLED"
+      },
+      "phase6": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "skip_reason": "PERCEPTION_FACT_SOURCE_BINDING_STALLED"
+      }
+    },
+    "storage_sizes": {
+      "run.json": 220188,
+      "result.json": 153657,
+      "events.json": 99207
+    }
+  },
+  "tests": {
+    "focused": "13 passed",
+    "regression": "115 passed",
+    "py_compile": "PASS",
+    "anti_hardcode": "PASS; only pre-existing CVL structural FireTest type names matched"
+  },
+  "generic_fixture_validation": {
+    "verdict": "passed",
+    "production_logic_depends_on_firetest_fixture": false,
+    "case_count": 5
+  },
+  "changed_files": [
+    "src/aipinho/schemas/artifacts/contract_perception.py",
+    "src/aipinho/services/artifacts/contract_driven_perception_service.py",
+    "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "src/aipinho/services/runtime/task_run_store.py",
+    "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "reports/runtime_consolidation/h1c0_r2_13_collect_public_rerun.py",
+    "tests/unit/test_artifact_late_rejection_preserves_terminal_reason.py",
+    "tests/unit/test_perception_fact_projection_stage_trace.py",
+    "tests/unit/test_perception_fact_projection_provenance.py",
+    "tests/unit/test_perception_fact_projection_observed_vs_derived.py",
+    "tests/unit/test_perception_fact_projection_bounded_derivation.py",
+    "tests/unit/test_perception_fact_projection_no_filesystem_observation.py",
+    "tests/unit/test_perception_fact_projection_reason_mapping.py",
+    "tests/unit/test_cvl_perception_fact_projection_frontier.py"
+  ],
+  "summary_vs_observation_divergences": [
+    "TaskRunResult top-level reason_code remains null in existing schema projection; validation.reason_code and completion metadata carry PERCEPTION_FACT_SOURCE_BINDING_STALLED and were used as canonical observed result_reason_code."
+  ],
+  "next_frontier": "Fact source binding / AttributeObservation plus EvidenceSet materialization under large selected entity sets."
+}

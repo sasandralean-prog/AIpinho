@@ -1,0 +1,24 @@
+skill_pack_id: test_android_pack
+display_name: Test Android Pack
+slug: test_android_pack
+version: 1.0.0
+status: active
+category: android
+description: Fixture pack for Android validation.
+included_skills:
+  - internal.safe_markdown_report_generator
+  - internal.project_readonly_inventory
+  - internal.artifact_bundle_exporter
+required_capabilities: [report_generate, artifact_create]
+optional_capabilities: [read_workspace]
+supported_agents: [aipinho, autopilot]
+supported_project_stacks: [android_gradle, mixed, unknown]
+supported_execution_modes: [assisted_execution, sandbox_autopilot]
+risk_level: low
+policy_profile: fixture_policy
+validation_profile: fixture_validation
+artifact_policy: token_protected_artifacts
+memory_policy: none
+docs_ref: docs/skills/SKILL_PACKS.md
+tests_ref: tests/skill_packs
+evidence_refs: [fixture:test_android_pack]

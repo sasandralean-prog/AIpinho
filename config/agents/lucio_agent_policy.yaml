@@ -1,0 +1,134 @@
+version: 1
+runtime_defaults:
+  enabled: false
+  openai_enabled: false
+  provider: disabled
+  visible_in_ux: false
+  allow_new_sessions: false
+  default_model: gpt-5.5
+  timeout_seconds: 120
+  max_prompt_chars: 200000
+  max_output_chars: 65536
+  use_memory_gateway: true
+  use_delegation: true
+  default_execution_mode: governed_autorun
+  allow_direct_local_tools: false
+
+multimodal:
+  enabled: false
+  provider: disabled
+  max_image_size_mb: 10
+  allowed_content_types:
+    - image/png
+    - image/jpeg
+    - image/webp
+    - text/plain
+    - text/markdown
+    - application/json
+    - application/pdf
+  store_images: true
+  memory_write_default: false
+  redaction_required: true
+  delegation_enabled: true
+
+routing:
+  direct:
+    operations:
+      - lucio_chat
+      - strategic_analysis
+      - architecture_review
+      - multimodal_review
+      - product_review
+    concepts:
+      - explanation
+      - strategy
+      - architecture
+      - product
+  codex:
+    operations:
+      - coding
+      - code_review
+      - refactor
+      - technical_analysis
+      - shell
+      - build
+      - test
+    capabilities:
+      - code_review
+      - workspace_write
+      - shell
+      - build
+      - test
+      - validation
+    concepts:
+      - code_change
+      - build
+      - test
+    default_operation: technical_analysis
+    operation_map:
+      lucio_chat: technical_analysis
+  aipinho:
+    operations:
+      - local_execution
+      - readonly_analysis
+      - artifact_request
+      - report_generate
+      - workspace_operation
+    capabilities:
+      - read_workspace
+      - search_workspace
+      - artifact_create
+      - report_generate
+      - workspace_operation
+    concepts:
+      - local_workspace
+      - artifact
+      - report
+    workspace_context_routes_here: true
+    default_operation: readonly_analysis
+    operation_map:
+      lucio_chat: readonly_analysis
+
+concept_registry:
+  explanation:
+    - explique
+    - explique-me
+    - o que e
+    - como funciona
+  strategy:
+    - estrategia
+    - priorize
+    - compare opcoes
+    - plano macro
+  architecture:
+    - arquitetura
+    - design do sistema
+    - componentes
+  product:
+    - produto
+    - experiencia do usuario
+    - ux
+  code_change:
+    - implemente
+    - corrija o codigo
+    - refatore
+    - gere patch
+  build:
+    - compile
+    - build
+    - empacote o aplicativo
+  test:
+    - rode os testes
+    - execute os testes
+    - valide o build
+  local_workspace:
+    - workspace
+    - diretorio local
+    - pasta local
+  artifact:
+    - artefato
+    - arquivo para download
+    - zip baixavel
+  report:
+    - gere um relatorio
+    - produza um relatorio

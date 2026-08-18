@@ -1,0 +1,42 @@
+{
+  "session_id": "chat_c64464cc08834138921770a7736a549c",
+  "status": "active",
+  "created_at": "2026-06-18T03:16:37.934853+00:00",
+  "updated_at": "2026-06-18T03:17:04.115542+00:00",
+  "expires_at": "2026-06-18T07:16:37.934853+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Liste as diferentes eras do Jap?o e resuma cada uma.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_bae805c0fb3c43b9a7735b9deafae480",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

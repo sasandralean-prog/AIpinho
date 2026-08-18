@@ -1,0 +1,10 @@
+schema_version: 1
+suite:
+  suite_id: ux_regression_suite
+  enabled: true
+  description: Operational UX regressions.
+cases:
+  mobile_backend_sync:
+    expectations:
+    - type: mobile_sync
+      backend_source_of_truth: true

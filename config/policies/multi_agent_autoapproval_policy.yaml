@@ -1,0 +1,124 @@
+version: 1
+default_execution_mode: governed_autorun
+enable_power_user_mode: true
+enable_unrestricted_local_lab: false
+autoapprove_low_risk: true
+autoapprove_medium_risk: true
+autoapprove_high_risk: false
+block_critical_risk: true
+autoapprove_system_write: false
+system_mutable_write_policy:
+  allow_operations:
+    - workspace_readonly_audit_report
+    - workspace_static_reachability_report
+    - workspace_evidence_bundle
+    - report_generate
+  modes:
+    - governed_autorun
+    - power_user
+  allowed_capabilities:
+    - workspace_write
+    - create_file
+    - report_generate
+require_reason_for_block: true
+require_safe_alternative_on_block: true
+audit_all_decisions: true
+autoapproval_matrix:
+  safe_chat:
+    artifact_create: true
+    artifact_upload: true
+    artifact_download: true
+    validation: true
+    report_generate: true
+    workspace_write: false
+    shell: false
+    memory_read: true
+    memory_candidate_create: true
+    memory_write: false
+    shared_memory_write: false
+    memory_validate: false
+    memory_supersede: false
+    memory_delete: false
+    memory_raw_access: false
+  assisted_execution:
+    read_workspace: true
+    search_workspace: true
+    artifact_create: true
+    artifact_upload: true
+    artifact_download: true
+    validation: true
+    report_generate: true
+    workspace_write: false
+    readonly_shell: false
+    test_shell: false
+    build_shell: false
+    memory_read: true
+    memory_candidate_create: true
+    memory_write: false
+    shared_memory_write: false
+    memory_validate: false
+    memory_supersede: false
+    memory_delete: false
+    memory_raw_access: false
+  governed_autorun:
+    read_workspace: true
+    search_workspace: true
+    artifact_create: true
+    artifact_upload: true
+    artifact_download: true
+    validation: true
+    report_generate: true
+    patch_preview: true
+    workspace_write: true
+    create_file: true
+    modify_file: true
+    create_directory: true
+    patch_apply: true
+    readonly_shell: true
+    test_shell: true
+    build_shell: true
+    package_shell: true
+    git_read_shell: true
+    destructive_shell: false
+    network_shell: false
+    git_write_shell: false
+    process_control_shell: false
+    memory_read: true
+    memory_candidate_create: true
+    memory_write: true
+    shared_memory_write: false
+    memory_validate: false
+    memory_supersede: false
+    memory_delete: false
+    memory_raw_access: false
+  power_user:
+    read_workspace: true
+    search_workspace: true
+    artifact_create: true
+    artifact_upload: true
+    artifact_download: true
+    validation: true
+    report_generate: true
+    patch_preview: true
+    workspace_write: true
+    create_file: true
+    modify_file: true
+    create_directory: true
+    patch_apply: true
+    readonly_shell: true
+    test_shell: true
+    build_shell: true
+    package_shell: true
+    git_read_shell: true
+    git_write_shell: false
+    network_shell: false
+    destructive_shell: false
+    process_control_shell: false
+    memory_read: true
+    memory_candidate_create: true
+    memory_write: true
+    shared_memory_write: false
+    memory_validate: false
+    memory_supersede: false
+    memory_delete: false
+    memory_raw_access: false

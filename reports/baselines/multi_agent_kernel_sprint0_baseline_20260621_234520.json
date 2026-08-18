@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-06-21T23:45:20-03:00",
+  "scope": "Sprint 0 revalidation",
+  "verdict": "approved_for_sprint1_revalidation",
+  "production_behavior_changed_by_sprint0": false,
+  "inventory": {
+    "router_modules": 117,
+    "service_modules": 1080,
+    "schema_modules": 853,
+    "python_test_files": 776,
+    "api_namespace": "/api/v1"
+  },
+  "current_owners": {
+    "chat": "ChatService",
+    "task_runtime": "TaskRuntimeService",
+    "policy": "Policy Kernel and workspace policy services",
+    "tools": "AgentToolGatewayService and governed tool execution services",
+    "patch_preview": "PatchPlanningService",
+    "patch_apply": "PatchApplyApprovalBridge and PatchApplyService",
+    "agent_sessions": "AgentSessionKernelService",
+    "agent_events": "MultiAgentEventBus"
+  },
+  "existing_artifacts": [
+    "docs/architecture/CURRENT_RUNTIME_INVENTORY.md",
+    "docs/architecture/MULTI_AGENT_KERNEL_ROADMAP.md",
+    "docs/architecture/AGENT_SESSION_KERNEL.md",
+    "reports/baselines/multi_agent_kernel_sprint0_baseline_20260612_223533.md",
+    "reports/multi_agent/sprint1_agent_session_kernel_20260612_233035.md"
+  ],
+  "risks": [
+    "router_service_sprawl",
+    "compatibility_adapter_state_isolation",
+    "legacy_rag_context_isolation",
+    "cross_surface_ui_truth"
+  ],
+  "next_step": "Revalidate the existing Sprint 1 Agent Session Kernel; do not start Sprint 2 automatically."
+}

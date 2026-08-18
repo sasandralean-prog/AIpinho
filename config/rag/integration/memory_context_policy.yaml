@@ -1,0 +1,22 @@
+schema_version: 1
+
+memory_context:
+  enabled: true
+  explicit_request_required: true
+  allow_active_curated_memory: true
+  allow_candidate_memory: false
+  allow_expired_memory: false
+  allow_superseded_memory: false
+  allow_superseded_history_if_explicit: true
+  require_memory_read_policy: true
+  require_scope_match: true
+  require_evidence_summary: true
+  require_version: true
+  max_memory_items: 4
+
+blocked:
+  candidate_memory: true
+  rejected_memory: true
+  expired_memory: true
+  unresolved_conflict_memory: true
+  memory_without_evidence: true

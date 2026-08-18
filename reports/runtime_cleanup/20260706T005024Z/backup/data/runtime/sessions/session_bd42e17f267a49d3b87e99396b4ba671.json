@@ -1,0 +1,41 @@
+{
+  "session_id": "session_bd42e17f267a49d3b87e99396b4ba671",
+  "status": "active",
+  "created_at": "2026-06-17T23:51:08.886933+00:00",
+  "updated_at": "2026-06-17T23:51:08.936634+00:00",
+  "expires_at": "2026-06-18T03:51:08.886933+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "quanto e 2+2?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_a09d1e07d0bc44b5816e75554ab8c6ed",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

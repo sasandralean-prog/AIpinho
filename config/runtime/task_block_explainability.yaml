@@ -1,0 +1,49 @@
+schema_version: 1
+
+defaults:
+  blocked_stage: unknown
+  human_reason: A task foi bloqueada antes de concluir a operacao.
+  safe_alternatives:
+    - Consulte o trace e ajuste o pedido ou a policy aplicavel.
+
+reasons:
+  sandbox_readonly_disabled:
+    blocked_stage: source_read_policy
+    human_reason: A policy de sandbox nao autorizou a leitura workspace-bound.
+    safe_alternatives:
+      - Use um modo de sandbox configurado para leitura governada.
+  forbidden_root:
+    blocked_stage: workspace_resolution
+    human_reason: O workspace solicitado esta protegido pela policy.
+    safe_alternatives:
+      - Escolha um workspace autorizado.
+  workspace_needs_clarification:
+    blocked_stage: workspace_resolution
+    human_reason: O workspace nao foi resolvido com confianca suficiente.
+    safe_alternatives:
+      - Informe explicitamente o workspace autorizado.
+  approval_required:
+    blocked_stage: approval_required
+    human_reason: A operacao aguarda aprovacao humana antes de continuar.
+    safe_alternatives:
+      - Revise e decida o pedido de aprovacao.
+  approval_denied:
+    blocked_stage: approval_denied
+    human_reason: A aprovacao necessaria foi negada ou cancelada.
+    safe_alternatives:
+      - Reformule o pedido sem a capacidade negada.
+  artifact_export_blocked:
+    blocked_stage: artifact_output_policy
+    human_reason: O resultado existe, mas a exportacao do artefato foi bloqueada.
+    safe_alternatives:
+      - Revise a validacao e a policy de artifact output.
+  validation_failed:
+    blocked_stage: validation_failed
+    human_reason: A validacao do resultado falhou.
+    safe_alternatives:
+      - Consulte os checks de validacao e corrija a causa indicada.
+  runtime_timeout_exceeded:
+    blocked_stage: execution_failed
+    human_reason: A execucao excedeu o tempo permitido pela policy.
+    safe_alternatives:
+      - Reduza o escopo ou use um perfil de runtime apropriado.

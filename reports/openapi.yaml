@@ -1,0 +1,38 @@
+openapi: 3.1.0
+info:
+  title: AIpinho Public Runtime API
+  version: "1.0"
+paths:
+  /api/v1/chat:
+    post:
+      summary: Public chat operation through Gateway and Kernel
+  /api/v1/execute:
+    post:
+      summary: Public execution operation through Gateway and Kernel
+  /api/v1/analyze:
+    post:
+      summary: Public analysis operation through Gateway and Kernel
+  /api/v1/doctor:
+    post:
+      summary: Public Runtime Doctor operation through Gateway and Kernel
+  /api/v1/validate:
+    post:
+      summary: Public validation operation through Gateway and Kernel
+  /api/v1/artifacts:
+    post:
+      summary: Public artifact operation through Gateway and Kernel
+  /api/v1/runtime:
+    get:
+      summary: Runtime public status
+  /api/v1/modules:
+    get:
+      summary: Public Kernel module registry view
+  /api/v1/contracts:
+    get:
+      summary: Public contract registry
+  /api/v1/health:
+    get:
+      summary: Existing public health endpoint
+  /api/v1/version:
+    get:
+      summary: Public API version

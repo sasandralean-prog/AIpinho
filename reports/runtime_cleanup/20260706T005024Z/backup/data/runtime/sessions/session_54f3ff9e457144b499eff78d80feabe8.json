@@ -1,0 +1,46 @@
+{
+  "session_id": "session_54f3ff9e457144b499eff78d80feabe8",
+  "status": "active",
+  "created_at": "2026-06-20T02:49:55.456321+00:00",
+  "updated_at": "2026-06-20T02:49:55.501919+00:00",
+  "expires_at": "2026-06-20T06:49:55.456321+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Crie um arquivo README_TESTE.md com conteudo 'x'.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_a191452dcf9349a0be87ea4510d96f63",
+    "intent_type": "filesystem_write_request",
+    "task_type": "filesystem_write",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_clarification",
+    "contract_type": "filesystem_write",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [
+      "write_files"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [
+    "requires_clarification"
+  ],
+  "trace_refs": []
+}

@@ -1,0 +1,23 @@
+schema_version: 1
+
+latency:
+  small_cpu:
+    class: low_to_medium
+    expected: "usable on CPU"
+    requires_warning: false
+  medium_cpu:
+    class: medium_to_high
+    expected: "usable but slower on CPU"
+    requires_warning: true
+  low:
+    class: low
+    expected: "lightweight role inference"
+    requires_warning: false
+  medium:
+    class: medium
+    expected: "controlled role inference"
+    requires_warning: true
+  large_cpu_slow:
+    class: very_high
+    expected: "manual-only, high latency on CPU"
+    requires_warning: true

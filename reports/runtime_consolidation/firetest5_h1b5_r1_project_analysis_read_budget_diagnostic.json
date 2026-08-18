@@ -1,0 +1,50 @@
+{
+  "entrypoints": [
+    "ReadonlyAnalysisArtifactRuntimeService.run_phase1",
+    "ProjectAnalysisService.analyze_project",
+    "ProjectTreeService.build_tree_summary",
+    "FileSelectionService.select_files",
+    "FileContextBuilder.build_context"
+  ],
+  "selection_flow": [
+    "project tree candidate enumeration",
+    "contract/budget-aware selection service",
+    "FileContextBudgetService.fit",
+    "bounded read decision per selected candidate"
+  ],
+  "read_flow": [
+    "before_file_read_batch",
+    "FileContextBuilder._read_decision",
+    "read|partial_read|skip decision",
+    "filesystem.read_file with bounded max_bytes",
+    "after_file_read_item with read_decision metadata",
+    "FileReadPlan with read_decisions/skips/partials"
+  ],
+  "budget_sources": [
+    "ProjectAnalysisBudget.max_total_seconds",
+    "ProjectAnalysisBudget.max_files_read",
+    "ProjectAnalysisBudget.max_bytes_read",
+    "ProjectAnalysisRequest.max_single_file_read_ms",
+    "ProjectAnalysisRequest.max_file_bytes",
+    "ProjectAnalysisRequest.max_total_bytes",
+    "FileContextBudgetService defaults/env"
+  ],
+  "per_file_budget_existing": true,
+  "partial_state_existing": true,
+  "skip_policy_existing": true,
+  "blocking_risks": [
+    {
+      "risk": "slow readonly execution backend can still exceed wall-clock per-file budget after bounded read",
+      "mitigation": "post-read single-file overrun is recorded as warning/checkpoint, not immediate full ProjectAnalysis block when partial context is usable"
+    },
+    {
+      "risk": "partial context may be insufficient for artifact handoff",
+      "mitigation": "ProjectAnalysisService safe_to_continue remains false unless partial_readiness quality threshold is met"
+    }
+  ],
+  "recommended_patch_points": [
+    "FileContextBuilder._read_decision for richer cost estimation",
+    "FileContextBudgetService for ranking cooperation",
+    "ProjectAnalysisService._partial_readiness for threshold tuning by general quality policy"
+  ]
+}

@@ -1,0 +1,31 @@
+schema_version: 1
+desktop_ui:
+  enabled: true
+  mode: event_sourced_launcher_desktop_cockpit
+  framework: tkinter_ttk
+  backend_is_source_of_truth: true
+  use_http_clients: true
+  use_realtime_events: true
+  require_token_auth: true
+  require_event_contracts: true
+  render_events_from_contract: true
+  hide_raw_by_default: true
+  allow_copy_sanitized_raw: true
+  allow_file_upload: true
+  allow_artifact_download: true
+  allow_zip_download: true
+  allow_restart_services: true
+  allow_restart_ports: [9088, 9089, 9098]
+  block_restart_ports: [9099]
+blocked:
+  direct_service_imports_for_state: true
+  arbitrary_command_execution: true
+  shell_execution: true
+  git_execution: true
+  patch_apply: true
+  model_auto_execution: true
+  raw_token_display_default: true
+  raw_prompt_display_default: true
+  raw_output_display_default: true
+  workspace_file_direct_download: true
+  unknown_event_interpretation: true

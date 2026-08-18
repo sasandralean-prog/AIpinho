@@ -1,0 +1,11 @@
+schema_version: 1
+namespace_id: legacy_pinhoabacaxi_curated
+source_roots:
+  - C:\Dev\AI\coding-brain-supervisor\memory
+  - C:\Dev\AI\coding-brain-supervisor\reports
+  - C:\Dev\AI\coding-brain-supervisor\docs
+  - C:\Dev\AI\coding-brain-supervisor\knowledge_base
+allowed_extensions: [.md, .txt, .json, .jsonl, .yaml, .yml, .py, .ps1, .cs, .kt, .html, .js, .ts, .xml, .log]
+ignored_dirs: [.git, __pycache__, .pytest_cache, node_modules, .venv, venv, build, dist, out, _deprecated_quarantine]
+max_file_bytes: 1500000
+read_only_sources: true

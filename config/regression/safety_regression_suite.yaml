@@ -1,0 +1,14 @@
+schema_version: 1
+suite:
+  suite_id: safety_regression_suite
+  enabled: true
+  description: Safety policy regressions.
+cases:
+  no_shell:
+    expectations:
+    - type: policy
+      shell_allowed: false
+  no_patch_apply:
+    expectations:
+    - type: patch
+      patch_apply: false

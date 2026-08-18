@@ -1,0 +1,24 @@
+schema_version: 1
+
+role_rag:
+  enabled: true
+  include_global_by_default: true
+  block_cross_role_namespace: true
+  require_role_namespace_match: true
+
+role_access:
+  planner: [planner_rag, global_ecosystem]
+  supervisor: [supervisor_rag, global_ecosystem]
+  coder: [coder_rag, global_ecosystem]
+  code_reviewer: [code_reviewer_rag, patch_quality_rag, global_ecosystem]
+  patch_quality_reviewer: [patch_quality_rag, code_reviewer_rag, global_ecosystem]
+  reporter: [reporter_rag, global_ecosystem]
+  debugger: [debugger_rag, global_ecosystem]
+  memory_curator: [memory_curator_rag, global_ecosystem]
+  vision_analyst: [vision_rag, global_ecosystem]
+  ocr_specialist: [ocr_rag, global_ecosystem]
+  document_reader: [vision_rag, ocr_rag, global_ecosystem]
+
+legacy_pinhoabacaxi_curated:
+  default_access: deny
+  allowed_roles: [debugger, reviewer, validator, reporter]

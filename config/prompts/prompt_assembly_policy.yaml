@@ -1,0 +1,39 @@
+﻿schema_version: 1
+
+assembly:
+  enabled: true
+  require_safety_envelope: true
+  require_output_contract: true
+  include_policy_decision: true
+  include_role_instruction: true
+  include_context_metadata: true
+  include_trace_in_debug_only: true
+  include_model_provider_metadata: true
+  include_real_inference_metadata: true
+  include_budget_summary: true
+  block_raw_logs: true
+  block_secret_context: true
+  stable_message_order: true
+
+allowed_purposes:
+  - chat
+  - project_report
+  - code_analysis
+  - self_analysis
+  - capability_explanation
+  - task_preview
+
+blocked:
+  execute_tools_from_prompt: true
+  write_files_from_prompt: true
+  patch_from_prompt: true
+  memory_write_from_prompt: true
+  llama_cpp_auto_use_from_chat: true
+  llama_cpp_auto_use_from_reports: true
+retrieval_context:
+  allow_explicit_context_bundle: false
+  auto_inject_retrieval_context: false
+  require_context_injection_plan: true
+  require_safe_for_prompt_assembly: true
+  require_citations: true
+  require_provenance: true

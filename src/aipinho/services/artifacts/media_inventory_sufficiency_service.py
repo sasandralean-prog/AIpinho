@@ -1,0 +1,155 @@
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Any
+
+
+@dataclass(frozen=True)
+class MediaInventorySufficiencyPolicy:
+    require_complete_selection: bool = True
+    require_full_evidence_coverage: bool = True
+    require_full_identity_coverage: bool = True
+    require_metadata_probe_attempted: bool = True
+    require_metadata_observation: bool = True
+    max_read_error_ratio: float = 0.0
+    max_unsupported_ratio: float = 1.0
+
+
+@dataclass(frozen=True)
+class MediaInventorySufficiencyResult:
+    status: str
+    reason_code: str | None
+    safe_to_use: bool
+    use_safety: dict[str, Any]
+    coverage_summary: dict[str, Any]
+    reason_codes: list[str] = field(default_factory=list)
+    limitations: list[str] = field(default_factory=list)
+
+    def model_dump(self, *, mode: str = "python") -> dict[str, Any]:
+        return {
+            "status": self.status,
+            "reason_code": self.reason_code,
+            "safe_to_use": self.safe_to_use,
+            "use_safety": dict(self.use_safety),
+            "coverage_summary": dict(self.coverage_summary),
+            "reason_codes": list(self.reason_codes),
+            "limitations": list(self.limitations),
+        }
+
+
+class MediaInventorySufficiencyService:
+    """Evaluates media inventory sufficiency from governed summaries only."""
+
+    def __init__(self, policy: MediaInventorySufficiencyPolicy | None = None) -> None:
+        self.policy = policy or MediaInventorySufficiencyPolicy()
+
+    def evaluate(
+        self,
+        *,
+        expected_rows: int,
+        selected_rows: int,
+        bound_rows: int,
+        evidence_ref_count: int,
+        row_validation: dict[str, Any],
+        media_metadata_capability: dict[str, Any],
+        metadata_coverage: dict[str, Any],
+        schema_status: str,
+    ) -> MediaInventorySufficiencyResult:
+        expected = max(0, int(expected_rows or 0))
+        selected = max(0, int(selected_rows or 0))
+        bound = max(0, int(bound_rows or 0))
+        evidence_refs = max(0, int(evidence_ref_count or 0))
+        row_evidence = row_validation.get("row_evidence_coverage") if isinstance(row_validation.get("row_evidence_coverage"), dict) else {}
+        identity_ratio = self._ratio(int(row_validation.get("rows_with_required_identity") or 0), selected)
+        evidence_ratio = self._ratio(int(row_evidence.get("rows_with_evidence_ref") or evidence_refs), selected)
+        selection_ratio = self._ratio(selected, expected)
+        metadata_ratio = float(metadata_coverage.get("coverage_ratio") or 0.0)
+        attempted = int(metadata_coverage.get("files_attempted") or 0)
+        unsupported = int(metadata_coverage.get("unsupported_count") or 0)
+        read_errors = int(metadata_coverage.get("read_error_count") or 0)
+        reason_codes: list[str] = []
+        limitations: list[str] = []
+        capability_status = str(media_metadata_capability.get("status") or "not_configured")
+        metadata_attributes_missing = [
+            str(item)
+            for item in media_metadata_capability.get("attributes_missing", []) or []
+            if str(item).strip()
+        ]
+        if expected <= 0:
+            reason_codes.append("MEDIA_CORPUS_ENTITY_SELECTION_EMPTY")
+        if self.policy.require_complete_selection and expected and selected < expected:
+            reason_codes.append("MEDIA_INVENTORY_COVERAGE_INSUFFICIENT")
+            limitations.append("inventory_selection_does_not_cover_expected_entities")
+        if self.policy.require_full_evidence_coverage and selected and (bound < selected or evidence_ratio < 1.0):
+            reason_codes.append("ARTIFACT_EVIDENCE_BINDING_MISSING")
+            limitations.append("row_evidence_coverage_incomplete")
+        if self.policy.require_full_identity_coverage and selected and identity_ratio < 1.0:
+            reason_codes.append("MEDIA_INVENTORY_IDENTITY_COVERAGE_INSUFFICIENT")
+            limitations.append("row_identity_coverage_incomplete")
+        if schema_status != "satisfied":
+            reason_codes.append("MEDIA_INVENTORY_SCHEMA_INSUFFICIENT")
+            limitations.append("schema_or_alias_validation_not_satisfied")
+        if self.policy.require_metadata_observation and selected and metadata_ratio < 1.0:
+            reason_codes.append("MEDIA_METADATA_OBSERVATION_INCOMPLETE")
+            limitations.append("metadata_observation_coverage_below_required_threshold")
+        if self.policy.require_metadata_probe_attempted and selected and attempted < selected:
+            reason_codes.append("MEDIA_METADATA_PROBE_NOT_RUN")
+            limitations.append("metadata_probe_not_attempted_for_all_selected_entities")
+        if capability_status in {"not_configured", "missing_dependency", "unavailable"}:
+            reason_codes.append("MEDIA_METADATA_CAPABILITY_NOT_CONFIGURED")
+            limitations.append(f"media_metadata_capability_{capability_status}")
+        elif capability_status in {"blocked", "failed"}:
+            reason_codes.append("MEDIA_METADATA_OBSERVATION_INCOMPLETE")
+            limitations.append(f"media_metadata_capability_{capability_status}")
+        if selected and self._ratio(read_errors, selected) > self.policy.max_read_error_ratio:
+            reason_codes.append("MEDIA_METADATA_READ_ERRORS_EXCEED_THRESHOLD")
+            limitations.append("metadata_read_error_threshold_exceeded")
+        if selected and self._ratio(unsupported, selected) > self.policy.max_unsupported_ratio:
+            reason_codes.append("MEDIA_METADATA_UNSUPPORTED_FORMATS_EXCEED_THRESHOLD")
+            limitations.append("metadata_unsupported_format_threshold_exceeded")
+        reason_codes = list(dict.fromkeys(reason_codes))
+        status = "satisfied" if not reason_codes else "blocked"
+        safe = status == "satisfied"
+        full_truth_claim = safe and not metadata_attributes_missing
+        return MediaInventorySufficiencyResult(
+            status=status,
+            reason_code=None if safe else reason_codes[0],
+            safe_to_use=safe,
+            use_safety={
+                "unrestricted": safe,
+                "phase1_discovery": safe,
+                "downstream_static_analysis": safe,
+                "full_truth_claim": full_truth_claim,
+                "limited_truth_claim": safe,
+                "reason_codes": reason_codes,
+                "limitations": [
+                    *limitations,
+                    *(["metadata_fields_missing_for_full_truth_claim"] if safe and metadata_attributes_missing else []),
+                ],
+            },
+            coverage_summary={
+                "expected_entities": expected,
+                "selected_entities": selected,
+                "bound_rows": bound,
+                "rows_rendered": selected,
+                "rows_with_evidence_ref": int(row_evidence.get("rows_with_evidence_ref") or evidence_refs),
+                "evidence_ref_count": evidence_refs,
+                "rows_with_required_identity": int(row_validation.get("rows_with_required_identity") or 0),
+                "selection_coverage_ratio": round(selection_ratio, 4),
+                "evidence_coverage_ratio": round(evidence_ratio, 4),
+                "identity_coverage_ratio": round(identity_ratio, 4),
+                "metadata_observation_ratio": round(metadata_ratio, 4),
+                "metadata_status": capability_status,
+                "metadata_files_attempted": attempted,
+                "metadata_files_succeeded": int(metadata_coverage.get("files_succeeded") or 0),
+                "metadata_files_failed": int(metadata_coverage.get("files_failed") or 0),
+                "unsupported_count": unsupported,
+                "read_error_count": read_errors,
+                "schema_status": schema_status,
+            },
+            reason_codes=reason_codes,
+            limitations=list(dict.fromkeys(limitations)),
+        )
+
+    def _ratio(self, numerator: int, denominator: int) -> float:
+        return 1.0 if denominator <= 0 and numerator <= 0 else max(0.0, min(1.0, numerator / max(1, denominator)))

@@ -1,0 +1,9 @@
+schema_version: 1
+
+search:
+  enabled: true
+  deterministic_only: true
+  filters: [status, kind, scope, workspace, source_type, tag, confidence, risk, text]
+  vector_search_enabled: false
+  embeddings_enabled: false
+  rag_enabled: false

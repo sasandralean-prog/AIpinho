@@ -1,0 +1,1 @@
+from aipinho.services.artifacts.artifact_interaction_core import ArtifactRegistryRepository

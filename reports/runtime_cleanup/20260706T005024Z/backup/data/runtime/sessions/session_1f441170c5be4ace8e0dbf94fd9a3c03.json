@@ -1,0 +1,46 @@
+{
+  "session_id": "session_1f441170c5be4ace8e0dbf94fd9a3c03",
+  "status": "active",
+  "created_at": "2026-06-13T17:34:49.685308+00:00",
+  "updated_at": "2026-06-13T17:34:49.726433+00:00",
+  "expires_at": "2026-06-13T21:34:49.685308+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Analise o projeto em \"C:\\Dev\\AIpinho\\field_trials\\rc1\\source_readonly_project\" em modo somente leitura. Gere um relatório com arquitetura, arquivos principais, riscos e sugestões. Não altere nenhum arquivo. Gere artifact markdown e zip se suportado.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_ab1097e67f074f3b99ce157c6934b519",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Dev\\AIpinho\\field_trials\\rc1\\source_readonly_project",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": true,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Dev\\AIpinho\\field_trials\\rc1\\source_readonly_project",
+  "active_task_draft_id": "draft_12913a5677ec4f109918c3a79f32970a",
+  "warnings": [],
+  "trace_refs": []
+}

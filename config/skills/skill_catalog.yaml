@@ -1,0 +1,4871 @@
+schema_version: 1
+skills:
+  aipinho.context_explainer:
+    namespace: aipinho
+    category: context
+    display_name: Aipinho Context Explainer
+    purpose: Explain admitted context bundles, rejected items, citations and budget.
+    when_to_use:
+    - context
+    - explanation
+    - bundle
+    - citation
+    - budget
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools: []
+    risk_level: low
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: read_only
+  aipinho.debugger_reader:
+    namespace: aipinho
+    category: debugger
+    display_name: Aipinho Debugger Reader
+    purpose: Read sanitized traces and produce a human summary.
+    when_to_use:
+    - debugger
+    - trace
+    - diagnosis
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools: []
+    risk_level: low
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: read_only
+  aipinho.policy_auditor:
+    namespace: aipinho
+    category: policy
+    display_name: Aipinho Policy Auditor
+    purpose: Audit policy, contract and capability consistency.
+    when_to_use:
+    - policy
+    - audit
+    - contract
+    - capability
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools: []
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: read_only
+  aipinho.patch_planner:
+    namespace: aipinho
+    category: patch
+    display_name: Aipinho Patch Planner
+    purpose: Create PatchPlan and DiffProposal previews through the patch pipeline.
+    when_to_use:
+    - patch
+    - diff
+    - preview
+    - plan
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - patch_preview
+    allowed_tools:
+    - patch.preview
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: experimental
+    default_enabled: false
+    execution_mode: preview_only
+  aipinho.artifact_packager:
+    namespace: aipinho
+    category: artifacts
+    display_name: Aipinho Artifact Packager
+    purpose: Preview packaging of registered artifacts through the governed artifact service.
+    when_to_use:
+    - artifact
+    - package
+    - export
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - artifact_write
+    allowed_tools:
+    - documents.create
+    forbidden_tools: []
+    risk_level: medium
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: experimental
+    default_enabled: false
+    execution_mode: preview_only
+  aipinho.memory_candidate_extractor:
+    namespace: aipinho
+    category: memory
+    display_name: Aipinho Memory Candidate Extractor
+    purpose: Suggest MemoryCandidate records from cited evidence without persistence.
+    when_to_use:
+    - memory
+    - candidate
+    - evidence
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - memory_read
+    allowed_tools: []
+    forbidden_tools:
+    - memory.write
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: experimental
+    default_enabled: false
+    execution_mode: preview_only
+  imagegen:
+    namespace: imagegen
+    category: image
+    display_name: Imagegen
+    purpose: Preview image generation or editing through an approved provider.
+    when_to_use:
+    - image
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools:
+    - image.generate
+    - image.edit
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  vision.ui_inspector:
+    namespace: vision
+    category: vision
+    display_name: Vision Ui Inspector
+    purpose: Inspect UI visual evidence without acting on the UI.
+    when_to_use:
+    - vision
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  ocr.document_reader:
+    namespace: ocr
+    category: ocr
+    display_name: Ocr Document Reader
+    purpose: Preview governed OCR extraction with citations.
+    when_to_use:
+    - ocr
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  openai_docs:
+    namespace: openai_docs
+    category: documentation
+    display_name: Openai Docs
+    purpose: Preview official OpenAI documentation lookup.
+    when_to_use:
+    - documentation
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools:
+    - openai.docs
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  openai_developers.agents_sdk:
+    namespace: openai_developers
+    category: openai_developers
+    display_name: Openai Developers Agents Sdk
+    purpose: Preview Agents SDK guidance.
+    when_to_use:
+    - openai_developers
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  openai_developers.build_chatgpt_app:
+    namespace: openai_developers
+    category: openai_developers
+    display_name: Openai Developers Build Chatgpt App
+    purpose: Preview ChatGPT App planning.
+    when_to_use:
+    - openai_developers
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  openai_developers.chatgpt_app_submission:
+    namespace: openai_developers
+    category: openai_developers
+    display_name: Openai Developers Chatgpt App Submission
+    purpose: Preview app submission review.
+    when_to_use:
+    - openai_developers
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  openai_developers.openai_api_troubleshooting:
+    namespace: openai_developers
+    category: openai_developers
+    display_name: Openai Developers Openai Api Troubleshooting
+    purpose: Preview API troubleshooting.
+    when_to_use:
+    - openai_developers
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  openai_developers.openai_platform_api_key:
+    namespace: openai_developers
+    category: credentials
+    display_name: Openai Developers Openai Platform Api Key
+    purpose: Describe credential setup without requesting or creating credentials.
+    when_to_use:
+    - credentials
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  plugin_creator:
+    namespace: plugin_creator
+    category: plugins
+    display_name: Plugin Creator
+    purpose: Create a plugin contract draft only.
+    when_to_use:
+    - plugins
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  skill_creator:
+    namespace: skill_creator
+    category: skills
+    display_name: Skill Creator
+    purpose: Create a skill contract draft only.
+    when_to_use:
+    - skills
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: experimental
+    default_enabled: false
+    execution_mode: preview_only
+  skill_installer:
+    namespace: skill_installer
+    category: skills
+    display_name: Skill Installer
+    purpose: Create an installation preview only.
+    when_to_use:
+    - skills
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  browser.control_in_app_browser:
+    namespace: browser
+    category: browser
+    display_name: Browser Control In App Browser
+    purpose: Preview in-app browser control.
+    when_to_use:
+    - browser
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools:
+    - browser.in_app
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  chrome.control_chrome:
+    namespace: chrome
+    category: browser
+    display_name: Chrome Control Chrome
+    purpose: Preview Chrome control.
+    when_to_use:
+    - browser
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools:
+    - browser.chrome
+    forbidden_tools:
+    - patch.apply
+    risk_level: critical
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  computer_use:
+    namespace: computer_use
+    category: computer
+    display_name: Computer Use
+    purpose: Preview computer control.
+    when_to_use:
+    - computer
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools:
+    - computer.use
+    forbidden_tools:
+    - patch.apply
+    risk_level: critical
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  build_web_apps.frontend_app_builder:
+    namespace: build_web_apps
+    category: build_web_apps
+    display_name: Build Web Apps Frontend App Builder
+    purpose: Preview frontend application plan.
+    when_to_use:
+    - build_web_apps
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  build_web_apps.frontend_testing_debugging:
+    namespace: build_web_apps
+    category: build_web_apps
+    display_name: Build Web Apps Frontend Testing Debugging
+    purpose: Preview frontend testing plan.
+    when_to_use:
+    - build_web_apps
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  build_web_apps.react_best_practices:
+    namespace: build_web_apps
+    category: build_web_apps
+    display_name: Build Web Apps React Best Practices
+    purpose: Review React best practices without mutation.
+    when_to_use:
+    - build_web_apps
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: low
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  build_web_apps.shadcn:
+    namespace: build_web_apps
+    category: build_web_apps
+    display_name: Build Web Apps Shadcn
+    purpose: Preview shadcn component work.
+    when_to_use:
+    - build_web_apps
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  build_web_apps.stripe_best_practices:
+    namespace: build_web_apps
+    category: payments
+    display_name: Build Web Apps Stripe Best Practices
+    purpose: Review Stripe best practices without external action.
+    when_to_use:
+    - payments
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  build_web_apps.supabase_postgres_best_practices:
+    namespace: build_web_apps
+    category: database
+    display_name: Build Web Apps Supabase Postgres Best Practices
+    purpose: Review Postgres best practices.
+    when_to_use:
+    - database
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: low
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  canva.branded_presentation:
+    namespace: canva
+    category: canva
+    display_name: Canva Branded Presentation
+    purpose: Preview Canva presentation creation.
+    when_to_use:
+    - canva
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools:
+    - canva.api
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  canva.resize_for_all_social_media:
+    namespace: canva
+    category: canva
+    display_name: Canva Resize For All Social Media
+    purpose: Preview Canva resize operation.
+    when_to_use:
+    - canva
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  canva.translate_design:
+    namespace: canva
+    category: canva
+    display_name: Canva Translate Design
+    purpose: Preview Canva translation.
+    when_to_use:
+    - canva
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  documents:
+    namespace: documents
+    category: artifacts
+    display_name: Documents
+    purpose: Preview document artifact creation.
+    when_to_use:
+    - artifacts
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - artifact_write
+    allowed_tools:
+    - documents.create
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: experimental
+    default_enabled: false
+    execution_mode: preview_only
+  presentations:
+    namespace: presentations
+    category: artifacts
+    display_name: Presentations
+    purpose: Preview presentation artifact creation.
+    when_to_use:
+    - artifacts
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - artifact_write
+    allowed_tools:
+    - presentations.create
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: experimental
+    default_enabled: false
+    execution_mode: preview_only
+  spreadsheets:
+    namespace: spreadsheets
+    category: artifacts
+    display_name: Spreadsheets
+    purpose: Preview spreadsheet artifact creation.
+    when_to_use:
+    - artifacts
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - artifact_write
+    allowed_tools:
+    - spreadsheets.create
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: experimental
+    default_enabled: false
+    execution_mode: preview_only
+  github:
+    namespace: github
+    category: github
+    display_name: Github
+    purpose: Preview GitHub inspection.
+    when_to_use:
+    - github
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools:
+    - github.api
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  github.gh_address_comments:
+    namespace: github
+    category: github
+    display_name: Github Gh Address Comments
+    purpose: Preview addressing PR comments.
+    when_to_use:
+    - github
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  github.gh_fix_ci:
+    namespace: github
+    category: github
+    display_name: Github Gh Fix Ci
+    purpose: Preview CI fix workflow.
+    when_to_use:
+    - github
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  github.yeet:
+    namespace: github
+    category: github
+    display_name: Github Yeet
+    purpose: Preview publish workflow without commit or push.
+    when_to_use:
+    - github
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: critical
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  huggingface.hf_cli:
+    namespace: huggingface
+    category: huggingface
+    display_name: Huggingface Hf Cli
+    purpose: Preview Hugging Face CLI action.
+    when_to_use:
+    - huggingface
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools:
+    - huggingface.cli
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  huggingface.community_evals:
+    namespace: huggingface
+    category: huggingface
+    display_name: Huggingface Community Evals
+    purpose: Preview community evaluation.
+    when_to_use:
+    - huggingface
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  huggingface.datasets:
+    namespace: huggingface
+    category: huggingface
+    display_name: Huggingface Datasets
+    purpose: Preview dataset lookup.
+    when_to_use:
+    - huggingface
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  huggingface.gradio:
+    namespace: huggingface
+    category: huggingface
+    display_name: Huggingface Gradio
+    purpose: Preview Gradio application work.
+    when_to_use:
+    - huggingface
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  huggingface.jobs:
+    namespace: huggingface
+    category: huggingface
+    display_name: Huggingface Jobs
+    purpose: Preview cloud job.
+    when_to_use:
+    - huggingface
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: critical
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  huggingface.llm_trainer:
+    namespace: huggingface
+    category: huggingface
+    display_name: Huggingface Llm Trainer
+    purpose: Preview LLM training.
+    when_to_use:
+    - huggingface
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: critical
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  huggingface.paper_publisher:
+    namespace: huggingface
+    category: huggingface
+    display_name: Huggingface Paper Publisher
+    purpose: Preview paper publication.
+    when_to_use:
+    - huggingface
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: critical
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  huggingface.papers:
+    namespace: huggingface
+    category: huggingface
+    display_name: Huggingface Papers
+    purpose: Preview paper lookup.
+    when_to_use:
+    - huggingface
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  huggingface.trackio:
+    namespace: huggingface
+    category: huggingface
+    display_name: Huggingface Trackio
+    purpose: Preview experiment tracking.
+    when_to_use:
+    - huggingface
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  huggingface.vision_trainer:
+    namespace: huggingface
+    category: huggingface
+    display_name: Huggingface Vision Trainer
+    purpose: Preview vision training.
+    when_to_use:
+    - huggingface
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: critical
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  huggingface.transformers_js:
+    namespace: huggingface
+    category: huggingface
+    display_name: Huggingface Transformers Js
+    purpose: Preview Transformers.js integration.
+    when_to_use:
+    - huggingface
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  notion.knowledge_capture:
+    namespace: notion
+    category: notion
+    display_name: Notion Knowledge Capture
+    purpose: Preview Notion knowledge capture.
+    when_to_use:
+    - notion
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools:
+    - notion.api
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  notion.meeting_intelligence:
+    namespace: notion
+    category: notion
+    display_name: Notion Meeting Intelligence
+    purpose: Preview Notion meeting preparation.
+    when_to_use:
+    - notion
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  notion.research_documentation:
+    namespace: notion
+    category: notion
+    display_name: Notion Research Documentation
+    purpose: Preview Notion research.
+    when_to_use:
+    - notion
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  notion.spec_to_implementation:
+    namespace: notion
+    category: notion
+    display_name: Notion Spec To Implementation
+    purpose: Preview Notion specification workflow.
+    when_to_use:
+    - notion
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - network
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  test_android_apps.android_emulator_qa:
+    namespace: test_android_apps
+    category: android
+    display_name: Test Android Apps Android Emulator Qa
+    purpose: Preview Android emulator QA.
+    when_to_use:
+    - android
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools:
+    - android.emulator
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  test_android_apps.android_performance:
+    namespace: test_android_apps
+    category: android
+    display_name: Test Android Apps Android Performance
+    purpose: Preview Android performance profiling.
+    when_to_use:
+    - android
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  tools.web_search:
+    namespace: tools
+    category: tools
+    display_name: Tools Web Search
+    purpose: Preview governed web search.
+    when_to_use:
+    - tools
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools:
+    - web.search
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  tools.apply_patch:
+    namespace: tools
+    category: tools
+    display_name: Tools Apply Patch
+    purpose: Represent direct patch application as a blocked tool contract.
+    when_to_use:
+    - tools
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - patch_apply
+    allowed_tools:
+    - patch.apply
+    forbidden_tools: []
+    risk_level: critical
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  tools.shell_powershell:
+    namespace: tools
+    category: tools
+    display_name: Tools Shell Powershell
+    purpose: Represent PowerShell as a blocked tool contract.
+    when_to_use:
+    - tools
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities:
+    - shell
+    allowed_tools:
+    - shell.powershell
+    forbidden_tools:
+    - patch.apply
+    risk_level: critical
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  tools.node_repl:
+    namespace: tools
+    category: tools
+    display_name: Tools Node Repl
+    purpose: Preview Node REPL usage.
+    when_to_use:
+    - tools
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools:
+    - node.repl
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  tools.codex_app:
+    namespace: tools
+    category: tools
+    display_name: Tools Codex App
+    purpose: Preview Codex application automation.
+    when_to_use:
+    - tools
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools:
+    - codex.terminal
+    forbidden_tools:
+    - patch.apply
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  tools.tool_search:
+    namespace: tools
+    category: tools
+    display_name: Tools Tool Search
+    purpose: Preview tool discovery.
+    when_to_use:
+    - tools
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools:
+    - tool.discovery
+    forbidden_tools:
+    - patch.apply
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  tools.multi_tool_parallel:
+    namespace: tools
+    category: tools
+    display_name: Tools Multi Tool Parallel
+    purpose: Preview parallel tool scheduling.
+    when_to_use:
+    - tools
+    - preview
+    - governed contract
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: false
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: skill_execution_future
+    required_capabilities: []
+    allowed_tools:
+    - multi_tool.parallel
+    forbidden_tools:
+    - patch.apply
+    risk_level: critical
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Skill blocked by contract.
+    events_emitted:
+    - skill_preview_created
+    - skill_dry_run_completed
+    debugger_trace_policy: sanitized
+    status: future_stub
+    default_enabled: false
+    execution_mode: preview_only
+  aipinho.maintenance_diagnoser:
+    namespace: aipinho
+    category: maintenance
+    display_name: Maintenance Diagnoser
+    purpose: Diagnose inconsistencies from admitted evidence and traces.
+    when_to_use:
+    - maintenance
+    - diagnosis
+    - supervised_autocure
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: true
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: maintenance_diagnosis
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - shell
+    - git
+    - patch_apply
+    - config_write
+    - memory_write
+    - external_api
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Maintenance skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Maintenance skill blocked by contract.
+    events_emitted:
+    - maintenance_run_created
+    - maintenance_diagnosis_completed
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: read_only
+    metadata:
+      supervised_only: true
+      side_effects_allowed: false
+  aipinho.invariant_checker:
+    namespace: aipinho
+    category: maintenance
+    display_name: Invariant Checker
+    purpose: Evaluate registered maintenance invariants.
+    when_to_use:
+    - maintenance
+    - diagnosis
+    - supervised_autocure
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: true
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: maintenance_diagnosis
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - shell
+    - git
+    - patch_apply
+    - config_write
+    - memory_write
+    - external_api
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Maintenance skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Maintenance skill blocked by contract.
+    events_emitted:
+    - invariant_check_completed
+    - invariant_violation_detected
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: read_only
+    metadata:
+      supervised_only: true
+      side_effects_allowed: false
+  aipinho.repair_planner:
+    namespace: aipinho
+    category: maintenance
+    display_name: Repair Planner
+    purpose: Propose governed repairs from completed diagnosis.
+    when_to_use:
+    - maintenance
+    - diagnosis
+    - supervised_autocure
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: true
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: repair_planning
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - shell
+    - git
+    - patch_apply
+    - config_write
+    - memory_write
+    - external_api
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Maintenance skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Maintenance skill blocked by contract.
+    events_emitted:
+    - repair_proposal_created
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: preview_only
+    metadata:
+      supervised_only: true
+      side_effects_allowed: false
+  aipinho.patch_preview_advisor:
+    namespace: aipinho
+    category: maintenance
+    display_name: Patch Preview Advisor
+    purpose: Prepare a handoff to Patch Planning without applying.
+    when_to_use:
+    - maintenance
+    - diagnosis
+    - supervised_autocure
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: true
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: repair_planning
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - shell
+    - git
+    - patch_apply
+    - config_write
+    - memory_write
+    - external_api
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Maintenance skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Maintenance skill blocked by contract.
+    events_emitted:
+    - maintenance_patch_preview_created
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: preview_only
+    metadata:
+      supervised_only: true
+      side_effects_allowed: false
+  aipinho.validation_plan_advisor:
+    namespace: aipinho
+    category: maintenance
+    display_name: Validation Plan Advisor
+    purpose: Recommend validation plans without command execution.
+    when_to_use:
+    - maintenance
+    - diagnosis
+    - supervised_autocure
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: true
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: repair_planning
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - shell
+    - git
+    - patch_apply
+    - config_write
+    - memory_write
+    - external_api
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Maintenance skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Maintenance skill blocked by contract.
+    events_emitted:
+    - maintenance_validation_plan_created
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: preview_only
+    metadata:
+      supervised_only: true
+      side_effects_allowed: false
+  aipinho.rollback_planner:
+    namespace: aipinho
+    category: maintenance
+    display_name: Rollback Planner
+    purpose: Prepare a rollback plan without executing it.
+    when_to_use:
+    - maintenance
+    - diagnosis
+    - supervised_autocure
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: true
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: repair_planning
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - shell
+    - git
+    - patch_apply
+    - config_write
+    - memory_write
+    - external_api
+    risk_level: high
+    approval_required: true
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Maintenance skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Maintenance skill blocked by contract.
+    events_emitted:
+    - maintenance_rollback_plan_created
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: preview_only
+    metadata:
+      supervised_only: true
+      side_effects_allowed: false
+  aipinho.lesson_candidate_writer:
+    namespace: aipinho
+    category: maintenance
+    display_name: Lesson Candidate Writer
+    purpose: Create an evidence-backed lesson candidate, never final memory.
+    when_to_use:
+    - maintenance
+    - diagnosis
+    - supervised_autocure
+    when_not_to_use:
+    - direct execution
+    - credential handling
+    - policy bypass
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: true
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: repair_planning
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - shell
+    - git
+    - patch_apply
+    - config_write
+    - memory_write
+    - external_api
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Maintenance skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    - signal: credential_required
+      reason: credential_request_blocked
+    examples:
+    - label: preview
+      input: {}
+      expected_mode: preview
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Maintenance skill blocked by contract.
+    events_emitted:
+    - maintenance_lesson_candidate_created
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: candidate_only
+    metadata:
+      supervised_only: true
+      side_effects_allowed: false
+  aipinho.replay_capturer:
+    namespace: aipinho
+    category: replay
+    display_name: Replay Capturer
+    purpose: Capture sanitized ReplaySnapshot.
+    when_to_use:
+    - replay
+    - safe regression
+    - dry-run
+    when_not_to_use:
+    - direct execution
+    - policy bypass
+    - real tool execution
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: true
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: maintenance_diagnosis
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - shell
+    - git
+    - patch_apply
+    - network
+    - model_real_inference
+    - memory_write
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Replay/regression skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    examples:
+    - label: dry_run
+      input: {}
+      expected_mode: dry_run
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Replay/regression skill blocked by contract.
+    events_emitted:
+    - replay_snapshot_created
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: read_only
+    metadata:
+      side_effects_allowed: false
+  aipinho.replay_runner:
+    namespace: aipinho
+    category: replay
+    display_name: Replay Runner
+    purpose: Run replay in safe dry-run mode.
+    when_to_use:
+    - replay
+    - safe regression
+    - dry-run
+    when_not_to_use:
+    - direct execution
+    - policy bypass
+    - real tool execution
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: true
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: maintenance_diagnosis
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - shell
+    - git
+    - patch_apply
+    - network
+    - model_real_inference
+    - memory_write
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Replay/regression skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    examples:
+    - label: dry_run
+      input: {}
+      expected_mode: dry_run
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Replay/regression skill blocked by contract.
+    events_emitted:
+    - replay_run_completed
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: dry_run_only
+    metadata:
+      side_effects_allowed: false
+  aipinho.regression_case_builder:
+    namespace: aipinho
+    category: regression
+    display_name: Regression Case Builder
+    purpose: Create RegressionCase from snapshot.
+    when_to_use:
+    - regression
+    - safe regression
+    - dry-run
+    when_not_to_use:
+    - direct execution
+    - policy bypass
+    - real tool execution
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: true
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: maintenance_diagnosis
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - shell
+    - git
+    - patch_apply
+    - network
+    - model_real_inference
+    - memory_write
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Replay/regression skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    examples:
+    - label: dry_run
+      input: {}
+      expected_mode: dry_run
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Replay/regression skill blocked by contract.
+    events_emitted:
+    - regression_case_created
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: preview_only
+    metadata:
+      side_effects_allowed: false
+  aipinho.regression_suite_runner:
+    namespace: aipinho
+    category: regression
+    display_name: Regression Suite Runner
+    purpose: Run RegressionSuite safely.
+    when_to_use:
+    - regression
+    - safe regression
+    - dry-run
+    when_not_to_use:
+    - direct execution
+    - policy bypass
+    - real tool execution
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: true
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: maintenance_diagnosis
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - shell
+    - git
+    - patch_apply
+    - network
+    - model_real_inference
+    - memory_write
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Replay/regression skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    examples:
+    - label: dry_run
+      input: {}
+      expected_mode: dry_run
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Replay/regression skill blocked by contract.
+    events_emitted:
+    - regression_suite_completed
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: dry_run_only
+    metadata:
+      side_effects_allowed: false
+  aipinho.golden_expectation_evaluator:
+    namespace: aipinho
+    category: regression
+    display_name: Golden Expectation Evaluator
+    purpose: Evaluate golden expectations.
+    when_to_use:
+    - regression
+    - safe regression
+    - dry-run
+    when_not_to_use:
+    - direct execution
+    - policy bypass
+    - real tool execution
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: true
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: maintenance_diagnosis
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - shell
+    - git
+    - patch_apply
+    - network
+    - model_real_inference
+    - memory_write
+    risk_level: medium
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Replay/regression skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    examples:
+    - label: dry_run
+      input: {}
+      expected_mode: dry_run
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Replay/regression skill blocked by contract.
+    events_emitted:
+    - golden_expectation_failed
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: read_only
+    metadata:
+      side_effects_allowed: false
+  aipinho.regression_reporter:
+    namespace: aipinho
+    category: regression
+    display_name: Regression Reporter
+    purpose: Generate RegressionReport.
+    when_to_use:
+    - regression
+    - safe regression
+    - dry-run
+    when_not_to_use:
+    - direct execution
+    - policy bypass
+    - real tool execution
+    input_contract:
+      type: object
+      required: []
+      properties: {}
+      additional_properties: true
+    output_contract:
+      type: object
+      required:
+      - summary
+      properties:
+        summary:
+          type: string
+      additional_properties: true
+    required_context_purpose: maintenance_diagnosis
+    required_capabilities: []
+    allowed_tools: []
+    forbidden_tools:
+    - shell
+    - git
+    - patch_apply
+    - network
+    - model_real_inference
+    - memory_write
+    risk_level: low
+    approval_required: false
+    supports_preview: true
+    supports_dry_run: true
+    supports_real_execution: false
+    validation:
+    - rule_id: output_contract
+      description: Validate declared output contract.
+      required: true
+    fallback:
+      mode: block
+      target_skill_id: null
+      human_message: Replay/regression skill unavailable; no execution performed.
+    anti_triggers:
+    - signal: direct_execution_requested
+      reason: direct_execution_blocked
+    examples:
+    - label: dry_run
+      input: {}
+      expected_mode: dry_run
+    failure_modes:
+    - code: contract_denied
+      behavior: block
+      human_message: Replay/regression skill blocked by contract.
+    events_emitted:
+    - regression_report_created
+    debugger_trace_policy: sanitized
+    status: enabled
+    default_enabled: true
+    execution_mode: artifact_preview_or_report
+    metadata:
+      side_effects_allowed: false

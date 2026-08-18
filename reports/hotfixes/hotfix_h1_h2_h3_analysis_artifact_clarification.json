@@ -1,0 +1,53 @@
+{
+  "date": "2026-07-08",
+  "verdicts": {
+    "h1": "ANALYSIS_CONTRACT_READY",
+    "h2": "ARTIFACT_RUNTIME_SEPARATED",
+    "h3": "CLARIFICATION_GATE_BOOTSTRAP_READY"
+  },
+  "files_changed": [
+    "C:\\Dev\\AIpinho\\config\\runtime\\task_runtime_policy.yaml",
+    "C:\\Dev\\AIpinho\\config\\runtime\\profiles\\readonly_analysis.yaml",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\runtime\\runtime_profile_service.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\runtime\\task_runtime_service.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\runtime\\workspace_context_service.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\governance\\lifecycle\\governance_lifecycle_service.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\governance\\runtime\\canonical_runtime_service.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\governance\\runtime\\readonly_analysis_artifact_runtime_service.py",
+    "C:\\Dev\\AIpinho\\tests\\governance\\test_runtime_vertical_slice.py"
+  ],
+  "tests": [
+    {
+      "command": "python -m pytest tests\\governance\\test_runtime_vertical_slice.py -q",
+      "result": "6 passed"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_workspace_runtime_context.py tests\\unit\\test_workflow_truth_runtime.py -q",
+      "result": "13 passed"
+    },
+    {
+      "command": "python -m pytest tests\\governance\\test_lifecycle_core.py tests\\governance\\test_g21_readonly_analysis_intent.py tests\\unit\\test_chat_operation_router_service.py -q",
+      "result": "94 passed"
+    },
+    {
+      "command": "python -m py_compile changed files",
+      "result": "passed"
+    }
+  ],
+  "legacy_divergence": {
+    "command": "python -m pytest tests\\contract\\test_task_runtime_contracts.py tests\\contract\\test_policy_kernel_contracts.py tests\\unit\\test_task_run_planner.py tests\\unit\\test_task_runtime_service.py -q",
+    "result": "28 passed, 1 failed",
+    "failing_test": "test_runtime_accepts_write_profile_for_governed_file_write",
+    "reason": "legacy test expects write_files without approval to remain created; current guard blocks with permission_requires_approval:write_files",
+    "action": "not relaxed because it would weaken governed write safety"
+  },
+  "runtime_evidence": {
+    "analysis_contract": "analysis_readonly",
+    "runtime_profile": "readonly_analysis",
+    "workspace_mutation": false,
+    "artifact_generation": true,
+    "approval_required_for": [],
+    "write_profile_used": false,
+    "clarification_blocked_bootstrap": false
+  }
+}

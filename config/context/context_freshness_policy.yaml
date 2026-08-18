@@ -1,0 +1,5 @@
+schema_version: 1
+freshness:
+  reject_expired: true
+  reject_superseded: true
+  stale_as_degraded: true

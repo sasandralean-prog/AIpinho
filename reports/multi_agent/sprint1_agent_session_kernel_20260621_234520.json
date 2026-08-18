@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-06-21T23:45:20-03:00",
+  "scope": "Sprint 1 revalidation",
+  "verdict": "approved_revalidated",
+  "profiles": ["aipinho", "lucio", "codex", "gemini"],
+  "contracts": ["AgentProfile", "AgentSession", "AgentMessage", "AgentRun", "AgentEvent", "AgentSessionState"],
+  "storage": "data/runtime/agent_kernel",
+  "api": [
+    "GET /api/v1/agents",
+    "GET /api/v1/agents/{agent_id}",
+    "GET|POST /api/v1/agents/{agent_id}/sessions",
+    "GET|PATCH|DELETE /api/v1/agents/{agent_id}/sessions/{session_id}",
+    "GET|POST /api/v1/agents/{agent_id}/sessions/{session_id}/messages",
+    "GET /api/v1/agents/runs/{run_id}",
+    "GET /api/v1/agents/runs/{run_id}/events"
+  ],
+  "guarantees": {
+    "agent_session_isolation": true,
+    "raw_hidden_by_default": true,
+    "compatibility_progressive": true,
+    "destructive_migration": false
+  },
+  "validation": {
+    "py_compile": "passed",
+    "focused_pytest": "18 passed in 22.27s",
+    "real_model_invoked": false
+  },
+  "not_started": ["Sprint 2", "new delegation behavior", "new tool gateway behavior", "new UI rewrite"]
+}

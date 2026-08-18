@@ -1,0 +1,45 @@
+{
+  "session_id": "session_5e76b5ae59d445f0a2660a0f61cf8678",
+  "status": "active",
+  "created_at": "2026-06-09T02:41:52.176859+00:00",
+  "updated_at": "2026-06-09T02:41:52.191913+00:00",
+  "expires_at": "2026-06-09T06:41:52.176859+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Analise em modo somente leitura os arquivos do projeto em \"C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio\" e produza um resumo honesto das funcionalidades encontradas. Nao altere arquivos.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_18fcf37353424db0b6163bc4511276d8",
+    "intent_type": "patch_request",
+    "task_type": "patch_request",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_approval",
+    "contract_type": "patch_request",
+    "allowed_actions": [
+      "patch_preview"
+    ],
+    "denied_actions": [],
+    "approval_required_for": [
+      "apply_patch"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio",
+  "active_task_draft_id": "draft_b3eaa2a919974919ab972901fbc060c1",
+  "warnings": [],
+  "trace_refs": []
+}

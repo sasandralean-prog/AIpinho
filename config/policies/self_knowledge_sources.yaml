@@ -1,0 +1,21 @@
+schema_version: 1
+
+sources:
+  - path: config/app/identity.yaml
+    kind: config
+    required: true
+  - path: config/app/product.yaml
+    kind: config
+    required: true
+  - path: docs/architecture/000_overview.md
+    kind: doc
+    required: true
+  - path: docs/architecture/010_runtime_flow.md
+    kind: doc
+    required: false
+  - path: docs/policies/policy_precedence.md
+    kind: doc
+    required: false
+  - path: docs/roles/role_contracts.md
+    kind: doc
+    required: false

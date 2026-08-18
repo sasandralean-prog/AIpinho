@@ -1,0 +1,13 @@
+schema_version: 1
+
+conflict:
+  enabled: true
+  resolve_automatically: false
+  conflict_status: needs_review
+  signals:
+    - enabled_disabled
+    - allowed_blocked
+    - passed_failed
+    - uses_vs_does_not_use
+    - policy_contradiction
+    - feature_availability_contradiction

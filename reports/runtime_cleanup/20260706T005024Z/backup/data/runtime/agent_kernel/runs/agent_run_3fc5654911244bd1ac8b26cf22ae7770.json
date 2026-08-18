@@ -1,0 +1,34 @@
+{
+  "run_id": "agent_run_3fc5654911244bd1ac8b26cf22ae7770",
+  "session_id": "agent_session_0484fcfddc954339a28e24031d82df9a",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "skill_execution:internal.validation_runner",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [
+    "validation",
+    "run_tests",
+    "report_generate"
+  ],
+  "started_at": "2026-06-14T12:28:27+00:00",
+  "completed_at": "2026-06-14T12:28:28+00:00",
+  "validation_status": "passed",
+  "artifact_ids": [
+    "agent_artifact_5b6c121b5df04080a2694dfecc662504"
+  ],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": "agent_msg_640d32805dc34e7384b1553b9769c7cd",
+  "error_code": null,
+  "metadata_sanitized": {
+    "skill_execution_id": "skill_exec_014c2b15d5ec422aa0f256d4be827152"
+  }
+}

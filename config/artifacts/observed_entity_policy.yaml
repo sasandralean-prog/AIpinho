@@ -1,0 +1,134 @@
+schema_version: 1
+
+scan:
+  max_entities: 20000
+  max_depth: 8
+
+root_role_policy:
+  project_root_role: project_root
+  library_root_role: library_root
+  external_root_role: external_root
+  artifact_root_role: artifact_root
+  build_output_segments:
+    - build
+    - target
+    - out
+    - dist
+  cache_segments:
+    - .gradle
+    - .git
+    - node_modules
+    - __pycache__
+    - .cache
+    - cache
+  source_segments:
+    - src
+  generated_segments:
+    - generated
+    - gen
+  corpus_preferred_root_roles:
+    - library_root
+    - corpus_root
+  corpus_excluded_entity_roles:
+    - project_source_file
+    - build_output_file
+    - cache_file
+    - generated_file
+  root_role_markers:
+    project_root:
+      - project
+      - projeto
+      - workspace
+      - app
+    library_root:
+      - library
+      - biblioteca
+      - corpus
+      - collection
+      - colecao
+      - dataset
+
+attribute_aliases:
+  name:
+    - name
+    - nome
+    - filename
+    - file_name
+  extension:
+    - extension
+    - extensao
+    - suffix
+  size_bytes:
+    - size
+    - tamanho
+    - bytes
+    - size_bytes
+  relative_path:
+    - path
+    - caminho
+    - relative_path
+  source_root:
+    - source
+    - origem
+    - source_root
+  source_root_role:
+    - source_root_role
+    - root_role
+    - papel_raiz
+  entity_role:
+    - entity_role
+    - papel_entidade
+  duration:
+    - duration
+    - duration_ms
+    - duracao
+  observations:
+    - observations
+    - observacoes
+    - observa_es
+    - notes
+  sample_rate:
+    - sample_rate
+    - sample_rate_hz
+    - taxa_amostragem
+  channels:
+    - channels
+    - canais
+  bitrate:
+    - bitrate
+    - bitrate_bps
+  artwork:
+    - artwork
+    - artwork_present
+    - capa
+  metadata:
+    - metadata
+    - metadados
+  metadata_source:
+    - metadata_source
+  probe_status:
+    - probe_status
+  severity:
+    - severity
+    - severidade
+  title:
+    - title
+    - titulo
+  summary:
+    - summary
+    - resumo
+
+display_labels:
+  name: nome
+  extension: extensão
+  size_bytes: tamanho
+  relative_path: caminho
+  source_root: origem
+  source_root_role: papel da raiz
+  entity_role: papel da entidade
+  duration: duração
+  observations: observações
+  sample_rate: taxa de amostragem
+  channels: canais
+  artwork: artwork
+  metadata: metadata

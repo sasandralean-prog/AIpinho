@@ -1,0 +1,272 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_7_PUBLIC_RERUN_ARTIFACT_WORKER_TERMINALIZED_BLOCKED",
+  "created_at": "2026-08-16T07:48:06.353190+00:00",
+  "raw_capture_dir": "C:\\Dev\\AIpinho\\reports\\firetest5\\firetest5_h1c0_r2_7_clean_phase0_to_6_20260816_044729",
+  "precheck": {
+    "created_at": "2026-08-16T07:47:29.313843+00:00",
+    "queue_health": {
+      "status": "ok",
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0,
+      "active_sessions": 0,
+      "dispatcher_status": "available",
+      "worker_pool_capacity": 8,
+      "worker_pool_available_slots": 8,
+      "stale_run_ids": [],
+      "backpressure_required": false,
+      "reason_code": null
+    },
+    "projection_health": {
+      "status": "ok",
+      "run_dirs_seen": 17,
+      "missing_index_count": 0,
+      "missing_index_run_ids": [],
+      "large_run_count": 0,
+      "large_runs": [],
+      "threshold_bytes": 1000000
+    }
+  },
+  "phase0": {
+    "readiness_id": "cognitive_readiness_df3c78f0bb12476a926941d55eff21d9",
+    "runtime_executed": false,
+    "task_created": false,
+    "task_run_created": false,
+    "operation_created": false,
+    "operational_artifacts_created": false,
+    "decision": "NO_GO_EXPECTED_BLOCK",
+    "confidence": 0.86,
+    "predicted_frontier": "ACCEPTED_RUNNING_ARTIFACT_WORKER_TERMINALIZATION_GAP",
+    "predicted_component": "artifact_worker_terminalization_guard",
+    "predicted_reason_code": "ARTIFACT_RUNTIME_STALLED_AFTER_ARTIFACT_CREATION_STARTED",
+    "reason_codes": [
+      "ARTIFACT_RUNTIME_STALLED_AFTER_ARTIFACT_CREATION_STARTED",
+      "PROFILE_SELECTED_BY_READONLY_ARTIFACT_DISCOVERY",
+      "FRONTIER_CONTEXT_ATTACHED"
+    ],
+    "phase0_result_ref": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\firetest5_h1c0_r2_7_phase0_cognitive_readiness_result.json"
+  },
+  "phase1": {
+    "client_response_status": "accepted_running",
+    "client_response_status_code": 200,
+    "client_response_time_ms": 6514,
+    "task_run_id": "task_run_4abdb0e40a0a41ffb57b8b7861195687",
+    "task_run_id_structured": "task_run_4abdb0e40a0a41ffb57b8b7861195687",
+    "result_ref_id": "task_run_4abdb0e40a0a41ffb57b8b7861195687",
+    "operation_id": "op_6d114217d6f349b89071ce08d984036c",
+    "run_status_from_run_json": "blocked",
+    "run_status_from_index": "blocked",
+    "result_json_exists": true,
+    "result_endpoint_status_code": 200,
+    "result_status": "blocked",
+    "result_source": "phase_semantic_completion_policy",
+    "result_reason_code": "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING",
+    "finished_at": "2026-08-16T07:48:06.123311+00:00",
+    "terminal_event_count": 1,
+    "terminal_event_types": [
+      "run_failed"
+    ],
+    "artifact_creation_started_count": 1,
+    "artifact_created_count": 0,
+    "artifact_partial_count": 0,
+    "artifact_blocked_count": 0,
+    "artifact_failed_count": 1,
+    "artifact_late_rejected_count": 0,
+    "last_event_type": "phase0_prediction_calibrated",
+    "last_event_status": "mismatch",
+    "last_event_message": "Phase 0 prediction calibrated against Phase 1 runtime result.",
+    "artifact_terminalization_guard_triggered": false,
+    "artifact_terminalization_guard_reason_code": null,
+    "worker_exception_captured": false,
+    "worker_silent_exit_detected": false,
+    "run_json_bytes": 74219,
+    "result_json_bytes": 51281,
+    "events_json_bytes": 30827,
+    "validation": {
+      "status": "blocked",
+      "score": 0.0,
+      "safe_to_display": true,
+      "reason_code": "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING",
+      "phase_contract_status": "blocked",
+      "artifact_sufficiency_status": "insufficient",
+      "safe_for_limited_discovery": false,
+      "blocking_findings": [
+        "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING",
+        "artifact_result",
+        "validation_result"
+      ],
+      "limiting_findings": []
+    },
+    "completion": {
+      "status": "blocked",
+      "safe_to_report_success": false,
+      "expected_outcomes": [],
+      "fulfilled_outcomes": [],
+      "missing_outcomes": [
+        "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING",
+        "artifact_result",
+        "validation_result"
+      ],
+      "criteria": [],
+      "warnings": [],
+      "limitations": [
+        "phase_semantic_completion_not_satisfied"
+      ],
+      "metadata": {
+        "reason_code": "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING",
+        "artifact_count": 1,
+        "logical_paths": [
+          "reports/firetest5/phase1_discovery.md",
+          "reports/firetest5/project_inventory.md",
+          "reports/firetest5/music_inventory.csv",
+          "reports/firetest5/evidence_phase1.zip"
+        ],
+        "artifact_semantic_profiles": [],
+        "limited_outputs": [],
+        "limiting_findings": [],
+        "blocking_findings": [
+          "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING",
+          "artifact_result",
+          "validation_result"
+        ],
+        "safe_for_limited_discovery": false,
+        "partial_artifact_accepted": false,
+        "allowed_claims": [],
+        "forbidden_claims": [
+          "full_inventory",
+          "full_corpus_coverage",
+          "full_media_metadata",
+          "all_songs_inventoried",
+          "relationships_validated",
+          "firetest_ready",
+          "phase_2_safe_without_dependency_evaluation"
+        ],
+        "required_disclosures": [],
+        "phase_dependency": {
+          "status": "blocked",
+          "reason_codes": [
+            "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING",
+            "artifact_result",
+            "validation_result"
+          ],
+          "phase_kind": "discovery"
+        },
+        "policy": {
+          "phase_kind": "discovery",
+          "partial_allowed": false,
+          "minimum_evidence_bound_rows": 1
+        }
+      }
+    },
+    "artifacts_from_result": {
+      "phase1_discovery": {
+        "artifact_id": null,
+        "logical_path": "reports/firetest5/phase1_discovery.md",
+        "task_run_id": "task_run_4abdb0e40a0a41ffb57b8b7861195687",
+        "status": "blocked",
+        "reason_code": "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING",
+        "storage_ref": null,
+        "safe_to_use": false,
+        "visible_in_endpoint": true,
+        "source": "artifact_worker_terminalization_guard",
+        "producer_step": "readonly_analysis_artifact_runtime",
+        "created_event_source_id": "task_run_event_fa5c8a4206254082992461af69a287f3",
+        "semantic_contract_status": "not_evaluated"
+      },
+      "music_inventory": null,
+      "evidence_phase1": null
+    }
+  },
+  "endpoint_timings": {
+    "summary": {
+      "status_code": 200,
+      "elapsed_ms": 2296,
+      "error": null
+    },
+    "result": {
+      "status_code": 200,
+      "elapsed_ms": 15,
+      "error": null
+    },
+    "truth": {
+      "status_code": 200,
+      "elapsed_ms": 16,
+      "error": null
+    },
+    "events": {
+      "status_code": 200,
+      "elapsed_ms": 30,
+      "error": null
+    },
+    "artifacts": {
+      "status_code": 200,
+      "elapsed_ms": 16,
+      "error": null
+    },
+    "session": {
+      "status_code": 200,
+      "elapsed_ms": 14,
+      "error": null
+    }
+  },
+  "phase2_to_6": {
+    "phase2": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "prior_blocking_phase": "phase1",
+      "skip_reason": "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING"
+    },
+    "phase3": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "prior_blocking_phase": "phase1",
+      "skip_reason": "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING"
+    },
+    "phase4": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "prior_blocking_phase": "phase1",
+      "skip_reason": "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING"
+    },
+    "phase5": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "prior_blocking_phase": "phase1",
+      "skip_reason": "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING"
+    },
+    "phase6": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "prior_blocking_phase": "phase1",
+      "skip_reason": "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING"
+    }
+  },
+  "queue_storage_after": {
+    "created_at": "2026-08-16T07:48:06.345178+00:00",
+    "queue_health": {
+      "status": "ok",
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0,
+      "active_sessions": 0,
+      "dispatcher_status": "available",
+      "worker_pool_capacity": 8,
+      "worker_pool_available_slots": 8,
+      "stale_run_ids": [],
+      "backpressure_required": false,
+      "reason_code": null
+    },
+    "projection_health": {
+      "status": "ok",
+      "run_dirs_seen": 18,
+      "missing_index_count": 0,
+      "missing_index_run_ids": [],
+      "large_run_count": 0,
+      "large_runs": [],
+      "threshold_bytes": 1000000
+    }
+  },
+  "phase_progression": "stopped_at_phase1"
+}

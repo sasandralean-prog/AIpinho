@@ -1,0 +1,46 @@
+{
+  "session_id": "session_541e458e979c4f6da3c8e3acda8042e1",
+  "status": "active",
+  "created_at": "2026-06-09T02:13:37.916430+00:00",
+  "updated_at": "2026-06-09T02:13:37.932591+00:00",
+  "expires_at": "2026-06-09T06:13:37.916430+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Analise o projeto em \"C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio\".",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_e5d64f2bbd5f468d81248cd6b1391785",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": true,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio",
+  "active_task_draft_id": "draft_7feec598fc6c4a91ae22fa91f130db58",
+  "warnings": [],
+  "trace_refs": []
+}

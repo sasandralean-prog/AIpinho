@@ -1,0 +1,2516 @@
+{
+  "report_id": "firetest5_h1c0_r2_3_noncanonical_phase2_to_6_test",
+  "session_id": "firetest5_h1c0_r2_3_noncanonical_phase2_to_6_20260814_011018",
+  "started_at": "2026-08-14T01:10:18.285882+00:00",
+  "canonical_progression_valid": false,
+  "reason": "Phase 1 was blocked; phases 2-6 were invoked only as an operator-requested diagnostic override.",
+  "phase1_baseline": {
+    "verdict": "FIRETEST5_H1C0_R2_3_RESULT_FINALIZATION_READY",
+    "session_id": "firetest5_h1c0_r2_3_clean_phase0_to_6_20260814_004919",
+    "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+    "result_ref_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+    "operation_id": "op_47ef6bfb17a1448f9ddf47fba19adf49",
+    "client_response_status": "accepted_running",
+    "client_response_time_ms": 6272,
+    "run_status": "BLOCKED",
+    "result_status": "blocked",
+    "result_json_exists": true,
+    "result_endpoint_status_code": 200,
+    "finished_at": "2026-08-14T01:04:35.989027+00:00",
+    "truth_safe_to_report_success": false,
+    "terminal_event_count": 1,
+    "terminal_event_types": [
+      "run_blocked"
+    ],
+    "music_inventory": {
+      "status": "blocked",
+      "semantic_contract_status": "partial",
+      "reason_code": "MUSIC_INVENTORY_PARTIAL_EVIDENCE",
+      "expected_rows": 1051,
+      "selected_rows": 100,
+      "bound_rows": 100,
+      "partial_rows": 100,
+      "evidence_ref_count": 100,
+      "row_evidence_coverage": {
+        "total_rows": 100,
+        "rows_with_evidence_ref": 100,
+        "rows_without_evidence_ref": 0,
+        "evidence_ref_count": 100,
+        "evidence_refs_sample": [
+          "file:D:\\rafa\\pinho music\\n A.m4a",
+          "file:D:\\rafa\\pinho music\\novinho depressivo Speed up 720 X 1280.mp4",
+          "file:D:\\rafa\\pinho music\\parasite.m4a",
+          "file:D:\\rafa\\pinho music\\penhasco.m4a",
+          "file:D:\\rafa\\pinho music\\please don't humble me.m4a",
+          "file:D:\\rafa\\pinho music\\prettygrunge.m4a",
+          "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life - 2.m4a",
+          "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life.m4a",
+          "file:D:\\rafa\\pinho music\\relacionamento a b e r t o.m4a",
+          "file:D:\\rafa\\pinho music\\rises the moon - 2.m4a",
+          "file:D:\\rafa\\pinho music\\rises the moon.m4a",
+          "file:D:\\rafa\\pinho music\\shall we celebrate.m4a",
+          "file:D:\\rafa\\pinho music\\she's green - graze Official.m4a",
+          "file:D:\\rafa\\pinho music\\signs.m4a",
+          "file:D:\\rafa\\pinho music\\snarky - 2.m4a",
+          "file:D:\\rafa\\pinho music\\snarky.m4a",
+          "file:D:\\rafa\\pinho music\\so hard to quit you - 2.m4a",
+          "file:D:\\rafa\\pinho music\\so hard to quit you.m4a",
+          "file:D:\\rafa\\pinho music\\soul ties.m4a",
+          "file:D:\\rafa\\pinho music\\taKe - 2.m4a"
+        ],
+        "status": "satisfied",
+        "reason_code": null
+      },
+      "safe_to_use": false
+    },
+    "evidence_phase1": {
+      "status": "ready",
+      "semantic_contract_status": "satisfied",
+      "safe_to_use": true,
+      "reason_code": null
+    },
+    "validation": {
+      "status": "blocked",
+      "safe_to_display": true,
+      "blocking_findings": [
+        "TASKRUN_LIFECYCLE_TIMEOUT"
+      ]
+    },
+    "completion": null,
+    "queue_after": {
+      "status": "ok",
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0,
+      "active_sessions": 0,
+      "dispatcher_status": "available",
+      "worker_pool_capacity": 8,
+      "worker_pool_available_slots": 8,
+      "stale_run_ids": [],
+      "backpressure_required": false,
+      "reason_code": null
+    },
+    "storage_after": {
+      "status": "ok",
+      "run_dirs_seen": 13,
+      "missing_index_count": 0,
+      "missing_index_run_ids": [],
+      "large_run_count": 0,
+      "large_runs": [],
+      "threshold_bytes": 1000000
+    },
+    "run_json_bytes": 156870,
+    "result_json_bytes": 877,
+    "endpoint_timings_ms": {
+      "summary": 2176,
+      "truth": 1204,
+      "events": 6562,
+      "artifacts": 1032,
+      "result": 301,
+      "queue_after": 858
+    }
+  },
+  "phases": {
+    "2": {
+      "phase": 2,
+      "called_public_chat": true,
+      "canonical_progression_valid": false,
+      "diagnostic_override": true,
+      "client_response": {
+        "status_code": 200,
+        "elapsed_ms": 4963,
+        "body": {
+          "response_id": "chat_57e488a7a1e940428b74e34644e8c1c9",
+          "session_id": "firetest5_h1c0_r2_3_noncanonical_phase2_to_6_20260814_011018",
+          "task_draft_id": null,
+          "preview_id": null,
+          "task_id": null,
+          "task_run_id": null,
+          "approval_id": null,
+          "task_preview_id": null,
+          "artifact_id": null,
+          "artifact_preview_id": null,
+          "artifact_links": [],
+          "result_ref_id": null,
+          "operation_id": "chatop_feb5c1589579462cbe3c50345b74e6c0",
+          "operation_type": "product_planning_readonly",
+          "message_type": "assistant_final_answer",
+          "status": "ok",
+          "message": "PLANNING_READONLY_READY\nClassifiquei este pedido como leitura/planejamento sem side effects. Nao criei TaskPreview, ApprovalRequest, grant, shell ou escrita de arquivos.",
+          "intent": {
+            "intent_type": "product_planning_readonly",
+            "operation_type": "product_planning_readonly",
+            "requires_task": false,
+            "readonly": true,
+            "negative_constraints": {
+              "write_forbidden": true,
+              "approval_forbidden": true
+            }
+          },
+          "policy": {
+            "read_only": true,
+            "approval_required_for": [],
+            "write_allowed": false,
+            "shell_allowed": false,
+            "canonical_lifecycle": {
+              "lifecycle_id": "life_540889dd02db410ba04bdd046a889fb3",
+              "state": "plan_only_preview",
+              "reason_code": "readonly_or_planning",
+              "permission": "allowed",
+              "approval_gate_status": "not_required",
+              "approval_id": null,
+              "preview_id": null,
+              "draft_id": null
+            }
+          },
+          "contract_preview": {},
+          "actions": [],
+          "next_actions": [],
+          "warnings": [],
+          "trace": [],
+          "raw_debug_ref": null,
+          "model_used": "canonical_governance_lifecycle",
+          "real_inference": false,
+          "model_warnings": [],
+          "evaluation_status": null,
+          "evaluation_warnings": [],
+          "fallback_used": false,
+          "context_plan_id": null,
+          "citation_map": {},
+          "evidence_refs": [],
+          "requires_user_action": false,
+          "is_final_answer": true,
+          "grounded": true,
+          "grounding_required": false,
+          "grounding_missing_reason": null,
+          "policy_block": null,
+          "governance_lifecycle": {
+            "lifecycle_id": "life_540889dd02db410ba04bdd046a889fb3",
+            "state": "plan_only_preview",
+            "reason_code": "readonly_or_planning",
+            "intent": {
+              "intent_type": "product_planning_readonly",
+              "operation_type": "product_planning_readonly",
+              "requires_task": false,
+              "side_effect_requested": false,
+              "readonly": true,
+              "source_channel": "api_chat",
+              "negative_constraints": {
+                "write_forbidden": true,
+                "approval_forbidden": true
+              },
+              "confidence": 1.0,
+              "evidence": [
+                "state_effect_readonly_contract",
+                "positive:knowledge_only",
+                "readonly_contract",
+                "observational_intent"
+              ],
+              "semantic_intent_graph": {
+                "observational_intent": true,
+                "planning_intent": false,
+                "mutation_intent": false,
+                "execution_intent": false,
+                "approval_intent": false,
+                "knowledge_output": true,
+                "artifact_output": false,
+                "readonly_contract": true,
+                "state_effect": "knowledge_only",
+                "workspace_effect": "immutable",
+                "filesystem_effect": "prohibited",
+                "runtime_effect": "none",
+                "prohibited_effects": [],
+                "requested_effects": [
+                  "knowledge_only"
+                ],
+                "evidence": [
+                  "positive:knowledge_only",
+                  "readonly_contract",
+                  "observational_intent"
+                ]
+              }
+            },
+            "operation_contract": {
+              "operation_id": "op_e32cfdf2876c44c1a2dbf898463d5c73",
+              "session_id": "firetest5_h1c0_r2_3_noncanonical_phase2_to_6_20260814_011018",
+              "source_channel": "api_chat",
+              "intent_type": "product_planning_readonly",
+              "operation_type": "product_planning_readonly",
+              "contract_type": "product_planning_readonly",
+              "runtime_profile": "product_planning_readonly",
+              "requested_actions": [],
+              "target_paths": [],
+              "workspace_path": "C:/Dev/AIpinho",
+              "risk_level": "low",
+              "trace": [
+                {
+                  "stage": "canonical_contract",
+                  "source": "GovernanceLifecycleService"
+                }
+              ]
+            },
+            "policy": {
+              "permission": "allowed",
+              "allowed_actions": [],
+              "ask_actions": [],
+              "denied_actions": [],
+              "reason_code": "readonly_or_planning",
+              "reason": "Read-only or non-executing operation.",
+              "source": "effective_policy_decision",
+              "requires_approval": false,
+              "trace": []
+            },
+            "context_gate": {
+              "status": "not_required",
+              "can_create_write_approval": true,
+              "reason_code": "none",
+              "source_message_id": null,
+              "context_ref": null,
+              "workspace_snapshot_ref": null,
+              "discovery_ref": null,
+              "analysis_ref": null,
+              "missing_requirements": [],
+              "trace": []
+            },
+            "execution_plan": {
+              "preview_kind": "plan_only_preview",
+              "executable": false,
+              "executable_plan_ref": null,
+              "plan_kind": null,
+              "expected_outputs": [],
+              "target_paths": [],
+              "blocked_reason": "readonly_or_planning",
+              "trace": [
+                {
+                  "stage": "canonical_runtime",
+                  "mode": "plan_only"
+                }
+              ]
+            },
+            "preview_quality": {
+              "status": "not_required",
+              "can_create_approval": true,
+              "reason_code": "none",
+              "missing_requirements": [],
+              "trace": []
+            },
+            "approval_gate": {
+              "required": false,
+              "can_create_approval": false,
+              "approval_id": null,
+              "preview_id": null,
+              "draft_id": null,
+              "status": "not_required",
+              "reason_code": "none",
+              "trace": []
+            },
+            "validation": {
+              "status": "not_run",
+              "safe_to_continue": false,
+              "missing_outputs": [],
+              "evidence_refs": [],
+              "reason_code": "none"
+            },
+            "completion": {
+              "status": "completed",
+              "safe_to_report_success": true,
+              "expected_outputs": [],
+              "fulfilled_outputs": [],
+              "missing_outputs": [],
+              "reason_code": "none"
+            },
+            "speaker_truth": {
+              "can_claim_success": false,
+              "message_status": "blocked",
+              "required_disclosures": [
+                "readonly_or_planning"
+              ],
+              "forbidden_claims": [
+                "executed",
+                "implemented",
+                "created",
+                "modified",
+                "applied",
+                "validated",
+                "completed"
+              ],
+              "reason_code": "speaker_truth_blocked"
+            },
+            "artifacts": [],
+            "task_run_id": null,
+            "warnings": [],
+            "trace": [
+              {
+                "stage": "intent",
+                "intent_type": "product_planning_readonly",
+                "operation_type": "product_planning_readonly"
+              },
+              {
+                "stage": "policy",
+                "permission": "allowed",
+                "reason_code": "readonly_or_planning"
+              },
+              {
+                "stage": "context_gate",
+                "status": "not_required",
+                "reason_code": "none"
+              },
+              {
+                "stage": "plan",
+                "preview_kind": "plan_only_preview",
+                "executable": false
+              },
+              {
+                "stage": "preview_quality",
+                "status": "not_required",
+                "reason_code": "none"
+              },
+              {
+                "stage": "approval",
+                "status": "not_required"
+              },
+              {
+                "stage": "completion",
+                "status": "completed"
+              }
+            ]
+          }
+        }
+      },
+      "task_run_id": null,
+      "result_ref_id": null,
+      "operation_id": "chatop_feb5c1589579462cbe3c50345b74e6c0",
+      "observation": null,
+      "queue_after_phase": {
+        "status_code": 200,
+        "elapsed_ms": 13,
+        "body": {
+          "status": "ok",
+          "active_runs": 0,
+          "queued_runs": 0,
+          "stale_runs": 0,
+          "pending_approvals": 0,
+          "active_sessions": 0,
+          "dispatcher_status": "available",
+          "worker_pool_capacity": 8,
+          "worker_pool_available_slots": 8,
+          "stale_run_ids": [],
+          "backpressure_required": false,
+          "reason_code": null
+        }
+      }
+    },
+    "3": {
+      "phase": 3,
+      "called_public_chat": true,
+      "canonical_progression_valid": false,
+      "diagnostic_override": true,
+      "client_response": {
+        "status_code": 200,
+        "elapsed_ms": 9236,
+        "body": {
+          "response_id": "chat_9bbd5e929a004a04aa8867b17560363d",
+          "session_id": "firetest5_h1c0_r2_3_noncanonical_phase2_to_6_20260814_011018",
+          "task_draft_id": null,
+          "preview_id": null,
+          "task_id": null,
+          "task_run_id": null,
+          "approval_id": null,
+          "task_preview_id": null,
+          "artifact_id": null,
+          "artifact_preview_id": null,
+          "artifact_links": [],
+          "result_ref_id": null,
+          "operation_id": "chatop_66ed6f1c55b6456aa2fd910a689ce0d8",
+          "operation_type": "workspace_analysis_readonly",
+          "message_type": "assistant_final_answer",
+          "status": "ok",
+          "message": "WORKSPACE_ANALYSIS_READONLY_READY\nSpeaker Truth: modo read-only confirmado. Nao criei TaskPreview, ApprovalRequest, grant, shell, patch, artifact ou escrita de arquivos.\n\nFase atual: Fase A / discovery e diagnostico read-only.\n\nCampos da Fase 0:\n- intent_type: workspace_analysis_readonly\n- operation_type: workspace_analysis_readonly\n- readonly: true\n- side_effect_requested: false\n- requested_actions: []\n- policy.permission: allowed/read_only\n- approval_required: false\n- approval_id: null\n- task_id: null\n- runtime_profile: workspace_analysis_readonly\n\nProvas:\n- workspace: C:\\Dev\\AIpinho\n- tree_status: partial\n- arquivos vistos: 442; diretorios vistos: 53\n- top_level: .env.example, .env.local, .gitignore, .pytest_cache, .tmp_pycache, AIpinho_Architecture_Audit.md, AIpinho_Architecture_Audit_Consolidated_Report.md, AIpinho_BreakingChanges.md, AIpinho_Canonical_Flow.md, AIpinho_CanonicalDirectories.md, AIpinho_CompatibilityMatrix.md, AIpinho_Consolidation_MasterPlan.md, AIpinho_DuplicateClasses.md, AIpinho_FinalArchitecture.md, AIpinho_Hardcode_Remediation.md, AIpinho_MigrationPlan.md, AIpinho_RemovedFiles.md, AIpinho_RuntimeContractBundle.md, AIpinho_TestCoverageMatrix.md, apps\n- caminhos importantes: apps, config, docs, pyproject.toml, README.md, src, tests, tmp_android_unknown/build.gradle.kts, tmp_android_unknown/settings.gradle.kts, tmp_android_unknown/app/src, tests/artifact_fixtures.py, tests/conftest.py, tests/maintenance_helpers.py, tests/manual_inference_test_helpers.py, tests/patch_fixtures.py, tests/replay_regression_helpers.py, tests/test_legacy_rag_classification.py, tests/test_legacy_rag_commit_gate.py, tests/test_legacy_rag_router_contract.py, tests/test_legacy_rag_sanitizer.py\n- arquivos candidatos: AIpinho_Architecture_Audit.md, AIpinho_Architecture_Audit_Consolidated_Report.md, AIpinho_BreakingChanges.md, AIpinho_Canonical_Flow.md, AIpinho_CanonicalDirectories.md, AIpinho_CompatibilityMatrix.md, AIpinho_Consolidation_MasterPlan.md, AIpinho_DuplicateClasses.md, AIpinho_FinalArchitecture.md, AIpinho_Hardcode_Remediation.md, AIpinho_MigrationPlan.md, AIpinho_RemovedFiles.md, AIpinho_RuntimeContractBundle.md, AIpinho_TestCoverageMatrix.md, DESKTOP_MOBILE_PARITY_MATRIX.md, docker-compose.yml, LICENSE, Makefile, maparuntime.json, pyproject.toml\n\nStack provavel / architecture map:\n- estruturas detectadas: python_project, package_src_layout, tests_present, config_first_layout, docs_present, project_profile:python\n- resumo: Projeto analisado em modo read-only: 442 arquivos vistos, 12 arquivos pequenos lidos e estruturas detectadas: python_project, package_src_layout, tests_present, config_first_layout, docs_present, project_profile:python.\n\nDiagnostico tecnico read-only:\n- INFO: Analise read-only controlada | A analise usou somente arvore de projeto e leituras de arquivos permitidos pelo executor read-only.\n- INFO: Arquitetura config-first detectada | O projeto possui config/ como area de contrato configuravel.\n- INFO: Testes detectados | A arvore inclui tests/, permitindo regressao automatizada do fluxo read-only.\n- LOW: Contexto parcial | Parte dos arquivos foi omitida ou bloqueada por budget, policy, segredo, binario ou guard de path.\n- INFO: Evidencia semantica observada: library_scan | Sinais de library_scan encontrados no recorte analisado. Termos: scan. Symbols: test_sensitivity_token_password_private_key. Arquivos relacionados: tests/unit/test_context_sensitivity_filter.py.\n\nSecoes do relatorio interno:\n- Escopo: Analise read-only sem escrita, patch, shell mutavel, memoria persistente, RAG ou chamada LLM.\n- Estruturas detectadas: python_project, package_src_layout, tests_present, config_first_layout, docs_present, project_profile:python\n- Arquivos lidos: tests/unit/test_capability_gate.py, tests/unit/test_event_card_component.py, tests/unit/test_artifact_link_card_component.py, tests/unit/test_debugger_event_card_component.py, tests/unit/test_download_integrity_utils.py, tests/unit/test_download_job_service.py, tests/unit/test_context_prompt_injection_guard.py, tests/unit/test_anomaly_detector.py\n- Arquivos omitidos/bloqueados: tests/unit/test_context_layer_resolver.py, tests/unit/test_chunk_classifier.py, tests/unit/test_context_purpose_policy_service.py, tests/unit/test_chat_model_fallback_service.py, tests/unit/test_artifact_write_event_service.py, tests/unit/test_debug_sanitizer.py, tests/unit/test_affected_file_resolver.py, tests/unit/test_diagnosis_service.py\n\nSuspeitas e limitacoes:\n- project_tree_entries_truncated\n- file_selection_partial\n- secret_redacted:generic_api_key\n- secret_redacted:bearer_token\n- Nenhuma violacao de leitura reportada.\n\nTechnical project plan / sprint roadmap:\n- Sprint 1: confirmar stack e entrypoints usando somente arquivos ja detectados.\n- Sprint 2: escolher um patch minimo com arquivos-alvo reais e rollback plan.\n- Sprint 3: criar TaskPreview somente se houver plano executavel, expected outputs e validation plan.\n- Sprint 4: aguardar aprovacao explicita antes de qualquer escrita ou shell.\n- Sprint 5: executar patch aprovado e validar sem ampliar escopo.\n\nTaskPreview: nao criada nesta fase read-only.\nApprovalRequest: nao criado por restricao explicita do prompt.\nValidation proposta: quando houver patch futuro, validar diff aprovado, outputs esperados e ausencia de side effects fora do escopo.\nVeredito final: READONLY_DISCOVERY_OK_READY_FOR_PATCH_PREVIEW",
+          "intent": {
+            "intent_type": "workspace_analysis_readonly",
+            "operation_type": "workspace_analysis_readonly",
+            "requires_task": false,
+            "readonly": true,
+            "negative_constraints": {
+              "shell_forbidden": true,
+              "patch_forbidden": true,
+              "write_forbidden": true,
+              "approval_forbidden": true
+            }
+          },
+          "policy": {
+            "read_only": true,
+            "approval_required_for": [],
+            "write_allowed": false,
+            "shell_allowed": false,
+            "workspace": "C:/Dev/AIpinho",
+            "analysis_result_id": "project_analysis_3019aba6265743ce899cd88837ce6626",
+            "analysis_status": "partial",
+            "canonical_lifecycle": {
+              "lifecycle_id": "life_21b527d5469d4ec3a74816eef7dba2e1",
+              "state": "plan_only_preview",
+              "reason_code": "readonly_or_planning",
+              "permission": "allowed",
+              "approval_gate_status": "not_required",
+              "approval_id": null,
+              "preview_id": null,
+              "draft_id": null
+            }
+          },
+          "contract_preview": {
+            "workspace": "C:/Dev/AIpinho",
+            "tree_status": "partial",
+            "total_files_seen": 442,
+            "total_dirs_seen": 53,
+            "structures": [
+              "python_project",
+              "package_src_layout",
+              "tests_present",
+              "config_first_layout",
+              "docs_present",
+              "project_profile:python"
+            ],
+            "findings": [
+              {
+                "finding_id": "finding_c795d1d0995844ae97ecf5bcb3b6e8ff",
+                "category": "scope",
+                "severity": "info",
+                "title": "Analise read-only controlada",
+                "summary": "A analise usou somente arvore de projeto e leituras de arquivos permitidos pelo executor read-only.",
+                "evidence_paths": [
+                  "tests/unit/test_capability_gate.py",
+                  "tests/unit/test_event_card_component.py",
+                  "tests/unit/test_artifact_link_card_component.py",
+                  "tests/unit/test_debugger_event_card_component.py",
+                  "tests/unit/test_download_integrity_utils.py",
+                  "tests/unit/test_download_job_service.py",
+                  "tests/unit/test_context_prompt_injection_guard.py",
+                  "tests/unit/test_anomaly_detector.py"
+                ],
+                "recommendation": "Use o relatorio como diagnostico inicial; mudancas continuam exigindo task, preview e approval."
+              },
+              {
+                "finding_id": "finding_a23848f358374718837afba8e637041e",
+                "category": "architecture",
+                "severity": "info",
+                "title": "Arquitetura config-first detectada",
+                "summary": "O projeto possui config/ como area de contrato configuravel.",
+                "evidence_paths": [],
+                "recommendation": "Manter variacoes em config e evitar regras operacionais espalhadas no codigo."
+              },
+              {
+                "finding_id": "finding_d517ace934f34d7b94d55d977a70c0fa",
+                "category": "validation",
+                "severity": "info",
+                "title": "Testes detectados",
+                "summary": "A arvore inclui tests/, permitindo regressao automatizada do fluxo read-only.",
+                "evidence_paths": [
+                  "tests/unit/test_artifact_content_validator.py",
+                  "tests/unit/test_firetest_phase1_phase2_semantic_contract.py",
+                  "tests/unit/test_context_sensitivity_filter.py",
+                  "tests/unit/test_memory_read_policy_service.py",
+                  "tests/unit/test_memory_candidate_evidence_service.py",
+                  "tests/unit/test_context_candidate_collector.py",
+                  "tests/unit/test_launcher_chat_client.py",
+                  "tests/unit/test_codex_agent_service.py"
+                ],
+                "recommendation": "Manter testes positivos e negativos para policies, prompts e side effects."
+              },
+              {
+                "finding_id": "finding_d275339095314cc2b9d64fa5b1e11ddb",
+                "category": "limitations",
+                "severity": "low",
+                "title": "Contexto parcial",
+                "summary": "Parte dos arquivos foi omitida ou bloqueada por budget, policy, segredo, binario ou guard de path.",
+                "evidence_paths": [
+                  "tests/unit/test_capability_gate.py",
+                  "tests/unit/test_event_card_component.py",
+                  "tests/unit/test_artifact_link_card_component.py",
+                  "tests/unit/test_debugger_event_card_component.py",
+                  "tests/unit/test_download_integrity_utils.py",
+                  "tests/unit/test_download_job_service.py",
+                  "tests/unit/test_context_prompt_injection_guard.py",
+                  "tests/unit/test_anomaly_detector.py",
+                  "tests/unit/test_chunk_dedupe_service.py",
+                  "tests/unit/test_event_cursor_store.py",
+                  "tests/unit/test_context_sensitivity_filter.py",
+                  "tests/unit/test_download_state_store.py"
+                ],
+                "recommendation": "Aumente o budget ou informe focus_paths especificos quando precisar de analise mais profunda."
+              },
+              {
+                "finding_id": "semantic_evidence_bfb770a9f0c44fc2bc0cac7c779468bc",
+                "category": "semantic_code_evidence",
+                "severity": "info",
+                "title": "Evidencia semantica observada: library_scan",
+                "summary": "Sinais de library_scan encontrados no recorte analisado. Termos: scan. Symbols: test_sensitivity_token_password_private_key. Arquivos relacionados: tests/unit/test_context_sensitivity_filter.py.",
+                "evidence_paths": [
+                  "tests/unit/test_context_sensitivity_filter.py"
+                ],
+                "recommendation": "Usar esta evidencia como ponto de partida para analise especializada; confirmar comportamento com validacao apropriada antes de declarar causa raiz."
+              }
+            ],
+            "warnings": [
+              "project_tree_entries_truncated",
+              "file_selection_partial",
+              "secret_redacted:generic_api_key",
+              "secret_redacted:bearer_token"
+            ],
+            "violations": []
+          },
+          "actions": [],
+          "next_actions": [],
+          "warnings": [],
+          "trace": [],
+          "raw_debug_ref": null,
+          "model_used": "canonical_governance_lifecycle",
+          "real_inference": false,
+          "model_warnings": [],
+          "evaluation_status": null,
+          "evaluation_warnings": [],
+          "fallback_used": false,
+          "context_plan_id": null,
+          "citation_map": {},
+          "evidence_refs": [],
+          "requires_user_action": false,
+          "is_final_answer": true,
+          "grounded": true,
+          "grounding_required": false,
+          "grounding_missing_reason": null,
+          "policy_block": null,
+          "governance_lifecycle": {
+            "lifecycle_id": "life_21b527d5469d4ec3a74816eef7dba2e1",
+            "state": "plan_only_preview",
+            "reason_code": "readonly_or_planning",
+            "intent": {
+              "intent_type": "workspace_analysis_readonly",
+              "operation_type": "workspace_analysis_readonly",
+              "requires_task": false,
+              "side_effect_requested": false,
+              "readonly": true,
+              "source_channel": "api_chat",
+              "negative_constraints": {
+                "shell_forbidden": true,
+                "patch_forbidden": true,
+                "write_forbidden": true,
+                "approval_forbidden": true
+              },
+              "confidence": 1.0,
+              "evidence": [
+                "state_effect_readonly_contract",
+                "negative:build_execution",
+                "negative:workspace_mutation",
+                "readonly_contract",
+                "observational_intent"
+              ],
+              "semantic_intent_graph": {
+                "observational_intent": true,
+                "planning_intent": false,
+                "mutation_intent": false,
+                "execution_intent": false,
+                "approval_intent": false,
+                "knowledge_output": false,
+                "artifact_output": false,
+                "readonly_contract": true,
+                "state_effect": "knowledge_only",
+                "workspace_effect": "immutable",
+                "filesystem_effect": "prohibited",
+                "runtime_effect": "prohibited",
+                "prohibited_effects": [
+                  "build_execution",
+                  "workspace_mutation"
+                ],
+                "requested_effects": [],
+                "evidence": [
+                  "negative:build_execution",
+                  "negative:workspace_mutation",
+                  "readonly_contract",
+                  "observational_intent"
+                ]
+              }
+            },
+            "operation_contract": {
+              "operation_id": "op_010e1015e6384778bafdc1803c7ab56a",
+              "session_id": "firetest5_h1c0_r2_3_noncanonical_phase2_to_6_20260814_011018",
+              "source_channel": "api_chat",
+              "intent_type": "workspace_analysis_readonly",
+              "operation_type": "workspace_analysis_readonly",
+              "contract_type": "workspace_analysis_readonly",
+              "runtime_profile": "workspace_analysis_readonly",
+              "requested_actions": [],
+              "target_paths": [],
+              "workspace_path": "C:/Dev/AIpinho",
+              "risk_level": "low",
+              "trace": [
+                {
+                  "stage": "canonical_contract",
+                  "source": "GovernanceLifecycleService"
+                }
+              ]
+            },
+            "policy": {
+              "permission": "allowed",
+              "allowed_actions": [],
+              "ask_actions": [],
+              "denied_actions": [],
+              "reason_code": "readonly_or_planning",
+              "reason": "Read-only or non-executing operation.",
+              "source": "effective_policy_decision",
+              "requires_approval": false,
+              "trace": []
+            },
+            "context_gate": {
+              "status": "not_required",
+              "can_create_write_approval": true,
+              "reason_code": "none",
+              "source_message_id": null,
+              "context_ref": null,
+              "workspace_snapshot_ref": null,
+              "discovery_ref": null,
+              "analysis_ref": null,
+              "missing_requirements": [],
+              "trace": []
+            },
+            "execution_plan": {
+              "preview_kind": "plan_only_preview",
+              "executable": false,
+              "executable_plan_ref": null,
+              "plan_kind": null,
+              "expected_outputs": [],
+              "target_paths": [],
+              "blocked_reason": "readonly_or_planning",
+              "trace": [
+                {
+                  "stage": "canonical_runtime",
+                  "mode": "plan_only"
+                }
+              ]
+            },
+            "preview_quality": {
+              "status": "not_required",
+              "can_create_approval": true,
+              "reason_code": "none",
+              "missing_requirements": [],
+              "trace": []
+            },
+            "approval_gate": {
+              "required": false,
+              "can_create_approval": false,
+              "approval_id": null,
+              "preview_id": null,
+              "draft_id": null,
+              "status": "not_required",
+              "reason_code": "none",
+              "trace": []
+            },
+            "validation": {
+              "status": "not_run",
+              "safe_to_continue": false,
+              "missing_outputs": [],
+              "evidence_refs": [],
+              "reason_code": "none"
+            },
+            "completion": {
+              "status": "completed",
+              "safe_to_report_success": true,
+              "expected_outputs": [],
+              "fulfilled_outputs": [],
+              "missing_outputs": [],
+              "reason_code": "none"
+            },
+            "speaker_truth": {
+              "can_claim_success": false,
+              "message_status": "blocked",
+              "required_disclosures": [
+                "readonly_or_planning"
+              ],
+              "forbidden_claims": [
+                "executed",
+                "implemented",
+                "created",
+                "modified",
+                "applied",
+                "validated",
+                "completed"
+              ],
+              "reason_code": "speaker_truth_blocked"
+            },
+            "artifacts": [],
+            "task_run_id": null,
+            "warnings": [],
+            "trace": [
+              {
+                "stage": "intent",
+                "intent_type": "workspace_analysis_readonly",
+                "operation_type": "workspace_analysis_readonly"
+              },
+              {
+                "stage": "policy",
+                "permission": "allowed",
+                "reason_code": "readonly_or_planning"
+              },
+              {
+                "stage": "context_gate",
+                "status": "not_required",
+                "reason_code": "none"
+              },
+              {
+                "stage": "plan",
+                "preview_kind": "plan_only_preview",
+                "executable": false
+              },
+              {
+                "stage": "preview_quality",
+                "status": "not_required",
+                "reason_code": "none"
+              },
+              {
+                "stage": "approval",
+                "status": "not_required"
+              },
+              {
+                "stage": "completion",
+                "status": "completed"
+              }
+            ]
+          }
+        }
+      },
+      "task_run_id": null,
+      "result_ref_id": null,
+      "operation_id": "chatop_66ed6f1c55b6456aa2fd910a689ce0d8",
+      "observation": null,
+      "queue_after_phase": {
+        "status_code": 200,
+        "elapsed_ms": 4,
+        "body": {
+          "status": "ok",
+          "active_runs": 0,
+          "queued_runs": 0,
+          "stale_runs": 0,
+          "pending_approvals": 0,
+          "active_sessions": 0,
+          "dispatcher_status": "available",
+          "worker_pool_capacity": 8,
+          "worker_pool_available_slots": 8,
+          "stale_run_ids": [],
+          "backpressure_required": false,
+          "reason_code": null
+        }
+      }
+    },
+    "4": {
+      "phase": 4,
+      "called_public_chat": true,
+      "canonical_progression_valid": false,
+      "diagnostic_override": true,
+      "client_response": {
+        "status_code": 200,
+        "elapsed_ms": 7314,
+        "body": {
+          "response_id": "chat_5e6275d2707b491dbf3d2ec0d2215fc7",
+          "session_id": "firetest5_h1c0_r2_3_noncanonical_phase2_to_6_20260814_011018",
+          "task_draft_id": null,
+          "preview_id": null,
+          "task_id": null,
+          "task_run_id": null,
+          "approval_id": null,
+          "task_preview_id": null,
+          "artifact_id": null,
+          "artifact_preview_id": null,
+          "artifact_links": [],
+          "result_ref_id": null,
+          "operation_id": "chatop_6197acaa935e43bc85df92c5364bc9ec",
+          "operation_type": "workspace_analysis_readonly",
+          "message_type": "assistant_final_answer",
+          "status": "ok",
+          "message": "WORKSPACE_ANALYSIS_READONLY_READY\nSpeaker Truth: modo read-only confirmado. Nao criei TaskPreview, ApprovalRequest, grant, shell, patch, artifact ou escrita de arquivos.\n\nFase atual: Fase A / discovery e diagnostico read-only.\n\nCampos da Fase 0:\n- intent_type: workspace_analysis_readonly\n- operation_type: workspace_analysis_readonly\n- readonly: true\n- side_effect_requested: false\n- requested_actions: []\n- policy.permission: allowed/read_only\n- approval_required: false\n- approval_id: null\n- task_id: null\n- runtime_profile: workspace_analysis_readonly\n\nProvas:\n- workspace: C:\\Dev\\AIpinho\n- tree_status: partial\n- arquivos vistos: 442; diretorios vistos: 53\n- top_level: .env.example, .env.local, .gitignore, .pytest_cache, .tmp_pycache, AIpinho_Architecture_Audit.md, AIpinho_Architecture_Audit_Consolidated_Report.md, AIpinho_BreakingChanges.md, AIpinho_Canonical_Flow.md, AIpinho_CanonicalDirectories.md, AIpinho_CompatibilityMatrix.md, AIpinho_Consolidation_MasterPlan.md, AIpinho_DuplicateClasses.md, AIpinho_FinalArchitecture.md, AIpinho_Hardcode_Remediation.md, AIpinho_MigrationPlan.md, AIpinho_RemovedFiles.md, AIpinho_RuntimeContractBundle.md, AIpinho_TestCoverageMatrix.md, apps\n- caminhos importantes: apps, config, docs, pyproject.toml, README.md, src, tests, tmp_android_unknown/build.gradle.kts, tmp_android_unknown/settings.gradle.kts, tmp_android_unknown/app/src, tests/artifact_fixtures.py, tests/conftest.py, tests/maintenance_helpers.py, tests/manual_inference_test_helpers.py, tests/patch_fixtures.py, tests/replay_regression_helpers.py, tests/test_legacy_rag_classification.py, tests/test_legacy_rag_commit_gate.py, tests/test_legacy_rag_router_contract.py, tests/test_legacy_rag_sanitizer.py\n- arquivos candidatos: AIpinho_Architecture_Audit.md, AIpinho_Architecture_Audit_Consolidated_Report.md, AIpinho_BreakingChanges.md, AIpinho_Canonical_Flow.md, AIpinho_CanonicalDirectories.md, AIpinho_CompatibilityMatrix.md, AIpinho_Consolidation_MasterPlan.md, AIpinho_DuplicateClasses.md, AIpinho_FinalArchitecture.md, AIpinho_Hardcode_Remediation.md, AIpinho_MigrationPlan.md, AIpinho_RemovedFiles.md, AIpinho_RuntimeContractBundle.md, AIpinho_TestCoverageMatrix.md, DESKTOP_MOBILE_PARITY_MATRIX.md, docker-compose.yml, LICENSE, Makefile, maparuntime.json, pyproject.toml\n\nStack provavel / architecture map:\n- estruturas detectadas: python_project, package_src_layout, tests_present, config_first_layout, docs_present, project_profile:python\n- resumo: Projeto analisado em modo read-only: 442 arquivos vistos, 12 arquivos pequenos lidos e estruturas detectadas: python_project, package_src_layout, tests_present, config_first_layout, docs_present, project_profile:python.\n\nDiagnostico tecnico read-only:\n- INFO: Analise read-only controlada | A analise usou somente arvore de projeto e leituras de arquivos permitidos pelo executor read-only.\n- INFO: Arquitetura config-first detectada | O projeto possui config/ como area de contrato configuravel.\n- INFO: Testes detectados | A arvore inclui tests/, permitindo regressao automatizada do fluxo read-only.\n- LOW: Contexto parcial | Parte dos arquivos foi omitida ou bloqueada por budget, policy, segredo, binario ou guard de path.\n- INFO: Evidencia semantica observada: library_scan | Sinais de library_scan encontrados no recorte analisado. Termos: scan. Symbols: test_sensitivity_token_password_private_key. Arquivos relacionados: tests/unit/test_context_sensitivity_filter.py.\n\nSecoes do relatorio interno:\n- Escopo: Analise read-only sem escrita, patch, shell mutavel, memoria persistente, RAG ou chamada LLM.\n- Estruturas detectadas: python_project, package_src_layout, tests_present, config_first_layout, docs_present, project_profile:python\n- Arquivos lidos: tests/unit/test_capability_gate.py, tests/unit/test_event_card_component.py, tests/unit/test_artifact_link_card_component.py, tests/unit/test_debugger_event_card_component.py, tests/unit/test_download_integrity_utils.py, tests/unit/test_download_job_service.py, tests/unit/test_context_prompt_injection_guard.py, tests/unit/test_anomaly_detector.py\n- Arquivos omitidos/bloqueados: tests/unit/test_context_layer_resolver.py, tests/unit/test_chunk_classifier.py, tests/unit/test_context_purpose_policy_service.py, tests/unit/test_chat_model_fallback_service.py, tests/unit/test_artifact_write_event_service.py, tests/unit/test_debug_sanitizer.py, tests/unit/test_affected_file_resolver.py, tests/unit/test_diagnosis_service.py\n\nSuspeitas e limitacoes:\n- project_tree_entries_truncated\n- file_selection_partial\n- secret_redacted:generic_api_key\n- secret_redacted:bearer_token\n- Nenhuma violacao de leitura reportada.\n\nTechnical project plan / sprint roadmap:\n- Sprint 1: confirmar stack e entrypoints usando somente arquivos ja detectados.\n- Sprint 2: escolher um patch minimo com arquivos-alvo reais e rollback plan.\n- Sprint 3: criar TaskPreview somente se houver plano executavel, expected outputs e validation plan.\n- Sprint 4: aguardar aprovacao explicita antes de qualquer escrita ou shell.\n- Sprint 5: executar patch aprovado e validar sem ampliar escopo.\n\nTaskPreview: nao criada nesta fase read-only.\nApprovalRequest: nao criado por restricao explicita do prompt.\nValidation proposta: quando houver patch futuro, validar diff aprovado, outputs esperados e ausencia de side effects fora do escopo.\nVeredito final: READONLY_DISCOVERY_OK_READY_FOR_PATCH_PREVIEW",
+          "intent": {
+            "intent_type": "workspace_analysis_readonly",
+            "operation_type": "workspace_analysis_readonly",
+            "requires_task": false,
+            "readonly": true,
+            "negative_constraints": {
+              "write_forbidden": true,
+              "patch_forbidden": true,
+              "approval_forbidden": true
+            }
+          },
+          "policy": {
+            "read_only": true,
+            "approval_required_for": [],
+            "write_allowed": false,
+            "shell_allowed": false,
+            "workspace": "C:/Dev/AIpinho",
+            "analysis_result_id": "project_analysis_7823ae4d4c3540b18db64e28e153b601",
+            "analysis_status": "partial",
+            "canonical_lifecycle": {
+              "lifecycle_id": "life_f5bad308cdf84fc9ae6bda96ba3a48d9",
+              "state": "plan_only_preview",
+              "reason_code": "readonly_or_planning",
+              "permission": "allowed",
+              "approval_gate_status": "not_required",
+              "approval_id": null,
+              "preview_id": null,
+              "draft_id": null
+            }
+          },
+          "contract_preview": {
+            "workspace": "C:/Dev/AIpinho",
+            "tree_status": "partial",
+            "total_files_seen": 442,
+            "total_dirs_seen": 53,
+            "structures": [
+              "python_project",
+              "package_src_layout",
+              "tests_present",
+              "config_first_layout",
+              "docs_present",
+              "project_profile:python"
+            ],
+            "findings": [
+              {
+                "finding_id": "finding_1c04847d7ccc43dcaf486971c96ba3bd",
+                "category": "scope",
+                "severity": "info",
+                "title": "Analise read-only controlada",
+                "summary": "A analise usou somente arvore de projeto e leituras de arquivos permitidos pelo executor read-only.",
+                "evidence_paths": [
+                  "tests/unit/test_capability_gate.py",
+                  "tests/unit/test_event_card_component.py",
+                  "tests/unit/test_artifact_link_card_component.py",
+                  "tests/unit/test_debugger_event_card_component.py",
+                  "tests/unit/test_download_integrity_utils.py",
+                  "tests/unit/test_download_job_service.py",
+                  "tests/unit/test_context_prompt_injection_guard.py",
+                  "tests/unit/test_anomaly_detector.py"
+                ],
+                "recommendation": "Use o relatorio como diagnostico inicial; mudancas continuam exigindo task, preview e approval."
+              },
+              {
+                "finding_id": "finding_d611967615264b93a4d0fc85fb893690",
+                "category": "architecture",
+                "severity": "info",
+                "title": "Arquitetura config-first detectada",
+                "summary": "O projeto possui config/ como area de contrato configuravel.",
+                "evidence_paths": [],
+                "recommendation": "Manter variacoes em config e evitar regras operacionais espalhadas no codigo."
+              },
+              {
+                "finding_id": "finding_195d55bcf20640d8aea35eba4ec33758",
+                "category": "validation",
+                "severity": "info",
+                "title": "Testes detectados",
+                "summary": "A arvore inclui tests/, permitindo regressao automatizada do fluxo read-only.",
+                "evidence_paths": [
+                  "tests/unit/test_artifact_content_validator.py",
+                  "tests/unit/test_firetest_phase1_phase2_semantic_contract.py",
+                  "tests/unit/test_context_sensitivity_filter.py",
+                  "tests/unit/test_memory_read_policy_service.py",
+                  "tests/unit/test_memory_candidate_evidence_service.py",
+                  "tests/unit/test_context_candidate_collector.py",
+                  "tests/unit/test_launcher_chat_client.py",
+                  "tests/unit/test_codex_agent_service.py"
+                ],
+                "recommendation": "Manter testes positivos e negativos para policies, prompts e side effects."
+              },
+              {
+                "finding_id": "finding_acd2e627a3014bbfa88849f38fb330af",
+                "category": "limitations",
+                "severity": "low",
+                "title": "Contexto parcial",
+                "summary": "Parte dos arquivos foi omitida ou bloqueada por budget, policy, segredo, binario ou guard de path.",
+                "evidence_paths": [
+                  "tests/unit/test_capability_gate.py",
+                  "tests/unit/test_event_card_component.py",
+                  "tests/unit/test_artifact_link_card_component.py",
+                  "tests/unit/test_debugger_event_card_component.py",
+                  "tests/unit/test_download_integrity_utils.py",
+                  "tests/unit/test_download_job_service.py",
+                  "tests/unit/test_context_prompt_injection_guard.py",
+                  "tests/unit/test_anomaly_detector.py",
+                  "tests/unit/test_chunk_dedupe_service.py",
+                  "tests/unit/test_event_cursor_store.py",
+                  "tests/unit/test_context_sensitivity_filter.py",
+                  "tests/unit/test_download_state_store.py"
+                ],
+                "recommendation": "Aumente o budget ou informe focus_paths especificos quando precisar de analise mais profunda."
+              },
+              {
+                "finding_id": "semantic_evidence_55386c8035bc41148d4730ef71434a59",
+                "category": "semantic_code_evidence",
+                "severity": "info",
+                "title": "Evidencia semantica observada: library_scan",
+                "summary": "Sinais de library_scan encontrados no recorte analisado. Termos: scan. Symbols: test_sensitivity_token_password_private_key. Arquivos relacionados: tests/unit/test_context_sensitivity_filter.py.",
+                "evidence_paths": [
+                  "tests/unit/test_context_sensitivity_filter.py"
+                ],
+                "recommendation": "Usar esta evidencia como ponto de partida para analise especializada; confirmar comportamento com validacao apropriada antes de declarar causa raiz."
+              }
+            ],
+            "warnings": [
+              "project_tree_entries_truncated",
+              "file_selection_partial",
+              "secret_redacted:generic_api_key",
+              "secret_redacted:bearer_token"
+            ],
+            "violations": []
+          },
+          "actions": [],
+          "next_actions": [],
+          "warnings": [],
+          "trace": [],
+          "raw_debug_ref": null,
+          "model_used": "canonical_governance_lifecycle",
+          "real_inference": false,
+          "model_warnings": [],
+          "evaluation_status": null,
+          "evaluation_warnings": [],
+          "fallback_used": false,
+          "context_plan_id": null,
+          "citation_map": {},
+          "evidence_refs": [],
+          "requires_user_action": false,
+          "is_final_answer": true,
+          "grounded": true,
+          "grounding_required": false,
+          "grounding_missing_reason": null,
+          "policy_block": null,
+          "governance_lifecycle": {
+            "lifecycle_id": "life_f5bad308cdf84fc9ae6bda96ba3a48d9",
+            "state": "plan_only_preview",
+            "reason_code": "readonly_or_planning",
+            "intent": {
+              "intent_type": "workspace_analysis_readonly",
+              "operation_type": "workspace_analysis_readonly",
+              "requires_task": false,
+              "side_effect_requested": false,
+              "readonly": true,
+              "source_channel": "api_chat",
+              "negative_constraints": {
+                "write_forbidden": true,
+                "patch_forbidden": true,
+                "approval_forbidden": true
+              },
+              "confidence": 1.0,
+              "evidence": [
+                "state_effect_readonly_contract",
+                "negative:workspace_mutation",
+                "readonly_contract",
+                "observational_intent"
+              ],
+              "semantic_intent_graph": {
+                "observational_intent": true,
+                "planning_intent": false,
+                "mutation_intent": false,
+                "execution_intent": false,
+                "approval_intent": false,
+                "knowledge_output": false,
+                "artifact_output": false,
+                "readonly_contract": true,
+                "state_effect": "knowledge_only",
+                "workspace_effect": "immutable",
+                "filesystem_effect": "prohibited",
+                "runtime_effect": "none",
+                "prohibited_effects": [
+                  "workspace_mutation"
+                ],
+                "requested_effects": [],
+                "evidence": [
+                  "negative:workspace_mutation",
+                  "readonly_contract",
+                  "observational_intent"
+                ]
+              }
+            },
+            "operation_contract": {
+              "operation_id": "op_78411e79f4c14fffa8c3d65f00b9aca4",
+              "session_id": "firetest5_h1c0_r2_3_noncanonical_phase2_to_6_20260814_011018",
+              "source_channel": "api_chat",
+              "intent_type": "workspace_analysis_readonly",
+              "operation_type": "workspace_analysis_readonly",
+              "contract_type": "workspace_analysis_readonly",
+              "runtime_profile": "workspace_analysis_readonly",
+              "requested_actions": [],
+              "target_paths": [],
+              "workspace_path": "C:/Dev/AIpinho",
+              "risk_level": "low",
+              "trace": [
+                {
+                  "stage": "canonical_contract",
+                  "source": "GovernanceLifecycleService"
+                }
+              ]
+            },
+            "policy": {
+              "permission": "allowed",
+              "allowed_actions": [],
+              "ask_actions": [],
+              "denied_actions": [],
+              "reason_code": "readonly_or_planning",
+              "reason": "Read-only or non-executing operation.",
+              "source": "effective_policy_decision",
+              "requires_approval": false,
+              "trace": []
+            },
+            "context_gate": {
+              "status": "not_required",
+              "can_create_write_approval": true,
+              "reason_code": "none",
+              "source_message_id": null,
+              "context_ref": null,
+              "workspace_snapshot_ref": null,
+              "discovery_ref": null,
+              "analysis_ref": null,
+              "missing_requirements": [],
+              "trace": []
+            },
+            "execution_plan": {
+              "preview_kind": "plan_only_preview",
+              "executable": false,
+              "executable_plan_ref": null,
+              "plan_kind": null,
+              "expected_outputs": [],
+              "target_paths": [],
+              "blocked_reason": "readonly_or_planning",
+              "trace": [
+                {
+                  "stage": "canonical_runtime",
+                  "mode": "plan_only"
+                }
+              ]
+            },
+            "preview_quality": {
+              "status": "not_required",
+              "can_create_approval": true,
+              "reason_code": "none",
+              "missing_requirements": [],
+              "trace": []
+            },
+            "approval_gate": {
+              "required": false,
+              "can_create_approval": false,
+              "approval_id": null,
+              "preview_id": null,
+              "draft_id": null,
+              "status": "not_required",
+              "reason_code": "none",
+              "trace": []
+            },
+            "validation": {
+              "status": "not_run",
+              "safe_to_continue": false,
+              "missing_outputs": [],
+              "evidence_refs": [],
+              "reason_code": "none"
+            },
+            "completion": {
+              "status": "completed",
+              "safe_to_report_success": true,
+              "expected_outputs": [],
+              "fulfilled_outputs": [],
+              "missing_outputs": [],
+              "reason_code": "none"
+            },
+            "speaker_truth": {
+              "can_claim_success": false,
+              "message_status": "blocked",
+              "required_disclosures": [
+                "readonly_or_planning"
+              ],
+              "forbidden_claims": [
+                "executed",
+                "implemented",
+                "created",
+                "modified",
+                "applied",
+                "validated",
+                "completed"
+              ],
+              "reason_code": "speaker_truth_blocked"
+            },
+            "artifacts": [],
+            "task_run_id": null,
+            "warnings": [],
+            "trace": [
+              {
+                "stage": "intent",
+                "intent_type": "workspace_analysis_readonly",
+                "operation_type": "workspace_analysis_readonly"
+              },
+              {
+                "stage": "policy",
+                "permission": "allowed",
+                "reason_code": "readonly_or_planning"
+              },
+              {
+                "stage": "context_gate",
+                "status": "not_required",
+                "reason_code": "none"
+              },
+              {
+                "stage": "plan",
+                "preview_kind": "plan_only_preview",
+                "executable": false
+              },
+              {
+                "stage": "preview_quality",
+                "status": "not_required",
+                "reason_code": "none"
+              },
+              {
+                "stage": "approval",
+                "status": "not_required"
+              },
+              {
+                "stage": "completion",
+                "status": "completed"
+              }
+            ]
+          }
+        }
+      },
+      "task_run_id": null,
+      "result_ref_id": null,
+      "operation_id": "chatop_6197acaa935e43bc85df92c5364bc9ec",
+      "observation": null,
+      "queue_after_phase": {
+        "status_code": 200,
+        "elapsed_ms": 4,
+        "body": {
+          "status": "ok",
+          "active_runs": 0,
+          "queued_runs": 0,
+          "stale_runs": 0,
+          "pending_approvals": 0,
+          "active_sessions": 0,
+          "dispatcher_status": "available",
+          "worker_pool_capacity": 8,
+          "worker_pool_available_slots": 8,
+          "stale_run_ids": [],
+          "backpressure_required": false,
+          "reason_code": null
+        }
+      }
+    },
+    "5": {
+      "phase": 5,
+      "called_public_chat": true,
+      "canonical_progression_valid": false,
+      "diagnostic_override": true,
+      "client_response": {
+        "status_code": 200,
+        "elapsed_ms": 4402,
+        "body": {
+          "response_id": "chat_21d5afafef4e475bb0ece4bb529d1616",
+          "session_id": "firetest5_h1c0_r2_3_noncanonical_phase2_to_6_20260814_011018",
+          "task_draft_id": null,
+          "preview_id": null,
+          "task_id": null,
+          "task_run_id": null,
+          "approval_id": null,
+          "task_preview_id": null,
+          "artifact_id": null,
+          "artifact_preview_id": null,
+          "artifact_links": [],
+          "result_ref_id": null,
+          "operation_id": "chatop_595f48b0e10c4e89b8fcdf1da473a4e2",
+          "operation_type": "conversation",
+          "message_type": "assistant_degraded_answer",
+          "status": "degraded",
+          "message": "O chat legado falhou de forma controlada. reason_code=legacy_chat_failed; detalhe=ValueError",
+          "intent": {
+            "intent_type": "conversation",
+            "requires_task": false
+          },
+          "policy": {
+            "legacy_chat_failed": true,
+            "canonical_lifecycle": {
+              "lifecycle_id": "life_fca6f45b9dab4c84a3b3d508d109d62c",
+              "state": "plan_only_preview",
+              "reason_code": "readonly_or_planning",
+              "permission": "allowed",
+              "approval_gate_status": "not_required",
+              "completion_status": "completed_with_warnings",
+              "safe_to_report_success": false,
+              "speaker_can_claim_success": false
+            }
+          },
+          "contract_preview": {},
+          "actions": [],
+          "next_actions": [],
+          "warnings": [
+            "canonical_lifecycle:readonly_or_planning"
+          ],
+          "trace": [],
+          "raw_debug_ref": null,
+          "model_used": "canonical_governance_lifecycle",
+          "real_inference": false,
+          "model_warnings": [],
+          "evaluation_status": null,
+          "evaluation_warnings": [],
+          "fallback_used": false,
+          "context_plan_id": null,
+          "citation_map": {},
+          "evidence_refs": [],
+          "requires_user_action": false,
+          "is_final_answer": true,
+          "grounded": true,
+          "grounding_required": false,
+          "grounding_missing_reason": null,
+          "policy_block": null,
+          "governance_lifecycle": {
+            "lifecycle_id": "life_fca6f45b9dab4c84a3b3d508d109d62c",
+            "state": "plan_only_preview",
+            "reason_code": "readonly_or_planning",
+            "intent": {
+              "intent_type": "conversation",
+              "operation_type": "conversation",
+              "requires_task": false,
+              "side_effect_requested": false,
+              "readonly": false,
+              "source_channel": "api_chat",
+              "negative_constraints": {},
+              "confidence": 1.0,
+              "evidence": [],
+              "semantic_intent_graph": {
+                "observational_intent": true,
+                "planning_intent": false,
+                "mutation_intent": false,
+                "execution_intent": false,
+                "approval_intent": false,
+                "knowledge_output": true,
+                "artifact_output": false,
+                "readonly_contract": false,
+                "state_effect": "knowledge_only",
+                "workspace_effect": "knowledge_only",
+                "filesystem_effect": "none",
+                "runtime_effect": "none",
+                "prohibited_effects": [],
+                "requested_effects": [
+                  "knowledge_only"
+                ],
+                "evidence": [
+                  "positive:knowledge_only",
+                  "observational_intent"
+                ]
+              }
+            },
+            "operation_contract": {
+              "operation_id": "op_35e2c58dd7994c1d9aa9f51651e77d1f",
+              "session_id": "firetest5_h1c0_r2_3_noncanonical_phase2_to_6_20260814_011018",
+              "source_channel": "api_chat",
+              "intent_type": "conversation",
+              "operation_type": "conversation",
+              "contract_type": "conversation",
+              "runtime_profile": "conversation",
+              "requested_actions": [],
+              "target_paths": [],
+              "workspace_path": "C:/Dev/AIpinho",
+              "risk_level": "low",
+              "trace": [
+                {
+                  "stage": "canonical_contract",
+                  "source": "GovernanceLifecycleService"
+                }
+              ]
+            },
+            "policy": {
+              "permission": "allowed",
+              "allowed_actions": [],
+              "ask_actions": [],
+              "denied_actions": [],
+              "reason_code": "readonly_or_planning",
+              "reason": "Read-only or non-executing operation.",
+              "source": "effective_policy_decision",
+              "requires_approval": false,
+              "trace": []
+            },
+            "context_gate": {
+              "status": "not_required",
+              "can_create_write_approval": true,
+              "reason_code": "none",
+              "source_message_id": null,
+              "context_ref": null,
+              "workspace_snapshot_ref": null,
+              "discovery_ref": null,
+              "analysis_ref": null,
+              "missing_requirements": [],
+              "trace": []
+            },
+            "execution_plan": {
+              "preview_kind": "plan_only_preview",
+              "executable": false,
+              "executable_plan_ref": null,
+              "plan_kind": null,
+              "expected_outputs": [],
+              "target_paths": [],
+              "blocked_reason": "readonly_or_planning",
+              "trace": [
+                {
+                  "stage": "canonical_runtime",
+                  "mode": "plan_only"
+                }
+              ]
+            },
+            "preview_quality": {
+              "status": "not_required",
+              "can_create_approval": true,
+              "reason_code": "none",
+              "missing_requirements": [],
+              "trace": []
+            },
+            "approval_gate": {
+              "required": false,
+              "can_create_approval": false,
+              "approval_id": null,
+              "preview_id": null,
+              "draft_id": null,
+              "status": "not_required",
+              "reason_code": "none",
+              "trace": []
+            },
+            "validation": {
+              "status": "not_run",
+              "safe_to_continue": false,
+              "missing_outputs": [],
+              "evidence_refs": [],
+              "reason_code": "none"
+            },
+            "completion": {
+              "status": "completed_with_warnings",
+              "safe_to_report_success": false,
+              "expected_outputs": [],
+              "fulfilled_outputs": [],
+              "missing_outputs": [],
+              "reason_code": "none"
+            },
+            "speaker_truth": {
+              "can_claim_success": false,
+              "message_status": "blocked",
+              "required_disclosures": [
+                "readonly_or_planning"
+              ],
+              "forbidden_claims": [
+                "executed",
+                "implemented",
+                "created",
+                "modified",
+                "applied",
+                "validated",
+                "completed"
+              ],
+              "reason_code": "speaker_truth_blocked"
+            },
+            "artifacts": [],
+            "task_run_id": null,
+            "warnings": [],
+            "trace": [
+              {
+                "stage": "intent",
+                "intent_type": "conversation",
+                "operation_type": "conversation"
+              },
+              {
+                "stage": "policy",
+                "permission": "allowed",
+                "reason_code": "readonly_or_planning"
+              },
+              {
+                "stage": "context_gate",
+                "status": "not_required",
+                "reason_code": "none"
+              },
+              {
+                "stage": "plan",
+                "preview_kind": "plan_only_preview",
+                "executable": false
+              },
+              {
+                "stage": "preview_quality",
+                "status": "not_required",
+                "reason_code": "none"
+              },
+              {
+                "stage": "approval",
+                "status": "not_required"
+              },
+              {
+                "stage": "completion",
+                "status": "completed_with_warnings"
+              }
+            ],
+            "semantic_ingress_doctor": {
+              "report_id": "semantic_ingress_6b86b60fd9cc474f8c3efed88bec14eb",
+              "status": "partial",
+              "prompt_normalization": {
+                "normalization_id": "prompt_norm_ba7bfb31e5384ebe8d11e8cc692db23c",
+                "original_text": "Fase 5 ? Validation/Artifact Review do FireTest 5 (DIAGN?STICO N?O-CAN?NICO).\n\nContexto obrigat?rio: Fase 1 est? BLOCKED, music_inventory partial safe_to_use=false. Esta chamada ? teste p?s-bloqueio.\n\nTarefa: validar que Completion/Speaker Truth permanecem conservadores e bloquear se depend?ncias sem?nticas anteriores n?o permitem valida??o. N?o declarar FireTest ready.",
+                "normalized_text": "fase 5 ? validation/artifact review do firetest 5 (diagn?stico nao-can?nico). contexto obrigat?rio: fase 1 est? blocked, music_inventory partial safe_to_use=false. esta chamada ? teste p?s-bloqueio. tarefa: validar que completion/speaker truth permanecem conservadores e bloquear se depend?ncias sem?nticas anteriores nao permitem valida??o. nao declarar firetest ready.",
+                "encoding_detected": "unicode_text",
+                "encoding_issues": [],
+                "transformations": [
+                  "unicode_nfkd",
+                  "casefold",
+                  "whitespace_collapsed"
+                ],
+                "text_variants": {},
+                "confidence": 1.0
+              },
+              "semantic_propositions": [
+                {
+                  "proposition_id": "semantic_prop_b488db6eef7547ef9b5761ac32a74daa",
+                  "proposition_type": "objective",
+                  "subject": "operator",
+                  "predicate": "submitted_prompt",
+                  "object_value": {
+                    "prompt_chars": 372
+                  },
+                  "polarity": "neutral",
+                  "confidence": 1.0,
+                  "evidence_refs": [
+                    "prompt:original_text"
+                  ]
+                },
+                {
+                  "proposition_id": "semantic_prop_48e660bfd17e4812990e63f9bb650bd1",
+                  "proposition_type": "effect_expected",
+                  "subject": "state",
+                  "predicate": "requests",
+                  "object_value": "knowledge_only",
+                  "polarity": "positive",
+                  "confidence": 1.0,
+                  "evidence_refs": [
+                    "semantic_graph:requested_effect:knowledge_only"
+                  ]
+                },
+                {
+                  "proposition_id": "semantic_prop_8cf22dff3bac4f869f974fd411032189",
+                  "proposition_type": "intent_signal",
+                  "subject": "semantic_graph",
+                  "predicate": "observational_intent",
+                  "object_value": true,
+                  "polarity": "neutral",
+                  "confidence": 1.0,
+                  "evidence_refs": [
+                    "semantic_graph:observational_intent"
+                  ]
+                },
+                {
+                  "proposition_id": "semantic_prop_67ed267511cf44ec92104eef097763dc",
+                  "proposition_type": "intent_signal",
+                  "subject": "semantic_graph",
+                  "predicate": "knowledge_output",
+                  "object_value": true,
+                  "polarity": "neutral",
+                  "confidence": 1.0,
+                  "evidence_refs": [
+                    "semantic_graph:knowledge_output"
+                  ]
+                }
+              ],
+              "state_effects": [
+                {
+                  "effect_id": "state_effect_a1b0e2ec21b74b7c8c1700f274cb4b19",
+                  "target": "workspace",
+                  "effect": "read_only",
+                  "confidence": 1.0,
+                  "evidence_refs": [
+                    "semantic_graph:workspace_effect",
+                    "semantic_graph:evidence:positive:knowledge_only",
+                    "semantic_graph:evidence:observational_intent"
+                  ],
+                  "reason_codes": []
+                },
+                {
+                  "effect_id": "state_effect_5f7d53df57224e5389fec7d36cf22002",
+                  "target": "filesystem",
+                  "effect": "none",
+                  "confidence": 1.0,
+                  "evidence_refs": [
+                    "semantic_graph:filesystem_effect",
+                    "semantic_graph:evidence:positive:knowledge_only",
+                    "semantic_graph:evidence:observational_intent"
+                  ],
+                  "reason_codes": []
+                },
+                {
+                  "effect_id": "state_effect_e514ddf27d4e451a99cd8cd492267234",
+                  "target": "runtime",
+                  "effect": "none",
+                  "confidence": 1.0,
+                  "evidence_refs": [
+                    "semantic_graph:runtime_effect",
+                    "semantic_graph:evidence:positive:knowledge_only",
+                    "semantic_graph:evidence:observational_intent"
+                  ],
+                  "reason_codes": []
+                },
+                {
+                  "effect_id": "state_effect_db560e3e5c6b43d68f50edc4f468c9c5",
+                  "target": "knowledge",
+                  "effect": "read_only",
+                  "confidence": 1.0,
+                  "evidence_refs": [
+                    "semantic_graph:knowledge_output",
+                    "semantic_graph:observational_intent"
+                  ],
+                  "reason_codes": []
+                }
+              ],
+              "intent_decision": {
+                "decision_id": "intent_decision_980d789b988947a58d603ac9e218b645",
+                "selected_intent_id": "conversation",
+                "selected_operation_type": "conversation",
+                "candidates": [
+                  {
+                    "intent_id": "workspace_analysis_readonly",
+                    "operation_type": "workspace_analysis_readonly",
+                    "confidence": 0.7,
+                    "supporting_propositions": [
+                      "semantic_prop_b488db6eef7547ef9b5761ac32a74daa",
+                      "semantic_prop_48e660bfd17e4812990e63f9bb650bd1",
+                      "semantic_prop_67ed267511cf44ec92104eef097763dc"
+                    ],
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "arbitration_score": 0.7
+                  },
+                  {
+                    "intent_id": "product_planning_readonly",
+                    "operation_type": "product_planning_readonly",
+                    "confidence": 0.0,
+                    "supporting_propositions": [],
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "arbitration_score": 0.0
+                  },
+                  {
+                    "intent_id": "proposal_only",
+                    "operation_type": "patch_preview",
+                    "confidence": 0.3,
+                    "supporting_propositions": [],
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "arbitration_score": 0.3
+                  },
+                  {
+                    "intent_id": "patch_or_write_request",
+                    "operation_type": "patch_request",
+                    "confidence": 0.3,
+                    "supporting_propositions": [],
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "arbitration_score": 0.3
+                  },
+                  {
+                    "intent_id": "governed_shell_request",
+                    "operation_type": "run_command",
+                    "confidence": 0.3,
+                    "supporting_propositions": [],
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "arbitration_score": 0.3
+                  },
+                  {
+                    "intent_id": "approval_command",
+                    "operation_type": "approval_command",
+                    "confidence": 0.3,
+                    "supporting_propositions": [],
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "arbitration_score": 0.3
+                  },
+                  {
+                    "intent_id": "conversation",
+                    "operation_type": "conversation",
+                    "confidence": 0.3,
+                    "supporting_propositions": [],
+                    "rejected_reason": null,
+                    "arbitration_score": 1.0
+                  }
+                ],
+                "criteria": [
+                  "selected_by_existing_canonical_intent_router",
+                  "state_effect_observed_not_overridden",
+                  "readonly_constraints_preserved_when_selected"
+                ],
+                "evidence_refs": [
+                  "positive:knowledge_only",
+                  "observational_intent"
+                ],
+                "confidence": 1.0,
+                "reason_codes": [
+                  "INTENT_AMBIGUITY"
+                ],
+                "decision_source": "canonical_intent_router"
+              },
+              "operation_contract_decision": {
+                "decision_id": "operation_contract_decision_14ac032e7ba7422a921a5811df1c239b",
+                "selected_contract_type": "conversation",
+                "selected_operation_type": "conversation",
+                "candidates": [
+                  {
+                    "contract_type": "analysis_readonly",
+                    "operation_type": "workspace_analysis_readonly",
+                    "confidence": 0.7,
+                    "state_effect_alignment": "aligned",
+                    "supporting_intent": "workspace_analysis_readonly",
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "evidence_refs": [
+                      "intent_candidate:workspace_analysis_readonly"
+                    ]
+                  },
+                  {
+                    "contract_type": "analysis_readonly",
+                    "operation_type": "product_planning_readonly",
+                    "confidence": 0.0,
+                    "state_effect_alignment": "aligned",
+                    "supporting_intent": "product_planning_readonly",
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "evidence_refs": [
+                      "intent_candidate:product_planning_readonly"
+                    ]
+                  },
+                  {
+                    "contract_type": "patch_request",
+                    "operation_type": "patch_preview",
+                    "confidence": 0.3,
+                    "state_effect_alignment": "partial",
+                    "supporting_intent": "proposal_only",
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "evidence_refs": [
+                      "intent_candidate:proposal_only"
+                    ]
+                  },
+                  {
+                    "contract_type": "patch_request",
+                    "operation_type": "patch_request",
+                    "confidence": 0.3,
+                    "state_effect_alignment": "partial",
+                    "supporting_intent": "patch_or_write_request",
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "evidence_refs": [
+                      "intent_candidate:patch_or_write_request"
+                    ]
+                  },
+                  {
+                    "contract_type": "shell_build_test",
+                    "operation_type": "run_command",
+                    "confidence": 0.3,
+                    "state_effect_alignment": "partial",
+                    "supporting_intent": "governed_shell_request",
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "evidence_refs": [
+                      "intent_candidate:governed_shell_request"
+                    ]
+                  },
+                  {
+                    "contract_type": "approval_command",
+                    "operation_type": "approval_command",
+                    "confidence": 0.3,
+                    "state_effect_alignment": "partial",
+                    "supporting_intent": "approval_command",
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "evidence_refs": [
+                      "intent_candidate:approval_command"
+                    ]
+                  },
+                  {
+                    "contract_type": "conversation",
+                    "operation_type": "conversation",
+                    "confidence": 0.3,
+                    "state_effect_alignment": "aligned",
+                    "supporting_intent": "conversation",
+                    "rejected_reason": null,
+                    "evidence_refs": [
+                      "intent_candidate:conversation"
+                    ]
+                  }
+                ],
+                "relation_to_intent": "selected_contract_derived_from_existing_intent_decision",
+                "relation_to_state_effects": "aligned",
+                "evidence_refs": [
+                  "actual_operation_contract"
+                ],
+                "confidence": 1.0,
+                "reason_codes": [],
+                "decision_source": "governance_lifecycle"
+              },
+              "reason_codes": [
+                "INTENT_AMBIGUITY"
+              ],
+              "warnings": [
+                "INTENT_AMBIGUITY"
+              ],
+              "trace": [
+                {
+                  "stage": "PromptNormalization",
+                  "status": "ok"
+                },
+                {
+                  "stage": "SemanticPropositionExtraction",
+                  "count": 4
+                },
+                {
+                  "stage": "StateEffectResolution",
+                  "state_effect": "knowledge_only"
+                },
+                {
+                  "stage": "IntentArbitration",
+                  "selected": "conversation"
+                },
+                {
+                  "stage": "OperationContractSelection",
+                  "selected": "conversation"
+                }
+              ]
+            },
+            "pre_task_bootstrap": {
+              "status": "complete",
+              "requires_task": false,
+              "task_id": null,
+              "task_run_id": null,
+              "stages": [
+                {
+                  "stage": "ChatIngressReceived",
+                  "status": "complete",
+                  "reason": "prompt_received",
+                  "data": {
+                    "source_channel": "api_chat"
+                  }
+                },
+                {
+                  "stage": "PromptNormalized",
+                  "status": "complete",
+                  "reason": "prompt_normalized",
+                  "data": {}
+                },
+                {
+                  "stage": "PreviewStarted",
+                  "status": "complete",
+                  "reason": "canonical_lifecycle_preview_started",
+                  "data": {
+                    "mode": "degraded"
+                  }
+                },
+                {
+                  "stage": "IntentResolutionStarted",
+                  "status": "complete",
+                  "reason": "canonical_intent_resolution_started",
+                  "data": {}
+                },
+                {
+                  "stage": "IntentResolutionFinished",
+                  "status": "complete",
+                  "reason": "canonical_intent_resolved",
+                  "data": {}
+                },
+                {
+                  "stage": "OperationContractSelected",
+                  "status": "complete",
+                  "reason": "operation_contract_selected",
+                  "data": {
+                    "operation_type": "conversation"
+                  }
+                },
+                {
+                  "stage": "TaskBootstrapStarted",
+                  "status": "skipped",
+                  "reason": "task_not_required_by_contract",
+                  "data": {}
+                },
+                {
+                  "stage": "TaskBootstrapFinished",
+                  "status": "skipped",
+                  "reason": "task_bootstrap_not_completed",
+                  "data": {
+                    "task_id": null
+                  }
+                },
+                {
+                  "stage": "TaskCreated",
+                  "status": "skipped",
+                  "reason": "task_missing",
+                  "data": {
+                    "task_id": null
+                  }
+                },
+                {
+                  "stage": "TaskRunCreated",
+                  "status": "skipped",
+                  "reason": "task_run_missing",
+                  "data": {
+                    "task_run_id": null
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "task_run_id": null,
+      "result_ref_id": null,
+      "operation_id": "chatop_595f48b0e10c4e89b8fcdf1da473a4e2",
+      "observation": null,
+      "queue_after_phase": {
+        "status_code": 200,
+        "elapsed_ms": 3,
+        "body": {
+          "status": "ok",
+          "active_runs": 0,
+          "queued_runs": 0,
+          "stale_runs": 0,
+          "pending_approvals": 0,
+          "active_sessions": 0,
+          "dispatcher_status": "available",
+          "worker_pool_capacity": 8,
+          "worker_pool_available_slots": 8,
+          "stale_run_ids": [],
+          "backpressure_required": false,
+          "reason_code": null
+        }
+      }
+    },
+    "6": {
+      "phase": 6,
+      "called_public_chat": true,
+      "canonical_progression_valid": false,
+      "diagnostic_override": true,
+      "client_response": {
+        "status_code": 200,
+        "elapsed_ms": 5730,
+        "body": {
+          "response_id": "chat_d5a0a1d812544e8580e4b2a16ceab069",
+          "session_id": "firetest5_h1c0_r2_3_noncanonical_phase2_to_6_20260814_011018",
+          "task_draft_id": null,
+          "preview_id": null,
+          "task_id": null,
+          "task_run_id": null,
+          "approval_id": null,
+          "task_preview_id": null,
+          "artifact_id": null,
+          "artifact_preview_id": null,
+          "artifact_links": [],
+          "result_ref_id": null,
+          "operation_id": "chatop_b6420bd9d4374b22ab16db7ddd0b61ac",
+          "operation_type": "conversation",
+          "message_type": "assistant_degraded_answer",
+          "status": "degraded",
+          "message": "O chat legado falhou de forma controlada. reason_code=legacy_chat_failed; detalhe=ValueError",
+          "intent": {
+            "intent_type": "conversation",
+            "requires_task": false
+          },
+          "policy": {
+            "legacy_chat_failed": true,
+            "canonical_lifecycle": {
+              "lifecycle_id": "life_169e1e450ff84fee9960b6d2b27ba5d4",
+              "state": "plan_only_preview",
+              "reason_code": "readonly_or_planning",
+              "permission": "allowed",
+              "approval_gate_status": "not_required",
+              "completion_status": "completed_with_warnings",
+              "safe_to_report_success": false,
+              "speaker_can_claim_success": false
+            }
+          },
+          "contract_preview": {},
+          "actions": [],
+          "next_actions": [],
+          "warnings": [
+            "canonical_lifecycle:readonly_or_planning"
+          ],
+          "trace": [],
+          "raw_debug_ref": null,
+          "model_used": "canonical_governance_lifecycle",
+          "real_inference": false,
+          "model_warnings": [],
+          "evaluation_status": null,
+          "evaluation_warnings": [],
+          "fallback_used": false,
+          "context_plan_id": null,
+          "citation_map": {},
+          "evidence_refs": [],
+          "requires_user_action": false,
+          "is_final_answer": true,
+          "grounded": true,
+          "grounding_required": false,
+          "grounding_missing_reason": null,
+          "policy_block": null,
+          "governance_lifecycle": {
+            "lifecycle_id": "life_169e1e450ff84fee9960b6d2b27ba5d4",
+            "state": "plan_only_preview",
+            "reason_code": "readonly_or_planning",
+            "intent": {
+              "intent_type": "conversation",
+              "operation_type": "conversation",
+              "requires_task": false,
+              "side_effect_requested": false,
+              "readonly": false,
+              "source_channel": "api_chat",
+              "negative_constraints": {},
+              "confidence": 1.0,
+              "evidence": [],
+              "semantic_intent_graph": {
+                "observational_intent": false,
+                "planning_intent": false,
+                "mutation_intent": false,
+                "execution_intent": false,
+                "approval_intent": false,
+                "knowledge_output": false,
+                "artifact_output": false,
+                "readonly_contract": false,
+                "state_effect": "none",
+                "workspace_effect": "none",
+                "filesystem_effect": "none",
+                "runtime_effect": "none",
+                "prohibited_effects": [],
+                "requested_effects": [],
+                "evidence": []
+              }
+            },
+            "operation_contract": {
+              "operation_id": "op_b59cbad91f51444ea3c7b6345fa6c830",
+              "session_id": "firetest5_h1c0_r2_3_noncanonical_phase2_to_6_20260814_011018",
+              "source_channel": "api_chat",
+              "intent_type": "conversation",
+              "operation_type": "conversation",
+              "contract_type": "conversation",
+              "runtime_profile": "conversation",
+              "requested_actions": [],
+              "target_paths": [],
+              "workspace_path": "C:/Dev/AIpinho",
+              "risk_level": "low",
+              "trace": [
+                {
+                  "stage": "canonical_contract",
+                  "source": "GovernanceLifecycleService"
+                }
+              ]
+            },
+            "policy": {
+              "permission": "allowed",
+              "allowed_actions": [],
+              "ask_actions": [],
+              "denied_actions": [],
+              "reason_code": "readonly_or_planning",
+              "reason": "Read-only or non-executing operation.",
+              "source": "effective_policy_decision",
+              "requires_approval": false,
+              "trace": []
+            },
+            "context_gate": {
+              "status": "not_required",
+              "can_create_write_approval": true,
+              "reason_code": "none",
+              "source_message_id": null,
+              "context_ref": null,
+              "workspace_snapshot_ref": null,
+              "discovery_ref": null,
+              "analysis_ref": null,
+              "missing_requirements": [],
+              "trace": []
+            },
+            "execution_plan": {
+              "preview_kind": "plan_only_preview",
+              "executable": false,
+              "executable_plan_ref": null,
+              "plan_kind": null,
+              "expected_outputs": [],
+              "target_paths": [],
+              "blocked_reason": "readonly_or_planning",
+              "trace": [
+                {
+                  "stage": "canonical_runtime",
+                  "mode": "plan_only"
+                }
+              ]
+            },
+            "preview_quality": {
+              "status": "not_required",
+              "can_create_approval": true,
+              "reason_code": "none",
+              "missing_requirements": [],
+              "trace": []
+            },
+            "approval_gate": {
+              "required": false,
+              "can_create_approval": false,
+              "approval_id": null,
+              "preview_id": null,
+              "draft_id": null,
+              "status": "not_required",
+              "reason_code": "none",
+              "trace": []
+            },
+            "validation": {
+              "status": "not_run",
+              "safe_to_continue": false,
+              "missing_outputs": [],
+              "evidence_refs": [],
+              "reason_code": "none"
+            },
+            "completion": {
+              "status": "completed_with_warnings",
+              "safe_to_report_success": false,
+              "expected_outputs": [],
+              "fulfilled_outputs": [],
+              "missing_outputs": [],
+              "reason_code": "none"
+            },
+            "speaker_truth": {
+              "can_claim_success": false,
+              "message_status": "blocked",
+              "required_disclosures": [
+                "readonly_or_planning"
+              ],
+              "forbidden_claims": [
+                "executed",
+                "implemented",
+                "created",
+                "modified",
+                "applied",
+                "validated",
+                "completed"
+              ],
+              "reason_code": "speaker_truth_blocked"
+            },
+            "artifacts": [],
+            "task_run_id": null,
+            "warnings": [],
+            "trace": [
+              {
+                "stage": "intent",
+                "intent_type": "conversation",
+                "operation_type": "conversation"
+              },
+              {
+                "stage": "policy",
+                "permission": "allowed",
+                "reason_code": "readonly_or_planning"
+              },
+              {
+                "stage": "context_gate",
+                "status": "not_required",
+                "reason_code": "none"
+              },
+              {
+                "stage": "plan",
+                "preview_kind": "plan_only_preview",
+                "executable": false
+              },
+              {
+                "stage": "preview_quality",
+                "status": "not_required",
+                "reason_code": "none"
+              },
+              {
+                "stage": "approval",
+                "status": "not_required"
+              },
+              {
+                "stage": "completion",
+                "status": "completed_with_warnings"
+              }
+            ],
+            "semantic_ingress_doctor": {
+              "report_id": "semantic_ingress_98422262d54a4c82bee3fada1e8ada37",
+              "status": "partial",
+              "prompt_normalization": {
+                "normalization_id": "prompt_norm_3d7ce8f6d27b46c687eacd3aebaaca56",
+                "original_text": "Fase 6 ? Final Synthesis do FireTest 5 (DIAGN?STICO N?O-CAN?NICO).\n\nContexto obrigat?rio: a progress?o can?nica est? bloqueada desde a Fase 1. Esta chamada ? apenas teste observacional do runtime.\n\nTarefa: produzir ou bloquear s?ntese governada indicando que FireTest 5 n?o est? READY se as fases anteriores n?o passaram. N?o transformar skipped/blocked em sucesso.",
+                "normalized_text": "fase 6 ? final synthesis do firetest 5 (diagn?stico nao-can?nico). contexto obrigat?rio: a progress?o can?nica est? bloqueada desde a fase 1. esta chamada ? apenas teste observacional do runtime. tarefa: produzir ou bloquear s?ntese governada indicando que firetest 5 nao est? ready se as fases anteriores nao passaram. nao transformar skipped/blocked em sucesso.",
+                "encoding_detected": "unicode_text",
+                "encoding_issues": [],
+                "transformations": [
+                  "unicode_nfkd",
+                  "casefold",
+                  "whitespace_collapsed"
+                ],
+                "text_variants": {},
+                "confidence": 1.0
+              },
+              "semantic_propositions": [
+                {
+                  "proposition_id": "semantic_prop_37b0134f28f5425ea6f218cc00540479",
+                  "proposition_type": "objective",
+                  "subject": "operator",
+                  "predicate": "submitted_prompt",
+                  "object_value": {
+                    "prompt_chars": 365
+                  },
+                  "polarity": "neutral",
+                  "confidence": 1.0,
+                  "evidence_refs": [
+                    "prompt:original_text"
+                  ]
+                }
+              ],
+              "state_effects": [
+                {
+                  "effect_id": "state_effect_9dd99b1fe1534c57bcb62fb27828ba24",
+                  "target": "workspace",
+                  "effect": "none",
+                  "confidence": 1.0,
+                  "evidence_refs": [
+                    "semantic_graph:workspace_effect"
+                  ],
+                  "reason_codes": []
+                },
+                {
+                  "effect_id": "state_effect_758dfa5b146547b38460b1d24d40d91c",
+                  "target": "filesystem",
+                  "effect": "none",
+                  "confidence": 1.0,
+                  "evidence_refs": [
+                    "semantic_graph:filesystem_effect"
+                  ],
+                  "reason_codes": []
+                },
+                {
+                  "effect_id": "state_effect_ff44ff16d5e6483bb5d0b55c675eb005",
+                  "target": "runtime",
+                  "effect": "none",
+                  "confidence": 1.0,
+                  "evidence_refs": [
+                    "semantic_graph:runtime_effect"
+                  ],
+                  "reason_codes": []
+                },
+                {
+                  "effect_id": "state_effect_a606c994aa784277aa6bd1c15fa51b6b",
+                  "target": "knowledge",
+                  "effect": "none",
+                  "confidence": 1.0,
+                  "evidence_refs": [
+                    "semantic_graph:knowledge_output",
+                    "semantic_graph:observational_intent"
+                  ],
+                  "reason_codes": []
+                }
+              ],
+              "intent_decision": {
+                "decision_id": "intent_decision_7eab13ca46ac4f0480ef509d8c39238f",
+                "selected_intent_id": "conversation",
+                "selected_operation_type": "conversation",
+                "candidates": [
+                  {
+                    "intent_id": "workspace_analysis_readonly",
+                    "operation_type": "workspace_analysis_readonly",
+                    "confidence": 0.0,
+                    "supporting_propositions": [],
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "arbitration_score": 0.0
+                  },
+                  {
+                    "intent_id": "product_planning_readonly",
+                    "operation_type": "product_planning_readonly",
+                    "confidence": 0.0,
+                    "supporting_propositions": [],
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "arbitration_score": 0.0
+                  },
+                  {
+                    "intent_id": "proposal_only",
+                    "operation_type": "patch_preview",
+                    "confidence": 0.3,
+                    "supporting_propositions": [],
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "arbitration_score": 0.3
+                  },
+                  {
+                    "intent_id": "patch_or_write_request",
+                    "operation_type": "patch_request",
+                    "confidence": 0.3,
+                    "supporting_propositions": [],
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "arbitration_score": 0.3
+                  },
+                  {
+                    "intent_id": "governed_shell_request",
+                    "operation_type": "run_command",
+                    "confidence": 0.3,
+                    "supporting_propositions": [],
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "arbitration_score": 0.3
+                  },
+                  {
+                    "intent_id": "approval_command",
+                    "operation_type": "approval_command",
+                    "confidence": 0.3,
+                    "supporting_propositions": [],
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "arbitration_score": 0.3
+                  },
+                  {
+                    "intent_id": "conversation",
+                    "operation_type": "conversation",
+                    "confidence": 1.0,
+                    "supporting_propositions": [
+                      "semantic_prop_37b0134f28f5425ea6f218cc00540479"
+                    ],
+                    "rejected_reason": null,
+                    "arbitration_score": 1.0
+                  }
+                ],
+                "criteria": [
+                  "selected_by_existing_canonical_intent_router",
+                  "state_effect_observed_not_overridden",
+                  "readonly_constraints_preserved_when_selected"
+                ],
+                "evidence_refs": [],
+                "confidence": 1.0,
+                "reason_codes": [],
+                "decision_source": "canonical_intent_router"
+              },
+              "operation_contract_decision": {
+                "decision_id": "operation_contract_decision_bbb6fe56fc3f4102945068d60efbf2b5",
+                "selected_contract_type": "conversation",
+                "selected_operation_type": "conversation",
+                "candidates": [
+                  {
+                    "contract_type": "analysis_readonly",
+                    "operation_type": "workspace_analysis_readonly",
+                    "confidence": 0.0,
+                    "state_effect_alignment": "aligned",
+                    "supporting_intent": "workspace_analysis_readonly",
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "evidence_refs": [
+                      "intent_candidate:workspace_analysis_readonly"
+                    ]
+                  },
+                  {
+                    "contract_type": "analysis_readonly",
+                    "operation_type": "product_planning_readonly",
+                    "confidence": 0.0,
+                    "state_effect_alignment": "aligned",
+                    "supporting_intent": "product_planning_readonly",
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "evidence_refs": [
+                      "intent_candidate:product_planning_readonly"
+                    ]
+                  },
+                  {
+                    "contract_type": "patch_request",
+                    "operation_type": "patch_preview",
+                    "confidence": 0.3,
+                    "state_effect_alignment": "partial",
+                    "supporting_intent": "proposal_only",
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "evidence_refs": [
+                      "intent_candidate:proposal_only"
+                    ]
+                  },
+                  {
+                    "contract_type": "patch_request",
+                    "operation_type": "patch_request",
+                    "confidence": 0.3,
+                    "state_effect_alignment": "partial",
+                    "supporting_intent": "patch_or_write_request",
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "evidence_refs": [
+                      "intent_candidate:patch_or_write_request"
+                    ]
+                  },
+                  {
+                    "contract_type": "shell_build_test",
+                    "operation_type": "run_command",
+                    "confidence": 0.3,
+                    "state_effect_alignment": "partial",
+                    "supporting_intent": "governed_shell_request",
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "evidence_refs": [
+                      "intent_candidate:governed_shell_request"
+                    ]
+                  },
+                  {
+                    "contract_type": "approval_command",
+                    "operation_type": "approval_command",
+                    "confidence": 0.3,
+                    "state_effect_alignment": "partial",
+                    "supporting_intent": "approval_command",
+                    "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                    "evidence_refs": [
+                      "intent_candidate:approval_command"
+                    ]
+                  },
+                  {
+                    "contract_type": "conversation",
+                    "operation_type": "conversation",
+                    "confidence": 1.0,
+                    "state_effect_alignment": "aligned",
+                    "supporting_intent": "conversation",
+                    "rejected_reason": null,
+                    "evidence_refs": [
+                      "intent_candidate:conversation"
+                    ]
+                  }
+                ],
+                "relation_to_intent": "selected_contract_derived_from_existing_intent_decision",
+                "relation_to_state_effects": "aligned",
+                "evidence_refs": [
+                  "actual_operation_contract"
+                ],
+                "confidence": 1.0,
+                "reason_codes": [],
+                "decision_source": "governance_lifecycle"
+              },
+              "reason_codes": [
+                "STATE_EFFECT_UNRESOLVED"
+              ],
+              "warnings": [],
+              "trace": [
+                {
+                  "stage": "PromptNormalization",
+                  "status": "ok"
+                },
+                {
+                  "stage": "SemanticPropositionExtraction",
+                  "count": 1
+                },
+                {
+                  "stage": "StateEffectResolution",
+                  "state_effect": "none"
+                },
+                {
+                  "stage": "IntentArbitration",
+                  "selected": "conversation"
+                },
+                {
+                  "stage": "OperationContractSelection",
+                  "selected": "conversation"
+                }
+              ]
+            },
+            "pre_task_bootstrap": {
+              "status": "complete",
+              "requires_task": false,
+              "task_id": null,
+              "task_run_id": null,
+              "stages": [
+                {
+                  "stage": "ChatIngressReceived",
+                  "status": "complete",
+                  "reason": "prompt_received",
+                  "data": {
+                    "source_channel": "api_chat"
+                  }
+                },
+                {
+                  "stage": "PromptNormalized",
+                  "status": "complete",
+                  "reason": "prompt_normalized",
+                  "data": {}
+                },
+                {
+                  "stage": "PreviewStarted",
+                  "status": "complete",
+                  "reason": "canonical_lifecycle_preview_started",
+                  "data": {
+                    "mode": "degraded"
+                  }
+                },
+                {
+                  "stage": "IntentResolutionStarted",
+                  "status": "complete",
+                  "reason": "canonical_intent_resolution_started",
+                  "data": {}
+                },
+                {
+                  "stage": "IntentResolutionFinished",
+                  "status": "complete",
+                  "reason": "canonical_intent_resolved",
+                  "data": {}
+                },
+                {
+                  "stage": "OperationContractSelected",
+                  "status": "complete",
+                  "reason": "operation_contract_selected",
+                  "data": {
+                    "operation_type": "conversation"
+                  }
+                },
+                {
+                  "stage": "TaskBootstrapStarted",
+                  "status": "skipped",
+                  "reason": "task_not_required_by_contract",
+                  "data": {}
+                },
+                {
+                  "stage": "TaskBootstrapFinished",
+                  "status": "skipped",
+                  "reason": "task_bootstrap_not_completed",
+                  "data": {
+                    "task_id": null
+                  }
+                },
+                {
+                  "stage": "TaskCreated",
+                  "status": "skipped",
+                  "reason": "task_missing",
+                  "data": {
+                    "task_id": null
+                  }
+                },
+                {
+                  "stage": "TaskRunCreated",
+                  "status": "skipped",
+                  "reason": "task_run_missing",
+                  "data": {
+                    "task_run_id": null
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "task_run_id": null,
+      "result_ref_id": null,
+      "operation_id": "chatop_b6420bd9d4374b22ab16db7ddd0b61ac",
+      "observation": null,
+      "queue_after_phase": {
+        "status_code": 200,
+        "elapsed_ms": 4,
+        "body": {
+          "status": "ok",
+          "active_runs": 0,
+          "queued_runs": 0,
+          "stale_runs": 0,
+          "pending_approvals": 0,
+          "active_sessions": 0,
+          "dispatcher_status": "available",
+          "worker_pool_capacity": 8,
+          "worker_pool_available_slots": 8,
+          "stale_run_ids": [],
+          "backpressure_required": false,
+          "reason_code": null
+        }
+      }
+    }
+  },
+  "finished_at": "2026-08-14T01:11:14.977690+00:00",
+  "storage_after": {
+    "status": "ok",
+    "run_dirs_seen": 13,
+    "missing_index_count": 0,
+    "missing_index_run_ids": [],
+    "large_run_count": 0,
+    "large_runs": [],
+    "threshold_bytes": 1000000
+  },
+  "queue_after": {
+    "status_code": 200,
+    "elapsed_ms": 17,
+    "body": {
+      "status": "ok",
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0,
+      "active_sessions": 0,
+      "dispatcher_status": "available",
+      "worker_pool_capacity": 8,
+      "worker_pool_available_slots": 8,
+      "stale_run_ids": [],
+      "backpressure_required": false,
+      "reason_code": null
+    }
+  }
+}

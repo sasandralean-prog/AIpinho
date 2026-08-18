@@ -1,0 +1,46 @@
+{
+  "session_id": "session_531b0e474fe94d8ea60907a05653944a",
+  "status": "active",
+  "created_at": "2026-06-12T17:09:55.555383+00:00",
+  "updated_at": "2026-06-12T17:09:55.589616+00:00",
+  "expires_at": "2026-06-12T21:09:55.555383+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Explique a arquitetura do projeto C:\\Dev\\AIpinho sem alterar nada",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_022a57d3462a4a6baa32977c10c3252c",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Dev\\AIpinho",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": true,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Dev\\AIpinho",
+  "active_task_draft_id": "draft_e5db697fa8e643c1beec874637fc1f38",
+  "warnings": [],
+  "trace_refs": []
+}

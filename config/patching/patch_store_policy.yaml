@@ -1,0 +1,15 @@
+schema_version: 1
+
+store:
+  path: "data/runtime/patch_plans"
+  save_plans: true
+  save_diff: true
+  save_evidence: true
+  save_risk: true
+  save_trace: true
+  sanitize_before_save: true
+  do_not_save_secrets: true
+
+retention:
+  max_patch_plans: 1000
+  cleanup_enabled: false

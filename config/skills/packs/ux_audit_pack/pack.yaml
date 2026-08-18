@@ -1,0 +1,38 @@
+skill_pack_id: ux_audit_pack
+display_name: UX Audit Pack v1
+slug: ux_audit_pack
+version: 1.0.0
+status: active
+category: ux
+description: Governed mobile and launcher UX audit pack with static inspection and sanitized report artifacts.
+included_skills:
+  - internal.mobile_ux_static_audit
+  - internal.project_readonly_inventory
+  - internal.safe_markdown_report_generator
+required_capabilities:
+  - read_workspace
+  - report_generate
+  - artifact_create
+optional_capabilities:
+  - search_files
+supported_agents: [aipinho, lucio, codex, autopilot]
+supported_project_stacks: [android_gradle, kotlin_android, mixed, unknown]
+supported_execution_modes: [project_readonly_analysis, assisted_execution, governed_autorun]
+risk_level: low
+policy_profile: ux_readonly_audit
+validation_profile: ux_report_validation
+artifact_policy: token_protected_artifacts
+memory_policy: propose_candidate_with_evidence
+dashboard_visible: true
+debugger_trace_required: true
+docs_ref: docs/skills/UX_AUDIT_PACK.md
+tests_ref: tests/skill_packs
+examples:
+  - label: Audit mobile screens
+    prompt: Audit mobile screen files and generate a UX report.
+    expected_pack_selection: [ux_audit_pack, docs_pack]
+limitations:
+  - Runtime visual automation is outside this pack; it focuses on governed static audit contracts.
+evidence_refs: [skill_pack_manifest:ux_audit_pack]
+metadata_sanitized:
+  audit_target: ui_files

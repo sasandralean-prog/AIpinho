@@ -1,0 +1,74 @@
+{
+  "sprint": "2+3",
+  "title": "Universal Artifact Registry + Mobile Agent Artifacts",
+  "date": "2026-06-22",
+  "verdict": "approved",
+  "endpoints": {
+    "created_or_strengthened": [
+      "POST /api/v1/artifacts",
+      "GET /api/v1/artifacts",
+      "GET /api/v1/artifacts/{artifact_id}",
+      "GET /api/v1/artifacts/by-agent/{agent_id}",
+      "GET /api/v1/artifacts/by-task/{task_id}",
+      "GET /api/v1/artifacts/by-bridge-task/{bridge_task_id}"
+    ],
+    "download": "GET /api/v1/artifacts/{artifact_id}/download"
+  },
+  "artifact_fields": [
+    "artifact_id",
+    "source_agent",
+    "owner_task_id",
+    "bridge_task_id",
+    "session_id",
+    "filename",
+    "content_type",
+    "size_bytes",
+    "local_path",
+    "download_endpoint",
+    "requires_token",
+    "created_at",
+    "status",
+    "validation_status",
+    "provenance",
+    "error_reason"
+  ],
+  "rules": {
+    "ready_requires_non_empty_file": true,
+    "empty_allowed_only_when_explicit": true,
+    "missing_file_marked_missing_or_stale": true,
+    "token_in_url": false,
+    "download_requires_header_token": true,
+    "tool_gateway_artifacts_aggregated": true
+  },
+  "files_changed": [
+    "src/aipinho/schemas/artifacts/artifact_interaction_contracts.py",
+    "src/aipinho/services/artifacts/artifact_interaction_core.py",
+    "src/aipinho/services/artifacts/universal_artifact_registry_service.py",
+    "src/aipinho/api/routers/artifact_router.py",
+    "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/network/AgentApiClient.kt",
+    "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/ui/components/AgentArtifactPanel.kt",
+    "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/ui/screens/AgentTabScreen.kt",
+    "tests/integration/test_universal_artifact_registry_api.py",
+    "tests/integration/test_mobile_agent_artifact_contract.py"
+  ],
+  "validations": [
+    {
+      "command": "python -m py_compile src\\aipinho\\schemas\\artifacts\\artifact_interaction_contracts.py src\\aipinho\\services\\artifacts\\artifact_interaction_core.py src\\aipinho\\services\\artifacts\\universal_artifact_registry_service.py src\\aipinho\\api\\routers\\artifact_router.py",
+      "result": "passed"
+    },
+    {
+      "command": "python -m pytest tests\\integration\\test_mobile_agent_artifact_contract.py tests\\integration\\test_universal_artifact_registry_api.py tests\\integration\\test_artifact_api.py tests\\integration\\test_agent_tool_gateway_api.py -q --durations=10",
+      "result": "15 passed in 33.76s"
+    },
+    {
+      "command": ".\\gradlew.bat :app:assembleDebug",
+      "result": "passed"
+    }
+  ],
+  "risks_remaining": [
+    "Visual QA on physical device is still useful for card density and spacing.",
+    "Legacy stores with incomplete metadata may render optional fields as absent rather than blocking the card."
+  ],
+  "hardcode_or_specific_case_added": false,
+  "secret_leak": false
+}

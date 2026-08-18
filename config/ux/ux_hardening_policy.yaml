@@ -1,0 +1,41 @@
+schema_version: 1
+ux_hardening:
+  enabled: true
+  mode: operational_reliability
+  require_human_errors: true
+  require_degraded_states: true
+  require_reconnect_state: true
+  require_transfer_progress: true
+  require_copy_consistency: true
+  require_raw_sanitized_viewer: true
+  require_event_filters: true
+  require_session_recovery: true
+  require_backend_source_of_truth: true
+blocked:
+  frontend_decides_policy: true
+  frontend_decides_context_admission: true
+  frontend_decides_final_status: true
+  raw_visible_by_default: true
+  token_visible_in_logs: true
+  unknown_event_rendered_as_normal: true
+  action_without_backend_confirmation: true
+  silent_failure: true
+  skill_executes_from_ui: true
+  skill_preview_shown_as_execution: true
+  tool_direct_action_from_catalog: true
+skill_runtime:
+  show_preview_state: true
+  show_risk: true
+  show_approval_requirement: true
+  real_execution_controls: false
+maintenance_plane:
+  enabled: true
+  show_supervised_badge: true
+  show_autonomous_apply_disabled: true
+  diagnosis_read_only: true
+  repair_preview_only: true
+  action_controls: false
+replay_regression:
+  show_replay_status: true
+  show_regression_status: true
+  show_side_effects_disabled: true

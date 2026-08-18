@@ -1,0 +1,8 @@
+schema_version: 1
+event_search:
+  enabled: true
+  searchable_fields: [event_type, source_service, human_summary, severity, status]
+  max_results: 500
+blocked:
+  include_hidden_by_default: true
+  unsanitized_search_result: true

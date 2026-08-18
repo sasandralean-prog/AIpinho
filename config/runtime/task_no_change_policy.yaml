@@ -1,0 +1,44 @@
+schema_version: 1
+
+evidence:
+  report_dirs:
+    - reports
+  excluded_report_statuses:
+    - no_changes_needed
+  max_reports: 12
+  max_bytes_per_report: 200000
+  prompt_reference_terms:
+    - diagnostico
+    - diagnostico anterior
+    - relatorio
+    - relatorio anterior
+    - evidencia
+    - evidencia anterior
+    - analise anterior
+  completion_request_terms:
+    - correcao
+    - corrigir
+    - corrija
+    - ajuste
+    - ajustar
+    - consertar
+    - conserte
+    - patch
+    - implemente
+    - implementar
+  positive_verdicts:
+    - no_changes_needed
+    - already_satisfied
+    - validation_passed
+    - passed
+    - healthy
+    - ok
+    - persistence_real
+  negative_verdict_fragments:
+    - fake_demo_only
+    - partial
+    - failed
+    - blocked
+    - requires_fix
+    - fix_required
+    - missing

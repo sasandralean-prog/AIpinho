@@ -1,0 +1,36 @@
+﻿schema_version: 1
+
+report_quality:
+  enabled: true
+  require_executive_summary: true
+  require_scope_and_limitations: true
+  require_findings_section: true
+  require_recommendations_section: true
+  require_evidence_for_findings: true
+  require_blocked_omitted_files_when_present: true
+  require_status_honesty: true
+  reject_empty_report: true
+  reject_findings_without_evidence: true
+  reject_claims_without_sources_when_evidence_required: true
+  reject_secret_content: true
+
+sections:
+  required: [executive_summary, findings, recommendations, limitations]
+
+findings:
+  require_category: true
+  require_severity: true
+  require_confidence: true
+  require_evidence: true
+  require_recommendation: true
+  max_critical_without_strong_evidence: 0
+
+recommendations:
+  reject_auto_patch_language: true
+  reject_unapproved_write_instruction: true
+  allow_future_followup: true
+
+limitations:
+  require_when_partial: true
+  require_when_files_blocked: true
+  require_when_budget_applied: true

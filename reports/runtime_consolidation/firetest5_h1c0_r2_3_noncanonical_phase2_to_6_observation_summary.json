@@ -1,0 +1,106 @@
+{
+  "2": {
+    "http_status": 200,
+    "elapsed_ms": 4963,
+    "response_status": "ok",
+    "operation_type": "product_planning_readonly",
+    "message_type": "assistant_final_answer",
+    "task_run_id": null,
+    "result_ref_id": null,
+    "operation_id": "chatop_feb5c1589579462cbe3c50345b74e6c0",
+    "requires_task": false,
+    "lifecycle_state": "plan_only_preview",
+    "lifecycle_reason": "readonly_or_planning",
+    "selected_intent": null,
+    "selected_contract": null,
+    "pre_task_bootstrap_status": null,
+    "taskrun_created_stage": null,
+    "queue_after": "ok"
+  },
+  "3": {
+    "http_status": 200,
+    "elapsed_ms": 9236,
+    "response_status": "ok",
+    "operation_type": "workspace_analysis_readonly",
+    "message_type": "assistant_final_answer",
+    "task_run_id": null,
+    "result_ref_id": null,
+    "operation_id": "chatop_66ed6f1c55b6456aa2fd910a689ce0d8",
+    "requires_task": false,
+    "lifecycle_state": "plan_only_preview",
+    "lifecycle_reason": "readonly_or_planning",
+    "selected_intent": null,
+    "selected_contract": null,
+    "pre_task_bootstrap_status": null,
+    "taskrun_created_stage": null,
+    "queue_after": "ok"
+  },
+  "4": {
+    "http_status": 200,
+    "elapsed_ms": 7314,
+    "response_status": "ok",
+    "operation_type": "workspace_analysis_readonly",
+    "message_type": "assistant_final_answer",
+    "task_run_id": null,
+    "result_ref_id": null,
+    "operation_id": "chatop_6197acaa935e43bc85df92c5364bc9ec",
+    "requires_task": false,
+    "lifecycle_state": "plan_only_preview",
+    "lifecycle_reason": "readonly_or_planning",
+    "selected_intent": null,
+    "selected_contract": null,
+    "pre_task_bootstrap_status": null,
+    "taskrun_created_stage": null,
+    "queue_after": "ok"
+  },
+  "5": {
+    "http_status": 200,
+    "elapsed_ms": 4402,
+    "response_status": "degraded",
+    "operation_type": "conversation",
+    "message_type": "assistant_degraded_answer",
+    "task_run_id": null,
+    "result_ref_id": null,
+    "operation_id": "chatop_595f48b0e10c4e89b8fcdf1da473a4e2",
+    "requires_task": false,
+    "lifecycle_state": "plan_only_preview",
+    "lifecycle_reason": "readonly_or_planning",
+    "selected_intent": "conversation",
+    "selected_contract": "conversation",
+    "pre_task_bootstrap_status": "complete",
+    "taskrun_created_stage": {
+      "stage": "TaskRunCreated",
+      "status": "skipped",
+      "reason": "task_run_missing",
+      "data": {
+        "task_run_id": null
+      }
+    },
+    "queue_after": "ok"
+  },
+  "6": {
+    "http_status": 200,
+    "elapsed_ms": 5730,
+    "response_status": "degraded",
+    "operation_type": "conversation",
+    "message_type": "assistant_degraded_answer",
+    "task_run_id": null,
+    "result_ref_id": null,
+    "operation_id": "chatop_b6420bd9d4374b22ab16db7ddd0b61ac",
+    "requires_task": false,
+    "lifecycle_state": "plan_only_preview",
+    "lifecycle_reason": "readonly_or_planning",
+    "selected_intent": "conversation",
+    "selected_contract": "conversation",
+    "pre_task_bootstrap_status": "complete",
+    "taskrun_created_stage": {
+      "stage": "TaskRunCreated",
+      "status": "skipped",
+      "reason": "task_run_missing",
+      "data": {
+        "task_run_id": null
+      }
+    },
+    "queue_after": "ok"
+  }
+}

@@ -1,0 +1,437 @@
+{
+  "generated_at": "2026-06-28T15:44:57.208267+00:00",
+  "components": [
+    {
+      "component": "config/governance/lifecycle.yaml",
+      "config_files": [
+        "config/governance/lifecycle.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "canonical_governance_lifecycle"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/governance/lifecycle.yaml",
+      "consumers": [
+        "GovernanceLifecycleService",
+        "OperationContract"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/governance/intents.yaml",
+      "config_files": [
+        "config/governance/intents.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "canonical_intents"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/governance/intents.yaml",
+      "consumers": [
+        "GovernanceLifecycleService",
+        "OperationContract"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/governance/policy.yaml",
+      "config_files": [
+        "config/governance/policy.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "canonical_policy"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/governance/policy.yaml",
+      "consumers": [
+        "GovernanceLifecycleService",
+        "OperationContract"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/governance/approval.yaml",
+      "config_files": [
+        "config/governance/approval.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "canonical_approval"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/governance/approval.yaml",
+      "consumers": [
+        "GovernanceLifecycleService",
+        "OperationContract"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/governance/runtime_profiles.yaml",
+      "config_files": [
+        "config/governance/runtime_profiles.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "canonical_runtime_profiles"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/governance/runtime_profiles.yaml",
+      "consumers": [
+        "GovernanceLifecycleService",
+        "OperationContract"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/chat/canonical_operation_map.yaml",
+      "config_files": [
+        "config/chat/canonical_operation_map.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "action_precedence",
+          "intent_types",
+          "router_aliases",
+          "schema_version"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/chat/canonical_operation_map.yaml",
+      "consumers": [
+        "ChatService",
+        "CanonicalPublicChatService",
+        "ChatOperationRouterService"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/chat/chat_operation_routing_policy.yaml",
+      "config_files": [
+        "config/chat/chat_operation_routing_policy.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "operation_order",
+          "operations",
+          "schema_version"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/chat/chat_operation_routing_policy.yaml",
+      "consumers": [
+        "ChatService",
+        "CanonicalPublicChatService",
+        "ChatOperationRouterService"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/runtime/task_runtime_policy.yaml",
+      "config_files": [
+        "config/runtime/task_runtime_policy.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "allowed_actions",
+          "allowed_contract_types",
+          "blocked_actions",
+          "schema_version",
+          "side_effects",
+          "task_runtime",
+          "validation_integration"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/runtime/task_runtime_policy.yaml",
+      "consumers": [
+        "TaskRuntimeService",
+        "TaskRunPlanner",
+        "TaskCompletionResolver"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/runtime/task_completion_policy.yaml",
+      "config_files": [
+        "config/runtime/task_completion_policy.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "contracts",
+          "output_aliases",
+          "schema_version",
+          "status_policy"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/runtime/task_completion_policy.yaml",
+      "consumers": [
+        "TaskRuntimeService",
+        "TaskRunPlanner",
+        "TaskCompletionResolver"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/runtime/profiles/project_generation.yaml",
+      "config_files": [
+        "config/runtime/profiles/project_generation.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "profile",
+          "schema_version"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/runtime/profiles/project_generation.yaml",
+      "consumers": [
+        "TaskRuntimeService",
+        "TaskRunPlanner",
+        "TaskCompletionResolver"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/runtime/profiles/patch.yaml",
+      "config_files": [
+        "config/runtime/profiles/patch.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "profile",
+          "schema_version"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/runtime/profiles/patch.yaml",
+      "consumers": [
+        "TaskRuntimeService",
+        "TaskRunPlanner",
+        "TaskCompletionResolver"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/roles/role_model_bindings.yaml",
+      "config_files": [
+        "config/roles/role_model_bindings.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "disabled_until_future_sprints",
+          "role_aliases",
+          "role_model_bindings",
+          "schema_version"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/roles/role_model_bindings.yaml",
+      "consumers": [
+        "RoleModelGate",
+        "RolePipelineService"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/roles/role_tool_policies.yaml",
+      "config_files": [
+        "config/roles/role_tool_policies.yaml"
+      ],
+      "effective_values": {},
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/roles/role_tool_policies.yaml",
+      "consumers": [
+        "RoleModelGate",
+        "RolePipelineService"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/tools/tool_registry.yaml",
+      "config_files": [
+        "config/tools/tool_registry.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "governed_tools",
+          "schema_version",
+          "tools"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/tools/tool_registry.yaml",
+      "consumers": [
+        "ToolGateway",
+        "GovernedToolExecutionService"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/tools/tool_policy.yaml",
+      "config_files": [
+        "config/tools/tool_policy.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "blocked",
+          "default",
+          "schema_version",
+          "tools"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/tools/tool_policy.yaml",
+      "consumers": [
+        "ToolGateway",
+        "GovernedToolExecutionService"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/artifacts/artifact_store_policy.yaml",
+      "config_files": [
+        "config/artifacts/artifact_store_policy.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "retention",
+          "schema_version",
+          "store"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/artifacts/artifact_store_policy.yaml",
+      "consumers": [
+        "ArtifactService",
+        "ArtifactRegistry"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/artifacts/artifact_zip_policy.yaml",
+      "config_files": [
+        "config/artifacts/artifact_zip_policy.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "artifact_zip",
+          "schema_version"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/artifacts/artifact_zip_policy.yaml",
+      "consumers": [
+        "ArtifactService",
+        "ArtifactRegistry"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/workspaces/workspace_registry.yaml",
+      "config_files": [
+        "config/workspaces/workspace_registry.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "defaults",
+          "schema_version",
+          "workspaces"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/workspaces/workspace_registry.yaml",
+      "consumers": [
+        "WorkspacePolicyService",
+        "WorkspacePermissionMatrixService"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    },
+    {
+      "component": "config/workspaces/workspace_resolution_policy.yaml",
+      "config_files": [
+        "config/workspaces/workspace_resolution_policy.yaml"
+      ],
+      "effective_values": {
+        "top_level_keys": [
+          "path_extraction",
+          "schema_version",
+          "workspace_resolution"
+        ]
+      },
+      "overridden_values": {},
+      "unused_values": [],
+      "conflicting_values": {},
+      "source_of_truth": "config/workspaces/workspace_resolution_policy.yaml",
+      "consumers": [
+        "WorkspacePolicyService",
+        "WorkspacePermissionMatrixService"
+      ],
+      "risk_level": "P2",
+      "recommendation": "Keep mapped to canonical lifecycle; remove only after a dedicated migration."
+    }
+  ]
+}

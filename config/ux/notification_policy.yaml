@@ -1,0 +1,26 @@
+schema_version: 1
+notifications:
+  enabled: true
+  toast_enabled: true
+  notification_center_enabled: true
+  persist_important_notifications: true
+  max_toasts_visible: 5
+notify_on:
+  - service_down
+  - service_recovered
+  - upload_completed
+  - upload_failed
+  - download_completed
+  - download_failed
+  - artifact_ready
+  - task_blocked
+  - approval_required
+  - validation_failed
+  - debugger_critical_finding
+  - context_item_rejected
+  - reconnecting
+  - realtime_recovered
+blocked:
+  notify_raw_secret: true
+  notify_token: true
+  spam_repeated_same_event: true

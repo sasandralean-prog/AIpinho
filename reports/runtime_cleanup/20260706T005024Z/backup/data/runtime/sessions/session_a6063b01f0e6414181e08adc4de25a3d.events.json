@@ -1,0 +1,59 @@
+[
+  {
+    "event_id": "session_event_8abad2424e2c48c98fba65669494c8fc",
+    "session_id": "session_a6063b01f0e6414181e08adc4de25a3d",
+    "event_type": "session_created",
+    "created_at": "2026-06-18T19:23:02.145698+00:00",
+    "summary": "Sessao criada.",
+    "data": {},
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_cf52ad80157f445fa48e1412ee27b132",
+    "session_id": "session_a6063b01f0e6414181e08adc4de25a3d",
+    "event_type": "chat_message",
+    "created_at": "2026-06-18T19:23:02.177916+00:00",
+    "summary": "Mensagem processada com status ready.",
+    "data": {
+      "intent_type": "unknown",
+      "task_draft_id": "sandbox_run_c8ab4bdc1cdc44ccac3b5b4735117460"
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_9924394b2f024090b9b7123b0687371c",
+    "session_id": "session_a6063b01f0e6414181e08adc4de25a3d",
+    "event_type": "operational_context_updated",
+    "created_at": "2026-06-18T19:23:02.177916+00:00",
+    "summary": "Contexto operacional recente atualizado.",
+    "data": {
+      "operation_type": "filesystem_write_file",
+      "path": "C:\\Dev\\AIpinho\\sandboxes\\dopamine_test\\contexto.txt"
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_a4faf658e51a495a933bc087b1d93d44",
+    "session_id": "session_a6063b01f0e6414181e08adc4de25a3d",
+    "event_type": "chat_message",
+    "created_at": "2026-06-18T19:23:02.209401+00:00",
+    "summary": "Mensagem processada com status ready.",
+    "data": {
+      "intent_type": "unknown",
+      "task_draft_id": "sandbox_run_a64494b425c14f68875670bd218301f5"
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_11be929ff477461c97a3ba43c36eed63",
+    "session_id": "session_a6063b01f0e6414181e08adc4de25a3d",
+    "event_type": "operational_context_updated",
+    "created_at": "2026-06-18T19:23:02.209401+00:00",
+    "summary": "Contexto operacional recente atualizado.",
+    "data": {
+      "operation_type": "filesystem_append_file",
+      "path": "C:\\Dev\\AIpinho\\sandboxes\\dopamine_test\\contexto.txt"
+    },
+    "warnings": []
+  }
+]

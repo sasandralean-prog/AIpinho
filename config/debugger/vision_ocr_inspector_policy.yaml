@@ -1,0 +1,24 @@
+﻿schema_version: 1
+debugger:
+  enabled: true
+  mode: read_only_observability
+  require_sanitization: true
+  require_trace_schema: true
+  require_timeline_builder: true
+read_only:
+  enabled: true
+  workspace_write: false
+  patch_apply: false
+  shell: false
+  git: false
+  memory_mutation: false
+  rag_ingestion_execute: false
+  approval_mutation: false
+blocked:
+  show_secrets: true
+  show_raw_prompt_by_default: true
+  show_raw_model_output_by_default: true
+  show_full_file_content: true
+  show_raw_logs: true
+  mutate_from_debugger: true
+  execute_from_debugger: true

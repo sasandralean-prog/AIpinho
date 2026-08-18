@@ -1,0 +1,299 @@
+{
+  "profile": {
+    "profile_id": "firetest5_h1b4_1_phase0",
+    "name": "FireTest 5 H1B4.1 CVL prediction",
+    "objective": "Predict the current media metadata observation frontier before public runtime execution.",
+    "domain": "generic",
+    "expected_pipeline": [
+      "semantic_ingress",
+      "operation_contract_selection",
+      "observed_entity_compilation",
+      "entity_selection_policy",
+      "backend_configuration",
+      "observer_execution",
+      "evidence_recording",
+      "evidence_coverage",
+      "validation",
+      "speaker_truth"
+    ],
+    "involved_contracts": [
+      "semantic_artifact_contract"
+    ],
+    "involved_modules": [],
+    "expected_capabilities": [
+      "media_metadata_reader"
+    ],
+    "expected_artifacts": [
+      "reports/firetest5/music_inventory.csv"
+    ],
+    "success_contract": {},
+    "metadata": {
+      "workspace_role_boundary": {
+        "root_role_status": "ready",
+        "entity_selection_policy_status": "ready",
+        "corpus_observation_status": "ready"
+      },
+      "media_metadata_capability": {
+        "capability_id": "media_metadata_reader",
+        "capability_status": "registered",
+        "backend_status": "partial",
+        "evidence_coverage_status": "partial",
+        "confidence": 0.86
+      }
+    }
+  },
+  "prediction": {
+    "prediction_id": "prediction_8c269d595f0a433a9a2ca7bedd1b5eda",
+    "profile_id": "firetest5_h1b4_1_phase0",
+    "predicted_status": "blocked",
+    "probable_component": "evidence_coverage",
+    "probable_contract": "semantic_artifact_contract",
+    "probable_capability": "media_metadata_reader",
+    "confidence": 0.86,
+    "dependency_chain": [
+      "capability:media_metadata_reader",
+      "pipeline:validation"
+    ],
+    "hypothesis": "Evidence may exist, but contract coverage is predicted to remain insufficient.",
+    "reason_codes": [
+      "EVIDENCE_COVERAGE_INSUFFICIENT"
+    ],
+    "evidence_refs": [
+      "profile:firetest5_h1b4_1_phase0",
+      "media_metadata_capability:evidence_coverage_status"
+    ]
+  },
+  "dependency_graph": {
+    "graph_id": "dependency_graph_c94c9a97649e431ababc1281176883d9",
+    "source_profile_id": "firetest5_h1b4_1_phase0",
+    "nodes": [
+      {
+        "node_id": "pipeline:semantic_ingress",
+        "node_type": "pipeline",
+        "label": "semantic_ingress",
+        "depends_on": [
+          "contract:semantic_artifact_contract"
+        ],
+        "dependents": [
+          "pipeline:operation_contract_selection"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "high",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:operation_contract_selection",
+        "node_type": "pipeline",
+        "label": "operation_contract_selection",
+        "depends_on": [
+          "pipeline:semantic_ingress"
+        ],
+        "dependents": [
+          "pipeline:observed_entity_compilation"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:observed_entity_compilation",
+        "node_type": "pipeline",
+        "label": "observed_entity_compilation",
+        "depends_on": [
+          "pipeline:operation_contract_selection"
+        ],
+        "dependents": [
+          "pipeline:entity_selection_policy"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:entity_selection_policy",
+        "node_type": "pipeline",
+        "label": "entity_selection_policy",
+        "depends_on": [
+          "pipeline:observed_entity_compilation"
+        ],
+        "dependents": [
+          "pipeline:backend_configuration"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:backend_configuration",
+        "node_type": "pipeline",
+        "label": "backend_configuration",
+        "depends_on": [
+          "pipeline:entity_selection_policy"
+        ],
+        "dependents": [
+          "pipeline:observer_execution"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:observer_execution",
+        "node_type": "pipeline",
+        "label": "observer_execution",
+        "depends_on": [
+          "pipeline:backend_configuration"
+        ],
+        "dependents": [
+          "pipeline:evidence_recording"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:evidence_recording",
+        "node_type": "pipeline",
+        "label": "evidence_recording",
+        "depends_on": [
+          "pipeline:observer_execution"
+        ],
+        "dependents": [
+          "pipeline:evidence_coverage"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:evidence_coverage",
+        "node_type": "pipeline",
+        "label": "evidence_coverage",
+        "depends_on": [
+          "pipeline:evidence_recording"
+        ],
+        "dependents": [
+          "pipeline:validation"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:validation",
+        "node_type": "pipeline",
+        "label": "validation",
+        "depends_on": [
+          "pipeline:evidence_coverage",
+          "capability:media_metadata_reader"
+        ],
+        "dependents": [
+          "artifact:reports_firetest5_music_inventory_csv",
+          "pipeline:speaker_truth"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:speaker_truth",
+        "node_type": "pipeline",
+        "label": "speaker_truth",
+        "depends_on": [
+          "pipeline:validation"
+        ],
+        "dependents": [],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "contract:semantic_artifact_contract",
+        "node_type": "contract",
+        "label": "semantic_artifact_contract",
+        "depends_on": [],
+        "dependents": [
+          "pipeline:semantic_ingress"
+        ],
+        "impact": "contract_satisfaction",
+        "criticality": "high",
+        "metadata": {}
+      },
+      {
+        "node_id": "capability:media_metadata_reader",
+        "node_type": "capability",
+        "label": "media_metadata_reader",
+        "depends_on": [],
+        "dependents": [
+          "pipeline:validation"
+        ],
+        "impact": "knowledge_or_observation_required",
+        "criticality": "high",
+        "metadata": {}
+      },
+      {
+        "node_id": "artifact:reports_firetest5_music_inventory_csv",
+        "node_type": "artifact",
+        "label": "reports/firetest5/music_inventory.csv",
+        "depends_on": [
+          "pipeline:validation"
+        ],
+        "dependents": [],
+        "impact": "evidence_materialization",
+        "criticality": "high",
+        "metadata": {}
+      }
+    ],
+    "edges": [
+      {
+        "from": "pipeline:semantic_ingress",
+        "to": "pipeline:operation_contract_selection"
+      },
+      {
+        "from": "pipeline:operation_contract_selection",
+        "to": "pipeline:observed_entity_compilation"
+      },
+      {
+        "from": "pipeline:observed_entity_compilation",
+        "to": "pipeline:entity_selection_policy"
+      },
+      {
+        "from": "pipeline:entity_selection_policy",
+        "to": "pipeline:backend_configuration"
+      },
+      {
+        "from": "pipeline:backend_configuration",
+        "to": "pipeline:observer_execution"
+      },
+      {
+        "from": "pipeline:observer_execution",
+        "to": "pipeline:evidence_recording"
+      },
+      {
+        "from": "pipeline:evidence_recording",
+        "to": "pipeline:evidence_coverage"
+      },
+      {
+        "from": "pipeline:evidence_coverage",
+        "to": "pipeline:validation"
+      },
+      {
+        "from": "pipeline:validation",
+        "to": "pipeline:speaker_truth"
+      },
+      {
+        "from": "contract:semantic_artifact_contract",
+        "to": "pipeline:semantic_ingress"
+      },
+      {
+        "from": "capability:media_metadata_reader",
+        "to": "pipeline:validation"
+      },
+      {
+        "from": "pipeline:validation",
+        "to": "artifact:reports_firetest5_music_inventory_csv"
+      }
+    ],
+    "metadata": {}
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "task_run_id": "task_run_76acee60438b4937a27f901e0184b2af",
+  "initial_status": "RUNNING",
+  "final_status": "blocked",
+  "result_status": "blocked",
+  "finished_at": "2026-08-12T08:58:15.164096+00:00",
+  "client_timeout": true,
+  "server_completed": true,
+  "cancel_requested": false,
+  "cancel_acknowledged": false,
+  "terminal_transition_missing": false,
+  "reason_codes": [
+    "artifact_result",
+    "validation_result"
+  ],
+  "events": {
+    "count": 11,
+    "last_event": {
+      "event_id": "task_run_event_cf248fc15fa54f85b4ca06058dbd1e8f",
+      "run_id": "task_run_76acee60438b4937a27f901e0184b2af",
+      "sequence": 11,
+      "type": "run_blocked",
+      "status": "blocked",
+      "message": "Read-only analysis did not satisfy required artifact outputs.",
+      "step_id": null,
+      "timestamp": "2026-08-12T08:58:20.887295+00:00",
+      "metadata": {}
+    },
+    "types": [
+      "run_created",
+      "task_bootstrap_created",
+      "PlanningStarted",
+      "PlanningFinished",
+      "ExecutionPlanCreated",
+      "run_queued",
+      "run_started",
+      "project_analysis_started",
+      "project_analysis_finished",
+      "run_failed",
+      "run_blocked"
+    ]
+  },
+  "payload_sizes": {
+    "run_json": 76537,
+    "events_json": 5928,
+    "result_json": 37028
+  }
+}

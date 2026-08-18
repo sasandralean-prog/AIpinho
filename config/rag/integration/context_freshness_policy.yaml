@@ -1,0 +1,24 @@
+schema_version: 1
+
+freshness:
+  enabled: true
+  check_memory_status: true
+  check_memory_version: true
+  check_source_timestamp: true
+  check_report_status: true
+  check_validation_status: true
+
+memory:
+  reject_expired: true
+  reject_rejected: true
+  reject_superseded_as_active: true
+  allow_superseded_only_when_history_requested: true
+  warn_if_older_than_days: 90
+
+reports:
+  warn_if_quality_not_passed: true
+  warn_if_older_than_days: 60
+
+retrieval:
+  warn_if_source_partial: true
+  warn_if_source_degraded: true

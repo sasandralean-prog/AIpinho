@@ -1,0 +1,41 @@
+{
+  "session_id": "session_283ebbdc86124e0a946d92fec2f7c91f",
+  "status": "active",
+  "created_at": "2026-06-08T01:41:08.100372+00:00",
+  "updated_at": "2026-06-08T01:41:08.106500+00:00",
+  "expires_at": "2026-06-08T05:41:08.100372+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Faca um report final desta conversa",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_57e65778401241e2a1731ef578f235f4",
+    "intent_type": "in_chat_final_report",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

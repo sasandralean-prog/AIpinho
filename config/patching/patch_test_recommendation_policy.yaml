@@ -1,0 +1,17 @@
+schema_version: 1
+
+test_recommendations:
+  enabled: true
+  suggest_tests_only: true
+  run_tests_enabled: false
+  require_for_python_changes: true
+  include_py_compile: true
+  include_unit_tests: true
+  include_contract_tests_when_schema_changes: true
+  include_integration_tests_when_api_changes: true
+  include_e2e_tests_when_flow_changes: true
+
+blocked:
+  execute_tests: true
+  shell: true
+  mutate_test_files: true

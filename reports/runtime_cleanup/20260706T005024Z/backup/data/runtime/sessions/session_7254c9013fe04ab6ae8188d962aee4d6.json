@@ -1,0 +1,41 @@
+{
+  "session_id": "session_7254c9013fe04ab6ae8188d962aee4d6",
+  "status": "active",
+  "created_at": "2026-06-09T22:13:40.361934+00:00",
+  "updated_at": "2026-06-09T22:13:45.750510+00:00",
+  "expires_at": "2026-06-10T02:13:40.361934+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Qual a cor do cavalo branco de napoleão?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_4c766a34aef74936898e7736e22eec80",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

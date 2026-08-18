@@ -1,0 +1,120 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "tool_calls": [
+    {
+      "tool": "filesystem_read",
+      "who_calls": ["services.agents.agent_tool_gateway_service", "services.chat.chat_service"],
+      "who_can_call": ["agent", "user", "tool_executor"],
+      "restrictions": ["workspace_scope", "read_only"],
+      "critical": true
+    },
+    {
+      "tool": "filesystem_write",
+      "who_calls": ["services.agents.agent_tool_gateway_service"],
+      "who_can_call": ["agent", "tool_executor"],
+      "restrictions": ["workspace_scope", "approval_required"],
+      "critical": true
+    },
+    {
+      "tool": "shell_command",
+      "who_calls": ["services.agents.agent_tool_gateway_service"],
+      "who_can_call": ["agent", "tool_executor"],
+      "restrictions": ["approval_required", "policy_check"],
+      "critical": true
+    },
+    {
+      "tool": "git_command",
+      "who_calls": ["services.agents.agent_tool_gateway_service"],
+      "who_can_call": ["agent", "tool_executor"],
+      "restrictions": ["workspace_scope", "approval_required"],
+      "critical": true
+    },
+    {
+      "tool": "browser_tool",
+      "who_calls": ["services.agents.agent_tool_gateway_service"],
+      "who_can_call": ["agent", "user"],
+      "restrictions": ["approval_required"],
+      "critical": false
+    },
+    {
+      "tool": "android_tool",
+      "who_calls": ["services.agents.agent_tool_gateway_service"],
+      "who_can_call": ["agent", "tool_executor"],
+      "restrictions": ["approval_required", "device_scope"],
+      "critical": false
+    },
+    {
+      "tool": "read_only_execution",
+      "who_calls": ["services.agents.agent_tool_gateway_service"],
+      "who_can_call": ["agent", "user"],
+      "restrictions": ["read_only"],
+      "critical": true
+    },
+    {
+      "tool": "tool_preview",
+      "who_calls": ["services.agents.agent_tool_gateway_service", "api.routers.tool_router"],
+      "who_can_call": ["agent", "user"],
+      "restrictions": ["preview_only"],
+      "critical": false
+    },
+    {
+      "tool": "tool_invocation_preview",
+      "who_calls": ["services.agents.agent_tool_gateway_service"],
+      "who_can_call": ["agent", "user"],
+      "restrictions": ["preview_only"],
+      "critical": false
+    },
+    {
+      "tool": "tool_trace",
+      "who_calls": ["services.agents.agent_tool_gateway_service", "api.routers.debug_trace_router"],
+      "who_can_call": ["debugger", "admin"],
+      "restrictions": ["admin_only"],
+      "critical": false
+    },
+    {
+      "tool": "tool_safety",
+      "who_calls": ["services.tools.governed_tool_execution_service"],
+      "who_can_call": ["system"],
+      "restrictions": ["system_only"],
+      "critical": true
+    },
+    {
+      "tool": "tool_permission",
+      "who_calls": ["services.tools.governed_tool_execution_service"],
+      "who_can_call": ["system"],
+      "restrictions": ["system_only"],
+      "critical": true
+    },
+    {
+      "tool": "tool_availability",
+      "who_calls": ["services.tools.tool_registry_service"],
+      "who_can_call": ["system"],
+      "restrictions": ["system_only"],
+      "critical": false
+    },
+    {
+      "tool": "tool_input_validator",
+      "who_calls": ["services.tools.governed_tool_execution_service"],
+      "who_can_call": ["system"],
+      "restrictions": ["system_only"],
+      "critical": true
+    },
+    {
+      "tool": "tool_result_sanitizer",
+      "who_calls": ["services.tools.governed_tool_execution_service"],
+      "who_can_call": ["system"],
+      "restrictions": ["system_only"],
+      "critical": true
+    }
+  ],
+  "total_tools": 15,
+  "tool_callers": {
+    "services.agents.agent_tool_gateway_service": 15,
+    "services.chat.chat_service": 1,
+    "api.routers.tool_router": 1,
+    "api.routers.debug_trace_router": 1,
+    "services.tools.governed_tool_execution_service": 4,
+    "services.tools.tool_registry_service": 1
+  }
+}

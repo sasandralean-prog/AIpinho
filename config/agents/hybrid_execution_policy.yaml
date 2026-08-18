@@ -1,0 +1,29 @@
+version: 1
+codex:
+  modes:
+    codex_direct_executor:
+      owner_agent: codex
+      allowed_actions: [read_workspace, workspace_write, patch_preview, patch_apply, shell, build, test, validation, report_generate]
+    codex_delegated_to_aipinho:
+      owner_agent: aipinho
+      allowed_actions: [delegate, observe_events, read_artifacts, summarize_result]
+    codex_hybrid_supervisor:
+      owner_agent: codex
+      allowed_actions: [delegate_diagnostics, observe_events, read_artifacts, workspace_write, patch_preview, validation]
+    codex_observe_only:
+      owner_agent: user
+      allowed_actions: [observe_events, read_artifacts, summarize_result]
+  direct_capabilities: [workspace_write, create_file, modify_file, patch_preview, patch_apply, coding, refactor]
+  delegated_capabilities: [read_workspace, scan_workspace, search_workspace, build, test, validation, artifact_create, report_generate]
+  diagnostic_capabilities: [read_workspace, scan_workspace, search_workspace, build, test, validation]
+  write_capabilities: [workspace_write, create_file, modify_file, create_directory, patch_preview, patch_apply]
+  high_risk_levels: [high, critical]
+interpretation_islands:
+  allowed_agents: [gemini]
+  local_execution_allowed: false
+  operational_capabilities: [read_workspace, scan_workspace, search_workspace, workspace_write, create_file, modify_file, shell, build, test, validation, artifact_create, report_generate]
+  confirmation_risk_levels: [high, critical]
+log_summary:
+  default_max_items: 5
+  max_items: 20
+  full_log_artifact_threshold_chars: 12000

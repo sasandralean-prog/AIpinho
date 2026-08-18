@@ -1,0 +1,20 @@
+schema_version: 1
+
+provenance:
+  enabled: true
+  require_source_type: true
+  require_source_id: true
+  require_retrieval_id_when_from_retrieval: true
+  require_memory_id_when_from_memory: true
+  require_version_for_memory: true
+  require_citation_id: true
+  require_content_hash_when_available: true
+  require_origin_reason: true
+
+origin_reasons:
+  - explicit_user_request
+  - task_contract_context
+  - role_pipeline_context
+  - report_evidence
+  - validation_evidence
+  - memory_explicit_read

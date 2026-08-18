@@ -1,0 +1,42 @@
+schema_version: 1
+
+contracts:
+  analyst:
+    output_contract_type: json_findings
+    require_evidence: true
+    reject_without_evidence: true
+
+  reporter:
+    output_contract_type: markdown_report
+    require_evidence: true
+    required_sections: [executive_summary, findings, recommendations, limitations]
+
+  planner:
+    output_contract_type: task_preview
+    require_actions_summary: true
+    require_policy_summary: true
+
+  interpreter:
+    output_contract_type: plain_text
+    require_policy_consistency: true
+
+  semantic_interpreter:
+    output_contract_type: semantic_interpreter_output
+    require_isr: true
+    side_effects_allowed: false
+
+  speaker:
+    output_contract_type: chat_response
+    require_human_readable: true
+
+  supervisor:
+    output_contract_type: validation_summary
+    deterministic_only: true
+
+  debugger:
+    output_contract_type: debug_summary
+    deterministic_only: true
+
+  artifact_writer:
+    output_contract_type: artifact_preview
+    deterministic_only: false

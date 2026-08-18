@@ -1,0 +1,82 @@
+skill_id: internal.validation_runner
+display_name: Validation Runner
+slug: validation_runner
+description: Record or run governed validation for a project profile through Tool
+  Gateway contracts.
+version: 1.0.0
+status: active
+category: validation
+owner: aipinho
+created_at: '2026-06-14T12:15:25+00:00'
+updated_at: '2026-06-14T12:15:25+00:00'
+min_aipinho_version: null
+compatible_agents:
+- aipinho
+- codex
+compatible_project_stacks:
+- android_gradle
+- python
+- node
+- mixed
+- unknown
+required_capabilities:
+- validation
+- run_tests
+- report_generate
+optional_capabilities: []
+allowed_tools:
+- validate
+- generate_report
+denied_tools:
+- patch_apply
+input_schema:
+  type: object
+  properties:
+    status:
+      type: string
+    name:
+      type: string
+output_schema:
+  type: object
+  required:
+  - summary
+  - validation_id
+  properties:
+    summary:
+      type: string
+    validation_id:
+      type: string
+side_effects:
+- validation_record
+- artifact_create
+workspace_policy:
+  source_readonly_write: false
+  requires_project_profile_for_project_scoped: false
+command_policy:
+  destructive_commands: blocked
+  unknown_shell: blocked
+artifact_policy:
+  generate_report: true
+  generate_markdown: true
+  generate_zip: false
+  requires_token: true
+  expose_in_agent_artifact_panel: true
+memory_policy:
+  mode: propose_candidate
+  requires_evidence: true
+validation_policy:
+  required: true
+  failure_policy: block_completion
+speaker_truth_policy:
+  raw_hidden_by_default: true
+  must_cite_validation: true
+risk_level: medium
+approval_policy:
+  required: false
+timeout_seconds: 300
+max_steps: 8
+examples: []
+docs_ref: docs/skills/INTERNAL_SKILLS_CATALOG.md
+tests_ref: tests/skills
+evidence_refs: []
+metadata_sanitized: {}

@@ -1,0 +1,36 @@
+schema_version: 1
+degraded_states:
+  enabled: true
+  show_degraded_banner: true
+  show_offline_banner: true
+  show_partial_backend_state: true
+  show_retry_action: true
+  show_last_successful_snapshot: true
+states:
+  backend_down:
+    severity: error
+    human_message: "Backend principal indisponivel. Algumas acoes estao bloqueadas."
+    allowed_actions: [retry, open_settings]
+  realtime_down:
+    severity: warning
+    human_message: "Sincronizacao em tempo real indisponivel. Usando atualizacao periodica."
+    allowed_actions: [retry_realtime, fallback_polling]
+  artifact_service_down:
+    severity: warning
+    human_message: "Servico de arquivos indisponivel. Uploads e downloads podem falhar."
+    allowed_actions: [retry]
+  monitor_down:
+    severity: error
+    human_message: "Monitor indisponivel. Reinicio de servicos nao esta disponivel pela API."
+    allowed_actions: [launcher_watchdog_retry]
+  event_registry_down:
+    severity: error
+    human_message: "Registro de eventos indisponivel. Eventos desconhecidos nao serao interpretados."
+    allowed_actions: [retry]
+  context_kernel_down:
+    severity: warning
+    human_message: "Context Kernel indisponivel. Pre-visualizacao de contexto esta desativada."
+    allowed_actions: [retry]
+blocked:
+  pretend_healthy_when_partial: true
+  hide_service_failure: true

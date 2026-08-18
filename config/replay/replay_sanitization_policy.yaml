@@ -1,0 +1,17 @@
+schema_version: 1
+sanitization:
+  enabled: true
+  redact_tokens: true
+  redact_passwords: true
+  redact_private_keys: true
+  redact_api_keys: true
+  redact_bearer_tokens: true
+  redact_file_content_over_limit: true
+  preserve_hashes: true
+  preserve_event_ids: true
+  preserve_decision_ids: true
+  preserve_source_refs: true
+  preserve_citation_refs: true
+blocked:
+  snapshot_with_unredacted_secret: true
+  export_unsanitized: true

@@ -1,0 +1,41 @@
+{
+  "session_id": "session_6bc66ff8de9247aabf120d7d7fd1405f",
+  "status": "active",
+  "created_at": "2026-06-06T13:34:12.695601+00:00",
+  "updated_at": "2026-06-06T13:34:12.705591+00:00",
+  "expires_at": "2026-06-06T17:34:12.695601+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Explique sua arquitetura atual",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_c4ee91119ada4bb3bd7dc06f3ea682d3",
+    "intent_type": "self_analysis",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

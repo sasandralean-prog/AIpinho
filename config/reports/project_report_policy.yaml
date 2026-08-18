@@ -1,0 +1,29 @@
+﻿schema_version: 1
+
+project_reports:
+  deterministic_reports_enabled: true
+  write_report_enabled: false
+  artifact_preview_enabled: true
+  real_file_write_enabled: false
+  patch_enabled: false
+  shell_enabled: false
+  git_write_enabled: false
+  memory_write_enabled: false
+  rag_enabled: false
+  vectorstore_enabled: false
+  llm_required: false
+  default_goal: general
+  max_findings: 50
+  max_report_chars: 20000
+  auto_execute_from_chat: false
+
+task_runtime:
+  return_report_in_result: true
+  write_artifact: false
+  max_result_chars: 30000
+
+quality_gate_integration:
+  enabled: true
+  attach_quality_gate_summary: true
+  invalid_report_status: degraded
+  evidence_first: true

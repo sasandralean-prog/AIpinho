@@ -1,0 +1,51 @@
+{
+  "verdict": "no_blocking_drift_after_h1b5_4_repair",
+  "findings": [
+    {
+      "finding_id": "H1B5_4_DRIFT_001",
+      "severity": "blocking",
+      "component": "RelationshipValidationPolicyService",
+      "field_or_contract": "EvidenceRecord requirement",
+      "expected": "RelationshipValidationResult must require a canonical EvidenceRecord for relationship_observation before validation_ready.",
+      "observed": "Before H1B5.4 repair, evidence_refs alone were enough for evidence_ok, so missing EvidenceRecord could still become validation_ready.",
+      "impact": "Missing EvidenceRecord could be treated as ok, violating H1B5.4 silent fallback criteria.",
+      "recommended_action": "Require matching relationship_observation EvidenceRecord by candidate_id, observation_id or evidence_id.",
+      "status_after_wave": "fixed",
+      "repair": "RelationshipValidationPolicyService.validate_many now accepts evidence_records and blocks with RELATIONSHIP_CANONICAL_EVIDENCE_RECORD_MISSING when no matching canonical record exists."
+    },
+    {
+      "finding_id": "H1B5_4_DRIFT_002",
+      "severity": "warning",
+      "component": "CVL and SemanticSelfReview",
+      "field_or_contract": "relationship conflict reason code",
+      "expected": "H1B5.1 report mentioned RELATIONSHIP_CONFLICT_UNRESOLVED; H1B5.3 introduced RELATIONSHIP_CONFLICT_BLOCKED for readiness blocking conflicts.",
+      "observed": "CVL now predicts RELATIONSHIP_CONFLICT_BLOCKED, while SemanticSelfReview still reports RELATIONSHIP_CONFLICT_PRESENT for candidate evidence.",
+      "impact": "Not blocking: evidence-layer presence and readiness-layer blocking are distinct states, but the older H1B5.1 wording remains broader.",
+      "recommended_action": "Keep both semantics documented: PRESENT for evidence review, BLOCKED for validation readiness.",
+      "status_after_wave": "accepted_non_blocking"
+    },
+    {
+      "finding_id": "H1B5_4_DRIFT_003",
+      "severity": "info",
+      "component": "CognitiveGapPredictor",
+      "field_or_contract": "_mentions_relationship_cognition helper",
+      "expected": "Single helper definition.",
+      "observed": "Helper is defined twice with equivalent implementation in the CVL service.",
+      "impact": "No behavioral drift observed; tests pass and both definitions use the same generic relationship tokens.",
+      "recommended_action": "Optional cleanup in a later hygiene slice; not required for H1B5.4.",
+      "status_after_wave": "accepted_info"
+    },
+    {
+      "finding_id": "H1B5_4_DRIFT_004",
+      "severity": "info",
+      "component": "Summary relationship_cognition",
+      "field_or_contract": "payload shape",
+      "expected": "Counts/status/reason_codes/ref counts only, no large candidates/evidence/provenance payload inline.",
+      "observed": "UniversalTaskSessionService summary includes counts, confidence summary, reason_codes, validation counters and source only.",
+      "impact": "Summary contract remains lightweight.",
+      "recommended_action": "No action.",
+      "status_after_wave": "pass"
+    }
+  ],
+  "blocking_findings_remaining": []
+}

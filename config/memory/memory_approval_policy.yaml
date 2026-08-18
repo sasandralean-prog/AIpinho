@@ -1,0 +1,32 @@
+schema_version: 1
+
+memory_approval:
+  enabled: true
+  approval_scope: curated_memory_persist
+  create_approval_from_candidate: true
+  approval_does_not_persist_automatically: true
+  persist_requires_explicit_endpoint: true
+  require_candidate_id: true
+  require_candidate_status: [candidate, needs_review]
+  block_candidate_status: [blocked, rejected, duplicate, expired, superseded]
+  require_operator_confirmation: true
+
+approval_metadata:
+  include_candidate_id: true
+  include_kind: true
+  include_scope: true
+  include_source: true
+  include_evidence_ids: true
+  include_risk: true
+  include_confidence: true
+  include_dedupe_status: true
+  include_conflict_status: true
+
+blocked:
+  approve_without_source: true
+  approve_without_scope: true
+  approve_without_evidence_for_technical_memory: true
+  approve_secret_candidate: true
+  approve_raw_log_candidate: true
+  approve_duplicate_as_new: true
+  approve_unresolved_conflict: true

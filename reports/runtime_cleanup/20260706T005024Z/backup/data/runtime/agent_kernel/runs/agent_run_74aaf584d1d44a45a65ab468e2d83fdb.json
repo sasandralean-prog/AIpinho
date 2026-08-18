@@ -1,0 +1,47 @@
+{
+  "run_id": "agent_run_74aaf584d1d44a45a65ab468e2d83fdb",
+  "session_id": "agent_session_32d03f6d9d3b466b8aa1afb14e5b9857",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "sandbox_project_generation",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [],
+  "started_at": "2026-06-14T21:03:59+00:00",
+  "completed_at": "2026-06-14T21:04:05+00:00",
+  "validation_status": null,
+  "artifact_ids": [
+    "agent_artifact_3bf1c341f8294c2e81779bc9ae4a574e"
+  ],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "project_generation_id": "project_generation_61c3d7a077c847739c5e5009a4bb3339",
+    "project_type": "python_cli",
+    "sandbox_task_id": "sandbox_task_f6cb13f1419549b5baecb7751175903c",
+    "sandbox_workspace_id": "sandbox_ws_default",
+    "latest_summary_sanitized": "Projeto CleanRunner gerado no sandbox. Artifact pronto: CleanRunner.zip. Artifact ID: agent_artifact_3bf1c341f8294c2e81779bc9ae4a574e.",
+    "evidence_refs": [
+      "sandbox_task:sandbox_task_f6cb13f1419549b5baecb7751175903c",
+      "run:agent_run_74aaf584d1d44a45a65ab468e2d83fdb",
+      "tool:tool_invocation_177dd4fce6b343b68c56be97682501a6",
+      "tool:tool_invocation_c70cbdeb6d8d43da8eebc49cb1234eeb",
+      "tool:tool_invocation_009d02d5cea44c1eb2ce27e65fd9e69c",
+      "tool:tool_invocation_13efb715fcab45fea1851c91283086ab",
+      "tool:tool_invocation_8551d09a57ed4bfa8d140f03d931d6ce",
+      "sandbox_validation:project_structure",
+      "sandbox_task:sandbox_task_f6cb13f1419549b5baecb7751175903c",
+      "artifact:agent_artifact_3bf1c341f8294c2e81779bc9ae4a574e",
+      "tool:tool_invocation_fd75bd84e24740ca831cc4b869c27ce1"
+    ]
+  }
+}

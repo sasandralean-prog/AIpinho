@@ -1,0 +1,31 @@
+template_id: docs_pack
+display_name: Documentation Pack
+slug: docs-pack
+version: "1.0.0"
+status: active
+category: docs
+description: Documentation pack with architecture, runbook, test plan, and changelog.
+supported_project_types: [docs_pack, markdown_docs]
+supported_languages: [markdown]
+supported_platforms: [docs]
+generator_key: docs_pack
+required_files:
+  - README.md
+  - ARCHITECTURE.md
+  - RUNBOOK.md
+  - TEST_PLAN.md
+  - CHANGELOG.md
+  - PROJECT_MANIFEST.json
+validation_profile:
+  structural: true
+build_profile:
+  build_required: false
+artifact_policy:
+  zip_required: true
+risk_level: low
+required_capabilities: [create_sandbox_files, create_artifact]
+compatible_skills: [sandbox_project_generation, documentation_pack]
+compatible_autopilot_modes: [governed_autorun]
+examples:
+  - criar pacote de documentacao
+  - generate docs pack

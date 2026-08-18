@@ -1,0 +1,17 @@
+schema_version: 1
+
+workspace_evidence_bundle:
+  enabled: true
+  max_source_files: 160
+  max_archive_files: 20000
+  max_archive_bytes: 536870912
+  max_chars_per_file: 12000
+  max_total_context_chars: 120000
+  max_runtime_evidence_files: 12
+  max_system_report_files: 12
+  allowed_text_extensions: [.md, .txt, .json, .yaml, .yml, .kt, .kts, .java, .py, .ts, .tsx, .js, .jsx, .cs]
+  ignored_directories: [.git, .gradle, .idea, .venv, build, dist, node_modules, __pycache__]
+  reporter:
+    enabled: true
+    allow_real_inference: true
+    fallback_to_manifest: true

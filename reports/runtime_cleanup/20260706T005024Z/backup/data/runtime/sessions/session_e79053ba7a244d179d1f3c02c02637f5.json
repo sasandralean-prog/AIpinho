@@ -1,0 +1,41 @@
+{
+  "session_id": "session_e79053ba7a244d179d1f3c02c02637f5",
+  "status": "active",
+  "created_at": "2026-06-08T01:28:07.076005+00:00",
+  "updated_at": "2026-06-08T01:28:07.080152+00:00",
+  "expires_at": "2026-06-08T05:28:07.076005+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Resuma este projeto sem alterar arquivos.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_bec5df5f93ec4f01815177fce82bf4da",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

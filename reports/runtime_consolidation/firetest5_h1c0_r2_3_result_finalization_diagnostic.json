@@ -1,0 +1,136 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_3_RESULT_FINALIZATION_READY",
+  "task_run_id": "task_run_a36b25645ebf4fe49c124763a29ec138",
+  "observed_blocker": "RESULT_FINALIZATION_MISSING_AFTER_ARTIFACT_BINDING",
+  "generated_at": "2026-08-14T00:32:03.018173+00:00",
+  "run_state": {
+    "status": "blocked",
+    "finished_at": "2026-08-13T23:28:11.548720+00:00",
+    "terminal_event_count": 1,
+    "terminal_event_types": [
+      "run_blocked"
+    ]
+  },
+  "artifact_state": {
+    "music_inventory": {
+      "status": "blocked",
+      "semantic_contract_status": "partial",
+      "selected_rows": 100,
+      "bound_rows": 100,
+      "evidence_ref_count": 100,
+      "safe_to_use": false,
+      "reason_code": "MUSIC_INVENTORY_PARTIAL_EVIDENCE"
+    },
+    "evidence_phase1": {
+      "status": "ready",
+      "semantic_contract_status": "satisfied",
+      "reason_code": null,
+      "safe_to_use": true
+    }
+  },
+  "result_finalization_trace": {
+    "result_builder_called": true,
+    "result_persistence_called": true,
+    "result_json_path": "data\\runtime\\task_runs\\task_run_a36b25645ebf4fe49c124763a29ec138\\result.json",
+    "result_json_exists": true,
+    "result_index_updated": true,
+    "store_get_result_available": true,
+    "result_endpoint_status_code": null,
+    "missing_transition": null,
+    "exception_or_silent_return": null
+  },
+  "validation_completion_truth": {
+    "validation_status": "blocked",
+    "completion_status": "blocked",
+    "speaker_truth_status": null,
+    "safe_to_report_success": false,
+    "can_claim_success": false,
+    "reason_codes": [
+      "MUSIC_INVENTORY_PARTIAL_EVIDENCE"
+    ]
+  },
+  "hypotheses_checked": {
+    "partial_artifact_skips_result_builder": true,
+    "blocked_status_reconciled_without_result": true,
+    "artifact_runtime_returns_without_finalization": null,
+    "async_worker_exits_before_result_write": null,
+    "exception_swallowed_after_artifact_binding": null,
+    "result_payload_spill_failed": false,
+    "run_index_updated_without_result_json": false,
+    "result_endpoint_reconstructs_from_run_but_file_missing": null
+  },
+  "questions_answered": {
+    "who_should_create_task_run_result": "ReadonlyAnalysisArtifactRuntimeService normal finalization path or TaskRunStore terminal result guard for externally terminalized runs.",
+    "called_when_artifact_state_partial": "Not guaranteed before patch; terminal reconciliation can mark run blocked without result.",
+    "called_when_run_status_blocked": "TaskRunStore save_result coheres status if called, but terminalize early-return paths do not create a missing terminal result.",
+    "branch_reconciles_blocked_without_result": "Yes: terminalize_if_runtime_budget_exceeded returns existing result when index/event terminal, even if result is missing.",
+    "early_return_after_artifact_partial_blocked": "Observed as possible terminal reconciliation gap; exact async worker transition needs guard.",
+    "silent_exception_after_artifact_binding": "Not proven.",
+    "result_json_required_for_terminal": "Should be required by this wave.",
+    "result_endpoint_reconstructs_without_file": "No canonical persisted result was available in previous run.",
+    "phase_progression_depends_on_result_or_summary": "Phase progression should require terminal result for canonical progression.",
+    "avoid_partial_success_conversion": "Build blocked TaskRunResult with Validation/Completion/SpeakerTruth conservative flags."
+  },
+  "patch_plan": [
+    "Add TaskRunStore.ensure_terminal_result to persist a conservative blocked result for terminal runs missing result.json.",
+    "Call the guard from timeout terminalization early-return paths and after readonly artifact runtime terminal transition.",
+    "Preserve produced artifact summaries and reason codes while keeping safe_to_report_success=false.",
+    "Add idempotency tests and CVL frontier awareness."
+  ],
+  "post_patch_confirmation": {
+    "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+    "result_json_exists": true,
+    "result_endpoint_status_code": 200,
+    "result_status": "blocked",
+    "terminal_event_count": 1,
+    "music_inventory_bound_rows": 100,
+    "music_inventory_evidence_ref_count": 100,
+    "phase2_to_6": {
+      "2": {
+        "phase": 2,
+        "status": "skipped_due_to_prior_block",
+        "called_public_chat": false,
+        "prior_blocking_phase": "1",
+        "prior_blocking_reason": "TASKRUN_LIFECYCLE_TIMEOUT",
+        "reason_code": "PHASE_SKIPPED_DUE_TO_PRIOR_BLOCK",
+        "safe_to_report_success": false
+      },
+      "3": {
+        "phase": 3,
+        "status": "skipped_due_to_prior_block",
+        "called_public_chat": false,
+        "prior_blocking_phase": "1",
+        "prior_blocking_reason": "TASKRUN_LIFECYCLE_TIMEOUT",
+        "reason_code": "PHASE_SKIPPED_DUE_TO_PRIOR_BLOCK",
+        "safe_to_report_success": false
+      },
+      "4": {
+        "phase": 4,
+        "status": "skipped_due_to_prior_block",
+        "called_public_chat": false,
+        "prior_blocking_phase": "1",
+        "prior_blocking_reason": "TASKRUN_LIFECYCLE_TIMEOUT",
+        "reason_code": "PHASE_SKIPPED_DUE_TO_PRIOR_BLOCK",
+        "safe_to_report_success": false
+      },
+      "5": {
+        "phase": 5,
+        "status": "skipped_due_to_prior_block",
+        "called_public_chat": false,
+        "prior_blocking_phase": "1",
+        "prior_blocking_reason": "TASKRUN_LIFECYCLE_TIMEOUT",
+        "reason_code": "PHASE_SKIPPED_DUE_TO_PRIOR_BLOCK",
+        "safe_to_report_success": false
+      },
+      "6": {
+        "phase": 6,
+        "status": "skipped_due_to_prior_block",
+        "called_public_chat": false,
+        "prior_blocking_phase": "1",
+        "prior_blocking_reason": "TASKRUN_LIFECYCLE_TIMEOUT",
+        "reason_code": "PHASE_SKIPPED_DUE_TO_PRIOR_BLOCK",
+        "safe_to_report_success": false
+      }
+    }
+  }
+}

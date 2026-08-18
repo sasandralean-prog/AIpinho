@@ -1,0 +1,33 @@
+﻿schema_version: 1
+
+side_effect_validation:
+  enabled: true
+  require_no_workspace_write: true
+  require_no_patch_apply: true
+  require_no_shell_execution: true
+  require_no_git_write: true
+  require_no_network: true
+  require_no_memory_write: true
+  require_no_rag_ingest: true
+  require_no_model_tool_calling: true
+
+allowed_internal_writes:
+  - "data/runtime/**"
+  - "data/logs/**"
+
+blocked_workspace_effects:
+  - write_files
+  - apply_patch
+  - delete_files
+  - move_files
+  - run_command
+  - git_commit
+  - git_push
+  - memory_write
+  - rag_ingest
+
+audit:
+  inspect_task_events: true
+  inspect_tool_results: true
+  inspect_runtime_audit: true
+  inspect_patch_events: true

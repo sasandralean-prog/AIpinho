@@ -1,0 +1,35 @@
+{
+  "run_id": "agent_run_d0de0a2b50274dc695b0c723df528f78",
+  "session_id": "agent_session_12fb7c39be6f46a3a6b8a05f0273ca58",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "cancelled",
+  "operation_type": "create_file",
+  "workspace_id": "aipinho_project",
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [
+    "read_workspace",
+    "create_file",
+    "workspace_write"
+  ],
+  "started_at": "2026-06-22T01:21:11+00:00",
+  "completed_at": "2026-06-22T16:06:35+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": "user_cancelled_pending_approval",
+  "metadata_sanitized": {
+    "tool_invocation_id": "tool_invocation_7720e0a7d97b4359baa6ee6bc4aead9b",
+    "policy_decision_id": "policy_decision_c6ebb443266940de8a18f5ffb29a44c4",
+    "cancel_reason": "user_authorized_pending_approval_cleanup",
+    "previous_status": "pending_approval"
+  }
+}

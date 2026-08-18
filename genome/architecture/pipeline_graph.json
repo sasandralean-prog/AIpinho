@@ -1,0 +1,283 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "pipelines": [
+    {
+      "name": "chat_pipeline",
+      "description": "Chat processing pipeline",
+      "steps": [
+        {
+          "step": 1,
+          "component": "services.chat.chat_service",
+          "path": "src/aipinho/services/chat/chat_service.py",
+          "operation": "process_chat_request"
+        },
+        {
+          "step": 2,
+          "component": "services.chat.chat_operation_router_service",
+          "path": "src/aipinho/services/chat/chat_operation_router_service.py",
+          "operation": "route_operation"
+        },
+        {
+          "step": 3,
+          "component": "services.runtime.task_runtime_service",
+          "path": "src/aipinho/services/runtime/task_runtime_service.py",
+          "operation": "execute_task"
+        },
+        {
+          "step": 4,
+          "component": "services.policy_kernel.policy_kernel_service",
+          "path": "src/aipinho/services/policy_kernel/policy_kernel_service.py",
+          "operation": "enforce_policy"
+        },
+        {
+          "step": 5,
+          "component": "services.validation.validation_gate_service",
+          "path": "src/aipinho/services/validation/validation_gate_service.py",
+          "operation": "validate_result"
+        }
+      ]
+    },
+    {
+      "name": "task_pipeline",
+      "description": "Task execution pipeline",
+      "steps": [
+        {
+          "step": 1,
+          "component": "services.runtime.task_runtime_service",
+          "path": "src/aipinho/services/runtime/task_runtime_service.py",
+          "operation": "create_task"
+        },
+        {
+          "step": 2,
+          "component": "services.runtime.intelligent_planner_service",
+          "path": "src/aipinho/services/runtime/intelligent_planner_service.py",
+          "operation": "plan_execution"
+        },
+        {
+          "step": 3,
+          "component": "services.runtime.execution_graph_service",
+          "path": "src/aipinho/services/runtime/execution_graph_service.py",
+          "operation": "build_execution_graph"
+        },
+        {
+          "step": 4,
+          "component": "services.policy_kernel.capability_gate_service",
+          "path": "src/aipinho/services/policy_kernel/capability_gate_service.py",
+          "operation": "check_capabilities"
+        },
+        {
+          "step": 5,
+          "component": "services.runtime.task_runtime_service",
+          "path": "src/aipinho/services/runtime/task_runtime_service.py",
+          "operation": "execute_steps"
+        }
+      ]
+    },
+    {
+      "name": "tool_pipeline",
+      "description": "Tool execution pipeline",
+      "steps": [
+        {
+          "step": 1,
+          "component": "services.agents.agent_tool_gateway_service",
+          "path": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+          "operation": "route_tool_call"
+        },
+        {
+          "step": 2,
+          "component": "services.tools.tool_input_validator",
+          "path": "src/aipinho/services/tools/tool_input_validator.py",
+          "operation": "validate_input"
+        },
+        {
+          "step": 3,
+          "component": "services.policy_kernel.capability_gate_service",
+          "path": "src/aipinho/services/policy_kernel/capability_gate_service.py",
+          "operation": "check_capability"
+        },
+        {
+          "step": 4,
+          "component": "services.tools.governed_tool_execution_service",
+          "path": "src/aipinho/services/tools/governed_tool_execution_service.py",
+          "operation": "execute_tool"
+        },
+        {
+          "step": 5,
+          "component": "services.tools.tool_result_sanitizer",
+          "path": "src/aipinho/services/tools/tool_result_sanitizer.py",
+          "operation": "sanitize_result"
+        }
+      ]
+    },
+    {
+      "name": "model_pipeline",
+      "description": "Model inference pipeline",
+      "steps": [
+        {
+          "step": 1,
+          "component": "services.models.llama_cpp_provider",
+          "path": "src/aipinho/services/models/llama_cpp_provider.py",
+          "operation": "select_model"
+        },
+        {
+          "step": 2,
+          "component": "adapters.llm_providers",
+          "path": "src/aipinho/adapters/llm_providers/__init__.py",
+          "operation": "call_model"
+        },
+        {
+          "step": 3,
+          "component": "services.models.model_invocation_service",
+          "path": "src/aipinho/services/models/model_invocation_service.py",
+          "operation": "process_response"
+        }
+      ]
+    },
+    {
+      "name": "validation_pipeline",
+      "description": "Validation pipeline",
+      "steps": [
+        {
+          "step": 1,
+          "component": "services.validation.validation_gate_service",
+          "path": "src/aipinho/services/validation/validation_gate_service.py",
+          "operation": "check_gate"
+        },
+        {
+          "step": 2,
+          "component": "services.validation.contract_compliance_validator",
+          "path": "src/aipinho/services/validation/contract_compliance_validator.py",
+          "operation": "validate_contract"
+        },
+        {
+          "step": 3,
+          "component": "services.validation.side_effect_validator",
+          "path": "src/aipinho/services/validation/side_effect_validator.py",
+          "operation": "validate_side_effects"
+        },
+        {
+          "step": 4,
+          "component": "services.validation.task_result_validator",
+          "path": "src/aipinho/services/validation/task_result_validator.py",
+          "operation": "validate_result"
+        }
+      ]
+    },
+    {
+      "name": "approval_pipeline",
+      "description": "Approval workflow pipeline",
+      "steps": [
+        {
+          "step": 1,
+          "component": "services.chat.chat_approval_command_service",
+          "path": "src/aipinho/services/chat/chat_approval_command_service.py",
+          "operation": "request_approval"
+        },
+        {
+          "step": 2,
+          "component": "services.policy_kernel.approval_policy_service",
+          "path": "src/aipinho/services/policy_kernel/approval_policy_service.py",
+          "operation": "check_approval_policy"
+        },
+        {
+          "step": 3,
+          "component": "repositories.approval_repository",
+          "path": "src/aipinho/repositories/approval_repository.py",
+          "operation": "store_approval"
+        }
+      ]
+    },
+    {
+      "name": "artifact_pipeline",
+      "description": "Artifact generation pipeline",
+      "steps": [
+        {
+          "step": 1,
+          "component": "services.artifacts.artifact_generator_service",
+          "path": "src/aipinho/services/artifacts/artifact_generator_service.py",
+          "operation": "generate_artifact"
+        },
+        {
+          "step": 2,
+          "component": "services.validation.artifact_content_validator",
+          "path": "src/aipinho/services/validation/artifact_content_validator.py",
+          "operation": "validate_content"
+        },
+        {
+          "step": 3,
+          "component": "services.artifacts.artifact_write_execution_service",
+          "path": "src/aipinho/services/artifacts/artifact_write_execution_service.py",
+          "operation": "write_artifact"
+        },
+        {
+          "step": 4,
+          "component": "services.artifacts.artifact_library_service",
+          "path": "src/aipinho/services/artifacts/artifact_library_service.py",
+          "operation": "register_artifact"
+        }
+      ]
+    },
+    {
+      "name": "memory_pipeline",
+      "description": "Memory curation pipeline",
+      "steps": [
+        {
+          "step": 1,
+          "component": "services.memory.memory_candidate_service",
+          "path": "src/aipinho/services/memory/memory_candidate_service.py",
+          "operation": "extract_candidates"
+        },
+        {
+          "step": 2,
+          "component": "services.memory.memory_candidate_validator",
+          "path": "src/aipinho/services/memory/memory_candidate_validator.py",
+          "operation": "validate_candidates"
+        },
+        {
+          "step": 3,
+          "component": "services.memory.curated_memory_service",
+          "path": "src/aipinho/services/memory/curated_memory_service.py",
+          "operation": "curate_memory"
+        },
+        {
+          "step": 4,
+          "component": "services.memory.curated_memory_persistence_service",
+          "path": "src/aipinho/services/memory/curated_memory_persistence_service.py",
+          "operation": "persist_memory"
+        }
+      ]
+    },
+    {
+      "name": "rag_pipeline",
+      "description": "RAG retrieval pipeline",
+      "steps": [
+        {
+          "step": 1,
+          "component": "services.rag.retrieval_service",
+          "path": "src/aipinho/services/rag/retrieval_service.py",
+          "operation": "retrieve_context"
+        },
+        {
+          "step": 2,
+          "component": "services.rag.retrieval_scope_service",
+          "path": "src/aipinho/services/rag/retrieval_scope_service.py",
+          "operation": "apply_scope"
+        },
+        {
+          "step": 3,
+          "component": "services.rag.retrieval_source_policy_service",
+          "path": "src/aipinho/services/rag/retrieval_source_policy_service.py",
+          "operation": "apply_source_policy"
+        },
+        {
+          "step": 4,
+          "component": "services.rag.retrieval_audit_service",
+          "path": "src/aipinho/services/rag/retrieval_audit_service.py",
+          "operation": "audit_retrieval"
+        }
+      ]
+    }
+  ],
+  "total_pipelines": 8
+}

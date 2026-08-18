@@ -1,0 +1,11 @@
+schema_version: 1
+
+query:
+  enabled: true
+  default_top_k: 5
+  max_top_k: 20
+  allow_global_query: true
+  allow_role_query: true
+  allow_global_plus_role: true
+  include_context_bundle_by_default: true
+  max_context_chars: 30000

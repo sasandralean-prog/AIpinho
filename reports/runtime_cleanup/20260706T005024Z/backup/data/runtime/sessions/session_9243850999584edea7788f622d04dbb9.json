@@ -1,0 +1,46 @@
+{
+  "session_id": "session_9243850999584edea7788f622d04dbb9",
+  "status": "active",
+  "created_at": "2026-06-08T21:45:59.971242+00:00",
+  "updated_at": "2026-06-08T21:45:59.981079+00:00",
+  "expires_at": "2026-06-09T01:45:59.971242+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "QUero que faça uma analise sobre o projeto PinhoForgeStudio em \"C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio\". Faça um breve resumo do estado atual do projeto e das funcionalidades dele.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_fa75ef6dc9a244a8820f5fb352e75147",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": true,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio",
+  "active_task_draft_id": "draft_5d5c470be21e472faf766c369348e5b0",
+  "warnings": [],
+  "trace_refs": []
+}

@@ -1,0 +1,30 @@
+schema_version: 1
+autocure:
+  enabled: true
+  supervised_only: true
+  autonomous_apply: false
+  require_human_approval_for_apply: true
+  require_policy_kernel_for_handoff: true
+  require_capability_gate_for_handoff: true
+  require_validation_gate_for_completion: true
+  require_event_sourced_speaker: true
+allowed_autocure_actions_this_sprint:
+- diagnose
+- classify_violation
+- propose_repair
+- create_patch_preview
+- create_config_change_preview
+- create_validation_plan
+- create_rollback_plan
+- create_lesson_candidate
+blocked_autocure_actions_this_sprint:
+- apply_patch
+- browser_control
+- computer_control
+- external_api_call
+- install_skill
+- run_git
+- run_shell
+- write_config
+- write_memory
+- write_policy

@@ -1,0 +1,9 @@
+schema_version: 1
+fallbacks:
+  text_chat: [gemini_text, stub_degraded]
+  code_assist: [text_chat]
+  embeddings: [keyword_search]
+  reranker: [keyword_score]
+  ocr: [vision]
+  vision: [ocr]
+  workspace_search: [keyword_search]

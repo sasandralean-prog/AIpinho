@@ -1,0 +1,53 @@
+schema_version: 1
+
+artifact_write:
+  enabled: true
+  mode: approved_non_code_writes
+  require_preview: true
+  require_preview_approved: true
+  require_approval: true
+  require_approval_snapshot: true
+  require_target_revalidation: true
+  require_content_revalidation: true
+  require_risk_revalidation: true
+  require_hash_lock: true
+  require_target_lock: true
+  require_post_write_validation: true
+  require_audit: true
+  require_trace: true
+  allow_direct_payload_write: false
+  allow_chat_auto_write: false
+
+allowed_artifact_types:
+  - report
+  - export
+  - validation_result
+  - task_result
+  - documentation_generated
+
+allowed_source_types:
+  - project_report
+  - task_run_result
+  - validation_result
+  - role_pipeline_run
+  - deterministic_export
+  - user_provided_content
+
+blocked:
+  source_code_targets: true
+  active_config_targets: true
+  script_targets: true
+  binary_targets: true
+  executable_targets: true
+  patch_targets: true
+  forbidden_root: true
+  path_traversal: true
+  outside_workspace: true
+  unknown_extension: true
+  secret_content: true
+  stale_preview: true
+  content_hash_mismatch: true
+  target_mismatch: true
+  approval_missing: true
+  approval_rejected: true
+  approval_expired: true

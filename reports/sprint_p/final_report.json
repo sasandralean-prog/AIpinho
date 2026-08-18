@@ -1,0 +1,82 @@
+{
+  "verdict": "DYNAMIC_AGENT_ECOSYSTEM_READY",
+  "status": "ready",
+  "objective": "Dynamic Agent Ecosystem & Capability Marketplace",
+  "implemented": {
+    "schemas": [
+      "AgentManifest",
+      "AgentCapabilityDescriptor",
+      "AgentScope",
+      "AgentHeartbeat",
+      "AgentHealthSnapshot",
+      "CapabilityQuery",
+      "CapabilityMatch",
+      "CapabilityNegotiationResult",
+      "AgentMarketplaceSnapshot"
+    ],
+    "services": [
+      "AgentMarketplaceService"
+    ],
+    "configs": [
+      "config/agents/agent_marketplace.yaml"
+    ],
+    "runtime_store": "data/runtime/agent_marketplace_runtime.json",
+    "launcher_tab": "Agent Marketplace",
+    "mobile_tab": "Agentes"
+  },
+  "endpoints": [
+    "GET /api/v1/agent-marketplace/status",
+    "GET /api/v1/agent-marketplace/agents",
+    "GET /api/v1/agent-marketplace/health",
+    "GET /api/v1/agent-marketplace/snapshot",
+    "POST /api/v1/agent-marketplace/agents",
+    "DELETE /api/v1/agent-marketplace/agents/{agent_id}",
+    "POST /api/v1/agent-marketplace/agents/{agent_id}/disable",
+    "POST /api/v1/agent-marketplace/agents/{agent_id}/heartbeat",
+    "POST /api/v1/agent-marketplace/agents/{agent_id}/failure",
+    "GET /api/v1/agent-marketplace/capabilities/{capability_id}",
+    "POST /api/v1/agent-marketplace/query",
+    "GET /api/v1/mobile/view-model/agents"
+  ],
+  "evidence": {
+    "agent_count": 9,
+    "capability_count": 17,
+    "ocr_selection": "ocr_local",
+    "planner_selected_agents": [
+      "planner_local",
+      "executor_local",
+      "debugger_local",
+      "vision_local",
+      "ocr_local",
+      "review_local",
+      "memory_local",
+      "supervisor_local",
+      "finalizer_local"
+    ]
+  },
+  "tests": [
+    {
+      "command": "python -m pytest tests/unit/test_agent_marketplace_service.py tests/unit/test_intelligent_planner_service.py tests/integration/test_launcher_multi_agent_ui_contract.py -q",
+      "result": "22 passed"
+    },
+    {
+      "command": "./gradlew.bat :app:testDebugUnitTest --tests br.com.aipinho.mobile.MobileViewModelClientTest",
+      "result": "BUILD SUCCESSFUL"
+    },
+    {
+      "command": "./gradlew.bat :app:assembleDebug",
+      "result": "BUILD SUCCESSFUL"
+    }
+  ],
+  "deploy": {
+    "launcher_exe": "C:\\Dev\\AIpinho\\dist\\AIpinhoLauncher.exe",
+    "apk": "C:\\Dev\\AIpinho\\apps\\mobile\\android\\app\\build\\outputs\\apk\\debug\\app-debug.apk",
+    "installed_device": "ZF5253V88S",
+    "backend_9088_pid": 63380
+  },
+  "remaining_risks": [
+    "Dynamic runtime registry is JSON-backed rather than transactional.",
+    "Manifest health_endpoint is modeled, but periodic background probing is not yet implemented.",
+    "Some legacy runtime profiles remain as historical fallbacks outside the main planner path."
+  ]
+}

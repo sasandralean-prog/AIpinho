@@ -1,0 +1,7 @@
+schema_version: 1
+
+sanitization:
+  redact_full_paths: false
+  redact_env_vars: true
+  redact_tokens: true
+  blocked_keys: [token, api_key, secret, password]

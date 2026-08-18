@@ -1,0 +1,29 @@
+{
+  "session_id": "session_352dfa55aa9c4890bb3bcbac64edd27a",
+  "status": "active",
+  "created_at": "2026-06-18T19:23:00.928611+00:00",
+  "updated_at": "2026-06-18T19:23:00.976719+00:00",
+  "expires_at": "2026-06-18T23:23:00.928611+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Leia o arquivo C:\\Dev\\AIpinho\\sandboxes\\dopamine_test\\resultado.txt e confirme o conteúdo.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {},
+  "last_policy_decision": {},
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {
+    "operation_type": "filesystem_read_file",
+    "path": "C:\\Dev\\AIpinho\\sandboxes\\dopamine_test\\resultado.txt",
+    "run_id": "sandbox_run_7b53af456a3f43b5ba2aca862d1194e4"
+  },
+  "warnings": [
+    "active_task_draft_missing"
+  ],
+  "trace_refs": []
+}

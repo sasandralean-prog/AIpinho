@@ -1,0 +1,6 @@
+schema_version: 1
+rollback:
+  enabled: true
+  plan_only: true
+  execution: false
+  requires_approved_snapshot: true

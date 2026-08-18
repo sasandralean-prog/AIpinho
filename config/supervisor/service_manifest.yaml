@@ -1,0 +1,115 @@
+﻿schema_version: 1
+services:
+  bootstrap_control:
+    service_id: bootstrap_control
+    display_name: "AIpinho Bootstrap Control"
+    port: 9080
+    host: "127.0.0.1"
+    public_bind_allowed: true
+    health_url: "http://127.0.0.1:9080/api/v1/health"
+    start_mode: external_bootstrap
+    restartable: false
+    restart_group: bootstrap
+    command_profile: aipinho_bootstrap_9080
+    human_name: "Canal bootstrap"
+  core_backend:
+    service_id: core_backend
+    display_name: "AIpinho Core Backend"
+    port: 9088
+    host: "127.0.0.1"
+    public_bind_allowed: true
+    health_url: "http://127.0.0.1:9088/api/v1/health"
+    start_mode: managed_process
+    restartable: true
+    restart_group: core
+    command_profile: aipinho_api_9088
+    human_name: "Backend principal"
+  interaction_gateway:
+    service_id: interaction_gateway
+    display_name: "AIpinho Interaction Gateway"
+    port: 9089
+    host: "127.0.0.1"
+    public_bind_allowed: true
+    health_url: "http://127.0.0.1:9089/api/v1/realtime/status"
+    start_mode: managed_process
+    restartable: true
+    restart_group: realtime
+    command_profile: aipinho_realtime_9089
+    human_name: "Sincronizacao em tempo real"
+  artifact_service:
+    service_id: artifact_service
+    display_name: "AIpinho Artifact Service"
+    port: 9098
+    host: "127.0.0.1"
+    public_bind_allowed: true
+    health_url: "http://127.0.0.1:9098/api/v1/health"
+    start_mode: managed_process
+    restartable: true
+    restart_group: artifacts
+    command_profile: aipinho_artifacts_9098
+    human_name: "Arquivos e artefatos"
+  monitor_supervisor:
+    service_id: monitor_supervisor
+    display_name: "AIpinho Monitor Supervisor"
+    port: 9099
+    host: "127.0.0.1"
+    public_bind_allowed: true
+    health_url: "http://127.0.0.1:9099/api/v1/health"
+    start_mode: launcher_watchdog
+    restartable: false
+    restartable_by_launcher_only: true
+    restart_group: supervisor
+    command_profile: aipinho_monitor_9099
+    human_name: "Monitor de servicos"
+command_profiles:
+  aipinho_bootstrap_9080:
+    type: python_module
+    module: "aipinho.apps.bootstrap_control_main"
+    app: "bootstrap"
+    port: 9080
+    allowed_args: ["--host", "--port", "--profile"]
+    env_profile: "bootstrap_9080"
+  aipinho_api_9088:
+    type: python_module
+    module: "aipinho.main"
+    app: "api"
+    port: 9088
+    allowed_args: ["--host", "--port", "--profile"]
+    env_profile: "api_9088"
+  aipinho_realtime_9089:
+    type: python_module
+    module: "aipinho.apps.realtime_main"
+    app: "realtime"
+    port: 9089
+    allowed_args: ["--host", "--port", "--profile"]
+    env_profile: "realtime_9089"
+  aipinho_artifacts_9098:
+    type: python_module
+    module: "aipinho.apps.artifacts_main"
+    app: "artifacts"
+    port: 9098
+    allowed_args: ["--host", "--port", "--profile"]
+    env_profile: "artifacts_9098"
+  aipinho_monitor_9099:
+    type: python_module
+    module: "aipinho.apps.monitor_main"
+    app: "monitor"
+    port: 9099
+    allowed_args: ["--host", "--port", "--profile"]
+    env_profile: "monitor_9099"
+rules:
+  no_arbitrary_command: true
+  no_shell_true: true
+  no_unregistered_service_restart: true
+  monitor_cannot_restart_itself: true
+  launcher_controls_monitor: true
+  required_service_ids:
+    - bootstrap_control
+    - core_backend
+    - interaction_gateway
+    - artifact_service
+    - monitor_supervisor
+  forbidden_recursive_health_paths:
+    - /api/v1/status
+    - /api/v1/monitor/status
+    - /api/v1/supervisor/status

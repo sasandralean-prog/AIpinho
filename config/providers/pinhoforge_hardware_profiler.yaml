@@ -1,0 +1,69 @@
+version: 1
+provider:
+  enabled: true
+  provider_id: pinhoforge_studio
+  capability_group: hardware_profiler
+  allow_profile: true
+  allow_report_export: true
+  allow_environment_repair: false
+  allow_install_tools: false
+  allow_modify_path: false
+  timeout_seconds: 30
+  max_output_size_kb: 256
+  redaction_enabled: true
+  cache_ttl_seconds: 0
+  expose_to_dashboard: true
+  tools:
+    - tool_id: java
+      display_name: Java
+      command: java
+      used_by_capabilities: [development_readiness, android_readiness]
+    - tool_id: gradle
+      display_name: Gradle
+      command: gradle
+      used_by_capabilities: [development_readiness, android_readiness]
+    - tool_id: adb
+      display_name: ADB
+      command: adb
+      used_by_capabilities: [android_readiness]
+    - tool_id: ffmpeg
+      display_name: FFmpeg
+      command: ffmpeg
+      used_by_capabilities: [conversion_readiness, media_readiness]
+    - tool_id: tesseract
+      display_name: Tesseract
+      command: tesseract
+      used_by_capabilities: [conversion_readiness, media_readiness]
+    - tool_id: whisper
+      display_name: Whisper
+      command: whisper
+      used_by_capabilities: [media_readiness]
+    - tool_id: libreoffice
+      display_name: LibreOffice
+      command: soffice
+      used_by_capabilities: [conversion_readiness]
+    - tool_id: pandoc
+      display_name: Pandoc
+      command: pandoc
+      used_by_capabilities: [conversion_readiness]
+    - tool_id: calibre
+      display_name: Calibre
+      command: ebook-convert
+      used_by_capabilities: [conversion_readiness]
+    - tool_id: inkscape
+      display_name: Inkscape
+      command: inkscape
+      used_by_capabilities: [conversion_readiness]
+    - tool_id: git
+      display_name: Git
+      command: git
+      used_by_capabilities: [development_readiness]
+    - tool_id: python
+      display_name: Python
+      command: python
+      used_by_capabilities: [development_readiness]
+    - tool_id: node
+      display_name: Node.js
+      command: node
+      used_by_capabilities: [development_readiness]
+

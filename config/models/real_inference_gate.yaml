@@ -1,0 +1,49 @@
+﻿schema_version: 1
+
+real_inference:
+  enabled: true
+  default_provider: llama_cpp_text
+  default_model: qwen3_1_7b_q6_k
+  allow_manual_enable: true
+  require_request_opt_in: true
+  require_provider_enabled: true
+  require_model_enabled: true
+  require_model_path_validation: true
+  require_executable_validation: true
+  require_safety_envelope: true
+  require_output_contract: true
+  require_prompt_budget: true
+  require_timeout: true
+  require_audit: true
+
+manual_profiles:
+  allow_manual_profile_override: true
+  require_manual_gate_enabled: true
+  require_profile_enabled: true
+  require_request_opt_in: true
+  require_operator_confirmation: true
+  allowed_manual_endpoints:
+    - "/api/v1/models/manual-inference/smoke-test"
+    - "/api/v1/models/llama-cpp/invoke"
+
+routing:
+  chat_uses_real_inference_by_default: true
+  reports_use_real_inference_by_default: true
+  analysis_uses_real_inference_by_default: true
+  allow_auto_conversation_inference: true
+  auto_conversation_roles: [speaker]
+  auto_conversation_purposes: [chat]
+  allow_auto_role_pipeline_inference: true
+  auto_role_pipeline_roles: [speaker, interpreter, reporter, analyst, planner, supervisor, debugger, coder, patch_planner, code_reviewer, patch_quality_reviewer, memory_curator]
+  auto_role_pipeline_purposes: [chat, project_report, code_analysis, task_preview, validation, debug_trace]
+  fallback_to_stub_on_unavailable: true
+
+blocked:
+  tool_calling: true
+  network: true
+  model_download: true
+  arbitrary_shell: true
+  write_files: true
+  patch_apply: true
+  memory_write: true
+  rag_ingest: true

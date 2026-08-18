@@ -1,0 +1,79 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "repositories": [
+    {
+      "repository": "task_repository",
+      "path": "src/aipinho/repositories/task_repository.py",
+      "type": "repository",
+      "data_source": "UNKNOWN",
+      "critical": true
+    },
+    {
+      "repository": "artifact_repository",
+      "path": "src/aipinho/repositories/artifact_repository.py",
+      "type": "repository",
+      "data_source": "UNKNOWN",
+      "critical": true
+    },
+    {
+      "repository": "approval_repository",
+      "path": "src/aipinho/repositories/approval_repository.py",
+      "type": "repository",
+      "data_source": "UNKNOWN",
+      "critical": true
+    },
+    {
+      "repository": "memory_repository",
+      "path": "src/aipinho/repositories/memory_repository.py",
+      "type": "repository",
+      "data_source": "UNKNOWN",
+      "critical": false
+    },
+    {
+      "repository": "event_repository",
+      "path": "src/aipinho/repositories/event_repository.py",
+      "type": "repository",
+      "data_source": "UNKNOWN",
+      "critical": false
+    },
+    {
+      "repository": "validation_repository",
+      "path": "src/aipinho/repositories/validation_repository.py",
+      "type": "repository",
+      "data_source": "UNKNOWN",
+      "critical": false
+    },
+    {
+      "repository": "rag_repository",
+      "path": "src/aipinho/repositories/rag_repository.py",
+      "type": "repository",
+      "data_source": "UNKNOWN",
+      "critical": false
+    },
+    {
+      "repository": "workspace_repository",
+      "path": "src/aipinho/repositories/workspace_repository.py",
+      "type": "repository",
+      "data_source": "UNKNOWN",
+      "critical": false
+    },
+    {
+      "repository": "tool_repository",
+      "path": "src/aipinho/repositories/tool_repository.py",
+      "type": "repository",
+      "data_source": "UNKNOWN",
+      "critical": false
+    },
+    {
+      "repository": "model_repository",
+      "path": "src/aipinho/repositories/model_repository.py",
+      "type": "repository",
+      "data_source": "UNKNOWN",
+      "critical": false
+    }
+  ],
+  "total_repositories": 10,
+  "critical_repositories": 3,
+  "non_critical_repositories": 7
+}

@@ -1,0 +1,17 @@
+﻿schema_version: 1
+
+contracts:
+  default_safe_to_execute: false
+  drafts_only: false
+  require_policy_preview: true
+  require_workspace_for:
+    - readonly_analysis
+    - artifact_generation
+    - patch_request
+  never_execute_from_draft: false
+runtime_execution:
+  read_only_runtime_enabled: true
+  require_explicit_start: true
+  draft_or_preview_required_by_default: true
+  direct_controlled_requires_policy_snapshot: true
+  write_runtime_enabled: true

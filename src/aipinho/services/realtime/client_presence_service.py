@@ -1,0 +1,1 @@
+from aipinho.services.realtime.realtime_core import ClientPresenceService

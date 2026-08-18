@@ -1,0 +1,1 @@
+﻿from aipinho.services.supervisor.service_manifest_service import ServiceManifestService

@@ -1,0 +1,41 @@
+{
+  "session_id": "chat_eb43c4bbb6b04b11bc852e384927dfb5",
+  "status": "active",
+  "created_at": "2026-06-12T15:10:36.134368+00:00",
+  "updated_at": "2026-06-12T15:10:52.179824+00:00",
+  "expires_at": "2026-06-12T19:10:36.134368+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Me a pasta em.um sapoandando. com os arquivos compeltos do projeto em \"C:\\Users\\rafae\\Documents\\TestesIALocal\\SapoAndando\"",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_2a2539eadda040659d3c318ddc458e28",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\TestesIALocal\\SapoAndando",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\TestesIALocal\\SapoAndando",
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

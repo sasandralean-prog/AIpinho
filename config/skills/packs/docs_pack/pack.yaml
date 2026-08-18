@@ -1,0 +1,38 @@
+skill_pack_id: docs_pack
+display_name: Docs Pack v1
+slug: docs_pack
+version: 1.0.0
+status: active
+category: docs
+description: Governed documentation and report generation using sanitized evidence and token-protected artifacts.
+included_skills:
+  - internal.project_readonly_inventory
+  - internal.safe_markdown_report_generator
+  - internal.artifact_bundle_exporter
+required_capabilities:
+  - read_workspace
+  - report_generate
+  - artifact_create
+optional_capabilities:
+  - artifact_download
+supported_agents: [aipinho, lucio, codex, gemini, autopilot]
+supported_project_stacks: [android_gradle, python, node, mixed, unknown]
+supported_execution_modes: [project_readonly_analysis, assisted_execution, governed_autorun, safe_chat]
+risk_level: low
+policy_profile: readonly_docs_default
+validation_profile: docs_artifact_smoke
+artifact_policy: token_protected_artifacts
+memory_policy: propose_candidate_with_evidence
+dashboard_visible: true
+debugger_trace_required: true
+docs_ref: docs/skills/DOCS_PACK.md
+tests_ref: tests/skill_packs
+examples:
+  - label: Generate docs package
+    prompt: Generate technical documentation from this project evidence.
+    expected_pack_selection: [docs_pack, artifact_pack]
+limitations:
+  - Project writing is never performed by this pack.
+evidence_refs: [skill_pack_manifest:docs_pack]
+metadata_sanitized:
+  output_hint: markdown_reports

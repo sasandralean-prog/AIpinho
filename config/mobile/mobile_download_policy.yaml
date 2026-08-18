@@ -1,0 +1,14 @@
+schema_version: 1
+downloads:
+  enabled: true
+  require_artifact_id: true
+  require_token_auth: true
+  allow_zip_download: true
+  show_progress: true
+  verify_sha256_when_available: true
+  save_to_user_selected_location: true
+  do_not_auto_open: true
+blocked:
+  download_by_raw_path: true
+  execute_after_download: true
+  overwrite_without_confirmation: true

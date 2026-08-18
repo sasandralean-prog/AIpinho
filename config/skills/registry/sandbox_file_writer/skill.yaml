@@ -1,0 +1,34 @@
+skill_id: internal.sandbox_file_writer
+display_name: Sandbox File Writer
+slug: sandbox_file_writer
+description: Create or replace a file inside a governed sandbox workspace.
+version: 1.0.0
+status: active
+category: code_modification
+owner: aipinho
+compatible_agents: [aipinho, codex, lucio, gemini]
+compatible_project_stacks: [android_gradle, python, node, mixed, unknown]
+required_capabilities: [sandbox_write]
+allowed_tools: [sandbox_write_file]
+denied_tools: [create_file, modify_file, patch_apply, run_shell]
+input_schema:
+  type: object
+  properties:
+    relative_path: {type: string}
+    content: {type: string}
+    overwrite: {type: boolean}
+output_schema: {type: object}
+side_effects: [sandbox_file_write]
+workspace_policy: {source_readonly_write: false, outside_sandbox_write: false}
+sandbox_required: true
+sandbox_allowed: true
+sandbox_side_effects: [write]
+command_policy: {shell: blocked}
+artifact_policy: {enabled: false}
+memory_policy: {mode: none}
+validation_policy: {required: true, failure_policy: block_completion}
+speaker_truth_policy: {raw_hidden_by_default: true, must_cite_evidence: true}
+risk_level: low
+approval_policy: {required: false}
+docs_ref: docs/sandbox/SANDBOX_FILE_OPERATIONS.md
+tests_ref: tests/sandbox

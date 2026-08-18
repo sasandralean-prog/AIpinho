@@ -1,0 +1,292 @@
+{
+  "schema_version": 1,
+  "golden_paths": [
+    {
+      "id": "simple_chat",
+      "prompt_or_input": "Generic input for simple_chat.",
+      "expected_operation_type": "simple_chat",
+      "expected_task_behavior": "no task",
+      "expected_workspace_behavior": "no workspace",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "no approval",
+      "expected_validation": "not required",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "message_received"
+      ],
+      "expected_mobile": "clean chat answer",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "simple_chat_with_artifact",
+      "prompt_or_input": "Generic input for simple_chat_with_artifact.",
+      "expected_operation_type": "artifact_request",
+      "expected_task_behavior": "no task by default",
+      "expected_workspace_behavior": "artifact store only",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "no approval",
+      "expected_validation": "artifact validation",
+      "expected_artifacts": "artifact links",
+      "expected_events": [
+        "artifact_created"
+      ],
+      "expected_mobile": "download card",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "readonly_analysis",
+      "prompt_or_input": "Generic input for readonly_analysis.",
+      "expected_operation_type": "readonly_analysis",
+      "expected_task_behavior": "task or operation",
+      "expected_workspace_behavior": "read only",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "none unless policy requires",
+      "expected_validation": "analysis validation",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "readonly_scan_started"
+      ],
+      "expected_mobile": "summary",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "readonly_analysis_with_artifact_output",
+      "prompt_or_input": "Generic input for readonly_analysis_with_artifact_output.",
+      "expected_operation_type": "readonly_analysis_with_artifact_output",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "read source; write artifact store only",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "none unless broad scan policy requires",
+      "expected_validation": "artifact/report validations",
+      "expected_artifacts": "txt/zip artifact",
+      "expected_events": [
+        "artifact_created",
+        "validation_finished"
+      ],
+      "expected_mobile": "summary plus download",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "target_workspace_patch_preview",
+      "prompt_or_input": "Generic input for target_workspace_patch_preview.",
+      "expected_operation_type": "patch_preview",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "read target no apply",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "approval later",
+      "expected_validation": "preview validation",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "preview_created"
+      ],
+      "expected_mobile": "preview card",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "target_workspace_patch_apply",
+      "prompt_or_input": "Generic input for target_workspace_patch_apply.",
+      "expected_operation_type": "patch_apply",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "mutate target only",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "required",
+      "expected_validation": "post apply validation",
+      "expected_artifacts": "optional report",
+      "expected_events": [
+        "approval_granted",
+        "patch_apply_finished"
+      ],
+      "expected_mobile": "final state",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "shell_readonly",
+      "prompt_or_input": "Generic input for shell_readonly.",
+      "expected_operation_type": "shell_command",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "read-only shell",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "maybe",
+      "expected_validation": "exit/evidence",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "shell_command_finished"
+      ],
+      "expected_mobile": "sanitized status",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "shell_test_or_build",
+      "prompt_or_input": "Generic input for shell_test_or_build.",
+      "expected_operation_type": "shell_command",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "test/build category",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "required when side effects",
+      "expected_validation": "exit/evidence",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "shell_command_finished"
+      ],
+      "expected_mobile": "test status",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "blocked_write_to_readonly",
+      "prompt_or_input": "Generic input for blocked_write_to_readonly.",
+      "expected_operation_type": "blocked_policy_message",
+      "expected_task_behavior": "maybe task",
+      "expected_workspace_behavior": "blocked",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "none",
+      "expected_validation": "block evidence",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "task_blocked"
+      ],
+      "expected_mobile": "blocked with reason",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "destructive_shell_blocked",
+      "prompt_or_input": "Generic input for destructive_shell_blocked.",
+      "expected_operation_type": "blocked_policy_message",
+      "expected_task_behavior": "task or preview",
+      "expected_workspace_behavior": "blocked",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "none",
+      "expected_validation": "block evidence",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "task_blocked"
+      ],
+      "expected_mobile": "blocked with reason",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "approval_required",
+      "prompt_or_input": "Generic input for approval_required.",
+      "expected_operation_type": "approval_request",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "pending side effect",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "required",
+      "expected_validation": "pending",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "approval_requested"
+      ],
+      "expected_mobile": "approval action",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "approval_denied",
+      "prompt_or_input": "Generic input for approval_denied.",
+      "expected_operation_type": "approval_denied",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "no mutation",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "denied",
+      "expected_validation": "terminal/blocked",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "approval_denied"
+      ],
+      "expected_mobile": "denied state",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "validation_failed",
+      "prompt_or_input": "Generic input for validation_failed.",
+      "expected_operation_type": "validation_result",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "no success",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "depends",
+      "expected_validation": "failed",
+      "expected_artifacts": "maybe report",
+      "expected_events": [
+        "validation_finished"
+      ],
+      "expected_mobile": "not completed",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "artifact_download",
+      "prompt_or_input": "Generic input for artifact_download.",
+      "expected_operation_type": "artifact_download",
+      "expected_task_behavior": "no task",
+      "expected_workspace_behavior": "artifact store only",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "token/header",
+      "expected_validation": "integrity optional",
+      "expected_artifacts": "downloaded file",
+      "expected_events": [
+        "artifact_download_completed"
+      ],
+      "expected_mobile": "download notification",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "mobile_endpoint_divergence_detection",
+      "prompt_or_input": "Generic input for mobile_endpoint_divergence_detection.",
+      "expected_operation_type": "diagnostic",
+      "expected_task_behavior": "regression candidate",
+      "expected_workspace_behavior": "none",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "none",
+      "expected_validation": "divergence evidence",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "regression_candidate_created"
+      ],
+      "expected_mobile": "diagnostic warning",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    }
+  ]
+}

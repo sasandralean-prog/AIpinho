@@ -1,0 +1,50 @@
+schema_version: 1
+
+rag_memory:
+  enabled: true
+  mode: governed_policy_integration
+  require_policy_decision: true
+  require_context_admission: true
+  require_context_injection_plan: true
+  require_citations: true
+  require_provenance: true
+  require_budget: true
+  require_trace: true
+  require_audit: true
+
+usage_modes:
+  explicit_user_request:
+    enabled: true
+    allow_retrieval: true
+    allow_curated_memory: true
+  task_contract_allowed:
+    enabled: true
+    allow_retrieval: true
+    allow_curated_memory: false
+  role_pipeline_allowed:
+    enabled: true
+    allow_retrieval: true
+    allow_curated_memory: false
+  automatic_chat:
+    enabled: false
+    allow_retrieval: false
+    allow_curated_memory: false
+  automatic_prompt_assembly:
+    enabled: false
+    allow_retrieval: false
+    allow_curated_memory: false
+
+blocked:
+  uncited_context: true
+  unscoped_context: true
+  unregistered_source: true
+  expired_memory: true
+  superseded_memory_as_active: true
+  rejected_memory: true
+  sensitive_context: true
+  raw_logs: true
+  secrets: true
+  legacy_vectorstore: true
+  embeddings: true
+  auto_ingest: true
+  model_source_selection: true

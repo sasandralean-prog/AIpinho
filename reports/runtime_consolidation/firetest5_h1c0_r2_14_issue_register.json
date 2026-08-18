@@ -1,0 +1,67 @@
+{
+  "wave": "H1C0.R2.14",
+  "verdict": "FIRETEST5_H1C0_R2_14_GOVERNED_FACT_SOURCE_BINDING_BLOCKED_WITH_CORE_FIX_VALIDATED",
+  "firetest5_status": "NOT_READY",
+  "issues": [
+    {
+      "id": "R2_14_P0_RESOLVED_SOURCE_BINDING_BLACK_BOX",
+      "severity": "P0",
+      "status": "resolved",
+      "title": "Fact source binding was a monolithic compile region",
+      "before": "Public runtime reached before_fact_source_binding and terminalized as PERCEPTION_FACT_SOURCE_BINDING_STALLED without an internal source-binding substage.",
+      "resolution": "ContractDrivenPerceptionService.compile now exposes generic source-binding stages for source index build, attribute observation projection, evidence ref resolution, evidence set materialization, provenance binding and bound check.",
+      "evidence": [
+        "firetest5_h1c0_r2_14_source_binding_stage_trace.json",
+        "firetest5_h1c0_r2_14_clean_phase0_to_6_validation_rerun.json"
+      ]
+    },
+    {
+      "id": "R2_14_P0_RESOLVED_TERMINAL_REASON_INCONSISTENCY",
+      "severity": "P0",
+      "status": "resolved",
+      "title": "Terminal blocked result lacked top-level reason_code",
+      "before": "R2.13 result endpoint returned blocked, but TaskRunResult.reason_code was null while validation/completion carried PERCEPTION_FACT_SOURCE_BINDING_STALLED.",
+      "resolution": "TaskRunResult has canonical top-level reason_code and result/session/summary projections prefer that canonical field.",
+      "evidence": [
+        "firetest5_h1c0_r2_14_terminal_reason_consistency.json"
+      ]
+    },
+    {
+      "id": "R2_14_P0_RESOLVED_GUARD_LIVE_WORKER_RACE",
+      "severity": "P0",
+      "status": "resolved",
+      "title": "Artifact terminalization guard could judge active work by artifact age instead of checkpoint silence",
+      "before": "A diagnostic public run terminalized while later checkpoints were rejected, showing the worker was still making progress after the guard decision.",
+      "resolution": "Artifact stall detection now measures silence since the latest artifact checkpoint and preserves existing terminal idempotency.",
+      "evidence": [
+        "firetest5_h1c0_r2_14_public_diagnostic_rerun.json",
+        "tests/unit/test_accepted_running_artifact_worker_terminalization_guard.py"
+      ]
+    },
+    {
+      "id": "R2_14_P0_NEW_ARTIFACT_PERSIST_PAYLOAD_BOUNDARY",
+      "severity": "P0",
+      "status": "open",
+      "title": "Music inventory reaches persist boundary and stalls before terminal artifact persist",
+      "observed": {
+        "reason_code": "MUSIC_INVENTORY_ARTIFACT_PERSIST_STALLED",
+        "last_completed_stage": "before_artifact_persist",
+        "metadata_coverage_reached": true,
+        "inventory_sufficiency_reached": true,
+        "evidence_phase1_reached": false,
+        "estimated_payload_bytes": 17194840,
+        "materialized_payload_bytes": 17194840,
+        "payload_ref_count": 0
+      },
+      "recommendation": "H1C0.R2.15 should focus on artifact persist payload-ref/materialization boundary, atomic persist and large artifact manifest behavior."
+    },
+    {
+      "id": "R2_14_P1_METRICS_PROJECTION_SPARSE",
+      "severity": "P1",
+      "status": "open",
+      "title": "Endpoint-sanitized checkpoint metrics preserve payload size but not all source-binding counters",
+      "observed": "The final metrics report has payload_ref_count and byte estimates, but several source-binding counters are null after endpoint projection.",
+      "recommendation": "Preserve bounded aggregate source-binding counters in endpoint-safe projection without inlining facts, evidence records or rows."
+    }
+  ]
+}

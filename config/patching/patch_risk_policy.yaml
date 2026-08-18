@@ -1,0 +1,36 @@
+schema_version: 1
+
+risk:
+  enabled: true
+  default: medium
+
+levels:
+  low:
+    preview_allowed: true
+    needs_review: false
+  medium:
+    preview_allowed: true
+    needs_review: true
+  high:
+    preview_allowed: true
+    needs_review: true
+    requires_extra_validation_future: true
+  critical:
+    preview_allowed: false
+    blocked: true
+
+signals:
+  config_file: high
+  scripts_file: high
+  many_files: high
+  no_evidence: critical
+  forbidden_root: critical
+  outside_workspace: critical
+  binary_file: critical
+  secret_file: critical
+  delete_file: critical
+  rename_file: critical
+  generated_lockfile: high
+  large_diff: high
+  touches_policy_kernel: high
+  touches_security: high

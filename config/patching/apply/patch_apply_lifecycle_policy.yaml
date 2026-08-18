@@ -1,0 +1,6 @@
+schema_version: 1
+
+lifecycle:
+  terminal_states: [completed, failed, blocked, cancelled, rolled_back, failed_with_rollback, rollback_failed]
+  execute_allowed_from: [ready_to_execute]
+  rollback_allowed_from: [completed, failed, failed_with_rollback]

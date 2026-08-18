@@ -1,0 +1,13 @@
+canonical_intents:
+  precedence:
+    - approval_command
+    - readonly_or_planning
+    - workspace_registry_query
+    - positive_permission_grant
+    - explicit_config_change
+    - project_or_workspace_bootstrap
+    - patch_or_write
+    - shell_build_test
+    - explicit_session_diagnostic
+    - conversation
+  regex_is_signal_not_final_truth: true

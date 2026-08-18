@@ -1,0 +1,16 @@
+schema_version: 1
+
+namespaces:
+  global: global_ecosystem
+  roles:
+    planner: planner_rag
+    supervisor: supervisor_rag
+    coder: coder_rag
+    code_reviewer: code_reviewer_rag
+    patch_quality_reviewer: patch_quality_rag
+    reporter: reporter_rag
+    debugger: debugger_rag
+    memory_curator: memory_curator_rag
+  disabled_future:
+    vision_analyst: vision_rag
+    ocr_specialist: ocr_rag

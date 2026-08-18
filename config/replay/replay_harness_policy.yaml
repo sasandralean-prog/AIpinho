@@ -1,0 +1,31 @@
+schema_version: 1
+replay_harness:
+  enabled: true
+  mode: deterministic_safe_replay
+  require_sanitization: true
+  require_snapshot_metadata: true
+  require_event_contracts: true
+  require_policy_hashes: true
+  require_config_hashes: true
+  require_source_refs: true
+  require_trace: true
+  require_audit: true
+execution:
+  real_side_effects_allowed: false
+  model_real_inference_allowed: false
+  shell_allowed: false
+  git_allowed: false
+  patch_apply_allowed: false
+  external_network_allowed: false
+  tool_real_execution_allowed: false
+  artifact_write_allowed: false
+  memory_write_allowed: false
+blocked:
+  unsanitized_snapshot: true
+  raw_secret_snapshot: true
+  replay_executes_real_tool: true
+  replay_applies_patch: true
+  replay_mutates_workspace: true
+  replay_updates_memory: true
+  replay_calls_external_api: true
+  replay_claims_real_completion: true

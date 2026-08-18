@@ -1,0 +1,12 @@
+schema_version: 1
+
+dedupe:
+  enabled: true
+  embeddings_enabled: false
+  exact_hash: true
+  kind_scope_hash: true
+  token_jaccard: true
+  near_duplicate_threshold: 0.72
+  exact_duplicate_status: duplicate
+  near_duplicate_status: needs_review
+  keep_existing_candidate: true

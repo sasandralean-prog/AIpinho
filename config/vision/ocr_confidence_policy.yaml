@@ -1,0 +1,8 @@
+schema_version: 1
+
+confidence:
+  required: true
+  minimum_strong: 0.8
+  minimum_acceptable: 0.55
+  missing_confidence_status: degraded
+  below_minimum_status: degraded

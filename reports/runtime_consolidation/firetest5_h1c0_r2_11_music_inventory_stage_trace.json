@@ -1,0 +1,289 @@
+{
+  "task_run_id": "task_run_86fb126c4ac446c3b87d35efd0f3bda7",
+  "music_inventory_checkpoints": [
+    {
+      "sequence": 32,
+      "logical_path": "reports/firetest5/music_inventory.csv",
+      "stage": "before_artifact_render",
+      "artifact_attempt_id": "artifact_attempt_77ba3b373fcc4333836e0784b841aef1",
+      "rows_rendered": null,
+      "rows_expected": null,
+      "cells_rendered": null,
+      "bounded": true
+    },
+    {
+      "sequence": 33,
+      "logical_path": "reports/firetest5/music_inventory.csv",
+      "stage": "before_entity_iteration",
+      "artifact_attempt_id": "artifact_attempt_77ba3b373fcc4333836e0784b841aef1",
+      "rows_rendered": null,
+      "rows_expected": null,
+      "cells_rendered": null,
+      "bounded": true
+    },
+    {
+      "sequence": 34,
+      "logical_path": "reports/firetest5/music_inventory.csv",
+      "stage": "after_intent_resolution",
+      "artifact_attempt_id": "artifact_attempt_77ba3b373fcc4333836e0784b841aef1",
+      "rows_rendered": null,
+      "rows_expected": 2272,
+      "cells_rendered": null,
+      "bounded": true
+    },
+    {
+      "sequence": 35,
+      "logical_path": "reports/firetest5/music_inventory.csv",
+      "stage": "after_entity_selection",
+      "artifact_attempt_id": "artifact_attempt_77ba3b373fcc4333836e0784b841aef1",
+      "rows_rendered": 0,
+      "rows_expected": 2272,
+      "cells_rendered": null,
+      "bounded": true
+    },
+    {
+      "sequence": 36,
+      "logical_path": "reports/firetest5/music_inventory.csv",
+      "stage": "before_perception_payload_compile",
+      "artifact_attempt_id": "artifact_attempt_77ba3b373fcc4333836e0784b841aef1",
+      "rows_rendered": 0,
+      "rows_expected": 2272,
+      "cells_rendered": null,
+      "bounded": true
+    }
+  ],
+  "artifact_events": [
+    {
+      "sequence": 9,
+      "type": "artifact_creation_terminalization_guard_started",
+      "logical_path": null,
+      "stage": null,
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 13,
+      "type": "artifact_creation_started",
+      "logical_path": "reports/firetest5/phase1_discovery.md",
+      "stage": null,
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 14,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/phase1_discovery.md",
+      "stage": "before_artifact_render",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 15,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/phase1_discovery.md",
+      "stage": "before_registry_create",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 16,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/phase1_discovery.md",
+      "stage": "before_artifact_semantic_profile",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 17,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/phase1_discovery.md",
+      "stage": "after_artifact_semantic_profile",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 18,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/phase1_discovery.md",
+      "stage": "before_artifact_persist",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 19,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/phase1_discovery.md",
+      "stage": "after_artifact_persist",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 20,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/phase1_discovery.md",
+      "stage": "after_registry_create_before_event",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 21,
+      "type": "artifact_created",
+      "logical_path": "reports/firetest5/phase1_discovery.md",
+      "stage": null,
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 22,
+      "type": "artifact_creation_started",
+      "logical_path": "reports/firetest5/project_inventory.md",
+      "stage": null,
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 23,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/project_inventory.md",
+      "stage": "before_artifact_render",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 24,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/project_inventory.md",
+      "stage": "before_registry_create",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 25,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/project_inventory.md",
+      "stage": "before_artifact_semantic_profile",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 26,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/project_inventory.md",
+      "stage": "after_artifact_semantic_profile",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 27,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/project_inventory.md",
+      "stage": "before_artifact_persist",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 28,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/project_inventory.md",
+      "stage": "after_artifact_persist",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 29,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/project_inventory.md",
+      "stage": "after_registry_create_before_event",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 30,
+      "type": "artifact_created",
+      "logical_path": "reports/firetest5/project_inventory.md",
+      "stage": null,
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 31,
+      "type": "artifact_creation_started",
+      "logical_path": "reports/firetest5/music_inventory.csv",
+      "stage": null,
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 32,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/music_inventory.csv",
+      "stage": "before_artifact_render",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 33,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/music_inventory.csv",
+      "stage": "before_entity_iteration",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 34,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/music_inventory.csv",
+      "stage": "after_intent_resolution",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 35,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/music_inventory.csv",
+      "stage": "after_entity_selection",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 36,
+      "type": "artifact_render_checkpoint",
+      "logical_path": "reports/firetest5/music_inventory.csv",
+      "stage": "before_perception_payload_compile",
+      "reason_code": null,
+      "last_checkpoint_stage": null
+    },
+    {
+      "sequence": 37,
+      "type": "artifact_creation_terminalization_guard_triggered",
+      "logical_path": "reports/firetest5/music_inventory.csv",
+      "stage": null,
+      "reason_code": "MUSIC_INVENTORY_PERCEPTION_PAYLOAD_COMPILE_STALLED",
+      "last_checkpoint_stage": "before_perception_payload_compile"
+    },
+    {
+      "sequence": 38,
+      "type": "artifact_failed",
+      "logical_path": "reports/firetest5/music_inventory.csv",
+      "stage": null,
+      "reason_code": "MUSIC_INVENTORY_PERCEPTION_PAYLOAD_COMPILE_STALLED",
+      "last_checkpoint_stage": "before_perception_payload_compile"
+    },
+    {
+      "sequence": 40,
+      "type": "artifact_creation_terminalization_guard_completed",
+      "logical_path": null,
+      "stage": null,
+      "reason_code": "MUSIC_INVENTORY_PERCEPTION_PAYLOAD_COMPILE_STALLED",
+      "last_checkpoint_stage": null
+    }
+  ],
+  "terminal_events": [
+    {
+      "sequence": 39,
+      "type": "run_blocked",
+      "reason_code": "MUSIC_INVENTORY_PERCEPTION_PAYLOAD_COMPILE_STALLED",
+      "last_checkpoint_stage": "before_perception_payload_compile"
+    }
+  ]
+}

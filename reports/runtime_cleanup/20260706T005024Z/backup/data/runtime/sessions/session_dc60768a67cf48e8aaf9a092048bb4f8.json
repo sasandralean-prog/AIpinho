@@ -1,0 +1,48 @@
+{
+  "session_id": "session_dc60768a67cf48e8aaf9a092048bb4f8",
+  "status": "active",
+  "created_at": "2026-06-10T12:07:12.649851+00:00",
+  "updated_at": "2026-06-10T12:07:12.662982+00:00",
+  "expires_at": "2026-06-10T16:07:12.649851+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Liste, de forma objetiva, todos os diretorios/workspaces que a AIpinho tem permissao para ler e todos os diretorios/workspaces que tem permissao para escrever ou executar operacoes governadas. Separe leitura, escrita/patch/artifact e shell/network governado. Cite tambem se precisa de approval e qual fonte de policy/config foi usada. Nao altere arquivos.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_4d6a85c610ff4ceaa00bb8d3a5902877",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_clarification",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": "draft_bc0b1bea973d48148556b9ee1d162945",
+  "warnings": [
+    "requires_clarification"
+  ],
+  "trace_refs": []
+}

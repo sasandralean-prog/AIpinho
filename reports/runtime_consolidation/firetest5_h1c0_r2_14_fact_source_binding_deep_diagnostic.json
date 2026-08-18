@@ -1,0 +1,117 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_14_GOVERNED_FACT_SOURCE_BINDING_BLOCKED_WITH_CORE_FIX_VALIDATED",
+  "wave": "H1C0.R2.14",
+  "observed_frontier": "PERCEPTION_FACT_SOURCE_BINDING_STALLED",
+  "baseline": {
+    "source_wave": "H1C0.R2.13",
+    "task_run_id": "task_run_a85129892a9d4ac29d3bfe0225de9883",
+    "result_status": "blocked",
+    "observed_result_reason_code": "PERCEPTION_FACT_SOURCE_BINDING_STALLED",
+    "result_top_level_reason_code": null,
+    "result_endpoint_status_code": 200,
+    "finished_at": "2026-08-17T16:55:41.465956+00:00",
+    "terminal_event_count": 1,
+    "queue_runtime_status_code": 200,
+    "backend_restart_required_after_terminal": false
+  },
+  "root_cause_status": "proven",
+  "root_cause": {
+    "summary": "Fact source binding was still a monolithic section of ContractDrivenPerceptionService.compile: it built AttributeObservation rows, EvidenceSet records and semantic coverage without internal stage checkpoints, so a public stall could only be reported as PERCEPTION_FACT_SOURCE_BINDING_STALLED.",
+    "proven_by": [
+      "ContractDrivenPerceptionService.compile called attribute_observations, evidence_set, semantic_coverage and semantic_coverage_report between before_fact_source_binding and after_fact_source_binding.",
+      "R2.13 public trace reached before_fact_source_binding and did not reach after_fact_source_binding.",
+      "R2.13 top-level TaskRunResult.reason_code was absent while validation/completion/events carried the blocking reason, creating canonical runtime truth inconsistency."
+    ]
+  },
+  "call_graph_real_before_patch": [
+    "ContractDrivenPerceptionService.compile",
+    "attribute_observations",
+    "evidence_set",
+    "semantic_coverage",
+    "semantic_coverage_report",
+    "knowledge_records",
+    "semantic_assertions",
+    "semantic_self_review",
+    "semantic_coverage_2"
+  ],
+  "source_binding_subresponsibilities": {
+    "source_index_build": "requirements, capability decisions, capabilities and execution evidence indexes",
+    "attribute_observation_projection": "selected entities plus expected attributes become AttributeObservation states",
+    "evidence_ref_resolution": "evidence refs are counted and deduplicated as refs, not hydrated into event payloads",
+    "evidence_set_materialization": "observed AttributeObservation records become EvidenceRecord rows; missing/unsupported records are not promoted",
+    "source_provenance_binding": "semantic coverage and coverage report bind provenance and limitations",
+    "source_binding_bound_check": "generic bounds decide explicit block reason without silent truncation"
+  },
+  "inputs_observed_from_baseline": {
+    "input_entity_count": 2272,
+    "projected_entity_count": 2230,
+    "relationship_candidate_count": 0,
+    "observation_execution_result_count": 0,
+    "payload_ref_count": 0
+  },
+  "questions_answered": {
+    "which_method_implements_source_binding": "ContractDrivenPerceptionService.compile orchestrates the section; attribute_observations and evidence_set perform the heavy projections.",
+    "attribute_observations_boundary": "Before R2.14 it had no internal runtime checkpoint and scanned requirements/decisions from local lists before each projection.",
+    "evidence_set_boundary": "Before R2.14 it materialized observed evidence records without a separate bounded checkpoint in the public trace.",
+    "fact_source_binding_did_not_execute_observer": true,
+    "fact_source_binding_did_not_scan_filesystem": true,
+    "candidate_or_missing_promoted_to_truth": false,
+    "terminal_reason_projection_gap": "TaskRunResult.reason_code was null in R2.13; endpoints inferred from validation/completion/events.",
+    "project_analysis_scope_reconciliation_needed": true
+  },
+  "hypotheses": {
+    "o_n_squared_source_lookup": {
+      "status": "weakened_by_code_patch",
+      "evidence": "R2.14 introduces precomputed requirement, decision, capability and execution-evidence indexes before projection."
+    },
+    "excessive_attribute_observation_cardinality": {
+      "status": "probable_with_evidence",
+      "evidence": "Public input cardinality was 2230 projected entities and expected attributes multiply into AttributeObservation attempts."
+    },
+    "evidence_copy_explosion": {
+      "status": "probable_with_evidence",
+      "evidence": "EvidenceSet materialization copied observed records; R2.14 adds metrics and checkpoints to prove or refute at runtime."
+    },
+    "truth_promotion_leakage": {
+      "status": "weakened_by_r2_13_tests",
+      "evidence": "Observed/derived/candidate semantics and truth_eligible gating already had generic fixture tests."
+    },
+    "filesystem_observation_leakage": {
+      "status": "not_observed",
+      "evidence": "No filesystem observer call was found in source binding; compile_only remains active."
+    }
+  },
+  "final_public_validation": {
+    "task_run_id": "task_run_b8b2925ff06b4682938f28f3ec7af356",
+    "operation_id": "op_8f0b098f7a554eedb7be6523404e239a",
+    "result_status": "blocked",
+    "result_reason_code": "MUSIC_INVENTORY_ARTIFACT_PERSIST_STALLED",
+    "result_top_level_reason_code": "MUSIC_INVENTORY_ARTIFACT_PERSIST_STALLED",
+    "result_endpoint_status_code": 200,
+    "finished_at": "2026-08-17T17:59:47.481218-03:00",
+    "terminal_event_count": 1,
+    "terminal_event_types": ["run_blocked"],
+    "music_inventory_reached": true,
+    "after_fact_source_binding_reached": true,
+    "after_fact_projection_reached": true,
+    "before_payload_assembly_reached": true,
+    "after_payload_assembly_reached": true,
+    "metadata_coverage_reached": true,
+    "inventory_sufficiency_reached": true,
+    "evidence_phase1_reached": false,
+    "last_completed_stage": "before_artifact_persist",
+    "queue_runtime_status_code": 200,
+    "queue_runtime_elapsed_ms": 21,
+    "truth_safe_to_report_success": false,
+    "new_frontier": "MUSIC_INVENTORY_ARTIFACT_PERSIST_STALLED"
+  },
+  "patch_plan": [
+    "Add generic source-binding subcheckpoints between before_fact_source_binding and after_fact_source_binding.",
+    "Use indexes for requirements, decisions, capabilities and execution evidence.",
+    "Emit bounded progress checkpoints for AttributeObservation projection and EvidenceSet materialization.",
+    "Add generic source-binding bound reason PERCEPTION_FACT_SOURCE_BINDING_BOUND_EXCEEDED.",
+    "Persist top-level TaskRunResult.reason_code for terminal non-success results.",
+    "Make summary/session/canonical projections prefer TaskRunResult.reason_code.",
+    "Add generic fixture tests and public rerun collectors."
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_5_CLEAN_PHASE0_TO_6_STOPPED_AT_PHASE1_SEMANTIC_BLOCKED",
+  "phase0": {
+    "readiness_id": "readiness_h1c0_r2_5_phase0",
+    "created_at": "2026-08-15T05:20:47.276050+00:00",
+    "runtime_executed": false,
+    "task_created": false,
+    "task_run_created": false,
+    "operation_created": false,
+    "operational_artifacts_created": false,
+    "prediction": {
+      "prediction_id": "prediction_h1c0_r2_5_semantic_handoff",
+      "profile_id": "firetest5_h1c0_r2_5_phase0_profile",
+      "predicted_status": "blocked",
+      "predicted_frontier": "SEMANTIC_COMPLETION_FINALIZATION_HANDOFF_MISSING",
+      "probable_component": "semantic_completion_finalization_handoff",
+      "probable_contract": "phase_semantic_completion_policy",
+      "probable_capability": "semantic_completion_finalization_handoff",
+      "confidence": 0.91,
+      "dependency_chain": [
+        "artifact_runtime",
+        "phase_semantic_completion_policy",
+        "result_persistence",
+        "speaker_truth"
+      ],
+      "hypothesis": "Artifact state is expected to require semantic completion finalization before lifecycle repair can safely act.",
+      "reason_codes": [
+        "SEMANTIC_COMPLETION_FINALIZATION_HANDOFF_MISSING"
+      ],
+      "evidence_refs": [
+        "reports/runtime_consolidation/firetest5_h1c0_r2_4_phase1_semantic_completion_policy_diagnostic.json"
+      ]
+    },
+    "decision": {
+      "decision": "NO_GO_EXPECTED_BLOCK",
+      "confidence": 0.91,
+      "expected_blocking_frontier": "SEMANTIC_COMPLETION_FINALIZATION_HANDOFF_MISSING",
+      "safe_to_start_phase1": false
+    },
+    "reason_codes": [
+      "SEMANTIC_COMPLETION_FINALIZATION_HANDOFF_MISSING"
+    ]
+  },
+  "phase1": {
+    "status": "blocked",
+    "task_run_id": "task_run_b59d89c948fb4a47a1c7e150a02808a3",
+    "result_status": "blocked",
+    "result_source": "phase_semantic_completion_policy",
+    "reason_code": "MUSIC_INVENTORY_PARTIAL_NOT_ACCEPTED_BY_PHASE_CONTRACT",
+    "safe_to_report_success": false,
+    "semantic_policy_called": true,
+    "semantic_result_persisted": true,
+    "store_repair_suppressed": true,
+    "music_inventory": {
+      "status": "blocked",
+      "validation_status": "blocked",
+      "semantic_contract_status": "partial",
+      "reason_code": "MUSIC_INVENTORY_PARTIAL_EVIDENCE",
+      "safe_to_use": false,
+      "expected_rows": 1051,
+      "selected_rows": 100,
+      "bound_rows": 100,
+      "partial_rows": 100,
+      "evidence_ref_count": 100,
+      "missing_columns": [
+        "size_bytes",
+        "channels",
+        "observations"
+      ],
+      "limitations": [
+        "media_inventory_source_root_role_missing",
+        "media_inventory_evidence_ref_missing",
+        "media_inventory_limitations_missing",
+        "ATTRIBUTE_NOT_OBSERVED:observations",
+        "artifact_render_entity_budget_partial",
+        "relationship_final_validation_missing",
+        "MUSIC_INVENTORY_PARTIAL_EVIDENCE"
+      ]
+    }
+  },
+  "phase2": {
+    "status": "skipped_due_to_prior_block",
+    "api_called": false,
+    "prior_blocking_phase": "phase1"
+  },
+  "phase3": {
+    "status": "skipped_due_to_prior_block",
+    "api_called": false,
+    "prior_blocking_phase": "phase1"
+  },
+  "phase4": {
+    "status": "skipped_due_to_prior_block",
+    "api_called": false,
+    "prior_blocking_phase": "phase1"
+  },
+  "phase5": {
+    "status": "skipped_due_to_prior_block",
+    "api_called": false,
+    "prior_blocking_phase": "phase1"
+  },
+  "phase6": {
+    "status": "skipped_due_to_prior_block",
+    "api_called": false,
+    "prior_blocking_phase": "phase1"
+  },
+  "endpoint_timings": {
+    "summary": {
+      "status_code": 200,
+      "elapsed_ms": 1775
+    },
+    "result": {
+      "status_code": 200,
+      "elapsed_ms": 525
+    },
+    "truth": {
+      "status_code": 200,
+      "elapsed_ms": 859
+    },
+    "artifacts": {
+      "status_code": 200,
+      "elapsed_ms": 1433
+    },
+    "events": {
+      "status_code": 200,
+      "elapsed_ms": 7672
+    }
+  },
+  "queue_storage_after": {
+    "counts": {
+      "blocked": 15
+    },
+    "active_count": 0,
+    "active_runs": [],
+    "large_run_count": 0,
+    "missing_index_count": 0,
+    "run_json_bytes": 159545,
+    "result_json_bytes": 28114,
+    "events_json_bytes": 34722,
+    "payload_ref_count": 3
+  },
+  "note": "A prior collector attempt returned 422 because it added unsupported context.session_id; it created no TaskRun and is not the canonical rerun."
+}

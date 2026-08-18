@@ -1,0 +1,16 @@
+{
+  "readiness_id": "cognitive_readiness_280f1a39c4d34a169c22ee93ef815866",
+  "prediction_id": "cognitive_prediction_e14df601bb0145cc858b8df3f03c43e3",
+  "decision": "NO_GO_EXPECTED_BLOCK",
+  "confidence": 0.84,
+  "predicted_frontier": "PROJECT_ANALYSIS_FILE_READ",
+  "predicted_component": "ProjectAnalysisService",
+  "predicted_reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+  "simulated_blocking_point": "ProjectAnalysis",
+  "simulated_reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+  "safe_to_start_phase1": false,
+  "task_runs_before": 32,
+  "task_runs_after": 32,
+  "task_run_created_by_phase0": false,
+  "result_path": "reports/runtime_consolidation/firetest5_phase0_cognitive_readiness_result.json"
+}

@@ -1,0 +1,51 @@
+{
+  "run_id": "agent_run_3e134722428b401ba4a13640e8ac3521",
+  "session_id": "agent_session_0551a033134341d9b4df8d1d33f550d9",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "sandbox_project_generation",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [],
+  "started_at": "2026-06-14T22:31:42+00:00",
+  "completed_at": "2026-06-14T22:31:55+00:00",
+  "validation_status": null,
+  "artifact_ids": [
+    "agent_artifact_137be42e04644dec915d8288cd8c778a"
+  ],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "project_generation_id": "project_generation_77e479928d894a8fb3f3f1f931edec55",
+    "project_type": "python_fastapi",
+    "sandbox_task_id": "sandbox_task_8bf275772c3e48998f3591697652a663",
+    "sandbox_workspace_id": "sandbox_ws_default",
+    "latest_summary_sanitized": "Projeto ApiDemo gerado no sandbox. Artifact pronto: apidemo.zip. Artifact ID: agent_artifact_137be42e04644dec915d8288cd8c778a.",
+    "evidence_refs": [
+      "sandbox_task:sandbox_task_8bf275772c3e48998f3591697652a663",
+      "run:agent_run_3e134722428b401ba4a13640e8ac3521",
+      "tool:tool_invocation_90d16c6165724436b8e06721b3ff2258",
+      "tool:tool_invocation_9cd652499e19400ea1c92313c2022166",
+      "tool:tool_invocation_46da179520714beda7994ed18205359f",
+      "tool:tool_invocation_508fd6fa708f4b59bd10fc5965e09a95",
+      "tool:tool_invocation_c3c410b932ea4bd986a99881e79c3e98",
+      "tool:tool_invocation_eb55fc79337b42bdbdf007d0f484f5ee",
+      "sandbox_validation:project_structure",
+      "sandbox_task:sandbox_task_8bf275772c3e48998f3591697652a663",
+      "artifact:agent_artifact_137be42e04644dec915d8288cd8c778a",
+      "tool:tool_invocation_ec95829376ab41839561c1fde70b149e"
+    ],
+    "template_id": "python_fastapi",
+    "template_version": "1.0.0",
+    "template_execution_id": "template_exec_980ee3e9d4dd437990359e0d80ddc378"
+  }
+}

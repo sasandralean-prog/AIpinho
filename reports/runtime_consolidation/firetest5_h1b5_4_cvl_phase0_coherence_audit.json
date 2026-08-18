@@ -1,0 +1,66 @@
+{
+  "verdict": "pass",
+  "frontiers_checked": [
+    {
+      "frontier": "MEDIA_RELATIONSHIP_CAPABILITY_MISSING",
+      "source": "relationship_cognition.capability_status",
+      "hardcode_specificity": "generic_capability_state"
+    },
+    {
+      "frontier": "RELATIONSHIP_EVIDENCE_INSUFFICIENT",
+      "source": "relationship_cognition.evidence_status",
+      "hardcode_specificity": "generic_evidence_state"
+    },
+    {
+      "frontier": "RELATIONSHIP_PROVENANCE_MISSING",
+      "source": "relationship_cognition.provenance_status",
+      "hardcode_specificity": "generic_provenance_state"
+    },
+    {
+      "frontier": "RELATIONSHIP_CONFIDENCE_INSUFFICIENT",
+      "source": "relationship_cognition.confidence_status",
+      "hardcode_specificity": "generic_confidence_state"
+    },
+    {
+      "frontier": "RELATIONSHIP_VALIDATION_REQUIRED",
+      "source": "relationship_cognition.validation_status",
+      "hardcode_specificity": "generic_validation_state"
+    },
+    {
+      "frontier": "RELATIONSHIP_VALIDATION_POLICY_MISSING",
+      "source": "relationship_cognition.validation_policy_status",
+      "hardcode_specificity": "generic_policy_state"
+    },
+    {
+      "frontier": "RELATIONSHIP_AMBIGUITY_UNRESOLVED",
+      "source": "relationship_cognition.ambiguity_status",
+      "hardcode_specificity": "generic_ambiguity_state"
+    },
+    {
+      "frontier": "RELATIONSHIP_CONFLICT_BLOCKED",
+      "source": "relationship_cognition.conflict_status",
+      "hardcode_specificity": "generic_conflict_state"
+    },
+    {
+      "frontier": "RELATIONSHIP_TRUTH_POLICY_NOT_SATISFIED",
+      "source": "relationship_cognition.truth_policy_status",
+      "hardcode_specificity": "generic_truth_policy_state"
+    }
+  ],
+  "accepted_legacy_frontier": {
+    "frontier": "RELATIONSHIP_CONFLICT_UNRESOLVED",
+    "status": "covered_by_relationship_conflict_status_as_legacy_wording",
+    "current_readiness_reason_code": "RELATIONSHIP_CONFLICT_BLOCKED"
+  },
+  "prohibited_sources_found": {
+    "firetest_string": false,
+    "local_path": false,
+    "artifact_name": false,
+    "extension_specific": false
+  },
+  "tests": [
+    "test_gap_predictor_recognizes_relationship_cognition_frontier_without_runtime_execution",
+    "test_gap_predictor_prioritizes_relationship_provenance_before_validation",
+    "test_cvl_recognizes_relationship_validation_policy_frontier"
+  ]
+}

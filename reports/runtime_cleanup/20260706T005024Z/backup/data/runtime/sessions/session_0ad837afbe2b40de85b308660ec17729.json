@@ -1,0 +1,35 @@
+{
+  "session_id": "session_0ad837afbe2b40de85b308660ec17729",
+  "status": "active",
+  "created_at": "2026-06-18T18:49:47.576358+00:00",
+  "updated_at": "2026-06-18T18:49:47.669815+00:00",
+  "expires_at": "2026-06-18T22:49:47.576358+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Crie um arquivo em C:\\Dev\\AIpinho\\sandboxes\\dopamine_test\\contexto.txt com o texto: Primeira linha.",
+      "message_id": null,
+      "created_at": null
+    },
+    {
+      "role": "user",
+      "content": "Adicione uma segunda linha no mesmo arquivo: Segunda linha adicionada.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {},
+  "last_policy_decision": {},
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {
+    "operation_type": "filesystem_append_file",
+    "path": "C:\\Dev\\AIpinho\\sandboxes\\dopamine_test\\contexto.txt",
+    "run_id": "sandbox_run_7098510f8c41448b8a1a35a9ccaeb745"
+  },
+  "warnings": [
+    "active_task_draft_missing"
+  ],
+  "trace_refs": []
+}

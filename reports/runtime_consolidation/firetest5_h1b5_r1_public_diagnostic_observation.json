@@ -1,0 +1,535 @@
+{
+  "run_id": "task_run_a78064df1cc24ea883e38132bfb9bdd4",
+  "run_status": "cancelled",
+  "finished_at": "2026-08-13T02:15:12.119840+00:00",
+  "client_response_status": "timeout",
+  "client_response_time_ms": 360035,
+  "event_count": 21,
+  "event_counts": {
+    "run_created": 1,
+    "task_bootstrap_created": 1,
+    "PlanningStarted": 1,
+    "PlanningFinished": 1,
+    "ExecutionPlanCreated": 1,
+    "phase0_prediction_attached": 1,
+    "run_queued": 1,
+    "run_started": 1,
+    "project_analysis_started": 1,
+    "project_analysis_partial": 1,
+    "project_analysis_finished": 1,
+    "artifact_creation_started": 3,
+    "artifact_created": 3,
+    "run_cancel_requested": 2,
+    "run_cancelled": 1,
+    "terminalization_already_applied": 1
+  },
+  "artifact_logical_counts": {
+    "reports/firetest5/phase1_discovery.md": {
+      "artifact_creation_started": 1,
+      "artifact_created": 1
+    },
+    "reports/firetest5/project_inventory.md": {
+      "artifact_creation_started": 1,
+      "artifact_created": 1
+    },
+    "reports/firetest5/music_inventory.csv": {
+      "artifact_creation_started": 1,
+      "artifact_created": 1
+    }
+  },
+  "artifact_creation_started_count": 3,
+  "artifact_created_count": 3,
+  "project_analysis_events": [
+    {
+      "sequence": 9,
+      "type": "project_analysis_started",
+      "status": "running",
+      "metadata": {}
+    },
+    {
+      "sequence": 10,
+      "type": "project_analysis_partial",
+      "status": "partial",
+      "metadata": {
+        "analysis_result_id": "project_analysis_70a9880c4f0c44e89b5f702371ec2e14",
+        "analysis_status": "partial",
+        "reason_code": "PROJECT_ANALYSIS_COMPLETED",
+        "duration_ms": 46406,
+        "last_checkpoint": "after_result_serialization",
+        "last_completed_checkpoint": "after_result_serialization",
+        "elapsed_ms_by_checkpoint": {
+          "before_path_resolution": 0,
+          "after_path_resolution": 0,
+          "before_workspace_root_scan": 0,
+          "after_workspace_root_scan": 16,
+          "before_file_enumeration": 16,
+          "during_file_enumeration": 5671,
+          "after_file_enumeration": 5671,
+          "before_file_selection": 5671,
+          "project_analysis_selection_started": 5671,
+          "project_analysis_selection_checkpoint": 45766,
+          "project_analysis_selection_finished": 45766,
+          "after_file_selection": 45781,
+          "project_analysis_file_read_started": 45781,
+          "before_file_read_batch": 45781,
+          "before_file_read_item": 46375,
+          "after_file_read_item": 46391,
+          "after_file_read_batch": 46391,
+          "before_symbol_extraction": 46391,
+          "after_symbol_extraction_batch": 46391,
+          "before_result_serialization": 46406,
+          "after_result_serialization": 46406
+        },
+        "files_discovered": 200,
+        "files_scan_attempted": 500,
+        "files_scanned": 444,
+        "files_read": 12,
+        "bytes_read": 2635,
+        "current_root": "C:\\Dev\\AIpinho",
+        "current_path_sample": "tests/unit/test_event_search_service.py",
+        "blocking_operation": "result_serialization",
+        "budget_exceeded_at": null,
+        "safe_to_continue": true,
+        "budget_exceeded": false,
+        "error_type": null,
+        "error_message": null,
+        "files_selected": 12,
+        "remaining_budget_ms_at_return": 253594,
+        "handoff_reserve_reached": false,
+        "partial_readiness": {
+          "safe_to_continue_to_artifact_runtime": true,
+          "minimum_context_available": true,
+          "workspace_root_resolved": true,
+          "tree_summary_available": true,
+          "file_selection_available": true,
+          "file_context_available": true,
+          "contract_context_available": true,
+          "known_limitations": [],
+          "missing_context": [],
+          "reason_codes": [
+            "PROJECT_ANALYSIS_PARTIAL_CONTEXT_AVAILABLE"
+          ],
+          "confidence": 0.72
+        },
+        "file_selection_plan": {
+          "plan_id": "file_selection_plan_2662b043432743c5be333f6cd7233ad9",
+          "workspace_root": "C:\\Dev\\AIpinho",
+          "candidate_count": 200,
+          "selected_count": 12,
+          "selection_strategy": "cheap_path_metadata_ranking",
+          "selection_budget_ms": 195000,
+          "selection_started_at": "2026-08-13T02:06:51.237722+00:00",
+          "selection_finished_at": "2026-08-13T02:07:31.331111+00:00",
+          "elapsed_ms": 40094,
+          "rejected_files_summary": {
+            "max_files_budget": 188
+          },
+          "selection_reason_codes": [
+            "FILE_SELECTION_CHEAP_PATH_METADATA_RANKING",
+            "FILE_SELECTION_PARTIAL"
+          ],
+          "budget_exceeded": false,
+          "partial": true,
+          "selected_files_count": 12,
+          "selected_files_sample": [
+            {
+              "path": "tests/unit/test_capability_gate.py",
+              "score": 560,
+              "reason": "project_profile_pattern:**/test_*.py",
+              "size_bytes": 0,
+              "blocked": false,
+              "blocked_reason": null
+            },
+            {
+              "path": "tests/unit/test_event_card_component.py",
+              "score": 560,
+              "reason": "project_profile_pattern:**/test_*.py",
+              "size_bytes": 153,
+              "blocked": false,
+              "blocked_reason": null
+            },
+            {
+              "path": "tests/unit/test_artifact_link_card_component.py",
+              "score": 560,
+              "reason": "project_profile_pattern:**/test_*.py",
+              "size_bytes": 183,
+              "blocked": false,
+              "blocked_reason": null
+            },
+            {
+              "path": "tests/unit/test_debugger_event_card_component.py",
+              "score": 560,
+              "reason": "project_profile_pattern:**/test_*.py",
+              "size_bytes": 187,
+              "blocked": false,
+              "blocked_reason": null
+            },
+            {
+              "path": "tests/unit/test_download_integrity_utils.py",
+              "score": 560,
+              "reason": "project_profile_pattern:**/test_*.py",
+              "size_bytes": 216,
+              "blocked": false,
+              "blocked_reason": null
+            },
+            {
+              "path": "tests/unit/test_download_job_service.py",
+              "score": 560,
+              "reason": "project_profile_pattern:**/test_*.py",
+              "size_bytes": 236,
+              "blocked": false,
+              "blocked_reason": null
+            },
+            {
+              "path": "tests/unit/test_event_filter_service.py",
+              "score": 560,
+              "reason": "project_profile_pattern:**/test_*.py",
+              "size_bytes": 257,
+              "blocked": false,
+              "blocked_reason": null
+            },
+            {
+              "path": "tests/unit/test_event_view_model_service.py",
+              "score": 560,
+              "reason": "project_profile_pattern:**/test_*.py",
+              "size_bytes": 270,
+              "blocked": false,
+              "blocked_reason": null
+            },
+            {
+              "path": "tests/unit/test_event_filtering_utils.py",
+              "score": 560,
+              "reason": "project_profile_pattern:**/test_*.py",
+              "size_bytes": 271,
+              "blocked": false,
+              "blocked_reason": null
+            },
+            {
+              "path": "tests/unit/test_context_prompt_injection_guard.py",
+              "score": 560,
+              "reason": "project_profile_pattern:**/test_*.py",
+              "size_bytes": 276,
+              "blocked": false,
+              "blocked_reason": null
+            }
+          ]
+        },
+        "file_read_plan": {
+          "plan_id": "file_read_plan_316b580f8dc447bdb56215d339c25e86",
+          "max_files_read": 12,
+          "max_bytes_read": 120000,
+          "max_single_file_read_ms": 3000,
+          "read_started_at": "2026-08-13T02:07:31.342989+00:00",
+          "read_finished_at": "2026-08-13T02:07:31.962916+00:00",
+          "files_read": 12,
+          "files_partial_read": 0,
+          "files_skipped": 0,
+          "bytes_read": 2635,
+          "bytes_skipped_estimated": 0,
+          "read_decisions": [
+            {
+              "candidate_path": "tests/unit/test_capability_gate.py",
+              "relative_path": "tests/unit/test_capability_gate.py",
+              "file_size_bytes": 0,
+              "estimated_read_cost": 1,
+              "remaining_stage_budget_ms": null,
+              "remaining_total_budget_ms": null,
+              "remaining_context_bytes": 120000,
+              "single_file_budget_ms": 3000,
+              "decision": "read",
+              "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+              "bytes_requested": 30000,
+              "provenance": "FileContextBuilder._read_decision"
+            },
+            {
+              "candidate_path": "tests/unit/test_event_card_component.py",
+              "relative_path": "tests/unit/test_event_card_component.py",
+              "file_size_bytes": 153,
+              "estimated_read_cost": 1,
+              "remaining_stage_budget_ms": null,
+              "remaining_total_budget_ms": null,
+              "remaining_context_bytes": 120000,
+              "single_file_budget_ms": 3000,
+              "decision": "read",
+              "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+              "bytes_requested": 30000,
+              "provenance": "FileContextBuilder._read_decision"
+            },
+            {
+              "candidate_path": "tests/unit/test_artifact_link_card_component.py",
+              "relative_path": "tests/unit/test_artifact_link_card_component.py",
+              "file_size_bytes": 183,
+              "estimated_read_cost": 1,
+              "remaining_stage_budget_ms": null,
+              "remaining_total_budget_ms": null,
+              "remaining_context_bytes": 119847,
+              "single_file_budget_ms": 3000,
+              "decision": "read",
+              "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+              "bytes_requested": 30000,
+              "provenance": "FileContextBuilder._read_decision"
+            },
+            {
+              "candidate_path": "tests/unit/test_debugger_event_card_component.py",
+              "relative_path": "tests/unit/test_debugger_event_card_component.py",
+              "file_size_bytes": 187,
+              "estimated_read_cost": 1,
+              "remaining_stage_budget_ms": null,
+              "remaining_total_budget_ms": null,
+              "remaining_context_bytes": 119664,
+              "single_file_budget_ms": 3000,
+              "decision": "read",
+              "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+              "bytes_requested": 30000,
+              "provenance": "FileContextBuilder._read_decision"
+            },
+            {
+              "candidate_path": "tests/unit/test_download_integrity_utils.py",
+              "relative_path": "tests/unit/test_download_integrity_utils.py",
+              "file_size_bytes": 216,
+              "estimated_read_cost": 1,
+              "remaining_stage_budget_ms": null,
+              "remaining_total_budget_ms": null,
+              "remaining_context_bytes": 119477,
+              "single_file_budget_ms": 3000,
+              "decision": "read",
+              "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+              "bytes_requested": 30000,
+              "provenance": "FileContextBuilder._read_decision"
+            },
+            {
+              "candidate_path": "tests/unit/test_download_job_service.py",
+              "relative_path": "tests/unit/test_download_job_service.py",
+              "file_size_bytes": 236,
+              "estimated_read_cost": 1,
+              "remaining_stage_budget_ms": null,
+              "remaining_total_budget_ms": null,
+              "remaining_context_bytes": 119261,
+              "single_file_budget_ms": 3000,
+              "decision": "read",
+              "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+              "bytes_requested": 30000,
+              "provenance": "FileContextBuilder._read_decision"
+            },
+            {
+              "candidate_path": "tests/unit/test_event_filter_service.py",
+              "relative_path": "tests/unit/test_event_filter_service.py",
+              "file_size_bytes": 257,
+              "estimated_read_cost": 1,
+              "remaining_stage_budget_ms": null,
+              "remaining_total_budget_ms": null,
+              "remaining_context_bytes": 119025,
+              "single_file_budget_ms": 3000,
+              "decision": "read",
+              "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+              "bytes_requested": 30000,
+              "provenance": "FileContextBuilder._read_decision"
+            },
+            {
+              "candidate_path": "tests/unit/test_event_view_model_service.py",
+              "relative_path": "tests/unit/test_event_view_model_service.py",
+              "file_size_bytes": 270,
+              "estimated_read_cost": 1,
+              "remaining_stage_budget_ms": null,
+              "remaining_total_budget_ms": null,
+              "remaining_context_bytes": 118768,
+              "single_file_budget_ms": 3000,
+              "decision": "read",
+              "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+              "bytes_requested": 30000,
+              "provenance": "FileContextBuilder._read_decision"
+            },
+            {
+              "candidate_path": "tests/unit/test_event_filtering_utils.py",
+              "relative_path": "tests/unit/test_event_filtering_utils.py",
+              "file_size_bytes": 271,
+              "estimated_read_cost": 1,
+              "remaining_stage_budget_ms": null,
+              "remaining_total_budget_ms": null,
+              "remaining_context_bytes": 118498,
+              "single_file_budget_ms": 3000,
+              "decision": "read",
+              "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+              "bytes_requested": 30000,
+              "provenance": "FileContextBuilder._read_decision"
+            },
+            {
+              "candidate_path": "tests/unit/test_context_prompt_injection_guard.py",
+              "relative_path": "tests/unit/test_context_prompt_injection_guard.py",
+              "file_size_bytes": 276,
+              "estimated_read_cost": 1,
+              "remaining_stage_budget_ms": null,
+              "remaining_total_budget_ms": null,
+              "remaining_context_bytes": 118227,
+              "single_file_budget_ms": 3000,
+              "decision": "read",
+              "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+              "bytes_requested": 30000,
+              "provenance": "FileContextBuilder._read_decision"
+            },
+            {
+              "candidate_path": "tests/unit/test_anomaly_detector.py",
+              "relative_path": "tests/unit/test_anomaly_detector.py",
+              "file_size_bytes": 289,
+              "estimated_read_cost": 1,
+              "remaining_stage_budget_ms": null,
+              "remaining_total_budget_ms": null,
+              "remaining_context_bytes": 117951,
+              "single_file_budget_ms": 3000,
+              "decision": "read",
+              "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+              "bytes_requested": 30000,
+              "provenance": "FileContextBuilder._read_decision"
+            },
+            {
+              "candidate_path": "tests/unit/test_event_search_service.py",
+              "relative_path": "tests/unit/test_event_search_service.py",
+              "file_size_bytes": 297,
+              "estimated_read_cost": 1,
+              "remaining_stage_budget_ms": null,
+              "remaining_total_budget_ms": null,
+              "remaining_context_bytes": 117662,
+              "single_file_budget_ms": 3000,
+              "decision": "read",
+              "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+              "bytes_requested": 30000,
+              "provenance": "FileContextBuilder._read_decision"
+            }
+          ],
+          "budget_exceeded": false,
+          "partial": true,
+          "selected_files_count": 12,
+          "selected_files_sample": [
+            "tests/unit/test_capability_gate.py",
+            "tests/unit/test_event_card_component.py",
+            "tests/unit/test_artifact_link_card_component.py",
+            "tests/unit/test_debugger_event_card_component.py",
+            "tests/unit/test_download_integrity_utils.py",
+            "tests/unit/test_download_job_service.py",
+            "tests/unit/test_event_filter_service.py",
+            "tests/unit/test_event_view_model_service.py",
+            "tests/unit/test_event_filtering_utils.py",
+            "tests/unit/test_context_prompt_injection_guard.py"
+          ],
+          "read_order_count": 12,
+          "read_order_sample": [
+            "tests/unit/test_capability_gate.py",
+            "tests/unit/test_event_card_component.py",
+            "tests/unit/test_artifact_link_card_component.py",
+            "tests/unit/test_debugger_event_card_component.py",
+            "tests/unit/test_download_integrity_utils.py",
+            "tests/unit/test_download_job_service.py",
+            "tests/unit/test_event_filter_service.py",
+            "tests/unit/test_event_view_model_service.py",
+            "tests/unit/test_event_filtering_utils.py",
+            "tests/unit/test_context_prompt_injection_guard.py"
+          ],
+          "skipped_files_count": 100,
+          "skipped_files_sample": [
+            {
+              "path": "tests/unit/test_chunk_dedupe_service.py",
+              "reason": "max_files_budget",
+              "size_bytes": 298
+            },
+            {
+              "path": "tests/unit/test_event_cursor_store.py",
+              "reason": "max_files_budget",
+              "size_bytes": 298
+            },
+            {
+              "path": "tests/unit/test_event_render_policy_service.py",
+              "reason": "max_files_budget",
+              "size_bytes": 306
+            },
+            {
+              "path": "tests/unit/test_context_sensitivity_filter.py",
+              "reason": "max_files_budget",
+              "size_bytes": 313
+            },
+            {
+              "path": "tests/unit/test_download_state_store.py",
+              "reason": "max_files_budget",
+              "size_bytes": 316
+            },
+            {
+              "path": "tests/unit/test_context_layer_resolver.py",
+              "reason": "max_files_budget",
+              "size_bytes": 324
+            },
+            {
+              "path": "tests/unit/test_chunk_classifier.py",
+              "reason": "max_files_budget",
+              "size_bytes": 336
+            },
+            {
+              "path": "tests/unit/test_context_purpose_policy_service.py",
+              "reason": "max_files_budget",
+              "size_bytes": 343
+            },
+            {
+              "path": "tests/unit/test_chat_model_fallback_service.py",
+              "reason": "max_files_budget",
+              "size_bytes": 345
+            },
+            {
+              "path": "tests/unit/test_event_formatting.py",
+              "reason": "max_files_budget",
+              "size_bytes": 345
+            }
+          ],
+          "read_errors_count": 0,
+          "read_errors_sample": []
+        }
+      }
+    },
+    {
+      "sequence": 11,
+      "type": "project_analysis_finished",
+      "status": "completed",
+      "metadata": {
+        "analysis_result_id": "project_analysis_70a9880c4f0c44e89b5f702371ec2e14",
+        "analysis_status": "partial",
+        "reason_code": "PROJECT_ANALYSIS_COMPLETED",
+        "safe_to_continue": true,
+        "partial_readiness": {
+          "safe_to_continue_to_artifact_runtime": true,
+          "minimum_context_available": true,
+          "workspace_root_resolved": true,
+          "tree_summary_available": true,
+          "file_selection_available": true,
+          "file_context_available": true,
+          "contract_context_available": true,
+          "known_limitations": [],
+          "missing_context": [],
+          "reason_codes": [
+            "PROJECT_ANALYSIS_PARTIAL_CONTEXT_AVAILABLE"
+          ],
+          "confidence": 0.72
+        }
+      }
+    }
+  ],
+  "terminal_event_count": 1,
+  "last_event": {
+    "event_id": "task_run_event_152aef4fa0174e0d947dce071b794106",
+    "run_id": "task_run_a78064df1cc24ea883e38132bfb9bdd4",
+    "sequence": 21,
+    "type": "terminalization_already_applied",
+    "status": "ignored",
+    "message": "Terminalization ignored because the TaskRun already has a terminal event.",
+    "step_id": null,
+    "timestamp": "2026-08-13T02:15:31.444162+00:00",
+    "metadata": {
+      "terminal_event_id": "task_run_event_0a2f13693e2349b399e27248af35da71",
+      "terminal_status": "cancelled",
+      "terminal_reason_code": null,
+      "attempted_status": "blocked",
+      "attempted_reason_code": "TASKRUN_LIFECYCLE_TIMEOUT",
+      "ignored": true,
+      "reason": "terminal_state_already_set"
+    }
+  },
+  "music_inventory_physical_file_exists_without_event": true,
+  "music_inventory_physical_size_bytes": 995,
+  "diagnostic_verdict": "PROJECT_ANALYSIS_RECOVERED_ARTIFACT_RENDER_PUBLIC_BOUNDARY_BLOCKED"
+}

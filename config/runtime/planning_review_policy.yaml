@@ -1,0 +1,20 @@
+schema_version: 1
+
+review:
+  required_for:
+    - coding
+    - debug
+    - android
+    - python
+    - multimodal
+    - ocr
+    - vision
+    - artifact
+  speaker_truth_required: true
+  supervisor_required: true
+  memory_candidates_allowed: true
+
+replan:
+  enabled: true
+  retry_failed_node_only: true
+  downstream_review_required: true

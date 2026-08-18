@@ -1,0 +1,41 @@
+{
+  "session_id": "session_2ea9edc1a49f4c029af6844c0d3b1080",
+  "status": "active",
+  "created_at": "2026-06-18T01:27:51.334906+00:00",
+  "updated_at": "2026-06-18T01:27:51.365250+00:00",
+  "expires_at": "2026-06-18T05:27:51.334906+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Apague recursivamente C:\\Dev\\AIpinho.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_7933bea24b0a482b8549a8da68659760",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": "C:\\Dev\\AIpinho",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Dev\\AIpinho",
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

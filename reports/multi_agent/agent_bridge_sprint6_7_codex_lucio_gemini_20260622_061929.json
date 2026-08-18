@@ -1,0 +1,71 @@
+{
+  "project": "AIpinho",
+  "root": "C:\\Dev\\AIpinho",
+  "timestamp": "20260622_061929",
+  "verdict": "AGENT_BRIDGE_SPRINT6_7_READY",
+  "implemented": [
+    "codex_hybrid_execution_modes",
+    "codex_mode_select_endpoint",
+    "codex_delegation_to_aipinho_endpoint",
+    "codex_delegation_details_endpoint",
+    "codex_hybrid_diagnostics_endpoint",
+    "lucio_interpretation_chat_endpoint",
+    "gemini_interpretation_chat_endpoint",
+    "canonical_prompt_builder",
+    "agent_text_artifact_service",
+    "delegation_log_summary_service",
+    "workspace_lock_respected_by_codex_direct",
+    "lucio_gemini_no_direct_local_tool_path"
+  ],
+  "endpoints_created": [
+    "POST /api/v1/codex/mode-select",
+    "POST /api/v1/codex/delegate-to-aipinho",
+    "GET /api/v1/codex/delegations/{delegation_id}",
+    "POST /api/v1/codex/hybrid/collect-diagnostics",
+    "POST /api/v1/agents/lucio/chat",
+    "POST /api/v1/agents/gemini/chat"
+  ],
+  "files_created": [
+    "src/aipinho/schemas/agents/hybrid_execution.py",
+    "src/aipinho/services/agents/hybrid_execution_policy_service.py",
+    "src/aipinho/services/agents/canonical_prompt_builder_service.py",
+    "src/aipinho/services/agents/agent_text_artifact_service.py",
+    "src/aipinho/services/agents/delegation_log_summary_service.py",
+    "src/aipinho/services/agents/codex_hybrid_service.py",
+    "src/aipinho/services/agents/interpretation_agent_service.py",
+    "src/aipinho/api/routers/hybrid_agent_router.py",
+    "config/agents/hybrid_execution_policy.yaml",
+    "tests/integration/test_agent_bridge_sprint6_7_hybrid_islands.py"
+  ],
+  "files_modified": [
+    "src/aipinho/api/routers/__init__.py",
+    "src/aipinho/services/codex_agent/codex_agent_service.py",
+    "src/aipinho/services/lucio_agent/lucio_agent_service.py",
+    "src/aipinho/services/gemini_executor/gemini_executor_service.py"
+  ],
+  "tests": {
+    "py_compile": "passed",
+    "sprint6_7": "9 passed in 2.24s",
+    "sprint4_5_6_7_regression": "21 passed in 10.01s"
+  },
+  "known_risks": [
+    "QA visual Launcher/Mobile still recommended for the new endpoints and island screens.",
+    "External providers were not called by the automated tests; fake clients were used intentionally.",
+    "Git status was unavailable because C:\\Dev\\AIpinho did not respond as a git repository in this session."
+  ],
+  "ux_handoff": {
+    "fields": [
+      "source_agent",
+      "executor_agent",
+      "bridge_task_id",
+      "events_poll_url",
+      "artifact_refs",
+      "raw_default_visible"
+    ],
+    "notes": [
+      "When delegated=true, show AIpinho as executor and the island as interpreter/supervisor.",
+      "Raw remains hidden by default.",
+      "Text artifacts must use token-protected artifact download endpoints."
+    ]
+  }
+}

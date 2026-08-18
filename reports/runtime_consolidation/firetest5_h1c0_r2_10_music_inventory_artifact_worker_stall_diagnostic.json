@@ -1,0 +1,125 @@
+{
+  "verdict": null,
+  "observed_blocker": "ARTIFACT_WORKER_STALLED_AFTER_ARTIFACT_CREATION_STARTED_ON_MUSIC_INVENTORY",
+  "before_state": {
+    "r2_9_task_run_id": "task_run_5822ecdb6a9a48a9a2134d6a7f91353b",
+    "operation_id": "op_f16d6eaf072746a2a8463fab619133ea",
+    "client_response_status": "accepted_running",
+    "project_analysis_reason_code": "MEDIA_CORPUS_ROOT_HANDOFF_READY",
+    "corpus_handoff_ready": true,
+    "artifact_creation_started_count": 3,
+    "artifact_created_count": 2,
+    "music_inventory_reached": true,
+    "evidence_phase1_reached": false,
+    "last_event_type": "artifact_creation_started",
+    "last_event_logical_path": "reports/firetest5/music_inventory.csv",
+    "result_json_exists": false,
+    "result_endpoint_status_code_initial": 404,
+    "result_endpoint_status_code_after_guard_window": "timeout",
+    "finished_at": null,
+    "terminal_event_count": 0,
+    "endpoint_health_after_stall": {
+      "summary": "timeout",
+      "events": "timeout",
+      "result": "timeout",
+      "truth": "timeout",
+      "artifacts": "timeout",
+      "queue_health": "timeout_before_backend_restart"
+    }
+  },
+  "hypotheses_checked": {
+    "per_artifact_guard_incomplete": {
+      "status": "supported",
+      "evidence": "R2.7 guard existed, but R2.9 still left the third artifact in artifact_creation_started without terminal event/result."
+    },
+    "render_or_processing_long_without_heartbeat": {
+      "status": "supported",
+      "evidence": "music_inventory.csv was the first heavy semantic CSV artifact and had no bounded stage checkpoints beyond generic artifact_creation_started in the public observation."
+    },
+    "lock_contention_or_endpoint_starvation": {
+      "status": "supported",
+      "evidence": "summary/events/result/truth/artifacts/queue_health timed out together. TaskRunStore._read and _write shared one global RLock while _write prepared heavy sanitized/spilled payloads."
+    },
+    "payload_entity_graph_hydration_large": {
+      "status": "plausible",
+      "evidence": "music inventory render consumes observed_entity_graph, perception payloads, row validation, metadata coverage, and artifact registry writes."
+    },
+    "csv_render_buffer_large": {
+      "status": "mitigated_by_existing_budgets",
+      "evidence": "CSV rows/cells/bytes budgets already exist, but new checkpoints now cover stages before and after CSV write/validation/sufficiency."
+    },
+    "metadata_probe_blocking": {
+      "status": "not_primary_in_observed_r2_9",
+      "evidence": "R2.9 did not expose a metadata probe checkpoint/result before endpoint starvation."
+    },
+    "artifact_registry_index_write_contention": {
+      "status": "plausible_but_r2_8_mitigated",
+      "evidence": "R2.8 moved artifact writes to sharded manifests and light index; R2.10 preserves that path."
+    },
+    "event_emission_overload": {
+      "status": "guarded",
+      "evidence": "R2.10 checkpoint events are bounded by stage and interval and do not inline rows/entities."
+    },
+    "guard_depends_on_worker_or_shared_lock": {
+      "status": "supported",
+      "evidence": "Guard/store supervision reads events and result through TaskRunStore; those reads could block behind a long _write critical section."
+    },
+    "backend_process_starvation": {
+      "status": "plausible",
+      "evidence": "Endpoint timeouts across unrelated runtime projections are consistent with worker monopolization or lock contention."
+    }
+  },
+  "root_cause_model": {
+    "primary": "TaskRunStore read/write lock contention plus insufficient per-artifact observability for long semantic artifacts.",
+    "secondary": "Accepted-running guard used a long artifact silence budget and generic reason code; it did not encode artifact semantic kind in artifact_creation_started.",
+    "not_the_focus": [
+      "ProjectAnalysis media corpus handoff",
+      "metadata sufficiency policy",
+      "root binding",
+      "renderer filesystem observation",
+      "relationship truth"
+    ]
+  },
+  "patch_plan": [
+    {
+      "component": "ReadonlyAnalysisArtifactRuntimeService",
+      "change": "Add artifact_attempt_id, content_type, contract_id, artifact_kind, artifact budget and checkpoint interval to artifact_creation_started metadata."
+    },
+    {
+      "component": "ReadonlyAnalysisArtifactRuntimeService",
+      "change": "Add bounded artifact_render_checkpoint events at semantic stages: intent resolution, entity selection, perception compile, row rendering, row validation and inventory sufficiency."
+    },
+    {
+      "component": "ReadonlyAnalysisArtifactRuntimeService",
+      "change": "Select media inventory stall reason from artifact_kind/contract_id rather than logical path."
+    },
+    {
+      "component": "TaskRunStore",
+      "change": "Prepare sanitize/spill/json payloads outside the write lock; use the lock only for atomic replacement."
+    },
+    {
+      "component": "TaskRunStore",
+      "change": "Allow reads without the write lock because writes use unique temp files and atomic replace."
+    },
+    {
+      "component": "TaskRunStore",
+      "change": "Spill produced_artifacts when heavy so run.json remains lightweight."
+    },
+    {
+      "component": "TaskQueueService",
+      "change": "Align external artifact terminality reconciliation with accepted-running stall budget default and preserve media inventory stall reason."
+    }
+  ],
+  "expected_after_patch": {
+    "project_analysis_reason_code": "MEDIA_CORPUS_ROOT_HANDOFF_READY",
+    "music_inventory_started_without_terminal": "terminalized_as_blocked",
+    "reason_code_if_media_inventory_stalls": "MUSIC_INVENTORY_ARTIFACT_STALLED_AFTER_CREATION_STARTED",
+    "result_json_exists_after_stall_detection": true,
+    "result_endpoint_status_code_after_stall_detection": 200,
+    "finished_at_present": true,
+    "terminal_event_count": 1,
+    "endpoint_reads": "lock_light_snapshot_based",
+    "phase2_allowed_after_block": false,
+    "false_success_allowed": false
+  }
+}

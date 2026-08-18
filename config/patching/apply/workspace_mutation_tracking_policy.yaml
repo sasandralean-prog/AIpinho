@@ -1,0 +1,8 @@
+schema_version: 1
+
+tracking:
+  enabled: true
+  scan_mode: target_directories_only
+  allow_expected_targets: true
+  allow_expected_temp_files: true
+  detect_temp_leftovers: true

@@ -1,0 +1,16 @@
+schema_version: 1
+profile:
+  id: write_file
+  operation_types: [filesystem_create_directory, filesystem_write_file, filesystem_append_file, filesystem_modify_file, filesystem_read_file]
+  allowed_step_types: [validate_runtime, validate_workspace, execute_filesystem_operation, validate_filesystem_result, compose_final_result]
+  steps: [validate_runtime, validate_workspace, execute_filesystem_operation, validate_filesystem_result, compose_final_result]
+  allowed_actions: [write_files]
+  allowed_side_effects: [filesystem_write]
+  required_capabilities: [write_workspace]
+  approval_scope: filesystem_write
+  workspace_requirements: {required: true, allowed_roles: [target_mutable, system_mutable]}
+  forbidden: [forbidden_root, source_readonly, path_traversal]
+  max_duration_seconds: 600
+  output_validation_required: true
+  artifact_registration_required: false
+  default_safe_to_execute_policy: policy_and_approval

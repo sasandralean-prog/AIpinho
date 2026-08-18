@@ -1,0 +1,24 @@
+﻿schema_version: 1
+speaker_truth:
+  enabled: true
+  require_source_event: true
+  block_false_progress: true
+  block_patch_applied_claim_without_event: true
+  conservative_by_default: true
+  completion_events:
+    - patch_apply_completed
+    - post_validation_passed
+    - validation_completed
+    - validation_passed
+    - task_completed
+    - write_completed
+    - report_generated
+claims:
+  plan_created: "Plano criado. Ainda nao apliquei mudancas."
+  approval_required: "Preciso de aprovacao antes de continuar."
+  task_blocked: "A tarefa foi bloqueada por politica."
+  patch_apply_completed: "Patch aplicado e registrado por evento real."
+  validation_failed: "A validacao falhou. Ainda nao posso declarar sucesso."
+  validation_passed: "Validacao concluida com sucesso registrado."
+  post_validation_passed: "A alteracao passou pela validacao posterior."
+  write_completed: "Escrita governada concluida e registrada."

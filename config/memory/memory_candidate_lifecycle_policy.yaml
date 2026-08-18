@@ -1,0 +1,18 @@
+schema_version: 1
+
+lifecycle:
+  initial_statuses:
+    - candidate
+    - needs_review
+    - blocked
+    - duplicate
+  allowed_transitions:
+    candidate: [needs_review, rejected, duplicate]
+    needs_review: [candidate, rejected, duplicate, blocked]
+    blocked: [rejected]
+    duplicate: [rejected]
+    rejected: [rejected]
+  forbidden_statuses_this_sprint:
+    - approved
+    - curated
+    - persisted

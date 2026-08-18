@@ -1,0 +1,1559 @@
+[
+  {
+    "file": "src/aipinho/capabilities/media_metadata/descriptor.py",
+    "line": 13,
+    "rule_or_literal": "MediaMetadataBackendType = Literal[\"python_library\", \"external_cli\", \"native_minimal\", \"fake\"]",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/descriptor.py",
+    "line": 64,
+    "rule_or_literal": "fallbacks: list[str] = Field(default_factory=lambda: [\"ffprobe\", \"native_minimal\"])",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/policy.py",
+    "line": 28,
+    "rule_or_literal": "\"native_minimal\": NativeMinimalMediaProbeBackend(),",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/adapter.py",
+    "line": 25,
+    "rule_or_literal": "if entity_role not in {\"media_asset_candidate\", \"audio_track_candidate\"}:",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/adapter.py",
+    "line": 27,
+    "rule_or_literal": "if source_root_role not in {\"library_root\", \"corpus_root\"}:",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/mutagen_backend.py",
+    "line": 32,
+    "rule_or_literal": "supported_extensions=[\"mp3\", \"mp4\", \"m4a\", \"flac\", \"ogg\", \"opus\", \"wav\"],",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/mutagen_backend.py",
+    "line": 33,
+    "rule_or_literal": "supported_containers=[\"mp3\", \"mp4\", \"m4a\", \"flac\", \"ogg\", \"opus\", \"wav\"],",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 17,
+    "rule_or_literal": "backend_id = \"native_minimal\"",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 23,
+    "rule_or_literal": "backend_type=\"native_minimal\",",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 25,
+    "rule_or_literal": "supported_extensions=[\"mp3\", \"mp4\", \"m4a\"],",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 26,
+    "rule_or_literal": "supported_containers=[\"mp3\", \"mp4\", \"m4a\"],",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 34,
+    "rule_or_literal": "\"Does not implement full MP4 atom, ID3, artwork, or editorial metadata parsing.\",",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 50,
+    "rule_or_literal": "return self._probe_mp4(data=data, path=path, entity_ref=entity_ref)",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 52,
+    "rule_or_literal": "return self._probe_mp3(data=data, path=path, entity_ref=entity_ref)",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 55,
+    "rule_or_literal": "def _probe_mp4(self, *, data: bytes, path: Path, entity_ref: dict[str, Any] | None) -> RawMediaMetadataResult:",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 59,
+    "rule_or_literal": "container = \"m4a\" if brand_key in {\"m4a\", \"m4b\", \"m4p\"} else \"mp4\"",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 61,
+    "rule_or_literal": "boxes = self._mp4_boxes(data)",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 67,
+    "rule_or_literal": "duration = self._find_mp4_duration_seconds(data)",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 85,
+    "rule_or_literal": "provenance={\"backend\": self.backend_id, \"probe\": \"mp4_minimal\", \"file_path\": str(path)},",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 89,
+    "rule_or_literal": "def _probe_mp3(self, *, data: bytes, path: Path, entity_ref: dict[str, Any] | None) -> RawMediaMetadataResult:",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 90,
+    "rule_or_literal": "offset = self._mp3_frame_offset(data)",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 91,
+    "rule_or_literal": "fields = [self._field(\"container\", \"mp3\", 0.85, str(path), limitations=[\"container detected from ID3/MPEG header\"])]",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 93,
+    "rule_or_literal": "frame = self._parse_mp3_frame(data[offset:offset + 4])",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 95,
+    "rule_or_literal": "fields.append(self._field(\"codec\", \"mp3\", 0.8, str(path), limitations=[\"codec detected from MPEG audio frame header\"]))",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 107,
+    "rule_or_literal": "container=\"mp3\",",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 108,
+    "rule_or_literal": "codec=\"mp3\" if any(item.canonical_key == \"codec\" for item in fields) else None,",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 115,
+    "rule_or_literal": "provenance={\"backend\": self.backend_id, \"probe\": \"mp3_minimal\", \"file_path\": str(path)},",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 119,
+    "rule_or_literal": "def _mp4_boxes(self, data: bytes) -> list[str]:",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 142,
+    "rule_or_literal": "def _find_mp4_duration_seconds(self, data: bytes) -> float | None:",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 161,
+    "rule_or_literal": "offset = self._mp3_frame_offset(data)",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 164,
+    "rule_or_literal": "def _mp3_frame_offset(self, data: bytes) -> int | None:",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py",
+    "line": 176,
+    "rule_or_literal": "def _parse_mp3_frame(self, header: bytes) -> dict[str, int] | None:",
+    "classification": "CAPABILITY_PACK_OK",
+    "risk": "low",
+    "recommended_action": "Domain-specific capability pack, not Runtime core.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/observation_execution_boundary_service.py",
+    "line": 40,
+    "rule_or_literal": "FireTest, or renderer behavior.",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "No action.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/contract_driven_perception_service.py",
+    "line": 631,
+    "rule_or_literal": "has_corpus_root = any(roots_by_role.get(role) for role in (\"library_root\", \"corpus_root\"))",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/contract_driven_perception_service.py",
+    "line": 634,
+    "rule_or_literal": "and has_corpus_root",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/contract_driven_perception_service.py",
+    "line": 2035,
+    "rule_or_literal": "if capability_id == \"media_metadata_reader\" and source_root_role in {\"library_root\", \"corpus_root\"} and entity_role != \"media_asset_candidate\":",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/contract_driven_perception_service.py",
+    "line": 2225,
+    "rule_or_literal": "has_library_roots = bool(workspace_context.get(\"library_roots\"))",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/contract_driven_perception_service.py",
+    "line": 2227,
+    "rule_or_literal": "if expected_kind == \"tabular_collection\" and has_library_roots:",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/contract_driven_perception_service.py",
+    "line": 2232,
+    "rule_or_literal": "\"allowed_root_roles\": list(root_policy.get(\"corpus_preferred_root_roles\") or [\"library_root\", \"corpus_root\"]),",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/contract_driven_perception_service.py",
+    "line": 2234,
+    "rule_or_literal": "\"source\": \"workspace_context_library_roots\",",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/contract_driven_perception_service.py",
+    "line": 2358,
+    "rule_or_literal": "if selected_root_roles.intersection({\"library_root\", \"corpus_root\"}):",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/observed_entity_compilation_service.py",
+    "line": 73,
+    "rule_or_literal": "CorpusDescriptor(root_id=item.root_id, path=item.path, role=\"corpus_root\", source=item.source)",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/observed_entity_compilation_service.py",
+    "line": 75,
+    "rule_or_literal": "if item.role in {\"library_root\", \"corpus_root\"}",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/observed_entity_compilation_service.py",
+    "line": 149,
+    "rule_or_literal": "for raw in self._string_list(workspace_context.get(\"library_roots\")):",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/observed_entity_compilation_service.py",
+    "line": 150,
+    "rule_or_literal": "raw_roots.append((raw, \"library_roots\", policy.get(\"library_root_role\", \"library_root\")))",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/observed_entity_compilation_service.py",
+    "line": 164,
+    "rule_or_literal": "purposes=[\"corpus\"] if role in {\"library_root\", \"corpus_root\"} else [\"project\"] if role == \"project_root\" else [],",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/observed_entity_compilation_service.py",
+    "line": 185,
+    "rule_or_literal": "\"library_root\": 30,",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/observed_entity_compilation_service.py",
+    "line": 186,
+    "rule_or_literal": "\"corpus_root\": 35,",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/observed_entity_compilation_service.py",
+    "line": 326,
+    "rule_or_literal": "if source_root_role in {\"library_root\", \"corpus_root\"}:",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/observed_entity_compilation_service.py",
+    "line": 345,
+    "rule_or_literal": "if source_root_role in {\"library_root\", \"corpus_root\"}:",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/artifacts/observed_entity_compilation_service.py",
+    "line": 355,
+    "rule_or_literal": "corpus_roles = set(policy.get(\"corpus_preferred_root_roles\") or [\"library_root\", \"corpus_root\"])",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "line": 260,
+    "rule_or_literal": "\"library_roots\": request_context.get(\"library_roots\", []),",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "line": 1557,
+    "rule_or_literal": "if root and root != project_root and role_by_root.get(root) not in {\"library_root\", \"corpus_root\"} and root not in external_roots:",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "line": 1559,
+    "rule_or_literal": "library_roots = self._string_list(context.get(\"library_roots\"))",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "line": 1561,
+    "rule_or_literal": "if role_by_root.get(root) in {\"library_root\", \"corpus_root\"} and root not in library_roots:",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "line": 1562,
+    "rule_or_literal": "library_roots.append(root)",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "line": 1565,
+    "rule_or_literal": "if root and root not in library_roots:",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "line": 1566,
+    "rule_or_literal": "library_roots.append(root)",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "line": 1575,
+    "rule_or_literal": "\"library_roots\": library_roots,",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "line": 1586,
+    "rule_or_literal": "\"library_root\": [\"library\", \"biblioteca\", \"corpus\", \"collection\", \"colecao\", \"dataset\"],",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "line": 1597,
+    "rule_or_literal": "for role in (\"library_root\", \"project_root\"):",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "Workspace role boundary is generic scope metadata.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/runtime_doctor/runtime_doctor_service.py",
+    "line": 320,
+    "rule_or_literal": "\"MEDIA_BACKEND_UNSUPPORTED_FORMAT\": (\"observer_execution\", [\"src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py\", \"src/aipinho/capabilities/media_metadata/policy.py\"], [\"probe\", \"observe\"]),",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "No action.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/runtime_doctor/runtime_doctor_service.py",
+    "line": 325,
+    "rule_or_literal": "\"MEDIA_BACKEND_RUNTIME_ERROR\": (\"observer_execution\", [\"src/aipinho/capabilities/media_metadata/backends/mutagen_backend.py\", \"src/aipinho/capabilities/media_metadata/backends/native_minimal_backend.py\"], [\"probe\"]),",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "No action.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/runtime_doctor/runtime_doctor_service.py",
+    "line": 349,
+    "rule_or_literal": "\"CVL_PROFILE_MISSING\": (\"firetest_lab\", [\"src/aipinho/services/cvl/cognitive_validation_laboratory_service.py\"], [\"suite\"]),",
+    "classification": "GENERIC_RUNTIME_OK",
+    "risk": "low",
+    "recommended_action": "No action.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 14,
+    "rule_or_literal": "FireTestProfile,",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 15,
+    "rule_or_literal": "FireTestSuite,",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 25,
+    "rule_or_literal": "class FireTestLaboratoryService:",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 28,
+    "rule_or_literal": "def suite(self, profiles: list[FireTestProfile], *, name: str = \"cognitive_validation_suite\") -> FireTestSuite:",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 30,
+    "rule_or_literal": "rows: list[FireTestProfile] = []",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 33,
+    "rule_or_literal": "raise ValueError(\"duplicate_firetest_profile_id\")",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 36,
+    "rule_or_literal": "return FireTestSuite(name=name, profiles=rows)",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 38,
+    "rule_or_literal": "def get_profile(self, suite: FireTestSuite, profile_id: str) -> FireTestProfile | None:",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 45,
+    "rule_or_literal": "def build(self, profile: FireTestProfile) -> DependencyGraph:",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 189,
+    "rule_or_literal": "profile: FireTestProfile,",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 244,
+    "rule_or_literal": "def _predict_semantic_ingress(self, profile: FireTestProfile, *, graph: DependencyGraph | None) -> PredictionReport | None:",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 269,
+    "rule_or_literal": "def _predict_semantic_maturity(self, profile: FireTestProfile, *, graph: DependencyGraph | None) -> PredictionReport | None:",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 325,
+    "rule_or_literal": "def _predict_observer_backend_frontier(self, profile: FireTestProfile, *, graph: DependencyGraph | None) -> PredictionReport | None:",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 405,
+    "rule_or_literal": "def _predict_workspace_role_boundary(self, profile: FireTestProfile, *, graph: DependencyGraph | None) -> PredictionReport | None:",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 410,
+    "rule_or_literal": "(\"corpus_observation_status\", {\"missing\", \"unobserved\", \"invalid\"}, \"observed_entity_compilation\", \"PREDICTED_CORPUS_ROOT_NOT_OBSERVED\", \"A declared corpus or library root is not represented in the observed entity graph.\"),",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 445,
+    "rule_or_literal": "def report(self, profile: FireTestProfile, *, available_capabilities: list[str] | None = None) -> CoverageReport:",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 472,
+    "rule_or_literal": "def _semantic_ingress_metrics(self, profile: FireTestProfile) -> list[CoverageMetric]:",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 502,
+    "rule_or_literal": "def _workspace_role_boundary_metrics(self, profile: FireTestProfile) -> list[CoverageMetric]:",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 530,
+    "rule_or_literal": "def _observer_backend_metrics(self, profile: FireTestProfile) -> list[CoverageMetric]:",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 571,
+    "rule_or_literal": "def _semantic_maturity_metrics(self, profile: FireTestProfile) -> list[CoverageMetric]:",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 751,
+    "rule_or_literal": "suite: FireTestSuite,",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 759,
+    "rule_or_literal": "\"firetest_lab\": self._firetest_lab(suite),",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 773,
+    "rule_or_literal": "def _firetest_lab(self, suite: FireTestSuite) -> str:",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 774,
+    "rule_or_literal": "lines = [\"# CVL - FireTest Laboratory\", \"\", f\"- Suite: `{suite.name}`\", f\"- Profiles: `{len(suite.profiles)}`\", \"\"]",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 843,
+    "rule_or_literal": "suite: FireTestSuite,",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 876,
+    "rule_or_literal": "laboratory: FireTestLaboratoryService | None = None,",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 883,
+    "rule_or_literal": "self.laboratory = laboratory or FireTestLaboratoryService()",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "line": 892,
+    "rule_or_literal": "profiles: list[FireTestProfile],",
+    "classification": "ARTIFACT_CONTRACT_OK",
+    "risk": "low",
+    "recommended_action": "CVL profile vocabulary allowed when it does not alter Runtime behavior.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 36,
+    "rule_or_literal": "\"source_root_role\": \"library_root\",",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 44,
+    "rule_or_literal": "\"source_root_role\": \"library_root\",",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 55,
+    "rule_or_literal": "def _minimal_mp4_bytes(*, brand: bytes = b\"M4A \", duration_seconds: int | None = None, codec: bytes | None = None) -> bytes:",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 67,
+    "rule_or_literal": "def _minimal_mp3_bytes() -> bytes:",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 124,
+    "rule_or_literal": "assert native_descriptor.backend_type == \"native_minimal\"",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 157,
+    "rule_or_literal": "def test_native_minimal_backend_detects_mp4_container_duration_and_codec_from_headers(tmp_path: Path) -> None:",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 159,
+    "rule_or_literal": "sample.write_bytes(_minimal_mp4_bytes(duration_seconds=123, codec=b\"mp4a\"))",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 164,
+    "rule_or_literal": "assert fields[\"container\"] == \"m4a\"",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 165,
+    "rule_or_literal": "assert fields[\"codec\"] == \"mp4a\"",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 169,
+    "rule_or_literal": "def test_native_minimal_backend_detects_mp3_basic_frame_without_tags(tmp_path: Path) -> None:",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 171,
+    "rule_or_literal": "sample.write_bytes(_minimal_mp3_bytes())",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 176,
+    "rule_or_literal": "assert fields[\"container\"] == \"mp3\"",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 177,
+    "rule_or_literal": "assert fields[\"codec\"] == \"mp3\"",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 182,
+    "rule_or_literal": "def test_native_minimal_backend_does_not_invent_codec_or_duration(tmp_path: Path) -> None:",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 183,
+    "rule_or_literal": "sample = tmp_path / \"sample.m4a\"",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 184,
+    "rule_or_literal": "sample.write_bytes(_minimal_mp4_bytes(duration_seconds=None, codec=None))",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 189,
+    "rule_or_literal": "assert fields[\"container\"] == \"m4a\"",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 194,
+    "rule_or_literal": "def test_native_minimal_backend_does_not_use_extension_as_metadata(tmp_path: Path) -> None:",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 196,
+    "rule_or_literal": "\"fake.m4a\": b\"plain text pretending to be media\",",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 197,
+    "rule_or_literal": "\"fake.mp3\": b\"plain text pretending to be media\",",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 198,
+    "rule_or_literal": "\"fake.lrc\": b\"[00:01.00] lyrics only\",",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 199,
+    "rule_or_literal": "\"fake.jpg\": b\"not a parsed media container\",",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 270,
+    "rule_or_literal": "sample.write_bytes(_minimal_mp3_bytes())",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 273,
+    "rule_or_literal": "backend_policy=MediaMetadataBackendPolicy(primary=\"native_minimal\", fallbacks=[]),",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 274,
+    "rule_or_literal": "backends={\"native_minimal\": NativeMinimalMediaProbeBackend()},",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 289,
+    "rule_or_literal": "sample.write_bytes(_minimal_mp3_bytes())",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 292,
+    "rule_or_literal": "backend_policy=MediaMetadataBackendPolicy(primary=\"native_minimal\", fallbacks=[], min_confidence=0.6),",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 293,
+    "rule_or_literal": "backends={\"native_minimal\": NativeMinimalMediaProbeBackend()},",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 308,
+    "rule_or_literal": "assert all(record.backend_id == \"native_minimal\" for record in result.evidence_set.records)",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 322,
+    "rule_or_literal": "\"selected_backend\": \"native_minimal\",",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 323,
+    "rule_or_literal": "\"available_backends\": [\"native_minimal\"],",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 328,
+    "rule_or_literal": "\"attempted_backends\": [\"mutagen\", \"native_minimal\"],",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 329,
+    "rule_or_literal": "\"successful_backends\": [\"native_minimal\"],",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 330,
+    "rule_or_literal": "\"fallback_backends_used\": [\"native_minimal\"],",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 342,
+    "rule_or_literal": "assert summary[\"selected_backend\"] == \"native_minimal\"",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 349,
+    "rule_or_literal": "assert summary[\"attempted_backends\"] == [\"mutagen\", \"native_minimal\"]",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 350,
+    "rule_or_literal": "assert summary[\"successful_backends\"] == [\"native_minimal\"]",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 351,
+    "rule_or_literal": "assert summary[\"fallback_backends_used\"] == [\"native_minimal\"]",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 361,
+    "rule_or_literal": "fallbacks=[\"ffprobe\", \"native_minimal\"],",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 379,
+    "rule_or_literal": "\"native_minimal\": _FakeMediaBackend(",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 380,
+    "rule_or_literal": "\"native_minimal\",",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 384,
+    "rule_or_literal": "normalized_value=\"m4a\",",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 386,
+    "rule_or_literal": "source_backend_id=\"native_minimal\",",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 399,
+    "rule_or_literal": "assert summary[\"attempted_backends\"] == [\"mutagen\", \"ffprobe\", \"native_minimal\"]",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 400,
+    "rule_or_literal": "assert summary[\"successful_backends\"] == [\"mutagen\", \"native_minimal\"]",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 401,
+    "rule_or_literal": "assert summary[\"fallback_backends_used\"] == [\"native_minimal\"]",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_media_metadata_capability_pack.py",
+    "line": 405,
+    "rule_or_literal": "assert {record[\"backend_id\"] for record in evidence} == {\"mutagen\", \"native_minimal\"}",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 15,
+    "rule_or_literal": "\"library_root_role\": \"library_root\",",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 17,
+    "rule_or_literal": "\"corpus_preferred_root_roles\": [\"library_root\", \"corpus_root\"],",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 130,
+    "rule_or_literal": "\"expected_schema\": [\"extens?o\", \"dura??o\"],",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 140,
+    "rule_or_literal": "assert \"?\" not in by_raw[\"dura??o\"].canonical_key",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 270,
+    "rule_or_literal": "workspace_context={\"project_root\": str(project), \"library_roots\": [str(library)]},",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 279,
+    "rule_or_literal": "\"workspace_context\": {\"project_root\": str(project), \"library_roots\": [str(library)]},",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 284,
+    "rule_or_literal": "assert graph[\"roots_scanned_by_role\"][\"library_root\"] == [str(library.resolve())]",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 288,
+    "rule_or_literal": "assert {item[\"source_root_role\"] for item in selected_entities} == {\"library_root\"}",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 299,
+    "rule_or_literal": "def test_library_root_media_metadata_attempt_uses_media_asset_hypothesis_not_audio_truth(tmp_path: Path) -> None:",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 308,
+    "rule_or_literal": "workspace_context={\"project_root\": str(project), \"library_roots\": [str(library)]},",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 317,
+    "rule_or_literal": "\"workspace_context\": {\"project_root\": str(project), \"library_roots\": [str(library)]},",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 341,
+    "rule_or_literal": "\"expected_schema\": [\"extens?o\", \"dura??o\"],",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 365,
+    "rule_or_literal": "workspace_context={\"project_root\": str(project), \"library_roots\": [str(library)]},",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 378,
+    "rule_or_literal": "\"workspace_context\": {\"project_root\": str(project), \"library_roots\": [str(library)]},",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 392,
+    "rule_or_literal": "def test_tabular_collection_with_corpus_roots_blocks_when_selection_policy_is_not_bound(tmp_path: Path) -> None:",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 402,
+    "rule_or_literal": "workspace_context={\"project_root\": str(project), \"library_roots\": [str(library)]},",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 414,
+    "rule_or_literal": "assert graph[\"roots_scanned_by_role\"][\"library_root\"]",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 423,
+    "rule_or_literal": "def test_renderer_blocks_when_contract_corpus_root_has_no_eligible_entities(tmp_path: Path) -> None:",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 430,
+    "rule_or_literal": "workspace_context={\"project_root\": str(project), \"library_roots\": [str(tmp_path / \"missing_library\")]},",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_contract_driven_perception_service.py",
+    "line": 443,
+    "rule_or_literal": "\"workspace_context\": {\"project_root\": str(project), \"library_roots\": [str(tmp_path / \"missing_library\")]},",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_cognitive_validation_laboratory_service.py",
+    "line": 3,
+    "rule_or_literal": "from aipinho.schemas.cvl import FireTestProfile, SimulationRequest",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_cognitive_validation_laboratory_service.py",
+    "line": 11,
+    "rule_or_literal": "FireTestLaboratoryService,",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_cognitive_validation_laboratory_service.py",
+    "line": 15,
+    "rule_or_literal": "def _profile() -> FireTestProfile:",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_cognitive_validation_laboratory_service.py",
+    "line": 16,
+    "rule_or_literal": "return FireTestProfile(",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_cognitive_validation_laboratory_service.py",
+    "line": 37,
+    "rule_or_literal": "def test_firetest_laboratory_registers_profiles_without_code_changes() -> None:",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_cognitive_validation_laboratory_service.py",
+    "line": 40,
+    "rule_or_literal": "suite = FireTestLaboratoryService().suite([profile], name=\"generic_suite\")",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_cognitive_validation_laboratory_service.py",
+    "line": 44,
+    "rule_or_literal": "assert FireTestLaboratoryService().get_profile(suite, \"profile_generic_capability\") == profile",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_cognitive_validation_laboratory_service.py",
+    "line": 61,
+    "rule_or_literal": "profile = FireTestProfile(",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_cognitive_validation_laboratory_service.py",
+    "line": 90,
+    "rule_or_literal": "profile = FireTestProfile(",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_cognitive_validation_laboratory_service.py",
+    "line": 129,
+    "rule_or_literal": "profile = FireTestProfile(",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_cognitive_validation_laboratory_service.py",
+    "line": 184,
+    "rule_or_literal": "profile = FireTestProfile(",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_cognitive_validation_laboratory_service.py",
+    "line": 232,
+    "rule_or_literal": "profile = FireTestProfile(",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_cognitive_validation_laboratory_service.py",
+    "line": 278,
+    "rule_or_literal": "profile = FireTestProfile(",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  },
+  {
+    "file": "tests/unit/test_cognitive_validation_laboratory_service.py",
+    "line": 342,
+    "rule_or_literal": "\"firetest_lab\",",
+    "classification": "TEST_FIXTURE_OK",
+    "risk": "low",
+    "recommended_action": "Keep if fixture remains synthetic and not local-path dependent.",
+    "fixed_now": "no"
+  }
+]

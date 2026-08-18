@@ -1,0 +1,8 @@
+schema_version: 1
+
+sensitivity:
+  block_secret_like: true
+  block_private_key: true
+  block_raw_logs: true
+  block_binary_marker: true
+  redact_trace: true

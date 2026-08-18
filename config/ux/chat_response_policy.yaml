@@ -1,0 +1,82 @@
+﻿schema_version: 1
+
+defaults:
+  include_trace_by_default: false
+  max_message_chars: 4000
+  anti_truncation_enabled: true
+  raw_debug_in_chat: false
+
+responses:
+  conversation:
+    style: concise_helpful
+    allow_direct_answer: true
+  self_analysis:
+    style: grounded_explanation
+    allow_direct_answer: true
+    require_sources: true
+    no_task: true
+  capability_explanation:
+    style: grounded_list
+    allow_direct_answer: true
+    require_sources: false
+    no_task: true
+  in_chat_final_report:
+    style: structured_summary
+    allow_direct_answer: true
+    no_task: true
+    no_write: true
+  readonly_analysis:
+    style: preview
+    allow_direct_answer: false
+    show_contract_preview: true
+  artifact_generation:
+    style: preview
+    allow_direct_answer: false
+    show_contract_preview: true
+    require_approval: true
+  patch_request:
+    style: preview
+    allow_direct_answer: false
+    show_contract_preview: true
+    require_approval: true
+  ambiguity:
+    style: clarification
+    ask_clarifying_question: true
+  blocked:
+    style: safety_explanation
+    explain_policy_reason: true
+task_runtime:
+  suggest_create_task_run: true
+  auto_start: false
+  show_existing_result: true
+
+validation_display:
+  show_task_validation_status: true
+  failed_or_rejected_not_trusted: true
+  degraded_requires_limitations_message: true
+retrieval:
+  allow_explicit_retrieval_response: true
+  allow_explicit_vector_rag_query: true
+  allow_vector_rag_ingestion_from_chat: false
+  allow_vector_rag_auto_ingest: false
+  vector_rag_requires_namespace_or_role: true
+  embedding_reranker_as_chat: false
+  allow_auto_retrieval: false
+  show_sources: true
+  show_citations: true
+  block_legacy_vectorstore: true
+  require_context_admission: true
+  require_context_injection_plan: true
+  block_citation_bypass: true
+
+memory_context:
+  allow_explicit_curated_memory: true
+  allow_auto_memory: false
+  require_active_status: true
+  require_citations: true
+
+role_models:
+  allow_status_answers: true
+  allow_chat_auto_run: false
+  suggest_next_action_only: true
+  block_14b_from_chat: true

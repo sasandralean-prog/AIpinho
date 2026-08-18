@@ -1,0 +1,13 @@
+schema_version: 1
+approval_clarity:
+  enabled: true
+  show_approval_required: true
+  show_approval_reason: true
+  show_blocked_actions: true
+  show_risk_level: true
+  show_required_capabilities: true
+  show_next_safe_action: true
+blocked:
+  imply_approved_when_pending: true
+  hide_blocked_capability: true
+  auto_approve_from_ui: true

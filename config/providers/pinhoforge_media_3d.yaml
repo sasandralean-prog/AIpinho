@@ -1,0 +1,57 @@
+version: 1
+provider:
+  enabled: true
+  allow_overwrite_original: false
+  require_policy_allow: true
+  require_output_validation: true
+  require_artifact_registration: true
+  model_review_enabled: true
+  model_review_required_for_semantic_tasks: true
+  redaction_enabled: true
+  timeout_seconds: 60
+  max_input_size_mb: 64
+  max_output_size_mb: 128
+  allowed_source_scopes:
+    - sandbox
+    - artifact_library
+    - registered_workspace
+    - imported_workspace
+    - pinhoforge_controlled_output
+  image:
+    supported_operations:
+      - brightness
+      - contrast
+      - saturation
+      - grayscale
+      - invert
+      - crop
+      - resize
+      - rotate
+      - flip_horizontal
+      - flip_vertical
+    supported_input_formats:
+      - png
+      - jpg
+      - jpeg
+      - bmp
+    supported_output_formats:
+      - png
+      - jpeg
+  three_d:
+    supported_operations:
+      - create_scene
+      - add_primitive
+      - edit_transform
+      - edit_material
+      - edit_light
+      - edit_camera
+      - export_scene
+      - generate_report
+    supported_primitives:
+      - cube
+      - sphere
+      - cylinder
+      - cone
+      - plane
+    supported_export_formats:
+      - obj

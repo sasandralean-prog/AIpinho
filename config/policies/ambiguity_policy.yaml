@@ -1,0 +1,11 @@
+schema_version: 1
+
+ambiguity:
+  operational_markers_required_for_light_ambiguity: true
+  mutation_without_target_requires_clarification: true
+  workspace_reference_without_path_requires_clarification: true
+  low_confidence_requires_clarification: true
+  clarifying_questions:
+    default: "Você quer apenas uma explicação no chat ou deseja criar uma task supervisionada?"
+    workspace: "Qual workspace ou caminho devo analisar?"
+    mutation: "O que exatamente deve ser alterado e em qual workspace?"

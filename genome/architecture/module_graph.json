@@ -1,0 +1,350 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "total_modules": 328,
+  "modules": {
+    "core": {
+      "bootstrap": {
+        "path": "src/aipinho/core/bootstrap.py",
+        "type": "module",
+        "exports": [],
+        "imports": ["core.local_environment"],
+        "dependencies": ["core.local_environment"]
+      },
+      "dependency_container": {
+        "path": "src/aipinho/core/dependency_container.py",
+        "type": "module",
+        "exports": [],
+        "imports": [],
+        "dependencies": []
+      },
+      "local_environment": {
+        "path": "src/aipinho/core/local_environment.py",
+        "type": "module",
+        "exports": [],
+        "imports": ["utils"],
+        "dependencies": ["utils"]
+      },
+      "paths": {
+        "path": "src/aipinho/core/paths.py",
+        "type": "module",
+        "exports": [],
+        "imports": [],
+        "dependencies": []
+      },
+      "exceptions": {
+        "path": "src/aipinho/core/exceptions.py",
+        "type": "module",
+        "exports": [],
+        "imports": [],
+        "dependencies": []
+      },
+      "result": {
+        "path": "src/aipinho/core/result.py",
+        "type": "module",
+        "exports": [],
+        "imports": [],
+        "dependencies": []
+      },
+      "clock": {
+        "path": "src/aipinho/core/clock.py",
+        "type": "module",
+        "exports": [],
+        "imports": [],
+        "dependencies": [],
+        "status": "empty_stub"
+      },
+      "lifecycle": {
+        "path": "src/aipinho/core/lifecycle.py",
+        "type": "module",
+        "exports": [],
+        "imports": [],
+        "dependencies": [],
+        "status": "empty_stub"
+      },
+      "ids": {
+        "path": "src/aipinho/core/ids.py",
+        "type": "module",
+        "exports": [],
+        "imports": [],
+        "dependencies": [],
+        "status": "empty_stub"
+      }
+    },
+    "utils": {
+      "json_loader": {
+        "path": "src/aipinho/utils/json_loader.py",
+        "type": "module",
+        "exports": [],
+        "imports": [],
+        "dependencies": []
+      },
+      "yaml_loader": {
+        "path": "src/aipinho/utils/yaml_loader.py",
+        "type": "module",
+        "exports": [],
+        "imports": [],
+        "dependencies": []
+      },
+      "hashing": {
+        "path": "src/aipinho/utils/hashing.py",
+        "type": "module",
+        "exports": [],
+        "imports": [],
+        "dependencies": []
+      },
+      "redaction": {
+        "path": "src/aipinho/utils/redaction.py",
+        "type": "module",
+        "exports": [],
+        "imports": [],
+        "dependencies": []
+      },
+      "safe_paths": {
+        "path": "src/aipinho/utils/safe_paths.py",
+        "type": "module",
+        "exports": [],
+        "imports": [],
+        "dependencies": []
+      },
+      "text": {
+        "path": "src/aipinho/utils/text.py",
+        "type": "module",
+        "exports": [],
+        "imports": [],
+        "dependencies": []
+      },
+      "diagnostics": {
+        "path": "src/aipinho/utils/diagnostics.py",
+        "type": "module",
+        "exports": [],
+        "imports": [],
+        "dependencies": []
+      }
+    },
+    "services": {
+      "policy_kernel": {
+        "policy_kernel_service": {
+          "path": "src/aipinho/services/policy_kernel/policy_kernel_service.py",
+          "type": "service",
+          "exports": [],
+          "imports": ["core", "registries", "schemas.policy"],
+          "dependencies": ["core", "registries", "schemas.policy"]
+        },
+        "capability_gate_service": {
+          "path": "src/aipinho/services/policy_kernel/capability_gate_service.py",
+          "type": "service",
+          "exports": [],
+          "imports": ["core", "registries", "schemas.policy"],
+          "dependencies": ["core", "registries", "schemas.policy"]
+        },
+        "workspace_role_contract_service": {
+          "path": "src/aipinho/services/policy_kernel/workspace_role_contract_service.py",
+          "type": "service",
+          "exports": [],
+          "imports": ["core", "registries", "schemas.policy"],
+          "dependencies": ["core", "registries", "schemas.policy"]
+        }
+      },
+      "runtime": {
+        "task_runtime_service": {
+          "path": "src/aipinho/services/runtime/task_runtime_service.py",
+          "type": "service",
+          "exports": [],
+          "imports": ["core", "repositories", "schemas.runtime", "services.policy_kernel"],
+          "dependencies": ["core", "repositories", "schemas.runtime", "services.policy_kernel"]
+        },
+        "execution_graph_service": {
+          "path": "src/aipinho/services/runtime/execution_graph_service.py",
+          "type": "service",
+          "exports": [],
+          "imports": ["core", "schemas.runtime", "services.policy_kernel"],
+          "dependencies": ["core", "schemas.runtime", "services.policy_kernel"]
+        },
+        "intelligent_planner_service": {
+          "path": "src/aipinho/services/runtime/intelligent_planner_service.py",
+          "type": "service",
+          "exports": [],
+          "imports": ["core", "schemas.runtime", "services.policy_kernel"],
+          "dependencies": ["core", "schemas.runtime", "services.policy_kernel"]
+        }
+      },
+      "chat": {
+        "chat_service": {
+          "path": "src/aipinho/services/chat/chat_service.py",
+          "type": "service",
+          "exports": [],
+          "imports": ["core", "schemas.chat", "services.runtime", "services.policy_kernel", "services.memory", "services.models", "services.tools"],
+          "dependencies": ["core", "schemas.chat", "services.runtime", "services.policy_kernel", "services.memory", "services.models", "services.tools"]
+        },
+        "chat_operation_router_service": {
+          "path": "src/aipinho/services/chat/chat_operation_router_service.py",
+          "type": "service",
+          "exports": [],
+          "imports": ["core", "schemas.chat", "services.runtime", "services.policy_kernel", "services.agents", "services.tools"],
+          "dependencies": ["core", "schemas.chat", "services.runtime", "services.policy_kernel", "services.agents", "services.tools"]
+        }
+      },
+      "agents": {
+        "agent_tool_gateway_service": {
+          "path": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+          "type": "service",
+          "exports": [],
+          "imports": ["core", "schemas.agents", "services.runtime", "services.policy_kernel", "services.tools", "services.workspaces"],
+          "dependencies": ["core", "schemas.agents", "services.runtime", "services.policy_kernel", "services.tools", "services.workspaces"]
+        },
+        "agent_local_action_planner": {
+          "path": "src/aipinho/services/agents/agent_local_action_planner.py",
+          "type": "service",
+          "exports": [],
+          "imports": ["core", "schemas.agents", "services.runtime", "services.policy_kernel", "services.tools"],
+          "dependencies": ["core", "schemas.agents", "services.runtime", "services.policy_kernel", "services.tools"]
+        }
+      },
+      "models": {
+        "llama_cpp_provider": {
+          "path": "src/aipinho/services/models/llama_cpp_provider.py",
+          "type": "service",
+          "exports": [],
+          "imports": ["core", "schemas.models", "adapters.llm_providers"],
+          "dependencies": ["core", "schemas.models", "adapters.llm_providers"]
+        }
+      },
+      "tools": {
+        "governed_tool_execution_service": {
+          "path": "src/aipinho/services/tools/governed_tool_execution_service.py",
+          "type": "service",
+          "exports": [],
+          "imports": ["core", "schemas.tools", "services.runtime", "services.policy_kernel", "adapters"],
+          "dependencies": ["core", "schemas.tools", "services.runtime", "services.policy_kernel", "adapters"]
+        }
+      },
+      "validation": {
+        "validation_gate_service": {
+          "path": "src/aipinho/services/validation/validation_gate_service.py",
+          "type": "service",
+          "exports": [],
+          "imports": ["core", "schemas.validation"],
+          "dependencies": ["core", "schemas.validation"]
+        }
+      }
+    },
+    "registries": {
+      "role_registry": {
+        "path": "src/aipinho/registries/role_registry.py",
+        "type": "registry",
+        "exports": [],
+        "imports": ["core", "config.roles"],
+        "dependencies": ["core", "config.roles"]
+      },
+      "route_registry": {
+        "path": "src/aipinho/registries/route_registry.py",
+        "type": "registry",
+        "exports": [],
+        "imports": ["core", "config.routes"],
+        "dependencies": ["core", "config.routes"]
+      },
+      "action_registry": {
+        "path": "src/aipinho/registries/action_registry.py",
+        "type": "registry",
+        "exports": [],
+        "imports": ["core", "config.policies"],
+        "dependencies": ["core", "config.policies"]
+      },
+      "capability_registry": {
+        "path": "src/aipinho/registries/capability_registry.py",
+        "type": "registry",
+        "exports": [],
+        "imports": ["core", "config.policies"],
+        "dependencies": ["core", "config.policies"]
+      }
+    },
+    "api": {
+      "routers": {
+        "health_router": {
+          "path": "src/aipinho/api/routers/health_router.py",
+          "type": "router",
+          "exports": [],
+          "imports": ["services.health"],
+          "dependencies": ["services.health"]
+        },
+        "chat_router": {
+          "path": "src/aipinho/api/routers/chat_router.py",
+          "type": "router",
+          "exports": [],
+          "imports": ["services.chat"],
+          "dependencies": ["services.chat"]
+        },
+        "task_runtime_router": {
+          "path": "src/aipinho/api/routers/task_runtime_router.py",
+          "type": "router",
+          "exports": [],
+          "imports": ["services.runtime"],
+          "dependencies": ["services.runtime"]
+        },
+        "tool_router": {
+          "path": "src/aipinho/api/routers/tool_router.py",
+          "type": "router",
+          "exports": [],
+          "imports": ["services.tools"],
+          "dependencies": ["services.tools"]
+        },
+        "model_router": {
+          "path": "src/aipinho/api/routers/model_router.py",
+          "type": "router",
+          "exports": [],
+          "imports": ["services.models"],
+          "dependencies": ["services.models"]
+        },
+        "artifact_router": {
+          "path": "src/aipinho/api/routers/artifact_router.py",
+          "type": "router",
+          "exports": [],
+          "imports": ["services.artifacts"],
+          "dependencies": ["services.artifacts"]
+        },
+        "agent_router": {
+          "path": "src/aipinho/api/routers/agent_router.py",
+          "type": "router",
+          "exports": [],
+          "imports": ["services.agents"],
+          "dependencies": ["services.agents"]
+        },
+        "policy_router": {
+          "path": "src/aipinho/api/routers/policy_router.py",
+          "type": "router",
+          "exports": [],
+          "imports": ["services.policy_kernel"],
+          "dependencies": ["services.policy_kernel"]
+        }
+      }
+    },
+    "entrypoint": {
+      "main": {
+        "path": "src/aipinho/main.py",
+        "type": "entrypoint",
+        "exports": [],
+        "imports": ["app_factory"],
+        "dependencies": ["app_factory"]
+      },
+      "app_factory": {
+        "path": "src/aipinho/app_factory.py",
+        "type": "factory",
+        "exports": [],
+        "imports": ["core.local_environment", "api.routers", "services.runtime.task_queue_maintenance_service"],
+        "dependencies": ["core.local_environment", "api.routers", "services.runtime.task_queue_maintenance_service"]
+      }
+    }
+  },
+  "module_types": {
+    "module": 10,
+    "service": 13,
+    "registry": 4,
+    "router": 8,
+    "entrypoint": 1,
+    "factory": 1,
+    "adapter": 0,
+    "repository": 0,
+    "schema": 0
+  }
+}

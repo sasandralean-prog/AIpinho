@@ -1,0 +1,89 @@
+version: 1
+enabled: true
+sandbox_enabled: true
+sandbox_root: C:\Dev\AIpinho\sandboxes
+default_workspace_role: sandbox_mutable
+default_task_parent: C:\Dev\AIpinho\sandboxes\tasks
+default_artifact_parent: C:\Dev\AIpinho\sandboxes\artifacts
+default_tmp_parent: C:\Dev\AIpinho\sandboxes\tmp
+default_trash_parent: C:\Dev\AIpinho\sandboxes\trash
+root_policy:
+  default_root: C:\Dev\AIpinho\sandboxes
+  allow_runtime_env_override: true
+  deny_escape: true
+  deny_path_traversal: true
+  deny_symlink_escape: true
+file_operations:
+  allow_read: true
+  allow_write: true
+  allow_append: true
+  allow_modify: true
+  allow_mkdir: true
+  allow_copy: true
+  allow_move: true
+  allow_delete_safe: true
+  delete_safe_uses_trash: true
+shell:
+  enabled: true
+  require_cwd_inside_sandbox: true
+  deny_network_by_default: true
+  timeout_seconds: 300
+  max_output_kb: 512
+  sanitize_stdout: true
+  sanitize_stderr: true
+  allowed_shells:
+    - powershell
+    - cmd
+    - python
+    - gradle
+    - npm
+allowed_shell_categories:
+  - readonly_shell
+  - test_shell
+  - build_shell
+  - package_shell
+blocked_shell_patterns:
+  - \bdel\b|\brm\b|\bformat\b|\bshutdown\b|\brestart-computer\b
+  - \bgit\s+push\b|\bgit\s+commit\b
+  - \bcurl\b|\bwget\b|\binvoke-webrequest\b|\birm\b|\biwr\b
+artifact:
+  enabled: true
+  max_bytes: 262144000
+  max_file_size_mb: 50
+  requires_token: true
+  token_in_url: false
+  include_manifest: true
+cleanup:
+  requires_preview: true
+  allow_tmp: true
+  allow_trash: true
+  deny_delete_evidence: true
+  deny_delete_final_artifacts_without_approval: true
+validation:
+  require_validation_for_artifact_export: true
+  allow_file_existence_validation: true
+  allow_zip_integrity_validation: true
+  allow_build_validation: true
+  allow_test_validation: true
+autopilot:
+  modes:
+    - sandbox_play
+    - sandbox_generation
+    - sandbox_validation
+    - sandbox_artifact_export
+  project_profile_required_for_new_generation: false
+skills:
+  sandbox_allowed: true
+  sandbox_required_capabilities:
+    - sandbox_read
+    - sandbox_write
+    - sandbox_modify
+    - sandbox_mkdir
+    - sandbox_shell
+    - sandbox_validate
+    - sandbox_artifact_export
+    - sandbox_cleanup_preview
+    - sandbox_cleanup_apply
+audit:
+  trace_every_operation: true
+  raw_hidden_by_default: true

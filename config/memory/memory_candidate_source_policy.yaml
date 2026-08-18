@@ -1,0 +1,38 @@
+schema_version: 1
+
+sources:
+  project_report:
+    enabled: true
+    require_report_exists: true
+    require_quality_gate_passed_or_warnings: true
+    allow_failed_report: false
+  task_run_result:
+    enabled: true
+    require_run_exists: true
+    require_validation_passed_or_warnings: true
+    allow_partial_with_limitations: true
+  validation_result:
+    enabled: true
+    require_validation_exists: true
+    allowed_statuses: [passed, passed_with_warnings, needs_review, failed, rejected]
+  patch_apply_result:
+    enabled: true
+    require_apply_run_exists: true
+    allowed_statuses: [completed, failed, rolled_back, rollback_failed]
+    require_post_apply_validation_for_success_memory: true
+  user_instruction:
+    enabled: true
+    require_explicit_memory_intent: true
+    require_scope: true
+    require_confirmation_future: true
+  manual_payload:
+    enabled: true
+    allowed_for_tests: true
+    require_source_metadata: true
+
+blocked_sources:
+  - raw_log
+  - unvalidated_model_output
+  - unvalidated_chat_message
+  - full_conversation_dump
+  - secret_scan_failed_content

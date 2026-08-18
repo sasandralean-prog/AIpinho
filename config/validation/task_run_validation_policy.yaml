@@ -1,0 +1,36 @@
+﻿schema_version: 1
+
+task_run_validation:
+  enabled: true
+  require_terminal_state: true
+  allowed_terminal_states: [completed, partial, failed, cancelled, blocked]
+  validate_events: true
+  validate_steps: true
+  validate_result: true
+  validate_policy_snapshot: true
+  validate_workspace_snapshot: true
+  validate_approval_snapshot_when_required: true
+  validate_side_effects: true
+  validate_contract_compliance: true
+
+status_consistency:
+  completed_requires:
+    - all_required_steps_completed
+    - no_critical_warnings
+    - no_blocked_required_items
+    - no_side_effects
+    - result_present
+  partial_allowed_when:
+    - budget_limit_applied
+    - optional_step_failed
+    - files_omitted
+    - noncritical_warnings
+  failed_requires:
+    - required_step_failed
+    - validator_error
+    - runtime_error
+  blocked_requires:
+    - policy_denial
+    - forbidden_root
+    - blocked_action
+    - missing_required_permission

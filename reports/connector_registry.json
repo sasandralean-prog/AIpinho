@@ -1,0 +1,18 @@
+{
+  "status": "EX2_READY",
+  "official_connectors": [
+    "launcher",
+    "cli",
+    "vscode",
+    "continue",
+    "rest",
+    "web",
+    "mobile",
+    "mcp"
+  ],
+  "input_format": "gateway_request.v1",
+  "output_format": "gateway_response.v1",
+  "runtime_coupling": false,
+  "mutates_runtime": false,
+  "validated": true
+}

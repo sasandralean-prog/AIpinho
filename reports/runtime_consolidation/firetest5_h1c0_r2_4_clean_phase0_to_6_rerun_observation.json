@@ -1,0 +1,115 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_4_CLEAN_PHASE0_TO_6_STOPPED_AT_PHASE1_BLOCKED",
+  "phase0": {
+    "predicted_status": null,
+    "predicted_frontier": null,
+    "predicted_component": null,
+    "predicted_reason_code": null,
+    "confidence": 0.87
+  },
+  "phase1": {
+    "status": "blocked",
+    "task_run_id": "task_run_128043624a614fa68c0bbd1c8ec81790",
+    "result_status": "blocked",
+    "reason_code": "TASKRUN_LIFECYCLE_TIMEOUT",
+    "safe_to_report_success": false,
+    "music_inventory": {
+      "status": "blocked",
+      "validation_status": "blocked",
+      "semantic_contract_status": "partial",
+      "reason_code": "MUSIC_INVENTORY_PARTIAL_EVIDENCE",
+      "safe_to_use": false,
+      "partial_rows": 100,
+      "expected_rows": 1051,
+      "selected_rows": 100,
+      "bound_rows": 100,
+      "evidence_ref_count": 100,
+      "missing_columns": [
+        "size_bytes",
+        "channels",
+        "observations"
+      ],
+      "limitations": [
+        "media_inventory_source_root_role_missing",
+        "media_inventory_evidence_ref_missing",
+        "media_inventory_limitations_missing",
+        "ATTRIBUTE_NOT_OBSERVED:observations",
+        "artifact_render_entity_budget_partial",
+        "relationship_final_validation_missing",
+        "MUSIC_INVENTORY_PARTIAL_EVIDENCE"
+      ]
+    },
+    "terminal_event_count": 1,
+    "terminal_event_types": [
+      "run_blocked"
+    ]
+  },
+  "phase2": {
+    "status": "skipped_due_to_prior_block",
+    "prior_blocking_phase": "phase1",
+    "api_called": false
+  },
+  "phase3": {
+    "status": "skipped_due_to_prior_block",
+    "prior_blocking_phase": "phase1",
+    "api_called": false
+  },
+  "phase4": {
+    "status": "skipped_due_to_prior_block",
+    "prior_blocking_phase": "phase1",
+    "api_called": false
+  },
+  "phase5": {
+    "status": "skipped_due_to_prior_block",
+    "prior_blocking_phase": "phase1",
+    "api_called": false
+  },
+  "phase6": {
+    "status": "skipped_due_to_prior_block",
+    "prior_blocking_phase": "phase1",
+    "api_called": false
+  },
+  "queue_storage_after": {
+    "backend_status": "ready_with_warnings",
+    "runtime_hygiene_status_endpoint": "offline_or_timeout_during_status_script",
+    "active_runs": 0,
+    "queued_runs": 0,
+    "stale_runs": 0,
+    "artifact_index_by_task_run_bytes": 16655,
+    "operational_memory_bytes": 6383,
+    "large_run_count": 0,
+    "missing_index_count": 0
+  },
+  "endpoint_timings": [
+    {
+      "endpoint": "summary",
+      "status": 200,
+      "ms": 2789,
+      "bytes": 6106
+    },
+    {
+      "endpoint": "result",
+      "status": 200,
+      "ms": 20,
+      "bytes": 15111
+    },
+    {
+      "endpoint": "truth",
+      "status": 200,
+      "ms": 27,
+      "bytes": 1246
+    },
+    {
+      "endpoint": "artifacts",
+      "status": 200,
+      "ms": 65,
+      "bytes": 27661
+    },
+    {
+      "endpoint": "events",
+      "status": 200,
+      "ms": 69,
+      "bytes": 56853
+    }
+  ]
+}

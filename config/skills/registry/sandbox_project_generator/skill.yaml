@@ -1,0 +1,33 @@
+skill_id: internal.sandbox_project_generator
+display_name: Sandbox Project Generator
+slug: sandbox_project_generator
+description: Generate a declared directory and file set inside a governed sandbox task.
+version: 1.0.0
+status: active
+category: project_onboarding
+owner: aipinho
+compatible_agents: [aipinho, codex, lucio, gemini]
+compatible_project_stacks: [android_gradle, python, node, mixed, unknown]
+required_capabilities: [sandbox_mkdir, sandbox_write]
+allowed_tools: [sandbox_mkdir, sandbox_write_file]
+denied_tools: [create_file, modify_file, patch_apply, run_shell]
+input_schema:
+  type: object
+  properties:
+    directories: {type: array}
+    files: {type: array}
+output_schema: {type: object}
+side_effects: [sandbox_directory_create, sandbox_file_write]
+workspace_policy: {source_readonly_write: false, outside_sandbox_write: false}
+sandbox_required: true
+sandbox_allowed: true
+sandbox_side_effects: [mkdir, write]
+command_policy: {shell: blocked}
+artifact_policy: {enabled: false}
+memory_policy: {mode: propose_candidate, requires_evidence: true}
+validation_policy: {required: true, failure_policy: block_completion}
+speaker_truth_policy: {raw_hidden_by_default: true, must_cite_evidence: true}
+risk_level: low
+approval_policy: {required: false}
+docs_ref: docs/sandbox/GOVERNED_LOCAL_SANDBOX.md
+tests_ref: tests/sandbox

@@ -1,0 +1,92 @@
+﻿schema_version: 1
+
+capabilities:
+  read_workspace:
+    description: "Read files inside an allowed workspace."
+    side_effect: false
+    aliases:
+      - scan_workspace
+      - search_workspace
+  write_workspace:
+    description: "Write files inside an allowed workspace."
+    side_effect: true
+    aliases:
+      - workspace_write
+      - write_file
+      - create_file
+      - modify_file
+      - create_directory
+  shell:
+    description: "Run approved local shell commands."
+    side_effect: true
+    aliases:
+      - run_approved_shell
+      - governed_shell_request
+      - run_shell_readonly
+      - run_command
+  git:
+    description: "Run approved git commands."
+    side_effect: true
+  network:
+    description: "Access approved network targets."
+    side_effect: true
+  rag:
+    description: "Query governed retrieval sources."
+    side_effect: false
+  memory_read:
+    description: "Read curated memory."
+    side_effect: false
+  memory_write:
+    description: "Write curated memory after approval."
+    side_effect: true
+  model_inference:
+    description: "Request model inference through an approved provider."
+    side_effect: false
+  artifact_write:
+    description: "Write controlled artifacts."
+    side_effect: true
+    aliases:
+      - artifact_create
+      - artifact_request
+      - create_artifact
+      - artifact_generate
+      - artifact_generation
+      - artifact_upload
+      - artifact_download
+      - report_generate
+      - report_generation
+      - generate_report
+  patch_preview:
+    description: "Create a patch preview without applying it."
+    side_effect: false
+    aliases:
+      - create_patch_preview
+  patch_apply:
+    description: "Apply an approved patch."
+    side_effect: true
+  delegation:
+    description: "Delegate work to another governed agent."
+    side_effect: false
+    aliases:
+      - delegate
+  validation:
+    description: "Run or request validation for a governed operation."
+    side_effect: false
+    aliases:
+      - validate_changes
+      - validate_runtime
+  build:
+    description: "Run governed build workflows inside an allowed workspace."
+    side_effect: true
+    aliases:
+      - run_build
+      - build_project
+      - run_shell_build
+  test:
+    description: "Run governed test workflows inside an allowed workspace."
+    side_effect: false
+    aliases:
+      - run_test
+      - run_tests
+      - test_project
+      - run_shell_test

@@ -1,0 +1,194 @@
+{
+  "diagnostic_run_A": {
+    "task_run_id": "task_run_f5abad70e03c4955b15c0ee5d9523503",
+    "operation_id": "op_9ac1d9cb3dbd4e69a91e4a14769282b9",
+    "result_status": "blocked",
+    "result_reason_code": "MUSIC_INVENTORY_CSV_STREAMING_BUDGET_EXCEEDED",
+    "last_completed_stage": "before_csv_cell_render",
+    "terminal_event_count": 1,
+    "truth_safe_to_report_success": false,
+    "metadata_coverage_reached": false,
+    "inventory_sufficiency_reached": false,
+    "evidence_phase1_reached": false
+  },
+  "validation_run_B": {
+    "task_run_id": "task_run_0b0cbc1d3a74411a9fd47b751039e45c",
+    "operation_id": "op_b9665916503744a3b62d3236298a4ec2",
+    "result_status": "blocked",
+    "result_reason_code": "MUSIC_INVENTORY_CSV_STREAMING_BUDGET_EXCEEDED",
+    "last_completed_stage": "before_csv_cell_render",
+    "terminal_event_count": 1,
+    "truth_safe_to_report_success": false,
+    "metadata_coverage_reached": false,
+    "inventory_sufficiency_reached": false,
+    "evidence_phase1_reached": false
+  },
+  "digest_comparison": {
+    "column_schema_digest": {
+      "A": "9d8a80afb0ab1ad73620f4cb1bd8835d1b43f406581f3c284a96676c66ffb803",
+      "B": "9d8a80afb0ab1ad73620f4cb1bd8835d1b43f406581f3c284a96676c66ffb803",
+      "same": true
+    },
+    "input_entity_set_digest": {
+      "A": "2c5c57f3c9bf085d73746f9c53b8388066725a9597f14635b54567db20882a43",
+      "B": "2c5c57f3c9bf085d73746f9c53b8388066725a9597f14635b54567db20882a43",
+      "same": true
+    },
+    "projected_entity_set_digest": {
+      "A": "3d8068bbb5057d365deeb05888ddf44e6d232d28f7b212b136702a681db6561f",
+      "B": "3d8068bbb5057d365deeb05888ddf44e6d232d28f7b212b136702a681db6561f",
+      "same": true
+    },
+    "render_order_digest": {
+      "A": "dcab2232bbb3491bc5a8fc9d051323c6dabc97af0e93fe3f0eefbeb8a0f51e29",
+      "B": "dcab2232bbb3491bc5a8fc9d051323c6dabc97af0e93fe3f0eefbeb8a0f51e29",
+      "same": true
+    },
+    "row_model_digest": {
+      "A": "47be6d9b9cf53b9cc50dbb89443f1851eae0e1dfc4be961b4a46fddbb231b046",
+      "B": "47be6d9b9cf53b9cc50dbb89443f1851eae0e1dfc4be961b4a46fddbb231b046",
+      "same": true
+    }
+  },
+  "cardinality_comparison": {
+    "source_input_entity_count": {
+      "A": 2286,
+      "B": 2286,
+      "same": true
+    },
+    "selected_entity_count": {
+      "A": 2272,
+      "B": 2272,
+      "same": true
+    },
+    "projected_entity_count": {
+      "A": 2272,
+      "B": 2272,
+      "same": true
+    },
+    "row_model_candidate_count": {
+      "A": 2230,
+      "B": 2230,
+      "same": true
+    },
+    "row_model_accepted_count": {
+      "A": 2230,
+      "B": 2230,
+      "same": true
+    },
+    "row_model_rejected_count": {
+      "A": 0,
+      "B": 0,
+      "same": true
+    },
+    "row_model_skipped_count": {
+      "A": 42,
+      "B": 42,
+      "same": true
+    },
+    "csv_rows_expected_at_stream_start": {
+      "A": 2230,
+      "B": 2230,
+      "same": true
+    },
+    "csv_rows_attempted": {
+      "A": 1645,
+      "B": 1743,
+      "same": false
+    },
+    "csv_rows_rendered": {
+      "A": 1644,
+      "B": 1742,
+      "same": false
+    },
+    "csv_rows_written": {
+      "A": 1644,
+      "B": 1742,
+      "same": false
+    },
+    "csv_rows_failed": {
+      "A": 0,
+      "B": 0,
+      "same": true
+    },
+    "csv_cells_expected": {
+      "A": 55750,
+      "B": 55750,
+      "same": true
+    },
+    "csv_cells_attempted": {
+      "A": 41125,
+      "B": 43575,
+      "same": false
+    },
+    "csv_cells_rendered": {
+      "A": 41125,
+      "B": 43575,
+      "same": false
+    },
+    "csv_cells_written": {
+      "A": 41100,
+      "B": 43550,
+      "same": false
+    }
+  },
+  "cost_comparison": {
+    "row_model_build_elapsed_ms": {
+      "A": 0,
+      "B": 0,
+      "same": true
+    },
+    "row_order_elapsed_ms": {
+      "A": 0,
+      "B": 0,
+      "same": true
+    },
+    "csv_stream_elapsed_ms": {
+      "A": 258125,
+      "B": 258030,
+      "same": false
+    },
+    "csv_row_render_elapsed_ms": {
+      "A": 230005,
+      "B": 238141,
+      "same": false
+    },
+    "csv_cell_render_elapsed_ms": {
+      "A": 47,
+      "B": 239110,
+      "same": false
+    },
+    "csv_cell_serialization_elapsed_ms": {
+      "A": null,
+      "B": 16,
+      "same": false
+    },
+    "rows_per_second": {
+      "A": 6.283,
+      "B": 6.675,
+      "same": false
+    },
+    "cells_per_second": {
+      "A": 157.082,
+      "B": 166.878,
+      "same": false
+    },
+    "average_cell_us": {
+      "A": 1.213,
+      "B": 5538.642,
+      "same": false
+    },
+    "max_batch_elapsed_ms": {
+      "A": 16000,
+      "B": 18109,
+      "same": false
+    }
+  },
+  "determinism_verdict": "cardinality_and_order_deterministic; progress_depth_differs_with_budget_window",
+  "notes": [
+    "A and B have identical input/projected/row/order/column digests.",
+    "Cardinality domains are stable: 2286 source context entities, 2272 selected/projected entities, 2230 accepted row-model rows, 42 skipped.",
+    "Rows/cells written differ because each run reached a different point before the same budget-exceeded terminalization.",
+    "The reason is stable: MUSIC_INVENTORY_CSV_STREAMING_BUDGET_EXCEEDED."
+  ]
+}

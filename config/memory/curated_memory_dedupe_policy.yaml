@@ -1,0 +1,17 @@
+schema_version: 1
+
+dedupe:
+  enabled: true
+  compare_against_curated_memory: true
+  compare_against_candidates: true
+  use_normalized_text_hash: true
+  use_kind_scope_hash: true
+  similarity_without_embeddings: true
+  similarity_algorithm: token_jaccard
+  duplicate_threshold: 0.90
+  near_duplicate_threshold: 0.75
+
+decisions:
+  exact_duplicate_blocks_new_memory: true
+  near_duplicate_requires_supersede_or_review: true
+  allow_link_to_existing: true

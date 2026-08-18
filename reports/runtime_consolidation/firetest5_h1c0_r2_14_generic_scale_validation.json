@@ -1,0 +1,36 @@
+{
+  "wave": "H1C0.R2.14",
+  "scope": "generic_scale_validation",
+  "verdict": "passed_service_equivalent",
+  "production_fixture_independence": {
+    "firetest_specific_branch": false,
+    "path_specific_branch": false,
+    "artifact_name_specific_branch": false,
+    "extension_specific_truth_branch": false,
+    "row_count_specific_success_branch": false
+  },
+  "synthetic_large_compile_observation": {
+    "entity_count": 2272,
+    "completed_to": "perception_compile_completed",
+    "elapsed_ms": 6653,
+    "internal_reason_code": "PERCEPTION_PAYLOAD_BOUND_EXCEEDED",
+    "attribute_observation_count": 4544,
+    "evidence_record_count": 2272,
+    "projected_fact_count": 2274,
+    "payload_item_count": 45467,
+    "semantic_result": "bounded_block_not_success",
+    "notes": "The large synthetic fixture is generic and validates scale behavior without depending on a media corpus or artifact path."
+  },
+  "tests": {
+    "initial_new_tests": "7 passed",
+    "observation_binding_followup": "8 passed",
+    "terminality_followup": "27 passed",
+    "result_projection_followup": "29 passed",
+    "project_analysis_policy_regression_after_event_contract_fix": "3 passed",
+    "final_focused_regression": "104 passed"
+  },
+  "limitations": [
+    "The final public run still blocked at artifact persist, so service-equivalent generic scale passed while public artifact persist remains open.",
+    "Endpoint-safe metrics retained payload byte estimates but not every source-binding cardinality counter."
+  ]
+}

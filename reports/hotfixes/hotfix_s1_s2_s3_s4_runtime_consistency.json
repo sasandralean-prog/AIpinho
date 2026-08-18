@@ -1,0 +1,85 @@
+{
+  "verdicts": [
+    "LIFECYCLE_CONSISTENCY_READY",
+    "ARTIFACT_BINDING_READY",
+    "WORKSPACE_BINDING_READY",
+    "VALIDATION_ORDERING_READY"
+  ],
+  "files_changed": [
+    "src/aipinho/schemas/runtime/canonical_operation_state.py",
+    "src/aipinho/schemas/runtime/task_run.py",
+    "src/aipinho/schemas/runtime/workspace_context.py",
+    "src/aipinho/schemas/runtime/__init__.py",
+    "src/aipinho/services/runtime/canonical_operation_state_service.py",
+    "src/aipinho/services/runtime/task_runtime_service.py",
+    "src/aipinho/services/runtime/workspace_context_service.py",
+    "src/aipinho/services/runtime/universal_task_session_service.py",
+    "src/aipinho/services/runtime/runtime_timeline_service.py",
+    "src/aipinho/services/runtime/runtime_truth_engine.py",
+    "src/aipinho/services/artifacts/universal_artifact_registry_service.py",
+    "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "tests/unit/test_runtime_consistency_bindings.py",
+    "tests/governance/test_runtime_vertical_slice.py"
+    ,"src/aipinho/services/governance/lifecycle/canonical_public_chat_service.py"
+    ,"src/aipinho/api/routers/governance_lifecycle_router.py"
+    ,"tests/contract/test_task_runtime_contracts.py"
+    ,"tests/e2e/test_draft_preview_approval_lifecycle.py"
+    ,"tests/integration/test_chat_runtime_parity_api.py"
+  ],
+  "tests": [
+    {
+      "command": "python -m pytest C:\\Dev\\AIpinho\\tests\\unit\\test_runtime_consistency_bindings.py C:\\Dev\\AIpinho\\tests\\governance\\test_runtime_vertical_slice.py -q",
+      "result": "10 passed"
+    },
+    {
+      "command": "python -m pytest C:\\Dev\\AIpinho\\tests\\unit\\test_workspace_runtime_context.py C:\\Dev\\AIpinho\\tests\\unit\\test_workflow_truth_runtime.py C:\\Dev\\AIpinho\\tests\\unit\\test_universal_task_session_service.py C:\\Dev\\AIpinho\\tests\\governance\\test_lifecycle_core.py -q",
+      "result": "40 passed"
+    },
+    {
+      "command": "python -m py_compile changed runtime/schema/service files",
+      "result": "passed"
+    },
+    {
+      "command": "python -m pytest tests\\integration\\test_chat_runtime_parity_api.py::test_persistent_chat_forbidden_root_blocks_write tests\\integration\\test_chat_runtime_parity_api.py::test_active_run_limit_saturation_returns_visible_status -q",
+      "result": "2 passed"
+    },
+    {
+      "command": "python -m pytest tests\\contract\\test_task_runtime_contracts.py tests\\contract\\test_artifact_contracts.py tests\\e2e\\test_readonly_task_runtime_supervised_loop.py tests\\e2e\\test_draft_preview_approval_lifecycle.py tests\\integration\\test_chat_runtime_parity_api.py -q",
+      "result": "15 passed"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_runtime_consistency_bindings.py tests\\governance\\test_runtime_vertical_slice.py tests\\unit\\test_workspace_runtime_context.py tests\\unit\\test_workflow_truth_runtime.py tests\\unit\\test_universal_task_session_service.py tests\\governance\\test_lifecycle_core.py -q",
+      "result": "50 passed"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_artifact_runtime_service.py tests\\unit\\test_runtime_timeline_service.py tests\\unit\\test_task_runtime_service.py tests\\unit\\test_task_status_consistency_validator.py tests\\unit\\test_task_speaker_update_service.py tests\\integration\\test_task_runtime_api.py tests\\integration\\test_universal_artifact_registry_api.py -q",
+      "result": "40 passed"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_runtime_consistency_bindings.py tests\\governance\\test_runtime_vertical_slice.py tests\\e2e\\test_readonly_task_runtime_supervised_loop.py -q",
+      "result": "11 passed"
+    },
+    {
+      "command": "python -m py_compile src\\aipinho\\services\\governance\\lifecycle\\canonical_public_chat_service.py src\\aipinho\\api\\routers\\governance_lifecycle_router.py",
+      "result": "passed"
+    }
+  ],
+  "invariants": {
+    "single_canonical_state": true,
+    "artifact_binding": true,
+    "workspace_multi_root_context": true,
+    "validation_ordering_guard": true,
+    "no_workspace_mutation": true,
+    "protected_root_blocks_before_approval": true,
+    "dispatcher_backpressure_visible": true,
+    "no_approval_without_executable_plan": true
+  },
+  "continuation_verdicts": [
+    "PUBLIC_ROUTE_PROTECTED_ROOT_GATE_READY",
+    "CHAT_DISPATCH_BACKPRESSURE_VISIBLE_READY"
+  ],
+  "residual_risks": [
+    "Legacy execution paths outside TaskRuntimeService may still need migration to populate canonical_state.",
+    "UI surfaces should prefer metadata.canonical_operation_state where available."
+  ]
+}

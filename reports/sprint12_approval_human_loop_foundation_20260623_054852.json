@@ -1,0 +1,24 @@
+﻿{
+    "ux_operator_ready":  false,
+    "sprint":  "12",
+    "warnings":  [
+                     "internal status remains rejected for compatibility",
+                     "operator UX smoke not executed in sprint12 report"
+                 ],
+    "speaker_truth_ready":  true,
+    "backend_ready":  true,
+    "tests":  [
+                  "py_compile",
+                  "44 focused approval/runtime tests passed"
+              ],
+    "verdict":  "GOVERNED_APPROVAL_FOUNDATION_READY_WITH_WARNINGS",
+    "endpoints":  [
+                      "/api/v1/approvals/pending",
+                      "/api/v1/approvals/{approval_id}",
+                      "/api/v1/approvals/{approval_id}/approve",
+                      "/api/v1/approvals/{approval_id}/deny",
+                      "/api/v1/tasks/{task_id}/approvals",
+                      "/api/v1/tasks/{task_id}/approvals/approve-safe-batch",
+                      "/api/v1/tasks/{task_id}/approvals/deny-safe-batch"
+                  ]
+}

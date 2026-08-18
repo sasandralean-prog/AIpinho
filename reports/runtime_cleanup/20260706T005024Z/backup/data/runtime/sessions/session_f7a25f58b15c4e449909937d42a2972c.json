@@ -1,0 +1,41 @@
+{
+  "session_id": "session_f7a25f58b15c4e449909937d42a2972c",
+  "status": "active",
+  "created_at": "2026-06-10T12:20:51.593424+00:00",
+  "updated_at": "2026-06-10T12:20:56.599819+00:00",
+  "expires_at": "2026-06-10T16:20:51.593424+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Porque foi bloqueada a analise?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_f70a5d3c60dd4e8aa949a570e2e67fb1",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

@@ -1,0 +1,7 @@
+canonical_approval:
+  execution_approval_requires:
+    - executable_task_preview
+    - executable_plan_ref
+    - expected_outputs
+  approval_created_means_execution_completed: false
+  stale_or_hash_mismatch_reuse_allowed: false

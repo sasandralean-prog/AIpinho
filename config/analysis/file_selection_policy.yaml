@@ -1,0 +1,108 @@
+schema_version: 1
+file_selection:
+  enabled: true
+  max_files: 12
+  max_total_bytes: 120000
+  semantic_token_weight: 35
+  semantic_group_weight: 90
+  implementation_source_weight: 80
+  test_source_penalty: 35
+  semantic_stop_words:
+    - para
+    - como
+    - arquivos
+    - arquivo
+    - projeto
+    - phase
+    - fase
+    - reports
+    - report
+    - artifacts
+    - artifact
+  semantic_token_groups:
+    playback:
+      - player
+      - playback
+      - reproducao
+      - audio
+      - track
+      - song
+    decoding:
+      - decoder
+      - codec
+      - container
+      - m4a
+      - aac
+      - mp3
+      - wav
+      - flac
+    metadata:
+      - metadata
+      - tag
+      - tags
+      - artwork
+      - cover
+      - duration
+      - bitrate
+      - samplerate
+    library_scan:
+      - scanner
+      - scan
+      - index
+      - inventory
+      - biblioteca
+      - library
+    playlist:
+      - playlist
+      - queue
+      - list
+    cache:
+      - cache
+      - database
+      - jdbc
+      - db
+    signal_processing:
+      - dsp
+      - equalizer
+      - compressor
+      - limiter
+      - reverb
+      - waveform
+    error_handling:
+      - error
+      - exception
+      - failure
+      - fallback
+      - log
+  inventory_routing_hints:
+    media_extensions:
+      - .mp3
+      - .flac
+      - .m4a
+      - .wav
+      - .aac
+      - .ogg
+      - .opus
+  priority_patterns:
+    - README.md
+    - pyproject.toml
+    - package.json
+    - requirements.txt
+    - build.gradle.kts
+    - settings.gradle.kts
+    - build.gradle
+    - settings.gradle
+    - Cargo.toml
+    - go.mod
+    - src/**/main.py
+    - src/**/app_factory.py
+    - src/**/api/**/*.py
+    - src/**/services/**/*.py
+    - src/**/schemas/**/*.py
+    - config/**/*.yaml
+    - docs/**/*.md
+    - tests/**/*.py
+  deprioritize_patterns:
+    - data/**
+    - reports/**
+    - '**/__pycache__/**'

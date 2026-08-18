@@ -1,0 +1,40 @@
+skill_pack_id: debug_pack
+display_name: Debug Pack v1
+slug: debug_pack
+version: 1.0.0
+status: active
+category: debugging
+description: Governed diagnostic pack for traces, policy decisions, validation failures, artifact failures and speaker truth checks.
+included_skills:
+  - internal.project_readonly_inventory
+  - internal.validation_runner
+  - internal.artifact_reliability_validator
+  - internal.safe_markdown_report_generator
+required_capabilities:
+  - read_workspace
+  - validation
+  - report_generate
+  - artifact_create
+optional_capabilities:
+  - artifact_download
+supported_agents: [aipinho, lucio, codex, gemini, autopilot]
+supported_project_stacks: [android_gradle, python, node, mixed, unknown]
+supported_execution_modes: [project_readonly_analysis, assisted_execution, governed_autorun, safe_chat]
+risk_level: low
+policy_profile: diagnostic_readonly
+validation_profile: diagnostic_trace
+artifact_policy: token_protected_artifacts
+memory_policy: propose_candidate_with_evidence
+dashboard_visible: true
+debugger_trace_required: true
+docs_ref: docs/skills/DEBUG_PACK.md
+tests_ref: tests/skill_packs
+examples:
+  - label: Diagnose failure
+    prompt: Diagnose why the validation failed and generate a report.
+    expected_pack_selection: [debug_pack, docs_pack]
+limitations:
+  - This pack explains and reports; it does not apply repairs directly.
+evidence_refs: [skill_pack_manifest:debug_pack]
+metadata_sanitized:
+  debugger_filter: diagnostic

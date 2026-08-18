@@ -1,0 +1,354 @@
+{
+  "verdict": "FIRETEST5_H1B4_4_PHASE0_COGNITIVE_GATE_READY",
+  "phase0": {
+    "readiness_id": "cognitive_readiness_a31b5763e9b64b478174dcfa4d6b0d3f",
+    "prediction_id": "cognitive_prediction_b75c882215c141a7a96de74a87d4cbe1",
+    "decision": "NO_GO_EXPECTED_BLOCK",
+    "confidence": 0.84,
+    "safe_to_start_phase1": false,
+    "predicted_frontier": "PROJECT_ANALYSIS_FILE_READ",
+    "predicted_component": "ProjectAnalysisService",
+    "predicted_reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+    "simulated_blocking_point": "ProjectAnalysis",
+    "simulated_reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+    "invariants": {
+      "runtime_executed": false,
+      "task_created": false,
+      "task_run_created": false,
+      "operation_created": false,
+      "operational_artifacts_created": false,
+      "task_run_created_by_phase0": false,
+      "task_runs_before": 30,
+      "task_runs_after": 30
+    },
+    "profile_selection_method": "heuristic_prompt_profile_selection",
+    "profile_selection_reason_codes": [
+      "PROFILE_SELECTED_BY_READONLY_ARTIFACT_DISCOVERY",
+      "FRONTIER_CONTEXT_ATTACHED"
+    ],
+    "frontier_context_source": "reports/runtime_consolidation/firetest5_h1b4_3_3a_project_analysis_zero_progress_timeout_summary.md"
+  },
+  "phase1_public_run": {
+    "task_run_id": "task_run_368cdfb317f644ba84a2c899baab4938",
+    "operation_id": "chatop_368cdfb317f644ba84a2c899baab4938",
+    "client_response_status": 200,
+    "client_response_time_ms": 249402,
+    "client_status": "blocked",
+    "message_type": "assistant_degraded_answer",
+    "summary_status": "BLOCKED",
+    "result_status": "blocked",
+    "validation_status": "blocked",
+    "completion_status": "blocked",
+    "speaker_truth_safe_to_report_success": false,
+    "truth_status": "blocked",
+    "artifact_state": {
+      "status": "blocked_before_artifact_creation",
+      "count": 0,
+      "artifact_ids": [],
+      "artifacts": [],
+      "reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+      "terminal_phase": "project_analysis",
+      "source": "task_run_result_and_registry"
+    },
+    "observational_cognition": {
+      "status": "not_available",
+      "blocking_reason": null,
+      "semantic_coverage": {
+        "structural": null,
+        "entity": null,
+        "attribute": null,
+        "capability": null,
+        "evidence": null,
+        "knowledge": null,
+        "truth": null,
+        "semantic": null
+      },
+      "missing_capabilities": [],
+      "missing_attributes": [],
+      "knowledge": {
+        "records": 0,
+        "assertions": 0,
+        "truth_eligible_assertions": 0,
+        "self_review_truth_readiness": null,
+        "self_review_can_speaker_claim": null,
+        "self_review_reason_codes": []
+      },
+      "observation_goals": {
+        "total": 0,
+        "blocked": 0,
+        "ready": 0
+      },
+      "roots_scanned_by_role": {},
+      "entities_by_root_role": {},
+      "entities_selected_by_artifact": {},
+      "entities_rejected_by_policy": 0,
+      "workspace_role_mismatches": 0,
+      "media_metadata_capability": {
+        "status": "not_configured",
+        "capability_id": "media_metadata_reader",
+        "primary_backend": "mutagen",
+        "selected_backend": null,
+        "available_backends": [],
+        "blocked_backends": [],
+        "globally_blocked_backends": [],
+        "partially_blocked_backends": [],
+        "missing_dependency": [],
+        "attempted_backends": [],
+        "successful_backends": [],
+        "fallback_backends_used": [],
+        "backend_error_counts": {},
+        "evidence_records_created": 0,
+        "attributes_observed": [],
+        "attributes_missing": [],
+        "limitations": []
+      },
+      "evidence": {
+        "total_bound_observations": 0,
+        "by_attribute": {},
+        "source": "artifact_observation_binding"
+      },
+      "reason_codes": [],
+      "semantic_gap_count": 0,
+      "source": "artifact_observation_binding"
+    }
+  },
+  "phase0_attachment": {
+    "summary_cognitive_readiness": {
+      "readiness_id": "cognitive_readiness_a31b5763e9b64b478174dcfa4d6b0d3f",
+      "decision": "NO_GO_EXPECTED_BLOCK",
+      "confidence": 0.84,
+      "predicted_frontier": "PROJECT_ANALYSIS_FILE_READ",
+      "predicted_component": "ProjectAnalysisService",
+      "predicted_reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+      "runtime_executed_despite_no_go": true,
+      "calibration": {
+        "status": "matched",
+        "overall_accuracy_score": 0.9
+      },
+      "details_ref": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\firetest5_phase0_cognitive_readiness_result.json"
+    },
+    "attached_event_count": 1,
+    "calibrated_event_count": 1,
+    "runtime_executed_despite_cvl_no_go": true
+  },
+  "calibration": {
+    "calibration_id": "cognitive_calibration_8aae1489f02a4f149b12b025fa63487f",
+    "readiness_id": "cognitive_readiness_a31b5763e9b64b478174dcfa4d6b0d3f",
+    "task_run_id": "task_run_368cdfb317f644ba84a2c899baab4938",
+    "actual_outcome": "blocked",
+    "actual_frontier": "PROJECT_ANALYSIS_FILE_READ",
+    "actual_component": "ProjectAnalysisService",
+    "actual_reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+    "actual_contract": "analysis_readonly",
+    "actual_capability": null,
+    "actual_causal_chain": [
+      "Intent",
+      "Lifecycle",
+      "Workspace",
+      "Contracts",
+      "ProjectAnalysisService",
+      "file_read",
+      "PROJECT_ANALYSIS_FILE_READ_TIMEOUT"
+    ],
+    "prediction_matched_outcome": true,
+    "prediction_matched_frontier": true,
+    "prediction_matched_component": true,
+    "prediction_matched_reason_code": true,
+    "prediction_matched_contract": true,
+    "prediction_matched_capability": false,
+    "prediction_matched_causal_chain": true,
+    "confidence_was_calibrated": true,
+    "confidence_error": 0.06,
+    "specificity_score": 1.0,
+    "causal_accuracy_score": 0.6667,
+    "overall_accuracy_score": 0.9,
+    "false_positive": false,
+    "false_negative": false,
+    "overconfidence": false,
+    "underconfidence": false,
+    "divergence_explanation": "Prediction matched the dominant Phase 1 boundary.",
+    "lessons": [
+      "Current CVL frontier model is calibrated for this Phase 1 boundary."
+    ],
+    "status": "matched"
+  },
+  "events": {
+    "event_count_total": 14,
+    "terminal_event_count": 1,
+    "terminal_events": [
+      {
+        "event_id": "task_run_event_a8cf9369acf14b23abef79a78c4bb441",
+        "run_id": "task_run_368cdfb317f644ba84a2c899baab4938",
+        "sequence": 11,
+        "type": "run_blocked",
+        "status": "blocked",
+        "message": "Project analysis budget exceeded during before_file_read_item.",
+        "step_id": null,
+        "timestamp": "2026-08-12T16:23:08.706603+00:00",
+        "metadata": {
+          "reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+          "phase": "project_analysis",
+          "component": "ProjectAnalysisService",
+          "frontier": "PROJECT_ANALYSIS",
+          "project_analysis_status": "timeout",
+          "project_analysis_reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+          "error_type": null,
+          "error_message": "Project analysis budget exceeded during before_file_read_item.",
+          "safe_to_continue": false,
+          "artifacts_created": 0,
+          "artifact_index_exercised": false,
+          "next_frontier": "artifact_creation",
+          "budget": {
+            "max_total_seconds": 20.0,
+            "max_files_scanned": 5000,
+            "max_files_read": 80,
+            "max_bytes_read": 2000000,
+            "max_output_bytes": 1000000,
+            "cancel_poll_interval": 50,
+            "allow_partial_result": true
+          },
+          "duration_ms": 21672,
+          "last_checkpoint": "before_file_read_item",
+          "last_completed_checkpoint": "after_file_read_item",
+          "elapsed_ms_by_checkpoint": {
+            "before_path_resolution": 0,
+            "after_path_resolution": 15,
+            "before_workspace_root_scan": 15,
+            "after_workspace_root_scan": 15,
+            "before_file_enumeration": 15,
+            "during_file_enumeration": 3765,
+            "after_file_enumeration": 3765,
+            "before_file_selection": 3765,
+            "after_file_selection": 18969,
+            "before_file_read_batch": 18985,
+            "before_file_read_item": 19015,
+            "after_file_read_item": 19015
+          },
+          "files_discovered": 76,
+          "files_scan_attempted": 127,
+          "files_scanned": 78,
+          "files_read": 1,
+          "bytes_read": 2365,
+          "current_root": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+          "current_path_sample": "src/main/kotlin/com/pinhoabacaxi/musicasdesktop/audio/dsp/DesktopDspPresetCodec.kt",
+          "blocking_operation": "file_read",
+          "budget_exceeded_at": "before_file_read_item"
+        }
+      }
+    ],
+    "terminalization_already_applied_count": 2,
+    "artifact_creation_started_count": 0,
+    "artifact_created_count": 0,
+    "event_sequence": [
+      {
+        "sequence": 1,
+        "type": "run_created",
+        "status": "created",
+        "reason_code": null
+      },
+      {
+        "sequence": 2,
+        "type": "task_bootstrap_created",
+        "status": "created",
+        "reason_code": null
+      },
+      {
+        "sequence": 3,
+        "type": "PlanningStarted",
+        "status": "planning",
+        "reason_code": null
+      },
+      {
+        "sequence": 4,
+        "type": "PlanningFinished",
+        "status": "planned",
+        "reason_code": null
+      },
+      {
+        "sequence": 5,
+        "type": "ExecutionPlanCreated",
+        "status": "ready",
+        "reason_code": null
+      },
+      {
+        "sequence": 6,
+        "type": "phase0_prediction_attached",
+        "status": "recorded",
+        "reason_code": null
+      },
+      {
+        "sequence": 7,
+        "type": "run_queued",
+        "status": "queued",
+        "reason_code": null
+      },
+      {
+        "sequence": 8,
+        "type": "run_started",
+        "status": "running",
+        "reason_code": null
+      },
+      {
+        "sequence": 9,
+        "type": "project_analysis_started",
+        "status": "running",
+        "reason_code": null
+      },
+      {
+        "sequence": 10,
+        "type": "project_analysis_budget_exceeded",
+        "status": "timeout",
+        "reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT"
+      },
+      {
+        "sequence": 11,
+        "type": "run_blocked",
+        "status": "blocked",
+        "reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT"
+      },
+      {
+        "sequence": 12,
+        "type": "terminalization_already_applied",
+        "status": "ignored",
+        "reason_code": null
+      },
+      {
+        "sequence": 13,
+        "type": "phase0_prediction_calibrated",
+        "status": "matched",
+        "reason_code": null
+      },
+      {
+        "sequence": 14,
+        "type": "terminalization_already_applied",
+        "status": "ignored",
+        "reason_code": null
+      }
+    ]
+  },
+  "files": {
+    "readiness_result": "reports\\runtime_consolidation\\firetest5_phase0_cognitive_readiness_result.json",
+    "generation_check": "reports\\runtime_consolidation\\firetest5_h1b4_4_phase0_generation_check.json",
+    "calibration": "reports\\runtime_consolidation\\firetest5_phase0_vs_phase1_calibration.json",
+    "chat_response": "reports\\runtime_consolidation\\firetest5_h1b4_4_phase1_with_phase0_final_chat_response.json",
+    "summary_endpoint": "reports\\runtime_consolidation\\firetest5_h1b4_4_phase1_with_phase0_final_endpoint_summary.json",
+    "truth_endpoint": "reports\\runtime_consolidation\\firetest5_h1b4_4_phase1_with_phase0_final_endpoint_truth.json",
+    "events_endpoint": "reports\\runtime_consolidation\\firetest5_h1b4_4_phase1_with_phase0_final_endpoint_events.json",
+    "artifacts_endpoint": "reports\\runtime_consolidation\\firetest5_h1b4_4_phase1_with_phase0_final_endpoint_artifacts.json"
+  },
+  "hardcode_scan": {
+    "checked_files": [
+      "src/aipinho/services/cvl/cognitive_readiness_service.py",
+      "src/aipinho/schemas/cvl/cognitive_readiness.py"
+    ],
+    "specific_terms_found": false,
+    "terms": [
+      "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+      "PROJECT_ANALYSIS_FILE_READ",
+      "music_inventory",
+      "media_metadata_reader",
+      "Pinhoabacaxi",
+      "pinho music"
+    ]
+  }
+}

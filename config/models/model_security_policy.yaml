@@ -1,0 +1,11 @@
+schema_version: 1
+
+security:
+  allowed_roots:
+    - 'C:\Dev\AI\models'
+  blocked_roots: []
+  require_gguf_extension: true
+  block_network_paths: true
+  block_path_traversal: true
+  block_symlinks: true
+  no_downloads: true

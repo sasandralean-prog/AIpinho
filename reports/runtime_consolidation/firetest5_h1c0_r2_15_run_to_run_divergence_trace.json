@@ -1,0 +1,223 @@
+{
+  "verdict": "RUN_TO_RUN_DIVERGENCE_OBSERVED",
+  "diagnostic_run": {
+    "task_run_id": "task_run_2494e9d32e2548e1896e074823b715c9",
+    "operation_id": "op_5b1de39bca9b47edac04355656e00027",
+    "result_status": "blocked",
+    "result_reason_code": "ARTIFACT_RENDER_TIMEOUT",
+    "finished_at": "2026-08-17T23:28:06.071948+00:00",
+    "terminal_event_count": 1,
+    "truth_safe_to_report_success": false,
+    "artifact_creation_started_count": 3,
+    "artifact_created_count": 2,
+    "music_inventory_reached": true,
+    "metadata_coverage_reached": true,
+    "inventory_sufficiency_reached": true,
+    "evidence_phase1_reached": false,
+    "last_completed_stage": "after_artifact_persist",
+    "music_checkpoint_count": 201,
+    "last_music_stage": "after_artifact_persist",
+    "persist_stage_count": 32,
+    "music_after_artifact_persist_reached": true,
+    "music_persist_stages": [
+      "before_artifact_persist",
+      "before_persist_payload_classification",
+      "before_payload_materialization",
+      "after_payload_materialization",
+      "after_persist_payload_classification",
+      "before_payload_serialization",
+      "after_payload_serialization",
+      "before_payload_ref_decision",
+      "before_payload_ref_persist",
+      "after_payload_ref_persist",
+      "before_payload_ref_persist",
+      "after_payload_ref_persist",
+      "before_payload_ref_persist",
+      "before_payload_ref_persist",
+      "after_payload_ref_persist",
+      "after_payload_ref_decision",
+      "before_artifact_content_write",
+      "after_artifact_content_write",
+      "before_manifest_build",
+      "after_manifest_build",
+      "before_manifest_persist",
+      "before_sharded_manifest_persist",
+      "after_sharded_manifest_persist",
+      "before_light_index_persist",
+      "after_light_index_persist",
+      "legacy_registry_projection_skipped",
+      "after_manifest_persist",
+      "before_registry_index_update",
+      "after_registry_index_update",
+      "before_artifact_commit",
+      "after_artifact_commit",
+      "after_artifact_persist"
+    ],
+    "latest_music_metrics": {
+      "rows_expected": 2272,
+      "rows_rendered": 2272,
+      "cells_rendered": 55775,
+      "payload_ref_count": 4,
+      "materialized_payload_bytes": 17194840,
+      "estimated_payload_bytes": 17194840,
+      "artifact_content_bytes": 920564,
+      "payload_bytes": 920564,
+      "payload_ref_decision": "PAYLOAD_REF",
+      "copy_count_estimate": 1,
+      "serialized_bytes": 920564,
+      "manifest_inline_bytes": 16439,
+      "payload_ref_bytes": 402921183,
+      "manifest_bytes": 19086
+    },
+    "terminal_events": [
+      {
+        "sequence": 280,
+        "type": "run_blocked",
+        "status": "blocked",
+        "reason_code": "ARTIFACT_RENDER_TIMEOUT",
+        "stage": "after_artifact_persist"
+      }
+    ],
+    "endpoint_timings": {
+      "summary": {
+        "status_code": 200,
+        "elapsed_ms": 238,
+        "ok": true
+      },
+      "events": {
+        "status_code": 200,
+        "elapsed_ms": 107,
+        "ok": true
+      },
+      "result": {
+        "status_code": 200,
+        "elapsed_ms": 23,
+        "ok": true
+      },
+      "truth": {
+        "status_code": 200,
+        "elapsed_ms": 11,
+        "ok": true
+      },
+      "artifacts": {
+        "status_code": 200,
+        "elapsed_ms": 25,
+        "ok": true
+      },
+      "session": {
+        "status_code": 200,
+        "elapsed_ms": 22,
+        "ok": true
+      },
+      "queue_hygiene": {
+        "status_code": 200,
+        "elapsed_ms": 17,
+        "ok": true
+      },
+      "queue_runtime": {
+        "status_code": 200,
+        "elapsed_ms": 14,
+        "ok": true
+      }
+    }
+  },
+  "final_run": {
+    "task_run_id": "task_run_f23704fcec1f4874bdef0c2cfb972c9e",
+    "operation_id": "op_62900674eb23407d80055695a13bbab3",
+    "result_status": "blocked",
+    "result_reason_code": "MUSIC_INVENTORY_CSV_STREAMING_STALLED",
+    "finished_at": "2026-08-18T02:15:25.857691+00:00",
+    "terminal_event_count": 1,
+    "truth_safe_to_report_success": false,
+    "artifact_creation_started_count": 3,
+    "artifact_created_count": 2,
+    "music_inventory_reached": true,
+    "metadata_coverage_reached": false,
+    "inventory_sufficiency_reached": false,
+    "evidence_phase1_reached": false,
+    "last_completed_stage": "before_csv_cell_render",
+    "music_checkpoint_count": 162,
+    "last_music_stage": "before_csv_cell_render",
+    "persist_stage_count": 0,
+    "music_after_artifact_persist_reached": false,
+    "music_persist_stages": [],
+    "latest_music_metrics": {
+      "rows_expected": 2230,
+      "rows_rendered": 2040,
+      "cells_rendered": 51050,
+      "payload_ref_count": 0,
+      "materialized_payload_bytes": 17194840,
+      "estimated_payload_bytes": 17194840
+    },
+    "terminal_events": [
+      {
+        "sequence": 241,
+        "type": "run_blocked",
+        "status": "blocked",
+        "reason_code": "MUSIC_INVENTORY_CSV_STREAMING_STALLED",
+        "stage": "before_csv_cell_render"
+      }
+    ],
+    "endpoint_timings": {
+      "summary": {
+        "status_code": 200,
+        "elapsed_ms": 2550,
+        "ok": true
+      },
+      "events": {
+        "status_code": 200,
+        "elapsed_ms": 64,
+        "ok": true
+      },
+      "result": {
+        "status_code": 200,
+        "elapsed_ms": 617,
+        "ok": true
+      },
+      "truth": {
+        "status_code": 200,
+        "elapsed_ms": 30,
+        "ok": true
+      },
+      "artifacts": {
+        "status_code": 200,
+        "elapsed_ms": 10,
+        "ok": true
+      },
+      "session": {
+        "status_code": 200,
+        "elapsed_ms": 15,
+        "ok": true
+      },
+      "queue_hygiene": {
+        "status_code": 200,
+        "elapsed_ms": 4,
+        "ok": true
+      },
+      "queue_runtime": {
+        "status_code": 200,
+        "elapsed_ms": 13,
+        "ok": true
+      }
+    }
+  },
+  "delta": {
+    "diagnostic_reached_music_persist": true,
+    "final_reached_music_persist": false,
+    "diagnostic_last_stage": "after_artifact_persist",
+    "final_last_stage": "before_csv_cell_render",
+    "diagnostic_reason": "ARTIFACT_RENDER_TIMEOUT",
+    "final_reason": "MUSIC_INVENTORY_CSV_STREAMING_STALLED",
+    "reason_changed_from_generic_to_stage_specific": true,
+    "same_artifact_creation_counts": true,
+    "same_artifact_created_counts": true
+  },
+  "assessment": {
+    "artifact_persist_boundary_core_fix_validated": true,
+    "final_frontier": "MUSIC_INVENTORY_CSV_STREAMING_STALLED",
+    "run_to_run_divergence_explained": false,
+    "run_to_run_divergence_status": "not_yet_proven",
+    "reason": "Equivalent public runs progressed to different stages: one reached music inventory persist, the final run blocked during CSV cell rendering. No evidence yet proves cache, scheduler, ordering, GC, or duplicate work as the cause."
+  },
+  "next_required_boundary": "CSV streaming/cell rendering determinism and cost model"
+}

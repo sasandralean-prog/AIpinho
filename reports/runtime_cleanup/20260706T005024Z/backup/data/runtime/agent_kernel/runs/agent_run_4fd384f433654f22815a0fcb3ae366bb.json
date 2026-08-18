@@ -1,0 +1,40 @@
+{
+  "run_id": "agent_run_4fd384f433654f22815a0fcb3ae366bb",
+  "session_id": "agent_session_bdc6805f286a43ac922f457741354b29",
+  "agent_id": "gemini",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "blocked",
+  "operation_type": "artifact_request",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [
+    "read_workspace",
+    "scan_workspace",
+    "create_file",
+    "workspace_write",
+    "modify_file",
+    "shell",
+    "build",
+    "test",
+    "validation",
+    "artifact_create",
+    "report_generate"
+  ],
+  "started_at": "2026-06-23T03:37:08+00:00",
+  "completed_at": "2026-06-23T03:37:09+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "delegation_id": "delegation_8f1232281ae946849a3986ca266579ff"
+  }
+}

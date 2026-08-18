@@ -1,0 +1,43 @@
+{
+  "project_analysis_file_read_boundary": {
+    "entrypoint": "/api/v1/chat -> ReadonlyAnalysisArtifactRuntimeService.execute -> ProjectAnalysisService.analyze_project",
+    "selection_component": "FileSelectionService.select_files",
+    "read_component": "FileContextBuilder.build_context",
+    "budget_seconds": 300.0,
+    "expensive_regions": [
+      "FileSelectionService path validation/stat over candidates",
+      "FileContextBuilder incremental filesystem.read_file calls",
+      "ProjectAnalysis result/report serialization before runtime handoff"
+    ],
+    "checks_before_selection": true,
+    "checks_during_selection": true,
+    "checks_before_file_read": true,
+    "checks_after_each_file_read": true,
+    "has_handoff_reserve": true,
+    "can_return_partial_before_timeout": true,
+    "can_continue_to_artifact_with_partial": true,
+    "reason_codes": [
+      "PROJECT_ANALYSIS_PARTIAL_HANDOFF",
+      "PROJECT_ANALYSIS_SELECTION_BUDGET_EXCEEDED",
+      "PROJECT_ANALYSIS_FILE_READ_BUDGET_EXCEEDED",
+      "PROJECT_ANALYSIS_SINGLE_FILE_READ_BUDGET_EXCEEDED",
+      "PROJECT_ANALYSIS_HANDOFF_RESERVE_REACHED",
+      "PROJECT_ANALYSIS_INSUFFICIENT_PARTIAL_CONTEXT"
+    ],
+    "policy": {
+      "max_total_seconds": 300.0,
+      "max_selection_seconds": 195.0,
+      "max_file_read_seconds": 135.0,
+      "max_single_file_read_ms": 3000,
+      "max_files_scanned": 500,
+      "max_files_selected": 12,
+      "max_files_read": 12,
+      "max_bytes_read": 120000,
+      "min_remaining_ms_for_handoff": 1500,
+      "min_remaining_ms_for_result_serialization": 750,
+      "allow_partial_result": true,
+      "allow_partial_handoff": true,
+      "required_minimum_summary": true
+    }
+  }
+}

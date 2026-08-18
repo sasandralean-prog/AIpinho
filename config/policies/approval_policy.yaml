@@ -1,0 +1,18 @@
+schema_version: 1
+
+approval:
+  side_effects_require_approval: true
+  actions_requiring_approval:
+    - write_files
+    - apply_patch
+    - run_command
+    - web_request
+    - git_commit
+    - git_push
+    - write_memory
+  preview_allowed_without_approval:
+    - patch_preview
+  never_auto_execute:
+    - apply_patch
+    - git_push
+  unknown_action_requires_approval: true

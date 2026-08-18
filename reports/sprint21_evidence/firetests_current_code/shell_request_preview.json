@@ -1,0 +1,264 @@
+{
+  "http_status": 200,
+  "body": {
+    "response_id": "chatop_24f1ad4439b34533b2563a92c5ee7909",
+    "session_id": "chat_sprint21_shell_request_preview",
+    "task_draft_id": null,
+    "preview_id": "preview_1bd233c529ee4ccabc0864b2dc0b8ce9",
+    "task_id": null,
+    "approval_id": "approval_279f7c257596497aaafb37ded7291f08",
+    "task_preview_id": null,
+    "artifact_id": null,
+    "artifact_preview_id": null,
+    "artifact_links": [],
+    "result_ref_id": null,
+    "operation_id": "chatop_24f1ad4439b34533b2563a92c5ee7909",
+    "operation_type": "governed_shell_request",
+    "message_type": "task_status_update",
+    "status": "pending_approval",
+    "message": "O comando foi reconhecido como shell governado e precisa de aprovacao antes de qualquer execucao. Nada foi executado. Revise o approval no Pipeline ou responda no chat com o approval_id.",
+    "intent": {
+      "intent_type": "governed_shell_request",
+      "requires_task": true,
+      "requires_workspace": true,
+      "requested_operation": "run_command"
+    },
+    "policy": {
+      "status": "needs_approval",
+      "approval_required_for": [
+        "run_command"
+      ],
+      "safe_to_preview": true,
+      "safe_to_execute": false,
+      "workspace_ref": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main"
+    },
+    "contract_preview": {
+      "draft": {
+        "draft_id": "chat_shell_9a377aa18ee44164bfde15aa7b2e94e8",
+        "session_id": "chat_sprint21_shell_request_preview",
+        "status": "approval_required",
+        "intent_map": {
+          "prompt": "Rode npm test no workspace C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main",
+          "source_channel": "chat",
+          "intent": "governed_shell_request",
+          "risk": "high",
+          "command_text": "Rode npm test no workspace C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main"
+        },
+        "policy_decision": {
+          "decision_id": "chat_shell_policy_d812b8a2ca674ff5b2ae00471eda2563",
+          "status": "needs_approval",
+          "allowed_actions": [],
+          "denied_actions": [],
+          "approval_required_for": [
+            "run_command"
+          ],
+          "granted_capabilities": [],
+          "denied_capabilities": []
+        },
+        "contract_type": "validation_request",
+        "operation_type": "run_command",
+        "intent_type": "governed_shell_request",
+        "runtime_profile": "governed",
+        "capabilities_required": [
+          "run_command",
+          "shell"
+        ],
+        "source_scope": "chat",
+        "requires_workspace": true,
+        "workspace": {
+          "path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main",
+          "status": "confirmed"
+        },
+        "requested_actions": [
+          "run_command"
+        ],
+        "allowed_actions": [],
+        "denied_actions": [],
+        "approval_required_for": [
+          "run_command"
+        ],
+        "safe_to_execute": false,
+        "safe_to_preview": true,
+        "clarifying_questions": [],
+        "warnings": [],
+        "trace": [
+          {
+            "source": "services/chat/chat_service.py",
+            "stage": "governed_shell_preview",
+            "decision": "approval_required",
+            "reason": "shell_side_effect_requires_preview_approval_validation",
+            "operation_id": "chatop_24f1ad4439b34533b2563a92c5ee7909"
+          }
+        ],
+        "created_at": "2026-06-25T10:48:19.785076+00:00",
+        "updated_at": "2026-06-25T10:48:19.785076+00:00",
+        "expires_at": null
+      },
+      "preview": {
+        "preview_id": "preview_1bd233c529ee4ccabc0864b2dc0b8ce9",
+        "draft_id": "chat_shell_9a377aa18ee44164bfde15aa7b2e94e8",
+        "session_id": "chat_sprint21_shell_request_preview",
+        "status": "approval_required",
+        "contract_type": "validation_request",
+        "summary": "Preview approval_required para contrato validation_request. Nenhuma execucao sera realizada nesta sprint.",
+        "requested_actions": [
+          "run_command"
+        ],
+        "allowed_actions": [],
+        "denied_actions": [],
+        "approval_required_for": [
+          "run_command"
+        ],
+        "potential_side_effects": [
+          "run_command: Pode executar comando se aprovado e suportado por runtime futuro."
+        ],
+        "safe_to_execute": false,
+        "safe_to_preview": true,
+        "policy_snapshot": {
+          "policy_decision_id": "chat_shell_policy_d812b8a2ca674ff5b2ae00471eda2563",
+          "policy_status": "needs_approval",
+          "allowed_actions": [],
+          "denied_actions": [],
+          "approval_required_for": [
+            "run_command"
+          ],
+          "granted_capabilities": [],
+          "denied_capabilities": [],
+          "workspace_status": "confirmed",
+          "risk_level": "high",
+          "trace_hash": "7458e1fe7bac34f4f0b71964e8f2a62cb4beef0749ef17379c503c2c9b2f2053",
+          "config_versions": {
+            "preview_policy_schema_version": 1
+          }
+        },
+        "trace": [
+          {
+            "source": "services/chat/chat_service.py",
+            "stage": "governed_shell_preview",
+            "decision": "approval_required",
+            "reason": "shell_side_effect_requires_preview_approval_validation",
+            "operation_id": "chatop_24f1ad4439b34533b2563a92c5ee7909"
+          }
+        ],
+        "warnings": [],
+        "created_at": "2026-06-25T10:48:20.017842+00:00",
+        "updated_at": "2026-06-25T10:48:20.017842+00:00"
+      },
+      "approval": {
+        "approval_id": "approval_279f7c257596497aaafb37ded7291f08",
+        "preview_id": "preview_1bd233c529ee4ccabc0864b2dc0b8ce9",
+        "draft_id": "chat_shell_9a377aa18ee44164bfde15aa7b2e94e8",
+        "run_id": null,
+        "task_id": null,
+        "session_id": "chat_sprint21_shell_request_preview",
+        "agent_id": "aipinho",
+        "workspace_id": null,
+        "workspace_path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main",
+        "operation_type": "run_command",
+        "target_paths": [
+          "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main",
+          "run_command: Pode executar comando se aprovado e suportado por runtime futuro."
+        ],
+        "commands": [
+          "Rode npm test no workspace C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main"
+        ],
+        "preview": {
+          "available": true,
+          "summary": "Preview approval_required para contrato validation_request. Nenhuma execucao sera realizada nesta sprint.",
+          "diff_ref": null,
+          "content_preview_ref": "preview_1bd233c529ee4ccabc0864b2dc0b8ce9"
+        },
+        "policy_refs": [
+          "chat_shell_policy_d812b8a2ca674ff5b2ae00471eda2563"
+        ],
+        "allowed_by_policy": true,
+        "forbidden_operations": [],
+        "status": "pending",
+        "actions_requested": [
+          "run_command"
+        ],
+        "approval_scope": "future_execution",
+        "reason": "Chat requested governed shell execution approval",
+        "risk_level": "high",
+        "policy_snapshot": {
+          "policy_decision_id": "chat_shell_policy_d812b8a2ca674ff5b2ae00471eda2563",
+          "policy_status": "needs_approval",
+          "allowed_actions": [],
+          "denied_actions": [],
+          "approval_required_for": [
+            "run_command"
+          ],
+          "granted_capabilities": [],
+          "denied_capabilities": [],
+          "workspace_status": "confirmed",
+          "risk_level": "high",
+          "trace_hash": "7458e1fe7bac34f4f0b71964e8f2a62cb4beef0749ef17379c503c2c9b2f2053",
+          "config_versions": {
+            "preview_policy_schema_version": 1
+          }
+        },
+        "expires_at": "2026-06-25T12:48:20.163849+00:00",
+        "created_at": "2026-06-25T10:48:20.163849+00:00",
+        "updated_at": "2026-06-25T10:48:20.163849+00:00",
+        "created_by": {
+          "type": "system",
+          "id": "approval_service"
+        },
+        "trace": [
+          {
+            "stage": "approval_create",
+            "decision": "pending",
+            "reason": "approval_created_without_execution",
+            "source": "services/approvals/approval_service.py"
+          }
+        ],
+        "execution_status": "not_executed"
+      }
+    },
+    "actions": [],
+    "next_actions": [
+      {
+        "type": "review_approval",
+        "label": "Revisar aprovacao",
+        "target_id": "approval_279f7c257596497aaafb37ded7291f08"
+      },
+      {
+        "type": "reject",
+        "label": "Negar acao governada",
+        "target_id": "approval_279f7c257596497aaafb37ded7291f08"
+      }
+    ],
+    "warnings": [
+      "shell_requires_approval",
+      "no_shell_executed"
+    ],
+    "trace": [],
+    "raw_debug_ref": null,
+    "model_used": null,
+    "real_inference": null,
+    "model_warnings": [],
+    "evaluation_status": null,
+    "evaluation_warnings": [],
+    "fallback_used": false,
+    "context_plan_id": null,
+    "citation_map": {},
+    "evidence_refs": [
+      {
+        "type": "task_preview",
+        "ref_id": "preview_1bd233c529ee4ccabc0864b2dc0b8ce9",
+        "human_label": "Preview de shell governado"
+      },
+      {
+        "type": "approval_request",
+        "ref_id": "approval_279f7c257596497aaafb37ded7291f08",
+        "human_label": "Approval de shell governado"
+      }
+    ],
+    "requires_user_action": true,
+    "is_final_answer": false,
+    "grounded": true,
+    "grounding_required": true,
+    "grounding_missing_reason": "approval_required_before_shell_execution",
+    "policy_block": null
+  }
+}

@@ -1,0 +1,37 @@
+provider:
+  provider_id: pinhoforge_studio
+  bridge_module: command_catalog
+  execution_enabled: false
+  commands:
+    - command_id: ps-list-files
+      title: List files
+      body: Get-ChildItem -LiteralPath <PATH>
+      category: filesystem
+      collection: powershell
+      tags: [readonly, files]
+      risk: safe
+      description: Lists files under an explicit path without modification.
+    - command_id: ps-test-path
+      title: Test path
+      body: Test-Path -LiteralPath <PATH>
+      category: filesystem
+      collection: powershell
+      tags: [readonly, validation]
+      risk: safe
+      description: Checks whether a path exists.
+    - command_id: ps-build-gradle
+      title: Run Gradle build
+      body: .\gradlew.bat build
+      category: build
+      collection: powershell
+      tags: [build, validation]
+      risk: caution
+      description: Runs a project build in the current workspace.
+    - command_id: ps-remove-item-recursive
+      title: Remove item recursively
+      body: Remove-Item -LiteralPath <PATH> -Recurse -Force
+      category: filesystem
+      collection: powershell
+      tags: [destructive, delete]
+      risk: dangerous
+      description: Deletes a path recursively and is blocked by this read-only catalog.

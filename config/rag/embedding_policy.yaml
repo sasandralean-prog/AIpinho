@@ -1,0 +1,12 @@
+schema_version: 1
+
+embedding:
+  enabled: true
+  model_id: qwen3_embedding_4b_q5_k_m
+  provider_id: llama_cpp_embedding
+  allow_deterministic_fallback_when_runtime_unavailable: true
+  forbid_chat_use: true
+  require_chunk_validation: true
+  require_citation: true
+  require_source_ref: true
+  dimensions: 16

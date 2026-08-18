@@ -1,0 +1,22 @@
+schema_version: 1
+
+approval:
+  enabled: true
+  require_approval_for_future_write: true
+  approval_scope: future_artifact_write
+  create_approval_from_preview: true
+  approving_preview_does_not_write: true
+  approved_state: approved_for_future_write
+  reject_if_preview_blocked: true
+  reject_if_risk_critical: true
+  reject_if_validation_failed: true
+
+approval_actions:
+  - artifact_write_future
+
+blocked_actions_this_sprint:
+  - artifact_write_execute
+  - write_files
+  - overwrite_file
+  - create_directory
+  - apply_patch

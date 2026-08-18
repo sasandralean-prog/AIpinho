@@ -1,0 +1,24 @@
+﻿{
+    "sprint":  "10",
+    "verdict":  "MULTI_ISLAND_FIRETEST_READY_WITH_WARNINGS",
+    "timestamp":  "20260622_094737",
+    "tests":  [
+                  "py_compile passed",
+                  "15 focused tests passed in 11.54s"
+              ],
+    "hotfixes":  [
+                     "launcher_trace_center",
+                     "agent_console_debugger_endpoints",
+                     "routing_invariant_tests"
+                 ],
+    "warnings":  [
+                     "manual visual mobile/launcher smoke not executed",
+                     "firetest prompt set represented by invariant tests"
+                 ],
+    "files_changed":  [
+                          "apps/launcher/ui/api/agent_console_client.py",
+                          "apps/launcher/ui/tabs/agent_console_tab.py",
+                          "tests/integration/test_launcher_agent_console_contract.py",
+                          "tests/integration/test_multi_island_sprint10_11_routing.py"
+                      ]
+}

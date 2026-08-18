@@ -1,0 +1,30 @@
+template_id: python_fastapi
+display_name: Python FastAPI
+slug: python-fastapi
+version: "1.0.0"
+status: active
+category: python
+description: Minimal FastAPI service scaffold with health endpoint.
+supported_project_types: [python_fastapi]
+supported_languages: [python]
+supported_platforms: [backend, api]
+generator_key: python_fastapi
+required_files:
+  - README.md
+  - requirements.txt
+  - app/main.py
+  - PROJECT_MANIFEST.json
+validation_profile:
+  structural: true
+  syntax_check: true
+build_profile:
+  py_compile: app/main.py
+artifact_policy:
+  zip_required: true
+risk_level: low
+required_capabilities: [create_sandbox_files, run_sandbox_build, create_artifact]
+compatible_skills: [sandbox_project_generation, api_scaffold]
+compatible_autopilot_modes: [governed_autorun]
+examples:
+  - criar api fastapi
+  - generate python fastapi backend

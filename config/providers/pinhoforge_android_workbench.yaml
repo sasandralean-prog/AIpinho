@@ -1,0 +1,56 @@
+version: 1
+provider:
+  enabled: true
+  allow_project_detect: true
+  allow_environment_readiness: true
+  allow_gradle_task_list: true
+  allow_gradle_help: true
+  allow_gradle_tasks: true
+  allow_gradle_clean: true
+  allow_gradle_assemble_debug: true
+  allow_gradle_test: true
+  allow_gradle_lint: true
+  allow_adb_devices: true
+  allow_logcat_readonly: true
+  allow_adb_shell: false
+  allow_adb_install: false
+  allow_adb_uninstall: false
+  allow_adb_push_pull: false
+  allow_clear_app_data: false
+  require_policy_allow: true
+  require_registered_workspace: true
+  timeout_seconds: 120
+  output_limit_kb: 256
+  redaction_enabled: true
+  artifact_registration_enabled: true
+  gradle_tasks:
+    - task_id: help
+      display_name: Gradle help
+      args: [help]
+      risk: safe
+      timeout_seconds: 30
+    - task_id: tasks
+      display_name: List tasks
+      args: [tasks]
+      risk: safe
+      timeout_seconds: 30
+    - task_id: clean
+      display_name: Clean
+      args: [clean]
+      risk: caution
+      timeout_seconds: 120
+    - task_id: assembleDebug
+      display_name: Assemble debug
+      args: [assembleDebug]
+      risk: caution
+      timeout_seconds: 300
+    - task_id: test
+      display_name: Unit tests
+      args: [test]
+      risk: caution
+      timeout_seconds: 300
+    - task_id: lint
+      display_name: Android lint
+      args: [lint]
+      risk: caution
+      timeout_seconds: 300

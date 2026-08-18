@@ -1,0 +1,47 @@
+{
+  "run_id": "agent_run_0f91d556e794451d8f455afc1ef4db83",
+  "session_id": "agent_session_52dd9e3faede4b1eaf4763472572b00e",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "sandbox_project_generation",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [],
+  "started_at": "2026-06-14T17:51:15+00:00",
+  "completed_at": "2026-06-14T17:51:20+00:00",
+  "validation_status": null,
+  "artifact_ids": [
+    "agent_artifact_35226aaa95904c2f8be973b715f7e527"
+  ],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "project_generation_id": "project_generation_e6bcac65a7ca4dafa8f9dbb96ecf1d09",
+    "project_type": "python_cli",
+    "sandbox_task_id": "sandbox_task_5cea200279404dd4860a5e64c576f9be",
+    "sandbox_workspace_id": "sandbox_ws_default",
+    "latest_summary_sanitized": "Projeto FieldRunner gerado no sandbox. Artifact pronto: FieldRunner.zip. Artifact ID: agent_artifact_35226aaa95904c2f8be973b715f7e527.",
+    "evidence_refs": [
+      "sandbox_task:sandbox_task_5cea200279404dd4860a5e64c576f9be",
+      "run:agent_run_0f91d556e794451d8f455afc1ef4db83",
+      "tool:tool_invocation_b28f7200785943fea830c2f301102cdf",
+      "tool:tool_invocation_9ebb8f225e244620bc73e59dafffe9c7",
+      "tool:tool_invocation_cf1c7be96a2e41d4b6af3dedfd50b094",
+      "tool:tool_invocation_8fe0b1aad0874539a01c2524f8ef9deb",
+      "tool:tool_invocation_db40c2e2b3164e77810c99e4ff06fc34",
+      "sandbox_validation:project_structure",
+      "sandbox_task:sandbox_task_5cea200279404dd4860a5e64c576f9be",
+      "artifact:agent_artifact_35226aaa95904c2f8be973b715f7e527",
+      "tool:tool_invocation_62040d5ed73d45dabfc15d4ecd5e78bb"
+    ]
+  }
+}

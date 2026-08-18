@@ -1,0 +1,16 @@
+schema_version: 1
+downloads:
+  enabled: true
+  require_artifact_id: true
+  require_token_auth: true
+  default_download_dir: "data/runtime/launcher/downloads"
+  allow_choose_path: true
+  show_progress: true
+  verify_sha256: true
+  record_download_job: true
+  allow_retry: true
+blocked:
+  raw_path_download: true
+  overwrite_without_confirmation: true
+  execute_after_download: true
+  open_untrusted_file_automatically: true

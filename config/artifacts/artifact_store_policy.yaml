@@ -1,0 +1,17 @@
+schema_version: 1
+
+store:
+  path: data/runtime/artifact_previews
+  save_drafts: true
+  save_previews: true
+  save_trace: true
+  save_audit: true
+  save_content_preview: true
+  max_saved_preview_chars: 20000
+  sanitize_before_save: true
+  do_not_save_secrets: true
+  do_not_write_workspace: true
+
+retention:
+  max_previews: 1000
+  cleanup_enabled: false

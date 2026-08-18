@@ -1,0 +1,39 @@
+{
+  "report": "mobile_dashboard_pending_warning_cleanup",
+  "timestamp": "2026-06-22T13:16:07-03:00",
+  "objective": "Cancel pending approvals authorized by the user and fix residual mobile dashboard warnings without hardcode or false success.",
+  "cancelled_pending_approvals": [
+    "agent_run_d0de0a2b50274dc695b0c723df528f78",
+    "agent_run_eb55f3dfa2bf4b3dbd4411b4ed89e4bf"
+  ],
+  "files_changed": [
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\mobile_view_models\\dashboard_mobile_aggregator.py",
+    "C:\\Dev\\AIpinho\\tests\\integration\\test_mobile_dashboard_view_model_api.py"
+  ],
+  "behavior_changes": [
+    "Realtime/SSE card now uses RealtimeStatusService instead of static unknown.",
+    "Maintenance/Regression card now uses MaintenancePlaneService instead of static unknown.",
+    "Legacy RAG is reported as historical/info instead of degraded/warning.",
+    "Historical cards are excluded from active warning list."
+  ],
+  "validations": {
+    "py_compile": "passed",
+    "focused_pytest": "14 passed in 16.23s",
+    "backend_restart": "passed",
+    "dashboard_state": {
+      "status": "healthy",
+      "warnings": []
+    },
+    "multi_agent_dashboard": {
+      "pending_approvals": 0,
+      "active_runs": 7,
+      "historical_failures_preserved": true
+    },
+    "health": "ok"
+  },
+  "remaining_risks": [
+    "Seven active runs remain and were not cancelled because they were not pending approval.",
+    "Historical failures are preserved for traceability and should not be treated as active blockers."
+  ],
+  "verdict": "READY"
+}

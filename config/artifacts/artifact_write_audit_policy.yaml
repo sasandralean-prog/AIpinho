@@ -1,0 +1,14 @@
+schema_version: 1
+
+audit:
+  enabled: true
+  log_blocked_attempts: true
+  log_write_started: true
+  log_write_completed: true
+  log_write_failed: true
+  log_backup_created: true
+  log_post_validation: true
+  log_target_path: true
+  log_content_hash: true
+  do_not_log_full_content: true
+  redact_secrets: true

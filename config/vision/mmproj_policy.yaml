@@ -1,0 +1,18 @@
+schema_version: 1
+
+mmproj:
+  enabled: true
+  required_for: [llava_v1_6_mistral_7b_q4_k_m]
+  validation:
+    require_path: true
+    require_file_exists: true
+    require_gguf_extension: true
+    require_same_allowed_model_root: true
+    reject_forbidden_root: true
+    reject_missing_mmproj: true
+
+allowed_roots:
+  - "C:\\Dev\\AI\\models"
+
+blocked_roots:
+  - "C:\\Windows"

@@ -1,0 +1,45 @@
+schema_version: 1
+
+pipelines:
+  chat_basic:
+    enabled: true
+    description: "Pipeline simples de chat seguro."
+    allowed_intents: [conversation, self_analysis, capability_explanation]
+    passes:
+      - pass_id: interpret_state
+        role_id: interpreter
+        required: false
+      - pass_id: final_speaker
+        role_id: speaker
+        required: true
+
+  readonly_project_report:
+    enabled: true
+    description: "Pipeline cognitivo para relatorio read-only baseado em contexto existente."
+    allowed_intents: [readonly_analysis, in_chat_final_report]
+    required_inputs: [file_context_bundle_or_project_report]
+    passes:
+      - pass_id: analyst_findings
+        role_id: analyst
+        required: true
+      - pass_id: reporter_markdown
+        role_id: reporter
+        required: true
+      - pass_id: final_speaker
+        role_id: speaker
+        required: false
+
+  task_preview:
+    enabled: true
+    description: "Pipeline para explicar preview de task."
+    allowed_intents: [artifact_generation, patch_request, validation_request]
+    passes:
+      - pass_id: planner_preview
+        role_id: planner
+        required: true
+      - pass_id: interpreter_policy
+        role_id: interpreter
+        required: true
+      - pass_id: final_speaker
+        role_id: speaker
+        required: true

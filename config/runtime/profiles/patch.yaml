@@ -1,0 +1,16 @@
+schema_version: 1
+profile:
+  id: patch
+  operation_types: [patch_preview, patch_apply]
+  allowed_step_types: [validate_runtime, validate_workspace, execute_patch_pipeline, validate_patch_result, compose_final_result]
+  steps: [validate_runtime, validate_workspace, execute_patch_pipeline, validate_patch_result, compose_final_result]
+  allowed_actions: [patch_preview, apply_patch, write_files]
+  allowed_side_effects: [patch_apply, workspace_write]
+  required_capabilities: [patch_apply, write_workspace]
+  approval_scope: patch_apply
+  workspace_requirements: {required: true, allowed_roles: [target_mutable, system_mutable]}
+  forbidden: [forbidden_root, source_readonly, path_traversal]
+  max_duration_seconds: 240
+  output_validation_required: true
+  artifact_registration_required: false
+  default_safe_to_execute_policy: policy_and_approval

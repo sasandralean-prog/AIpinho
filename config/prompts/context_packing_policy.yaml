@@ -1,0 +1,12 @@
+schema_version: 1
+
+context_packing:
+  enabled: true
+  order: priority_then_source_then_title
+  omit_blocked: true
+  omit_secret: true
+  truncate_large_items: true
+  include_omission_reasons: true
+  stable_order: true
+  blocked_source_types:
+    - raw_log

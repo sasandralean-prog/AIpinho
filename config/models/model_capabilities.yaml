@@ -1,0 +1,22 @@
+schema_version: 1
+
+capability_groups:
+  text: [instruction, conversation, summarization, reporting, reasoning]
+  coding: [code, patch_planning, code_review, test_suggestion, code_summary]
+  vision: [vision, image_caption, visual_crosscheck, image_understanding, ui_inspection, diagram_reading]
+  retrieval: [embedding, rerank]
+  ocr: [ocr, document_text_extraction, image_text_extraction]
+
+provider_rules:
+  llama_cpp_embedding:
+    required_capability: embedding
+    forbidden_capabilities: [code, vision, ocr, rerank]
+  llama_cpp_reranker:
+    required_capability: rerank
+    forbidden_capabilities: [embedding, code, vision, ocr]
+  llama_cpp_ocr:
+    required_capability: ocr
+  llama_cpp_vision:
+    required_capability: vision
+  llama_cpp_text:
+    forbidden_capabilities: [embedding, rerank, ocr, vision]

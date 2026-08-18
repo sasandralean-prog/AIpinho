@@ -1,0 +1,22 @@
+﻿schema_version: 1
+
+contract_compliance:
+  enabled: true
+  require_contract_type: true
+  require_requested_actions_subset_of_allowed: true
+  require_denied_actions_not_executed: true
+  require_approval_for_approval_actions: true
+  require_readonly_mode_for_readonly_contract: true
+  reject_unknown_action: true
+  reject_action_outside_contract: true
+
+contract_types:
+  readonly_analysis:
+    allowed_result_outputs: [project_tree_summary, file_context_summary, project_analysis_report, project_report, role_pipeline_run]
+    forbidden_actions: [write_files, apply_patch, run_command, git_commit, memory_write, rag_ingest]
+  in_chat_final_report:
+    allowed_result_outputs: [role_pipeline_run, project_report, summary]
+    forbidden_actions: [write_files, artifact_write, apply_patch]
+  validation_request:
+    allowed_result_outputs: [validation_result, project_analysis_report, project_report]
+    forbidden_actions: [write_files, apply_patch, run_command]

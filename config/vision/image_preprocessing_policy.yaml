@@ -1,0 +1,8 @@
+schema_version: 1
+
+preprocessing:
+  enabled: true
+  mutate_original: false
+  store_raw_blob: false
+  derived_runtime_artifacts_only: true
+  max_resized_pixels: 25000000

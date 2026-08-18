@@ -1,0 +1,6 @@
+schema_version: 1
+
+audit:
+  enabled: true
+  path: data/logs/audit/vector_rag_audit.jsonl
+  trace_category: vector_rag

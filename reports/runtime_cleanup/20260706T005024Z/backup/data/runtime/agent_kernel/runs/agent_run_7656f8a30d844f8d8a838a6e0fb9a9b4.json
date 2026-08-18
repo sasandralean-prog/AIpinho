@@ -1,0 +1,33 @@
+{
+  "run_id": "agent_run_7656f8a30d844f8d8a838a6e0fb9a9b4",
+  "session_id": "agent_session_977a150472e7440d8c61b289aa7a62b7",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "cancelled",
+  "operation_type": "patch_pipeline",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [],
+  "started_at": "2026-06-22T02:41:54+00:00",
+  "completed_at": "2026-06-25T02:20:42+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": "stale_runtime_cleanup",
+  "metadata_sanitized": {
+    "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "task_step_source": "governed_task_step_runner",
+    "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863",
+    "previous_status": "running",
+    "previous_effective_status": "running",
+    "stale_reason": "active_run_without_recent_event"
+  }
+}

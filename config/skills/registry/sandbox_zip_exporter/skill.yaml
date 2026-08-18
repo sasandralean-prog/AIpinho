@@ -1,0 +1,29 @@
+skill_id: internal.sandbox_zip_exporter
+display_name: Sandbox ZIP Exporter
+slug: sandbox_zip_exporter
+description: Export validated sandbox task content as a token-protected ZIP artifact.
+version: 1.0.0
+status: active
+category: artifact_generation
+owner: aipinho
+compatible_agents: [aipinho, codex, lucio, gemini]
+compatible_project_stacks: [android_gradle, python, node, static_web, mixed, unknown]
+required_capabilities: [sandbox_artifact_export, sandbox_validate]
+allowed_tools: [sandbox_zip_export, sandbox_validate]
+denied_tools: [run_shell, create_file, modify_file, patch_apply]
+input_schema: {type: object}
+output_schema: {type: object}
+side_effects: [sandbox_artifact_export]
+workspace_policy: {outside_sandbox_write: false}
+sandbox_required: true
+sandbox_allowed: true
+sandbox_side_effects: [artifact_export]
+command_policy: {shell: blocked}
+artifact_policy: {enabled: true, requires_token: true, token_in_url: false}
+memory_policy: {mode: none}
+validation_policy: {required: true, failure_policy: block_completion}
+speaker_truth_policy: {raw_hidden_by_default: true, must_cite_evidence: true}
+risk_level: low
+approval_policy: {required: false}
+docs_ref: docs/artifacts/ARTIFACT_DOWNLOAD_RELIABILITY.md
+tests_ref: tests/project_factory

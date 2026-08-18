@@ -1,0 +1,13 @@
+schema_version: 1
+
+memory:
+  runtime_enabled: false
+  auto_save_enabled: false
+  write_requires_approval: true
+  allowed_states:
+    - candidate
+    - proposed
+    - approved
+    - rejected
+    - superseded
+    - archived

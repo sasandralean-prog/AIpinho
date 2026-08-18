@@ -1,0 +1,82 @@
+{
+  "verdict": "PATCH_IMPLEMENTED_PENDING_PUBLIC_RERUN",
+  "observed_blocker": "TASKRUN_LIFECYCLE_TIMEOUT_CONSERVATIVE_RESULT_REPAIR_BEFORE_PHASE_SEMANTIC_COMPLETION_AUTHORITY",
+  "created_at": "2026-08-15T05:19:12.286549+00:00",
+  "task_run_id": "task_run_128043624a614fa68c0bbd1c8ec81790",
+  "artifact_runtime": {
+    "materialized_artifacts": true,
+    "artifact_state_available": true,
+    "artifact_state_ref": "reports/runtime_consolidation/firetest5_h1c0_r2_4_public_phase1_rerun_observation.json",
+    "music_inventory_bound_rows": 100,
+    "music_inventory_evidence_ref_count": 100,
+    "evidence_phase1_ready": true
+  },
+  "phase_semantic_completion_policy": {
+    "policy_available": true,
+    "called_in_public_runtime": "implemented_but_not_terminal_authority_in_r2_4_public_run",
+    "decision_created": "unit_verified",
+    "decision_status": "blocked",
+    "decision_reason_code": "MUSIC_INVENTORY_PARTIAL_NOT_ACCEPTED_BY_PHASE_CONTRACT",
+    "decision_ref": "phase_semantic_completion_policy metadata in TaskRunResult outputs",
+    "why_not_called_or_not_persisted": "runtime budget supervision/TaskRunStore terminalize path persisted conservative timeout result before semantic result became terminal authority"
+  },
+  "validation_completion_truth": {
+    "validation_created_from_policy": true,
+    "completion_created_from_policy": true,
+    "speaker_truth_created_from_policy": "via RuntimeTruthEngine over semantic TaskRunResult",
+    "validation_status": "blocked",
+    "completion_status": "blocked",
+    "speaker_truth_status": "blocked_expected",
+    "safe_to_report_success": false
+  },
+  "result_persistence": {
+    "semantic_result_builder_called": true,
+    "semantic_result_persisted": "patch_expected_and_unit_verified",
+    "result_json_exists_before_store_repair": false,
+    "result_json_exists_after_store_repair": true,
+    "persisted_result_source": "phase_semantic_completion_policy_after_patch",
+    "persisted_reason_code": "MUSIC_INVENTORY_PARTIAL_NOT_ACCEPTED_BY_PHASE_CONTRACT",
+    "store_repair_triggered": "suppressed_when_semantic_artifact_state_exists",
+    "store_repair_reason_code": "TASKRUN_LIFECYCLE_TIMEOUT_only_when_no_semantic_artifact_state_or_real_timeout",
+    "store_repair_should_have_been_suppressed": true
+  },
+  "handoff_breakpoint": {
+    "component_where_semantic_decision_was_lost": "TaskRunStore.terminalize_if_runtime_budget_exceeded",
+    "return_path_missing_result_persistence": "runtime still running after artifacts existed; public summary supervision terminalized by lifecycle timeout",
+    "async_worker_exited_before_result_write": "possible in r2_4 public observation, now guarded by semantic fallback",
+    "exception_or_silent_return": null,
+    "missing_method_call": "semantic finalization fallback before runtime budget result creation"
+  },
+  "timeout_assessment": {
+    "taskrun_lifecycle_timeout_present": true,
+    "real_timeout_evidence_present": "elapsed budget may be real, but semantic artifact state is sufficient for semantic terminal decision",
+    "started_at": "from runtime events",
+    "finished_at": "present in r2_4 observation",
+    "budget_ms": "AIPINHO_PHASE1_MAX_RUNTIME_SECONDS * 1000",
+    "elapsed_ms": "public run exceeded supervision budget",
+    "dominant_timeout_component": "TaskRunStore conservative repair before patch",
+    "is_stale_or_repair_fallback": true
+  },
+  "patch_plan": [
+    "Add PhaseSemanticResultFinalizer consuming governed artifact summaries only.",
+    "Call semantic finalizer from TaskRunStore.ensure_terminal_result before conservative repair.",
+    "Call semantic finalizer from terminalize_if_runtime_budget_exceeded when artifacts already contain semantic state.",
+    "Keep TASKRUN_LIFECYCLE_TIMEOUT for runs without semantic artifact state or real pre-artifact timeout.",
+    "Expose result.source and result.finished_at on TaskRunResult.",
+    "Add CVL frontiers for semantic finalization handoff."
+  ],
+  "explicit_answers": {
+    "artifact_runtime_terminal_method": "ReadonlyAnalysisArtifactRuntimeService.execute after artifact validation and result build",
+    "artifact_state_contains_music_and_evidence": true,
+    "policy_called_in_public_real_path_before_patch": "not as terminal authority",
+    "decision_loss_point": "TaskRunStore runtime budget terminalization fallback",
+    "missing_handoff": "semantic finalization fallback before conservative timeout repair",
+    "validation_completion_truth_builder": "PhaseSemanticResultFinalizer plus RuntimeTruthEngine projection",
+    "result_persistence_owner": "TaskRunStore.save_result with semantic TaskRunResult",
+    "why_repair_preempted": "public summary/runtime supervision saw terminal/no result gap and persisted timeout result",
+    "repair_suppression": "semantic artifact state with bound_rows/evidence_ref_count triggers phase semantic result first",
+    "timeout_real_preserved": "no semantic artifact state keeps timeout repair path active",
+    "terminal_idempotency": "first terminal event wins; existing semantic result is not overwritten",
+    "run_json_lightweight": "TaskRunStore _lighten_for_inline/payload_refs unchanged"
+  }
+}

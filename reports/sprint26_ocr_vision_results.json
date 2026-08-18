@@ -1,0 +1,93 @@
+{
+  "generated_at": "2026-06-25T12:33:44.407609+00:00",
+  "ocr_status": {
+    "ok": true,
+    "status_code": 200,
+    "body": {
+      "status": "ok",
+      "service": "ocr_pipeline",
+      "raw_output_hidden": true,
+      "confidence_required": true
+    }
+  },
+  "vision_status": {
+    "ok": true,
+    "status_code": 200,
+    "body": {
+      "status": "ok",
+      "service": "vision_status",
+      "enabled": true,
+      "vision_runtime_enabled": true,
+      "ocr_runtime_enabled": true,
+      "primary_vision_model": "qwen2_5_vl_7b_q4_k_m",
+      "vision_fallback_model": "llava_v1_6_mistral_7b_q4_k_m",
+      "ocr_model": "nanonets_ocr_s_q5_k_m",
+      "vision_rag_enabled": true,
+      "ocr_rag_enabled": true,
+      "raw_image_memory_enabled": false,
+      "raw_image_vector_ingestion_enabled": false,
+      "auto_memory_from_image_enabled": false,
+      "auto_rag_from_image_enabled": false,
+      "tool_calling_enabled": false,
+      "workspace_source_mutation_enabled": false,
+      "warnings": [
+        "CPU-only latency expected.",
+        "usable but slower on CPU"
+      ],
+      "blocked_reasons": []
+    }
+  },
+  "ocr_no_image": {
+    "ok": true,
+    "status_code": 200,
+    "body": {
+      "status": "blocked",
+      "run_id": "ocr_run_8d61dad41da34b4c96501355adc0d8dc",
+      "result": {
+        "run_id": "ocr_run_8d61dad41da34b4c96501355adc0d8dc",
+        "status": "blocked",
+        "model_id": null,
+        "provider_id": null,
+        "text_blocks": [],
+        "citations": [],
+        "summary": "",
+        "raw_output_hidden": true,
+        "trace_id": "vision_trace_27ae902587434e829e030610db69f42f",
+        "warnings": [],
+        "blocked_reasons": [
+          "image_input_required"
+        ],
+        "created_at": "2026-06-25T12:41:04.000909+00:00",
+        "evaluation": {}
+      }
+    }
+  },
+  "vision_no_image": {
+    "ok": true,
+    "status_code": 200,
+    "body": {
+      "status": "blocked",
+      "run_id": "vision_run_aa17126e4abf41b6a7e2121ef046cda6",
+      "result": {
+        "run_id": "vision_run_aa17126e4abf41b6a7e2121ef046cda6",
+        "status": "blocked",
+        "model_id": null,
+        "provider_id": null,
+        "fallback_used": false,
+        "summary": "",
+        "findings": [],
+        "evidence": [],
+        "citations": [],
+        "hits": [],
+        "raw_output_hidden": true,
+        "trace_id": "vision_trace_0234309155754a8ab27b349015f2587d",
+        "warnings": [],
+        "blocked_reasons": [
+          "image_input_required"
+        ],
+        "created_at": "2026-06-25T12:41:04.029664+00:00",
+        "evaluation": {}
+      }
+    }
+  }
+}

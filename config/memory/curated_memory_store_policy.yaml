@@ -1,0 +1,26 @@
+schema_version: 1
+
+store:
+  path: data/memory/curated
+  format: json
+  save_memory_items: true
+  save_versions: true
+  save_events: true
+  save_trace: true
+  save_audit_refs: true
+  save_evidence_summaries: true
+  do_not_save_raw_logs: true
+  do_not_save_full_file_content: true
+  do_not_save_secrets: true
+  do_not_create_vectorstore: true
+  do_not_create_embeddings: true
+
+index:
+  deterministic_metadata_index: true
+  text_search_index: false
+  vector_index: false
+
+retention:
+  allow_expiration: true
+  default_ttl_days: null
+  max_memory_items: 10000

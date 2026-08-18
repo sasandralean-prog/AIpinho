@@ -1,0 +1,47 @@
+{
+  "run_id": "agent_run_fabd53355f1c47d48cad58c6c9906254",
+  "session_id": "agent_session_42be7363ee1a44308f8b3660cc8210b7",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "sandbox_project_generation",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [],
+  "started_at": "2026-06-14T21:41:25+00:00",
+  "completed_at": "2026-06-14T21:41:32+00:00",
+  "validation_status": null,
+  "artifact_ids": [
+    "agent_artifact_7f98dbe54c9d47c7bf560e764221cf3f"
+  ],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "project_generation_id": "project_generation_f9eb0b2b7ff84d71bb9c0e2717ed02e5",
+    "project_type": "static_web",
+    "sandbox_task_id": "sandbox_task_5bda92e23e0f4093a5a91f81fe394341",
+    "sandbox_workspace_id": "sandbox_ws_default",
+    "latest_summary_sanitized": "Projeto ApiWeb gerado no sandbox. Artifact pronto: apiweb.zip. Artifact ID: agent_artifact_7f98dbe54c9d47c7bf560e764221cf3f.",
+    "evidence_refs": [
+      "sandbox_task:sandbox_task_5bda92e23e0f4093a5a91f81fe394341",
+      "run:agent_run_fabd53355f1c47d48cad58c6c9906254",
+      "tool:tool_invocation_06aca07ccc044afb88ef2e7b64daf8ac",
+      "tool:tool_invocation_81ac1f7397cd4cffa5bf8ef1c51f4d2e",
+      "tool:tool_invocation_e47f0f9c6e28433f8606fb94de9dff85",
+      "tool:tool_invocation_91ab92c120934fca95e708e73043e581",
+      "tool:tool_invocation_5d5174eae07540c0bf52ad0eb58caede",
+      "sandbox_validation:project_structure",
+      "sandbox_task:sandbox_task_5bda92e23e0f4093a5a91f81fe394341",
+      "artifact:agent_artifact_7f98dbe54c9d47c7bf560e764221cf3f",
+      "tool:tool_invocation_cf6d76f07145457e9a692e7f9fbf0cc0"
+    ]
+  }
+}

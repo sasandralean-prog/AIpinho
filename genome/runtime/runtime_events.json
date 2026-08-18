@@ -1,0 +1,177 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "runtime_events": [
+    {
+      "event": "task_created",
+      "who_publishes": ["services.runtime.task_runtime_service"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "task_id": "string",
+        "task_type": "string",
+        "created_at": "datetime"
+      },
+      "type": "domain_event"
+    },
+    {
+      "event": "task_started",
+      "who_publishes": ["services.runtime.task_runtime_service"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "task_id": "string",
+        "started_at": "datetime"
+      },
+      "type": "domain_event"
+    },
+    {
+      "event": "task_completed",
+      "who_publishes": ["services.runtime.task_runtime_service"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "task_id": "string",
+        "completed_at": "datetime",
+        "result": "object"
+      },
+      "type": "domain_event"
+    },
+    {
+      "event": "task_failed",
+      "who_publishes": ["services.runtime.task_runtime_service"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "task_id": "string",
+        "failed_at": "datetime",
+        "error": "string"
+      },
+      "type": "domain_event"
+    },
+    {
+      "event": "execution_step_started",
+      "who_publishes": ["services.runtime.execution_graph_service"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "task_id": "string",
+        "step_id": "string",
+        "started_at": "datetime"
+      },
+      "type": "domain_event"
+    },
+    {
+      "event": "execution_step_completed",
+      "who_publishes": ["services.runtime.execution_graph_service"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "task_id": "string",
+        "step_id": "string",
+        "completed_at": "datetime",
+        "result": "object"
+      },
+      "type": "domain_event"
+    },
+    {
+      "event": "policy_check",
+      "who_publishes": ["services.policy_kernel.policy_kernel_service"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "policy_id": "string",
+        "check_result": "boolean",
+        "checked_at": "datetime"
+      },
+      "type": "domain_event"
+    },
+    {
+      "event": "capability_check",
+      "who_publishes": ["services.policy_kernel.capability_gate_service"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "capability_id": "string",
+        "check_result": "boolean",
+        "checked_at": "datetime"
+      },
+      "type": "domain_event"
+    },
+    {
+      "event": "tool_invocation",
+      "who_publishes": ["services.tools.governed_tool_execution_service"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "tool_id": "string",
+        "invoked_at": "datetime",
+        "parameters": "object"
+      },
+      "type": "domain_event"
+    },
+    {
+      "event": "model_invocation",
+      "who_publishes": ["services.models.llama_cpp_provider"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "model_id": "string",
+        "invoked_at": "datetime",
+        "prompt": "string"
+      },
+      "type": "domain_event"
+    },
+    {
+      "event": "validation_check",
+      "who_publishes": ["services.validation.validation_gate_service"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "validation_id": "string",
+        "check_result": "boolean",
+        "checked_at": "datetime"
+      },
+      "type": "domain_event"
+    },
+    {
+      "event": "artifact_created",
+      "who_publishes": ["services.artifacts.artifact_generator_service"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "artifact_id": "string",
+        "artifact_type": "string",
+        "created_at": "datetime"
+      },
+      "type": "domain_event"
+    },
+    {
+      "event": "memory_candidate_created",
+      "who_publishes": ["services.memory.memory_candidate_service"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "candidate_id": "string",
+        "candidate_type": "string",
+        "created_at": "datetime"
+      },
+      "type": "domain_event"
+    },
+    {
+      "event": "retrieval_performed",
+      "who_publishes": ["services.rag.retrieval_service"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "retrieval_id": "string",
+        "query": "string",
+        "retrieved_at": "datetime"
+      },
+      "type": "domain_event"
+    },
+    {
+      "event": "agent_action",
+      "who_publishes": ["services.agents.agent_tool_gateway_service"],
+      "who_consumes": ["services.events.event_publisher_service"],
+      "payload": {
+        "agent_id": "string",
+        "action": "string",
+        "performed_at": "datetime"
+      },
+      "type": "domain_event"
+    }
+  ],
+  "total_events": 14,
+  "event_types": {
+    "domain_event": 14,
+    "system_event": 0,
+    "integration_event": 0
+  }
+}

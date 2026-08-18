@@ -1,0 +1,9 @@
+schema_version: 1
+
+analysis:
+  enabled: true
+  require_image_citation: true
+  require_visual_evidence: true
+  require_confidence: true
+  deterministic_fallback_allowed_for_tests: true
+  raw_output_hidden: true

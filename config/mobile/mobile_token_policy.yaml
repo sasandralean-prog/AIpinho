@@ -1,0 +1,16 @@
+schema_version: 1
+token:
+  enabled: true
+  source: pc_pairing
+  hardcoded_in_apk: false
+  store_securely: true
+  prefer_android_keystore: true
+  fallback_storage_allowed_for_debug_only: true
+  redact_in_logs: true
+  show_plaintext_only_when_user_enters_or_pairs: true
+  show_preview_chars: 4
+blocked:
+  log_token: true
+  show_token_in_dashboard: true
+  send_token_in_query_string: true
+  accept_empty_token: true

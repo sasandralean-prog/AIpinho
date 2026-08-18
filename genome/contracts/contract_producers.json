@@ -1,0 +1,44 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "contract_producers": {
+    "ChatRequest": [
+      "api.routers.chat_router"
+    ],
+    "ChatResponse": [
+      "services.chat.chat_service"
+    ],
+    "TaskRequest": [
+      "api.routers.task_runtime_router"
+    ],
+    "TaskResponse": [
+      "services.runtime.task_runtime_service"
+    ],
+    "ToolRequest": [
+      "api.routers.tool_router"
+    ],
+    "ToolResponse": [
+      "services.tools.governed_tool_execution_service"
+    ],
+    "ModelRequest": [
+      "api.routers.model_router"
+    ],
+    "ModelResponse": [
+      "services.models.llama_cpp_provider"
+    ],
+    "ArtifactRequest": [
+      "api.routers.artifact_router"
+    ],
+    "ArtifactResponse": [
+      "services.artifacts.artifact_generator_service"
+    ],
+    "PolicyRequest": [
+      "api.routers.policy_router"
+    ],
+    "PolicyResponse": [
+      "services.policy_kernel.policy_kernel_service"
+    ]
+  },
+  "total_contracts": 12,
+  "total_producers": 12
+}

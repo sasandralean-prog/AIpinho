@@ -1,0 +1,96 @@
+{
+  "program": "AIpinho Engineering Evolution Program",
+  "block": "I",
+  "block_name": "Multi-Worker Runtime",
+  "date": "2026-07-02",
+  "verdict": "BLOCK_I_MULTI_WORKER_RUNTIME_READY",
+  "objective": "Replace hardcoded step-to-worker selection with specialized worker contracts and dynamic routing through the ExecutionGraph.",
+  "contracts_created": [
+    "WorkerContract",
+    "WorkerRouteDecision",
+    "WorkerRegistrySnapshot"
+  ],
+  "services_created": [
+    "WorkerRegistryService"
+  ],
+  "configs_created": [
+    "config/runtime/worker_registry.yaml"
+  ],
+  "workers": [
+    "ArchitectWorker",
+    "PlannerWorker",
+    "ResearchWorker",
+    "ReviewerWorker",
+    "ImplementationWorker",
+    "ValidationWorker",
+    "SecurityWorker",
+    "DocumentationWorker",
+    "ReportingWorker"
+  ],
+  "files_changed": [
+    "config/runtime/worker_registry.yaml",
+    "src/aipinho/schemas/runtime/worker_contract.py",
+    "src/aipinho/services/runtime/worker_registry_service.py",
+    "src/aipinho/services/runtime/execution_graph_service.py",
+    "tests/unit/test_worker_registry_service.py",
+    "tests/unit/test_task_runtime_service.py",
+    "reports/engineering_evolution/block_i_multi_worker_runtime_report.md",
+    "reports/engineering_evolution/block_i_multi_worker_runtime_report.json"
+  ],
+  "tests": {
+    "py_compile": "passed",
+    "pytest_command": "python -m pytest tests/unit/test_worker_registry_service.py tests/unit/test_task_runtime_service.py tests/unit/test_hotfix_policy_kernel_approval_gate.py tests/governance/test_g21_readonly_analysis_intent.py tests/governance/test_lifecycle_core.py tests/governance/test_g24_preview_quality_gate.py -q",
+    "pytest_result": "52 passed",
+    "app_factory_import": {
+      "command": "python -c \"from aipinho.app_factory import create_app; app=create_app(); print(app.title); print(len(app.routes))\"",
+      "result": "AIpinho / 942 routes"
+    },
+    "regression_assertions": [
+      "Worker registry loads contract-only workers",
+      "write_files routes to ImplementationWorker",
+      "run_command routes to SecurityWorker",
+      "unknown steps route to default PlannerWorker",
+      "ExecutionGraph nodes include worker_route decisions"
+    ]
+  },
+  "live_backend_smoke": {
+    "backend_restarted": true,
+    "pid": 50868,
+    "health": {
+      "status": "ok",
+      "service": "AIpinho",
+      "version": "0.1.0",
+      "runtime": "local"
+    },
+    "run_id": "task_run_80b4335361cf4672a9107308c52fd319",
+    "graph_id": "exec_graph_3cdce531f1d14519ae4045eaa534e0e3",
+    "workers": [
+      "ValidationWorker",
+      "PlannerWorker",
+      "PlannerWorker"
+    ],
+    "route_decisions": 3,
+    "nodes": 3
+  },
+  "hardcode_removed": [
+    "ExecutionGraphService._worker_for_step"
+  ],
+  "rollback": [
+    "Remove WorkerRegistryService.",
+    "Remove WorkerContract and WorkerRouteDecision schemas.",
+    "Remove config/runtime/worker_registry.yaml.",
+    "Restore previous _worker_for_step routing in ExecutionGraphService.",
+    "Remove worker registry tests."
+  ],
+  "limitations": [
+    "Workers are currently contracts/routes, not independent parallel processes.",
+    "Physical execution still runs through the supervised loop.",
+    "Future blocks must build on this registry instead of adding a second worker model."
+  ],
+  "hardcode_check": {
+    "workload_specific_rules_added": false,
+    "path_specific_rules_added": false,
+    "filename_specific_rules_added": false,
+    "fire_test_specific_routes_added": false
+  }
+}

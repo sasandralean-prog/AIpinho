@@ -1,0 +1,54 @@
+{
+  "health": {
+    "status": "ok",
+    "service": "AIpinho",
+    "version": "0.1.0",
+    "runtime": "local"
+  },
+  "queue_health": {
+    "status": "ok",
+    "active_runs": 0,
+    "queued_runs": 0,
+    "stale_runs": 0,
+    "pending_approvals": 0,
+    "active_sessions": 0,
+    "dispatcher_status": "available",
+    "worker_pool_capacity": 8,
+    "worker_pool_available_slots": 8,
+    "stale_run_ids": [],
+    "backpressure_required": false,
+    "reason_code": null
+  },
+  "chat_smoke": [
+    {
+      "title": "Mobile Chat smoke",
+      "session_id": "chat_6f3f36ce4d7e499ab91045eb0df50cd9",
+      "prompt": "oi",
+      "status": "ok",
+      "operation_type": "conversation",
+      "assistant_message_created": true,
+      "assistant_excerpt": "Ol\u00e1! Como posso ajudar voc\u00ea hoje?",
+      "warnings": []
+    },
+    {
+      "title": "Launcher Chat smoke",
+      "session_id": "chat_de5dc33e92d3411ba5b4da5b1929c9f7",
+      "prompt": "oi",
+      "status": "ok",
+      "operation_type": "conversation",
+      "assistant_message_created": true,
+      "assistant_excerpt": "Ol\u00e1! Como posso ajudar voc\u00ea hoje?",
+      "warnings": []
+    },
+    {
+      "title": "Workspace registry smoke",
+      "session_id": "chat_6bdbfefdca8c48b4b1e5c866366a1fad",
+      "prompt": "Liste os workspaces registrados",
+      "status": "ok",
+      "operation_type": "permission_status",
+      "assistant_message_created": true,
+      "assistant_excerpt": "Permissoes atuais da AIpinho:\n\nLeitura permitida:\n- C:\\Dev\\AIpinho (system_mutable; read; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\AIpinhoTestes (target_mutable; read; approval obrigatorio)\n- C:\\Dev\\AI\\codin",
+      "warnings": []
+    }
+  ]
+}

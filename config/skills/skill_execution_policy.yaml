@@ -1,0 +1,30 @@
+schema_version: 1
+execution:
+  default_mode: preview
+  allow_dry_run: true
+  allow_real_execution: false
+  require_approval_for_high_risk: true
+  require_approval_for_external_connectors: true
+  require_approval_for_writes: true
+  require_approval_for_browser_control: true
+  require_approval_for_computer_use: true
+  require_approval_for_shell: true
+  require_approval_for_patch: true
+risk_defaults:
+  low:
+    default_mode: preview
+    approval_required: false
+  medium:
+    default_mode: preview
+    approval_required: false
+  high:
+    default_mode: preview
+    approval_required: true
+  critical:
+    default_mode: disabled
+    approval_required: true
+blocked:
+  critical_real_execution: true
+  external_api_call_without_connector: true
+  credential_request_in_skill: true
+  arbitrary_command: true

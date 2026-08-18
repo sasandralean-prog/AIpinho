@@ -1,0 +1,15 @@
+schema_version: 1
+
+citation_map:
+  enabled: true
+  require_every_context_item_mapped: true
+  require_stable_context_item_ids: true
+  require_citation_ids: true
+  require_source_refs: true
+  reject_missing_citation: true
+  reject_duplicate_item_without_reason: true
+
+output:
+  expose_citation_map_in_debug: true
+  expose_safe_citations_to_chat: true
+  hide_internal_trace_by_default: true

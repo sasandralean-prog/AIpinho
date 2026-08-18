@@ -1,0 +1,477 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "total_dependencies": 50,
+  "dependencies": [
+    {
+      "source": "main",
+      "source_path": "src/aipinho/main.py",
+      "target": "app_factory",
+      "target_path": "src/aipinho/app_factory.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "app_factory",
+      "source_path": "src/aipinho/app_factory.py",
+      "target": "core.local_environment",
+      "target_path": "src/aipinho/core/local_environment.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "app_factory",
+      "source_path": "src/aipinho/app_factory.py",
+      "target": "api.routers",
+      "target_path": "src/aipinho/api/routers/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "app_factory",
+      "source_path": "src/aipinho/app_factory.py",
+      "target": "services.runtime.task_queue_maintenance_service",
+      "target_path": "src/aipinho/services/runtime/task_queue_maintenance_service.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "core.local_environment",
+      "source_path": "src/aipinho/core/local_environment.py",
+      "target": "utils",
+      "target_path": "src/aipinho/utils/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.policy_kernel.policy_kernel_service",
+      "source_path": "src/aipinho/services/policy_kernel/policy_kernel_service.py",
+      "target": "core",
+      "target_path": "src/aipinho/core/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.policy_kernel.policy_kernel_service",
+      "source_path": "src/aipinho/services/policy_kernel/policy_kernel_service.py",
+      "target": "registries",
+      "target_path": "src/aipinho/registries/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.policy_kernel.policy_kernel_service",
+      "source_path": "src/aipinho/services/policy_kernel/policy_kernel_service.py",
+      "target": "schemas.policy",
+      "target_path": "src/aipinho/schemas/policy/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.policy_kernel.capability_gate_service",
+      "source_path": "src/aipinho/services/policy_kernel/capability_gate_service.py",
+      "target": "core",
+      "target_path": "src/aipinho/core/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.policy_kernel.capability_gate_service",
+      "source_path": "src/aipinho/services/policy_kernel/capability_gate_service.py",
+      "target": "registries",
+      "target_path": "src/aipinho/registries/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.policy_kernel.capability_gate_service",
+      "source_path": "src/aipinho/services/policy_kernel/capability_gate_service.py",
+      "target": "schemas.policy",
+      "target_path": "src/aipinho/schemas/policy/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.runtime.task_runtime_service",
+      "source_path": "src/aipinho/services/runtime/task_runtime_service.py",
+      "target": "core",
+      "target_path": "src/aipinho/core/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.runtime.task_runtime_service",
+      "source_path": "src/aipinho/services/runtime/task_runtime_service.py",
+      "target": "repositories",
+      "target_path": "src/aipinho/repositories/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.runtime.task_runtime_service",
+      "source_path": "src/aipinho/services/runtime/task_runtime_service.py",
+      "target": "schemas.runtime",
+      "target_path": "src/aipinho/schemas/runtime/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.runtime.task_runtime_service",
+      "source_path": "src/aipinho/services/runtime/task_runtime_service.py",
+      "target": "services.policy_kernel",
+      "target_path": "src/aipinho/services/policy_kernel/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.runtime.execution_graph_service",
+      "source_path": "src/aipinho/services/runtime/execution_graph_service.py",
+      "target": "core",
+      "target_path": "src/aipinho/core/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.runtime.execution_graph_service",
+      "source_path": "src/aipinho/services/runtime/execution_graph_service.py",
+      "target": "schemas.runtime",
+      "target_path": "src/aipinho/schemas/runtime/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.runtime.execution_graph_service",
+      "source_path": "src/aipinho/services/runtime/execution_graph_service.py",
+      "target": "services.policy_kernel",
+      "target_path": "src/aipinho/services/policy_kernel/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.runtime.intelligent_planner_service",
+      "source_path": "src/aipinho/services/runtime/intelligent_planner_service.py",
+      "target": "core",
+      "target_path": "src/aipinho/core/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.runtime.intelligent_planner_service",
+      "source_path": "src/aipinho/services/runtime/intelligent_planner_service.py",
+      "target": "schemas.runtime",
+      "target_path": "src/aipinho/schemas/runtime/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.runtime.intelligent_planner_service",
+      "source_path": "src/aipinho/services/runtime/intelligent_planner_service.py",
+      "target": "services.policy_kernel",
+      "target_path": "src/aipinho/services/policy_kernel/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.chat.chat_service",
+      "source_path": "src/aipinho/services/chat/chat_service.py",
+      "target": "core",
+      "target_path": "src/aipinho/core/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.chat.chat_service",
+      "source_path": "src/aipinho/services/chat/chat_service.py",
+      "target": "schemas.chat",
+      "target_path": "src/aipinho/schemas/chat/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.chat.chat_service",
+      "source_path": "src/aipinho/services/chat/chat_service.py",
+      "target": "services.runtime",
+      "target_path": "src/aipinho/services/runtime/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.chat.chat_service",
+      "source_path": "src/aipinho/services/chat/chat_service.py",
+      "target": "services.policy_kernel",
+      "target_path": "src/aipinho/services/policy_kernel/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.chat.chat_service",
+      "source_path": "src/aipinho/services/chat/chat_service.py",
+      "target": "services.memory",
+      "target_path": "src/aipinho/services/memory/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.chat.chat_service",
+      "source_path": "src/aipinho/services/chat/chat_service.py",
+      "target": "services.models",
+      "target_path": "src/aipinho/services/models/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.chat.chat_service",
+      "source_path": "src/aipinho/services/chat/chat_service.py",
+      "target": "services.tools",
+      "target_path": "src/aipinho/services/tools/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.chat.chat_operation_router_service",
+      "source_path": "src/aipinho/services/chat/chat_operation_router_service.py",
+      "target": "core",
+      "target_path": "src/aipinho/core/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.chat.chat_operation_router_service",
+      "source_path": "src/aipinho/services/chat/chat_operation_router_service.py",
+      "target": "schemas.chat",
+      "target_path": "src/aipinho/schemas/chat/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.chat.chat_operation_router_service",
+      "source_path": "src/aipinho/services/chat/chat_operation_router_service.py",
+      "target": "services.runtime",
+      "target_path": "src/aipinho/services/runtime/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.chat.chat_operation_router_service",
+      "source_path": "src/aipinho/services/chat/chat_operation_router_service.py",
+      "target": "services.policy_kernel",
+      "target_path": "src/aipinho/services/policy_kernel/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.chat.chat_operation_router_service",
+      "source_path": "src/aipinho/services/chat/chat_operation_router_service.py",
+      "target": "services.agents",
+      "target_path": "src/aipinho/services/agents/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.chat.chat_operation_router_service",
+      "source_path": "src/aipinho/services/chat/chat_operation_router_service.py",
+      "target": "services.tools",
+      "target_path": "src/aipinho/services/tools/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.agents.agent_tool_gateway_service",
+      "source_path": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+      "target": "core",
+      "target_path": "src/aipinho/core/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.agents.agent_tool_gateway_service",
+      "source_path": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+      "target": "schemas.agents",
+      "target_path": "src/aipinho/schemas/agents/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.agents.agent_tool_gateway_service",
+      "source_path": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+      "target": "services.runtime",
+      "target_path": "src/aipinho/services/runtime/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.agents.agent_tool_gateway_service",
+      "source_path": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+      "target": "services.policy_kernel",
+      "target_path": "src/aipinho/services/policy_kernel/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.agents.agent_tool_gateway_service",
+      "source_path": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+      "target": "services.tools",
+      "target_path": "src/aipinho/services/tools/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.agents.agent_tool_gateway_service",
+      "source_path": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+      "target": "services.workspaces",
+      "target_path": "src/aipinho/services/workspaces/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.agents.agent_local_action_planner",
+      "source_path": "src/aipinho/services/agents/agent_local_action_planner.py",
+      "target": "core",
+      "target_path": "src/aipinho/core/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.agents.agent_local_action_planner",
+      "source_path": "src/aipinho/services/agents/agent_local_action_planner.py",
+      "target": "schemas.agents",
+      "target_path": "src/aipinho/schemas/agents/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.agents.agent_local_action_planner",
+      "source_path": "src/aipinho/services/agents/agent_local_action_planner.py",
+      "target": "services.runtime",
+      "target_path": "src/aipinho/services/runtime/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.agents.agent_local_action_planner",
+      "source_path": "src/aipinho/services/agents/agent_local_action_planner.py",
+      "target": "services.policy_kernel",
+      "target_path": "src/aipinho/services/policy_kernel/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.agents.agent_local_action_planner",
+      "source_path": "src/aipinho/services/agents/agent_local_action_planner.py",
+      "target": "services.tools",
+      "target_path": "src/aipinho/services/tools/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.models.llama_cpp_provider",
+      "source_path": "src/aipinho/services/models/llama_cpp_provider.py",
+      "target": "core",
+      "target_path": "src/aipinho/core/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.models.llama_cpp_provider",
+      "source_path": "src/aipinho/services/models/llama_cpp_provider.py",
+      "target": "schemas.models",
+      "target_path": "src/aipinho/schemas/models/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.models.llama_cpp_provider",
+      "source_path": "src/aipinho/services/models/llama_cpp_provider.py",
+      "target": "adapters.llm_providers",
+      "target_path": "src/aipinho/adapters/llm_providers/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.tools.governed_tool_execution_service",
+      "source_path": "src/aipinho/services/tools/governed_tool_execution_service.py",
+      "target": "core",
+      "target_path": "src/aipinho/core/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.tools.governed_tool_execution_service",
+      "source_path": "src/aipinho/services/tools/governed_tool_execution_service.py",
+      "target": "schemas.tools",
+      "target_path": "src/aipinho/schemas/tools/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.tools.governed_tool_execution_service",
+      "source_path": "src/aipinho/services/tools/governed_tool_execution_service.py",
+      "target": "services.runtime",
+      "target_path": "src/aipinho/services/runtime/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.tools.governed_tool_execution_service",
+      "source_path": "src/aipinho/services/tools/governed_tool_execution_service.py",
+      "target": "services.policy_kernel",
+      "target_path": "src/aipinho/services/policy_kernel/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.tools.governed_tool_execution_service",
+      "source_path": "src/aipinho/services/tools/governed_tool_execution_service.py",
+      "target": "adapters",
+      "target_path": "src/aipinho/adapters/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.validation.validation_gate_service",
+      "source_path": "src/aipinho/services/validation/validation_gate_service.py",
+      "target": "core",
+      "target_path": "src/aipinho/core/__init__.py",
+      "type": "import",
+      "critical": true
+    },
+    {
+      "source": "services.validation.validation_gate_service",
+      "source_path": "src/aipinho/services/validation/validation_gate_service.py",
+      "target": "schemas.validation",
+      "target_path": "src/aipinho/schemas/validation/__init__.py",
+      "type": "import",
+      "critical": true
+    }
+  ],
+  "dependency_layers": {
+    "entrypoint": ["app_factory"],
+    "app_factory": ["core.local_environment", "api.routers", "services.runtime.task_queue_maintenance_service"],
+    "core.local_environment": ["utils"],
+    "services.policy_kernel": ["core", "registries", "schemas.policy"],
+    "services.runtime": ["core", "repositories", "schemas.runtime", "services.policy_kernel"],
+    "services.chat": ["core", "schemas.chat", "services.runtime", "services.policy_kernel", "services.memory", "services.models", "services.tools"],
+    "services.agents": ["core", "schemas.agents", "services.runtime", "services.policy_kernel", "services.tools", "services.workspaces"],
+    "services.models": ["core", "schemas.models", "adapters.llm_providers"],
+    "services.tools": ["core", "schemas.tools", "services.runtime", "services.policy_kernel", "adapters"],
+    "services.validation": ["core", "schemas.validation"]
+  },
+  "circular_dependencies": [],
+  "hub_dependencies": [
+    {
+      "hub": "services.policy_kernel",
+      "dependents": ["services.runtime", "services.chat", "services.agents", "services.tools"],
+      "critical": true
+    },
+    {
+      "hub": "services.runtime",
+      "dependents": ["services.chat", "services.agents", "services.tools"],
+      "critical": true
+    },
+    {
+      "hub": "core",
+      "dependents": ["services.policy_kernel", "services.runtime", "services.chat", "services.agents", "services.models", "services.tools", "services.validation"],
+      "critical": true
+    }
+  ]
+}

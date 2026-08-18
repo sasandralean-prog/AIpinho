@@ -1,0 +1,50 @@
+schema_version: 1
+
+curated_memory:
+  enabled: true
+  mode: curated_persistence
+  require_candidate: true
+  require_candidate_validation: true
+  require_explicit_approval: true
+  require_source: true
+  require_evidence_for_technical_memory: true
+  require_scope: true
+  require_sensitivity_scan: true
+  require_dedupe_resolution: true
+  require_conflict_resolution: true
+  require_versioning: true
+  require_trace: true
+  require_audit: true
+
+usage:
+  use_in_chat_automatically: false
+  use_in_prompt_assembly_automatically: false
+  use_in_role_pipeline_automatically: false
+  allow_explicit_read: true
+  allow_search: true
+
+disabled:
+  vectorstore: true
+  embeddings: true
+  rag: true
+  automatic_learning: true
+  model_decides_approval: true
+  raw_log_storage: true
+  full_file_content_storage: true
+
+allowed_memory_kinds:
+  - architecture_decision
+  - policy_decision
+  - validation_learning
+  - bug_fix_summary
+  - patch_outcome
+  - runtime_behavior
+  - project_constraint
+  - user_instruction
+  - operational_procedure
+  - known_limitation
+  - testing_guidance
+  - risk_pattern
+  - design_rationale
+
+legacy_rag_never_auto_memory: true

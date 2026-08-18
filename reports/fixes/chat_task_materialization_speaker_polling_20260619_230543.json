@@ -1,0 +1,24 @@
+{
+  "verdict": "approved",
+  "root_causes": [
+    "chat_preview_not_materialized_into_task_run",
+    "canonical_operation_not_recognized_by_governed_write_adapter",
+    "speaker_updates_not_exposed_as_incremental_sanitized_feed"
+  ],
+  "endpoint_added": "/api/v1/task-runs/{run_id}/speaker/updates",
+  "poll_interval_seconds": 5,
+  "raw_included": false,
+  "validation": {
+    "py_compile": "passed",
+    "focused_python_tests": {"passed": 22, "failed": 0},
+    "android_focused_test": "passed",
+    "task_runtime_completion_integration": "passed_after_context_output_evidence_fix"
+  },
+  "safety": {
+    "specific_case_rules_added": false,
+    "hardcoded_workspace_or_prompt": false,
+    "preview_executes": false,
+    "approval_bypassed": false,
+    "raw_exposed_to_speaker": false
+  }
+}

@@ -1,0 +1,256 @@
+{
+  "generated_at": "2026-08-13T07:00:08.353627+00:00",
+  "verdict": "FIRETEST5_PHASE_PROGRESSION_BLOCKED_AT_PHASE_3_PUBLIC_RUNTIME_BEFORE_ACCEPTED_RUNNING",
+  "session_id": "firetest5_full_clean_comparison_20260813_062041",
+  "phase1": {
+    "source_report": "C:\\Dev\\AIpinho\\reports\\firetest5\\full_clean_comparison_20260813_062041\\firetest5_full_clean_comparison_report.md",
+    "task_run_id": "task_run_0ec7859b6d674b17a759b932cff4493a",
+    "status": "completed",
+    "result_status": "completed",
+    "client_response_status": "accepted_running",
+    "client_response_time_ms": 6197,
+    "artifact_created_count": 4,
+    "artifacts": [
+      {
+        "logical_path": "reports/firetest5/phase1_discovery.md",
+        "status": "ready",
+        "validation_status": "validated",
+        "size_bytes": 9556,
+        "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_b15303219a3a49a6b6fed57888bd058f_reports__firetest5__phase1_discovery.md",
+        "sha256": "8337ff7bc11b52e1fdccdceb8719ae72448914abf2ee6fa306e6de75e115ce92"
+      },
+      {
+        "logical_path": "reports/firetest5/project_inventory.md",
+        "status": "ready",
+        "validation_status": "validated",
+        "size_bytes": 9557,
+        "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_3ac2aae1ae784351913adabfbf3e3c76_reports__firetest5__project_inventory.md",
+        "sha256": "e7cca0b0364ef330b9cccc48fc186c474ffdb75d7974b31ce9762c1e913e1bc3"
+      },
+      {
+        "logical_path": "reports/firetest5/music_inventory.csv",
+        "status": "ready",
+        "validation_status": "validated",
+        "size_bytes": 8947,
+        "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_9af616866a4043a4b68a29ab363785a3_reports__firetest5__music_inventory.csv",
+        "sha256": "1b22ac453048b3b4a3f937d0cb82e1aa36cbaca4713f3a0dfc836a670d790251"
+      },
+      {
+        "logical_path": "reports/firetest5/evidence_phase1.zip",
+        "status": "ready",
+        "validation_status": "validated",
+        "size_bytes": 209511,
+        "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_7cbadcaa611a46399945b2cd143ada62_reports__firetest5__evidence_phase1.zip",
+        "sha256": "f6c51034a7e0f30aa431b2390c3f65237f884b5376c6d56884a6f9954354fb3d"
+      }
+    ],
+    "semantic_findings": [
+      "music_inventory.csv materialized as findings CSV rather than rich per-track inventory",
+      "observational_cognition not_available",
+      "relationship_cognition not_available"
+    ]
+  },
+  "phase2": {
+    "source_report": "C:\\Dev\\AIpinho\\reports\\firetest5\\phase_progression_after_phase1_20260813_035347\\phase2\\phase2_report.md",
+    "task_run_id": "task_run_7fcc0b20ecd0418b8a82f025739ddce3",
+    "status": "completed",
+    "result_status": "completed",
+    "client_response_status": "accepted_running",
+    "client_response_time_ms": 6478,
+    "validation_status": "passed",
+    "truth_safe_to_report_success": true,
+    "artifact_created_count": 2,
+    "terminal_event_count": 1,
+    "artifacts": [
+      {
+        "artifact_id": "artifact_fadff82aca1242118dc69bbffc83ec42",
+        "logical_path": "reports/firetest5/phase2_static_analysis.md",
+        "status": "ready",
+        "validation_status": "validated",
+        "size_bytes": 9251,
+        "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_fadff82aca1242118dc69bbffc83ec42_reports__firetest5__phase2_static_analysis.md",
+        "sha256": "4ed547c6b86ba76629623ca32d107d211fcf3a1d9f3a48b53160bf61015002da"
+      },
+      {
+        "artifact_id": "artifact_d3d44bf71789437785f75fa559ebaa0b",
+        "logical_path": "reports/firetest5/static_risk_matrix.md",
+        "status": "ready",
+        "validation_status": "validated",
+        "size_bytes": 9247,
+        "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_d3d44bf71789437785f75fa559ebaa0b_reports__firetest5__static_risk_matrix.md",
+        "sha256": "0c99bb98cd31c1f45941c1e34486d2e3de09bae4c8091b60a37d1a01a9413324"
+      }
+    ],
+    "project_analysis": {
+      "status": "partial",
+      "reason_code": "PROJECT_ANALYSIS_COMPLETED",
+      "safe_to_continue": true,
+      "files_discovered": 76,
+      "files_selected": 12,
+      "files_read": 12,
+      "files_partial_read": 0,
+      "files_skipped": 0,
+      "bytes_read": 39249,
+      "bytes_skipped_estimated": 0,
+      "read_decision_count": 12,
+      "read_decision_sample": [
+        {
+          "candidate_path": "src/main/kotlin/com/pinhoabacaxi/musicasdesktop/metadata/DesktopAudioMetadata.kt",
+          "relative_path": "src/main/kotlin/com/pinhoabacaxi/musicasdesktop/metadata/DesktopAudioMetadata.kt",
+          "file_size_bytes": 357,
+          "estimated_read_cost": 1,
+          "remaining_stage_budget_ms": null,
+          "remaining_total_budget_ms": null,
+          "remaining_context_bytes": 120000,
+          "single_file_budget_ms": 3000,
+          "decision": "read",
+          "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+          "bytes_requested": 30000,
+          "provenance": "FileContextBuilder._read_decision"
+        },
+        {
+          "candidate_path": "src/test/kotlin/com/pinhoabacaxi/musicasdesktop/audio/dsp/DesktopEqualizerTemplateJsonCodecTest.kt",
+          "relative_path": "src/test/kotlin/com/pinhoabacaxi/musicasdesktop/audio/dsp/DesktopEqualizerTemplateJsonCodecTest.kt",
+          "file_size_bytes": 2365,
+          "estimated_read_cost": 2,
+          "remaining_stage_budget_ms": null,
+          "remaining_total_budget_ms": null,
+          "remaining_context_bytes": 119643,
+          "single_file_budget_ms": 3000,
+          "decision": "read",
+          "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+          "bytes_requested": 30000,
+          "provenance": "FileContextBuilder._read_decision"
+        },
+        {
+          "candidate_path": "src/main/kotlin/com/pinhoabacaxi/musicasdesktop/audio/AdaptivePcmDecoder.kt",
+          "relative_path": "src/main/kotlin/com/pinhoabacaxi/musicasdesktop/audio/AdaptivePcmDecoder.kt",
+          "file_size_bytes": 1533,
+          "estimated_read_cost": 1,
+          "remaining_stage_budget_ms": null,
+          "remaining_total_budget_ms": null,
+          "remaining_context_bytes": 117278,
+          "single_file_budget_ms": 3000,
+          "decision": "read",
+          "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+          "bytes_requested": 30000,
+          "provenance": "FileContextBuilder._read_decision"
+        },
+        {
+          "candidate_path": "src/main/kotlin/com/pinhoabacaxi/musicasdesktop/metadata/JAudioTaggerMetadataReader.kt",
+          "relative_path": "src/main/kotlin/com/pinhoabacaxi/musicasdesktop/metadata/JAudioTaggerMetadataReader.kt",
+          "file_size_bytes": 2203,
+          "estimated_read_cost": 2,
+          "remaining_stage_budget_ms": null,
+          "remaining_total_budget_ms": null,
+          "remaining_context_bytes": 115745,
+          "single_file_budget_ms": 3000,
+          "decision": "read",
+          "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+          "bytes_requested": 30000,
+          "provenance": "FileContextBuilder._read_decision"
+        },
+        {
+          "candidate_path": "src/test/kotlin/com/pinhoabacaxi/musicasdesktop/smoke/AudibleM4aPlaybackSmokeTest.kt",
+          "relative_path": "src/test/kotlin/com/pinhoabacaxi/musicasdesktop/smoke/AudibleM4aPlaybackSmokeTest.kt",
+          "file_size_bytes": 3092,
+          "estimated_read_cost": 3,
+          "remaining_stage_budget_ms": null,
+          "remaining_total_budget_ms": null,
+          "remaining_context_bytes": 113542,
+          "single_file_budget_ms": 3000,
+          "decision": "read",
+          "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+          "bytes_requested": 30000,
+          "provenance": "FileContextBuilder._read_decision"
+        }
+      ],
+      "remaining_budget_ms_at_return": 282375,
+      "handoff_reserve_reached": false,
+      "partial_readiness": {
+        "safe_to_continue_to_artifact_runtime": true,
+        "confidence": 0.72,
+        "missing_context": [],
+        "reason_codes": [
+          "PROJECT_ANALYSIS_PARTIAL_CONTEXT_AVAILABLE"
+        ]
+      }
+    }
+  },
+  "phase3_block": {
+    "phase": 3,
+    "name": "Experimental Diagnosis",
+    "status": "timeout_blocked",
+    "reason_code": "PUBLIC_RUNTIME_BLOCKED_BEFORE_ACCEPTED_RUNNING",
+    "http_status": 200,
+    "elapsed_ms": 11469,
+    "task_run_created": false,
+    "task_run_id": null,
+    "safe_to_report_success": false,
+    "message": "PUBLIC_RUNTIME_TIMEOUT_BLOCKED\nreason_code=PUBLIC_RUNTIME_BLOCKED_BEFORE_ACCEPTED_RUNNING\nworkspace=C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop\nsafe_to_report_success=false",
+    "warnings": [
+      "timeout_blocked_is_not_success",
+      "canonical_lifecycle:readonly_or_planning"
+    ]
+  },
+  "post_block_attempts_invalid_progression": [
+    {
+      "phase": 4,
+      "status_code": 200,
+      "elapsed_ms": 28332,
+      "response_status": "timeout_blocked",
+      "reason_code": "PUBLIC_RUNTIME_BLOCKED_BEFORE_ACCEPTED_RUNNING",
+      "task_run_id": null,
+      "task_created": false,
+      "valid_progression": false
+    },
+    {
+      "phase": 5,
+      "status_code": 200,
+      "elapsed_ms": 7953,
+      "response_status": "timeout_blocked",
+      "reason_code": "PUBLIC_RUNTIME_BLOCKED_BEFORE_ACCEPTED_RUNNING",
+      "task_run_id": null,
+      "task_created": false,
+      "valid_progression": false
+    },
+    {
+      "phase": 6,
+      "status_code": 200,
+      "elapsed_ms": 7880,
+      "response_status": "timeout_blocked",
+      "reason_code": "PUBLIC_RUNTIME_BLOCKED_BEFORE_ACCEPTED_RUNNING",
+      "task_run_id": null,
+      "task_created": false,
+      "valid_progression": false
+    }
+  ],
+  "queue_after": {
+    "status": "ok",
+    "cancelled_run_ids": [],
+    "cancelled_approval_ids": [],
+    "warnings": [],
+    "snapshot": {
+      "status": "ok",
+      "enabled": true,
+      "max_pending_tasks": 25,
+      "max_wait_seconds": 86400,
+      "active_count": 0,
+      "pending_count": 0,
+      "requires_decision_count": 0,
+      "total_visible": 0,
+      "items": [],
+      "last_reconciled_at": "2026-08-13T07:00:08.314021+00:00",
+      "warnings": []
+    }
+  },
+  "storage_after": {
+    "status": "ok",
+    "run_dirs_seen": 49,
+    "missing_index_count": 0,
+    "missing_index_run_ids": [],
+    "large_run_count": 0,
+    "large_runs": [],
+    "threshold_bytes": 1000000
+  }
+}

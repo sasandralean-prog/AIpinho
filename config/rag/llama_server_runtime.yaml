@@ -1,0 +1,49 @@
+schema_version: 1
+
+server_defaults:
+  host: "127.0.0.1"
+  startup_timeout_seconds: 45
+  request_timeout_seconds: 30
+  no_window: true
+  isolate_process_group: true
+  max_input_chars: 12000
+  health_paths:
+    - "/health"
+    - "/v1/models"
+
+test_runtime:
+  disable_real_runtime_under_pytest: true
+  opt_in_env: AIPINHO_ENABLE_REAL_RAG_RUNTIME_TESTS
+
+embedding:
+  enabled: true
+  auto_start: true
+  provider_id: llama_cpp_embedding
+  model_id: qwen3_embedding_4b_q5_k_m
+  port: 19191
+  pooling: mean
+  endpoint_paths:
+    - "/v1/embeddings"
+    - "/embeddings"
+    - "/embedding"
+  server_args:
+    - "--embedding"
+    - "--pooling"
+    - "mean"
+
+reranker:
+  enabled: true
+  auto_start: true
+  provider_id: llama_cpp_reranker
+  model_id: qwen3_reranker_4b_q5_k_m
+  port: 19192
+  pooling: rank
+  endpoint_paths:
+    - "/v1/rerank"
+    - "/v1/reranking"
+    - "/rerank"
+    - "/reranking"
+  server_args:
+    - "--rerank"
+    - "--pooling"
+    - "rank"

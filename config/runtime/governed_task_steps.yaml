@@ -1,0 +1,23 @@
+schema_version: 1
+
+step_types:
+  validate_runtime: {enabled: true, action: validate_runtime, side_effect: false, required: true}
+  validate_workspace: {enabled: true, action: inspect_path, side_effect: false, required: true}
+  build_project_tree: {enabled: true, action: project_tree, side_effect: false, required: true}
+  build_file_context: {enabled: true, action: project_context, side_effect: false, required: true}
+  run_project_analysis: {enabled: true, action: project_analysis, side_effect: false, required: true}
+  generate_project_report: {enabled: true, action: project_report, side_effect: false, required: false}
+  run_role_pipeline: {enabled: true, action: role_pipeline_run, side_effect: false, required: false}
+  execute_web_search: {enabled: true, action: web_request, side_effect: true, required: true}
+  generate_artifact: {enabled: true, action: artifact_generate, side_effect: true, required: true}
+  validate_artifact: {enabled: true, action: validate_runtime, side_effect: false, required: true}
+  execute_filesystem_operation: {enabled: true, action: write_files, side_effect: true, required: true}
+  validate_filesystem_result: {enabled: true, action: validate_runtime, side_effect: false, required: true}
+  execute_patch_pipeline: {enabled: true, action: apply_patch, side_effect: true, required: true}
+  validate_patch_result: {enabled: true, action: validate_runtime, side_effect: false, required: true}
+  execute_governed_shell: {enabled: true, action: run_command, side_effect: true, required: true}
+  validate_shell_result: {enabled: true, action: validate_runtime, side_effect: false, required: true}
+  execute_project_generation: {enabled: true, action: write_files, side_effect: true, required: true}
+  validate_project_result: {enabled: true, action: validate_runtime, side_effect: false, required: true}
+  execute_validation: {enabled: true, action: validate_runtime, side_effect: false, required: true}
+  compose_final_result: {enabled: true, action: compose_result, side_effect: false, required: true}

@@ -1,0 +1,36 @@
+{
+  "run_id": "agent_run_33acb23c9ad744e3a7e082951e318969",
+  "session_id": "agent_session_d5f05975c86640b680b022d86c0909a8",
+  "agent_id": "lucio",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "cancelled",
+  "operation_type": "workspace_operation",
+  "workspace_id": "C:\\Users\\rafae\\Documents\\AIpinhoTestes",
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [
+    "read_workspace",
+    "scan_workspace",
+    "create_file",
+    "workspace_write"
+  ],
+  "started_at": "2026-06-15T03:38:41+00:00",
+  "completed_at": "2026-06-22T15:21:18+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [
+    "agent_memory_candidate_bd9d92d5a8cb46ab9e1f2c68e6b5454e"
+  ],
+  "memory_warnings": [],
+  "final_message_id": "agent_msg_162c617c5f0b4102bb09cee564a96879",
+  "error_code": "stale_runtime_cleanup",
+  "metadata_sanitized": {
+    "hygiene_preview_id": "cleanup_preview_6bcff1cc4a6e40c988e350dd38f972b4",
+    "previous_status": "delegation_running"
+  }
+}

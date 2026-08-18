@@ -1,0 +1,16 @@
+schema_version: 1
+profile:
+  id: shell
+  operation_types: [shell_preview, shell_execute, test_run, build_run]
+  allowed_step_types: [validate_runtime, validate_workspace, execute_governed_shell, validate_shell_result, compose_final_result]
+  steps: [validate_runtime, validate_workspace, execute_governed_shell, validate_shell_result, compose_final_result]
+  allowed_actions: [run_command, run_tests]
+  allowed_side_effects: [shell]
+  required_capabilities: [shell]
+  approval_scope: shell_execution
+  workspace_requirements: {required: true, allowed_roles: [target_mutable, system_mutable]}
+  forbidden: [destructive_shell, git_write_shell, unknown_shell]
+  max_duration_seconds: 240
+  output_validation_required: true
+  artifact_registration_required: false
+  default_safe_to_execute_policy: policy_and_approval

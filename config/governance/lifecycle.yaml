@@ -1,0 +1,16 @@
+canonical_governance_lifecycle:
+  enabled: true
+  source_of_truth: GovernanceLifecycleSnapshot
+  permission_vocabulary:
+    - allowed
+    - ask
+    - denied
+    - needs_clarification
+    - invalid
+    - expired
+    - stale
+  preview_kinds:
+    - plan_only_preview
+    - executable_task_preview
+  final_status_owner: canonical_completion_and_speaker_truth
+  routes_should_delegate: true

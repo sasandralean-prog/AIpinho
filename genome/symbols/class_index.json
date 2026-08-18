@@ -1,0 +1,133 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "classes": [
+    {
+      "class": "PolicyKernelService",
+      "file": "src/aipinho/services/policy_kernel/policy_kernel_service.py",
+      "module": "services.policy_kernel",
+      "methods": ["UNKNOWN"],
+      "visibility": "public",
+      "base_classes": ["UNKNOWN"],
+      "who_instantiates": ["UNKNOWN"]
+    },
+    {
+      "class": "CapabilityGateService",
+      "file": "src/aipinho/services/policy_kernel/capability_gate_service.py",
+      "module": "services.policy_kernel",
+      "methods": ["UNKNOWN"],
+      "visibility": "public",
+      "base_classes": ["UNKNOWN"],
+      "who_instantiates": ["UNKNOWN"]
+    },
+    {
+      "class": "WorkspaceRoleContractService",
+      "file": "src/aipinho/services/policy_kernel/workspace_role_contract_service.py",
+      "module": "services.policy_kernel",
+      "methods": ["UNKNOWN"],
+      "visibility": "public",
+      "base_classes": ["UNKNOWN"],
+      "who_instantiates": ["UNKNOWN"]
+    },
+    {
+      "class": "TaskRuntimeService",
+      "file": "src/aipinho/services/runtime/task_runtime_service.py",
+      "module": "services.runtime",
+      "methods": ["UNKNOWN"],
+      "visibility": "public",
+      "base_classes": ["UNKNOWN"],
+      "who_instantiates": ["UNKNOWN"]
+    },
+    {
+      "class": "ExecutionGraphService",
+      "file": "src/aipinho/services/runtime/execution_graph_service.py",
+      "module": "services.runtime",
+      "methods": ["UNKNOWN"],
+      "visibility": "public",
+      "base_classes": ["UNKNOWN"],
+      "who_instantiates": ["UNKNOWN"]
+    },
+    {
+      "class": "IntelligentPlannerService",
+      "file": "src/aipinho/services/runtime/intelligent_planner_service.py",
+      "module": "services.runtime",
+      "methods": ["UNKNOWN"],
+      "visibility": "public",
+      "base_classes": ["UNKNOWN"],
+      "who_instantiates": ["UNKNOWN"]
+    },
+    {
+      "class": "ChatService",
+      "file": "src/aipinho/services/chat/chat_service.py",
+      "module": "services.chat",
+      "methods": ["UNKNOWN"],
+      "visibility": "public",
+      "base_classes": ["UNKNOWN"],
+      "who_instantiates": ["UNKNOWN"]
+    },
+    {
+      "class": "ChatOperationRouterService",
+      "file": "src/aipinho/services/chat/chat_operation_router_service.py",
+      "module": "services.chat",
+      "methods": ["UNKNOWN"],
+      "visibility": "public",
+      "base_classes": ["UNKNOWN"],
+      "who_instantiates": ["UNKNOWN"]
+    },
+    {
+      "class": "AgentToolGatewayService",
+      "file": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+      "module": "services.agents",
+      "methods": ["UNKNOWN"],
+      "visibility": "public",
+      "base_classes": ["UNKNOWN"],
+      "who_instantiates": ["UNKNOWN"]
+    },
+    {
+      "class": "AgentLocalActionPlanner",
+      "file": "src/aipinho/services/agents/agent_local_action_planner.py",
+      "module": "services.agents",
+      "methods": ["UNKNOWN"],
+      "visibility": "public",
+      "base_classes": ["UNKNOWN"],
+      "who_instantiates": ["UNKNOWN"]
+    },
+    {
+      "class": "LlamaCppProvider",
+      "file": "src/aipinho/services/models/llama_cpp_provider.py",
+      "module": "services.models",
+      "methods": ["UNKNOWN"],
+      "visibility": "public",
+      "base_classes": ["UNKNOWN"],
+      "who_instantiates": ["UNKNOWN"]
+    },
+    {
+      "class": "GovernedToolExecutionService",
+      "file": "src/aipinho/services/tools/governed_tool_execution_service.py",
+      "module": "services.tools",
+      "methods": ["UNKNOWN"],
+      "visibility": "public",
+      "base_classes": ["UNKNOWN"],
+      "who_instantiates": ["UNKNOWN"]
+    },
+    {
+      "class": "ValidationGateService",
+      "file": "src/aipinho/services/validation/validation_gate_service.py",
+      "module": "services.validation",
+      "methods": ["UNKNOWN"],
+      "visibility": "public",
+      "base_classes": ["UNKNOWN"],
+      "who_instantiates": ["UNKNOWN"]
+    }
+  ],
+  "total_classes": 12,
+  "modules": {
+    "services.policy_kernel": 3,
+    "services.runtime": 3,
+    "services.chat": 2,
+    "services.agents": 2,
+    "services.models": 1,
+    "services.tools": 1,
+    "services.validation": 1
+  }
+}

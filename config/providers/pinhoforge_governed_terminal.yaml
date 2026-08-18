@@ -1,0 +1,17 @@
+version: 1
+provider:
+  enabled: true
+  allowed_source_scopes:
+    - sandbox
+    - target_mutable
+    - registered_workspace_readonly
+    - artifact_workspace
+  timeout_seconds: 60
+  output_limit_kb: 64
+  catalog_commands:
+    - command_id: powershell-files-recursive
+      command_line: Get-ChildItem -Recurse -File | Select-Object FullName
+      shell_category: readonly_shell
+    - command_id: powershell-total-size
+      command_line: Get-ChildItem . -Recurse -File | Measure-Object -Property Length -Sum
+      shell_category: readonly_shell

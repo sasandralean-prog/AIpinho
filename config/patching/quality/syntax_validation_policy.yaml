@@ -1,0 +1,9 @@
+schema_version: 1
+
+syntax_validation:
+  enabled: true
+  python_ast: true
+  json: true
+  yaml: true
+  toml: true
+  execute_imports: false

@@ -1,0 +1,46 @@
+{
+  "session_id": "session_2d008a4ce16943c1beca4315ff299996",
+  "status": "active",
+  "created_at": "2026-06-21T23:09:49.563893+00:00",
+  "updated_at": "2026-06-21T23:09:49.614548+00:00",
+  "expires_at": "2026-06-22T03:09:49.563893+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Gere um ZIP com três arquivos txt simples dentro da sandbox.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_75ce13747bf44c55a9263d06b20a42d5",
+    "intent_type": "filesystem_write_request",
+    "task_type": "filesystem_write",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_clarification",
+    "contract_type": "filesystem_write",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [
+      "write_files"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [
+    "requires_clarification"
+  ],
+  "trace_refs": []
+}

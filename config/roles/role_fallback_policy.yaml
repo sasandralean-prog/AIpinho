@@ -1,0 +1,13 @@
+schema_version: 1
+
+fallbacks:
+  deterministic_summary:
+    enabled: true
+  safe_empty_findings:
+    enabled: true
+  safe_policy_explanation:
+    enabled: true
+  speaker_safe_error:
+    enabled: true
+  skip_optional_pass:
+    enabled: true

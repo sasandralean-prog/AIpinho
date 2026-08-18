@@ -1,0 +1,46 @@
+{
+  "session_id": "session_d62a584a8c1647f391650c84201f0279",
+  "status": "active",
+  "created_at": "2026-06-09T02:55:03.409128+00:00",
+  "updated_at": "2026-06-09T02:55:03.424744+00:00",
+  "expires_at": "2026-06-09T06:55:03.409128+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Analise em modo somente leitura os arquivos do projeto em \"C:\\Dev\\AIpinho\" e produza um resumo honesto. Nao altere arquivos.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_822d43204f3149dea859f43106aea2a7",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Dev\\AIpinho",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": true,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Dev\\AIpinho",
+  "active_task_draft_id": "draft_6c8a1f1716334178ac9794014326350d",
+  "warnings": [],
+  "trace_refs": []
+}

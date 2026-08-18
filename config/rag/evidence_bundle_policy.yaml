@@ -1,0 +1,10 @@
+schema_version: 1
+
+evidence_bundle:
+  enabled: true
+  require_evidence_id: true
+  require_source_ref: true
+  require_citation: true
+  require_excerpt: true
+  reject_secret_evidence: true
+  reject_uncited_evidence: true

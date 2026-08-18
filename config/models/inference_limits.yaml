@@ -1,0 +1,23 @@
+﻿schema_version: 1
+
+limits:
+  max_input_chars: 20000
+  max_estimated_input_tokens: 4096
+  max_output_tokens: 1024
+  default_output_tokens: 256
+  max_concurrent_invocations: 1
+  timeout_seconds: 60
+  max_stdout_chars: 20000
+  max_stderr_chars: 8000
+
+memory:
+  require_ram_estimate: true
+  max_estimated_ram_gb: 16
+  block_if_estimate_unknown_when_real_inference: false
+  warn_if_estimated_ram_gb_above: 8
+
+safety:
+  block_empty_prompt: true
+  block_prompt_without_safety_envelope: true
+  block_prompt_without_output_contract: true
+  block_if_context_truncated_without_warning: false

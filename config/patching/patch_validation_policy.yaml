@@ -1,0 +1,16 @@
+schema_version: 1
+
+patch_validation:
+  enabled: true
+  validate_targets: true
+  validate_evidence: true
+  validate_diff_format: true
+  validate_risk: true
+  validate_no_apply: true
+  validate_no_write: true
+  validate_no_shell: true
+  validate_no_git: true
+  reject_critical_risk: true
+  reject_missing_evidence: true
+  reject_empty_diff: true
+  reject_unreadable_target: true

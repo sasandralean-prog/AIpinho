@@ -1,0 +1,24 @@
+schema_version: 1
+
+ranking:
+  enabled: true
+  deterministic_only: true
+  algorithm: weighted_lexical
+  use_embeddings: false
+  use_llm_reranker: false
+
+weights:
+  exact_phrase: 3.0
+  token_overlap: 1.0
+  title_match: 1.5
+  source_priority: 1.0
+  evidence_match: 2.0
+  recency: 0.2
+  quality_status_passed: 0.5
+  active_memory: 0.5
+
+dedupe:
+  enabled: true
+  same_source_same_excerpt_threshold: 0.90
+  prefer_higher_score: true
+  prefer_stronger_citation: true

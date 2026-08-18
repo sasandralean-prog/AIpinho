@@ -1,0 +1,11 @@
+schema_version: 1
+
+trace:
+  enabled: true
+  include_role_id: true
+  include_model_id: true
+  include_fallback: true
+  include_manual_escalation: true
+  include_evaluation_status: true
+  raw_prompt_logging: false
+  raw_output_logging: false

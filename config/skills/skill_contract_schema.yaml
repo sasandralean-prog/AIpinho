@@ -1,0 +1,25 @@
+schema_version: 1
+required_fields:
+- allowed_tools
+- anti_triggers
+- approval_required
+- category
+- debugger_trace_policy
+- display_name
+- events_emitted
+- examples
+- failure_modes
+- fallback
+- forbidden_tools
+- input_contract
+- namespace
+- output_contract
+- purpose
+- required_capabilities
+- required_context_purpose
+- risk_level
+- skill_id
+- validation
+- when_not_to_use
+- when_to_use
+real_execution_supported: false

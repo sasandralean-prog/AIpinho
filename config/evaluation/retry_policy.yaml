@@ -1,0 +1,18 @@
+﻿schema_version: 1
+
+retry:
+  enabled: true
+  max_retries: 1
+  retry_on:
+    - invalid_json
+    - truncation
+    - missing_required_section
+  do_not_retry_on:
+    - critical_safety_violation
+    - secret_leak
+    - policy_bypass
+    - forbidden_root
+  retry_strategy:
+    invalid_json: "ask_for_json_only"
+    truncation: "reduce_output_scope"
+    missing_required_section: "ask_for_missing_sections"

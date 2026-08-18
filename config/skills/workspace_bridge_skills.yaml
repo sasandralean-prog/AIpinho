@@ -1,0 +1,37 @@
+skills:
+  - skill_id: external_path_detector
+    type: workspace_onboarding
+    side_effects: none
+    description: Detecta caminhos externos em prompts e oferece acoes governadas.
+  - skill_id: workspace_onboarding_assistant
+    type: workspace_onboarding
+    side_effects: registry_write
+    description: Registra workspace externo com papel source_readonly ou target_mutable.
+  - skill_id: source_readonly_inventory
+    type: workspace_readonly
+    side_effects: none
+    description: Inventaria fonte externa registrada sem escrever nela.
+  - skill_id: workspace_import_preview
+    type: sandbox_import
+    side_effects: preview_only
+    description: Planeja importacao de workspace externo para sandbox.
+  - skill_id: workspace_import_apply
+    type: sandbox_import
+    side_effects: sandbox_write
+    description: Copia fonte externa autorizada para sandbox governado.
+  - skill_id: project_profile_candidate_generator
+    type: project_profile
+    side_effects: internal_metadata
+    description: Gera candidato de profile com base em marcadores genericos.
+  - skill_id: readonly_workspace_artifact_exporter
+    type: artifact_export
+    side_effects: artifact_store
+    description: Exporta fonte read-only como artifact tokenizado.
+  - skill_id: sandbox_to_project_promotion_planner
+    type: promotion
+    side_effects: preview_only
+    description: Compara origem sandbox e destino target_mutable para criar preview de promocao.
+  - skill_id: sandbox_to_project_promotion_apply
+    type: promotion
+    side_effects: governed_target_write
+    description: Aplica preview aprovado no target_mutable com snapshot e validacao.

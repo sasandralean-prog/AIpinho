@@ -1,0 +1,10 @@
+schema_version: 1
+
+audit:
+  enabled: true
+  log_blocked_attempts: true
+  log_plan_created: true
+  log_diff_generated: true
+  log_validation: true
+  do_not_log_secret_content: true
+  apply_logging_enabled: false

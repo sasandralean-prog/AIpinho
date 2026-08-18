@@ -1,0 +1,51 @@
+{
+  "verdict": "pass",
+  "component": "UniversalTaskSessionService._relationship_cognition_summary",
+  "allowed_payload": [
+    "status",
+    "candidate_count",
+    "observation_count",
+    "evidence_count",
+    "provenance_trace_count",
+    "conflict_count",
+    "negative_evidence_count",
+    "rendered_field_count",
+    "evidence_ref_count",
+    "provenance_ref_count",
+    "validation_ready_count",
+    "validated_relationship_count",
+    "conflicted_relationship_count",
+    "relation_families",
+    "confidence_summary",
+    "truth_eligible",
+    "validation_status",
+    "reason_codes",
+    "source"
+  ],
+  "forbidden_payload_checked": [
+    "candidate list",
+    "raw evidence payload",
+    "full provenance trace inline",
+    "file content",
+    "bound_relationship_observations",
+    "relationship_provenance_traces"
+  ],
+  "observed_behavior": {
+    "contains_counts": true,
+    "contains_status": true,
+    "contains_confidence_summary": true,
+    "contains_reason_codes": true,
+    "contains_refs_as_counts": true,
+    "contains_candidate_list": false,
+    "contains_raw_evidence_payload": false,
+    "contains_full_provenance_trace": false,
+    "contains_file_content": false,
+    "truth_eligible": false
+  },
+  "tests": [
+    "test_relationship_stack_end_to_end_candidate_reaches_validation_ready_without_truth",
+    "test_relationship_stack_renderer_materializes_payload_only_without_observing",
+    "test_relationship_cognition_summary_reports_rendered_fields_lightly",
+    "test_relationship_summary_reports_readiness_counts_lightly"
+  ]
+}

@@ -1,0 +1,34 @@
+﻿{
+    "speaker_truth_ready":  true,
+    "warnings":  [
+                     "operator UX smoke not executed",
+                     "chat approval card depends on current mobile view-model metadata availability"
+                 ],
+    "backend_ready":  true,
+    "verdict":  "APPROVAL_UX_READY_WITH_WARNINGS",
+    "launcher_changed":  [
+                             "apps/launcher/ui/api/pipeline_client.py",
+                             "apps/launcher/ui/tabs/pipeline_tab.py"
+                         ],
+    "smoke_real":  "not_executed",
+    "mobile_changed":  [
+                           "PipelineClient.kt",
+                           "PipelineScreen.kt",
+                           "ChatScreen.kt"
+                       ],
+    "tests":  [
+                  "py_compile passed",
+                  "compileDebugKotlin passed",
+                  "Android Chat/Pipeline focused unit tests passed",
+                  "44 backend approval/runtime tests passed"
+              ],
+    "endpoints_consumed":  [
+                               "/api/v1/approvals/pending",
+                               "/api/v1/approvals/{approval_id}/approve",
+                               "/api/v1/approvals/{approval_id}/deny",
+                               "/api/v1/tasks/{task_id}/approvals/approve-safe-batch",
+                               "/api/v1/tasks/{task_id}/approvals/deny-safe-batch"
+                           ],
+    "ux_operator_ready":  "partial",
+    "sprint":  "13"
+}

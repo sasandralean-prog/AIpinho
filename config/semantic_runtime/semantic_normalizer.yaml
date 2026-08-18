@@ -1,0 +1,90 @@
+schema_version: 1
+
+synonyms:
+  write_patch:
+    - corrigir
+    - ajustar
+    - editar
+    - modificar
+    - alterar
+    - consertar
+    - implementar
+    - patch
+    - file_modification_request
+    - patch_request
+    - implementation_request
+  repository_analysis:
+    - analisar
+    - analise
+    - análise
+    - inspecionar
+    - auditar
+    - diagnosticar
+    - revisar
+    - readonly_analysis
+    - project_analysis
+  public_knowledge_query:
+    - pesquisar
+    - pesquise
+    - buscar
+    - internet
+    - web
+    - noticia
+    - notícias
+    - public_fact_query
+  conversation:
+    - conversar
+    - explicar
+    - explique
+    - conversation
+
+intent_map:
+  write_patch: write_patch
+  repository_analysis: repository_analysis
+  public_knowledge_query: public_knowledge_query
+  conversation: conversation
+
+scope_map:
+  workspace_or_filesystem: repository
+  project: repository
+  repo: repository
+  repository: repository
+  public_knowledge: public_knowledge
+  chat: chat
+  unknown: unknown
+
+constraint_map:
+  read_only: read_only
+  no_write: write_forbidden
+  no_patch: patch_forbidden
+  no_shell: shell_forbidden
+  no_runtime: runtime_forbidden
+  approval_forbidden: approval_forbidden
+  write_forbidden: write_forbidden
+  patch_forbidden: patch_forbidden
+  shell_forbidden: shell_forbidden
+  runtime_forbidden: runtime_forbidden
+
+output_map:
+  report: report
+  relatorio: report
+  relatório: report
+  summary: summary
+  resumo: summary
+  plan: plan
+  plano: plan
+  diagnostic: diagnostic
+  diagnostico: diagnostic
+  diagnóstico: diagnostic
+  preview: preview
+  file: file
+  arquivo: file
+  artifact: artifact
+  artefato: artifact
+  apk: apk
+
+permission_map:
+  write_files: write_patch
+  apply_patch: write_patch
+  run_command: shell_execution
+  delete_file: destructive_filesystem

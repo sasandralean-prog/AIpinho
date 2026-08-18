@@ -1,0 +1,5 @@
+schema_version: 1
+patch_quality_gate:
+  enabled: true
+  apply_requires_passed_gate: true
+  replay_harness_reads_only: true

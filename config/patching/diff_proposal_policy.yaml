@@ -1,0 +1,26 @@
+schema_version: 1
+
+diff:
+  format: unified
+  include_file_headers: true
+  include_hunk_headers: true
+  include_context_lines: 3
+  max_context_lines: 5
+  require_original_content_snapshot: true
+  require_line_anchors_when_possible: true
+  reject_empty_diff: true
+  reject_binary_diff: true
+  reject_diff_without_target_file: true
+  reject_diff_with_apply_markers_only: true
+  allow_markdown_code_fence_output: true
+
+validation:
+  ensure_removed_lines_exist_in_original: true
+  ensure_hunks_apply_theoretically: true
+  ensure_no_target_outside_scope: true
+  ensure_no_forbidden_file_headers: true
+  ensure_no_absolute_forbidden_paths: true
+
+output:
+  max_diff_preview_chars: 50000
+  truncate_large_diff_preview: true

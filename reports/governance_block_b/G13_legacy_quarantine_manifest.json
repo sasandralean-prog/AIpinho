@@ -1,0 +1,39 @@
+{
+  "status": "G13_LEGACY_QUARANTINE_READY_PARTIAL",
+  "quarantine_root": "quarantine/legacy/governance/2026-06-26",
+  "moved": [
+    {
+      "from": "config/runtime/runtime_profiles.yaml",
+      "to": "quarantine/legacy/governance/2026-06-26/config/runtime/runtime_profiles.yaml",
+      "replacement": "config/governance/runtime_profiles.yaml",
+      "reason": "Legacy runtime profile disabled execution and conflicted with canonical governance runtime profiles.",
+      "post_move_references": 0
+    }
+  ],
+  "not_moved": [
+    {
+      "path": "src/aipinho/api/routers/chat_router.py",
+      "reason": "Still mounted for residual endpoints; critical public routes are already shadowed by governance_lifecycle_router."
+    },
+    {
+      "path": "src/aipinho/api/routers/continue_integration_router.py",
+      "reason": "Still mounted for residual Continue endpoints; OpenAI-compatible critical endpoints are canonical first."
+    },
+    {
+      "path": "src/aipinho/services/chat/chat_service.py",
+      "reason": "Still used as conversation/content provider after canonical lifecycle decision."
+    },
+    {
+      "path": "src/aipinho/services/chat/chat_operation_router_service.py",
+      "reason": "Still imported by legacy endpoints/tests; must be retired only after endpoint coverage map is complete."
+    },
+    {
+      "path": "src/aipinho/services/chat/chat_permission_grant_service.py",
+      "reason": "Still owns session grant persistence semantics; must be folded into canonical permission service in next block."
+    }
+  ],
+  "tests_after_quarantine": {
+    "py_compile": "passed",
+    "focused_governance_chat": "25 passed in 71.14s"
+  }
+}

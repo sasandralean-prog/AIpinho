@@ -1,0 +1,35 @@
+[
+  {
+    "event_id": "session_event_e570be0a8aba4d20815183cd0d4c0eab",
+    "session_id": "session_01ff96cfc54f403abb7383ce77b8bd8e",
+    "event_type": "session_created",
+    "created_at": "2026-06-06T12:43:03.885154+00:00",
+    "summary": "Sessao criada.",
+    "data": {},
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_70d502609c0a4bcdbf8edbcc4b6bd311",
+    "session_id": "session_01ff96cfc54f403abb7383ce77b8bd8e",
+    "event_type": "chat_message",
+    "created_at": "2026-06-06T12:43:03.894806+00:00",
+    "summary": "Mensagem processada com status preview.",
+    "data": {
+      "intent_type": "patch_request",
+      "task_draft_id": "draft_9c222d8fdb06453792d718f5dbed2d42"
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_97ad91ebbc7343809c425704bc063d5a",
+    "session_id": "session_01ff96cfc54f403abb7383ce77b8bd8e",
+    "event_type": "task_draft_created",
+    "created_at": "2026-06-06T12:43:03.896831+00:00",
+    "summary": "Task draft registrado com status ready_for_approval.",
+    "data": {
+      "draft_id": "draft_9c222d8fdb06453792d718f5dbed2d42",
+      "draft_status": "ready_for_approval"
+    },
+    "warnings": []
+  }
+]

@@ -1,0 +1,53 @@
+{
+  "session_id": "chat_a7c6ca879c544ea498fe608a8219686a",
+  "status": "active",
+  "created_at": "2026-06-16T00:45:59.451271+00:00",
+  "updated_at": "2026-06-16T00:48:24.747396+00:00",
+  "expires_at": "2026-06-16T04:45:59.451271+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Oi",
+      "message_id": null,
+      "created_at": null
+    },
+    {
+      "role": "user",
+      "content": "Quais arquivos e cnfiguraçoes e contratos seus eu reciso mdificar para oder liberar sua caacdade pratca de criar e modofcar arquvs e executar comandos?",
+      "message_id": null,
+      "created_at": null
+    },
+    {
+      "role": "user",
+      "content": "Como faço para autorizar voce a criar um arquivo?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_c1a0d40234734ae1a9bd8291cbdf967d",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

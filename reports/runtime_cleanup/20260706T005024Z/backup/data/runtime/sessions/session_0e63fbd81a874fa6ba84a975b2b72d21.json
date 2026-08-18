@@ -1,0 +1,47 @@
+{
+  "session_id": "session_0e63fbd81a874fa6ba84a975b2b72d21",
+  "status": "active",
+  "created_at": "2026-06-08T11:13:31.910748+00:00",
+  "updated_at": "2026-06-08T11:13:31.926934+00:00",
+  "expires_at": "2026-06-08T15:13:31.910748+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Salve um relatorio em reports/final.md",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_2e88c0f051014a63a221bf4ad411588a",
+    "intent_type": "artifact_generation",
+    "task_type": "artifact_generation",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_clarification",
+    "contract_type": "artifact_generation",
+    "allowed_actions": [],
+    "denied_actions": [
+      "apply_patch"
+    ],
+    "approval_required_for": [
+      "write_files"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": "draft_1df0593e8aa24fb794938c287d2cf074",
+  "warnings": [
+    "requires_clarification"
+  ],
+  "trace_refs": []
+}

@@ -1,0 +1,36 @@
+[
+  {
+    "event_id": "session_event_c9580b46954f4f3cab8b678650ec61ee",
+    "session_id": "session_13e9fb9ff1e24e768835afd228a49a8d",
+    "event_type": "session_created",
+    "created_at": "2026-06-07T12:09:00.235419+00:00",
+    "summary": "Sessao criada.",
+    "data": {},
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_fe37d8b79a9a47d5a75508c64fc36170",
+    "session_id": "session_13e9fb9ff1e24e768835afd228a49a8d",
+    "event_type": "chat_message",
+    "created_at": "2026-06-07T12:09:00.250099+00:00",
+    "summary": "Mensagem processada com status preview.",
+    "data": {
+      "intent_type": "readonly_analysis",
+      "task_draft_id": "draft_6989514ee06e407581630ac3602e9acb"
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_6fda40bea52949149ec104e2f20157c3",
+    "session_id": "session_13e9fb9ff1e24e768835afd228a49a8d",
+    "event_type": "task_draft_created",
+    "created_at": "2026-06-07T12:09:00.251318+00:00",
+    "summary": "Task draft registrado com status draft.",
+    "data": {
+      "draft_id": "draft_6989514ee06e407581630ac3602e9acb",
+      "draft_status": "draft",
+      "preview_id": "preview_51474e61696d4342b037da02791e9ffc"
+    },
+    "warnings": []
+  }
+]

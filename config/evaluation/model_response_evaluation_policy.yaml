@@ -1,0 +1,37 @@
+﻿schema_version: 1
+
+evaluation:
+  enabled: true
+  require_output_contract: true
+  require_safety_validation: true
+  require_format_validation: true
+  require_evidence_validation_when_contract_requires: true
+  reject_on_critical_safety_violation: true
+  reject_on_invalid_required_json: true
+  reject_on_missing_required_sections: true
+  reject_on_missing_required_evidence: true
+  allow_accepted_with_warnings: true
+  default_on_validator_error: rejected
+
+integration:
+  evaluate_stub_responses: true
+  evaluate_real_model_responses: true
+  chat_requires_evaluation: false
+  reports_require_evaluation: true
+  role_pipeline_requires_evaluation_future: true
+  role_outputs_require_evaluation: true
+  reject_tool_call_attempts: true
+  reject_false_side_effect_claims: true
+  context_usage_validation_enabled: true
+  reject_fabricated_context_citations: true
+  reject_unsupported_context_sources: true
+
+scoring:
+  start_score: 1.0
+  invalid_format_penalty: 0.4
+  safety_violation_penalty: 0.6
+  missing_evidence_penalty: 0.5
+  truncation_penalty: 0.2
+  hallucination_signal_penalty: 0.3
+  minimum_accept_score: 0.7
+  minimum_warning_score: 0.5

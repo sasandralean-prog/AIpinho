@@ -1,0 +1,18 @@
+schema_version: 1
+
+store:
+  path: "data/runtime/artifact_writes"
+  save_runs: true
+  save_events: true
+  save_trace: true
+  save_results: true
+  save_audit: true
+  save_content_hash: true
+  save_target_snapshot: true
+  save_approval_snapshot: true
+  do_not_save_secrets: true
+  do_not_save_full_content_by_default: true
+
+retention:
+  max_write_runs: 1000
+  cleanup_enabled: false

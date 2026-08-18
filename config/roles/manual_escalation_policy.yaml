@@ -1,0 +1,12 @@
+schema_version: 1
+
+manual_escalation:
+  enabled: true
+  require_manual_escalation: true
+  require_operator_confirmation: true
+  require_latency_warning_acknowledged: true
+  require_reason: true
+  allowed_manual_models:
+    - qwen2_5_coder_14b_q5_k_m
+    - deepseek_r1_distill_qwen_14b_q4_k_m
+  blocked_from_chat: true

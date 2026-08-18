@@ -1,0 +1,11 @@
+schema_version: 1
+layers:
+  current_message: {id: L0, enabled: true, required_by_default: true, source_types: [current_request], max_items: 1}
+  chat_session: {id: L1, enabled: true, source_types: [chat_message, chat_summary], max_items: 20, require_sanitized: true}
+  active_task: {id: L2, enabled: true, source_types: [task_card, task_contract, pipeline_stage, approval_state], max_items: 30}
+  workspace_hot_cache: {id: L3, enabled: true, source_types: [project_tree, file_summary, project_analysis], max_items: 50, require_freshness: true}
+  curated_memory: {id: L4, enabled: true, source_types: [curated_memory], require_approved: true, reject_expired: true, reject_superseded: true}
+  governed_rag: {id: L5, enabled: true, source_types: [rag_chunk, vector_rag_hit, evidence_bundle], require_citation: true}
+  attachments_artifacts: {id: L6, enabled: true, source_types: [chat_attachment, artifact_record, artifact_manifest], require_artifact_id: true, block_raw_workspace_path: true}
+  debugger_eval_traces: {id: L7, enabled: true, source_types: [debugger_trace, eval_result, validation_result, patch_apply_result], debugger_only_by_default: true}
+  vision_ocr_context: {id: L8, enabled: true, source_types: [visual_evidence, image_citation, ocr_text_block, ocr_citation], require_confidence: true}

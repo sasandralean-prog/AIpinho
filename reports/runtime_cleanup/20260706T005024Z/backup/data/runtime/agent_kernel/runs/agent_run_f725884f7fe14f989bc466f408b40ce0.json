@@ -1,0 +1,47 @@
+{
+  "run_id": "agent_run_f725884f7fe14f989bc466f408b40ce0",
+  "session_id": "agent_session_292dc58465c94f478a1d90dc2a3f4ec6",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "sandbox_project_generation",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [],
+  "started_at": "2026-06-14T21:01:26+00:00",
+  "completed_at": "2026-06-14T21:01:30+00:00",
+  "validation_status": null,
+  "artifact_ids": [
+    "agent_artifact_4278f8181fa04c0b89688b915b877937"
+  ],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "project_generation_id": "project_generation_b08c28b391cb48c4bada2b4fd52d6b65",
+    "project_type": "static_web",
+    "sandbox_task_id": "sandbox_task_0d49f4dd43834d1287e478c88e576968",
+    "sandbox_workspace_id": "sandbox_ws_default",
+    "latest_summary_sanitized": "Projeto NeonLanding gerado no sandbox. Artifact pronto: NeonLanding.zip. Artifact ID: agent_artifact_4278f8181fa04c0b89688b915b877937.",
+    "evidence_refs": [
+      "sandbox_task:sandbox_task_0d49f4dd43834d1287e478c88e576968",
+      "run:agent_run_f725884f7fe14f989bc466f408b40ce0",
+      "tool:tool_invocation_2f95be3a893242848663b2b817a1c882",
+      "tool:tool_invocation_bc059cc831a24bc68f7ce373a24ce037",
+      "tool:tool_invocation_6444fad7fa4a4c2daa8cd37000fb20cf",
+      "tool:tool_invocation_bb4a489ce76f4bf587a5cd6943dec0f4",
+      "tool:tool_invocation_abeaa712b26c49229c82ac79ec707464",
+      "sandbox_validation:project_structure",
+      "sandbox_task:sandbox_task_0d49f4dd43834d1287e478c88e576968",
+      "artifact:agent_artifact_4278f8181fa04c0b89688b915b877937",
+      "tool:tool_invocation_147047028e3e4dc0b942f39161b33111"
+    ]
+  }
+}

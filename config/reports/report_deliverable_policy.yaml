@@ -1,0 +1,55 @@
+schema_version: 1
+
+completion:
+  require_all_explicit_deliverables: true
+  missing_deliverable_status: partial
+
+deliverables:
+  initial_diagnosis:
+    title: "Initial Diagnosis"
+    strategy: diagnosis
+    aliases: [diagnostico inicial, initial diagnosis]
+  project_overview:
+    title: "Project Overview"
+    strategy: project_overview
+    aliases: [visao geral do projeto, project overview, codebase overview]
+  target_workspace_status:
+    title: "Target Workspace Status"
+    strategy: target_workspace_status
+    aliases: [estado atual do workspace alvo, target workspace status, estado do workspace alvo]
+  problems:
+    title: "Problems Observed"
+    strategy: problems
+    aliases: [principais problemas, problemas percebidos, problems observed]
+  opportunities:
+    title: "Reformulation Opportunities"
+    strategy: opportunities
+    aliases: [oportunidades de reformulacao, oportunidades de melhoria, improvement opportunities]
+  macro_plan:
+    title: "Macro Portability and Correction Plan"
+    strategy: macro_plan
+    aliases: [plano macro em sprints, plano macro, macro plan, plano de portabilidade, plano de correcao]
+  first_sprint:
+    title: "Proposed First Sprint"
+    strategy: first_sprint
+    aliases: [proposta do sprint 1, primeiro sprint, proposed sprint 1]
+  risks:
+    title: "Risks"
+    strategy: risks
+    aliases: [riscos, risks]
+  permissions:
+    title: "Required Permissions"
+    strategy: permissions
+    aliases: [permissoes necessarias, required permissions]
+  next_steps:
+    title: "Safe Next Steps"
+    strategy: next_steps
+    aliases: [proximos passos seguros, proximos passos, next steps]
+  evidence:
+    title: "Evidence Used"
+    strategy: evidence
+    aliases: [evidencias usadas, fontes consultadas, evidence used]
+  validation_strategy:
+    title: "Validation Strategy"
+    strategy: validation_strategy
+    aliases: [estrategia de validacao, criterios de validacao, validation strategy]

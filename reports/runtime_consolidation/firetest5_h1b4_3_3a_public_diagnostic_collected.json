@@ -1,0 +1,209 @@
+﻿{
+    "session_id":  "firetest5_h1b4_3_3a_public_diagnostic_20260812",
+    "task_run_id":  "task_run_60169a8f9cbb42f4839ef60f1bb83965",
+    "operation_id":  "op_a3c0f366685a4e8d988f5f24c088a233",
+    "client_response_status":  200,
+    "client_response_time_ms":  235138,
+    "client_ok":  true,
+    "client_error":  null,
+    "server_final_status":  "BLOCKED",
+    "run_status":  "blocked",
+    "result_status":  "blocked",
+    "finished_at":  "2026-08-12T14:32:20.860833+00:00",
+    "terminal_event_count":  1,
+    "first_terminal_event":  {
+                                 "sequence":  10,
+                                 "type":  "run_blocked",
+                                 "status":  "blocked",
+                                 "reason_code":  "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+                                 "message":  "Project analysis budget exceeded during after_file_read_item.",
+                                 "event_id":  "task_run_event_54150bc185fd4e128adf8dca64aeef3f"
+                             },
+    "duplicate_terminal_attempts":  [
+                                        {
+                                            "sequence":  11,
+                                            "type":  "terminalization_already_applied",
+                                            "status":  "ignored",
+                                            "message":  "Terminalization ignored because the TaskRun already has a terminal event.",
+                                            "metadata":  {
+                                                             "terminal_event_id":  "task_run_event_54150bc185fd4e128adf8dca64aeef3f",
+                                                             "terminal_status":  "blocked",
+                                                             "terminal_reason_code":  "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+                                                             "attempted_event_type":  "run_blocked",
+                                                             "attempted_status":  "blocked",
+                                                             "attempted_reason_code":  null,
+                                                             "ignored":  true,
+                                                             "reason":  "terminal_state_already_set"
+                                                         }
+                                        },
+                                        {
+                                            "sequence":  12,
+                                            "type":  "terminalization_already_applied",
+                                            "status":  "ignored",
+                                            "message":  "Terminalization ignored because the TaskRun already has a terminal event.",
+                                            "metadata":  {
+                                                             "terminal_event_id":  "task_run_event_54150bc185fd4e128adf8dca64aeef3f",
+                                                             "terminal_status":  "blocked",
+                                                             "terminal_reason_code":  "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+                                                             "attempted_status":  "blocked",
+                                                             "attempted_reason_code":  "TASKRUN_LIFECYCLE_TIMEOUT",
+                                                             "ignored":  true,
+                                                             "reason":  "terminal_state_already_set"
+                                                         }
+                                        }
+                                    ],
+    "post_terminal_events":  [
+                                 {
+                                     "sequence":  11,
+                                     "type":  "terminalization_already_applied",
+                                     "status":  "ignored",
+                                     "message":  "Terminalization ignored because the TaskRun already has a terminal event.",
+                                     "metadata":  {
+                                                      "terminal_event_id":  "task_run_event_54150bc185fd4e128adf8dca64aeef3f",
+                                                      "terminal_status":  "blocked",
+                                                      "terminal_reason_code":  "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+                                                      "attempted_event_type":  "run_blocked",
+                                                      "attempted_status":  "blocked",
+                                                      "attempted_reason_code":  null,
+                                                      "ignored":  true,
+                                                      "reason":  "terminal_state_already_set"
+                                                  }
+                                 },
+                                 {
+                                     "sequence":  12,
+                                     "type":  "terminalization_already_applied",
+                                     "status":  "ignored",
+                                     "message":  "Terminalization ignored because the TaskRun already has a terminal event.",
+                                     "metadata":  {
+                                                      "terminal_event_id":  "task_run_event_54150bc185fd4e128adf8dca64aeef3f",
+                                                      "terminal_status":  "blocked",
+                                                      "terminal_reason_code":  "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+                                                      "attempted_status":  "blocked",
+                                                      "attempted_reason_code":  "TASKRUN_LIFECYCLE_TIMEOUT",
+                                                      "ignored":  true,
+                                                      "reason":  "terminal_state_already_set"
+                                                  }
+                                 }
+                             ],
+    "artifact_creation_started_count":  0,
+    "artifact_created_count":  0,
+    "artifact_created_after_terminal_count":  0,
+    "artifact_late_rejected_count":  0,
+    "partial_artifact_count":  0,
+    "interrupted_artifact_count":  0,
+    "rejected_artifact_count":  0,
+    "artifact_index_status":  "absent",
+    "artifacts_endpoint_status":  "blocked_before_artifact_creation",
+    "artifacts_endpoint_count":  0,
+    "music_inventory_status":  null,
+    "evidence_phase1_status":  null,
+    "validation_status":  "blocked",
+    "completion_status":  "blocked",
+    "speaker_truth_safe_to_report_success":  false,
+    "project_analysis_status":  "timeout",
+    "project_analysis_reason_code":  "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+    "project_analysis_duration_ms":  20953,
+    "last_checkpoint":  "after_file_read_item",
+    "last_completed_checkpoint":  "after_file_read_item",
+    "elapsed_ms_by_checkpoint":  {
+                                     "before_path_resolution":  0,
+                                     "after_path_resolution":  15,
+                                     "before_workspace_root_scan":  15,
+                                     "after_workspace_root_scan":  15,
+                                     "before_file_enumeration":  15,
+                                     "during_file_enumeration":  3750,
+                                     "after_file_enumeration":  3750,
+                                     "before_file_selection":  3750,
+                                     "after_file_selection":  17655,
+                                     "before_file_read_batch":  17655,
+                                     "before_file_read_item":  17655,
+                                     "after_file_read_item":  20953
+                                 },
+    "files_discovered":  74,
+    "files_scan_attempted":  127,
+    "files_scanned":  0,
+    "files_read":  0,
+    "bytes_read":  0,
+    "current_root":  "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+    "current_path_sample":  "src/test/kotlin/com/pinhoabacaxi/musicasdesktop/audio/dsp/DesktopEqualizerTemplateJsonCodecTest.kt",
+    "blocking_operation":  "file_read",
+    "budget_exceeded_at":  "after_file_read_item",
+    "public_diagnostic_verdict":  "FIRETEST5_H1B4_3_3A_PROJECT_ANALYSIS_TIMEOUT_EXPLAINED",
+    "project_analysis_crossed":  false,
+    "artifact_render_terminality_exercised":  false,
+    "block_reason":  "PROJECT_ANALYSIS_FILE_READ_TIMEOUT_BEFORE_ARTIFACT_RENDER",
+    "event_sequence":  [
+                           {
+                               "sequence":  1,
+                               "type":  "run_created",
+                               "status":  "created",
+                               "message":  "TaskRun created without execution."
+                           },
+                           {
+                               "sequence":  2,
+                               "type":  "task_bootstrap_created",
+                               "status":  "created",
+                               "message":  "Universal Task identity created before execution."
+                           },
+                           {
+                               "sequence":  3,
+                               "type":  "PlanningStarted",
+                               "status":  "planning",
+                               "message":  "Canonical planning started before execution."
+                           },
+                           {
+                               "sequence":  4,
+                               "type":  "PlanningFinished",
+                               "status":  "planned",
+                               "message":  "Canonical planning finished."
+                           },
+                           {
+                               "sequence":  5,
+                               "type":  "ExecutionPlanCreated",
+                               "status":  "ready",
+                               "message":  "Canonical ExecutionPlan created as execution boundary."
+                           },
+                           {
+                               "sequence":  6,
+                               "type":  "run_queued",
+                               "status":  "queued",
+                               "message":  "Read-only artifact analysis queued."
+                           },
+                           {
+                               "sequence":  7,
+                               "type":  "run_started",
+                               "status":  "running",
+                               "message":  "Read-only artifact analysis started."
+                           },
+                           {
+                               "sequence":  8,
+                               "type":  "project_analysis_started",
+                               "status":  "running",
+                               "message":  "Project analysis started."
+                           },
+                           {
+                               "sequence":  9,
+                               "type":  "project_analysis_budget_exceeded",
+                               "status":  "timeout",
+                               "message":  "Project analysis budget exceeded during after_file_read_item."
+                           },
+                           {
+                               "sequence":  10,
+                               "type":  "run_blocked",
+                               "status":  "blocked",
+                               "message":  "Project analysis budget exceeded during after_file_read_item."
+                           },
+                           {
+                               "sequence":  11,
+                               "type":  "terminalization_already_applied",
+                               "status":  "ignored",
+                               "message":  "Terminalization ignored because the TaskRun already has a terminal event."
+                           },
+                           {
+                               "sequence":  12,
+                               "type":  "terminalization_already_applied",
+                               "status":  "ignored",
+                               "message":  "Terminalization ignored because the TaskRun already has a terminal event."
+                           }
+                       ]
+}

@@ -1,0 +1,238 @@
+schema_version: 1
+capabilities:
+  text_chat:
+    enabled: true
+    provider: continue_adapter
+    model: aipinho-local
+    endpoint: /v1/chat/completions
+    local: true
+    requires_api_key: false
+    cost_profile: free_local
+    privacy_profile: local
+    max_input: 32000
+    fallback_chain: [gemini_text, stub_degraded]
+    test_prompt: "Oi"
+    supported_inputs: [text]
+    supported_outputs: [text]
+  code_assist:
+    enabled: true
+    provider: continue_adapter
+    model: aipinho-local
+    endpoint: /v1/chat/completions
+    local: true
+    requires_api_key: false
+    cost_profile: free_local
+    privacy_profile: local
+    max_input: 64000
+    fallback_chain: [gemini_code, text_chat]
+    test_prompt: "Explique este trecho de codigo."
+    supported_inputs: [text, code, attached_context]
+    supported_outputs: [text, patch_preview]
+  planning:
+    enabled: true
+    provider: aipinho_internal
+    model: policy_deterministic
+    endpoint: internal
+    local: true
+    requires_api_key: false
+    cost_profile: free_local
+    privacy_profile: local
+    max_input: 32000
+    fallback_chain: [code_assist]
+    test_prompt: "Planeje uma tarefa simples."
+    supported_inputs: [text, task_contract]
+    supported_outputs: [plan]
+  intent_classification:
+    enabled: true
+    provider: aipinho_internal
+    model: prompt_intelligence
+    endpoint: internal
+    local: true
+    requires_api_key: false
+    cost_profile: free_local
+    privacy_profile: local
+    max_input: 32000
+    fallback_chain: []
+    test_prompt: "Classifique uma conversa simples."
+    supported_inputs: [text]
+    supported_outputs: [intent]
+  policy_reasoning:
+    enabled: true
+    provider: aipinho_internal
+    model: policy_kernel
+    endpoint: internal
+    local: true
+    requires_api_key: false
+    cost_profile: free_local
+    privacy_profile: local
+    max_input: 32000
+    fallback_chain: []
+    test_prompt: "Avalie uma policy."
+    supported_inputs: [operation_contract]
+    supported_outputs: [policy_decision]
+  embeddings:
+    enabled: true
+    provider: local_embedding_runtime
+    model: qwen3_embedding_4b_q5_k_m
+    endpoint: local_runtime
+    local: true
+    requires_api_key: false
+    cost_profile: free_local
+    privacy_profile: local
+    max_input: 8192
+    fallback_chain: [keyword_search]
+    test_prompt: "AIpinho teste"
+    supported_inputs: [text, chunks]
+    supported_outputs: [vector]
+  reranker:
+    enabled: true
+    provider: local_reranker_runtime
+    model: qwen3_reranker_4b_q5_k_m
+    endpoint: local_runtime
+    local: true
+    requires_api_key: false
+    cost_profile: free_local
+    privacy_profile: local
+    max_input: 8192
+    fallback_chain: [keyword_score]
+    test_prompt: "query/documentos simples"
+    supported_inputs: [query, documents]
+    supported_outputs: [ranking]
+  ocr:
+    enabled: false
+    provider: tesseract
+    model: null
+    endpoint: local_binary
+    local: true
+    requires_api_key: false
+    cost_profile: free_local
+    privacy_profile: local
+    max_input: 1
+    fallback_chain: [vision]
+    test_prompt: "imagem de teste"
+    supported_inputs: [image, pdf_page]
+    supported_outputs: [text]
+  vision:
+    enabled: false
+    provider: disabled
+    model: null
+    endpoint: null
+    local: true
+    requires_api_key: false
+    cost_profile: none
+    privacy_profile: local
+    max_input: 1
+    fallback_chain: [ocr]
+    test_prompt: "screenshot de teste"
+    supported_inputs: [image, screenshot]
+    supported_outputs: [description, ui_elements]
+  workspace_search:
+    enabled: true
+    provider: aipinho_internal
+    model: keyword_search
+    endpoint: internal
+    local: true
+    requires_api_key: false
+    cost_profile: free_local
+    privacy_profile: local
+    max_input: 200000
+    fallback_chain: [keyword_search]
+    test_prompt: "buscar termo no workspace"
+    supported_inputs: [query, workspace]
+    supported_outputs: [search_results]
+  file_summarization:
+    enabled: true
+    provider: continue_adapter
+    model: aipinho-local
+    endpoint: /v1/chat/completions
+    local: true
+    requires_api_key: false
+    cost_profile: free_local
+    privacy_profile: local
+    max_input: 64000
+    fallback_chain: [text_chat]
+    test_prompt: "resuma arquivo"
+    supported_inputs: [file_text]
+    supported_outputs: [summary]
+  patch_planning:
+    enabled: true
+    provider: aipinho_internal
+    model: patch_planning_service
+    endpoint: internal
+    local: true
+    requires_api_key: false
+    cost_profile: free_local
+    privacy_profile: local
+    max_input: 64000
+    fallback_chain: [code_assist]
+    test_prompt: "planeje patch"
+    supported_inputs: [code, requirement]
+    supported_outputs: [patch_plan]
+  shell_planning:
+    enabled: true
+    provider: aipinho_internal
+    model: governed_shell_policy
+    endpoint: internal
+    local: true
+    requires_api_key: false
+    cost_profile: free_local
+    privacy_profile: local
+    max_input: 32000
+    fallback_chain: []
+    test_prompt: "planeje comando"
+    supported_inputs: [command_request]
+    supported_outputs: [shell_preview]
+  artifact_summary:
+    enabled: true
+    provider: aipinho_internal
+    model: artifact_summary
+    endpoint: internal
+    local: true
+    requires_api_key: false
+    cost_profile: free_local
+    privacy_profile: local
+    max_input: 64000
+    fallback_chain: [file_summarization]
+    test_prompt: "resuma artifact"
+    supported_inputs: [artifact]
+    supported_outputs: [summary]
+roles:
+  chat_assistant:
+    capabilities: [text_chat]
+    default_model: aipinho-local
+    fallback_model: stub_degraded
+    enabled: true
+  code_assistant:
+    capabilities: [code_assist, workspace_search, patch_planning]
+    default_model: aipinho-local
+    fallback_model: text_chat
+    enabled: true
+  governance_agent:
+    capabilities: [intent_classification, policy_reasoning]
+    default_model: policy_deterministic
+    fallback_model: null
+    enabled: true
+  retrieval_agent:
+    capabilities: [embeddings, reranker, workspace_search]
+    default_model: keyword_search
+    fallback_model: keyword_search
+    enabled: true
+  vision_agent:
+    capabilities: [ocr, vision]
+    default_model: null
+    fallback_model: null
+    enabled: false
+  build_agent:
+    capabilities: [shell_planning, artifact_summary]
+    default_model: governed_shell_policy
+    fallback_model: null
+    enabled: true
+route_matrix:
+  continue_context_analysis: [code_assist]
+  continue_terminal_analysis: [code_assist, shell_planning]
+  continue_git_diff_analysis: [code_assist, patch_planning]
+  workspace_search: [workspace_search, embeddings, reranker]
+  project_analysis: [workspace_search, code_assist, file_summarization]
+  chat: [text_chat]
+  patch_request: [patch_planning, code_assist]
+  shell_request: [shell_planning]

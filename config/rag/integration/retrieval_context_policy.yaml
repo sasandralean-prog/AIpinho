@@ -1,0 +1,18 @@
+schema_version: 1
+
+retrieval_context:
+  enabled: true
+  require_retrieval_result: true
+  require_context_bundle: true
+  require_status: [found, partial]
+  allow_no_results_bundle: true
+  require_citations: true
+  require_source_refs: true
+  require_sensitivity_pass: true
+  max_retrieval_items: 8
+
+blocked:
+  blocked_retrieval_result: true
+  degraded_without_warning: true
+  uncited_hit: true
+  unsafe_bundle: true

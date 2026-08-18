@@ -1,0 +1,39 @@
+skill_pack_id: promotion_pack
+display_name: Promotion Pack v1
+slug: promotion_pack
+version: 1.0.0
+status: active
+category: promotion
+description: Governed promotion planning and validation support for sandbox-to-project promotion without bypassing approval.
+included_skills:
+  - internal.validation_runner
+  - internal.safe_markdown_report_generator
+  - internal.artifact_bundle_exporter
+required_capabilities:
+  - validation
+  - report_generate
+  - artifact_create
+optional_capabilities:
+  - patch_preview
+  - artifact_download
+supported_agents: [aipinho, lucio, codex, autopilot]
+supported_project_stacks: [android_gradle, python, node, mixed, unknown]
+supported_execution_modes: [promotion_plan, promotion_apply, assisted_execution, governed_autorun]
+risk_level: medium
+policy_profile: promotion_pipeline
+validation_profile: promotion_validation
+artifact_policy: token_protected_artifacts
+memory_policy: propose_candidate_with_evidence
+dashboard_visible: true
+debugger_trace_required: true
+docs_ref: docs/skills/PROMOTION_PACK.md
+tests_ref: tests/skill_packs
+examples:
+  - label: Promotion preview
+    prompt: Create a preview to promote sandbox changes into a mutable target.
+    expected_pack_selection: [promotion_pack, validation_release_pack]
+limitations:
+  - Patch apply is owned by Promotion Pipeline and is never executed by the pack directly.
+evidence_refs: [skill_pack_manifest:promotion_pack]
+metadata_sanitized:
+  pipeline_owner: promotion_service

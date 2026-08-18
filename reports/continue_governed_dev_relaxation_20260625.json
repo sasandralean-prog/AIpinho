@@ -1,0 +1,75 @@
+{
+  "report_id": "continue_governed_dev_relaxation_20260625",
+  "project": "AIpinho",
+  "created_at": "2026-06-25",
+  "objective": "Relaxar o Continue adapter para modo assistente de programacao governado.",
+  "root_cause": "Detector lexical amplo demais tratava perguntas normais, capacidade, configuracao e contexto anexado como acao operacional.",
+  "files_changed": [
+    "config/integrations/continue_adapter_policy.json",
+    "src/aipinho/api/routers/continue_integration_router.py",
+    "tests/integration/test_continue_openai_compat_api.py",
+    "docs/integrations/continue_vscode_aipinho.md"
+  ],
+  "config_added": {
+    "path": "config/integrations/continue_adapter_policy.json",
+    "mode": "governed_dev",
+    "allow_direct_write": false,
+    "allow_direct_shell": false,
+    "file_write_policy": "ask",
+    "shell_policy": "ask",
+    "delete_policy": "ask_strong",
+    "git_push_policy": "ask_strong"
+  },
+  "classifier_intents": [
+    "conversation",
+    "math_or_reasoning",
+    "how_to_configure",
+    "continue_context_analysis",
+    "file_write_request",
+    "shell_request",
+    "dangerous_operation_request",
+    "patch_preview_request"
+  ],
+  "continue_context_parser": {
+    "detects": [
+      "@App.tsx and file-like references",
+      "@Terminal",
+      "@Git Diff",
+      "@rules/..."
+    ],
+    "behavior": "Analisa contexto anexado sem alegar falsa incapacidade; leitura adicional do disco continua governada."
+  },
+  "tests": {
+    "commands": [
+      "python -m py_compile C:\\Dev\\AIpinho\\src\\aipinho\\api\\routers\\continue_integration_router.py",
+      "python -m pytest C:\\Dev\\AIpinho\\tests\\integration\\test_continue_openai_compat_api.py -q"
+    ],
+    "result": "31 passed in 8.06s"
+  },
+  "readiness": {
+    "CONVERSATION_READY": "sim",
+    "CONTEXT_ANALYSIS_READY": "sim",
+    "WORKSPACE_READ_READY": "ask",
+    "PATCH_PREVIEW_READY": "sim",
+    "FILE_WRITE_GOVERNED_READY": "sim",
+    "SHELL_GOVERNED_READY": "sim",
+    "POLICY_GOVERNANCE_READY": "sim",
+    "SPEAKER_TRUTH_READY": "sim"
+  },
+  "smoke_real": {
+    "status": "passed",
+    "evidence": [
+      "POST /v1/chat/completions prompt='Voce consegue configurar personalidade e tom?' returned continue_intent=how_to_configure.",
+      "POST /v1/chat/completions prompt='Voce consegue ler arquivos?' returned capability-aware answer.",
+      "POST /v1/chat/completions stream=true prompt='quanto e 2+2?' returned SSE chunks with content '2+2 = 4.' and data: [DONE].",
+      "VS Code Continue real, Agent mode, AIpinho Local, prompt='ola' rendered 'Ola! Como posso ajudar voce hoje?'."
+    ],
+    "note": "Backend 9088 was restarted with elevation after the previous python process denied normal termination."
+  },
+  "risks_remaining": [
+    "Analise profunda de contexto depende do ChatService/modelo quando for necessario raciocinio longo.",
+    "Workspace read adicional ainda precisa seguir rota governada de leitura.",
+    "Patch preview estruturado continua via endpoint de preview, nao por execucao direta em chat completions."
+  ],
+  "verdict": "CONTINUE_GOVERNED_DEV_READY"
+}

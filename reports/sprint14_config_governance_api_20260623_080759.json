@@ -1,0 +1,58 @@
+{
+  "sprint": "14",
+  "name": "Config Governance API",
+  "timestamp": "20260623_080759",
+  "verdict": "READY_WITH_WARNINGS",
+  "implemented": [
+    "config_change_request",
+    "config_change_preview",
+    "config_apply_result",
+    "config_backup",
+    "token_protected_mutation_endpoints",
+    "backup_before_apply",
+    "rollback",
+    "secret_redaction",
+    "reload_self_check"
+  ],
+  "endpoints": [
+    "GET /api/v1/config/effective-policy",
+    "GET /api/v1/config/workspaces",
+    "GET /api/v1/config/providers",
+    "GET /api/v1/config/agents",
+    "GET /api/v1/config/permissions",
+    "POST /api/v1/config/changes",
+    "GET /api/v1/config/changes",
+    "GET /api/v1/config/changes/{change_id}",
+    "POST /api/v1/config/changes/{change_id}/preview",
+    "POST /api/v1/config/changes/{change_id}/approve",
+    "POST /api/v1/config/changes/{change_id}/apply",
+    "POST /api/v1/config/changes/{change_id}/cancel",
+    "GET /api/v1/config/backups",
+    "GET /api/v1/config/backups/{backup_id}",
+    "POST /api/v1/config/rollback/{backup_id}",
+    "POST /api/v1/config/reload",
+    "GET /api/v1/config/health"
+  ],
+  "files_changed": [
+    "src/aipinho/schemas/config_governance/config_change.py",
+    "src/aipinho/schemas/config_governance/workspace_permission.py",
+    "src/aipinho/schemas/config_governance/__init__.py",
+    "src/aipinho/services/config_governance/config_governance_service.py",
+    "src/aipinho/services/config_governance/workspace_permission_matrix_service.py",
+    "src/aipinho/services/config_governance/__init__.py",
+    "src/aipinho/api/routers/config_governance_router.py",
+    "src/aipinho/api/routers/__init__.py",
+    "tests/unit/test_config_governance_service.py"
+  ],
+  "tests": {
+    "py_compile": "passed",
+    "focused_pytest": "17 passed",
+    "app_import_routes": "passed",
+    "service_health_smoke": "passed",
+    "api_token_gate_smoke": "passed"
+  },
+  "warnings": [
+    "mutable endpoints require local bearer token",
+    "real production config apply was not executed during sprint validation"
+  ]
+}

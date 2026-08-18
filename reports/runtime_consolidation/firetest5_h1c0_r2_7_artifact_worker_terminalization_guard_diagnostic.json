@@ -1,0 +1,93 @@
+{
+  "verdict": "diagnostic_before_patch",
+  "observed_blocker": "ARTIFACT_RUNTIME_STALLED_AFTER_ARTIFACT_CREATION_STARTED_WITHOUT_TERMINAL_RESULT",
+  "before_state": {
+    "task_run_id": "task_run_ac1b9a417c6f4da1a739143d28bf42d3",
+    "operation_id": "op_0a583c02125647568b26a2bfc1e0175c",
+    "client_response_status": "accepted_running",
+    "run_status_from_run_json": "created",
+    "run_status_from_index": "created",
+    "result_json_exists": false,
+    "result_endpoint_status_code": 404,
+    "finished_at": null,
+    "terminal_event_count": 0,
+    "last_event_type": "artifact_creation_started",
+    "last_event_status": "running",
+    "last_event_message": "Artifact creation started for reports/firetest5/phase1_discovery.md.",
+    "artifact_creation_started_count": 1,
+    "artifact_terminal_event_count": 0,
+    "music_inventory_reached": false,
+    "evidence_phase1_reached": false
+  },
+  "worker_lifecycle": {
+    "accepted_running_response_returned": true,
+    "background_worker_started": true,
+    "background_worker_registered": true,
+    "worker_heartbeat_started": false,
+    "worker_heartbeat_last_seen_at": null,
+    "worker_completed": "unknown_from_persisted_state",
+    "worker_exception_captured": false,
+    "worker_cancelled": false,
+    "worker_silent_exit_detected": false,
+    "worker_budget_exceeded": false,
+    "worker_state_after_artifact_creation_started": "not_persisted"
+  },
+  "artifact_runtime": {
+    "producer_step": "readonly_analysis_artifact_runtime",
+    "artifact_in_progress": true,
+    "artifact_logical_path": "reports/firetest5/phase1_discovery.md",
+    "artifact_started_at": "from_task_run_event_timestamp",
+    "artifact_terminal_state": null,
+    "artifact_terminal_event_emitted": false,
+    "artifact_created": false,
+    "artifact_partial": false,
+    "artifact_blocked": false,
+    "artifact_failed": false,
+    "artifact_exception_captured": false,
+    "artifact_elapsed_ms": null,
+    "artifact_budget_ms": "AIPINHO_ARTIFACT_RENDER_MAX_ARTIFACT_SECONDS"
+  },
+  "terminalization_gap": {
+    "component_where_terminalization_was_lost": "ReadonlyAnalysisArtifactRuntimeService.start_public_boundary background worker",
+    "missing_guard": "accepted_running worker has no persisted terminalization observer after public response returns",
+    "missing_finally_block": "worker finally restores monkey patches but does not enforce terminal TaskRunResult",
+    "missing_exception_to_result_projection": "worker exception is stored in a local holder after accepted_running and may not become persisted result",
+    "missing_budget_watchdog": "no artifact-specific watchdog observes artifact_creation_started without terminal artifact state",
+    "missing_worker_exit_observer": "public boundary reaper only joins threads and drops completed threads",
+    "missing_artifact_terminal_event": true,
+    "missing_taskrun_result": true
+  },
+  "result_contract": {
+    "expected_result_status_on_stall": "blocked",
+    "expected_result_source": "artifact_worker_terminalization_guard",
+    "expected_reason_code": "ARTIFACT_WORKER_STALLED_AFTER_ARTIFACT_CREATION_STARTED",
+    "completion_required": true,
+    "truth_safe_to_report_success": false,
+    "phase2_allowed": false
+  },
+  "explicit_answers": {
+    "where_accepted_running_returns_before_worker_finishes": "ReadonlyAnalysisArtifactRuntimeService.start_public_boundary returns at the discovered_run branch while the daemon worker thread may still be alive.",
+    "how_background_worker_is_created_registered_monitored": "A daemon Thread named aipinho-public-runtime-boundary is created, appended to _PUBLIC_BOUNDARY_THREADS, and later reaped only by join/is_alive checks.",
+    "where_artifact_creation_started_is_emitted": "ReadonlyAnalysisArtifactRuntimeService.execute, immediately before _create_artifact for each logical artifact.",
+    "method_expected_to_emit_artifact_terminal_state": "The same execute loop emits artifact_created/artifact_partial/artifact_blocked after _create_artifact returns and registry state is merged.",
+    "worker_failure_mode_from_persisted_state": "The persisted public run cannot distinguish crash, stall, silent exit, or cancellation because no post-accepted worker guard persisted that state.",
+    "try_finally_coverage": "execute catches GovernedPhase1Block and generic Exception, but start_public_boundary worker finally only restores patched methods.",
+    "async_exception_capture_after_accepted_running": "Exceptions are placed in holder['exception']; after the response is returned there is no guaranteed persistence path.",
+    "artifact_heartbeat": "not implemented before this patch",
+    "watchdog_for_artifact_started_without_terminal": "not implemented before this patch",
+    "terminal_result_owner_on_artifact_runtime_failure": "ReadonlyAnalysisArtifactRuntimeService should persist a safe TaskRunResult before TaskRunStore conservative repair is needed.",
+    "prevent_result_404_after_artifact_started": "accepted-running worker terminalization guard must create a terminal blocked result when artifact start lacks terminal artifact/result.",
+    "preserve_terminal_event_count_1": "reuse existing terminal event idempotency and emit terminal events through the same guarded path.",
+    "preserve_evidence_payload_refs": "only write lightweight guard summaries and keep existing run/event/artifact evidence.",
+    "avoid_global_timeout_solution": "use artifact-worker terminality state and artifact-specific silence/budget policy, not a larger client/global timeout.",
+    "phase2_to_6_after_block": "phase progression must use the blocked result and mark later phases skipped_due_to_prior_block."
+  },
+  "patch_plan": [
+    "Add accepted-running worker terminality policy with artifact-specific silence budget.",
+    "Start a lightweight guard thread when accepted_running is returned.",
+    "Convert worker exception after accepted_running into artifact_failed plus blocked TaskRunResult.",
+    "Detect worker silent exit or artifact_creation_started without terminal artifact/result.",
+    "Persist source=artifact_worker_terminalization_guard result with specific reason code.",
+    "Keep terminal event idempotency and never overwrite existing semantic/cancel terminal results."
+  ]
+}

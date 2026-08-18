@@ -1,0 +1,28 @@
+{
+  "date": "2026-06-21",
+  "verdict": "pass",
+  "session_id": "chat_d6a9acef93924e5284f2a81b5630c3b1",
+  "task_id": "task_run_91f36bf91e5140678e47c0bc2a022d00",
+  "approval_id": "approval_d9196b2b3835406b9974ceee76d1c0fb",
+  "run_status": "completed",
+  "patch_status": "no_changes_needed",
+  "patch_reason": "prior_diagnostic_indicates_no_patch_needed",
+  "source_report": "reports/aipinho_firetest_persistence_diagnosis.md",
+  "result_status": "completed",
+  "result_summary": "TaskRun governada concluida com 2 grupo(s) de resultado.",
+  "validation": {
+    "status": "passed",
+    "score": 1.0,
+    "blocking_findings": []
+  },
+  "safe_to_report_success": true,
+  "limitations": [],
+  "focused_tests": {
+    "passed": 101,
+    "duration_seconds": 34.15
+  },
+  "known_testing_backlog": [
+    "Historical E2E expectations still assume C:\\PinhoabacaxiAI is forbidden.",
+    "Historical E2E expectations still assume real inference is blocked."
+  ]
+}

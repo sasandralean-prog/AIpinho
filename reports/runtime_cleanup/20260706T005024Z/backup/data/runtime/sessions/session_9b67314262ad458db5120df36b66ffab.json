@@ -1,0 +1,45 @@
+{
+  "session_id": "session_9b67314262ad458db5120df36b66ffab",
+  "status": "active",
+  "created_at": "2026-06-07T12:06:56.977804+00:00",
+  "updated_at": "2026-06-07T12:06:56.996708+00:00",
+  "expires_at": "2026-06-07T16:06:56.977804+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Corrija os problemas encontrados no projeto C:\\Dev\\AIpinho",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_3d8b906a2fe642398a87015b599d235c",
+    "intent_type": "patch_request",
+    "task_type": "patch_request",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Dev\\AIpinho",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_approval",
+    "contract_type": "patch_request",
+    "allowed_actions": [
+      "patch_preview"
+    ],
+    "denied_actions": [],
+    "approval_required_for": [
+      "apply_patch"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Dev\\AIpinho",
+  "active_task_draft_id": "draft_d493236ac29d4c9a81e9a94783f2057a",
+  "warnings": [],
+  "trace_refs": []
+}

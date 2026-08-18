@@ -1,0 +1,49 @@
+{
+  "checkpoint": "G17_LEGACY_QUARANTINE_COMPLETED_READY",
+  "quarantine_root": "C:\\Dev\\AIpinho\\quarantine\\legacy\\governance\\2026-06-26",
+  "items": [
+    {
+      "original_path": "src/aipinho/api/routers/chat_router.py",
+      "quarantine_path": "C:\\Dev\\AIpinho\\quarantine\\legacy\\governance\\2026-06-26\\src\\aipinho\\api\\routers\\chat_router.py",
+      "canonical_replacement": "src/aipinho/api/routers/governance_lifecycle_router.py",
+      "reason": "All active public chat endpoints are now owned first by governance_lifecycle_router.",
+      "import_scan_result": 0,
+      "route_scan_result": "covered_by_canonical_router",
+      "tests_covering_replacement": [
+        "tests/governance/test_g15_residual_endpoint_migration.py",
+        "tests/governance/test_g19_post_deletion_regression.py"
+      ],
+      "rollback_note": "Move file back and re-add chat_router import/router in api/routers/__init__.py.",
+      "moved": true,
+      "retained_role": "quarantined_rollback_only"
+    },
+    {
+      "original_path": "src/aipinho/api/routers/continue_integration_router.py",
+      "quarantine_path": "C:\\Dev\\AIpinho\\quarantine\\legacy\\governance\\2026-06-26\\src\\aipinho\\api\\routers\\continue_integration_router.py",
+      "canonical_replacement": "src/aipinho/api/routers/governance_lifecycle_router.py",
+      "reason": "OpenAI-compatible and VSCode Continue action endpoints are owned first by governance_lifecycle_router.",
+      "import_scan_result": 0,
+      "route_scan_result": "covered_by_canonical_router",
+      "tests_covering_replacement": [
+        "tests/governance/test_g15_residual_endpoint_migration.py"
+      ],
+      "rollback_note": "Move file back and re-add continue_integration_router import/router in api/routers/__init__.py.",
+      "moved": true,
+      "retained_role": "quarantined_rollback_only"
+    },
+    {
+      "original_path": "config/runtime/runtime_profiles.yaml",
+      "quarantine_path": "C:\\Dev\\AIpinho\\quarantine\\legacy\\governance\\2026-06-26\\config\\runtime\\runtime_profiles.yaml",
+      "canonical_replacement": "config/governance/runtime_profiles.yaml",
+      "reason": "Legacy runtime profile was replaced by canonical governance runtime profiles.",
+      "import_scan_result": 0,
+      "route_scan_result": "not_a_route",
+      "tests_covering_replacement": [
+        "tests/governance/test_lifecycle_core.py"
+      ],
+      "rollback_note": "Restore archived config only if diagnostics need old runtime profile inventory.",
+      "moved": true,
+      "deleted_in_g19": true
+    }
+  ]
+}

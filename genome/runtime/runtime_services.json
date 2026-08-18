@@ -1,0 +1,150 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "services": [
+    {
+      "name": "task_runtime_service",
+      "path": "src/aipinho/services/runtime/task_runtime_service.py",
+      "category": "runtime",
+      "type": "service",
+      "methods": [
+        "create_task",
+        "execute_task",
+        "cancel_task",
+        "get_task_status",
+        "list_tasks"
+      ],
+      "dependencies": ["core", "repositories", "schemas.runtime", "services.policy_kernel"],
+      "critical": true
+    },
+    {
+      "name": "execution_graph_service",
+      "path": "src/aipinho/services/runtime/execution_graph_service.py",
+      "category": "runtime",
+      "type": "service",
+      "methods": [
+        "build_graph",
+        "validate_graph",
+        "execute_graph",
+        "get_graph_status"
+      ],
+      "dependencies": ["core", "schemas.runtime", "services.policy_kernel"],
+      "critical": true
+    },
+    {
+      "name": "intelligent_planner_service",
+      "path": "src/aipinho/services/runtime/intelligent_planner_service.py",
+      "category": "runtime",
+      "type": "service",
+      "methods": [
+        "plan_execution",
+        "optimize_plan",
+        "validate_plan",
+        "get_plan_status"
+      ],
+      "dependencies": ["core", "schemas.runtime", "services.policy_kernel"],
+      "critical": true
+    },
+    {
+      "name": "runtime_doctor_service",
+      "path": "src/aipinho/services/runtime/runtime_doctor_service.py",
+      "category": "runtime",
+      "type": "service",
+      "methods": [
+        "diagnose_runtime",
+        "check_health",
+        "get_runtime_status",
+        "fix_runtime_issues"
+      ],
+      "dependencies": ["core", "schemas.runtime"],
+      "critical": false
+    },
+    {
+      "name": "runtime_state_hygiene_service",
+      "path": "src/aipinho/services/runtime/runtime_state_hygiene_service.py",
+      "category": "runtime",
+      "type": "service",
+      "methods": [
+        "clean_state",
+        "validate_state",
+        "reset_state",
+        "get_state_status"
+      ],
+      "dependencies": ["core", "repositories"],
+      "critical": false
+    },
+    {
+      "name": "runtime_timeline_service",
+      "path": "src/aipinho/services/runtime/runtime_timeline_service.py",
+      "category": "runtime",
+      "type": "service",
+      "methods": [
+        "record_event",
+        "get_timeline",
+        "query_timeline",
+        "export_timeline"
+      ],
+      "dependencies": ["core", "repositories"],
+      "critical": false
+    },
+    {
+      "name": "runtime_truth_engine",
+      "path": "src/aipinho/services/runtime/runtime_truth_engine.py",
+      "category": "runtime",
+      "type": "service",
+      "methods": [
+        "validate_truth",
+        "evidence_check",
+        "truth_report",
+        "get_truth_status"
+      ],
+      "dependencies": ["core", "schemas.runtime"],
+      "critical": false
+    },
+    {
+      "name": "task_queue_service",
+      "path": "src/aipinho/services/runtime/task_queue_service.py",
+      "category": "runtime",
+      "type": "service",
+      "methods": [
+        "enqueue_task",
+        "dequeue_task",
+        "get_queue_status",
+        "manage_queue"
+      ],
+      "dependencies": ["core", "repositories"],
+      "critical": false
+    },
+    {
+      "name": "task_queue_maintenance_service",
+      "path": "src/aipinho/services/runtime/task_queue_maintenance_service.py",
+      "category": "runtime",
+      "type": "service",
+      "methods": [
+        "run_forever",
+        "maintain_queue",
+        "cleanup_queue",
+        "get_maintenance_status"
+      ],
+      "dependencies": ["core", "services.runtime.task_queue_service"],
+      "critical": false
+    },
+    {
+      "name": "supervised_execution_loop",
+      "path": "src/aipinho/services/runtime/supervised_execution_loop.py",
+      "category": "runtime",
+      "type": "service",
+      "methods": [
+        "run_loop",
+        "supervise_execution",
+        "handle_errors",
+        "get_loop_status"
+      ],
+      "dependencies": ["core", "services.runtime.task_runtime_service"],
+      "critical": false
+    }
+  ],
+  "total_services": 10,
+  "critical_count": 3,
+  "non_critical_count": 7
+}

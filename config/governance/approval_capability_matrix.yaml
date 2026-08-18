@@ -1,0 +1,139 @@
+schema_version: 1
+
+authority:
+  execution: AIpinho
+  planning: AIpinho
+  runtime: AIpinho
+  persistence: AIpinho
+  validation: AIpinho
+  speaker_truth: AIpinho
+
+trust_order:
+  L0: 0
+  L1: 1
+  L2: 2
+  L3: 3
+  L4: 4
+
+capability_categories:
+  filesystem: [approve, deny]
+  patch: [approve, deny]
+  build: [approve, deny]
+  shell: [approve, deny]
+  runtime: [approve, deny]
+  policy: [approve, deny]
+  memory: [approve, deny]
+  database: [approve, deny]
+  security: [approve, deny]
+  models: [approve, deny]
+  artifacts: [approve, deny]
+  reports: [approve, deny]
+  contracts: [approve, deny]
+
+minimum_trust_by_category:
+  filesystem: L1
+  patch: L1
+  build: L1
+  shell: L2
+  runtime: L2
+  policy: L3
+  memory: L2
+  database: L3
+  security: L3
+  models: L2
+  artifacts: L1
+  reports: L1
+  contracts: L1
+
+action_category_map:
+  create_file: filesystem
+  modify_file: filesystem
+  write_file: filesystem
+  write_files: filesystem
+  create_directory: filesystem
+  copy_file: filesystem
+  move_file: filesystem
+  delete_file: filesystem
+  apply_patch: patch
+  patch: patch
+  run_command: shell
+  shell: shell
+  shell_build: build
+  shell_test: build
+  build: build
+  test: build
+  create_artifact: artifacts
+  artifact_create: artifacts
+  generate_report: reports
+  report: reports
+  update_policy: policy
+  config_change: policy
+  memory_write: memory
+  database_write: database
+  model_route: models
+  contract_change: contracts
+
+default_approvers:
+  aipinho:
+    display_name: AIpinho
+    approver_type: service_account
+    trust_level: L4
+    status: active
+    capabilities:
+      filesystem: [approve, deny]
+      patch: [approve, deny]
+      build: [approve, deny]
+      shell: [approve, deny]
+      runtime: [approve, deny]
+      policy: [approve, deny]
+      memory: [approve, deny]
+      database: [approve, deny]
+      security: [approve, deny]
+      models: [approve, deny]
+      artifacts: [approve, deny]
+      reports: [approve, deny]
+      contracts: [approve, deny]
+  external_ai_l1:
+    display_name: External AI L1
+    approver_type: external_adapter
+    trust_level: L1
+    status: active
+    capabilities:
+      filesystem: [approve, deny]
+      patch: [approve, deny]
+      build: [approve, deny]
+      artifacts: [approve, deny]
+      reports: [approve, deny]
+      contracts: [approve, deny]
+      shell: [deny]
+      policy: [deny]
+      database: [deny]
+      security: [deny]
+  human_operator_l2:
+    display_name: Human Operator L2
+    approver_type: human
+    trust_level: L2
+    status: active
+    capabilities:
+      filesystem: [approve, deny]
+      patch: [approve, deny]
+      build: [approve, deny]
+      shell: [approve, deny]
+      runtime: [approve, deny]
+      memory: [approve, deny]
+      artifacts: [approve, deny]
+      reports: [approve, deny]
+      contracts: [approve, deny]
+      policy: [deny]
+      database: [deny]
+      security: [deny]
+
+adapter_profile_defaults:
+  execution_mode: supervised
+  default_execute: false
+  speaker_truth_mode: strict
+  can_continue_task: true
+  can_create_task: false
+  can_request_review: true
+  can_request_approval: true
+  can_finish_task: false

@@ -1,0 +1,8 @@
+schema_version: 1
+
+audit:
+  enabled: true
+  record_guard: true
+  record_backup: true
+  record_post_validation: true
+  redact_secrets: true

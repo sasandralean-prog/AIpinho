@@ -1,0 +1,46 @@
+{
+  "session_id": "session_70ff092c9cc549f793c4c13e8586f569",
+  "status": "active",
+  "created_at": "2026-06-20T01:47:39.566744+00:00",
+  "updated_at": "2026-06-20T01:47:39.600916+00:00",
+  "expires_at": "2026-06-20T05:47:39.566744+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Analise o source project em modo somente leitura. Gere um relatorio markdown com riscos. Nao altere arquivos.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_e258b163fb00449e91ddf675b1e24f70",
+    "intent_type": "filesystem_write_request",
+    "task_type": "filesystem_write",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_clarification",
+    "contract_type": "filesystem_write",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [
+      "write_files"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [
+    "requires_clarification"
+  ],
+  "trace_refs": []
+}

@@ -1,0 +1,24 @@
+version: 1
+matrix_name: speaker_truth
+cases:
+  - completed_requires_final_event
+  - file_created_requires_tool_evidence
+  - file_modified_requires_tool_evidence
+  - shell_passed_requires_exit_code_zero
+  - build_passed_requires_evidence
+  - validation_passed_requires_validation_id
+  - artifact_generated_requires_artifact_id
+  - delegation_completed_requires_result
+  - child_failed_blocks_clean_parent_completion
+  - validation_failed_blocks_clean_completed
+  - blocked_not_completed
+  - cancelled_not_completed
+  - timed_out_not_completed
+  - completed_without_evidence_creates_self_healing_candidate
+  - final_answer_does_not_claim_success_when_tool_failed
+  - ui_success_matches_backend_status
+  - dashboard_exposes_failed_runs
+  - debugger_exposes_evidence
+  - reports_list_limitations
+  - auto_review_flags_optimistic_claims
+

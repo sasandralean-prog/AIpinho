@@ -1,0 +1,48 @@
+{
+  "session_id": "session_03d9243aae81484492b63fd5c873f4ce",
+  "status": "active",
+  "created_at": "2026-06-06T12:43:04.589978+00:00",
+  "updated_at": "2026-06-06T12:43:04.597020+00:00",
+  "expires_at": "2026-06-06T16:43:04.589978+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Explique a arquitetura desse projeto",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_d6e9c68b78ac46d7a5d7520010aa40af",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_clarification",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": "draft_00654e3a983341b4a8a0459f1a277304",
+  "warnings": [
+    "requires_clarification"
+  ],
+  "trace_refs": []
+}

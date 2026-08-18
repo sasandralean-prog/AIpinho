@@ -1,0 +1,12 @@
+schema_version: 1
+
+atomic_write:
+  enabled: true
+  use_temp_file: true
+  temp_suffix: .aipinho_patch_tmp
+  temp_same_directory: true
+  replace_existing_atomically: true
+  cleanup_temp_on_success: true
+  cleanup_temp_on_failure: true
+  block_if_temp_exists: true
+  verify_after_replace: true

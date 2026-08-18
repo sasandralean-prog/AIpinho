@@ -1,0 +1,117 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "services": [
+    {
+      "name": "policy_kernel_service",
+      "path": "src/aipinho/services/policy_kernel/policy_kernel_service.py",
+      "category": "governance",
+      "critical": true
+    },
+    {
+      "name": "capability_gate_service",
+      "path": "src/aipinho/services/policy_kernel/capability_gate_service.py",
+      "category": "governance",
+      "critical": true
+    },
+    {
+      "name": "workspace_role_contract_service",
+      "path": "src/aipinho/services/policy_kernel/workspace_role_contract_service.py",
+      "category": "governance",
+      "critical": true
+    },
+    {
+      "name": "task_runtime_service",
+      "path": "src/aipinho/services/runtime/task_runtime_service.py",
+      "category": "runtime",
+      "critical": true
+    },
+    {
+      "name": "execution_graph_service",
+      "path": "src/aipinho/services/runtime/execution_graph_service.py",
+      "category": "runtime",
+      "critical": true
+    },
+    {
+      "name": "intelligent_planner_service",
+      "path": "src/aipinho/services/runtime/intelligent_planner_service.py",
+      "category": "runtime",
+      "critical": true
+    },
+    {
+      "name": "chat_service",
+      "path": "src/aipinho/services/chat/chat_service.py",
+      "category": "chat",
+      "critical": true
+    },
+    {
+      "name": "chat_operation_router_service",
+      "path": "src/aipinho/services/chat/chat_operation_router_service.py",
+      "category": "chat",
+      "critical": true
+    },
+    {
+      "name": "agent_tool_gateway_service",
+      "path": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+      "category": "agents",
+      "critical": true
+    },
+    {
+      "name": "agent_local_action_planner",
+      "path": "src/aipinho/services/agents/agent_local_action_planner.py",
+      "category": "agents",
+      "critical": true
+    },
+    {
+      "name": "llama_cpp_provider",
+      "path": "src/aipinho/services/models/llama_cpp_provider.py",
+      "category": "models",
+      "critical": true
+    },
+    {
+      "name": "governed_tool_execution_service",
+      "path": "src/aipinho/services/tools/governed_tool_execution_service.py",
+      "category": "tools",
+      "critical": true
+    },
+    {
+      "name": "validation_gate_service",
+      "path": "src/aipinho/services/validation/validation_gate_service.py",
+      "category": "validation",
+      "critical": true
+    },
+    {
+      "name": "retrieval_service",
+      "path": "src/aipinho/services/rag/retrieval_service.py",
+      "category": "rag",
+      "critical": false
+    },
+    {
+      "name": "memory_candidate_service",
+      "path": "src/aipinho/services/memory/memory_candidate_service.py",
+      "category": "memory",
+      "critical": false
+    },
+    {
+      "name": "artifact_generator_service",
+      "path": "src/aipinho/services/artifacts/artifact_generator_service.py",
+      "category": "artifacts",
+      "critical": false
+    }
+  ],
+  "total_services": 15,
+  "critical_services": 12,
+  "non_critical_services": 3,
+  "categories": {
+    "governance": 3,
+    "runtime": 3,
+    "chat": 2,
+    "agents": 2,
+    "models": 1,
+    "tools": 1,
+    "validation": 1,
+    "rag": 1,
+    "memory": 1,
+    "artifacts": 1
+  }
+}

@@ -1,0 +1,6 @@
+schema_version: 1
+session_recovery:
+  enabled: true
+  preserve_cursor: true
+  preserve_unsent_draft: true
+  mark_snapshot_stale_offline: true

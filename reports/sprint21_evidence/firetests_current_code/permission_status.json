@@ -1,0 +1,110 @@
+{
+  "http_status": 200,
+  "body": {
+    "response_id": "chat_8dead5e0b8284261be6e2647851f8834",
+    "session_id": "chat_sprint21_permission_status",
+    "task_draft_id": null,
+    "preview_id": null,
+    "task_id": null,
+    "approval_id": null,
+    "task_preview_id": null,
+    "artifact_id": null,
+    "artifact_preview_id": null,
+    "artifact_links": [],
+    "result_ref_id": null,
+    "operation_id": "chatop_13bfd47864a6450ca073ea8c26ef3df7",
+    "operation_type": "permission_status",
+    "message_type": "assistant_final_answer",
+    "status": "ok",
+    "message": "Permissoes atuais da AIpinho:\n\nLeitura permitida:\n- C:\\Dev\\AIpinho (system_mutable; read; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\AIpinhoTestes (target_mutable; read; approval obrigatorio)\n- C:\\Dev\\AI\\coding-brain-supervisor (target_mutable; read; approval obrigatorio)\n- C:\\Dev\\AI (target_mutable; read; approval obrigatorio)\n- C:\\Dev\\Dependencias (target_mutable; read; approval obrigatorio)\n- C:\\PinhoabacaxiAI (target_mutable; read; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\FashionHelper (target_mutable; read; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\Fashion Helper legado (target_mutable; read; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\Pinhoabacaxi-musicas-main (target_mutable; read; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\PinhoabacaxiMusicasDesktop (target_mutable; read; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\TestesIALocal (target_mutable; read; approval obrigatorio)\n- C:\\Dev\\AIpinho\\field_trials\\rc2\\source_readonly_project (source_readonly; read; approval nao obrigatorio)\n- C:\\Dev\\AIpinho\\field_trials\\rc2\\target_mutable_project (target_mutable; read; approval obrigatorio)\n- C:\\Dev\\AIpinho\\field_trials\\rc2\\protected_project (protected; read; approval obrigatorio)\n- C:\\Dev\\AIpinho\\field_trials\\dogfood_sprint20\\source_readonly_project (source_readonly; read; approval nao obrigatorio)\n- C:\\Dev\\AIpinho\\field_trials\\dogfood_sprint20\\target_mutable_project (target_mutable; read; approval obrigatorio)\n- C:\\Dev\\AIpinho\\field_trials\\dogfood_sprint20\\protected_project (protected; read; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Downloads (external_inbox; read; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main (target_mutable; read; approval obrigatorio)\n\nEscrita/patch/artifact governados:\n- C:\\Dev\\AIpinho (system_mutable; artifact, patch, workspace_write; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\AIpinhoTestes (target_mutable; artifact, patch, workspace_write; approval obrigatorio)\n- C:\\Dev\\AI\\coding-brain-supervisor (target_mutable; artifact, patch, workspace_write; approval obrigatorio)\n- C:\\Dev\\AI (target_mutable; workspace_write; approval obrigatorio)\n- C:\\Dev\\Dependencias (target_mutable; workspace_write; approval obrigatorio)\n- C:\\PinhoabacaxiAI (target_mutable; artifact, patch, workspace_write; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\FashionHelper (target_mutable; artifact, patch, workspace_write; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\Fashion Helper legado (target_mutable; artifact, patch, workspace_write; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\Pinhoabacaxi-musicas-main (target_mutable; artifact, patch, workspace_write; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\PinhoabacaxiMusicasDesktop (target_mutable; workspace_write; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\TestesIALocal (target_mutable; artifact, patch, workspace_write; approval obrigatorio)\n- C:\\Dev\\AIpinho\\field_trials\\rc2\\target_mutable_project (target_mutable; workspace_write; approval obrigatorio)\n- C:\\Dev\\AIpinho\\field_trials\\dogfood_sprint20\\target_mutable_project (target_mutable; workspace_write; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main (target_mutable; workspace_write; approval obrigatorio)\n- capacidade registrada nao significa acao liberada agora: preview, approval, role e validacao ainda sao avaliados por pedido.\n\nShell/network governado:\n- C:\\Dev\\AIpinho (system_mutable; shell/network; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\AIpinhoTestes (target_mutable; shell/network; approval obrigatorio)\n- C:\\Dev\\AI\\coding-brain-supervisor (target_mutable; shell/network; approval obrigatorio)\n- C:\\PinhoabacaxiAI (target_mutable; shell/network; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\FashionHelper (target_mutable; shell/network; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\Fashion Helper legado (target_mutable; shell/network; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\Pinhoabacaxi-musicas-main (target_mutable; shell/network; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\TestesIALocal (target_mutable; shell/network; approval obrigatorio)\n- capabilities permitidas: shell, network\n- actions permitidas: run_command, web_request\n- actions negadas por policy: apply_patch, write_files, delete_files, move_files, git_commit, git_push, write_memory\n\nRegras de seguranca:\n- escrita real exige preview/policy/approval/validacao quando aplicavel.\n- shell livre nao esta liberado; execucao usa allowlist/denylist, timeout e audit.\n- git/destructive routes continuam bloqueados por default.\n\nFontes: config/workspaces/workspace_registry.yaml; config/artifacts/artifact_target_policy.yaml; config/patching/patch_target_policy.yaml; config/policies/governed_tool_execution_policy.yaml.",
+    "intent": {
+      "intent_type": "permission_status",
+      "requires_task": false,
+      "requires_workspace": false,
+      "requires_patch": false
+    },
+    "policy": {
+      "read_only": true,
+      "approval_required_for": [],
+      "registered_capabilities": [
+        "shell",
+        "network"
+      ],
+      "currently_allowed_actions": [
+        "run_command",
+        "web_request"
+      ],
+      "approval_required_actions": [
+        "workspace_write",
+        "apply_patch",
+        "artifact_generation",
+        "governed_shell"
+      ],
+      "currently_blocked_actions": [
+        "apply_patch",
+        "write_files",
+        "delete_files",
+        "move_files",
+        "git_commit",
+        "git_push",
+        "write_memory"
+      ],
+      "required_preconditions": [
+        "registered_workspace",
+        "workspace_role_allows_action",
+        "policy_allows_action",
+        "preview_when_required",
+        "approval_when_required",
+        "validation_when_required"
+      ],
+      "sources": [
+        "config/workspaces/workspace_registry.yaml",
+        "config/artifacts/artifact_target_policy.yaml",
+        "config/patching/patch_target_policy.yaml",
+        "config/policies/governed_tool_execution_policy.yaml"
+      ]
+    },
+    "contract_preview": {},
+    "actions": [],
+    "next_actions": [],
+    "warnings": [],
+    "trace": [],
+    "raw_debug_ref": null,
+    "model_used": "policy_config",
+    "real_inference": false,
+    "model_warnings": [],
+    "evaluation_status": null,
+    "evaluation_warnings": [],
+    "fallback_used": false,
+    "context_plan_id": null,
+    "citation_map": {},
+    "evidence_refs": [
+      {
+        "type": "policy_config",
+        "ref_id": "workspace_registry",
+        "human_label": "workspace_registry.yaml"
+      },
+      {
+        "type": "policy_config",
+        "ref_id": "artifact_target_policy",
+        "human_label": "artifact_target_policy.yaml"
+      },
+      {
+        "type": "policy_config",
+        "ref_id": "patch_target_policy",
+        "human_label": "patch_target_policy.yaml"
+      },
+      {
+        "type": "policy_config",
+        "ref_id": "governed_tool_execution_policy",
+        "human_label": "governed_tool_execution_policy.yaml"
+      }
+    ],
+    "requires_user_action": false,
+    "is_final_answer": true,
+    "grounded": true,
+    "grounding_required": false,
+    "grounding_missing_reason": null,
+    "policy_block": null
+  }
+}

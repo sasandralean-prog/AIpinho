@@ -1,0 +1,85 @@
+schema_version: 1
+
+targets:
+  allowed_workspace_roots:
+    - "C:\\Dev\\AIpinho"
+    - "C:\\Users\\rafae\\Documents\\AIpinhoTestes"
+    - "C:\\Dev\\AI\\coding-brain-supervisor"
+    - "C:\\PinhoabacaxiAI"
+    - "C:\\Users\\rafae\\Documents\\FashionHelper"
+    - "C:\\Users\\rafae\\Documents\\Fashion Helper legado"
+    - "C:\\Users\\rafae\\Documents\\Pinhoabacaxi-musicas-main"
+    - "C:\\Users\\rafae\\Documents\\TestesIALocal"
+
+  allowed_base_dirs:
+    - reports
+    - artifacts
+    - exports
+    - docs/generated
+
+  blocked_base_dirs:
+    - src
+    - tests
+    - config
+    - scripts
+    - .git
+    - .venv
+    - venv
+    - node_modules
+    - data/runtime
+    - data/logs
+
+  allowed_extensions:
+    - .md
+    - .txt
+    - .json
+    - .yaml
+    - .yml
+    - .csv
+    - .html
+
+  blocked_extensions:
+    - .py
+    - .js
+    - .ts
+    - .tsx
+    - .jsx
+    - .java
+    - .kt
+    - .go
+    - .rs
+    - .cpp
+    - .h
+    - .hpp
+    - .cs
+    - .sh
+    - .ps1
+    - .bat
+    - .cmd
+    - .exe
+    - .dll
+    - .so
+    - .bin
+    - .zip
+    - .7z
+    - .rar
+    - .sqlite
+    - .db
+
+path_rules:
+  require_relative_target_by_default: true
+  allow_absolute_target_if_inside_workspace: true
+  block_forbidden_roots: true
+  block_path_traversal: true
+  block_unc_paths: true
+  block_device_paths: true
+  normalize_windows_paths: true
+  create_missing_dirs_in_preview_only: false
+
+forbidden_roots: []
+
+overwrite:
+  detect_existing_target: true
+  allow_overwrite_preview: true
+  allow_overwrite_execution: false
+  require_explicit_overwrite_approval_future: true

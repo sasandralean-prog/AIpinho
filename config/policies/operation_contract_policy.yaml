@@ -1,0 +1,135 @@
+schema_version: 1
+action_aliases:
+  write_files:
+    - create_file
+    - modify_file
+  report_generation:
+    - create_file
+  patch:
+    - apply_patch
+  file_edit:
+    - modify_file
+  workspace_write:
+    - create_file
+    - modify_file
+    - apply_patch
+  workspace_read:
+    - read_file
+    - list_files
+    - workspace_metadata_read
+  build:
+    - shell_build
+  test:
+    - shell_test
+  command:
+    - shell_readonly
+  run_command:
+    - shell_readonly
+  copy:
+    - copy_file
+  move:
+    - move_file
+  delete:
+    - delete_file
+permission_aliases:
+  workspace_metadata_read: list_files
+  copy_file: copy_to
+  move_file: move_to
+  shell_readonly: shell_readonly
+  shell_build: shell_build
+  shell_test: shell_test
+  create_file: create_file
+  create_directory: create_file
+  modify_file: modify_file
+  apply_patch: apply_patch
+  artifact_create: artifact_create
+negative_constraints:
+  create_file:
+    value: false
+    terms:
+      - nao crie arquivo
+      - nao criar arquivo
+      - nao gere arquivo
+      - sem criar arquivo
+  write:
+    value: false
+    terms:
+      - nao escreva
+      - nao escrever
+      - sem escrita
+  modify:
+    value: false
+    terms:
+      - nao altere
+      - nao modificar
+      - sem alteracao
+  report_file:
+    value: false
+    terms:
+      - nao gere relatorio
+      - nao gerar relatorio
+      - sem relatorio
+  chat_only:
+    value: true
+    terms:
+      - responda somente no chat
+      - apenas responda no chat
+      - somente no chat
+  readonly:
+    value: true
+    terms:
+      - apenas leia
+      - somente leitura
+      - read-only
+      - readonly
+  shell:
+    value: false
+    terms:
+      - nao rode shell
+      - nao executar shell
+      - nao use terminal
+  tool_execution:
+    value: false
+    terms:
+      - nao use ferramentas
+      - sem ferramentas
+constraint_blocks:
+  create_file:
+    - create_file
+    - artifact_create
+  write:
+    - create_file
+    - modify_file
+    - apply_patch
+    - artifact_create
+  modify:
+    - modify_file
+    - apply_patch
+  report_file:
+    - artifact_create
+    - create_file
+  chat_only:
+    - create_file
+    - modify_file
+    - apply_patch
+    - artifact_create
+    - shell_readonly
+    - shell_build
+    - shell_test
+  readonly:
+    - create_file
+    - modify_file
+    - apply_patch
+    - artifact_create
+  shell:
+    - shell_readonly
+    - shell_build
+    - shell_test
+  tool_execution:
+    - shell_readonly
+    - shell_build
+    - shell_test
+    - create_file
+    - modify_file
+    - apply_patch
+    - artifact_create

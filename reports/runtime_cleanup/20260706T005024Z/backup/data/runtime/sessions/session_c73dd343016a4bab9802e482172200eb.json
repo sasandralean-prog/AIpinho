@@ -1,0 +1,46 @@
+{
+  "session_id": "session_c73dd343016a4bab9802e482172200eb",
+  "status": "active",
+  "created_at": "2026-06-09T23:16:34.597732+00:00",
+  "updated_at": "2026-06-09T23:16:34.616616+00:00",
+  "expires_at": "2026-06-10T03:16:34.597732+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "AIpinho quero que faça uma avaliação e analise sobre o projeto sapo andando em \"C:\\Users\\rafae\\Documents\\TestesIALocal\\SapoAndando\". Na analise quero que evidencie os problemas e erros no projeto do jogo e proponha melhorias para corrigir os erros nele. Entregue o relatorio com a analise em um relatorio.txt dentro de um realtorio.zip baixavel.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_46b089ae05b34067a51c838ff67b98e0",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\TestesIALocal\\SapoAndando",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": true,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\TestesIALocal\\SapoAndando",
+  "active_task_draft_id": "draft_7793736c676d40e0be679e9028856e18",
+  "warnings": [],
+  "trace_refs": []
+}

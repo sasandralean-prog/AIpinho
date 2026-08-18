@@ -1,0 +1,12 @@
+﻿schema_version: 1
+
+store:
+  enabled: true
+  runs_dir: data/runtime/model_runs
+  events_dir: data/runtime/model_runs/events
+  audit_log: data/logs/audit/manual_inference_smoke.jsonl
+  sanitize: true
+  persist_prompt_full: false
+  persist_stdout_full: false
+  persist_stderr_full: false
+  max_output_preview_chars: 500

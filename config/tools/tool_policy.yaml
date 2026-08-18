@@ -1,0 +1,22 @@
+schema_version: 1
+tools:
+  enabled: true
+  require_tool_contract: true
+  require_provider_registration: true
+  require_skill_permission: true
+  require_capability: true
+  require_approval_for_high_risk: true
+  require_sanitization: true
+default:
+  available: false
+  execution_mode: preview_only
+blocked:
+  unknown_tool: true
+  arbitrary_tool_call: true
+  shell_true: true
+  patch_apply_direct: true
+  git_write_direct: true
+  browser_control_direct: true
+  computer_use_direct: true
+  credential_exposure: true
+  token_in_tool_result: true

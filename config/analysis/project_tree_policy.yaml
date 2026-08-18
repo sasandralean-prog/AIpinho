@@ -1,0 +1,24 @@
+schema_version: 1
+project_tree:
+  enabled: true
+  max_depth: 10
+  max_entries: 500
+  max_candidate_files: 200
+  follow_symlinks: false
+  include_hidden: false
+  important_names:
+    - README.md
+    - pyproject.toml
+    - package.json
+    - build.gradle.kts
+    - settings.gradle.kts
+    - build.gradle
+    - settings.gradle
+    - Cargo.toml
+    - go.mod
+    - requirements.txt
+    - src
+    - tests
+    - config
+    - docs
+    - apps

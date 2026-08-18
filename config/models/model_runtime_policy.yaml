@@ -1,0 +1,35 @@
+schema_version: 1
+
+runtime:
+  chat_auto_use_enabled: false
+  role_pipeline_auto_use_enabled: true
+  role_model_inference_enabled: true
+  controlled_role_inference_enabled: true
+  embedding_runtime_enabled: true
+  reranker_runtime_enabled: true
+  vector_rag_only_embedding_models: true
+  vector_rag_only_reranker_models: true
+  vision_runtime_enabled: true
+  ocr_runtime_enabled: true
+  first_token_probe_enabled_by_default: false
+  tool_calling_enabled: false
+  network_download_enabled: false
+  load_models_during_doctor: false
+  metadata_probe_only_by_default: true
+
+limits:
+  cpu_only: true
+  max_auto_parameter_class: 7b
+  manual_only_parameter_classes: [14b]
+  no_gpu_assumption: true
+
+blocked:
+  automatic_chat_model_use: true
+  automatic_role_model_use: true
+  chat_auto_role_inference: true
+  embedding_model_as_chat: true
+  reranker_model_as_chat: true
+  vision_model_as_chat: true
+  ocr_model_as_chat: true
+  arbitrary_shell: true
+  model_download: true

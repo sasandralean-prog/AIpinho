@@ -1,0 +1,122 @@
+{
+  "h1b5_0": {
+    "declared_contracts": [
+      "RelationshipGoal",
+      "RelationshipCandidate",
+      "RelationshipEvidence",
+      "RelationshipEvidenceSignal",
+      "RelationshipObservation",
+      "RelationshipBinding",
+      "media_relationship_candidate_detector via existing CapabilityRegistry",
+      "EvidenceRecord evidence_type=relationship_observation",
+      "ArtifactSemanticProfile relationship binding",
+      "Summary relationship_cognition"
+    ],
+    "declared_outputs": [
+      "Relationship candidates are candidate-only",
+      "Relationship observations produce EvidenceRecord entries",
+      "SemanticSelfReview blocks final relationship promotion",
+      "Summary remains lightweight",
+      "CVL recognizes media relationship capability/evidence/validation frontiers"
+    ],
+    "declared_non_goals": [
+      "Do not implement final sidecar resolution",
+      "Do not declare lyrics_for/artwork_for/album_art_for/sidecar_of as Truth",
+      "Do not implement Knowledge Graph/H1D",
+      "Do not implement public chat boundary",
+      "Do not seek FIRETEST5_READY"
+    ],
+    "declared_gaps": [
+      "Relationship final validation did not exist",
+      "Artifact contract activation/rendering of relationship fields was minimal",
+      "Public chat accepted_running/timeout_blocked remained external"
+    ]
+  },
+  "h1b5_1": {
+    "declared_contracts": [
+      "RelationshipEvidenceSignal maturity",
+      "RelationshipProvenanceTrace",
+      "RelationshipConfidenceModel",
+      "RelationshipNegativeEvidence",
+      "RelationshipConflict",
+      "EvidenceRecord relationship_observation maturity",
+      "ArtifactSemanticProfile relationship binding quality",
+      "CVL relationship maturity frontiers"
+    ],
+    "declared_outputs": [
+      "Signals include source/target refs, confidence method and is_sufficient_alone=false",
+      "Provenance explains producer, inputs, signals used/rejected, policy checks and evidence refs",
+      "Confidence bands include insufficient, low, medium, high and conflicted",
+      "Negative evidence and conflicts are preserved",
+      "Speaker Truth remains blocked for final relation claims"
+    ],
+    "declared_non_goals": [
+      "Do not implement artifact rendering activation",
+      "Do not implement relationship final validation",
+      "Do not declare final relationship kinds as Truth",
+      "Do not implement Knowledge Graph/H1D or public chat boundary",
+      "Do not seek FIRETEST5_READY"
+    ],
+    "declared_gaps": [
+      "Artifact contract activation/rendering of relationship fields not implemented yet",
+      "Relationship final validation/readiness policy not implemented yet",
+      "Public path boundary remained external"
+    ]
+  },
+  "h1b5_2": {
+    "declared_contracts": [
+      "relationship-aware artifact contract fields",
+      "relationship_rendered_fields",
+      "relationship_rendering_summary",
+      "Renderer materializes relationship_* fields from governed perception_payload only",
+      "Summary relationship_cognition rendered/ref counts"
+    ],
+    "declared_outputs": [
+      "Contracts can declare expected_relationships, relationship_fields and relationship_semantics",
+      "ArtifactSemanticProfile derives candidate fields from binding/provenance",
+      "Renderer does not call detector, create EvidenceRecord or observe filesystem/backend",
+      "Candidate fields do not pass final Validation"
+    ],
+    "declared_non_goals": [
+      "Do not implement H1B5.3",
+      "Do not validate final relation",
+      "Do not create renderer observer",
+      "Do not call capability from renderer",
+      "Do not seek FIRETEST5_READY"
+    ],
+    "declared_gaps": [
+      "Relationship validation/readiness policy did not exist",
+      "relationship_validation_ready was not calculated",
+      "Public path boundary remained external"
+    ]
+  },
+  "h1b5_3": {
+    "declared_contracts": [
+      "RelationshipValidationPolicy",
+      "RelationshipValidationResult",
+      "RelationshipValidationPolicyService",
+      "Validation readiness states not_ready|validation_ready|validated|rejected|blocked|conflicted",
+      "ArtifactSemanticProfile validation summary/counters",
+      "CVL relationship validation frontiers"
+    ],
+    "declared_outputs": [
+      "Ambiguity and conflict handling",
+      "validation_ready does not enable Speaker Truth",
+      "validated does not enable Speaker Truth automatically",
+      "Artifact contract fields expose validation status/codes/counts",
+      "Summary remains lightweight"
+    ],
+    "declared_non_goals": [
+      "Do not seek FIRETEST5_READY",
+      "Do not validate relationship final by extension/stem/directory",
+      "Do not declare final relationship kinds as Truth",
+      "Do not implement Knowledge Graph/H1D",
+      "Do not relax Validation, Completion or Speaker Truth"
+    ],
+    "declared_gaps": [
+      "Public path can still block before relationship flow",
+      "Relationship final validation still depends on broader Success Contract integration",
+      "Speaker Truth remains conservative"
+    ]
+  }
+}

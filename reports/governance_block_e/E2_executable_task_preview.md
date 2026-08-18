@@ -1,0 +1,7 @@
+# E2_executable_task_preview
+
+E2_EXECUTABLE_TASK_PREVIEW_READY
+
+Preview final: preview_c9d652585d7f4e4aa8367022ca334296
+Draft final: draft_block_e_repair_acd5e338367049c28c0880971b17c4da
+Plano executavel: project_generation_plan com arquivos e validacoes.

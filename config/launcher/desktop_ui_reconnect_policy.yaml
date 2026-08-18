@@ -1,0 +1,18 @@
+schema_version: 1
+reconnect:
+  enabled: true
+  use_sse: true
+  fallback_to_polling: true
+  preserve_cursor: true
+  preserve_last_snapshot: true
+  show_reconnect_status: true
+  max_backoff_seconds: 30
+  backoff_seconds: [1, 2, 5, 10, 30]
+polling:
+  enabled_when_sse_down: true
+  interval_seconds: 5
+  use_sync_changes: true
+blocked:
+  aggressive_polling: true
+  drop_cursor_on_disconnect: true
+  duplicate_events_without_dedupe: true

@@ -1,0 +1,49 @@
+schema_version: 1
+
+rag_memory_integration:
+  require_policy_decision: true
+  require_context_admission: true
+  require_context_injection_plan: true
+  automatic_chat: false
+  automatic_prompt_assembly: false
+
+retrieval:
+  enabled: true
+  mode: governed_read_only
+  deterministic_only_by_default: true
+  require_source_registry: true
+  require_source_policy: true
+  require_scope: true
+  require_budget: true
+  require_citations: true
+  require_trace: true
+  require_audit: true
+  allow_chat_explicit_retrieval: true
+  allow_chat_auto_retrieval: false
+  allow_prompt_assembly_auto_injection: false
+  allow_model_source_selection: false
+
+disabled:
+  vectorstore_creation: true
+  embedding_generation: true
+  automatic_ingestion: true
+  legacy_vectorstore: true
+  network_retrieval: true
+  web_retrieval: true
+  unregistered_sources: true
+  raw_log_retrieval: true
+  secret_retrieval: true
+
+allowed_modes:
+  - lexical
+  - metadata_filter
+  - evidence_lookup
+  - curated_memory_filter
+  - file_context_lookup
+
+blocked_modes:
+  - vector_search
+  - embedding_search
+  - semantic_ingest
+  - legacy_rag
+  - network_search

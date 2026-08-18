@@ -1,0 +1,48 @@
+{
+  "session_id": "session_71841c2658564be895441551b73c9afa",
+  "status": "active",
+  "created_at": "2026-06-09T18:36:54.824238+00:00",
+  "updated_at": "2026-06-09T18:36:54.847520+00:00",
+  "expires_at": "2026-06-09T22:36:54.824238+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Quero iniciar um teste de fogo controlado.\n\nVocê é a agente principal.\n\nFonte legada read-only:\nC:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio\n\nWorkspace alvo mutável:\nC:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2\n\nObjetivo da Fase 1:\n1. Entender o projeto legado somente em modo leitura.\n2. Identificar tipo de app, tecnologias, estrutura, funcionalidades e riscos.\n3. Explicar em linguagem humana o que foi encontrado.\n4. Propor um plano inicial de modernização para o workspace alvo.\n5. Não copiar arquivos ainda.\n6. Não aplicar alterações ainda.\n7. Não gerar patch ainda.\n8. Não escrever no projeto legado.\n9. Não escrever no workspace alvo nesta fase, salvo se a policy exigir apenas registro interno de task/relatório.\n\nRegras:\n- Trate a fonte legada como read-only.\n- Trate o workspace alvo como o local futuro de trabalho, mas gated por aprovação.\n- Se precisar de permissões, peça explicitamente.\n- Se não puder acessar algum caminho, explique claramente.\n- Use o pipeline oficial da AIpinho.\n- Não use atalhos fora do Orchestrator.\n\nFaça apenas análise read-only agora.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_21379d9ec3f04074bee811666af30c38",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": true,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio",
+  "active_task_draft_id": "draft_701db548bc2e4ee384670c4d94236276",
+  "warnings": [
+    "requires_clarification"
+  ],
+  "trace_refs": []
+}

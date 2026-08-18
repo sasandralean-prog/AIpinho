@@ -1,0 +1,6 @@
+schema_version: 1
+budget:
+  default_max_chars: 8000
+  preserve_priorities: [10, 9, 8]
+  truncate_low_priority: true
+  min_item_chars: 80

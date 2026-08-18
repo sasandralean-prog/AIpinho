@@ -1,0 +1,8 @@
+schema_version: 1
+
+ocr_citation:
+  require_text_block: true
+  require_source_ref: true
+  require_confidence: true
+  require_page_ref_when_document: true
+  block_secret_excerpt: true

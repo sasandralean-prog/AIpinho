@@ -1,0 +1,47 @@
+{
+  "run_id": "agent_run_f222df6ee22b4e569300690d85495be4",
+  "session_id": "agent_session_abdbed7378334eaa82532493406d35fe",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "sandbox_project_generation",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [],
+  "started_at": "2026-06-14T17:40:04+00:00",
+  "completed_at": "2026-06-14T17:40:08+00:00",
+  "validation_status": null,
+  "artifact_ids": [
+    "agent_artifact_e208c747051549b68313d67cd8227c3c"
+  ],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "project_generation_id": "project_generation_2fdc42fcbf034c8e80e34f01c64d44b4",
+    "project_type": "python_cli",
+    "sandbox_task_id": "sandbox_task_a0e67d6f7e014c8aa61f3e22c58575ae",
+    "sandbox_workspace_id": "sandbox_ws_default",
+    "latest_summary_sanitized": "Projeto FileLister gerado no sandbox. Artifact pronto: FileLister.zip. Artifact ID: agent_artifact_e208c747051549b68313d67cd8227c3c.",
+    "evidence_refs": [
+      "sandbox_task:sandbox_task_a0e67d6f7e014c8aa61f3e22c58575ae",
+      "run:agent_run_f222df6ee22b4e569300690d85495be4",
+      "tool:tool_invocation_26d5e6c55bc043a684ae2a525949f6c1",
+      "tool:tool_invocation_26335e003e094a01a36b98fe17ace900",
+      "tool:tool_invocation_ae130646ff3745978cf5785be63e9bf7",
+      "tool:tool_invocation_917b5e388b284dea872cdfcbeadbcb57",
+      "tool:tool_invocation_1b2ada976d4545c7891e8b215d36e0f8",
+      "sandbox_validation:project_structure",
+      "sandbox_task:sandbox_task_a0e67d6f7e014c8aa61f3e22c58575ae",
+      "artifact:agent_artifact_e208c747051549b68313d67cd8227c3c",
+      "tool:tool_invocation_12071f4b210745ae911c3b1e0ff00691"
+    ]
+  }
+}

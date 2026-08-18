@@ -1,0 +1,6 @@
+schema_version: 1
+dedupe:
+  enabled: true
+  by_content_hash: true
+  by_source_ref: true
+  near_duplicate_summary: true

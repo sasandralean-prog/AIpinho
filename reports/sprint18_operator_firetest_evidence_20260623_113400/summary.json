@@ -1,0 +1,96 @@
+{
+  "sprint": "18",
+  "name": "End-to-End Operator Firetest",
+  "timestamp": "20260623_113400",
+  "verdict": "CONFIG_GOVERNANCE_OPERATOR_REQUIRES_PATCH",
+  "reason": "Backend contracts and governed service path pass, but HTTP mutation path rejected the supplied token and real Mobile/Launcher operator execution was not completed end-to-end.",
+  "readiness": {
+    "BACKEND_READY": true,
+    "MOBILE_UX_READY": "build_ready_not_operator_verified",
+    "LAUNCHER_UX_READY": "py_compile_ready_not_operator_verified",
+    "OPERATOR_FLOW_READY": "partial_service_bypass_only",
+    "SPEAKER_TRUTH_READY": "not_exercised_in_full_operator_flow"
+  },
+  "patches_applied": [
+    {
+      "area": "workspace flow contract",
+      "files": [
+        "src/aipinho/schemas/workspace_flows/workspace_flow.py",
+        "src/aipinho/services/workspace_flows/workspace_flow_service.py",
+        "tests/unit/test_workspace_flow_service.py"
+      ],
+      "change": "Accept structured source/target endpoints with workspace_id while preserving legacy source_path/target_path.",
+      "genericity": "No route duplication and no project-specific branch; workspace resolution uses registry and permission matrix."
+    },
+    {
+      "area": "operator settings UX",
+      "files": [
+        "apps/launcher/ui/api/governance_client.py",
+        "apps/launcher/ui/tabs/settings_tab.py",
+        "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/network/GovernanceClient.kt",
+        "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/ui/screens/SettingsScreen.kt"
+      ],
+      "change": "Add create/approve/apply/rollback controls wired to existing config governance endpoints.",
+      "genericity": "Uses existing canonical endpoints and configurable workspace payloads; no duplicate route created."
+    }
+  ],
+  "evidence": {
+    "backend_health": "ok on 127.0.0.1:9088 after restart",
+    "routes": [
+      "/api/v1/config/*",
+      "/api/v1/workspace-flows/plan"
+    ],
+    "structured_flow_plan": {
+      "status": "ok",
+      "result": "payload source/target with workspace_id now accepted and produces pending_approval"
+    },
+    "config_workspaces_added_by_governed_service_bypass": [
+      {
+        "workspace_id": "rafael_downloads",
+        "role": "external_inbox",
+        "approval": "approval_a29f6d837b3c4a4e807a9321d9aeee93",
+        "change": "config_change_6671085cb451447ebfbd00facecc38a5",
+        "backup": "config_backup_3a6b596c890f4e05acb68330a22cae60"
+      },
+      {
+        "workspace_id": "sprint_file_sync",
+        "role": "target_mutable",
+        "approval": "approval_8490a7aa76b2404882e813abedd75414",
+        "change": "config_change_5d085234acb343af9da951168853a7e3",
+        "backup": "config_backup_d7442b1c387b4d73bf26214c89f901b1"
+      }
+    ],
+    "rollback_probe": "temp workspace applied then rollback restored prior registry; temp_still_present=false",
+    "copy_plan": "rafael_downloads -> sprint_file_sync/reports asks approval for create_file/copy_to",
+    "git_push_plan": "sprint_file_sync git_push asks approval; no free execution",
+    "http_mutation_block": "POST /api/v1/config/workspaces with supplied bearer token returned local_token_required"
+  },
+  "tests": [
+    "python -m py_compile src/aipinho/schemas/workspace_flows/workspace_flow.py src/aipinho/services/workspace_flows/workspace_flow_service.py src/aipinho/api/routers/workspace_flow_router.py apps/launcher/ui/api/governance_client.py apps/launcher/ui/tabs/settings_tab.py apps/launcher/ui/launcher_app.py",
+    "python -m pytest tests\\unit\\test_workspace_flow_service.py tests\\unit\\test_mobile_view_model_service.py -q -> 13 passed",
+    "cmd /c apps\\mobile\\android\\gradlew.bat -p apps\\mobile\\android :app:compileDebugKotlin -> BUILD SUCCESSFUL"
+  ],
+  "known_issues": [
+    {
+      "id": "s18-token-http-mutation",
+      "severity": "P0 for operator UX",
+      "description": "Protected config mutation endpoints rejected the supplied local bearer token; service-level governance works, HTTP operator path needs token/pairing alignment."
+    },
+    {
+      "id": "s18-ux-real-operator-validation",
+      "severity": "P1",
+      "description": "Mobile/Launcher compiled but were not used end-to-end by a real operator in this run."
+    },
+    {
+      "id": "s18-speaker-truth-not-exercised",
+      "severity": "P1",
+      "description": "Speaker truth for full approval/task resume flow was not validated in this sprint run."
+    },
+    {
+      "id": "s18-approvalrequest-extra-fields-historical-log",
+      "severity": "P1",
+      "description": "Historical backend err log before restart showed ApprovalRequest extra-field validation failures in a previous path; no fresh recurrence after restart, but Sprint 19 should inspect schema/callers."
+    }
+  ],
+  "no_route_duplication": true
+}

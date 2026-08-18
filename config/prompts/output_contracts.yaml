@@ -1,0 +1,59 @@
+schema_version: 1
+contracts:
+  plain_text:
+    format: text
+    required_sections: []
+  chat_response:
+    format: markdown
+    required_sections:
+    - answer
+    max_chars: 4000
+  markdown_report:
+    format: markdown
+    required_sections:
+    - executive_summary
+    - findings
+    - recommendations
+    - limitations
+    require_evidence: true
+  json_findings:
+    format: json
+    required_fields:
+    - findings
+    - limitations
+    require_valid_json: true
+  task_preview:
+    format: json
+    required_fields:
+    - summary
+    - allowed_actions
+    - denied_actions
+    - approval_required_for
+  local_smoke_test:
+    format: text
+    required_sections: []
+    max_chars: 5000
+  validation_summary:
+    format: text
+    required_sections: []
+    max_chars: 4000
+  debug_summary:
+    format: text
+    required_sections: []
+    max_chars: 4000
+  artifact_preview:
+    format: markdown
+    required_sections:
+    - summary
+    - limitations
+    max_chars: 4000
+  repair_proposal_output:
+    format: json
+    required_fields:
+    - target
+    - intent
+    - concrete_change
+    - rollback
+    - impact
+    - risks
+    require_valid_json: true

@@ -1,0 +1,15 @@
+﻿schema_version: 1
+mobile_pairing:
+  enabled: true
+  token_generated_on_pc: true
+  token_storage_path: data/runtime/security/mobile_pairing/token.json
+  token_hardcoded_in_mobile_apk: false
+  token_rotation_enabled: true
+  default_token_ttl_days: 365
+  require_bearer_token: true
+blocked:
+  log_token_plaintext: true
+  expose_token_in_status: true
+  accept_empty_token: true
+  accept_token_in_query_string: true
+

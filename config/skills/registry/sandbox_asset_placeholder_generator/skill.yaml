@@ -1,0 +1,29 @@
+skill_id: internal.sandbox_asset_placeholder_generator
+display_name: Sandbox Asset Placeholder Generator
+slug: sandbox_asset_placeholder_generator
+description: Create small local placeholder assets for generated sandbox projects without external downloads.
+version: 1.0.0
+status: active
+category: artifact_generation
+owner: aipinho
+compatible_agents: [aipinho, codex, lucio, gemini]
+compatible_project_stacks: [android_gradle, static_web, mixed, unknown]
+required_capabilities: [sandbox_write]
+allowed_tools: [sandbox_write_file]
+denied_tools: [run_shell, download_artifact, create_file, modify_file]
+input_schema: {type: object}
+output_schema: {type: object}
+side_effects: [sandbox_file_write]
+workspace_policy: {outside_sandbox_write: false}
+sandbox_required: true
+sandbox_allowed: true
+sandbox_side_effects: [write]
+command_policy: {shell: blocked}
+artifact_policy: {enabled: false}
+memory_policy: {mode: none}
+validation_policy: {required: true, failure_policy: block_completion}
+speaker_truth_policy: {raw_hidden_by_default: true, must_cite_evidence: true}
+risk_level: low
+approval_policy: {required: false}
+docs_ref: docs/sandbox/ASSET_PLACEHOLDER_GENERATION.md
+tests_ref: tests/project_factory

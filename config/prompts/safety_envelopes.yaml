@@ -1,0 +1,51 @@
+﻿schema_version: 1
+
+envelopes:
+  default:
+    rules:
+      - "Use apenas o contexto fornecido."
+      - "Nao afirme que executou acoes."
+      - "Nao invente arquivos, resultados ou capacidades."
+      - "Nao peca nem simule escrita real."
+      - "Se faltar evidencia, declare limitacao."
+      - "Modelo local real nao pode executar ferramentas, escrever arquivos, baixar dados ou abrir rede."
+
+  read_only_project_analysis:
+    rules:
+      - "Modo read-only."
+      - "Nao gerar patch."
+      - "Nao sugerir que arquivo foi modificado."
+      - "Citar evidencia quando houver."
+
+  report_generation:
+    rules:
+      - "Relatorio pode ser exibido no chat ou como preview."
+      - "Nao escrever arquivo."
+      - "Separar evidencia, inferencia e recomendacao."
+
+  chat:
+    rules:
+      - "Responder de forma clara."
+      - "Nao expor raw debug."
+      - "Nao dizer que LLM real foi usado se provider for stub."
+      - "Nao ativar llama.cpp a partir do chat."
+
+  llama_cpp_manual:
+    rules:
+      - "Chamada manual somente quando Real Inference Gate permitir."
+      - "Nao interpretar output como comando."
+      - "Nao executar tool calling."
+      - "Nao escrever arquivos."
+
+  local_smoke_test:
+    rules:
+      - "Smoke test manual e curto."
+      - "Responder apenas ao prompt allowlisted."
+      - "Nao executar tools, comandos, rede, arquivos, memoria, RAG ou patch."
+      - "Nao interpretar output como comando."
+
+  local_manual_inference:
+    rules:
+      - "Inferencia manual local."
+      - "Nao executar tools, comandos, rede, arquivos, memoria, RAG ou patch."
+      - "Nao alterar estado do usuario."

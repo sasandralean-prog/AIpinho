@@ -1,0 +1,25 @@
+schema_version: 1
+
+validation:
+  enabled: true
+  reject_empty_summary: true
+  reject_unscoped_memory: true
+  reject_missing_source: true
+  reject_missing_evidence_for_technical_memory: true
+  reject_secret_like_content: true
+  reject_raw_log_like_content: true
+  reject_full_file_content: true
+  reject_duplicate_as_new: true
+  reject_unresolved_conflict: true
+  reject_candidate_not_validated: true
+  reject_candidate_blocked: true
+  reject_model_only_claim: true
+
+technical_memory:
+  require_evidence: true
+  require_confidence_minimum: medium
+
+user_instruction:
+  require_explicit_user_instruction: true
+  require_scope: true
+  allow_evidence_type_user_explicit_instruction: true

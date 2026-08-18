@@ -1,0 +1,23 @@
+schema_version: 1
+
+sensitivity:
+  enabled: true
+  scan_ocr_text: true
+  scan_user_metadata: true
+  scan_extracted_text: true
+  reject_private_keys: true
+  reject_passwords: true
+  reject_tokens: true
+  reject_api_keys: true
+  redact_sensitive_text_in_trace: true
+  allow_sensitive_document_summary_with_redaction: false
+
+patterns:
+  secret_like:
+    - "(?i)(api[_-]?key|secret|token|password)\\s*[:=]\\s*[^\\s]+"
+    - "-----BEGIN .*PRIVATE KEY-----"
+
+decisions:
+  secret_detected: blocked
+  possible_pii_detected: needs_review
+  low_risk: allowed

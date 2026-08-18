@@ -1,0 +1,72 @@
+{
+  "report_id": "hotfix_gemini_aipinho_capability_negotiation_20260623_011500",
+  "date": "2026-06-23",
+  "verdict": "GEMINI_AIPINHO_CAPABILITY_HOTFIX_READY_WITH_WARNINGS",
+  "objective": "Fix generic Gemini to AIpinho capability negotiation without hardcode or policy bypass.",
+  "root_cause": [
+    "Capability aliases were incomplete across registry, agent profiles and delegation routes.",
+    "Composite operational Gemini requests could be classified as plain artifact_request.",
+    "Blocked delegations did not preserve structured missing capability metadata in DelegationResult.",
+    "Gemini text could mention child-run events even when no child_run_id existed."
+  ],
+  "files_changed": [
+    "C:\\Dev\\AIpinho\\config\\policies\\capability_registry.yaml",
+    "C:\\Dev\\AIpinho\\config\\agents\\agent_registry.yaml",
+    "C:\\Dev\\AIpinho\\config\\agents\\delegation_policy.yaml",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\schemas\\agents\\delegation.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\agents\\agent_delegation_policy_service.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\agents\\agent_delegation_service.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\gemini_executor\\gemini_executor_service.py",
+    "C:\\Dev\\AIpinho\\tests\\unit\\test_agent_delegation_service.py",
+    "C:\\Dev\\AIpinho\\tests\\unit\\test_gemini_executor_service.py"
+  ],
+  "tests": [
+    {
+      "command": "python -m py_compile src\\aipinho\\services\\agents\\agent_delegation_policy_service.py src\\aipinho\\services\\agents\\agent_delegation_service.py src\\aipinho\\services\\gemini_executor\\gemini_executor_service.py src\\aipinho\\schemas\\agents\\delegation.py",
+      "status": "passed"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_agent_delegation_service.py tests\\unit\\test_gemini_executor_service.py -q",
+      "status": "passed",
+      "summary": "23 passed in 4.13s"
+    }
+  ],
+  "smoke": {
+    "delegation_direct": {
+      "status": "running",
+      "decision": "auto_approve",
+      "child_run_created": true,
+      "child_operation_type": "delegated_governed_execution",
+      "matched_aliases": {
+        "scan_workspace": "read_workspace",
+        "create_file": "write_workspace",
+        "workspace_write": "write_workspace",
+        "create_artifact": "artifact_write",
+        "run_shell_build": "build",
+        "run_tests": "test"
+      }
+    },
+    "gemini_executor_full": {
+      "status": "blocked_before_delegation",
+      "classification": "warning",
+      "reason": "workspace resolver/policy did not recognize real workspace_context in smoke harness",
+      "false_child_run_promise": false
+    }
+  },
+  "hardcode_scan": {
+    "status": "passed",
+    "patterns_checked": [
+      "SapoAndando",
+      "PinhoForgeStudio",
+      "pinhoforge",
+      "relatorio.zip",
+      "resumo.zip",
+      "prompt contains"
+    ],
+    "matches": 0
+  },
+  "risks_remaining": [
+    "Gemini Executor full path still depends on workspace resolver recognizing real paths before delegation.",
+    "Build/test are now declared governed capabilities and must remain under existing gates for side effects."
+  ]
+}

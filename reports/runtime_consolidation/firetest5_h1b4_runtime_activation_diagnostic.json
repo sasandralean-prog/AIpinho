@@ -1,0 +1,142 @@
+{
+  "project_root": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+  "library_root": "D:\\rafa\\pinho music",
+  "roots_scanned_by_role": {
+    "project_root": [
+      "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop"
+    ],
+    "library_root": [
+      "D:\\rafa\\pinho music"
+    ]
+  },
+  "entities_by_root_role": {
+    "project_root": 1221,
+    "library_root": 1051
+  },
+  "candidate_entity_count": 2272,
+  "selected_entity_count": 1051,
+  "selected_root_roles": [
+    "library_root"
+  ],
+  "project_like_selected_count": 0,
+  "media_metadata_capability": {
+    "status": "partial",
+    "capability_id": "media_metadata_reader",
+    "selected_backend": "native_minimal",
+    "available_backends": [
+      "native_minimal"
+    ],
+    "blocked_backends": [
+      "ffprobe",
+      "mutagen",
+      "native_minimal"
+    ],
+    "missing_dependency": [
+      "ffprobe",
+      "mutagen"
+    ],
+    "evidence_records_created": 1644,
+    "attributes_observed": [
+      "codec",
+      "container",
+      "sample_rate"
+    ],
+    "attributes_missing": [
+      "bitrate",
+      "channels",
+      "duration",
+      "artwork",
+      "metadata",
+      "observations"
+    ],
+    "limitations": [
+      "FFPROBE_NOT_AVAILABLE",
+      "MEDIA_BACKEND_UNSUPPORTED_FORMAT",
+      "MUTAGEN_NOT_IMPORTABLE",
+      "Native minimal backend did not recognize a supported media signature.",
+      "Python dependency mutagen is not available.",
+      "bitrate estimated from first MPEG frame",
+      "channels read from first MPEG frame",
+      "codec detected from MPEG audio frame header",
+      "codec read from simple stsd sample entry",
+      "container detected from ID3/MPEG header",
+      "container inferred from ftyp brand/header",
+      "duration derived from simple mvhd/mdhd timescale",
+      "ffprobe executable is not available in PATH.",
+      "sample rate read from first MPEG frame",
+      "stsd sample entry not found by native minimal backend"
+    ]
+  },
+  "media_metadata_error_count": 2348,
+  "observation_execution_result_count": 1051,
+  "execution_error_counts": {
+    "OBSERVER_PRODUCED_NO_EVIDENCE": 123
+  },
+  "evidence_record_count": 4797,
+  "evidence_canonical_keys": [
+    "codec",
+    "container",
+    "extension",
+    "name",
+    "sample_rate",
+    "size_bytes"
+  ],
+  "semantic_coverage_report": {
+    "report_id": "semantic_coverage_report_fecb590fc7c2403a9935b574788844b2",
+    "artifact_id": "diagnostic_music_inventory",
+    "contract_id": "diagnostic_media_inventory_contract",
+    "artifact_logical_path": "reports/firetest5/music_inventory.csv",
+    "artifact_kind": "tabular_collection",
+    "task_run_id": null,
+    "unbound_reason": null,
+    "structural_coverage": 1.0,
+    "entity_coverage": 1.0,
+    "attribute_coverage": 0.5,
+    "capability_coverage": 1.0,
+    "evidence_coverage": 0.5,
+    "semantic_confidence": 0.7,
+    "missing_attributes": [
+      "bitrate",
+      "channels",
+      "duration",
+      "artwork",
+      "metadata",
+      "observations"
+    ],
+    "missing_capabilities": [],
+    "blocking_reasons": [
+      "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    ],
+    "is_semantically_complete": false
+  },
+  "semantic_coverage_2": {
+    "coverage_id": "semantic_coverage_2_e813e560087b498ca68bd248a6e86e8a",
+    "structural_coverage": 1.0,
+    "entity_coverage": 1.0,
+    "attribute_coverage": 0.5,
+    "capability_coverage": 1.0,
+    "evidence_coverage": 0.5,
+    "knowledge_coverage": 0.5,
+    "semantic_coverage": 0.7143,
+    "truth_coverage": 0.5,
+    "dimension_statuses": {
+      "structural": "complete",
+      "entity": "complete",
+      "attribute": "partial",
+      "capability": "complete",
+      "evidence": "partial",
+      "knowledge": "partial",
+      "truth": "partial"
+    },
+    "blocking_reasons": [
+      "MEDIA_BACKEND_UNSUPPORTED_FORMAT",
+      "CONFIDENCE_OR_EVIDENCE_INSUFFICIENT",
+      "TRACEABILITY_MISSING"
+    ],
+    "warnings": [],
+    "is_truth_ready": false
+  },
+  "reason_codes": [
+    "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+  ]
+}

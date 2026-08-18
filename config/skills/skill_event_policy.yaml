@@ -1,0 +1,5 @@
+schema_version: 1
+events:
+  require_registered_contract: true
+  sanitize_payload: true
+  unknown_event: block

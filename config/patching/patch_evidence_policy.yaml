@@ -1,0 +1,12 @@
+schema_version: 1
+
+evidence:
+  require_evidence_per_file: true
+  require_evidence_per_change: true
+  accepted_sources: [report_finding, validation_finding, task_result, file_context, user_request, read_only_file_snapshot]
+  require_source_path: true
+  require_excerpt_or_line_range: true
+  reject_blocked_file_evidence: true
+  reject_secret_evidence: true
+  allow_user_request_as_supporting_evidence: true
+  user_request_alone_max_risk: medium

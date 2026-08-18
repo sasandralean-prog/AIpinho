@@ -1,0 +1,46 @@
+{
+  "session_id": "chat_b1363874bd244b9bb07aecc1d65d644e",
+  "status": "active",
+  "created_at": "2026-06-11T18:20:56.700602+00:00",
+  "updated_at": "2026-06-11T18:20:56.740941+00:00",
+  "expires_at": "2026-06-11T22:20:56.700602+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "﻿Quero iniciar um teste de fogo controlado.\n\nVocê é a agente principal.\n\nFonte legada read-only:\nC:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio\n\nWorkspace alvo mutável:\nC:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2\n\nObjetivo:\nAnalisar o projeto legado e reformular o projeto no workspace alvo em sprints pequenos e seguros.\n\nRegras:\n\n1. Não altere o projeto legado.\n2. Use o projeto legado apenas como fonte read-only.\n3. O único workspace de implementação é o workspace alvo.\n4. Não copie cegamente o projeto antigo.\n5. Não trate PinhoForgeStudio como regra especial.\n6. Não faça hardcode de nome, path ou caso.\n7. Antes de qualquer escrita, gere plano, contrato, riscos, permissões, preview e aguarde approval quando sua policy exigir.\n8. Não pule gates.\n9. Não declare conclusão sem evidência.\n10. Ao final de cada sprint, gere relatório com objetivo, escopo, arquivos analisados, arquivos alterados, decisões, validações, riscos, pendências, traces, events, artifacts e próximo passo.\n\nPrimeira tarefa:\nFaça apenas análise read-only agora.\n\nGere:\n\n* diagnóstico inicial;\n* visão geral do projeto legado;\n* estado atual do workspace alvo;\n* principais problemas percebidos;\n* oportunidades de reformulação;\n* plano macro em sprints;\n* proposta do Sprint 1;\n* riscos;\n* permissões necessárias;\n* próximos passos seguros;\n* evidências usadas.\n\nNão aplique alterações ainda.\n",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_46c8de908c60491fab5bf2a3a5593308",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": true,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio",
+  "active_task_draft_id": "draft_bd83fac66a4a424ca93175dfd8bea549",
+  "warnings": [],
+  "trace_refs": []
+}

@@ -1,0 +1,23 @@
+﻿schema_version: 1
+
+evidence:
+  require_evidence_for_findings: true
+  accepted_evidence_sources:
+    - file
+    - tree
+    - config
+    - policy
+    - absence
+    - metadata
+  require_path_for_file_evidence: true
+  require_excerpt_or_line_range: true
+  max_claims_without_evidence: 0
+  allow_limitations_without_evidence: true
+
+citation:
+  accepted_formats:
+    - path_line
+    - evidence_id
+    - inline_source
+  require_relative_paths: true
+  reject_secret_evidence: true

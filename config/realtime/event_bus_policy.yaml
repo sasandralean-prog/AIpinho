@@ -1,0 +1,6 @@
+﻿schema_version: 1
+event_bus:
+  enabled: true
+  validate_contract_before_publish: true
+  persist_events: true
+  cursor_enabled: true

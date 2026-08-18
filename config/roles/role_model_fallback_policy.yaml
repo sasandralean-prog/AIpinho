@@ -1,0 +1,13 @@
+schema_version: 1
+
+fallback:
+  enabled: true
+  max_attempts: 1
+  allow_deterministic_fallback: true
+  allow_model_fallback: true
+  fallback_on_status: [blocked, error, degraded, rejected, needs_retry]
+  blocked_fallback_models:
+    - qwen2_5_coder_14b_q5_k_m
+    - deepseek_r1_distill_qwen_14b_q4_k_m
+  deterministic_prefixes:
+    - deterministic_

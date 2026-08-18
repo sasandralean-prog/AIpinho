@@ -1,0 +1,170 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "public_api": {
+    "functions": [
+      {
+        "function": "create_app",
+        "module": "app_factory",
+        "file": "src/aipinho/app_factory.py",
+        "signature": "() -> FastAPI",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "function": "load_local_environment",
+        "module": "core.local_environment",
+        "file": "src/aipinho/core/local_environment.py",
+        "signature": "() -> None",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "function": "json_loader",
+        "module": "utils.json_loader",
+        "file": "src/aipinho/utils/json_loader.py",
+        "signature": "(path: str) -> dict",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "function": "yaml_loader",
+        "module": "utils.yaml_loader",
+        "file": "src/aipinho/utils/yaml_loader.py",
+        "signature": "(path: str) -> dict",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "function": "hash_string",
+        "module": "utils.hashing",
+        "file": "src/aipinho/utils/hashing.py",
+        "signature": "(data: str) -> str",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "function": "redact_data",
+        "module": "utils.redaction",
+        "file": "src/aipinho/utils/redaction.py",
+        "signature": "(data: str, patterns: list) -> str",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "function": "safe_path",
+        "module": "utils.safe_paths",
+        "file": "src/aipinho/utils/safe_paths.py",
+        "signature": "(path: str) -> Path",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "function": "diagnostic_check",
+        "module": "utils.diagnostics",
+        "file": "src/aipinho/utils/diagnostics.py",
+        "signature": "() -> dict",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      }
+    ],
+    "classes": [
+      {
+        "class": "PolicyKernelService",
+        "module": "services.policy_kernel",
+        "file": "src/aipinho/services/policy_kernel/policy_kernel_service.py",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "class": "CapabilityGateService",
+        "module": "services.policy_kernel",
+        "file": "src/aipinho/services/policy_kernel/capability_gate_service.py",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "class": "WorkspaceRoleContractService",
+        "module": "services.policy_kernel",
+        "file": "src/aipinho/services/policy_kernel/workspace_role_contract_service.py",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "class": "TaskRuntimeService",
+        "module": "services.runtime",
+        "file": "src/aipinho/services/runtime/task_runtime_service.py",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "class": "ExecutionGraphService",
+        "module": "services.runtime",
+        "file": "src/aipinho/services/runtime/execution_graph_service.py",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "class": "IntelligentPlannerService",
+        "module": "services.runtime",
+        "file": "src/aipinho/services/runtime/intelligent_planner_service.py",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "class": "ChatService",
+        "module": "services.chat",
+        "file": "src/aipinho/services/chat/chat_service.py",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "class": "ChatOperationRouterService",
+        "module": "services.chat",
+        "file": "src/aipinho/services/chat/chat_operation_router_service.py",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "class": "AgentToolGatewayService",
+        "module": "services.agents",
+        "file": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "class": "AgentLocalActionPlanner",
+        "module": "services.agents",
+        "file": "src/aipinho/services/agents/agent_local_action_planner.py",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "class": "LlamaCppProvider",
+        "module": "services.models",
+        "file": "src/aipinho/services/models/llama_cpp_provider.py",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "class": "GovernedToolExecutionService",
+        "module": "services.tools",
+        "file": "src/aipinho/services/tools/governed_tool_execution_service.py",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      },
+      {
+        "class": "ValidationGateService",
+        "module": "services.validation",
+        "file": "src/aipinho/services/validation/validation_gate_service.py",
+        "visibility": "public",
+        "documentation": "UNKNOWN"
+      }
+    ]
+  },
+  "total_public_api": 21,
+  "api_types": {
+    "functions": 8,
+    "classes": 12
+  }
+}

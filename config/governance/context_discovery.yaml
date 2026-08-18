@@ -1,0 +1,23 @@
+schema_version: 1
+owner: GovernanceLifecycleService
+gates:
+  write_approval_requires:
+    - source_message_id
+    - context_ref
+    - workspace_path
+    - target_files
+    - executable_plan_ref
+    - expected_outputs
+    - validation_plan
+  diagnostic_write_requires:
+    - discovery_ref
+    - analysis_ref
+reason_codes:
+  workspace_discovery_required: WORKSPACE_DISCOVERY_REQUIRED
+  prompt_context_missing: APPROVAL_NOT_CREATED_PROMPT_CONTEXT_MISSING
+  workspace_not_resolved: APPROVAL_NOT_CREATED_WORKSPACE_NOT_RESOLVED
+  no_analysis_ref: APPROVAL_NOT_CREATED_NO_ANALYSIS_REF
+  no_target_files: APPROVAL_NOT_CREATED_NO_TARGET_FILES
+  no_executable_plan: APPROVAL_NOT_CREATED_NO_EXECUTABLE_PLAN
+  no_expected_outputs: APPROVAL_NOT_CREATED_NO_EXPECTED_OUTPUTS
+  no_validation_plan: APPROVAL_NOT_CREATED_NO_VALIDATION_PLAN

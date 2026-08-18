@@ -1,0 +1,535 @@
+{
+  "generated_at": "2026-06-25T12:42:16.742022+00:00",
+  "workspace_id": "sprint26_fixture",
+  "workspace_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+  "preview": {
+    "ok": true,
+    "label": "workspace_index_preview",
+    "result": {
+      "status": "previewed",
+      "index_request": {
+        "index_request_id": "index_request_95a649126d2b4a659e179df834c94dd7",
+        "workspace_id": "sprint26_fixture",
+        "workspace_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+        "source_channel": "report",
+        "session_id": "sprint26_evidence",
+        "requested_by": "user",
+        "scope": "workspace",
+        "include_patterns": [
+          "**/*"
+        ],
+        "exclude_patterns": [],
+        "respect_gitignore": true,
+        "max_file_size": 512000,
+        "max_total_size": 5000000,
+        "secret_scan_enabled": true,
+        "embeddings_required": false,
+        "reranker_required": false,
+        "ocr_enabled": false,
+        "vision_enabled": false,
+        "external_provider_allowed": false,
+        "policy_decision": {
+          "read_file": {
+            "status": "allowed",
+            "reason_code": "permission_allowed",
+            "permission": "read_file",
+            "permission_value": "allowed",
+            "workspace_id": "sprint26_fixture",
+            "workspace_role": "target_mutable",
+            "root_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+            "target_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+            "trace": [
+              {
+                "event_type": "runtime_permission_decision",
+                "status": "allowed",
+                "reason_code": "permission_allowed",
+                "permission": "read_file",
+                "permission_value": "allowed",
+                "workspace_id": "sprint26_fixture",
+                "workspace_role": "target_mutable",
+                "source": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace_registry.yaml"
+              }
+            ]
+          },
+          "list_files": {
+            "status": "allowed",
+            "reason_code": "permission_allowed",
+            "permission": "list_files",
+            "permission_value": "allowed",
+            "workspace_id": "sprint26_fixture",
+            "workspace_role": "target_mutable",
+            "root_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+            "target_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+            "trace": [
+              {
+                "event_type": "runtime_permission_decision",
+                "status": "allowed",
+                "reason_code": "permission_allowed",
+                "permission": "list_files",
+                "permission_value": "allowed",
+                "workspace_id": "sprint26_fixture",
+                "workspace_role": "target_mutable",
+                "source": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace_registry.yaml"
+              }
+            ]
+          }
+        },
+        "approval_id": null,
+        "status": "previewed"
+      },
+      "policy_decision": {
+        "read_file": {
+          "status": "allowed",
+          "reason_code": "permission_allowed",
+          "permission": "read_file",
+          "permission_value": "allowed",
+          "workspace_id": "sprint26_fixture",
+          "workspace_role": "target_mutable",
+          "root_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+          "target_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+          "trace": [
+            {
+              "event_type": "runtime_permission_decision",
+              "status": "allowed",
+              "reason_code": "permission_allowed",
+              "permission": "read_file",
+              "permission_value": "allowed",
+              "workspace_id": "sprint26_fixture",
+              "workspace_role": "target_mutable",
+              "source": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace_registry.yaml"
+            }
+          ]
+        },
+        "list_files": {
+          "status": "allowed",
+          "reason_code": "permission_allowed",
+          "permission": "list_files",
+          "permission_value": "allowed",
+          "workspace_id": "sprint26_fixture",
+          "workspace_role": "target_mutable",
+          "root_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+          "target_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+          "trace": [
+            {
+              "event_type": "runtime_permission_decision",
+              "status": "allowed",
+              "reason_code": "permission_allowed",
+              "permission": "list_files",
+              "permission_value": "allowed",
+              "workspace_id": "sprint26_fixture",
+              "workspace_role": "target_mutable",
+              "source": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace_registry.yaml"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "start": {
+    "ok": true,
+    "label": "workspace_index_start",
+    "result": {
+      "status": "indexed",
+      "index_request_id": "index_request_55d30a459f1e476f9188412f718cbcb5",
+      "record": {
+        "request": {
+          "index_request_id": "index_request_55d30a459f1e476f9188412f718cbcb5",
+          "workspace_id": "sprint26_fixture",
+          "workspace_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+          "source_channel": "report",
+          "session_id": "sprint26_evidence",
+          "requested_by": "user",
+          "scope": "workspace",
+          "include_patterns": [
+            "**/*"
+          ],
+          "exclude_patterns": [],
+          "respect_gitignore": true,
+          "max_file_size": 512000,
+          "max_total_size": 5000000,
+          "secret_scan_enabled": true,
+          "embeddings_required": false,
+          "reranker_required": false,
+          "ocr_enabled": false,
+          "vision_enabled": false,
+          "external_provider_allowed": false,
+          "policy_decision": {
+            "read_file": {
+              "status": "allowed",
+              "reason_code": "permission_allowed",
+              "permission": "read_file",
+              "permission_value": "allowed",
+              "workspace_id": "sprint26_fixture",
+              "workspace_role": "target_mutable",
+              "root_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+              "target_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+              "trace": [
+                {
+                  "event_type": "runtime_permission_decision",
+                  "status": "allowed",
+                  "reason_code": "permission_allowed",
+                  "permission": "read_file",
+                  "permission_value": "allowed",
+                  "workspace_id": "sprint26_fixture",
+                  "workspace_role": "target_mutable",
+                  "source": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace_registry.yaml"
+                }
+              ]
+            },
+            "list_files": {
+              "status": "allowed",
+              "reason_code": "permission_allowed",
+              "permission": "list_files",
+              "permission_value": "allowed",
+              "workspace_id": "sprint26_fixture",
+              "workspace_role": "target_mutable",
+              "root_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+              "target_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+              "trace": [
+                {
+                  "event_type": "runtime_permission_decision",
+                  "status": "allowed",
+                  "reason_code": "permission_allowed",
+                  "permission": "list_files",
+                  "permission_value": "allowed",
+                  "workspace_id": "sprint26_fixture",
+                  "workspace_role": "target_mutable",
+                  "source": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace_registry.yaml"
+                }
+              ]
+            }
+          },
+          "approval_id": null,
+          "status": "indexed"
+        },
+        "indexed_files": [
+          {
+            "path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace\\src\\main.py",
+            "relative_path": "src/main.py",
+            "size": 52,
+            "snippet": "def main():\n    return \"workspace search keyword\"\n"
+          }
+        ],
+        "skipped_files": [
+          {
+            "path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace\\.env",
+            "reason": "secret_or_credential_name"
+          },
+          {
+            "path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace\\README.md",
+            "reason": "pattern_excluded"
+          }
+        ],
+        "capabilities_used": {
+          "keyword_index": true,
+          "embeddings_used": false,
+          "reranker_used": false,
+          "fallback": "keyword_index"
+        },
+        "warnings": [
+          "embeddings_not_executed_keyword_index_used"
+        ],
+        "route_decision": {
+          "operation_id": "model_route_a31d444597a6447b8b1a77d186c5ccf4",
+          "operation_type": "workspace_search",
+          "intent_type": null,
+          "source_channel": "report",
+          "required_capabilities": [
+            "workspace_search",
+            "embeddings",
+            "reranker"
+          ],
+          "selected_capabilities": [
+            {
+              "enabled": true,
+              "provider": "aipinho_internal",
+              "model": "keyword_search",
+              "endpoint": "internal",
+              "local": true,
+              "requires_api_key": false,
+              "cost_profile": "free_local",
+              "privacy_profile": "local",
+              "max_input": 200000,
+              "fallback_chain": [
+                "keyword_search"
+              ],
+              "test_prompt": "buscar termo no workspace",
+              "supported_inputs": [
+                "query",
+                "workspace"
+              ],
+              "supported_outputs": [
+                "search_results"
+              ],
+              "capability_id": "workspace_search",
+              "health_status": "ok",
+              "last_checked_at": "2026-06-25T12:42:16.919397+00:00",
+              "reason": "internal_or_adapter_available"
+            },
+            {
+              "enabled": true,
+              "provider": "local_embedding_runtime",
+              "model": "qwen3_embedding_4b_q5_k_m",
+              "endpoint": "local_runtime",
+              "local": true,
+              "requires_api_key": false,
+              "cost_profile": "free_local",
+              "privacy_profile": "local",
+              "max_input": 8192,
+              "fallback_chain": [
+                "keyword_search"
+              ],
+              "test_prompt": "AIpinho teste",
+              "supported_inputs": [
+                "text",
+                "chunks"
+              ],
+              "supported_outputs": [
+                "vector"
+              ],
+              "capability_id": "embeddings",
+              "health_status": "ok",
+              "last_checked_at": "2026-06-25T12:42:16.919397+00:00",
+              "reason": "vector_rag_runtime_reports_ok"
+            },
+            {
+              "enabled": true,
+              "provider": "local_reranker_runtime",
+              "model": "qwen3_reranker_4b_q5_k_m",
+              "endpoint": "local_runtime",
+              "local": true,
+              "requires_api_key": false,
+              "cost_profile": "free_local",
+              "privacy_profile": "local",
+              "max_input": 8192,
+              "fallback_chain": [
+                "keyword_score"
+              ],
+              "test_prompt": "query/documentos simples",
+              "supported_inputs": [
+                "query",
+                "documents"
+              ],
+              "supported_outputs": [
+                "ranking"
+              ],
+              "capability_id": "reranker",
+              "health_status": "ok",
+              "last_checked_at": "2026-06-25T12:42:16.990801+00:00",
+              "reason": "vector_rag_runtime_reports_ok"
+            }
+          ],
+          "fallback_used": false,
+          "reason": "capability_route_preview",
+          "confidence": "high"
+        },
+        "created_at": "2026-06-25T12:42:17.067576+00:00",
+        "updated_at": "2026-06-25T12:42:17.067576+00:00"
+      }
+    }
+  },
+  "status": {
+    "ok": true,
+    "label": "workspace_index_status",
+    "result": {
+      "status": "indexed",
+      "workspace_id": "sprint26_fixture",
+      "indexed": true,
+      "record": {
+        "request": {
+          "index_request_id": "index_request_55d30a459f1e476f9188412f718cbcb5",
+          "workspace_id": "sprint26_fixture",
+          "workspace_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+          "source_channel": "report",
+          "session_id": "sprint26_evidence",
+          "requested_by": "user",
+          "scope": "workspace",
+          "include_patterns": [
+            "**/*"
+          ],
+          "exclude_patterns": [],
+          "respect_gitignore": true,
+          "max_file_size": 512000,
+          "max_total_size": 5000000,
+          "secret_scan_enabled": true,
+          "embeddings_required": false,
+          "reranker_required": false,
+          "ocr_enabled": false,
+          "vision_enabled": false,
+          "external_provider_allowed": false,
+          "policy_decision": {
+            "read_file": {
+              "status": "allowed",
+              "reason_code": "permission_allowed",
+              "permission": "read_file",
+              "permission_value": "allowed",
+              "workspace_id": "sprint26_fixture",
+              "workspace_role": "target_mutable",
+              "root_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+              "target_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+              "trace": [
+                {
+                  "event_type": "runtime_permission_decision",
+                  "status": "allowed",
+                  "reason_code": "permission_allowed",
+                  "permission": "read_file",
+                  "permission_value": "allowed",
+                  "workspace_id": "sprint26_fixture",
+                  "workspace_role": "target_mutable",
+                  "source": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace_registry.yaml"
+                }
+              ]
+            },
+            "list_files": {
+              "status": "allowed",
+              "reason_code": "permission_allowed",
+              "permission": "list_files",
+              "permission_value": "allowed",
+              "workspace_id": "sprint26_fixture",
+              "workspace_role": "target_mutable",
+              "root_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+              "target_path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace",
+              "trace": [
+                {
+                  "event_type": "runtime_permission_decision",
+                  "status": "allowed",
+                  "reason_code": "permission_allowed",
+                  "permission": "list_files",
+                  "permission_value": "allowed",
+                  "workspace_id": "sprint26_fixture",
+                  "workspace_role": "target_mutable",
+                  "source": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace_registry.yaml"
+                }
+              ]
+            }
+          },
+          "approval_id": null,
+          "status": "indexed"
+        },
+        "indexed_files": [
+          {
+            "path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace\\src\\main.py",
+            "relative_path": "src/main.py",
+            "size": 52,
+            "snippet": "def main():\n    return \"workspace search keyword\"\n"
+          }
+        ],
+        "skipped_files": [
+          {
+            "path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace\\.env",
+            "reason": "secret_or_credential_name"
+          },
+          {
+            "path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace\\README.md",
+            "reason": "pattern_excluded"
+          }
+        ],
+        "capabilities_used": {
+          "keyword_index": true,
+          "embeddings_used": false,
+          "reranker_used": false,
+          "fallback": "keyword_index"
+        },
+        "warnings": [
+          "embeddings_not_executed_keyword_index_used"
+        ],
+        "route_decision": {
+          "operation_id": "model_route_a31d444597a6447b8b1a77d186c5ccf4",
+          "operation_type": "workspace_search",
+          "intent_type": null,
+          "source_channel": "report",
+          "required_capabilities": [
+            "workspace_search",
+            "embeddings",
+            "reranker"
+          ],
+          "selected_capabilities": [
+            {
+              "enabled": true,
+              "provider": "aipinho_internal",
+              "model": "keyword_search",
+              "endpoint": "internal",
+              "local": true,
+              "requires_api_key": false,
+              "cost_profile": "free_local",
+              "privacy_profile": "local",
+              "max_input": 200000,
+              "fallback_chain": [
+                "keyword_search"
+              ],
+              "test_prompt": "buscar termo no workspace",
+              "supported_inputs": [
+                "query",
+                "workspace"
+              ],
+              "supported_outputs": [
+                "search_results"
+              ],
+              "capability_id": "workspace_search",
+              "health_status": "ok",
+              "last_checked_at": "2026-06-25T12:42:16.919397+00:00",
+              "reason": "internal_or_adapter_available"
+            },
+            {
+              "enabled": true,
+              "provider": "local_embedding_runtime",
+              "model": "qwen3_embedding_4b_q5_k_m",
+              "endpoint": "local_runtime",
+              "local": true,
+              "requires_api_key": false,
+              "cost_profile": "free_local",
+              "privacy_profile": "local",
+              "max_input": 8192,
+              "fallback_chain": [
+                "keyword_search"
+              ],
+              "test_prompt": "AIpinho teste",
+              "supported_inputs": [
+                "text",
+                "chunks"
+              ],
+              "supported_outputs": [
+                "vector"
+              ],
+              "capability_id": "embeddings",
+              "health_status": "ok",
+              "last_checked_at": "2026-06-25T12:42:16.919397+00:00",
+              "reason": "vector_rag_runtime_reports_ok"
+            },
+            {
+              "enabled": true,
+              "provider": "local_reranker_runtime",
+              "model": "qwen3_reranker_4b_q5_k_m",
+              "endpoint": "local_runtime",
+              "local": true,
+              "requires_api_key": false,
+              "cost_profile": "free_local",
+              "privacy_profile": "local",
+              "max_input": 8192,
+              "fallback_chain": [
+                "keyword_score"
+              ],
+              "test_prompt": "query/documentos simples",
+              "supported_inputs": [
+                "query",
+                "documents"
+              ],
+              "supported_outputs": [
+                "ranking"
+              ],
+              "capability_id": "reranker",
+              "health_status": "ok",
+              "last_checked_at": "2026-06-25T12:42:16.990801+00:00",
+              "reason": "vector_rag_runtime_reports_ok"
+            }
+          ],
+          "fallback_used": false,
+          "reason": "capability_route_preview",
+          "confidence": "high"
+        },
+        "created_at": "2026-06-25T12:42:17.067576+00:00",
+        "updated_at": "2026-06-25T12:42:17.067576+00:00"
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "project_analysis_boundary": {
+    "caller": "ReadonlyAnalysisArtifactRuntimeService.execute",
+    "service": "ProjectAnalysisService.analyze_project",
+    "is_blocking": true,
+    "has_budget": true,
+    "has_cancel_token": true,
+    "checkpoints": [
+      "before_scan",
+      "after_scan_batch",
+      "before_file_read",
+      "after_file_read_batch",
+      "before_symbol_extraction",
+      "after_symbol_extraction_batch",
+      "before_result_serialization"
+    ],
+    "emits_started_event": true,
+    "emits_finished_event": true,
+    "emits_error_event": true,
+    "error_message_preserved": true,
+    "partial_result_supported": true
+  },
+  "public_chat_boundary": {
+    "client_timeout_seconds": 90,
+    "server_budget_seconds": 120,
+    "returns_before_task_finished": false,
+    "supports_accepted_running_response": false,
+    "supports_blocked_response": true,
+    "finding": "PUBLIC_CHAT_RESPONSE_BOUNDARY_STILL_SYNCHRONOUS"
+  }
+}

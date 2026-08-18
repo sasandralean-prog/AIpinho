@@ -1,0 +1,36 @@
+[
+  {
+    "event_id": "session_event_d211275c796a406092b3e2c9cefb1816",
+    "session_id": "session_39c1b0dff0464d67b8c6f372ce1405e6",
+    "event_type": "session_created",
+    "created_at": "2026-06-07T13:39:05.479708+00:00",
+    "summary": "Sessao criada.",
+    "data": {},
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_173743744cde4b7babffcd4808751d78",
+    "session_id": "session_39c1b0dff0464d67b8c6f372ce1405e6",
+    "event_type": "chat_message",
+    "created_at": "2026-06-07T13:39:05.488989+00:00",
+    "summary": "Mensagem processada com status blocked.",
+    "data": {
+      "intent_type": "patch_request",
+      "task_draft_id": null
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_7a666ac031a442179d1ba20ce819d760",
+    "session_id": "session_39c1b0dff0464d67b8c6f372ce1405e6",
+    "event_type": "task_draft_created",
+    "created_at": "2026-06-07T13:39:05.491004+00:00",
+    "summary": "Task draft registrado com status blocked.",
+    "data": {
+      "draft_id": "draft_bb05a6404a7b4aba9a1ed2ad9b05674a",
+      "draft_status": "blocked",
+      "preview_id": null
+    },
+    "warnings": []
+  }
+]

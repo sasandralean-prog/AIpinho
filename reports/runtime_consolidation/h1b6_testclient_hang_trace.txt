@@ -1,0 +1,94 @@
+Timeout (0:00:08)!
+Thread 0x000052e4 (most recent call first):
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\yaml\scanner.py", line 1713381386 in next_possible_simple_key
+
+Thread 0x00001c58 (most recent call first):
+  File "C:\Program Files\Python311\Lib\asyncio\windows_events.py", line 817 in _poll
+  File "C:\Program Files\Python311\Lib\asyncio\windows_events.py", line 444 in select
+  File "C:\Program Files\Python311\Lib\asyncio\base_events.py", line 1884 in _run_once
+  File "C:\Program Files\Python311\Lib\asyncio\base_events.py", line 607 in run_forever
+  File "C:\Program Files\Python311\Lib\asyncio\windows_events.py", line 321 in run_forever
+  File "C:\Program Files\Python311\Lib\asyncio\base_events.py", line 640 in run_until_complete
+  File "C:\Program Files\Python311\Lib\asyncio\runners.py", line 118 in run
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\anyio\_backends\_asyncio.py", line 2358 in run
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\anyio\_core\_eventloop.py", line 77 in run
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\anyio\from_thread.py", line 532 in run_blocking_portal
+  File "C:\Program Files\Python311\Lib\threading.py", line 982 in run
+  File "C:\Program Files\Python311\Lib\threading.py", line 1045 in _bootstrap_inner
+  File "C:\Program Files\Python311\Lib\threading.py", line 1002 in _bootstrap
+
+Thread 0x000053fc (most recent call first):
+  File "C:\Program Files\Python311\Lib\threading.py", line 327 in wait
+  File "C:\Program Files\Python311\Lib\concurrent\futures\_base.py", line 451 in result
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\anyio\from_thread.py", line 334 in call
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\starlette\testclient.py", line 374 in handle_request
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\httpx\_client.py", line 1014 in _send_single_request
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\httpx\_client.py", line 979 in _send_handling_redirects
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\httpx\_client.py", line 942 in _send_handling_auth
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\httpx\_client.py", line 914 in send
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\httpx\_client.py", line 825 in request
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\starlette\testclient.py", line 484 in request
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\httpx\_client.py", line 1144 in post
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\starlette\testclient.py", line 593 in post
+  File "<stdin>", line 9 in <module>
+Timeout (0:00:08)!
+Thread 0x00004ec8 (most recent call first):
+  File "C:\Program Files\Python311\Lib\subprocess.py", line 1597 in _readerthread
+  File "C:\Program Files\Python311\Lib\threading.py", line 982 in run
+  File "C:\Program Files\Python311\Lib\threading.py", line 1045 in _bootstrap_inner
+  File "C:\Program Files\Python311\Lib\threading.py", line 1002 in _bootstrap
+
+Thread 0x0000530c (most recent call first):
+  File "C:\Program Files\Python311\Lib\subprocess.py", line 1597 in _readerthread
+  File "C:\Program Files\Python311\Lib\threading.py", line 982 in run
+  File "C:\Program Files\Python311\Lib\threading.py", line 1045 in _bootstrap_inner
+  File "C:\Program Files\Python311\Lib\threading.py", line 1002 in _bootstrap
+
+Thread 0x000052e4 (most recent call first):
+  File "C:\Program Files\Python311\Lib\threading.py", line 1139 in _wait_for_tstate_lock
+  File "C:\Program Files\Python311\Lib\threading.py", line 1123 in join
+  File "C:\Program Files\Python311\Lib\subprocess.py", line 1626 in _communicate
+  File "C:\Program Files\Python311\Lib\subprocess.py", line 1209 in communicate
+  File "C:\Dev\AIpinho\src\aipinho\services\models\model_process_runner.py", line 67 in run
+  File "C:\Dev\AIpinho\src\aipinho\services\models\llama_cpp_provider.py", line 187 in invoke
+  File "C:\Dev\AIpinho\src\aipinho\adapters\llm_providers\llama_cpp_provider.py", line 17 in invoke
+  File "C:\Dev\AIpinho\src\aipinho\services\models\inference_runtime_service.py", line 63 in invoke
+  File "C:\Dev\AIpinho\src\aipinho\services\models\model_invocation_service.py", line 53 in invoke
+  File "C:\Dev\AIpinho\src\aipinho\services\chat\chat_service.py", line 744 in _conversation_model_response
+  File "C:\Dev\AIpinho\src\aipinho\services\chat\chat_service.py", line 559 in respond
+  File "C:\Dev\AIpinho\src\aipinho\services\governance\lifecycle\canonical_public_chat_service.py", line 742 in _conversation_response
+  File "C:\Dev\AIpinho\src\aipinho\services\governance\lifecycle\canonical_public_chat_service.py", line 169 in respond
+  File "C:\Dev\AIpinho\src\aipinho\api\routers\governance_lifecycle_router.py", line 209 in post_chat
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\anyio\_backends\_asyncio.py", line 1002 in run
+  File "C:\Program Files\Python311\Lib\threading.py", line 1045 in _bootstrap_inner
+  File "C:\Program Files\Python311\Lib\threading.py", line 1002 in _bootstrap
+
+Thread 0x00001c58 (most recent call first):
+  File "C:\Program Files\Python311\Lib\asyncio\windows_events.py", line 817 in _poll
+  File "C:\Program Files\Python311\Lib\asyncio\windows_events.py", line 444 in select
+  File "C:\Program Files\Python311\Lib\asyncio\base_events.py", line 1884 in _run_once
+  File "C:\Program Files\Python311\Lib\asyncio\base_events.py", line 607 in run_forever
+  File "C:\Program Files\Python311\Lib\asyncio\windows_events.py", line 321 in run_forever
+  File "C:\Program Files\Python311\Lib\asyncio\base_events.py", line 640 in run_until_complete
+  File "C:\Program Files\Python311\Lib\asyncio\runners.py", line 118 in run
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\anyio\_backends\_asyncio.py", line 2358 in run
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\anyio\_core\_eventloop.py", line 77 in run
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\anyio\from_thread.py", line 532 in run_blocking_portal
+  File "C:\Program Files\Python311\Lib\threading.py", line 982 in run
+  File "C:\Program Files\Python311\Lib\threading.py", line 1045 in _bootstrap_inner
+  File "C:\Program Files\Python311\Lib\threading.py", line 1002 in _bootstrap
+
+Thread 0x000053fc (most recent call first):
+  File "C:\Program Files\Python311\Lib\threading.py", line 327 in wait
+  File "C:\Program Files\Python311\Lib\concurrent\futures\_base.py", line 451 in result
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\anyio\from_thread.py", line 334 in call
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\starlette\testclient.py", line 374 in handle_request
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\httpx\_client.py", line 1014 in _send_single_request
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\httpx\_client.py", line 979 in _send_handling_redirects
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\httpx\_client.py", line 942 in _send_handling_auth
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\httpx\_client.py", line 914 in send
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\httpx\_client.py", line 825 in request
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\starlette\testclient.py", line 484 in request
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\httpx\_client.py", line 1144 in post
+  File "C:\Users\rafae\AppData\Roaming\Python\Python311\site-packages\starlette\testclient.py", line 593 in post
+  File "<stdin>", line 9 in <module>

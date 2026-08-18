@@ -1,0 +1,30 @@
+template_id: python_cli
+display_name: Python CLI
+slug: python-cli
+version: "1.0.0"
+status: active
+category: python
+description: Small Python CLI scaffold with a focused test.
+supported_project_types: [python_cli, python_simple_app]
+supported_languages: [python]
+supported_platforms: [desktop, cli]
+generator_key: python_cli
+required_files:
+  - README.md
+  - main.py
+  - requirements.txt
+  - PROJECT_MANIFEST.json
+validation_profile:
+  structural: true
+  syntax_check: true
+build_profile:
+  py_compile: main.py
+artifact_policy:
+  zip_required: true
+risk_level: low
+required_capabilities: [create_sandbox_files, run_sandbox_build, create_artifact]
+compatible_skills: [sandbox_project_generation, python_cli_scaffold]
+compatible_autopilot_modes: [governed_autorun]
+examples:
+  - criar cli python
+  - generate python command line tool

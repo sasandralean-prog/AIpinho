@@ -1,0 +1,30 @@
+﻿schema_version: 1
+
+tools:
+  default_unknown_tool: deny
+  default_disabled_tool: deny
+  default_execute: deny
+  allow_dry_run: true
+  require_capability_match: true
+  require_action_match: true
+  require_approval_for_side_effects: true
+
+categories:
+  filesystem:
+    dry_run_allowed: true
+    execute_allowed: false
+  shell:
+    dry_run_allowed: true
+    execute_allowed: false
+  git:
+    dry_run_allowed: true
+    execute_allowed: false
+  patch:
+    dry_run_allowed: true
+    execute_allowed: false
+  android:
+    dry_run_allowed: true
+    execute_allowed: false
+  web:
+    dry_run_allowed: true
+    execute_allowed: false

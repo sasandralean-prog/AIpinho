@@ -1,0 +1,11 @@
+schema_version: 1
+
+reranker:
+  enabled: true
+  model_id: qwen3_reranker_4b_q5_k_m
+  provider_id: llama_cpp_reranker
+  allow_deterministic_fallback_when_runtime_unavailable: true
+  forbid_chat_use: true
+  preserve_citations: true
+  preserve_source_refs: true
+  reject_fabricated_hits: true

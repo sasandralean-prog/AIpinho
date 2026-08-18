@@ -1,0 +1,9 @@
+﻿{
+    "session_id":  "firetest5_h1b4_1_public_validation_20260812_010729",
+    "message":  "FIRE TEST 5 - FASE 1 - Discovery Governado\n\nObjetivo\n\nExecutar uma descoberta completa do projeto Pinhoabacaxi Music Desktop e da biblioteca de musicas utilizando o Runtime Governado atual.\n\nEsta fase NAO pode modificar nenhum arquivo do projeto.\n\nO Runtime deve:\n\ncriar Task;\ncriar TaskRun;\nregistrar Operation;\nregistrar Workspace;\ngerar artifacts governados;\nvalidar outputs;\nregistrar tudo no Runtime.\n\nProjeto\n\nC:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop\n\nBiblioteca\n\nD:\\rafa\\pinho music\n\nMapear completamente:\n\nstack\nlinguagem\nframework\nplayer\ndecoder\ncodecs\nscanner\ncache\nplaylist\nmetadata\nwaveform\nimportacao\nexportacao\nDSP\nequalizador\ncompressor\nlimiter\nreverb\npipeline completo de reproducao\n\nInventariar TODAS as musicas.\n\nPara cada musica registrar:\n\nnome\nextensao\ntamanho\ncodec\ncontainer\nbitrate\nsample rate\ncanais\nduracao\nartwork\nmetadata\nobservacoes\n\nNao assumir que todos os M4A utilizam AAC.\n\nArtifacts obrigatorios\n\nreports/firetest5/phase1_discovery.md\nreports/firetest5/project_inventory.md\nreports/firetest5/music_inventory.csv\nreports/firetest5/evidence_phase1.zip\n\nSuccess Contract\n\nREADY somente se existir:\n\nTask\nTaskRun\nOperation\nArtifact IDs\nValidation PASS\nSpeaker Truth PASS\n\nSem modificar o workspace.",
+    "context":  {
+                    "surface":  "api",
+                    "active_workspace":  "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop"
+                },
+    "include_trace":  true
+}

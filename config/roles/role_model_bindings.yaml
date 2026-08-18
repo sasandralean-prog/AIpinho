@@ -1,0 +1,196 @@
+schema_version: 1
+
+role_aliases:
+  analyst: small_code_assistant
+  reviewer: code_reviewer
+  patch_reviewer: patch_quality_reviewer
+  validator: supervisor
+  artifact_writer: reporter
+
+role_model_bindings:
+  intent_classifier:
+    enabled: true
+    primary_model: qwen3_1_7b_q6_k
+    fallback_model: deterministic_intent_classifier
+    allowed_capabilities: [classification, routing, summarization]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: low
+    output_contract: intent_classification_output
+  semantic_interpreter:
+    enabled: true
+    primary_model: qwen3_1_7b_q6_k
+    fallback_model: deterministic_semantic_interpreter
+    allowed_capabilities: [classification, routing, instruction, conversation, summarization]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: low
+    output_contract: semantic_interpreter_output
+  speaker:
+    enabled: true
+    primary_model: qwen3_1_7b_q6_k
+    fallback_model: deterministic_speaker
+    allowed_capabilities: [text_generation, instruction, conversation, summarization]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: low
+    output_contract: speaker_output
+  interpreter:
+    enabled: true
+    primary_model: qwen2_5_7b_instruct_q5_k_m
+    fallback_model: deterministic_interpreter
+    allowed_capabilities: [text_generation, instruction, summarization]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: medium
+    output_contract: interpreter_output
+  reporter:
+    enabled: true
+    primary_model: qwen2_5_7b_instruct_q5_k_m
+    fallback_model: deterministic_reporter
+    allowed_capabilities: [text_generation, instruction, reporting, summarization]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: medium
+    output_contract: report_summary_output
+  planner:
+    enabled: true
+    primary_model: deepseek_r1_distill_qwen_7b_q5_k_m
+    fallback_model: qwen3_4b_thinking_distill_q4_k_m
+    escalation_model: deepseek_r1_distill_qwen_14b_q4_k_m
+    escalation_mode: manual_only
+    allowed_capabilities: [text_generation, reasoning, planning]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: medium
+    output_contract: planning_output
+  supervisor:
+    enabled: true
+    primary_model: deepseek_r1_distill_qwen_7b_q5_k_m
+    fallback_model: qwen3_4b_thinking_distill_q4_k_m
+    escalation_model: deepseek_r1_distill_qwen_14b_q4_k_m
+    escalation_mode: manual_only
+    allowed_capabilities: [text_generation, reasoning, supervision, validation_assistance]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: medium
+    output_contract: supervision_output
+  small_code_assistant:
+    enabled: true
+    primary_model: qwen2_5_coder_1_5b_q8_0
+    fallback_model: deterministic_code_summary
+    allowed_capabilities: [code, instruction, code_summary]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: low
+    output_contract: code_summary_output
+  coder:
+    enabled: true
+    primary_model: qwen2_5_coder_7b_q4_k_m
+    fallback_model: qwen2_5_coder_1_5b_q8_0
+    escalation_model: qwen2_5_coder_14b_q5_k_m
+    escalation_mode: manual_only
+    allowed_capabilities: [code, instruction, patch_planning, test_suggestion]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: medium
+    output_contract: coder_output
+    is_default_coding_role: true
+  patch_planner:
+    enabled: true
+    primary_model: qwen2_5_coder_7b_q4_k_m
+    fallback_model: qwen2_5_coder_1_5b_q8_0
+    escalation_model: deepseek_r1_distill_qwen_14b_q4_k_m
+    escalation_mode: manual_only
+    allowed_capabilities: [code, instruction, patch_planning, reasoning]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: medium
+    output_contract: patch_plan_draft_output
+  code_reviewer:
+    enabled: true
+    primary_model: qwen2_5_coder_7b_q4_k_m
+    secondary_model: starcoder2_7b_q5_k_m
+    fallback_model: qwen2_5_coder_1_5b_q8_0
+    escalation_model: qwen2_5_coder_14b_q5_k_m
+    escalation_mode: manual_only
+    allowed_capabilities: [code, code_review, instruction]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: medium
+    output_contract: code_review_output
+  patch_quality_reviewer:
+    enabled: true
+    primary_model: qwen2_5_coder_7b_q4_k_m
+    secondary_model: starcoder2_7b_q5_k_m
+    fallback_model: qwen2_5_coder_1_5b_q8_0
+    escalation_models: [qwen2_5_coder_14b_q5_k_m, deepseek_r1_distill_qwen_14b_q4_k_m]
+    escalation_mode: manual_only
+    allowed_capabilities: [code, code_review, patch_planning, reasoning]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: medium
+    output_contract: patch_quality_review_output
+  debugger:
+    enabled: true
+    primary_model: qwen3_4b_thinking_distill_q4_k_m
+    fallback_model: deepseek_r1_distill_qwen_7b_q5_k_m
+    allowed_capabilities: [text_generation, reasoning, debugging, planning]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: medium
+    output_contract: debugger_explanation_output
+  memory_curator:
+    enabled: true
+    primary_model: qwen2_5_7b_instruct_q5_k_m
+    fallback_model: deterministic_memory_validator
+    allowed_capabilities: [text_generation, instruction, summarization]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: medium
+    output_contract: memory_candidate_review_output
+  vision_analyst:
+    enabled: true
+    primary_model: qwen2_5_vl_7b_q4_k_m
+    fallback_model: llava_v1_6_mistral_7b_q4_k_m
+    allowed_capabilities: [vision, image_understanding, ui_inspection, diagram_reading]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: medium
+    output_contract: vision_analysis_output
+    metadata:
+      pipeline_only: true
+      tool_calling_enabled: false
+      workspace_write_enabled: false
+  ocr_specialist:
+    enabled: true
+    primary_model: nanonets_ocr_s_q5_k_m
+    fallback_model: deterministic_ocr_summary
+    allowed_capabilities: [ocr, document_text_extraction, image_text_extraction]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: medium
+    output_contract: ocr_extraction_output
+    metadata:
+      pipeline_only: true
+      tool_calling_enabled: false
+      workspace_write_enabled: false
+  document_reader:
+    enabled: true
+    primary_model: nanonets_ocr_s_q5_k_m
+    fallback_model: qwen2_5_vl_7b_q4_k_m
+    allowed_capabilities: [ocr, document_text_extraction, image_text_extraction]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: medium
+    output_contract: document_read_output
+    metadata:
+      pipeline_only: true
+      tool_calling_enabled: false
+      workspace_write_enabled: false
+
+disabled_until_future_sprints:
+  embedding:
+    reason: "Embedding runtime enters in Sprint 29."
+  reranker:
+    reason: "Reranker runtime enters in Sprint 29."

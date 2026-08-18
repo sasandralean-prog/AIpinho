@@ -1,0 +1,45 @@
+schema_version: 1
+profile:
+  id: project_bootstrap
+  operation_types: [project_bootstrap, governed_project_planning]
+  allowed_step_types:
+    - validate_runtime
+    - resolve_workspace
+    - inspect_workspace_readonly
+    - create_blueprint_or_plan
+    - create_task_preview
+    - create_approval_request
+    - wait_for_approval
+  steps:
+    - validate_runtime
+    - resolve_workspace
+    - inspect_workspace_readonly
+    - create_blueprint_or_plan
+    - create_task_preview
+    - create_approval_request
+    - wait_for_approval
+  allowed_actions:
+    - read_workspace_metadata
+    - inspect_workspace
+    - create_task_preview
+    - create_approval_request
+    - write_files
+    - apply_patch
+  allowed_side_effects: []
+  required_capabilities: [read_workspace]
+  approval_scope: project_write
+  workspace_requirements: {required: true, allowed_roles: [target_mutable, system_mutable]}
+  forbidden: [forbidden_root, source_readonly, path_traversal]
+  pre_approval_expected_outcomes:
+    - discovery_result
+    - blueprint_result
+    - task_preview_result
+    - approval_request_result
+  post_approval_expected_outcomes:
+    - patch_result
+    - validation_result
+    - artifact_result
+  max_duration_seconds: 300
+  output_validation_required: false
+  artifact_registration_required: false
+  default_safe_to_execute_policy: approval_required_before_side_effect

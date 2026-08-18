@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-06-25T12:33:44.407609+00:00",
+  "verdict": "SPRINT26_RAG_MULTIMODAL_READY_WITH_WARNINGS",
+  "warnings": [
+    "OCR/Vision endpoints are structured but real OCR/vision runtime was not proven in this smoke.",
+    "Embeddings/reranker are exposed through capability health/route decisions; workspace search used keyword fallback when direct vector runtime was unavailable.",
+    "Mobile/Launcher/VSCode visual firetest was not executed in this evidence pass."
+  ],
+  "tests": [
+    "python -m py_compile changed Sprint 26 python files",
+    "python -m pytest tests\\integration\\test_continue_openai_compat_api.py tests\\integration\\test_model_capability_router_api.py tests\\integration\\test_sprint26_rag_multimodal.py -q"
+  ],
+  "results": {
+    "pytest": "47 passed in 15.34s",
+    "py_compile": "passed"
+  },
+  "artifacts": [
+    "C:\\Dev\\AIpinho\\reports\\sprint26_evidence.zip"
+  ],
+  "compaction_note": "Large intermediate search payloads were replaced by compact review evidence."
+}

@@ -1,0 +1,95 @@
+{
+  "verdict": "FIRETEST5_H1B6_PUBLIC_RUNTIME_RESPONSE_BOUNDARY_READY_WITH_ENDPOINT_WINDOW_FINDING",
+  "task_run_id": "task_run_ad519431dd5146bea4043f4beeab011d",
+  "session_id": "chat_h1b6_public_endpoint_light_20260813060155",
+  "client_response_status": "accepted_running",
+  "client_response_time_ms": 5991,
+  "server_final_status": "completed",
+  "result_status": "completed",
+  "finished_at": "2026-08-13T06:05:20.881042+00:00",
+  "terminal_event_count": 1,
+  "event_count": 22,
+  "artifact_created_count": 3,
+  "artifact_creation_started_count": 3,
+  "public_response_accepted_running_count": 1,
+  "endpoint_max_elapsed_ms": {
+    "summary": 8037,
+    "truth": 5316,
+    "events": 463,
+    "artifacts": 8009,
+    "result": 8000
+  },
+  "endpoint_transient_failures": [
+    {
+      "poll_delay": 3,
+      "endpoint": "summary",
+      "elapsed_ms": 8001,
+      "error": "TimeoutError('timed out')"
+    },
+    {
+      "poll_delay": 3,
+      "endpoint": "artifacts",
+      "elapsed_ms": 8002,
+      "error": "TimeoutError('timed out')"
+    },
+    {
+      "poll_delay": 5,
+      "endpoint": "summary",
+      "elapsed_ms": 8037,
+      "error": "TimeoutError('timed out')"
+    },
+    {
+      "poll_delay": 5,
+      "endpoint": "artifacts",
+      "elapsed_ms": 8009,
+      "error": "TimeoutError('timed out')"
+    },
+    {
+      "poll_delay": 10,
+      "endpoint": "summary",
+      "elapsed_ms": 8010,
+      "error": "TimeoutError('timed out')"
+    }
+  ],
+  "queue_health_after": {
+    "status": "ok",
+    "enabled": true,
+    "max_pending_tasks": 25,
+    "max_wait_seconds": 86400,
+    "active_count": 0,
+    "pending_count": 0,
+    "requires_decision_count": 0,
+    "total_visible": 0,
+    "items": [],
+    "last_reconciled_at": "2026-08-13T06:08:57.429729+00:00",
+    "warnings": []
+  },
+  "storage_projection_health": {
+    "status": "ok",
+    "run_dirs_seen": 47,
+    "missing_index_count": 0,
+    "missing_index_run_ids": [],
+    "large_run_count": 0,
+    "large_runs": [],
+    "threshold_bytes": 1000000
+  },
+  "run_json_bytes": 88666,
+  "manual_emergency_compaction": {
+    "files_compacted": 10,
+    "total_saved_bytes": 1528561957,
+    "report_path": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\h1b6_task_run_json_compaction_report.json"
+  },
+  "formal_storage_compaction": {
+    "files_compacted": 5,
+    "total_saved_bytes": 4674813,
+    "report_path": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\h1b6_runtime_storage_projection_compaction_report.json"
+  },
+  "tests": {
+    "integrated": "74 passed in 93.77s",
+    "py_compile": "PASS"
+  },
+  "reports": {
+    "public_clean_rerun_observation": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\firetest5_h1b6_public_endpoint_light_rerun_observation.json",
+    "phase0_ref": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\firetest5_h1b6_clean_phase0_cognitive_readiness_result.json"
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "endpoints": [
+    {
+      "endpoint": "/health",
+      "method": "GET",
+      "type": "HTTP",
+      "input": {
+        "type": "query_params",
+        "schema": "UNKNOWN"
+      },
+      "output": {
+        "type": "json",
+        "schema": "UNKNOWN"
+      },
+      "contract": "UNKNOWN",
+      "service": "services.health.health_router",
+      "critical": true
+    },
+    {
+      "endpoint": "/chat",
+      "method": "POST",
+      "type": "HTTP",
+      "input": {
+        "type": "json_body",
+        "schema": "schemas.chat.ChatRequest"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.chat.ChatResponse"
+      },
+      "contract": "UNKNOWN",
+      "service": "services.chat.chat_router",
+      "critical": true
+    },
+    {
+      "endpoint": "/tasks",
+      "method": "POST",
+      "type": "HTTP",
+      "input": {
+        "type": "json_body",
+        "schema": "schemas.tasks.TaskRequest"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.tasks.TaskResponse"
+      },
+      "contract": "UNKNOWN",
+      "service": "api.routers.task_runtime_router",
+      "critical": true
+    },
+    {
+      "endpoint": "/tasks/{task_id}",
+      "method": "GET",
+      "type": "HTTP",
+      "input": {
+        "type": "path_params",
+        "schema": "UNKNOWN"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.tasks.TaskStatus"
+      },
+      "contract": "UNKNOWN",
+      "service": "api.routers.task_runtime_router",
+      "critical": true
+    },
+    {
+      "endpoint": "/tools/execute",
+      "method": "POST",
+      "type": "HTTP",
+      "input": {
+        "type": "json_body",
+        "schema": "schemas.tools.ToolRequest"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.tools.ToolResponse"
+      },
+      "contract": "UNKNOWN",
+      "service": "api.routers.tool_router",
+      "critical": true
+    },
+    {
+      "endpoint": "/models/invoke",
+      "method": "POST",
+      "type": "HTTP",
+      "input": {
+        "type": "json_body",
+        "schema": "schemas.models.ModelRequest"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.models.ModelResponse"
+      },
+      "contract": "UNKNOWN",
+      "service": "api.routers.model_router",
+      "critical": true
+    },
+    {
+      "endpoint": "/artifacts",
+      "method": "POST",
+      "type": "HTTP",
+      "input": {
+        "type": "json_body",
+        "schema": "schemas.artifacts.ArtifactRequest"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.artifacts.ArtifactResponse"
+      },
+      "contract": "UNKNOWN",
+      "service": "api.routers.artifact_router",
+      "critical": true
+    },
+    {
+      "endpoint": "/agents/delegate",
+      "method": "POST",
+      "type": "HTTP",
+      "input": {
+        "type": "json_body",
+        "schema": "schemas.agents.AgentRequest"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.agents.AgentResponse"
+      },
+      "contract": "UNKNOWN",
+      "service": "api.routers.agent_router",
+      "critical": true
+    },
+    {
+      "endpoint": "/policy/check",
+      "method": "POST",
+      "type": "HTTP",
+      "input": {
+        "type": "json_body",
+        "schema": "schemas.policy.PolicyRequest"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.policy.PolicyResponse"
+      },
+      "contract": "UNKNOWN",
+      "service": "api.routers.policy_router",
+      "critical": true
+    },
+    {
+      "endpoint": "/config",
+      "method": "GET",
+      "type": "HTTP",
+      "input": {
+        "type": "query_params",
+        "schema": "UNKNOWN"
+      },
+      "output": {
+        "type": "json",
+        "schema": "UNKNOWN"
+      },
+      "contract": "UNKNOWN",
+      "service": "api.routers.config_router",
+      "critical": false
+    }
+  ],
+  "total_endpoints": 10,
+  "endpoint_types": {
+    "HTTP": 10,
+    "IPC": 0,
+    "CLI": 0,
+    "internal": 0
+  },
+  "critical_endpoints": 9,
+  "non_critical_endpoints": 1
+}

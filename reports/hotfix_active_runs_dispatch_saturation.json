@@ -1,0 +1,110 @@
+{
+  "generated_at": "2026-06-25T02:33:33.882725+00:00",
+  "verdict": "ACTIVE_RUN_DISPATCH_HOTFIX_READY",
+  "preflight_summary": {
+    "total_runs": 215,
+    "active_runs_effective": 19,
+    "stale_active_runs": 19,
+    "total_sessions": 213,
+    "active_sessions_not_archived": 196,
+    "stale_sessions_over_24h": 196
+  },
+  "cleanup_summary": {
+    "preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863",
+    "candidate_count": 204,
+    "applied_count": 204,
+    "queue_health_after": {
+      "status": "ok",
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0,
+      "active_sessions": 0,
+      "dispatcher_status": "available",
+      "worker_pool_capacity": 8,
+      "worker_pool_available_slots": 8,
+      "stale_run_ids": [],
+      "backpressure_required": false,
+      "reason_code": null
+    }
+  },
+  "smoke": {
+    "health": {
+      "status": "ok",
+      "service": "AIpinho",
+      "version": "0.1.0",
+      "runtime": "local"
+    },
+    "queue_health": {
+      "status": "ok",
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0,
+      "active_sessions": 0,
+      "dispatcher_status": "available",
+      "worker_pool_capacity": 8,
+      "worker_pool_available_slots": 8,
+      "stale_run_ids": [],
+      "backpressure_required": false,
+      "reason_code": null
+    },
+    "chat_smoke": [
+      {
+        "title": "Mobile Chat smoke",
+        "session_id": "chat_6f3f36ce4d7e499ab91045eb0df50cd9",
+        "prompt": "oi",
+        "status": "ok",
+        "operation_type": "conversation",
+        "assistant_message_created": true,
+        "assistant_excerpt": "Ol\u00e1! Como posso ajudar voc\u00ea hoje?",
+        "warnings": []
+      },
+      {
+        "title": "Launcher Chat smoke",
+        "session_id": "chat_de5dc33e92d3411ba5b4da5b1929c9f7",
+        "prompt": "oi",
+        "status": "ok",
+        "operation_type": "conversation",
+        "assistant_message_created": true,
+        "assistant_excerpt": "Ol\u00e1! Como posso ajudar voc\u00ea hoje?",
+        "warnings": []
+      },
+      {
+        "title": "Workspace registry smoke",
+        "session_id": "chat_6bdbfefdca8c48b4b1e5c866366a1fad",
+        "prompt": "Liste os workspaces registrados",
+        "status": "ok",
+        "operation_type": "permission_status",
+        "assistant_message_created": true,
+        "assistant_excerpt": "Permissoes atuais da AIpinho:\n\nLeitura permitida:\n- C:\\Dev\\AIpinho (system_mutable; read; approval obrigatorio)\n- C:\\Users\\[REDACTED]\\Documents\\AIpinhoTestes (target_mutable; read; approval obrigatorio)\n- C:\\Dev\\AI\\codin",
+        "warnings": []
+      }
+    ]
+  },
+  "files_changed": [
+    "src/aipinho/services/runtime/runtime_state_hygiene_service.py",
+    "src/aipinho/services/agents/multi_agent_observability_service.py",
+    "src/aipinho/api/routers/runtime_hygiene_router.py",
+    "src/aipinho/api/routers/chat_router.py",
+    "src/aipinho/services/policy_kernel/workspace_role_contract_service.py",
+    "config/chat/chat_operation_routing_policy.yaml",
+    "tests/unit/test_runtime_state_hygiene_service.py",
+    "tests/integration/test_chat_runtime_parity_api.py",
+    "tests/unit/test_chat_operation_router_service.py"
+  ],
+  "tests_and_commands": [
+    "python -m py_compile <altered python files>",
+    "pytest tests/unit/test_runtime_state_hygiene_service.py -q -> 15 passed",
+    "pytest tests/integration/test_chat_runtime_parity_api.py -q -k \"saturation or no_silent\" -> 2 passed",
+    "pytest tests/unit/test_chat_operation_router_service.py -q -k \"permission_status or registered_workspace\" -> 5 passed",
+    "pytest tests/unit/test_workspace_permission_matrix_service.py tests/unit/test_operational_trust_kernel.py -q -> 13 passed",
+    "runtime hygiene preview/apply max_age_hours=1 kinds=run,session,delegation -> 204 applied",
+    "restart backend 9088 via scripts/dev/stop_aipinho_9088.ps1 and start_aipinho_9088.ps1",
+    "HTTP smoke /health, /runtime/hygiene/queue-health, persistent chat sends"
+  ],
+  "known_residuals": [
+    "Full test_chat_runtime_parity_api.py still has unrelated pre-existing parity failures for sandbox_batch/forbidden_root when run without -k; not part of this P0 lifecycle fix.",
+    "Chunk protocol protection was not deeply implemented because current ChatMessageCreateRequest has no explicit chunk assembly contract; visible dispatch failure/backpressure is now covered."
+  ]
+}

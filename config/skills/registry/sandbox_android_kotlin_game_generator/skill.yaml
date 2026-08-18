@@ -1,0 +1,30 @@
+skill_id: internal.sandbox_android_kotlin_game_generator
+display_name: Sandbox Android Kotlin Game Generator
+slug: sandbox_android_kotlin_game_generator
+description: Generate a minimal Android Kotlin game project inside a governed sandbox workspace.
+version: 1.0.0
+status: active
+category: artifact_generation
+owner: aipinho
+compatible_agents: [aipinho, codex, lucio, gemini]
+compatible_project_stacks: [android_gradle, mixed, unknown]
+required_capabilities: [sandbox_write, sandbox_validate, sandbox_artifact_export]
+optional_capabilities: [sandbox_shell]
+allowed_tools: [sandbox_write_file, sandbox_validate, sandbox_zip_export, sandbox_run_shell]
+denied_tools: [create_file, modify_file, patch_apply, run_shell]
+input_schema: {type: object}
+output_schema: {type: object}
+side_effects: [sandbox_project_generation, sandbox_file_write, sandbox_artifact_export]
+workspace_policy: {outside_sandbox_write: false, source_readonly_write: false}
+sandbox_required: true
+sandbox_allowed: true
+sandbox_side_effects: [write, validate, artifact_export]
+command_policy: {shell: safe_inside_sandbox_only}
+artifact_policy: {enabled: true, requires_token: true, ready_only_download: true}
+memory_policy: {mode: none}
+validation_policy: {required: true, failure_policy: block_completion}
+speaker_truth_policy: {raw_hidden_by_default: true, must_cite_evidence: true}
+risk_level: medium
+approval_policy: {required: false}
+docs_ref: docs/sandbox/ANDROID_KOTLIN_TEMPLATE.md
+tests_ref: tests/project_factory

@@ -1,0 +1,46 @@
+{
+  "session_id": "session_7b72618dac6a499caf3b275813401e93",
+  "status": "active",
+  "created_at": "2026-06-11T14:13:42.022535+00:00",
+  "updated_at": "2026-06-11T14:13:42.057290+00:00",
+  "expires_at": "2026-06-11T18:13:42.022535+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Quero que faça uma analise sobre o projeto pinhoforgestudio em \"C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio\". Retorne um relatorio.txt dentro de um relatorio.zip com a analise completa do projeto e suas funcionalidades. Inclua na analise tambem sugestoes de correções e melhorias para o projeto. Faça o relatorio no formato com titulo, data, resumo, sugestoes e fontes consultadas.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_aa5356290d714a56a4e071c8c37c4c8f",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": true,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\TestesIALocal\\PinhoForgeStudio",
+  "active_task_draft_id": "draft_38c17c928c9c4fb3bfeb2ac8cc2a09e2",
+  "warnings": [],
+  "trace_refs": []
+}

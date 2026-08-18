@@ -1,0 +1,35 @@
+schema_version: 1
+
+mobile_view_models:
+  enabled: true
+  backend_is_source_of_truth: true
+  ui_decides_policy: false
+  ui_decides_safety: false
+  ui_decides_final_status: false
+  require_sanitization: true
+  require_humanization: true
+  require_evidence_mapping: true
+  require_safe_actions: true
+  require_copy_policy: true
+  require_trace_refs_when_available: true
+
+dogma_questions:
+  - what_is_happening
+  - why_is_it_happening
+  - is_it_safe
+  - what_can_i_do_now
+  - what_evidence_supports_this
+  - can_copy_sanitized_summary
+
+blocked:
+  raw_default_visible: true
+  token_in_view_model: true
+  secret_in_copy_payload: true
+  unknown_event_rendered_as_normal: true
+  direct_patch_action: true
+  direct_shell_action: true
+  direct_git_action: true
+  direct_model_real_inference_action: true
+  direct_memory_write_action: true
+  openapi_dump_as_ui: true
+

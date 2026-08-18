@@ -1,0 +1,14 @@
+﻿schema_version: 1
+
+local_provider_policy:
+  require_enabled_provider: true
+  real_inference_enabled: true
+  network_enabled: false
+  model_download_enabled: false
+  tool_execution_enabled_from_model: false
+  write_enabled_from_model: false
+  rag_enabled_from_model: false
+  memory_write_enabled_from_model: false
+  llama_cpp_auto_use_enabled: true
+  require_manual_real_inference_opt_in: true
+  fallback_to_stub_on_unavailable: true

@@ -1,0 +1,8 @@
+schema_version: 1
+
+probe:
+  metadata_probe_enabled: true
+  first_token_probe_enabled_by_default: false
+  require_operator_confirmation: true
+  max_probe_seconds: 15
+  no_prompt_execution_by_default: true

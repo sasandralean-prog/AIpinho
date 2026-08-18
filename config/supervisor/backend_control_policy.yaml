@@ -1,0 +1,17 @@
+schema_version: 1
+
+backend_control:
+  enabled: true
+  control_service_id: monitor_supervisor
+  control_port: 9099
+  exclusive_control_port: true
+  controlled_service_id: core_backend
+  controlled_port: 9088
+  status_timeout_seconds: 1.0
+  restart_timeout_seconds: 90
+  cooldown_seconds: 5
+  require_token_auth: true
+  no_custom_command_from_request: true
+  canonical_scripts:
+    stop: scripts/dev/stop_aipinho_9088.ps1
+    start: scripts/dev/start_aipinho_9088.ps1

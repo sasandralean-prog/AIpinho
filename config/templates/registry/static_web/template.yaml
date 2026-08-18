@@ -1,0 +1,30 @@
+template_id: static_web
+display_name: Static Web
+slug: static-web
+version: "1.0.0"
+status: active
+category: web
+description: Static HTML/CSS/JS demo scaffold.
+supported_project_types: [static_web]
+supported_languages: [html, css, javascript]
+supported_platforms: [web]
+generator_key: static_web
+required_files:
+  - README.md
+  - index.html
+  - style.css
+  - script.js
+  - PROJECT_MANIFEST.json
+validation_profile:
+  structural: true
+build_profile:
+  static_only: true
+artifact_policy:
+  zip_required: true
+risk_level: low
+required_capabilities: [create_sandbox_files, create_artifact]
+compatible_skills: [sandbox_project_generation, static_web_scaffold]
+compatible_autopilot_modes: [governed_autorun]
+examples:
+  - criar site estatico
+  - generate static web app

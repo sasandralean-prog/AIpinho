@@ -1,0 +1,11 @@
+schema_version: 1
+
+audit:
+  enabled: true
+  audit_log: data/logs/audit/manual_chat_inference.jsonl
+  persist_full_prompt: false
+  persist_full_output: false
+  persist_sanitized_preview: true
+  max_prompt_preview_chars: 160
+  max_output_preview_chars: 240
+  redact_secrets: true

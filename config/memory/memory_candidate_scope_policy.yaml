@@ -1,0 +1,42 @@
+schema_version: 1
+
+scopes:
+  allowed:
+    - global_project
+    - workspace
+    - module
+    - service
+    - policy
+    - validation
+    - patching
+    - runtime
+    - reports
+    - user_instruction
+  require_workspace_for:
+    - architecture_decision
+    - bug_fix_summary
+    - patch_outcome
+    - runtime_behavior
+    - project_constraint
+  require_module_or_service_for:
+    - policy_decision
+    - validation_learning
+    - risk_pattern
+
+blocked:
+  unscoped: true
+  ambiguous_scope: true
+  cross_project_without_user_instruction: true
+
+workspace:
+  allowed_roots:
+    - "C:\\Dev\\AIpinho"
+    - "C:\\Users\\rafae\\Documents\\AIpinhoTestes"
+    - "C:\\Dev\\AI\\coding-brain-supervisor"
+    - "C:\\PinhoabacaxiAI"
+    - "C:\\Users\\rafae\\Documents\\FashionHelper"
+    - "C:\\Users\\rafae\\Documents\\Fashion Helper legado"
+    - "C:\\Users\\rafae\\Documents\\Pinhoabacaxi-musicas-main"
+    - "C:\\Users\\rafae\\Documents\\TestesIALocal"
+  forbidden_roots:
+    - "C:\\Windows"

@@ -1,0 +1,203 @@
+{
+  "verdict": null,
+  "firetest5_status": "NOT_READY",
+  "created_at": "2026-08-16T16:16:18.150226+00:00",
+  "raw_capture_dir": "C:\\Dev\\AIpinho\\reports\\firetest5\\firetest5_h1c0_r2_10_clean_phase0_to_6_20260816_131428",
+  "precheck": {
+    "health": {
+      "ok": true,
+      "status_code": 200,
+      "elapsed_ms": 16,
+      "body": {
+        "status": "ok",
+        "service": "AIpinho",
+        "version": "0.1.0",
+        "runtime": "local"
+      }
+    },
+    "queue_hygiene": {
+      "ok": true,
+      "status_code": 200,
+      "elapsed_ms": 0,
+      "body": {
+        "status": "ok",
+        "active_runs": 0,
+        "queued_runs": 0,
+        "stale_runs": 0,
+        "pending_approvals": 0,
+        "active_sessions": 0,
+        "dispatcher_status": "available",
+        "worker_pool_capacity": 8,
+        "worker_pool_available_slots": 8,
+        "stale_run_ids": [],
+        "backpressure_required": false,
+        "reason_code": null
+      }
+    },
+    "queue_runtime": {
+      "ok": true,
+      "status_code": 200,
+      "elapsed_ms": 15,
+      "body": {
+        "status": "ok",
+        "cancelled_run_ids": [],
+        "cancelled_approval_ids": [],
+        "warnings": [],
+        "snapshot": {
+          "status": "ok",
+          "enabled": true,
+          "max_pending_tasks": 25,
+          "max_wait_seconds": 86400,
+          "active_count": 0,
+          "pending_count": 0,
+          "requires_decision_count": 0,
+          "total_visible": 0,
+          "items": [],
+          "last_reconciled_at": "2026-08-16T16:14:28.639055+00:00",
+          "warnings": []
+        }
+      }
+    }
+  },
+  "phase0": {
+    "runtime_executed": false,
+    "task_created": false,
+    "task_run_created": false,
+    "operation_created": false,
+    "operational_artifacts_created": false,
+    "predicted_frontier": "ACCEPTED_RUNNING_ARTIFACT_WORKER_TERMINALIZATION_GAP",
+    "predicted_component": "artifact_worker_terminalization_guard",
+    "predicted_reason_code": "ARTIFACT_WORKER_STALLED_AFTER_ARTIFACT_CREATION_STARTED_ON_MUSIC_INVENTORY",
+    "note": "R2.10 phase0 projection derived from R2.9 observed frontier; no runtime state was created."
+  },
+  "phase1": {
+    "client_response_status": "accepted_running",
+    "client_response_status_code": 200,
+    "client_response_time_ms": 7078,
+    "task_run_id": "task_run_8cfd605890b24907a27ebe2d5ee23af7",
+    "terminal_observed": true,
+    "summary_status": "BLOCKED",
+    "result_json_exists": true,
+    "result_endpoint_status_code": 200,
+    "result_status": "blocked",
+    "result_source": "artifact_worker_terminalization_guard",
+    "result_reason_code": "MUSIC_INVENTORY_ARTIFACT_STALLED_AFTER_CREATION_STARTED",
+    "finished_at": "2026-08-16T16:15:45.902043+00:00",
+    "truth_safe_to_report_success": false,
+    "terminal_event_count": 1,
+    "terminal_event_types": [
+      "run_blocked"
+    ],
+    "artifact_creation_started_count": 3,
+    "artifact_created_count": 2,
+    "artifact_partial_count": 0,
+    "artifact_blocked_count": 0,
+    "artifact_failed_count": 1,
+    "artifact_render_checkpoint_count": 10,
+    "artifact_started_logical_paths": [
+      "reports/firetest5/phase1_discovery.md",
+      "reports/firetest5/project_inventory.md",
+      "reports/firetest5/music_inventory.csv"
+    ],
+    "last_event_type": "artifact_creation_terminalization_guard_completed",
+    "endpoint_elapsed_ms": {
+      "queue_runtime": 10030,
+      "summary": 2469,
+      "events": 5671,
+      "result": 312,
+      "artifacts": 1735,
+      "truth": 656
+    },
+    "artifacts_count": 3
+  },
+  "phase2_to_6": {
+    "phase2": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "MUSIC_INVENTORY_ARTIFACT_STALLED_AFTER_CREATION_STARTED"
+    },
+    "phase3": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "MUSIC_INVENTORY_ARTIFACT_STALLED_AFTER_CREATION_STARTED"
+    },
+    "phase4": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "MUSIC_INVENTORY_ARTIFACT_STALLED_AFTER_CREATION_STARTED"
+    },
+    "phase5": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "MUSIC_INVENTORY_ARTIFACT_STALLED_AFTER_CREATION_STARTED"
+    },
+    "phase6": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "MUSIC_INVENTORY_ARTIFACT_STALLED_AFTER_CREATION_STARTED"
+    }
+  },
+  "storage": {
+    "run_json_exists": true,
+    "run_json_bytes": 145570,
+    "run_index_json_exists": true,
+    "run_index_json_bytes": 775,
+    "result_json_exists": true,
+    "result_json_bytes": 82323,
+    "events_json_exists": true,
+    "events_json_bytes": 32659,
+    "payload_ref_count": 0
+  },
+  "postcheck": {
+    "queue_hygiene": {
+      "ok": true,
+      "status_code": 200,
+      "elapsed_ms": 1125,
+      "body": {
+        "status": "ok",
+        "active_runs": 0,
+        "queued_runs": 0,
+        "stale_runs": 0,
+        "pending_approvals": 0,
+        "active_sessions": 0,
+        "dispatcher_status": "available",
+        "worker_pool_capacity": 8,
+        "worker_pool_available_slots": 8,
+        "stale_run_ids": [],
+        "backpressure_required": false,
+        "reason_code": null
+      }
+    },
+    "queue_runtime": {
+      "ok": false,
+      "status_code": "timeout_or_error",
+      "elapsed_ms": 15000,
+      "error_type": "TimeoutError",
+      "error": "timed out"
+    }
+  },
+  "post_restart_check": {
+    "checked_at": "2026-08-17T03:11:50.939979+00:00",
+    "health": {
+      "status": "ok",
+      "service": "AIpinho",
+      "version": "0.1.0",
+      "runtime": "local"
+    },
+    "queue_hygiene": {
+      "status": "ok",
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0,
+      "dispatcher_status": "available"
+    },
+    "queue_runtime": {
+      "status": "ok",
+      "active_count": 0,
+      "pending_count": 0,
+      "requires_decision_count": 0,
+      "warnings": []
+    }
+  }
+}

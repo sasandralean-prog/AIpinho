@@ -1,0 +1,80 @@
+{
+  "verdict": "INTELLIGENT_PLANNER_READY",
+  "date": "2026-07-04",
+  "objective": "Implement Intelligent Planner and autonomous task decomposition into governed Execution Graphs.",
+  "created_files": [
+    "src/aipinho/schemas/runtime/intelligent_planner.py",
+    "src/aipinho/services/runtime/intelligent_planner_service.py",
+    "config/runtime/planning_policy.yaml",
+    "config/runtime/planning_constraints.yaml",
+    "config/runtime/planning_cost_policy.yaml",
+    "config/runtime/planning_parallel_policy.yaml",
+    "config/runtime/planning_review_policy.yaml",
+    "apps/launcher/ui/tabs/planning_tab.py",
+    "tests/unit/test_intelligent_planner_service.py"
+  ],
+  "modified_files": [
+    "src/aipinho/schemas/runtime/execution_graph.py",
+    "src/aipinho/services/runtime/execution_graph_service.py",
+    "src/aipinho/services/runtime/task_runtime_service.py",
+    "src/aipinho/api/routers/task_runtime_router.py",
+    "src/aipinho/services/mobile_view_models/pipeline_mobile_aggregator.py",
+    "apps/launcher/ui/launcher_app.py",
+    "apps/launcher/ui/api/pipeline_client.py",
+    "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/network/TaskRuntimeClient.kt",
+    "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/ui/screens/PipelineScreen.kt",
+    "apps/mobile/android/app/src/test/java/br/com/aipinho/mobile/PipelineApprovalActionContractTest.kt",
+    "tests/integration/test_launcher_multi_agent_ui_contract.py",
+    "config/runtime/task_run_event_policy.yaml"
+  ],
+  "endpoints": [
+    "GET /api/v1/task-runs/{run_id}/planning/report",
+    "POST /api/v1/task-runs/{run_id}/planning/nodes/{node_id}/replan"
+  ],
+  "tests": {
+    "python_focused": "34 passed",
+    "delegation_regression": "9 passed",
+    "android_unit_contracts": "BUILD SUCCESSFUL",
+    "android_assemble_debug": "BUILD SUCCESSFUL",
+    "launcher_package": "BUILD SUCCESSFUL"
+  },
+  "smoke": {
+    "run_id": "task_run_e3381da22b624b4396f47cb255b9e790",
+    "graph_id": "exec_graph_4b3aaa40dc3b444eaa72d9f56ce25fd5",
+    "planning_report_id": "planning_report_8bd0d865930f4215bfecd5ef0a56a372",
+    "planning_task_type": "android",
+    "planning_strategy": "risk_aware_adaptive_graph",
+    "nodes": [
+      "node_planner",
+      "node_executor",
+      "node_debugger",
+      "node_vision",
+      "node_ocr",
+      "node_review",
+      "node_memory",
+      "node_supervisor",
+      "node_final"
+    ],
+    "poll_status": "ready"
+  },
+  "artifacts": {
+    "apk": "C:/Dev/AIpinho/apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk",
+    "launcher": "C:/Dev/AIpinho/dist/AIpinhoLauncher.exe",
+    "desktop_launcher_copy": "C:/Users/rafae/Desktop/AIpinhoLauncher.exe"
+  },
+  "device_install": {
+    "device_id": "ZF5253V88S",
+    "status": "success"
+  },
+  "backend": {
+    "port": 9088,
+    "pid": 36140,
+    "local_health": "http://127.0.0.1:9088/api/v1/health",
+    "tailscale_health": "http://100.107.124.8:9088/api/v1/health"
+  },
+  "known_risks": [
+    "Planner uses configurable heuristic stack/capability detection; future model-assisted planning can use the same contract.",
+    "Replanning currently retries a failed node and downstream dependencies; it does not yet mutate graph topology live.",
+    "Launcher Planning tab reads the canonical mobile view-model to avoid duplicate sources of truth."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "verdict": "generic_fixture_validation_passed",
+  "tests": {
+    "generic_compile_stage_trace": "passed",
+    "compile_only_no_observer_execution": "passed",
+    "payload_bound_exceeded_blocks": "passed",
+    "generic_entities_without_media_specific_authority": "passed",
+    "cvl_perception_payload_compile_frontier": "passed"
+  },
+  "fixtures": [
+    "small generic entity set",
+    "large generic entity set through payload bound test",
+    "generic entities without paths",
+    "sparse observations",
+    "dense/over-bound payload contract",
+    "relationship-free entities",
+    "observer-capable fixture with observer execution deferred in compile_only"
+  ],
+  "firetest_fixture_independence": {
+    "production_branch_by_firetest": false,
+    "production_branch_by_path": false,
+    "production_branch_by_artifact_name": false,
+    "production_branch_by_extension": false,
+    "production_branch_by_row_count": false
+  },
+  "test_commands": [
+    "21 passed in 33.06s (focused after final checkpoint patch)",
+    "116 passed in 93.77s (wide regression after final checkpoint patch)"
+  ]
+}

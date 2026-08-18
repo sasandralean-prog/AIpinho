@@ -1,0 +1,18 @@
+﻿schema_version: 1
+evaluation_workbench:
+  enabled: true
+  mode: read_only_evaluation
+  require_sanitization: true
+  require_findings: true
+read_only:
+  workspace_write: false
+  patch_apply: false
+  shell: false
+  git: false
+  memory_mutation: false
+  rag_ingestion_execute: false
+policies:
+  missing_evaluation_is_critical: true
+  fabricated_citation_is_critical: true
+  unsupported_execution_claim_is_critical: true
+  auto_selected_14b_is_critical: true

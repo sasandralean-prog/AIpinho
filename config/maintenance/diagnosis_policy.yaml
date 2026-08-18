@@ -1,0 +1,22 @@
+schema_version: 1
+diagnosis:
+  enabled: true
+  read_only: true
+  require_evidence: true
+  require_confidence: true
+  require_trace_refs: true
+  require_event_refs: true
+  allow_hypotheses: true
+  distinguish_fact_from_hypothesis: true
+confidence:
+  high_requires:
+  - direct_event_evidence
+  - policy_or_trace_ref
+  medium_requires:
+  - correlated_signals
+  low_allowed: true
+blocked:
+  diagnosis_without_evidence: true
+  claim_root_cause_without_confidence: true
+  raw_secret_in_diagnosis: true
+  mutate_during_diagnosis: true

@@ -1,0 +1,19 @@
+schema_version: 1
+event_filters:
+  enabled: true
+  filter_by_event_type: true
+  filter_by_source_service: true
+  filter_by_severity: true
+  filter_by_status: true
+  filter_by_task_id: true
+  filter_by_session_id: true
+  filter_by_trace_id: true
+  filter_by_visibility: true
+defaults:
+  hide_hidden: true
+  hide_internal_by_default: true
+  show_public: true
+  severity_order: [critical, error, warning, info]
+blocked:
+  show_hidden_without_policy: true
+  render_unknown_event_normal: true

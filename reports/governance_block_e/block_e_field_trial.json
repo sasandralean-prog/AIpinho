@@ -1,0 +1,840 @@
+{
+  "verdict": "BLOCK_E_FIELD_TRIAL_EXECUTED",
+  "timestamp": "2026-06-28T15:02:10.032182+00:00",
+  "workspace": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+  "source_draft_id": "draft_block_e_b4d7ccbcc8184c3abeeff35af93b14e0",
+  "draft_id": "draft_block_e_repair_acd5e338367049c28c0880971b17c4da",
+  "preview_id": "preview_c9d652585d7f4e4aa8367022ca334296",
+  "preview_status": "approval_required",
+  "approval_id": "approval_ce2aaa3c820c42ac82841806f66cfcef",
+  "approval_status": "approved",
+  "decision": "approved",
+  "resume": {
+    "status": "ok",
+    "reason_code": "task_run_created_from_approved_preview",
+    "approval_id": "approval_ce2aaa3c820c42ac82841806f66cfcef",
+    "run_id": "task_run_7eb64aab347e4f278b9fa038e0533e17",
+    "run_status": "completed",
+    "block_reason_code": null,
+    "resumed": true,
+    "queue_process": {
+      "status": "completed",
+      "started_run_id": "task_run_7eb64aab347e4f278b9fa038e0533e17",
+      "run": {
+        "run_id": "task_run_7eb64aab347e4f278b9fa038e0533e17",
+        "source_type": "preview",
+        "draft_id": "draft_block_e_repair_acd5e338367049c28c0880971b17c4da",
+        "preview_id": "preview_c9d652585d7f4e4aa8367022ca334296",
+        "approval_id": "approval_ce2aaa3c820c42ac82841806f66cfcef",
+        "session_id": "block_e_field_trial",
+        "workspace": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+        "contract_type": "project_generation",
+        "operation_type": "project_generation",
+        "runtime_profile": "project_generation",
+        "capabilities_required": [
+          "write_workspace"
+        ],
+        "requested_actions": [
+          "write_files"
+        ],
+        "intent_map": {
+          "intent_type": "app_creation_field_trial",
+          "operation_type": "project_generation",
+          "risk": "medium",
+          "raw_prompt": "Bloco E: reparar execucao anterior e materializar app Checklist de Campo por plano canonico aprovado.",
+          "target_path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+          "target_paths": [
+            "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo"
+          ],
+          "context_ref": "block_e_field_trial_static_app_requirements",
+          "analysis_ref": "block_e_e0_preflight",
+          "validation_plan": {
+            "checks": [
+              "file_exists",
+              "content_contains_expected_markers",
+              "no_external_secrets",
+              "content_not_sanitized_placeholder"
+            ]
+          },
+          "rollback_plan": {
+            "strategy": "restore_from_taskdraft_plan_or_remove_workspace_after_manual_approval",
+            "target": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo"
+          },
+          "project_generation_plan": {
+            "target_workspace": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+            "directories_to_create": [
+              {
+                "path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo"
+              },
+              {
+                "path": "src"
+              },
+              {
+                "path": "reports"
+              }
+            ],
+            "generation_steps": [
+              "create_static_web_app",
+              "create_reports"
+            ],
+            "validation_steps": [
+              "file_exists",
+              "content_contains_expected_markers",
+              "no_external_secrets",
+              "content_not_sanitized_placeholder"
+            ],
+            "expected_outputs": [
+              "index.html",
+              "src/app.js",
+              "src/style.css",
+              "README.md",
+              "reports/checklist_app_field_trial.md"
+            ],
+            "files_to_modify": [
+              {
+                "path": "index.html",
+                "overwrite": true
+              },
+              {
+                "path": "src/app.js",
+                "overwrite": true
+              },
+              {
+                "path": "src/style.css",
+                "overwrite": true
+              },
+              {
+                "path": "README.md",
+                "overwrite": true
+              },
+              {
+                "path": "reports/checklist_app_field_trial.md",
+                "overwrite": true
+              },
+              {
+                "path": "reports/checklist_app_validation.md",
+                "overwrite": true
+              },
+              {
+                "path": "reports/checklist_app_summary.md",
+                "overwrite": true
+              }
+            ]
+          },
+          "requested_deliverables": [
+            "static_web_app",
+            "validation_report",
+            "field_trial_report"
+          ]
+        },
+        "status": "completed",
+        "mode": "governed",
+        "plan": {
+          "plan_id": "task_run_plan_ff34fe47c04d447480a211ad660fea68",
+          "contract_type": "project_generation",
+          "status": "ready",
+          "steps": [
+            {
+              "step_id": "step_01_validate_runtime",
+              "step_type": "validate_runtime",
+              "action": "validate_runtime",
+              "required": true,
+              "side_effect": false,
+              "status": "completed",
+              "input_summary": {},
+              "output_summary": {
+                "components": {
+                  "readonly": "ok",
+                  "analysis": "ok",
+                  "reports": "ok",
+                  "roles": "ok"
+                }
+              },
+              "started_at": "2026-06-28T15:02:12.170708+00:00",
+              "finished_at": "2026-06-28T15:02:12.195544+00:00",
+              "warnings": [],
+              "violations": [],
+              "trace": []
+            },
+            {
+              "step_id": "step_02_validate_workspace",
+              "step_type": "validate_workspace",
+              "action": "inspect_path",
+              "required": true,
+              "side_effect": false,
+              "status": "completed",
+              "input_summary": {},
+              "output_summary": {
+                "execution_id": "exec_418ab429411a4fca88fa8008e56d90d7",
+                "workspace": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+                "target_path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+                "status": "executed_readonly"
+              },
+              "started_at": "2026-06-28T15:02:12.200167+00:00",
+              "finished_at": "2026-06-28T15:02:12.219488+00:00",
+              "warnings": [],
+              "violations": [],
+              "trace": []
+            },
+            {
+              "step_id": "step_03_execute_project_generation",
+              "step_type": "execute_project_generation",
+              "action": "write_files",
+              "required": true,
+              "side_effect": true,
+              "status": "completed",
+              "input_summary": {},
+              "output_summary": {
+                "status": "succeeded",
+                "executor": "project_generation_plan_executor",
+                "plan_kind": "project_generation_plan",
+                "workspace": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+                "created_directories": [
+                  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+                  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\src",
+                  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports"
+                ],
+                "created_files": [],
+                "modified_files": [
+                  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\index.html",
+                  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\src\\app.js",
+                  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\src\\style.css",
+                  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\README.md",
+                  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports\\checklist_app_field_trial.md",
+                  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports\\checklist_app_validation.md",
+                  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports\\checklist_app_summary.md"
+                ],
+                "expected_outputs": [
+                  "index.html",
+                  "src/app.js",
+                  "src/style.css",
+                  "README.md",
+                  "reports/checklist_app_field_trial.md"
+                ],
+                "validation_steps": [
+                  "file_exists",
+                  "content_contains_expected_markers",
+                  "no_external_secrets",
+                  "content_not_sanitized_placeholder"
+                ],
+                "files_written": true,
+                "directories_written": true
+              },
+              "started_at": "2026-06-28T15:02:12.225538+00:00",
+              "finished_at": "2026-06-28T15:02:12.230013+00:00",
+              "warnings": [],
+              "violations": [],
+              "trace": []
+            },
+            {
+              "step_id": "step_04_validate_project_result",
+              "step_type": "validate_project_result",
+              "action": "validate_runtime",
+              "required": true,
+              "side_effect": false,
+              "status": "completed",
+              "input_summary": {},
+              "output_summary": {
+                "status": "passed",
+                "validated_output": "project_generation",
+                "reason_code": "tool_result_succeeded"
+              },
+              "started_at": "2026-06-28T15:02:12.241938+00:00",
+              "finished_at": "2026-06-28T15:02:12.246958+00:00",
+              "warnings": [],
+              "violations": [],
+              "trace": []
+            },
+            {
+              "step_id": "step_05_compose_final_result",
+              "step_type": "compose_final_result",
+              "action": "compose_result",
+              "required": true,
+              "side_effect": false,
+              "status": "completed",
+              "input_summary": {},
+              "output_summary": {
+                "outputs_available": [
+                  "execute_project_generation",
+                  "inspect_path",
+                  "project_generation",
+                  "validate_project_result",
+                  "validate_runtime",
+                  "validate_workspace",
+                  "validation_result",
+                  "write_files"
+                ],
+                "limitations": 0,
+                "blocked_items": 0
+              },
+              "started_at": "2026-06-28T15:02:12.246958+00:00",
+              "finished_at": "2026-06-28T15:02:12.261224+00:00",
+              "warnings": [],
+              "violations": [],
+              "trace": []
+            }
+          ],
+          "warnings": [],
+          "blocked_reasons": [],
+          "trace": [
+            {
+              "stage": "task_run_planner",
+              "status": "ready",
+              "reason": "plan_built_from_runtime_profile",
+              "step_id": null,
+              "source": "config/runtime/profiles/project_generation.yaml",
+              "timestamp": "2026-06-28T15:02:11.862074+00:00",
+              "data": {
+                "steps": 5,
+                "profile": "project_generation"
+              }
+            }
+          ],
+          "metadata": {
+            "runtime_profile": "project_generation",
+            "required_capabilities": [
+              "write_workspace"
+            ],
+            "approval_scope": "project_write",
+            "output_validation_required": true,
+            "artifact_registration_required": true,
+            "normalized_actions": [
+              "write_files"
+            ],
+            "workspace_requirements": {
+              "required": true,
+              "allowed_roles": [
+                "target_mutable",
+                "system_mutable"
+              ]
+            }
+          }
+        },
+        "current_step_id": null,
+        "policy_snapshot": {
+          "policy_decision_id": "policy_block_e_repair_ea0d7e129c084744ba270e7deea3f736",
+          "policy_status": "ask",
+          "allowed_actions": [],
+          "denied_actions": [],
+          "approval_required_for": [
+            "write_files"
+          ],
+          "granted_capabilities": [],
+          "denied_capabilities": [],
+          "workspace_status": "confirmed",
+          "risk_level": "medium",
+          "trace_hash": "ffdeafc3c060003f8f0ee2226d064cfc144135196cd0998bf430eef1e990f2be",
+          "config_versions": {
+            "preview_policy_schema_version": 1
+          },
+          "status": "ask"
+        },
+        "context_injection_plan_id": null,
+        "workspace_snapshot": {
+          "status": "allowed",
+          "workspace_path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+          "blocked": false,
+          "needs_clarification": false,
+          "reason": "workspace_allowed"
+        },
+        "approval_snapshot": {
+          "approval_id": "approval_ce2aaa3c820c42ac82841806f66cfcef",
+          "preview_id": "preview_c9d652585d7f4e4aa8367022ca334296",
+          "draft_id": "draft_block_e_repair_acd5e338367049c28c0880971b17c4da",
+          "run_id": "task_run_7eb64aab347e4f278b9fa038e0533e17",
+          "task_id": "task_run_7eb64aab347e4f278b9fa038e0533e17",
+          "session_id": "block_e_field_trial",
+          "agent_id": "aipinho",
+          "workspace_id": null,
+          "workspace_path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+          "operation_type": "project_generation",
+          "contract_type": "project_generation",
+          "runtime_profile": "project_generation",
+          "target_paths": [
+            "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo"
+          ],
+          "commands": [],
+          "expected_outcomes": [
+            "project_generation",
+            "validation_result"
+          ],
+          "executable_plan_ref": "draft_block_e_repair_acd5e338367049c28c0880971b17c4da:project_generation_plan",
+          "preview_hash": "f4a525d7bf0b6a071e323a81ae8dac5e9b3ca768dde30aa74230d4a0fa708b9f",
+          "policy_snapshot_hash": "9aea45859227455ccce660c092cdcb3dd444b2d8f49c57db512e8125cfc3bc31",
+          "resume_status": null,
+          "block_reason_code": null,
+          "preview": {
+            "available": true,
+            "summary": "Preview approval_required para contrato project_generation. Nenhuma execucao sera realizada nesta sprint.",
+            "diff_ref": null,
+            "content_preview_ref": "preview_c9d652585d7f4e4aa8367022ca334296",
+            "executable_plan_ref": "draft_block_e_repair_acd5e338367049c28c0880971b17c4da:project_generation_plan",
+            "expected_outcomes": [
+              "project_generation",
+              "validation_result"
+            ]
+          },
+          "policy_refs": [
+            "policy_block_e_repair_ea0d7e129c084744ba270e7deea3f736"
+          ],
+          "allowed_by_policy": true,
+          "forbidden_operations": [],
+          "status": "approved",
+          "actions_requested": [
+            "write_files"
+          ],
+          "approval_scope": "future_execution",
+          "reason": "Block E repair field trial approval request",
+          "risk_level": "medium",
+          "policy_snapshot": {
+            "policy_decision_id": "policy_block_e_repair_ea0d7e129c084744ba270e7deea3f736",
+            "policy_status": "ask",
+            "allowed_actions": [],
+            "denied_actions": [],
+            "approval_required_for": [
+              "write_files"
+            ],
+            "granted_capabilities": [],
+            "denied_capabilities": [],
+            "workspace_status": "confirmed",
+            "risk_level": "medium",
+            "trace_hash": "ffdeafc3c060003f8f0ee2226d064cfc144135196cd0998bf430eef1e990f2be",
+            "config_versions": {
+              "preview_policy_schema_version": 1
+            }
+          },
+          "expires_at": "2026-06-28T17:02:10.057066+00:00",
+          "created_at": "2026-06-28T15:02:10.057066+00:00",
+          "updated_at": "2026-06-28T15:02:11.878148+00:00",
+          "created_by": {
+            "type": "user",
+            "id": "rafae_delegated_codex"
+          },
+          "trace": [
+            {
+              "stage": "approval_create",
+              "decision": "pending",
+              "reason": "approval_created_without_execution",
+              "source": "services/approvals/approval_service.py"
+            }
+          ],
+          "execution_status": "not_executed"
+        },
+        "auto_run_requested": true,
+        "cancellation_requested": false,
+        "cancellation_reason": null,
+        "revision": 14,
+        "created_at": "2026-06-28T15:02:11.871154+00:00",
+        "started_at": "2026-06-28T15:02:12.164173+00:00",
+        "finished_at": "2026-06-28T15:02:12.272921+00:00",
+        "warnings": [],
+        "blocked_reasons": [],
+        "block_cause": null,
+        "trace": [
+          {
+            "stage": "task_run_planner",
+            "status": "ready",
+            "reason": "plan_built_from_runtime_profile",
+            "step_id": null,
+            "source": "config/runtime/profiles/project_generation.yaml",
+            "timestamp": "2026-06-28T15:02:11.862074+00:00",
+            "data": {
+              "steps": 5,
+              "profile": "project_generation"
+            }
+          },
+          {
+            "stage": "task_run_guard",
+            "status": "allowed",
+            "reason": "run_guard_checked",
+            "step_id": null,
+            "source": "services/runtime/task_run_guard.py",
+            "timestamp": "2026-06-28T15:02:11.893847+00:00",
+            "data": {
+              "blocked_reasons": []
+            }
+          },
+          {
+            "stage": "task_run_guard",
+            "status": "allowed",
+            "reason": "run_guard_checked",
+            "step_id": null,
+            "source": "services/runtime/task_run_guard.py",
+            "timestamp": "2026-06-28T15:02:12.164173+00:00",
+            "data": {
+              "blocked_reasons": []
+            }
+          },
+          {
+            "stage": "task_run_guard",
+            "status": "allowed",
+            "reason": "step_guard_checked",
+            "step_id": "step_01_validate_runtime",
+            "source": "services/runtime/task_run_guard.py",
+            "timestamp": "2026-06-28T15:02:12.170708+00:00",
+            "data": {
+              "blocked_reasons": []
+            }
+          },
+          {
+            "stage": "task_run_guard",
+            "status": "allowed",
+            "reason": "step_guard_checked",
+            "step_id": "step_02_validate_workspace",
+            "source": "services/runtime/task_run_guard.py",
+            "timestamp": "2026-06-28T15:02:12.200167+00:00",
+            "data": {
+              "blocked_reasons": []
+            }
+          },
+          {
+            "stage": "task_run_guard",
+            "status": "allowed",
+            "reason": "step_guard_checked",
+            "step_id": "step_03_execute_project_generation",
+            "source": "services/runtime/task_run_guard.py",
+            "timestamp": "2026-06-28T15:02:12.225538+00:00",
+            "data": {
+              "blocked_reasons": []
+            }
+          },
+          {
+            "stage": "task_run_guard",
+            "status": "allowed",
+            "reason": "step_guard_checked",
+            "step_id": "step_04_validate_project_result",
+            "source": "services/runtime/task_run_guard.py",
+            "timestamp": "2026-06-28T15:02:12.241938+00:00",
+            "data": {
+              "blocked_reasons": []
+            }
+          },
+          {
+            "stage": "task_run_guard",
+            "status": "allowed",
+            "reason": "step_guard_checked",
+            "step_id": "step_05_compose_final_result",
+            "source": "services/runtime/task_run_guard.py",
+            "timestamp": "2026-06-28T15:02:12.246958+00:00",
+            "data": {
+              "blocked_reasons": []
+            }
+          }
+        ]
+      },
+      "result": {
+        "run_id": "task_run_7eb64aab347e4f278b9fa038e0533e17",
+        "status": "completed",
+        "summary": "TaskRun governada concluida com 2 grupo(s) de resultado.",
+        "outputs": {
+          "project_generation": {
+            "status": "succeeded",
+            "executor": "project_generation_plan_executor",
+            "plan_kind": "project_generation_plan",
+            "workspace": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+            "created_directories": [
+              "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+              "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\src",
+              "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports"
+            ],
+            "created_files": [],
+            "modified_files": [
+              "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\index.html",
+              "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\src\\app.js",
+              "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\src\\style.css",
+              "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\README.md",
+              "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports\\checklist_app_field_trial.md",
+              "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports\\checklist_app_validation.md",
+              "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports\\checklist_app_summary.md"
+            ],
+            "expected_outputs": [
+              "index.html",
+              "src/app.js",
+              "src/style.css",
+              "README.md",
+              "reports/checklist_app_field_trial.md"
+            ],
+            "validation_steps": [
+              "file_exists",
+              "content_contains_expected_markers",
+              "no_external_secrets",
+              "content_not_sanitized_placeholder"
+            ],
+            "files_written": true,
+            "directories_written": true
+          },
+          "validation_result": {
+            "status": "passed",
+            "validated_output": "project_generation",
+            "reason_code": "tool_result_succeeded"
+          }
+        },
+        "step_summaries": [
+          {
+            "step_id": "step_01_validate_runtime",
+            "step_type": "validate_runtime",
+            "status": "completed",
+            "output_summary": {
+              "components": {
+                "readonly": "ok",
+                "analysis": "ok",
+                "reports": "ok",
+                "roles": "ok"
+              }
+            },
+            "warnings": [],
+            "violations": []
+          },
+          {
+            "step_id": "step_02_validate_workspace",
+            "step_type": "validate_workspace",
+            "status": "completed",
+            "output_summary": {
+              "execution_id": "exec_418ab429411a4fca88fa8008e56d90d7",
+              "workspace": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+              "target_path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+              "status": "executed_readonly"
+            },
+            "warnings": [],
+            "violations": []
+          },
+          {
+            "step_id": "step_03_execute_project_generation",
+            "step_type": "execute_project_generation",
+            "status": "completed",
+            "output_summary": {
+              "status": "succeeded",
+              "executor": "project_generation_plan_executor",
+              "plan_kind": "project_generation_plan",
+              "workspace": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+              "created_directories": [
+                "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo",
+                "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\src",
+                "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports"
+              ],
+              "created_files": [],
+              "modified_files": [
+                "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\index.html",
+                "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\src\\app.js",
+                "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\src\\style.css",
+                "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\README.md",
+                "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports\\checklist_app_field_trial.md",
+                "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports\\checklist_app_validation.md",
+                "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports\\checklist_app_summary.md"
+              ],
+              "expected_outputs": [
+                "index.html",
+                "src/app.js",
+                "src/style.css",
+                "README.md",
+                "reports/checklist_app_field_trial.md"
+              ],
+              "validation_steps": [
+                "file_exists",
+                "content_contains_expected_markers",
+                "no_external_secrets",
+                "content_not_sanitized_placeholder"
+              ],
+              "files_written": true,
+              "directories_written": true
+            },
+            "warnings": [],
+            "violations": []
+          },
+          {
+            "step_id": "step_04_validate_project_result",
+            "step_type": "validate_project_result",
+            "status": "completed",
+            "output_summary": {
+              "status": "passed",
+              "validated_output": "project_generation",
+              "reason_code": "tool_result_succeeded"
+            },
+            "warnings": [],
+            "violations": []
+          },
+          {
+            "step_id": "step_05_compose_final_result",
+            "step_type": "compose_final_result",
+            "status": "completed",
+            "output_summary": {
+              "outputs_available": [
+                "execute_project_generation",
+                "inspect_path",
+                "project_generation",
+                "validate_project_result",
+                "validate_runtime",
+                "validate_workspace",
+                "validation_result",
+                "write_files"
+              ],
+              "limitations": 0,
+              "blocked_items": 0
+            },
+            "warnings": [],
+            "violations": []
+          }
+        ],
+        "limitations": [],
+        "blocked_items": [],
+        "warnings": [],
+        "events_count": 20,
+        "trace_ref": "task-runs/task_run_7eb64aab347e4f278b9fa038e0533e17/trace",
+        "safe_to_display": true,
+        "validation": {
+          "validation_id": "validation_da2d1fa22ef64478baa0f64cd1a8fc5b",
+          "status": "passed",
+          "score": 1.0,
+          "safe_to_display": true,
+          "warnings": [],
+          "blocking_findings": []
+        },
+        "block_cause": null,
+        "completion": {
+          "status": "completed",
+          "safe_to_report_success": true,
+          "expected_outcomes": [
+            "project_generation",
+            "validation_result"
+          ],
+          "fulfilled_outcomes": [
+            "project_generation",
+            "validation_result"
+          ],
+          "missing_outcomes": [],
+          "criteria": [
+            {
+              "criterion_id": "project_generation",
+              "kind": "required_output",
+              "required": true,
+              "status": "fulfilled",
+              "summary": "Output project_generation is present.",
+              "evidence_refs": [
+                "project_generation"
+              ],
+              "metadata": {}
+            },
+            {
+              "criterion_id": "validation_result",
+              "kind": "required_output",
+              "required": true,
+              "status": "fulfilled",
+              "summary": "Output validation_result is present.",
+              "evidence_refs": [
+                "validation_result"
+              ],
+              "metadata": {}
+            }
+          ],
+          "warnings": [],
+          "limitations": [],
+          "metadata": {
+            "contract_type": "project_generation",
+            "proposed_status": "completed"
+          }
+        }
+      },
+      "queue": {
+        "status": "ok",
+        "enabled": true,
+        "max_pending_tasks": 25,
+        "max_wait_seconds": 86400,
+        "active_count": 0,
+        "pending_count": 0,
+        "requires_decision_count": 0,
+        "total_visible": 0,
+        "items": [],
+        "last_reconciled_at": "2026-06-28T15:02:12.473796+00:00",
+        "warnings": []
+      }
+    }
+  },
+  "task_run_id": "task_run_7eb64aab347e4f278b9fa038e0533e17",
+  "task_run_status": "completed",
+  "task_run_blocked_reasons": [],
+  "result_status": "completed",
+  "result_summary": "TaskRun governada concluida com 2 grupo(s) de resultado.",
+  "result_validation": {
+    "validation_id": "validation_da2d1fa22ef64478baa0f64cd1a8fc5b",
+    "status": "passed",
+    "score": 1.0,
+    "safe_to_display": true,
+    "warnings": [],
+    "blocking_findings": []
+  },
+  "completion": {
+    "status": "completed",
+    "safe_to_report_success": true,
+    "expected_outcomes": [
+      "project_generation",
+      "validation_result"
+    ],
+    "fulfilled_outcomes": [
+      "project_generation",
+      "validation_result"
+    ],
+    "missing_outcomes": [],
+    "criteria": [
+      {
+        "criterion_id": "project_generation",
+        "kind": "required_output",
+        "required": true,
+        "status": "fulfilled",
+        "summary": "Output project_generation is present.",
+        "evidence_refs": [
+          "project_generation"
+        ],
+        "metadata": {}
+      },
+      {
+        "criterion_id": "validation_result",
+        "kind": "required_output",
+        "required": true,
+        "status": "fulfilled",
+        "summary": "Output validation_result is present.",
+        "evidence_refs": [
+          "validation_result"
+        ],
+        "metadata": {}
+      }
+    ],
+    "warnings": [],
+    "limitations": [],
+    "metadata": {
+      "contract_type": "project_generation",
+      "proposed_status": "completed"
+    }
+  },
+  "file_checks": {
+    "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\index.html": true,
+    "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\src\\app.js": true,
+    "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\src\\style.css": true,
+    "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\README.md": true,
+    "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports\\checklist_app_field_trial.md": true,
+    "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports\\checklist_app_validation.md": true,
+    "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\ChecklistDeCampo\\reports\\checklist_app_summary.md": true
+  },
+  "content_checks": {
+    "no_omitted_placeholder": true,
+    "html_title": true,
+    "js_add_task": true,
+    "css_mobile": true
+  },
+  "events_count": 20,
+  "qa": {
+    "browser_path": "Browser plugin via localhost HTTP fallback",
+    "file_url_blocked": true,
+    "localhost_url": "http://127.0.0.1:8765/index.html",
+    "interaction_passed": true,
+    "checked_state": {
+      "title": "Checklist de Campo",
+      "task_added": true,
+      "task_marked_done": true,
+      "completed_counter": "1",
+      "console_errors_or_warnings": []
+    },
+    "screenshot_status": "blocked_by_browser_cdp_timeout",
+    "e6_status": "E6_MOBILE_LAUNCHER_QA_PARTIAL"
+  },
+  "final_verdict": "BLOCK_E_APP_CREATION_FIELD_TRIAL_READY_WITH_CAUTION"
+}

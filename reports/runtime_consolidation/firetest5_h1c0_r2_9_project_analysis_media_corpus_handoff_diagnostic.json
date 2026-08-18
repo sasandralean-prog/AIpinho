@@ -1,0 +1,109 @@
+{
+  "verdict": "diagnostic_pre_patch_confirmed_and_patch_applied",
+  "observed_blocker": "PROJECT_ANALYSIS_DEGRADED",
+  "before_state": {
+    "latest_r2_8_task_run_id": "task_run_24636b2abe6f4b08bc6d7826b5cf136f",
+    "client_response_status": "accepted_running",
+    "result_status": "blocked",
+    "result_source": "phase_semantic_completion_policy",
+    "result_reason_code": "PROJECT_ANALYSIS_DEGRADED",
+    "finished_at": "present",
+    "terminal_event_count": 1,
+    "artifact_creation_started_count": 0,
+    "music_inventory_reached": false,
+    "evidence_phase1_reached": false,
+    "phase2_to_6_skipped": true
+  },
+  "project_analysis": {
+    "root_selected": "declared library/corpus root from public workspace context",
+    "root_role": "library_root",
+    "root_role_source": "workspace_context.library_roots extracted from public prompt/context",
+    "root_is_media_corpus": true,
+    "root_is_source_project": false,
+    "project_analysis_status": "blocked",
+    "project_analysis_reason_code": "PROJECT_ANALYSIS_DEGRADED",
+    "selected_files_count": 0,
+    "read_files_count": 0,
+    "rejected_files_count": 200,
+    "extension_not_allowed_count": 200,
+    "binary_or_media_rejection_count": 200,
+    "source_readable_files_count": 0,
+    "inventory_eligible_entities_count": 0,
+    "media_entity_candidates_count": 0
+  },
+  "file_selection": {
+    "selection_policy_component": "FileSelectionService",
+    "selection_policy_mode": "cheap_path_metadata_ranking_for_source_reading",
+    "source_reading_policy_applied": true,
+    "inventory_selection_policy_applied": false,
+    "extension_not_allowed_applied_to_media_inventory": true,
+    "readable_source_selection_empty": true,
+    "inventory_eligible_selection_empty": true,
+    "reason_codes": [
+      "FILE_SELECTION_CHEAP_PATH_METADATA_RANKING",
+      "FILE_SELECTION_PARTIAL"
+    ]
+  },
+  "corpus_handoff": {
+    "handoff_created": false,
+    "handoff_component": null,
+    "handoff_status": null,
+    "handoff_reason_code": null,
+    "artifact_runtime_allowed": false,
+    "handoff_payload_ref": null,
+    "handoff_payload_shape": null,
+    "observed_entities_count": 0,
+    "media_entities_count": 0,
+    "source_readable_files_required": true
+  },
+  "artifact_runtime_continuation": {
+    "artifact_runtime_reached": false,
+    "artifact_creation_started_count": 0,
+    "phase1_discovery_reached": false,
+    "project_inventory_reached": false,
+    "music_inventory_reached": false,
+    "evidence_phase1_reached": false,
+    "metadata_sufficiency_evaluated": false
+  },
+  "reason_model": {
+    "generic_project_analysis_degraded_used": true,
+    "specific_corpus_reason_available": false,
+    "recommended_reason_code": "MEDIA_CORPUS_ROOT_HANDOFF_READY when inventory entities exist; MEDIA_CORPUS_ROOT_NO_INVENTORY_ELIGIBLE_ENTITIES when they do not",
+    "phase_semantic_completion_policy_reason": "PROJECT_ANALYSIS_DEGRADED"
+  },
+  "phase0_cvl": {
+    "predicted_frontier": "TRUTH_READINESS",
+    "predicted_component": "truth_readiness",
+    "predicted_reason_code": "PREDICTED_TRUTH_READINESS_GAP",
+    "matches_observed_frontier": false
+  },
+  "questions_answered": {
+    "1_root_selected": "The latest R2.8 public run selected the declared corpus/library root as the ProjectAnalysis workspace.",
+    "2_root_role": "The public prompt/context carried the root as a library/corpus role, but ProjectAnalysisRequest did not receive that structured context before this patch.",
+    "3_root_role_classified_as_media_corpus": "No, not inside ProjectAnalysis before this patch.",
+    "4_source_readable_selection_applied_to_media": "Yes. PathGuard text-read extension policy rejected media files as extension_not_allowed.",
+    "5_extension_not_allowed_count": 200,
+    "6_inventory_eligible_count": "Expected to be nonzero for governed library/corpus media entities; before patch it was not counted at ProjectAnalysis.",
+    "7_block_due_no_source_files": true,
+    "8_source_files_required_for_media_artifact_runtime": false,
+    "9_handoff_package_exists": "Not before this patch.",
+    "10_handoff_not_used": "ProjectAnalysis lacked workspace_context root-role semantics and FileSelection lacked inventory eligibility counters.",
+    "11_service_should_produce_handoff": "ProjectAnalysisService with FileSelectionService role-aware plan.",
+    "12_separate_eligibility": "ReadableSourceSelection remains governed by text-read PathGuard; InventoryEligibleEntitySelection counts corpus candidates for artifact runtime without reading them as text.",
+    "13_extension_not_truth": "Extension is recorded only as a capability routing hint, never codec/container/tag truth.",
+    "14_keep_generic_degraded": "PROJECT_ANALYSIS_DEGRADED remains available for truly degraded projects without a more specific handoff reason.",
+    "15_specific_reason": "MEDIA_CORPUS_ROOT_HANDOFF_READY or MEDIA_CORPUS_ROOT_NO_INVENTORY_ELIGIBLE_ENTITIES.",
+    "16_artifact_runtime_without_success": "ProjectAnalysis returns partial safe_to_continue with limitations and reason; later artifact/runtime/semantic policies still decide success or block.",
+    "17_preserve_r2_7_r2_8": "No changes to terminality guard or sharded artifact registry write path.",
+    "18_cvl_update": "CVL now recognizes media corpus handoff and root-role/file-selection mismatch frontiers."
+  },
+  "patch_plan": [
+    "Add workspace_context to ProjectAnalysisRequest and pass it from public runtime.",
+    "Add root_role and inventory eligibility fields to FileSelectionRequest/Candidate/Plan.",
+    "Record media corpus inventory eligibility when PathGuard blocks only text-read extension.",
+    "Return MEDIA_CORPUS_ROOT_HANDOFF_READY partial ProjectAnalysisResult when corpus inventory entities exist but source-readable selection is empty.",
+    "Keep source project behavior unchanged.",
+    "Expose corpus_handoff in ProjectAnalysisResult and runtime analysis_payload.",
+    "Update CVL project-analysis frontier awareness."
+  ]
+}

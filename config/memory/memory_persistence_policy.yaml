@@ -1,0 +1,35 @@
+schema_version: 1
+
+persistence:
+  enabled: true
+  persist_curated_memory: true
+  require_approval: true
+  require_approval_status: approved
+  require_approval_scope: curated_memory_persist
+  require_final_candidate_validation: true
+  require_final_sensitivity_scan: true
+  require_final_dedupe_check: true
+  require_final_conflict_check: true
+  require_version_record: true
+  allow_direct_payload_persistence: false
+  allow_candidate_bypass: false
+
+storage:
+  backend: json
+  sqlite_enabled: false
+  vectorstore_enabled: false
+  embeddings_enabled: false
+  rag_enabled: false
+
+write_locations:
+  curated_memory_path: data/memory/curated
+  audit_path: data/runtime/memory_audit
+  events_path: data/runtime/memory_events
+
+blocked:
+  raw_logs: true
+  secrets: true
+  full_file_content: true
+  full_conversation: true
+  unvalidated_model_output: true
+  unapproved_candidate: true

@@ -1,0 +1,24 @@
+version: 1
+matrix_name: freedom_regression
+cases:
+  - read_workspace_autoapproved
+  - search_workspace_autoapproved
+  - artifact_upload_download_autoapproved
+  - validation_autoapproved
+  - report_generation_autoapproved
+  - create_file_target_mutable_governed_autorun
+  - modify_file_target_mutable_governed_autorun
+  - patch_apply_small_target_mutable_when_policy_allows
+  - readonly_shell_allowed
+  - test_shell_allowed
+  - build_shell_allowed
+  - package_shell_allowed
+  - lucio_to_codex_safe_delegation
+  - lucio_to_aipinho_safe_delegation
+  - gemini_to_aipinho_safe_delegation
+  - safe_codex_prompt_without_excessive_approval
+  - memory_absence_does_not_block_safe_execution
+  - stale_memory_warns_without_blocking
+  - self_healing_warning_does_not_block_safe_run
+  - dashboard_debugger_do_not_create_local_blocks
+

@@ -1,0 +1,14 @@
+schema_version: 1
+
+profiles:
+  small_cpu:
+    max_auto_parameter_class: 1_7b
+    warning: null
+  medium_cpu:
+    max_auto_parameter_class: 7b
+    warning: "CPU-only latency expected."
+  large_cpu_slow:
+    max_auto_parameter_class: 14b
+    manual_only: true
+    requires_operator_confirmation: true
+    warning: "Manual-only. High CPU latency expected."

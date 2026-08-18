@@ -1,0 +1,36 @@
+schema_version: 1
+
+scope:
+  require_scope: true
+  allowed_scope_types:
+    - workspace
+    - project
+    - module
+    - service
+    - policy
+    - report
+    - task_run
+    - validation
+    - patch_apply
+    - curated_memory
+
+workspace:
+  allowed_roots:
+    - "C:\\Dev\\AIpinho"
+    - "C:\\Users\\rafae\\Documents\\AIpinhoTestes"
+    - "C:\\Dev\\AI\\coding-brain-supervisor"
+    - "C:\\PinhoabacaxiAI"
+    - "C:\\Users\\rafae\\Documents\\FashionHelper"
+    - "C:\\Users\\rafae\\Documents\\Fashion Helper legado"
+    - "C:\\Users\\rafae\\Documents\\Pinhoabacaxi-musicas-main"
+    - "C:\\Users\\rafae\\Documents\\TestesIALocal"
+
+  forbidden_roots:
+    - "C:\\Windows"
+
+rules:
+  reject_forbidden_root: true
+  reject_outside_workspace: true
+  reject_ambiguous_workspace: true
+  require_explicit_memory_scope: true
+  cross_source_scope_must_match: true

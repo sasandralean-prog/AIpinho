@@ -1,0 +1,42 @@
+{
+  "session_id": "session_1653aef9c9254434a1f8cbfa9662e399",
+  "status": "active",
+  "created_at": "2026-06-18T19:21:26.119354+00:00",
+  "updated_at": "2026-06-18T19:21:26.183093+00:00",
+  "expires_at": "2026-06-18T23:21:26.119354+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Me dê uma ideia simples de jogo mobile para eu criar depois.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_b51df41077564e02b2d57d5857728dd3",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

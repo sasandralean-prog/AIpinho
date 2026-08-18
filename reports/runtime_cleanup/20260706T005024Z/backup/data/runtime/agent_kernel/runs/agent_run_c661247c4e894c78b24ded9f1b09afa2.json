@@ -1,0 +1,31 @@
+{
+  "run_id": "agent_run_c661247c4e894c78b24ded9f1b09afa2",
+  "session_id": "agent_session_96358935b58f4e549b28774b13360266",
+  "agent_id": "aipinho",
+  "parent_run_id": "agent_run_814c6b39a1cf4213b2bd9d95bf58f5a3",
+  "delegation_id": "delegation_5ca81b22710e45c5a12da0de6201844f",
+  "status": "cancelled",
+  "operation_type": "readonly_analysis",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [
+    "read_workspace"
+  ],
+  "started_at": "2026-06-14T10:56:10+00:00",
+  "completed_at": "2026-06-22T15:21:23+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": "stale_runtime_cleanup",
+  "metadata_sanitized": {
+    "hygiene_preview_id": "cleanup_preview_6bcff1cc4a6e40c988e350dd38f972b4",
+    "previous_status": "running"
+  }
+}

@@ -1,0 +1,47 @@
+version: 1
+matrix_name: golden_paths
+cases:
+  - id: aipinho_simple_chat
+    agent: aipinho
+    expected: [session_created, message_created, final_answer, completed]
+  - id: aipinho_readonly_analysis
+    agent: aipinho
+    workspace_role: source_readonly
+    expected: [read_allowed, no_write, report_artifact, validation_evidence, completed]
+  - id: aipinho_target_write
+    agent: aipinho
+    workspace_role: target_mutable
+    expected: [write_allowed_by_policy, autoapproval_audited, validation_passed, completed]
+  - id: codex_technical_execution
+    agent: codex
+    expected: [workspace_read, target_mutable_write, shell_test_allowed, auto_review, completed]
+  - id: codex_blocked_source_write
+    agent: codex
+    workspace_role: source_readonly
+    expected: [write_blocked, reason_code, no_file_changed]
+  - id: gemini_direct_answer
+    agent: gemini
+    expected: [cloud_notice, no_local_tool, completed]
+  - id: gemini_to_aipinho_delegation
+    agent: gemini
+    expected: [delegation_request, child_run, child_events_visible, delegation_result]
+  - id: lucio_direct_multimodal_analysis
+    agent: lucio
+    expected: [multimodal_summary, no_execution, completed]
+  - id: lucio_to_codex
+    agent: lucio
+    expected: [delegation_request, codex_child_run, result_evidence, completed]
+  - id: lucio_to_aipinho
+    agent: lucio
+    expected: [delegation_request, aipinho_child_run, result_evidence, completed]
+  - id: artifact_upload_download
+    expected: [artifact_id, authorization_header_required, no_token_in_url]
+  - id: dashboard_visibility
+    expected: [active_run_visible, delegation_visible, artifact_visible, failure_visible]
+  - id: debugger_trace_graph
+    expected: [agent_run_node, tool_node, policy_node, artifact_node, validation_node]
+  - id: self_healing_low_risk
+    expected: [candidate_created, low_risk_action, evidence_preserved]
+  - id: validation_failed
+    expected: [validation_failed_status, no_clean_completed, user_warning]
+

@@ -1,0 +1,42 @@
+{
+  "session_id": "session_ae6140ba23fe477c93d081926b8f24a2",
+  "status": "active",
+  "created_at": "2026-06-18T02:39:29.649856+00:00",
+  "updated_at": "2026-06-18T02:39:36.496340+00:00",
+  "expires_at": "2026-06-18T06:39:29.649856+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "um com três arquivos simples dentro da sandbox",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_3737fe42d36942a391d870c008803ce8",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

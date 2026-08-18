@@ -1,0 +1,68 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_15_ARTIFACT_PERSIST_PAYLOAD_REF_BOUNDARY_BLOCKED_WITH_CORE_FIX_VALIDATED",
+  "issues": [
+    {
+      "issue_id": "R2_14_P0_NEW_ARTIFACT_PERSIST_PAYLOAD_BOUNDARY",
+      "priority": "P0",
+      "status": "proven",
+      "title": "Artifact persist boundary lacked bounded checkpoints and large manifest payload refs",
+      "relationship_to_frontier": "core_boundary",
+      "architectural_owner": "ArtifactRuntimeService/UniversalArtifactRegistryService/ArtifactRegistryRepository",
+      "supporting_evidence": [
+        "diagnostic run reached after_artifact_persist for music inventory",
+        "persist checkpoints emitted from classification through commit",
+        "manifest metadata/provenance payloads spilled to payload refs",
+        "legacy registry projection skipped"
+      ],
+      "disconfirming_evidence": [
+        "final run did not reach music inventory persist, so final public run cannot prove end-to-end persist repeatability"
+      ],
+      "fix_in_this_wave": true,
+      "reason_if_deferred": null,
+      "tests": [
+        "test_artifact_persist_payload_ref_boundary.py",
+        "test_music_inventory_artifact_worker_stall_terminality.py"
+      ],
+      "public_validation": "validated in diagnostic rerun; not reached in final rerun because CSV streaming blocked earlier"
+    },
+    {
+      "issue_id": "R2_14_P1_METRICS_PROJECTION_SPARSE",
+      "priority": "P1",
+      "status": "probable_with_evidence",
+      "title": "Endpoint-safe metrics existed but collector/latest-checkpoint projection was sparse",
+      "relationship_to_frontier": "observability",
+      "architectural_owner": "ReadonlyAnalysisArtifactRuntimeService/report collector",
+      "supporting_evidence": [
+        "final metrics file has 54 bounded metrics merged from music checkpoints",
+        "latest checkpoint projection alone retained mostly payload size fields"
+      ],
+      "disconfirming_evidence": [
+        "raw endpoint events retained bounded metrics without payload hydration"
+      ],
+      "fix_in_this_wave": true,
+      "reason_if_deferred": null,
+      "tests": [
+        "test_bounded_runtime_metrics_projection.py"
+      ],
+      "public_validation": "collector now reports merged bounded metrics and persist-by-logical-path separation"
+    },
+    {
+      "issue_id": "R2_15_P1_RUN_TO_RUN_DIVERGENCE",
+      "priority": "P1",
+      "status": "not_yet_proven",
+      "title": "Equivalent public runs progressed to different stages",
+      "relationship_to_frontier": "new_frontier",
+      "architectural_owner": "CSV streaming/cell rendering runtime",
+      "supporting_evidence": [
+        "diagnostic run reached after_artifact_persist",
+        "final run blocked at before_csv_cell_render",
+        "both runs created the first two artifacts and reached music inventory"
+      ],
+      "disconfirming_evidence": [],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "Divergence belongs to CSV streaming/cell rendering cost/determinism, not artifact persist payload boundary.",
+      "tests": [],
+      "public_validation": "blocked with MUSIC_INVENTORY_CSV_STREAMING_STALLED"
+    }
+  ]
+}

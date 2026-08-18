@@ -1,0 +1,18 @@
+schema_version: 1
+context_window_chars: 160
+
+roles:
+  source_readonly:
+    aliases:
+      - fonte legada read-only
+      - fonte read-only
+      - source read-only
+      - projeto legado
+      - source workspace
+  target_mutable:
+    aliases:
+      - workspace alvo mutavel
+      - workspace alvo
+      - target mutable
+      - target workspace
+      - destino de implementacao

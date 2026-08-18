@@ -1,0 +1,36 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "event_producers": {
+    "task_created": ["services.runtime.task_runtime_service"],
+    "task_started": ["services.runtime.task_runtime_service"],
+    "task_completed": ["services.runtime.task_runtime_service"],
+    "task_failed": ["services.runtime.task_runtime_service"],
+    "execution_step_started": ["services.runtime.execution_graph_service"],
+    "execution_step_completed": ["services.runtime.execution_graph_service"],
+    "policy_check": ["services.policy_kernel.policy_kernel_service"],
+    "capability_check": ["services.policy_kernel.capability_gate_service"],
+    "tool_invocation": ["services.tools.governed_tool_execution_service"],
+    "model_invocation": ["services.models.llama_cpp_provider"],
+    "validation_check": ["services.validation.validation_gate_service"],
+    "artifact_created": ["services.artifacts.artifact_generator_service"],
+    "memory_candidate_created": ["services.memory.memory_candidate_service"],
+    "retrieval_performed": ["services.rag.retrieval_service"],
+    "agent_action": ["services.agents.agent_tool_gateway_service"]
+  },
+  "total_events": 14,
+  "total_producers": 14,
+  "producer_services": {
+    "services.runtime.task_runtime_service": 4,
+    "services.runtime.execution_graph_service": 2,
+    "services.policy_kernel.policy_kernel_service": 1,
+    "services.policy_kernel.capability_gate_service": 1,
+    "services.tools.governed_tool_execution_service": 1,
+    "services.models.llama_cpp_provider": 1,
+    "services.validation.validation_gate_service": 1,
+    "services.artifacts.artifact_generator_service": 1,
+    "services.memory.memory_candidate_service": 1,
+    "services.rag.retrieval_service": 1,
+    "services.agents.agent_tool_gateway_service": 1
+  }
+}

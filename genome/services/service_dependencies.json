@@ -1,0 +1,76 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "service_dependencies": {
+    "policy_kernel_service": {
+      "dependencies": ["core", "registries", "schemas.policy"],
+      "dependents": ["services.runtime.task_runtime_service", "services.chat.chat_service", "services.agents.agent_tool_gateway_service", "services.tools.governed_tool_execution_service"]
+    },
+    "capability_gate_service": {
+      "dependencies": ["core", "registries", "schemas.policy"],
+      "dependents": ["services.runtime.task_runtime_service", "services.chat.chat_service", "services.agents.agent_tool_gateway_service", "services.tools.governed_tool_execution_service"]
+    },
+    "workspace_role_contract_service": {
+      "dependencies": ["core", "registries", "schemas.policy"],
+      "dependents": ["services.chat.chat_service", "services.agents.agent_tool_gateway_service"]
+    },
+    "task_runtime_service": {
+      "dependencies": ["core", "repositories", "schemas.runtime", "services.policy_kernel"],
+      "dependents": ["services.chat.chat_service", "services.agents.agent_tool_gateway_service"]
+    },
+    "execution_graph_service": {
+      "dependencies": ["core", "schemas.runtime", "services.policy_kernel"],
+      "dependents": ["services.runtime.task_runtime_service", "services.chat.chat_service"]
+    },
+    "intelligent_planner_service": {
+      "dependencies": ["core", "schemas.runtime", "services.policy_kernel"],
+      "dependents": ["services.runtime.task_runtime_service", "services.chat.chat_service"]
+    },
+    "chat_service": {
+      "dependencies": ["core", "schemas.chat", "services.runtime", "services.policy_kernel", "services.memory", "services.models", "services.tools"],
+      "dependents": ["api.routers.chat_router"]
+    },
+    "chat_operation_router_service": {
+      "dependencies": ["core", "schemas.chat", "services.runtime", "services.policy_kernel", "services.agents", "services.tools"],
+      "dependents": ["services.chat.chat_service"]
+    },
+    "agent_tool_gateway_service": {
+      "dependencies": ["core", "schemas.agents", "services.runtime", "services.policy_kernel", "services.tools", "services.workspaces"],
+      "dependents": ["services.chat.chat_service"]
+    },
+    "agent_local_action_planner": {
+      "dependencies": ["core", "schemas.agents", "services.runtime", "services.policy_kernel", "services.tools"],
+      "dependents": ["services.agents.agent_tool_gateway_service"]
+    },
+    "llama_cpp_provider": {
+      "dependencies": ["core", "schemas.models", "adapters.llm_providers"],
+      "dependents": ["services.chat.chat_service", "services.agents.agent_tool_gateway_service"]
+    },
+    "governed_tool_execution_service": {
+      "dependencies": ["core", "schemas.tools", "services.runtime", "services.policy_kernel", "adapters"],
+      "dependents": ["services.agents.agent_tool_gateway_service"]
+    },
+    "validation_gate_service": {
+      "dependencies": ["core", "schemas.validation"],
+      "dependents": ["services.runtime.task_runtime_service", "services.chat.chat_service"]
+    },
+    "retrieval_service": {
+      "dependencies": ["core", "schemas.rag", "services.memory"],
+      "dependents": ["services.chat.chat_service"]
+    },
+    "memory_candidate_service": {
+      "dependencies": ["core", "schemas.memory", "repositories"],
+      "dependents": ["services.chat.chat_service"]
+    },
+    "artifact_generator_service": {
+      "dependencies": ["core", "schemas.artifacts", "services.validation"],
+      "dependents": ["services.chat.chat_service"]
+    }
+  },
+  "total_services": 15,
+  "hub_services": [
+    "services.policy_kernel.policy_kernel_service",
+    "services.runtime.task_runtime_service",
+    "services.chat.chat_service"
+  ]
+}

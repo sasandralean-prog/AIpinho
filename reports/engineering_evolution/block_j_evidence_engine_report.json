@@ -1,0 +1,82 @@
+{
+  "program": "AIpinho Engineering Evolution Program",
+  "block": "J",
+  "block_name": "Evidence Engine",
+  "date": "2026-07-02",
+  "verdict": "BLOCK_J_EVIDENCE_ENGINE_READY",
+  "objective": "Create a canonical runtime evidence engine so important decisions can be audited as Evidence -> Decision -> Execution -> Validation -> Evidence.",
+  "contracts_created": [
+    "EvidenceItem",
+    "EvidenceIndex",
+    "EvidenceScore",
+    "EvidenceReasoning",
+    "EvidenceBackedDecision",
+    "DecisionAudit"
+  ],
+  "services_created": [
+    "EvidenceCollector",
+    "EvidenceIndexService",
+    "EvidenceScoreService",
+    "EvidenceReasoner",
+    "DecisionBuilder",
+    "DecisionAuditService",
+    "EvidenceEngineService"
+  ],
+  "files_changed": [
+    "src/aipinho/schemas/runtime/evidence_engine.py",
+    "src/aipinho/services/runtime/evidence_engine_service.py",
+    "src/aipinho/services/runtime/task_runtime_service.py",
+    "tests/unit/test_evidence_engine_service.py",
+    "reports/engineering_evolution/block_j_evidence_engine_report.md",
+    "reports/engineering_evolution/block_j_evidence_engine_report.json"
+  ],
+  "tests": {
+    "py_compile": "passed",
+    "pytest_command": "python -m pytest tests/unit/test_evidence_engine_service.py tests/unit/test_worker_registry_service.py tests/unit/test_task_runtime_service.py tests/unit/test_hotfix_policy_kernel_approval_gate.py tests/governance/test_g21_readonly_analysis_intent.py tests/governance/test_lifecycle_core.py tests/governance/test_g24_preview_quality_gate.py -q",
+    "pytest_result": "56 passed",
+    "app_factory_import": {
+      "command": "python -c \"from aipinho.app_factory import create_app; app=create_app(); print(app.title); print(len(app.routes))\"",
+      "result": "AIpinho / 942 routes"
+    },
+    "regression_assertions": [
+      "Evidence Engine collects TaskRun, TaskRunPlan, ExecutionGraph and OperationalMemory",
+      "Evidence-backed decision is accepted when required evidence is present",
+      "Decision is blocked when required evidence is missing",
+      "DecisionAudit fails missing-evidence decisions",
+      "TaskRuntimeService can build evidence-backed decisions for a run"
+    ]
+  },
+  "live_backend_smoke": {
+    "backend_restarted": true,
+    "pid": 54116,
+    "health": {
+      "status": "ok",
+      "service": "AIpinho",
+      "version": "0.1.0",
+      "runtime": "local"
+    },
+    "run_id": "task_run_f574f22b316741b6a1ffc7a76f698e7a",
+    "decision_status": "accepted",
+    "audit_status": "passed",
+    "score": 1.0,
+    "evidence_count": 10,
+    "missing_required_evidence": []
+  },
+  "rollback": [
+    "Remove EvidenceEngineService from TaskRuntimeService.",
+    "Remove src/aipinho/services/runtime/evidence_engine_service.py.",
+    "Remove src/aipinho/schemas/runtime/evidence_engine.py.",
+    "Remove evidence engine tests."
+  ],
+  "limitations": [
+    "Evidence Engine is available through runtime services but does not yet gate every decision point.",
+    "No public endpoint was added for Evidence Engine in this block.",
+    "Block K should use Evidence Engine to drive continuous runtime decisions without evidence-free loops."
+  ],
+  "hardcode_check": {
+    "workload_specific_rules_added": false,
+    "path_specific_rules_added": false,
+    "filename_specific_rules_added": false,
+    "fire_test_specific_routes_added": false
+  }
+}

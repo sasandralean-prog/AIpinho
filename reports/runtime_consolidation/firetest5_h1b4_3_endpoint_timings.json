@@ -1,0 +1,30 @@
+﻿[
+    {
+        "endpoint":  "summary",
+        "status":  "error",
+        "ms":  30805,
+        "bytes":  0,
+        "file":  "O tempo limite da operação foi atingido."
+    },
+    {
+        "endpoint":  "truth",
+        "status":  200,
+        "ms":  25593,
+        "bytes":  1831,
+        "file":  "reports/runtime_consolidation/firetest5_h1b4_3_endpoint_truth.json"
+    },
+    {
+        "endpoint":  "events",
+        "status":  200,
+        "ms":  26,
+        "bytes":  5802,
+        "file":  "reports/runtime_consolidation/firetest5_h1b4_3_endpoint_events.json"
+    },
+    {
+        "endpoint":  "artifacts",
+        "status":  200,
+        "ms":  5269,
+        "bytes":  16218,
+        "file":  "reports/runtime_consolidation/firetest5_h1b4_3_endpoint_artifacts.json"
+    }
+]

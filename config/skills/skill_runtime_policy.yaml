@@ -1,0 +1,25 @@
+schema_version: 1
+skill_runtime:
+  enabled: true
+  default_mode: preview
+  allow_dry_run: true
+  allow_real_execution: false
+  require_contract: true
+  require_policy_envelope: true
+  require_context_bundle: true
+  require_tool_permission_envelope: true
+blocked:
+  unknown_skill: true
+  skill_expands_contract: true
+  skill_selects_model: true
+  skill_builds_context: true
+  skill_decides_final_status: true
+maintenance:
+  diagnose_read_only: true
+  repair_preview_only: true
+  real_execution: false
+  patch_apply: false
+  config_write: false
+  memory_write: false
+  shell: false
+  git: false

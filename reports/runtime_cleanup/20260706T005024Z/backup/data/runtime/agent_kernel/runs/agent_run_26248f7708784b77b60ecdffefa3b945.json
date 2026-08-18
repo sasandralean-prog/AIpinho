@@ -1,0 +1,38 @@
+{
+  "run_id": "agent_run_26248f7708784b77b60ecdffefa3b945",
+  "session_id": "agent_session_c23c3d5ebfe7418080067fcc3687aa92",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "workspace_evidence_bundle",
+  "workspace_id": "aipinho_test_area",
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [
+    "read_workspace",
+    "workspace_write",
+    "create_file",
+    "artifact_create",
+    "validation"
+  ],
+  "started_at": "2026-06-21T21:03:50+00:00",
+  "completed_at": "2026-06-21T21:03:55+00:00",
+  "validation_status": "passed",
+  "artifact_ids": [
+    "agent_artifact_f52f33c6b66741d8a9bff3e959592820"
+  ],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "summary_tool_invocation_id": "tool_invocation_43fb98d35a374c3e979fd952d252166d",
+    "archive_tool_invocation_id": "tool_invocation_8517b8d0f14c4d829fa208e874cd1eb8",
+    "operation_id": "chatop_86ff289a066d48ce839a66cded0807be"
+  }
+}

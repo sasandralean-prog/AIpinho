@@ -1,0 +1,39 @@
+schema_version: 1
+
+vision:
+  enabled: true
+  mode: governed_multimodal_pipeline
+  require_model_doctor: true
+  require_input_validation: true
+  require_image_policy: true
+  require_source_ref: true
+  require_citation: true
+  require_visual_evidence: true
+  require_output_evaluation: true
+  require_context_admission_for_prompt: true
+  require_trace: true
+  require_audit: true
+
+models:
+  primary_vision_model: qwen2_5_vl_7b_q4_k_m
+  fallback_vision_model: llava_v1_6_mistral_7b_q4_k_m
+  ocr_model: nanonets_ocr_s_q5_k_m
+
+disabled:
+  raw_image_memory: true
+  raw_image_vector_ingestion: true
+  auto_memory_from_image: true
+  auto_rag_from_image: true
+  tool_calling: true
+  network: true
+  download: true
+  workspace_write_by_model: true
+  patch_apply: true
+  shell: true
+  git: true
+
+runtime:
+  vision_runtime_enabled: true
+  ocr_runtime_enabled: true
+  embedding_runtime_enabled: true
+  reranker_runtime_enabled: true

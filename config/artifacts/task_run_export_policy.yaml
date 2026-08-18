@@ -1,0 +1,17 @@
+schema_version: 1
+
+defaults:
+  text_filename: artifact.txt
+  package_filename: artifacts.zip
+
+supported_formats:
+  text:
+    extensions: [txt, md]
+    content_type: text/plain; charset=utf-8
+  package:
+    extensions: [zip]
+    content_type: application/zip
+
+filename_extraction:
+  enabled: true
+  max_filename_length: 120

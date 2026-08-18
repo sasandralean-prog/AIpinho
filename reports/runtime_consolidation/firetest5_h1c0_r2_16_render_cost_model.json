@@ -1,0 +1,66 @@
+{
+  "task_run_id": "task_run_0b0cbc1d3a74411a9fd47b751039e45c",
+  "operation_id": "op_b9665916503744a3b62d3236298a4ec2",
+  "cost_model": {
+    "row_model_build_elapsed_ms": 0,
+    "row_order_elapsed_ms": 0,
+    "csv_stream_elapsed_ms": 258030,
+    "csv_row_render_elapsed_ms": 238141,
+    "csv_cell_render_elapsed_ms": 239110,
+    "csv_cell_serialization_elapsed_ms": 16,
+    "csv_serialization_elapsed_ms": null,
+    "csv_finalize_elapsed_ms": null,
+    "rows_per_second": 6.675,
+    "cells_per_second": 166.878,
+    "average_cell_us": 5538.642,
+    "max_batch_elapsed_ms": 18109
+  },
+  "interpretation": {
+    "cell_serialization_not_dominant": true,
+    "full_cell_processing_dominates": true,
+    "dominant_stage": "csv_cell_value_extraction_and_render_path",
+    "reason": "Full cell path accumulated about 239s while serialization itself accumulated 16ms."
+  },
+  "endpoint_timings": {
+    "summary": {
+      "status_code": 200,
+      "elapsed_ms": 604,
+      "ok": true
+    },
+    "events": {
+      "status_code": 200,
+      "elapsed_ms": 89,
+      "ok": true
+    },
+    "result": {
+      "status_code": 200,
+      "elapsed_ms": 34,
+      "ok": true
+    },
+    "truth": {
+      "status_code": 200,
+      "elapsed_ms": 18,
+      "ok": true
+    },
+    "artifacts": {
+      "status_code": 200,
+      "elapsed_ms": 6615,
+      "ok": true
+    },
+    "session": {
+      "status_code": 200,
+      "elapsed_ms": 42,
+      "ok": true
+    },
+    "queue_hygiene": {
+      "status_code": 200,
+      "elapsed_ms": 33,
+      "ok": true
+    },
+    "queue_runtime": {
+      "status_code": 200,
+      "elapsed_ms": 815,
+      "ok": true
+    }
+  }
+}

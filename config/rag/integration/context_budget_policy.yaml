@@ -1,0 +1,22 @@
+schema_version: 1
+
+budget:
+  max_context_items_total: 12
+  max_retrieval_items: 8
+  max_memory_items: 4
+  max_context_chars_total: 24000
+  max_context_chars_per_item: 2500
+  max_citation_excerpt_chars: 500
+  reserve_for_user_prompt_chars: 4000
+  reserve_for_policy_envelope_chars: 3000
+  truncate_allowed: true
+  truncation_requires_warning: true
+
+priority:
+  explicit_user_requested_source: 100
+  direct_task_source: 80
+  project_report_evidence: 70
+  validation_result: 65
+  active_curated_memory: 60
+  project_file_excerpt: 55
+  old_memory: 30

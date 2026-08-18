@@ -1,0 +1,195 @@
+schema_version: 1
+purposes:
+  user_response:
+    allowed_layers:
+    - current_message
+    - chat_session
+    - curated_memory
+    - governed_rag
+    - attachments_artifacts
+    required_citations:
+    - curated_memory
+    - governed_rag
+    - attachments_artifacts
+    max_budget_chars: 8000
+    blocked_source_types:
+    - raw_prompt
+    - raw_model_output
+    - raw_log
+    - debugger_trace
+    raw_policy: block
+  diagnosis:
+    allowed_layers:
+    - current_message
+    - chat_session
+    - active_task
+    - debugger_eval_traces
+    - governed_rag
+    required_citations:
+    - governed_rag
+    max_budget_chars: 12000
+    blocked_source_types:
+    - raw_prompt
+    - raw_model_output
+    raw_policy: sanitized_ref_only
+  patch_planning:
+    allowed_layers:
+    - current_message
+    - chat_session
+    - active_task
+    - workspace_hot_cache
+    - governed_rag
+    - attachments_artifacts
+    - debugger_eval_traces
+    required_citations:
+    - workspace_hot_cache
+    - governed_rag
+    - attachments_artifacts
+    max_budget_chars: 16000
+    raw_policy: block
+  patch_review:
+    allowed_layers:
+    - current_message
+    - active_task
+    - workspace_hot_cache
+    - debugger_eval_traces
+    required_citations:
+    - workspace_hot_cache
+    max_budget_chars: 12000
+    raw_policy: block
+  validation:
+    allowed_layers:
+    - current_message
+    - active_task
+    - debugger_eval_traces
+    required_citations: []
+    max_budget_chars: 10000
+    raw_policy: sanitized_ref_only
+  report_generation:
+    allowed_layers:
+    - current_message
+    - chat_session
+    - active_task
+    - curated_memory
+    - governed_rag
+    - attachments_artifacts
+    - debugger_eval_traces
+    - vision_ocr_context
+    required_citations:
+    - curated_memory
+    - governed_rag
+    - attachments_artifacts
+    - vision_ocr_context
+    max_budget_chars: 18000
+    raw_policy: block
+  explanation:
+    allowed_layers:
+    - current_message
+    - chat_session
+    - active_task
+    - debugger_eval_traces
+    required_citations: []
+    max_budget_chars: 8000
+    raw_policy: block
+  debugger_analysis:
+    allowed_layers:
+    - current_message
+    - active_task
+    - debugger_eval_traces
+    - vision_ocr_context
+    required_citations:
+    - vision_ocr_context
+    max_budget_chars: 16000
+    raw_policy: sanitized_ref_only
+  memory_curation:
+    allowed_layers:
+    - current_message
+    - chat_session
+    - active_task
+    - governed_rag
+    - attachments_artifacts
+    - debugger_eval_traces
+    required_citations:
+    - governed_rag
+    - attachments_artifacts
+    max_budget_chars: 12000
+    raw_policy: block
+  rag_query:
+    allowed_layers:
+    - current_message
+    - governed_rag
+    required_citations:
+    - governed_rag
+    max_budget_chars: 10000
+    raw_policy: block
+  skill_execution_future:
+    allowed_layers:
+    - current_message
+    - chat_session
+    - active_task
+    required_citations: []
+    max_budget_chars: 6000
+    raw_policy: block
+  artifact_generation:
+    allowed_layers:
+    - current_message
+    - chat_session
+    - attachments_artifacts
+    - governed_rag
+    required_citations:
+    - attachments_artifacts
+    - governed_rag
+    max_budget_chars: 12000
+    raw_policy: block
+  vision_analysis:
+    allowed_layers:
+    - current_message
+    - attachments_artifacts
+    - vision_ocr_context
+    required_citations:
+    - vision_ocr_context
+    max_budget_chars: 12000
+    raw_policy: block
+  ocr_analysis:
+    allowed_layers:
+    - current_message
+    - attachments_artifacts
+    - vision_ocr_context
+    required_citations:
+    - vision_ocr_context
+    max_budget_chars: 12000
+    raw_policy: block
+  maintenance_diagnosis:
+    allowed_layers:
+    - current_message
+    - active_task
+    - debugger_eval_traces
+    - governed_rag
+    - curated_memory
+    - events
+    - skill_traces
+    - context_bundles
+    required_citations:
+    - governed_rag
+    - curated_memory
+    max_budget_chars: 80000
+    raw_policy: sanitized_ref_only
+    require_trace_refs: true
+    require_source_refs: true
+  repair_planning:
+    allowed_layers:
+    - active_task
+    - debugger_eval_traces
+    - context_bundles
+    - skill_traces
+    - validation_results
+    - events
+    - governed_rag
+    required_citations:
+    - governed_rag
+    max_budget_chars: 80000
+    raw_policy: sanitized_ref_only
+    require_evidence: true
+
+legacy_pinhoabacaxi_curated:
+  current_truth_allowed: false

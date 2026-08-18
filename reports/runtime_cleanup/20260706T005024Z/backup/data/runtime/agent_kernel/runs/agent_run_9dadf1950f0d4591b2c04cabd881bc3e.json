@@ -1,0 +1,50 @@
+{
+  "run_id": "agent_run_9dadf1950f0d4591b2c04cabd881bc3e",
+  "session_id": "agent_session_3c3ceb6f9bbc4348b08a4091c9d826d0",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "sandbox_project_generation",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [],
+  "started_at": "2026-06-14T22:33:10+00:00",
+  "completed_at": "2026-06-14T22:33:21+00:00",
+  "validation_status": null,
+  "artifact_ids": [
+    "agent_artifact_180162d4188a4b4b90bb797df6049fbe"
+  ],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "project_generation_id": "project_generation_c7fe2f46255d477eb683ba1090070a95",
+    "project_type": "static_web",
+    "sandbox_task_id": "sandbox_task_11bcb9bd161a4685b0050a4f92ab9e12",
+    "sandbox_workspace_id": "sandbox_ws_default",
+    "latest_summary_sanitized": "Projeto ApiWeb gerado no sandbox. Artifact pronto: apiweb.zip. Artifact ID: agent_artifact_180162d4188a4b4b90bb797df6049fbe.",
+    "evidence_refs": [
+      "sandbox_task:sandbox_task_11bcb9bd161a4685b0050a4f92ab9e12",
+      "run:agent_run_9dadf1950f0d4591b2c04cabd881bc3e",
+      "tool:tool_invocation_081d30f71e3747699d98c0eb5e7e9691",
+      "tool:tool_invocation_c6ae08a3e42e409aba2146673c5c9596",
+      "tool:tool_invocation_cabd258dbe7e42b7adc62e9e623e759b",
+      "tool:tool_invocation_00e6eb05f54b4060816907a3b4f61fd3",
+      "tool:tool_invocation_bdfadb9cd47d4f318dee73f16db44a2c",
+      "sandbox_validation:project_structure",
+      "sandbox_task:sandbox_task_11bcb9bd161a4685b0050a4f92ab9e12",
+      "artifact:agent_artifact_180162d4188a4b4b90bb797df6049fbe",
+      "tool:tool_invocation_46eefbbd532f482fa882ffe1b2f99d34"
+    ],
+    "template_id": "static_web",
+    "template_version": "1.0.0",
+    "template_execution_id": "template_exec_715bc4b652544cb98865a56d9175a3cb"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "status": "G12_FULL_RECHECK_READY_WITH_RESIDUAL_LEGACY",
+  "canonical_source_of_truth": "GovernanceLifecycleSnapshot",
+  "critical_public_routes": [
+    {
+      "endpoint": "POST /api/v1/chat",
+      "first_owner": "aipinho.api.routers.governance_lifecycle_router",
+      "canonical_service": "CanonicalPublicChatService",
+      "lifecycle_first": true,
+      "legacy_decides_final_intent": false
+    },
+    {
+      "endpoint": "POST /api/v1/chat/sessions/{session_id}/send",
+      "first_owner": "aipinho.api.routers.governance_lifecycle_router",
+      "canonical_service": "CanonicalPublicChatService",
+      "lifecycle_first": true,
+      "legacy_decides_final_intent": false
+    },
+    {
+      "endpoint": "POST /v1/chat/completions",
+      "first_owner": "aipinho.api.routers.governance_lifecycle_router",
+      "canonical_service": "CanonicalPublicChatService",
+      "lifecycle_first": true,
+      "legacy_decides_final_intent": false
+    },
+    {
+      "endpoint": "POST /v1/integrations/continue/chat",
+      "first_owner": "aipinho.api.routers.governance_lifecycle_router",
+      "canonical_service": "CanonicalPublicChatService",
+      "lifecycle_first": true,
+      "legacy_decides_final_intent": false
+    }
+  ],
+  "canonical_configs": [
+    "config/governance/lifecycle.yaml",
+    "config/governance/intents.yaml",
+    "config/governance/policy.yaml",
+    "config/governance/approval.yaml",
+    "config/governance/runtime_profiles.yaml",
+    "config/governance/completion_policy.yaml"
+  ],
+  "tests": {
+    "focused_governance_and_chat": {
+      "status": "passed",
+      "count": 25,
+      "duration": "71.14s"
+    }
+  },
+  "residual_legacy": [
+    {
+      "file": "src/aipinho/api/routers/chat_router.py",
+      "reason_not_quarantined": "Ainda possui endpoints secundarios e compatibilidade residual fora das rotas criticas ja rewireadas."
+    },
+    {
+      "file": "src/aipinho/api/routers/continue_integration_router.py",
+      "reason_not_quarantined": "Ainda possui endpoints secundarios de Continue dev mode fora do adaptador OpenAI-compatible critico."
+    },
+    {
+      "file": "src/aipinho/services/chat/chat_operation_router_service.py",
+      "reason_not_quarantined": "Ainda usado por testes e por rotas legadas residuais; final intent das rotas criticas agora vem do CanonicalIntentRouter."
+    },
+    {
+      "file": "src/aipinho/services/chat/chat_permission_grant_service.py",
+      "reason_not_quarantined": "Ainda usado por ChatApproval/SessionGrant legado; permission grant positivo ainda precisa migracao completa no Bloco C."
+    }
+  ]
+}

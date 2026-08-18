@@ -1,0 +1,11 @@
+schema_version: 1
+
+diff:
+  enabled: true
+  max_diff_chars: 20000
+  max_existing_file_bytes: 200000
+  read_existing_target: true
+  read_only_only: true
+  block_secret_existing_target: true
+  block_binary_existing_target: true
+  leak_existing_content: false

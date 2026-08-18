@@ -1,0 +1,21 @@
+schema_version: 1
+
+context_admission:
+  enabled: true
+  require_source_allowed: true
+  require_scope_match: true
+  require_citation: true
+  require_provenance: true
+  require_sensitivity_pass: true
+  require_budget_fit: true
+  require_freshness_check: true
+  require_conflict_check: true
+  reject_uncited_items: true
+  reject_sensitive_items: true
+  reject_unknown_source: true
+  reject_expired_memory: true
+  reject_superseded_memory_unless_explicit_history: true
+
+decisions:
+  allowed_statuses: [admitted, admitted_with_warnings, partial]
+  blocked_statuses: [blocked, rejected, degraded]

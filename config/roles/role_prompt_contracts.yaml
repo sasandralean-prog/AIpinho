@@ -1,0 +1,30 @@
+schema_version: 1
+
+defaults:
+  include_policy_envelope: true
+  include_safety_envelope: true
+  include_output_contract: true
+  reminder: "Nao afirme execucao, escrita, patch, teste ou commit sem evidencia do runtime."
+
+contracts:
+  coder_output: {contract_type: plain_text, format: text, require_evidence: false}
+  code_review_output: {contract_type: plain_text, format: text, require_evidence: false}
+  patch_plan_draft_output:
+    contract_type: repair_proposal_output
+    format: json
+    require_evidence: false
+    require_valid_json: true
+    required_fields: [target, intent, concrete_change, rollback, impact, risks]
+  patch_quality_review_output: {contract_type: plain_text, format: text, require_evidence: false}
+  speaker_output: {contract_type: plain_text, format: text, require_evidence: false}
+  interpreter_output: {contract_type: plain_text, format: text, require_evidence: false}
+  report_summary_output: {contract_type: plain_text, format: text, require_evidence: false}
+  planning_output: {contract_type: plain_text, format: text, require_evidence: false}
+  supervision_output: {contract_type: plain_text, format: text, require_evidence: false}
+  debugger_explanation_output: {contract_type: plain_text, format: text, require_evidence: false}
+  memory_candidate_review_output: {contract_type: plain_text, format: text, require_evidence: false}
+  intent_classification_output: {contract_type: plain_text, format: text, require_evidence: false}
+  code_summary_output: {contract_type: plain_text, format: text, require_evidence: false}
+  vision_analysis_output: {contract_type: structured_vision_summary, format: json, require_evidence: true, require_citations: true}
+  ocr_extraction_output: {contract_type: structured_ocr_blocks, format: json, require_evidence: true, require_citations: true, require_confidence: true}
+  document_read_output: {contract_type: structured_document_read, format: json, require_evidence: true, require_citations: true, require_confidence: true}

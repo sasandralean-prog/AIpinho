@@ -1,0 +1,14 @@
+canonical_runtime_profiles:
+  project_bootstrap:
+    pre_approval_outputs: [discovery_result, blueprint_result, task_preview_result, approval_request_result]
+    post_approval_outputs: [patch_result, validation_result, artifact_result]
+  project_generation:
+    required_outputs: [project_generation_result, validation_result]
+  patch_request:
+    required_outputs: [patch_result, validation_result]
+  filesystem_write:
+    required_outputs: [filesystem_operation, validation_result]
+  shell_build_test:
+    required_outputs: [command_result, validation_result]
+  artifact_generation:
+    required_outputs: [artifact_result, validation_result]

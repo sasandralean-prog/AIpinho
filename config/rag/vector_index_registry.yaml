@@ -1,0 +1,99 @@
+schema_version: 1
+
+indexes:
+  global_ecosystem:
+    enabled: true
+    namespace_type: global
+    path: data/vectorstores/governed/global_ecosystem
+    description: Governed transversal AIpinho knowledge.
+    allowed_sources: [project_reports, validation_results, task_results, curated_memory, architecture_docs, policy_docs, generated_docs]
+    embedding_model: qwen3_embedding_4b_q5_k_m
+    reranker_model: qwen3_reranker_4b_q5_k_m
+  planner_rag:
+    enabled: true
+    namespace_type: role
+    role_id: planner
+    path: data/vectorstores/governed/roles/planner
+    allowed_sources: [architecture_docs, project_reports, policy_docs, task_plans, curated_memory]
+  supervisor_rag:
+    enabled: true
+    namespace_type: role
+    role_id: supervisor
+    path: data/vectorstores/governed/roles/supervisor
+    allowed_sources: [policy_docs, validation_results, project_reports, decision_traces, curated_memory]
+  coder_rag:
+    enabled: true
+    namespace_type: role
+    role_id: coder
+    path: data/vectorstores/governed/roles/coder
+    allowed_sources: [source_code_snapshots, schemas, services, tests, coding_conventions, patch_plans, patch_apply_results]
+  code_reviewer_rag:
+    enabled: true
+    namespace_type: role
+    role_id: code_reviewer
+    path: data/vectorstores/governed/roles/code_reviewer
+    allowed_sources: [patch_quality_results, static_validation_results, security_policies, previous_patch_outcomes, code_review_decisions]
+  patch_quality_rag:
+    enabled: true
+    namespace_type: role
+    role_id: patch_quality_reviewer
+    path: data/vectorstores/governed/roles/patch_quality
+    allowed_sources: [diff_proposals, quality_gate_findings, validation_policies, rollback_notes, test_recommendations]
+  reporter_rag:
+    enabled: true
+    namespace_type: role
+    role_id: reporter
+    path: data/vectorstores/governed/roles/reporter
+    allowed_sources: [project_reports, evidence_bundles, validation_results, citation_examples, report_quality_decisions]
+  debugger_rag:
+    enabled: true
+    namespace_type: role
+    role_id: debugger
+    path: data/vectorstores/governed/roles/debugger
+    allowed_sources: [decision_traces, model_doctor_reports, runtime_events_sanitized, validation_failures, model_failure_summaries, rag_failure_summaries]
+  memory_curator_rag:
+    enabled: true
+    namespace_type: role
+    role_id: memory_curator
+    path: data/vectorstores/governed/roles/memory_curator
+    allowed_sources: [memory_candidates, curated_memory, memory_approval_decisions, conflict_history, supersede_history, memory_validation_findings]
+  vision_rag:
+    enabled: true
+    namespace_type: role
+    role_id: vision_analyst
+    path: data/vectorstores/governed/roles/vision
+    allowed_sources: [visual_evidence, vision_analysis_summary, ui_inspection_summary, diagram_analysis_summary]
+    embedding_model: qwen3_embedding_4b_q5_k_m
+    reranker_model: qwen3_reranker_4b_q5_k_m
+  ocr_rag:
+    enabled: true
+    namespace_type: role
+    role_id: ocr_specialist
+    path: data/vectorstores/governed/roles/ocr
+    allowed_sources: [ocr_text_block, document_read_summary, ocr_evidence]
+    embedding_model: qwen3_embedding_4b_q5_k_m
+    reranker_model: qwen3_reranker_4b_q5_k_m
+
+  sprint_reports_00_40:
+    enabled: true
+    namespace_type: global
+    path: data/vectorstores/governed/sprint_reports_00_40
+    description: Curated and approved memory from sprint reports 00-40.
+    allowed_sources: [curated_memory]
+    embedding_model: qwen3_embedding_4b_q5_k_m
+    reranker_model: qwen3_reranker_4b_q5_k_m
+
+blocked_indexes:
+  legacy_vectorstore:
+    enabled: false
+    paths: [data/vectorstores/legacy, data/rag/legacy, rag_store, vectorstore, chroma, faiss]
+namespaces:
+
+  legacy_pinhoabacaxi_curated:
+    enabled: true
+    path: data/vectorstores/governed/legacy_pinhoabacaxi_curated
+    trust_level: legacy_reference
+    current_truth_allowed: false
+    allowed_use: historical_diagnostic_only
+    chunks: 17379
+    embedding_model: deterministic_lexical_hash_v1

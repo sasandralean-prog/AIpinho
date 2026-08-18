@@ -1,0 +1,21 @@
+schema_version: 1
+
+context_integration:
+  explicit_request_required: true
+  context_admission_required: true
+  context_injection_plan_required: true
+  automatic_prompt_injection: false
+
+read:
+  explicit_read_allowed: true
+  chat_listing_allowed: true
+  prompt_assembly_auto_injection: false
+  chat_auto_injection: false
+  role_pipeline_auto_injection: false
+  administrative_reads_audited: true
+retrieval:
+  explicit_retrieval_allowed: true
+  auto_retrieval_allowed: false
+  require_status_active: true
+  require_scope_match: true
+  require_citation: true

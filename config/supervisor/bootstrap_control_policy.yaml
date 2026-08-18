@@ -1,0 +1,16 @@
+schema_version: 1
+
+bootstrap_control:
+  enabled: true
+  bootstrap_service_id: bootstrap_control
+  bootstrap_port: 9080
+  controlled_service_id: monitor_supervisor
+  controlled_port: 9099
+  status_timeout_seconds: 1.0
+  restart_timeout_seconds: 60
+  cooldown_seconds: 5
+  require_token_auth: true
+  no_custom_command_from_request: true
+  canonical_scripts:
+    stop: scripts/dev/stop_aipinho_9099.ps1
+    start: scripts/dev/start_aipinho_9099.ps1

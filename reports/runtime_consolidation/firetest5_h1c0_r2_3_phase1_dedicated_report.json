@@ -1,0 +1,119 @@
+{
+  "report_id": "firetest5_h1c0_r2_3_phase1_dedicated_report",
+  "generated_at": "2026-08-14T01:09:08.302734+00:00",
+  "canonical_status": "blocked",
+  "diagnostic_use": "phase1_baseline_before_noncanonical_phase2_to_6_test",
+  "phase1": {
+    "verdict": "FIRETEST5_H1C0_R2_3_RESULT_FINALIZATION_READY",
+    "session_id": "firetest5_h1c0_r2_3_clean_phase0_to_6_20260814_004919",
+    "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+    "result_ref_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+    "operation_id": "op_47ef6bfb17a1448f9ddf47fba19adf49",
+    "client_response_status": "accepted_running",
+    "client_response_time_ms": 6272,
+    "run_status": "BLOCKED",
+    "result_status": "blocked",
+    "result_json_exists": true,
+    "result_endpoint_status_code": 200,
+    "finished_at": "2026-08-14T01:04:35.989027+00:00",
+    "truth_safe_to_report_success": false,
+    "terminal_event_count": 1,
+    "terminal_event_types": [
+      "run_blocked"
+    ],
+    "music_inventory": {
+      "status": "blocked",
+      "semantic_contract_status": "partial",
+      "reason_code": "MUSIC_INVENTORY_PARTIAL_EVIDENCE",
+      "expected_rows": 1051,
+      "selected_rows": 100,
+      "bound_rows": 100,
+      "partial_rows": 100,
+      "evidence_ref_count": 100,
+      "row_evidence_coverage": {
+        "total_rows": 100,
+        "rows_with_evidence_ref": 100,
+        "rows_without_evidence_ref": 0,
+        "evidence_ref_count": 100,
+        "evidence_refs_sample": [
+          "file:D:\\rafa\\pinho music\\n A.m4a",
+          "file:D:\\rafa\\pinho music\\novinho depressivo Speed up 720 X 1280.mp4",
+          "file:D:\\rafa\\pinho music\\parasite.m4a",
+          "file:D:\\rafa\\pinho music\\penhasco.m4a",
+          "file:D:\\rafa\\pinho music\\please don't humble me.m4a",
+          "file:D:\\rafa\\pinho music\\prettygrunge.m4a",
+          "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life - 2.m4a",
+          "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life.m4a",
+          "file:D:\\rafa\\pinho music\\relacionamento a b e r t o.m4a",
+          "file:D:\\rafa\\pinho music\\rises the moon - 2.m4a",
+          "file:D:\\rafa\\pinho music\\rises the moon.m4a",
+          "file:D:\\rafa\\pinho music\\shall we celebrate.m4a",
+          "file:D:\\rafa\\pinho music\\she's green - graze Official.m4a",
+          "file:D:\\rafa\\pinho music\\signs.m4a",
+          "file:D:\\rafa\\pinho music\\snarky - 2.m4a",
+          "file:D:\\rafa\\pinho music\\snarky.m4a",
+          "file:D:\\rafa\\pinho music\\so hard to quit you - 2.m4a",
+          "file:D:\\rafa\\pinho music\\so hard to quit you.m4a",
+          "file:D:\\rafa\\pinho music\\soul ties.m4a",
+          "file:D:\\rafa\\pinho music\\taKe - 2.m4a"
+        ],
+        "status": "satisfied",
+        "reason_code": null
+      },
+      "safe_to_use": false
+    },
+    "evidence_phase1": {
+      "status": "ready",
+      "semantic_contract_status": "satisfied",
+      "safe_to_use": true,
+      "reason_code": null
+    },
+    "validation": {
+      "status": "blocked",
+      "safe_to_display": true,
+      "blocking_findings": [
+        "TASKRUN_LIFECYCLE_TIMEOUT"
+      ]
+    },
+    "completion": null,
+    "queue_after": {
+      "status": "ok",
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0,
+      "active_sessions": 0,
+      "dispatcher_status": "available",
+      "worker_pool_capacity": 8,
+      "worker_pool_available_slots": 8,
+      "stale_run_ids": [],
+      "backpressure_required": false,
+      "reason_code": null
+    },
+    "storage_after": {
+      "status": "ok",
+      "run_dirs_seen": 13,
+      "missing_index_count": 0,
+      "missing_index_run_ids": [],
+      "large_run_count": 0,
+      "large_runs": [],
+      "threshold_bytes": 1000000
+    },
+    "run_json_bytes": 156870,
+    "result_json_bytes": 877,
+    "endpoint_timings_ms": {
+      "summary": 2176,
+      "truth": 1204,
+      "events": 6562,
+      "artifacts": 1032,
+      "result": 301,
+      "queue_after": 858
+    }
+  },
+  "governance": {
+    "phase2_allowed_canonically": false,
+    "reason": "Phase 1 result.status=blocked and truth.safe_to_report_success=false.",
+    "noncanonical_override_allowed_for_observation": true,
+    "noncanonical_override_must_not_declare_firetest_ready": true
+  }
+}

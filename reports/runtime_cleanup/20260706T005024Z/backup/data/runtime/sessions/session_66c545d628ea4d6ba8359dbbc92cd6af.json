@@ -1,0 +1,41 @@
+{
+  "session_id": "session_66c545d628ea4d6ba8359dbbc92cd6af",
+  "status": "active",
+  "created_at": "2026-06-09T23:19:19.028245+00:00",
+  "updated_at": "2026-06-09T23:19:24.246990+00:00",
+  "expires_at": "2026-06-10T03:19:19.028245+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Quais diretorios voce está permitido fazer analise?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_3b05ce9b60ff4ac4a30fc8017493a641",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

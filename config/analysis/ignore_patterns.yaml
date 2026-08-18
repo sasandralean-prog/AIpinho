@@ -1,0 +1,22 @@
+schema_version: 1
+ignore_patterns:
+  directories:
+    - .git
+    - .venv
+    - venv
+    - __pycache__
+    - .pytest_cache
+    - node_modules
+    - build
+    - dist
+    - .gradle
+    - .idea
+  files:
+    - '*.pyc'
+    - '*.pyo'
+    - '*.log'
+    - '*.tmp'
+    - '*.sqlite'
+    - '*.db'
+    - '.env'
+    - '.env.*'

@@ -1,0 +1,16 @@
+schema_version: 1
+
+conflicts:
+  enabled: true
+  compare_against_active_curated_memory: true
+  deterministic_only: true
+  unresolved_conflict_blocks_persistence: true
+  conflict_requires_supersede_or_reject: true
+
+detect:
+  enabled_disabled_pairs: true
+  allowed_blocked_pairs: true
+  passed_failed_pairs: true
+  policy_contradictions: true
+  feature_availability_conflicts: true
+  workspace_scope_conflicts: true

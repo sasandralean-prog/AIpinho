@@ -1,0 +1,175 @@
+marketplace:
+  enabled: true
+  auto_disable_after_failures: 3
+  stale_heartbeat_seconds: 120
+  dynamic_registry_path: data/runtime/agent_marketplace_runtime.json
+  prefer_healthy_agents: true
+  selection:
+    health_weight: 40
+    trust_weight: 20
+    priority_weight: 20
+    latency_weight: 10
+    cost_weight: 10
+
+agents:
+  - agent_id: planner_local
+    name: Local Planner
+    version: 1.0.0
+    trust_level: L4
+    runtime_profile: planner
+    priority: 95
+    cost: 1
+    latency_ms: 80
+    capabilities:
+      - capability_id: planning
+        inputs: [objective, policy_snapshot]
+        outputs: [planning_report]
+      - capability_id: policy_context
+        inputs: [workspace, operation_contract]
+        outputs: [policy_context]
+    restrictions:
+      - no_direct_side_effects
+
+  - agent_id: executor_local
+    name: Governed Technical Executor
+    version: 1.0.0
+    trust_level: L4
+    runtime_profile: executor
+    priority: 90
+    cost: 2
+    latency_ms: 180
+    capabilities:
+      - capability_id: read_workspace
+        inputs: [workspace]
+        outputs: [workspace_findings]
+      - capability_id: technical_analysis
+        inputs: [workspace, objective]
+        outputs: [analysis_result]
+      - capability_id: coding
+        inputs: [executable_plan]
+        outputs: [patch_or_analysis_artifact]
+      - capability_id: write_via_contract
+        inputs: [approved_contract]
+        outputs: [write_result]
+      - capability_id: artifact_generate
+        inputs: [result]
+        outputs: [artifact_ref]
+    restrictions:
+      - governed_pipeline_only
+
+  - agent_id: debugger_local
+    name: Governed Debugger
+    version: 1.0.0
+    trust_level: L4
+    runtime_profile: debugger
+    priority: 85
+    cost: 2
+    latency_ms: 240
+    capabilities:
+      - capability_id: test
+        inputs: [workspace, validation_plan]
+        outputs: [test_result]
+      - capability_id: build
+        inputs: [workspace, build_plan]
+        outputs: [build_result]
+      - capability_id: run_tests_with_approval
+        inputs: [approved_shell_contract]
+        outputs: [debugger_result]
+    restrictions:
+      - shell_requires_contract
+
+  - agent_id: vision_local
+    name: Governed Vision Analyst
+    version: 1.0.0
+    trust_level: L4
+    runtime_profile: vision
+    priority: 70
+    cost: 2
+    latency_ms: 260
+    capabilities:
+      - capability_id: vision_analysis
+        inputs: [image_artifact]
+        outputs: [vision_result]
+    restrictions:
+      - artifact_inputs_only
+
+  - agent_id: ocr_local
+    name: Governed OCR Analyst
+    version: 1.0.0
+    trust_level: L4
+    runtime_profile: ocr
+    priority: 70
+    cost: 1
+    latency_ms: 220
+    capabilities:
+      - capability_id: ocr
+        inputs: [image_artifact]
+        outputs: [ocr_result]
+    restrictions:
+      - artifact_inputs_only
+
+  - agent_id: review_local
+    name: Speaker Truth Reviewer
+    version: 1.0.0
+    trust_level: L4
+    runtime_profile: review
+    priority: 95
+    cost: 1
+    latency_ms: 120
+    capabilities:
+      - capability_id: review
+        inputs: [node_outputs]
+        outputs: [review_result]
+      - capability_id: speaker_truth
+        inputs: [claims, evidence]
+        outputs: [truth_report]
+    restrictions:
+      - no_execution
+
+  - agent_id: memory_local
+    name: Governed Memory Candidate Producer
+    version: 1.0.0
+    trust_level: L4
+    runtime_profile: memory
+    priority: 65
+    cost: 1
+    latency_ms: 120
+    capabilities:
+      - capability_id: memory_candidate
+        inputs: [validated_output]
+        outputs: [memory_candidates]
+    restrictions:
+      - aipinho_commits_memory
+
+  - agent_id: supervisor_local
+    name: AIpinho Supervisor
+    version: 1.0.0
+    trust_level: L4
+    runtime_profile: supervisor
+    priority: 100
+    cost: 1
+    latency_ms: 100
+    capabilities:
+      - capability_id: supervision
+        inputs: [graph_state, validation]
+        outputs: [supervisor_result]
+      - capability_id: speaker_truth
+        inputs: [claims, evidence]
+        outputs: [truth_report]
+    restrictions:
+      - authority_aipinho_only
+
+  - agent_id: finalizer_local
+    name: AIpinho Final Result Publisher
+    version: 1.0.0
+    trust_level: L4
+    runtime_profile: finalizer
+    priority: 100
+    cost: 1
+    latency_ms: 80
+    capabilities:
+      - capability_id: final_response
+        inputs: [supervisor_result]
+        outputs: [final_result]
+    restrictions:
+      - speaker_truth_required

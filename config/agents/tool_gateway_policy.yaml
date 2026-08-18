@@ -1,0 +1,43 @@
+version: 1
+enabled: true
+require_policy: true
+sanitize_output: true
+raw_default_visible: false
+allow:
+  read: true
+  write: true
+  shell: true
+  artifacts: true
+auto_approve:
+  read_workspace: true
+  artifact_create: true
+  artifact_upload: true
+  artifact_download: true
+  validation: true
+  report_generate: true
+  patch_preview: true
+  write: true
+  workspace_write: true
+  readonly_shell: true
+  test_shell: true
+  build_shell: true
+  package_shell: true
+  git_read_shell: true
+approval:
+  require_human_approval_for_chat_workspace_write: true
+  side_effect_actions:
+    - create_file
+    - modify_file
+    - create_directory
+    - workspace_write
+block:
+  destructive_shell: true
+  network_shell: true
+  git_write_shell: true
+  process_control_shell: true
+  unknown_shell: true
+limits:
+  default_timeout_seconds: 120
+  max_stdout_chars: 200000
+  max_stderr_chars: 200000
+  max_file_read_bytes: 1000000

@@ -1,0 +1,173 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "endpoints": [
+    {
+      "endpoint": "GET /health",
+      "router": "health_router",
+      "method": "GET",
+      "path": "/health",
+      "input": {
+        "type": "query_params",
+        "schema": "UNKNOWN"
+      },
+      "output": {
+        "type": "json",
+        "schema": "UNKNOWN"
+      },
+      "contract": "UNKNOWN",
+      "critical": true
+    },
+    {
+      "endpoint": "POST /chat",
+      "router": "chat_router",
+      "method": "POST",
+      "path": "/chat",
+      "input": {
+        "type": "json_body",
+        "schema": "schemas.chat.ChatRequest"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.chat.ChatResponse"
+      },
+      "contract": "UNKNOWN",
+      "critical": true
+    },
+    {
+      "endpoint": "POST /tasks",
+      "router": "task_runtime_router",
+      "method": "POST",
+      "path": "/tasks",
+      "input": {
+        "type": "json_body",
+        "schema": "schemas.tasks.TaskRequest"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.tasks.TaskResponse"
+      },
+      "contract": "UNKNOWN",
+      "critical": true
+    },
+    {
+      "endpoint": "GET /tasks/{task_id}",
+      "router": "task_runtime_router",
+      "method": "GET",
+      "path": "/tasks/{task_id}",
+      "input": {
+        "type": "path_params",
+        "schema": "UNKNOWN"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.tasks.TaskStatus"
+      },
+      "contract": "UNKNOWN",
+      "critical": true
+    },
+    {
+      "endpoint": "POST /tools/execute",
+      "router": "tool_router",
+      "method": "POST",
+      "path": "/tools/execute",
+      "input": {
+        "type": "json_body",
+        "schema": "schemas.tools.ToolRequest"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.tools.ToolResponse"
+      },
+      "contract": "UNKNOWN",
+      "critical": true
+    },
+    {
+      "endpoint": "POST /models/invoke",
+      "router": "model_router",
+      "method": "POST",
+      "path": "/models/invoke",
+      "input": {
+        "type": "json_body",
+        "schema": "schemas.models.ModelRequest"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.models.ModelResponse"
+      },
+      "contract": "UNKNOWN",
+      "critical": true
+    },
+    {
+      "endpoint": "POST /artifacts",
+      "router": "artifact_router",
+      "method": "POST",
+      "path": "/artifacts",
+      "input": {
+        "type": "json_body",
+        "schema": "schemas.artifacts.ArtifactRequest"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.artifacts.ArtifactResponse"
+      },
+      "contract": "UNKNOWN",
+      "critical": true
+    },
+    {
+      "endpoint": "POST /agents/delegate",
+      "router": "agent_router",
+      "method": "POST",
+      "path": "/agents/delegate",
+      "input": {
+        "type": "json_body",
+        "schema": "schemas.agents.AgentRequest"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.agents.AgentResponse"
+      },
+      "contract": "UNKNOWN",
+      "critical": true
+    },
+    {
+      "endpoint": "POST /policy/check",
+      "router": "policy_router",
+      "method": "POST",
+      "path": "/policy/check",
+      "input": {
+        "type": "json_body",
+        "schema": "schemas.policy.PolicyRequest"
+      },
+      "output": {
+        "type": "json",
+        "schema": "schemas.policy.PolicyResponse"
+      },
+      "contract": "UNKNOWN",
+      "critical": true
+    },
+    {
+      "endpoint": "GET /config",
+      "router": "config_router",
+      "method": "GET",
+      "path": "/config",
+      "input": {
+        "type": "query_params",
+        "schema": "UNKNOWN"
+      },
+      "output": {
+        "type": "json",
+        "schema": "UNKNOWN"
+      },
+      "contract": "UNKNOWN",
+      "critical": false
+    }
+  ],
+  "total_endpoints": 10,
+  "endpoint_methods": {
+    "GET": 3,
+    "POST": 7
+  },
+  "critical_endpoints": 9,
+  "non_critical_endpoints": 1
+}

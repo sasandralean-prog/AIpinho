@@ -1,0 +1,61 @@
+schema_version: 1
+
+sources:
+  project_files:
+    enabled: true
+    source_type: file
+    description: "Allowed workspace files through read-only sandbox."
+    adapter: file_retrieval_source
+    requires_workspace: true
+    read_only: true
+    auto_enabled_in_chat: false
+
+  project_reports:
+    enabled: true
+    source_type: project_report
+    adapter: project_report_retrieval_source
+    read_only: true
+    auto_enabled_in_chat: false
+
+  task_results:
+    enabled: true
+    source_type: task_run_result
+    adapter: task_result_retrieval_source
+    read_only: true
+    auto_enabled_in_chat: false
+
+  validation_results:
+    enabled: true
+    source_type: validation_result
+    adapter: validation_result_retrieval_source
+    read_only: true
+    auto_enabled_in_chat: false
+
+  patch_apply_results:
+    enabled: true
+    source_type: patch_apply_result
+    adapter: patch_apply_result_retrieval_source
+    read_only: true
+    auto_enabled_in_chat: false
+
+  curated_memory:
+    enabled: true
+    source_type: curated_memory
+    adapter: curated_memory_retrieval_source
+    read_only: true
+    explicit_request_required: true
+    auto_enabled_in_chat: false
+    auto_enabled_in_prompt: false
+
+blocked_sources:
+  legacy_vectorstore:
+    enabled: false
+    reason: "Legacy vectorstore is blocked in governed retrieval."
+
+  web:
+    enabled: false
+    reason: "Network/web retrieval is out of scope."
+
+  raw_logs:
+    enabled: false
+    reason: "Raw logs cannot be retrieval sources."

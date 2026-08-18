@@ -1,0 +1,938 @@
+{
+  "created_at": "2026-08-13T08:20:37.299335+00:00",
+  "verdict": "FIRETEST5_H1C0_PHASE1_PHASE2_SEMANTIC_CONTRACT_BLOCKED",
+  "hygiene_report": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\h1c0_dead_runtime_artifact_hygiene.md",
+  "hygiene_archive_root": "D:\\AIpinho_runtime_hygiene\\h1c0_cleanup_20260813_081500",
+  "hygiene_archive_total_size_bytes": 8397946313,
+  "attempts": [
+    {
+      "run_dir": "C:\\Dev\\AIpinho\\reports\\firetest5\\h1c0_phase1_phase2_clean_20260813_045156",
+      "observation": {
+        "stamp": "20260813_045156",
+        "run_dir": "C:\\Dev\\AIpinho\\reports\\firetest5\\h1c0_phase1_phase2_clean_20260813_045156",
+        "pre_queue": {
+          "status_code": 200,
+          "data": {
+            "status": "ok",
+            "active_runs": 0,
+            "queued_runs": 0,
+            "stale_runs": 0,
+            "pending_approvals": 0,
+            "active_sessions": 0,
+            "dispatcher_status": "available",
+            "worker_pool_capacity": 8,
+            "worker_pool_available_slots": 8,
+            "stale_run_ids": [],
+            "backpressure_required": false,
+            "reason_code": null
+          },
+          "error": null
+        },
+        "phase0_path": "C:\\Dev\\AIpinho\\reports\\firetest5\\h1c0_phase1_phase2_clean_20260813_045156\\phase0_cognitive_readiness_result.json",
+        "phase0_decision": "NO_GO_EXPECTED_BLOCK",
+        "phase0_predicted_frontier": "TRUTH_READINESS",
+        "phase0_predicted_reason_code": "PREDICTED_TRUTH_READINESS_GAP",
+        "phase1_task_run_id": "task_run_7ad05a3fbb6a426294d063dd866adda6",
+        "phase1_client": {
+          "status_code": 200,
+          "elapsed_ms": 6020,
+          "error": null,
+          "response": {
+            "response_id": "chat_accepted_running_ea21e97ac59445ea86c84ba15c930c4f",
+            "session_id": "firetest5_h1c0_clean_20260813_045156",
+            "task_draft_id": null,
+            "preview_id": null,
+            "task_id": "task_d82dc5cf7f694bd79ce32c22f48336dc",
+            "task_run_id": "task_run_7ad05a3fbb6a426294d063dd866adda6",
+            "approval_id": null,
+            "task_preview_id": null,
+            "artifact_id": null,
+            "artifact_preview_id": null,
+            "artifact_links": [],
+            "result_ref_id": "task_run_7ad05a3fbb6a426294d063dd866adda6",
+            "operation_id": "op_2d41e4b461be46dcbab8c724ccb67d7d",
+            "operation_type": "workspace_analysis_readonly",
+            "message_type": "task_status_update",
+            "status": "accepted_running",
+            "message": "PUBLIC_RUNTIME_ACCEPTED_RUNNING\ntask_run_id=task_run_7ad05a3fbb6a426294d063dd866adda6\nworkspace=C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop\nsafe_to_report_success=false\nRun accepted and still executing under governed runtime.",
+            "intent": {
+              "intent_type": "workspace_analysis_readonly",
+              "requires_task": true,
+              "readonly": true,
+              "artifact_generation": true
+            },
+            "policy": {
+              "read_only": true,
+              "workspace_mutation": false,
+              "artifact_generation": true,
+              "public_response_boundary": {
+                "status": "accepted_running",
+                "client_response_budget_ms": 2500,
+                "continuation_available": true,
+                "polling_available": true,
+                "result_finalized": false,
+                "reason_codes": [
+                  "RUN_ACCEPTED_ASYNC"
+                ],
+                "safe_to_report_success": false
+              },
+              "canonical_lifecycle": {
+                "lifecycle_id": "life_ae143e4b6b504d5796684bb834bb7815",
+                "state": "plan_only_preview",
+                "reason_code": "readonly_or_planning",
+                "permission": "allowed",
+                "approval_gate_status": "not_required",
+                "completion_status": "completed",
+                "safe_to_report_success": true,
+                "speaker_can_claim_success": false
+              }
+            },
+            "contract_preview": {
+              "task_run_id": "task_run_7ad05a3fbb6a426294d063dd866adda6",
+              "run_status": "created",
+              "safe_to_report_success": false,
+              "accepted_at": "2026-08-13T07:52:04.295932+00:00",
+              "polling": {
+                "summary_url": "/api/v1/task_runs/task_run_7ad05a3fbb6a426294d063dd866adda6/summary",
+                "truth_url": "/api/v1/task_runs/task_run_7ad05a3fbb6a426294d063dd866adda6/truth",
+                "events_url": "/api/v1/task_runs/task_run_7ad05a3fbb6a426294d063dd866adda6/events",
+                "artifacts_url": "/api/v1/task_runs/task_run_7ad05a3fbb6a426294d063dd866adda6/artifacts",
+                "result_url": "/api/v1/task-runs/task_run_7ad05a3fbb6a426294d063dd866adda6/result"
+              },
+              "current_phase": "phase_1",
+              "known_frontier": null
+            },
+            "actions": [],
+            "next_actions": [],
+            "warnings": [
+              "accepted_running_is_not_success",
+              "canonical_lifecycle:readonly_or_planning"
+            ],
+            "trace": [],
+            "raw_debug_ref": null,
+            "model_used": "readonly_analysis_artifact_runtime",
+            "real_inference": false,
+            "model_warnings": [],
+            "evaluation_status": null,
+            "evaluation_warnings": [],
+            "fallback_used": false,
+            "context_plan_id": null,
+            "citation_map": {},
+            "evidence_refs": [],
+            "requires_user_action": false,
+            "is_final_answer": false,
+            "grounded": true,
+            "grounding_required": false,
+            "grounding_missing_reason": null,
+            "policy_block": null,
+            "governance_lifecycle": {
+              "lifecycle_id": "life_ae143e4b6b504d5796684bb834bb7815",
+              "state": "plan_only_preview",
+              "reason_code": "readonly_or_planning",
+              "intent": {
+                "intent_type": "workspace_analysis_readonly",
+                "operation_type": "workspace_analysis_readonly",
+                "requires_task": true,
+                "side_effect_requested": false,
+                "readonly": true,
+                "source_channel": "api_chat",
+                "negative_constraints": {
+                  "write_forbidden": true,
+                  "patch_forbidden": true,
+                  "approval_forbidden": true
+                },
+                "confidence": 1.0,
+                "evidence": [
+                  "readonly_analysis_with_artifact_output",
+                  "positive:knowledge_only",
+                  "negative:workspace_mutation",
+                  "readonly_contract",
+                  "artifact_output",
+                  "observational_intent"
+                ],
+                "semantic_intent_graph": {
+                  "observational_intent": true,
+                  "planning_intent": false,
+                  "mutation_intent": false,
+                  "execution_intent": false,
+                  "approval_intent": false,
+                  "knowledge_output": true,
+                  "artifact_output": true,
+                  "readonly_contract": true,
+                  "state_effect": "knowledge_only",
+                  "workspace_effect": "immutable",
+                  "filesystem_effect": "prohibited",
+                  "runtime_effect": "none",
+                  "prohibited_effects": [
+                    "workspace_mutation"
+                  ],
+                  "requested_effects": [
+                    "knowledge_only"
+                  ],
+                  "evidence": [
+                    "positive:knowledge_only",
+                    "negative:workspace_mutation",
+                    "readonly_contract",
+                    "artifact_output",
+                    "observational_intent"
+                  ]
+                }
+              },
+              "operation_contract": {
+                "operation_id": "op_ea4e12338b714510bf41224fcd323fb2",
+                "session_id": "firetest5_h1c0_clean_20260813_045156",
+                "source_channel": "api_chat",
+                "intent_type": "workspace_analysis_readonly",
+                "operation_type": "workspace_analysis_readonly",
+                "contract_type": "workspace_analysis_readonly",
+                "runtime_profile": "workspace_analysis_readonly",
+                "requested_actions": [],
+                "target_paths": [],
+                "workspace_path": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+                "risk_level": "low",
+                "trace": [
+                  {
+                    "stage": "canonical_contract",
+                    "source": "GovernanceLifecycleService"
+                  }
+                ]
+              },
+              "policy": {
+                "permission": "allowed",
+                "allowed_actions": [],
+                "ask_actions": [],
+                "denied_actions": [],
+                "reason_code": "readonly_or_planning",
+                "reason": "Read-only or non-executing operation.",
+                "source": "effective_policy_decision",
+                "requires_approval": false,
+                "trace": []
+              },
+              "context_gate": {
+                "status": "not_required",
+                "can_create_write_approval": true,
+                "reason_code": "none",
+                "source_message_id": null,
+                "context_ref": null,
+                "workspace_snapshot_ref": null,
+                "discovery_ref": null,
+                "analysis_ref": null,
+                "missing_requirements": [],
+                "trace": []
+              },
+              "execution_plan": {
+                "preview_kind": "plan_only_preview",
+                "executable": false,
+                "executable_plan_ref": null,
+                "plan_kind": null,
+                "expected_outputs": [],
+                "target_paths": [],
+                "blocked_reason": "readonly_or_planning",
+                "trace": [
+                  {
+                    "stage": "canonical_runtime",
+                    "mode": "plan_only"
+                  }
+                ]
+              },
+              "preview_quality": {
+                "status": "not_required",
+                "can_create_approval": true,
+                "reason_code": "none",
+                "missing_requirements": [],
+                "trace": []
+              },
+              "approval_gate": {
+                "required": false,
+                "can_create_approval": false,
+                "approval_id": null,
+                "preview_id": null,
+                "draft_id": null,
+                "status": "not_required",
+                "reason_code": "none",
+                "trace": []
+              },
+              "validation": {
+                "status": "not_run",
+                "safe_to_continue": false,
+                "missing_outputs": [],
+                "evidence_refs": [],
+                "reason_code": "none"
+              },
+              "completion": {
+                "status": "completed",
+                "safe_to_report_success": true,
+                "expected_outputs": [],
+                "fulfilled_outputs": [],
+                "missing_outputs": [],
+                "reason_code": "none"
+              },
+              "speaker_truth": {
+                "can_claim_success": false,
+                "message_status": "blocked",
+                "required_disclosures": [
+                  "readonly_or_planning"
+                ],
+                "forbidden_claims": [
+                  "executed",
+                  "implemented",
+                  "created",
+                  "modified",
+                  "applied",
+                  "validated",
+                  "completed"
+                ],
+                "reason_code": "speaker_truth_blocked"
+              },
+              "artifacts": [],
+              "task_run_id": null,
+              "warnings": [],
+              "trace": [
+                {
+                  "stage": "intent",
+                  "intent_type": "workspace_analysis_readonly",
+                  "operation_type": "workspace_analysis_readonly"
+                },
+                {
+                  "stage": "policy",
+                  "permission": "allowed",
+                  "reason_code": "readonly_or_planning"
+                },
+                {
+                  "stage": "context_gate",
+                  "status": "not_required",
+                  "reason_code": "none"
+                },
+                {
+                  "stage": "plan",
+                  "preview_kind": "plan_only_preview",
+                  "executable": false
+                },
+                {
+                  "stage": "preview_quality",
+                  "status": "not_required",
+                  "reason_code": "none"
+                },
+                {
+                  "stage": "approval",
+                  "status": "not_required"
+                },
+                {
+                  "stage": "completion",
+                  "status": "completed"
+                }
+              ],
+              "semantic_ingress_doctor": {
+                "report_id": "semantic_ingress_4f2b7189b921467c9f6bcafc7a54bdf1",
+                "status": "complete",
+                "prompt_normalization": {
+                  "normalization_id": "prompt_norm_a818eb35ca384033b72de2e384674be0",
+                  "original_text": "Executar FireTest 5 Fase 1 de forma limpa e governada, somente leitura.\nWorkspace do app: C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop.\nCorpus/biblioteca de musicas: D:\\rafa\\pinho music.\nGere artifacts reports/firetest5/phase1_discovery.md, reports/firetest5/project_inventory.md, reports/firetest5/music_inventory.csv e reports/firetest5/evidence_phase1.zip.\nO inventario musical deve satisfazer contrato semantico de inventario de corpus musical; se a evidencia semantica for insuficiente, bloqueie ou marque partial governadamente.\nNao modificar arquivos do workspace, nao executar patch sem autorizacao, nao avancar fases artificialmente, nao declarar sucesso sem Validation/Completion/Speaker Truth.",
+                  "normalized_text": "executar firetest 5 fase 1 de forma limpa e governada, somente leitura. workspace do app: c:\\users\\rafae\\documents\\pinhoabacaximusicasdesktop. corpus/biblioteca de musicas: d:\\rafa\\pinho music. gere artifacts reports/firetest5/phase1_discovery.md, reports/firetest5/project_inventory.md, reports/firetest5/music_inventory.csv e reports/firetest5/evidence_phase1.zip. o inventario musical deve satisfazer contrato semantico de inventario de corpus musical; se a evidencia semantica for insuficiente, bloqueie ou marque partial governadamente. nao modificar arquivos do workspace, nao executar patch sem autorizacao, nao avancar fases artificialmente, nao declarar sucesso sem validation/completion/speaker truth.",
+                  "encoding_detected": "unicode_text",
+                  "encoding_issues": [],
+                  "transformations": [
+                    "unicode_nfkd",
+                    "casefold",
+                    "whitespace_collapsed"
+                  ],
+                  "text_variants": {},
+                  "confidence": 1.0
+                },
+                "semantic_propositions": [
+                  {
+                    "proposition_id": "semantic_prop_4bb1dd1f862f442e889358f24435be2a",
+                    "proposition_type": "objective",
+                    "subject": "operator",
+                    "predicate": "submitted_prompt",
+                    "object_value": {
+                      "prompt_chars": 711
+                    },
+                    "polarity": "neutral",
+                    "confidence": 1.0,
+                    "evidence_refs": [
+                      "prompt:original_text"
+                    ]
+                  },
+                  {
+                    "proposition_id": "semantic_prop_587dd9358ea245aea6272f6c5cb80836",
+                    "proposition_type": "effect_expected",
+                    "subject": "state",
+                    "predicate": "requests",
+                    "object_value": "knowledge_only",
+                    "polarity": "positive",
+                    "confidence": 1.0,
+                    "evidence_refs": [
+                      "semantic_graph:requested_effect:knowledge_only"
+                    ]
+                  },
+                  {
+                    "proposition_id": "semantic_prop_fb145fe392764c2c88efa54c658bc564",
+                    "proposition_type": "restriction",
+                    "subject": "state",
+                    "predicate": "prohibits",
+                    "object_value": "workspace_mutation",
+                    "polarity": "negative",
+                    "confidence": 1.0,
+                    "evidence_refs": [
+                      "semantic_graph:prohibited_effect:workspace_mutation"
+                    ]
+                  },
+                  {
+                    "proposition_id": "semantic_prop_fcd8a75f0a414b5e9b713e4508d88694",
+                    "proposition_type": "intent_signal",
+                    "subject": "semantic_graph",
+                    "predicate": "observational_intent",
+                    "object_value": true,
+                    "polarity": "neutral",
+                    "confidence": 1.0,
+                    "evidence_refs": [
+                      "semantic_graph:observational_intent"
+                    ]
+                  },
+                  {
+                    "proposition_id": "semantic_prop_473789d6a05a49ba8c307858198542fe",
+                    "proposition_type": "intent_signal",
+                    "subject": "semantic_graph",
+                    "predicate": "knowledge_output",
+                    "object_value": true,
+                    "polarity": "neutral",
+                    "confidence": 1.0,
+                    "evidence_refs": [
+                      "semantic_graph:knowledge_output"
+                    ]
+                  },
+                  {
+                    "proposition_id": "semantic_prop_65119ec82b5141189c3dd0c1e8dc9ec1",
+                    "proposition_type": "intent_signal",
+                    "subject": "semantic_graph",
+                    "predicate": "artifact_output",
+                    "object_value": true,
+                    "polarity": "neutral",
+                    "confidence": 1.0,
+                    "evidence_refs": [
+                      "semantic_graph:artifact_output"
+                    ]
+                  },
+                  {
+                    "proposition_id": "semantic_prop_ff2b5012a5c4491d91fc30e253c954c3",
+                    "proposition_type": "intent_signal",
+                    "subject": "semantic_graph",
+                    "predicate": "readonly_contract",
+                    "object_value": true,
+                    "polarity": "neutral",
+                    "confidence": 1.0,
+                    "evidence_refs": [
+                      "semantic_graph:readonly_contract"
+                    ]
+                  }
+                ],
+                "state_effects": [
+                  {
+                    "effect_id": "state_effect_3a0bcaa034084241b35638c0a3c467f3",
+                    "target": "workspace",
+                    "effect": "immutable",
+                    "confidence": 1.0,
+                    "evidence_refs": [
+                      "semantic_graph:workspace_effect",
+                      "semantic_graph:evidence:positive:knowledge_only",
+                      "semantic_graph:evidence:negative:workspace_mutation",
+                      "semantic_graph:evidence:readonly_contract",
+                      "semantic_graph:evidence:artifact_output",
+                      "semantic_graph:evidence:observational_intent"
+                    ],
+                    "reason_codes": []
+                  },
+                  {
+                    "effect_id": "state_effect_2c85f1828a7a4c06b7ac4b5e6e241103",
+                    "target": "filesystem",
+                    "effect": "prohibited",
+                    "confidence": 1.0,
+                    "evidence_refs": [
+                      "semantic_graph:filesystem_effect",
+                      "semantic_graph:evidence:positive:knowledge_only",
+                      "semantic_graph:evidence:negative:workspace_mutation",
+                      "semantic_graph:evidence:readonly_contract",
+                      "semantic_graph:evidence:artifact_output",
+                      "semantic_graph:evidence:observational_intent"
+                    ],
+                    "reason_codes": []
+                  },
+                  {
+                    "effect_id": "state_effect_770418c123f0415797b53e807c08a70b",
+                    "target": "runtime",
+                    "effect": "none",
+                    "confidence": 1.0,
+                    "evidence_refs": [
+                      "semantic_graph:runtime_effect",
+                      "semantic_graph:evidence:positive:knowledge_only",
+                      "semantic_graph:evidence:negative:workspace_mutation",
+                      "semantic_graph:evidence:readonly_contract",
+                      "semantic_graph:evidence:artifact_output",
+                      "semantic_graph:evidence:observational_intent"
+                    ],
+                    "reason_codes": []
+                  },
+                  {
+                    "effect_id": "state_effect_19a9802d5341497f86704f75d6a71391",
+                    "target": "knowledge",
+                    "effect": "read_only",
+                    "confidence": 1.0,
+                    "evidence_refs": [
+                      "semantic_graph:knowledge_output",
+                      "semantic_graph:observational_intent"
+                    ],
+                    "reason_codes": []
+                  }
+                ],
+                "intent_decision": {
+                  "decision_id": "intent_decision_790d97b1cff340da8d31297b4204e38c",
+                  "selected_intent_id": "workspace_analysis_readonly",
+                  "selected_operation_type": "workspace_analysis_readonly",
+                  "candidates": [
+                    {
+                      "intent_id": "workspace_analysis_readonly",
+                      "operation_type": "workspace_analysis_readonly",
+                      "confidence": 1.0,
+                      "supporting_propositions": [
+                        "semantic_prop_4bb1dd1f862f442e889358f24435be2a",
+                        "semantic_prop_587dd9358ea245aea6272f6c5cb80836",
+                        "semantic_prop_fb145fe392764c2c88efa54c658bc564",
+                        "semantic_prop_ff2b5012a5c4491d91fc30e253c954c3"
+                      ],
+                      "rejected_reason": null,
+                      "arbitration_score": 1.0
+                    },
+                    {
+                      "intent_id": "product_planning_readonly",
+                      "operation_type": "product_planning_readonly",
+                      "confidence": 0.3,
+                      "supporting_propositions": [],
+                      "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                      "arbitration_score": 0.3
+                    },
+                    {
+                      "intent_id": "proposal_only",
+                      "operation_type": "patch_preview",
+                      "confidence": 0.0,
+                      "supporting_propositions": [],
+                      "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                      "arbitration_score": 0.0
+                    },
+                    {
+                      "intent_id": "patch_or_write_request",
+                      "operation_type": "patch_request",
+                      "confidence": 0.0,
+                      "supporting_propositions": [],
+                      "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                      "arbitration_score": 0.0
+                    },
+                    {
+                      "intent_id": "governed_shell_request",
+                      "operation_type": "run_command",
+                      "confidence": 0.0,
+                      "supporting_propositions": [],
+                      "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                      "arbitration_score": 0.0
+                    },
+                    {
+                      "intent_id": "approval_command",
+                      "operation_type": "approval_command",
+                      "confidence": 0.3,
+                      "supporting_propositions": [],
+                      "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                      "arbitration_score": 0.3
+                    },
+                    {
+                      "intent_id": "conversation",
+                      "operation_type": "conversation",
+                      "confidence": 0.3,
+                      "supporting_propositions": [],
+                      "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                      "arbitration_score": 0.3
+                    }
+                  ],
+                  "criteria": [
+                    "selected_by_existing_canonical_intent_router",
+                    "state_effect_observed_not_overridden",
+                    "readonly_constraints_preserved_when_selected"
+                  ],
+                  "evidence_refs": [
+                    "readonly_analysis_with_artifact_output",
+                    "positive:knowledge_only",
+                    "negative:workspace_mutation",
+                    "readonly_contract",
+                    "artifact_output",
+                    "observational_intent"
+                  ],
+                  "confidence": 1.0,
+                  "reason_codes": [],
+                  "decision_source": "canonical_intent_router"
+                },
+                "operation_contract_decision": {
+                  "decision_id": "operation_contract_decision_5a69e58a29cf49d5ab40839fe2f7e764",
+                  "selected_contract_type": "workspace_analysis_readonly",
+                  "selected_operation_type": "workspace_analysis_readonly",
+                  "candidates": [
+                    {
+                      "contract_type": "analysis_readonly",
+                      "operation_type": "workspace_analysis_readonly",
+                      "confidence": 1.0,
+                      "state_effect_alignment": "aligned",
+                      "supporting_intent": "workspace_analysis_readonly",
+                      "rejected_reason": null,
+                      "evidence_refs": [
+                        "intent_candidate:workspace_analysis_readonly"
+                      ]
+                    },
+                    {
+                      "contract_type": "analysis_readonly",
+                      "operation_type": "product_planning_readonly",
+                      "confidence": 0.3,
+                      "state_effect_alignment": "aligned",
+                      "supporting_intent": "product_planning_readonly",
+                      "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                      "evidence_refs": [
+                        "intent_candidate:product_planning_readonly"
+                      ]
+                    },
+                    {
+                      "contract_type": "patch_request",
+                      "operation_type": "patch_preview",
+                      "confidence": 0.0,
+                      "state_effect_alignment": "partial",
+                      "supporting_intent": "proposal_only",
+                      "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                      "evidence_refs": [
+                        "intent_candidate:proposal_only"
+                      ]
+                    },
+                    {
+                      "contract_type": "patch_request",
+                      "operation_type": "patch_request",
+                      "confidence": 0.0,
+                      "state_effect_alignment": "conflict",
+                      "supporting_intent": "patch_or_write_request",
+                      "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                      "evidence_refs": [
+                        "intent_candidate:patch_or_write_request"
+                      ]
+                    },
+                    {
+                      "contract_type": "shell_build_test",
+                      "operation_type": "run_command",
+                      "confidence": 0.0,
+                      "state_effect_alignment": "conflict",
+                      "supporting_intent": "governed_shell_request",
+                      "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                      "evidence_refs": [
+                        "intent_candidate:governed_shell_request"
+                      ]
+                    },
+                    {
+                      "contract_type": "approval_command",
+                      "operation_type": "approval_command",
+                      "confidence": 0.3,
+                      "state_effect_alignment": "partial",
+                      "supporting_intent": "approval_command",
+                      "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                      "evidence_refs": [
+                        "intent_candidate:approval_command"
+                      ]
+                    },
+                    {
+                      "contract_type": "conversation",
+                      "operation_type": "conversation",
+                      "confidence": 0.3,
+                      "state_effect_alignment": "aligned",
+                      "supporting_intent": "conversation",
+                      "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                      "evidence_refs": [
+                        "intent_candidate:conversation"
+                      ]
+                    }
+                  ],
+                  "relation_to_intent": "selected_contract_derived_from_existing_intent_decision",
+                  "relation_to_state_effects": "aligned",
+                  "evidence_refs": [
+                    "actual_operation_contract"
+                  ],
+                  "confidence": 1.0,
+                  "reason_codes": [],
+                  "decision_source": "governance_lifecycle"
+                },
+                "reason_codes": [],
+                "warnings": [],
+                "trace": [
+                  {
+                    "stage": "PromptNormalization",
+                    "status": "ok"
+                  },
+                  {
+                    "stage": "SemanticPropositionExtraction",
+                    "count": 7
+                  },
+                  {
+                    "stage": "StateEffectResolution",
+                    "state_effect": "knowledge_only"
+                  },
+                  {
+                    "stage": "IntentArbitration",
+                    "selected": "workspace_analysis_readonly"
+                  },
+                  {
+                    "stage": "OperationContractSelection",
+                    "selected": "workspace_analysis_readonly"
+                  }
+                ]
+              },
+              "pre_task_bootstrap": {
+                "status": "complete",
+                "requires_task": true,
+                "task_id": "task_d82dc5cf7f694bd79ce32c22f48336dc",
+                "task_run_id": "task_run_7ad05a3fbb6a426294d063dd866adda6",
+                "stages": [
+                  {
+                    "stage": "ChatIngressReceived",
+                    "status": "complete",
+                    "reason": "prompt_received",
+                    "data": {
+                      "source_channel": "api_chat"
+                    }
+                  },
+                  {
+                    "stage": "PromptNormalized",
+                    "status": "complete",
+                    "reason": "prompt_normalized",
+                    "data": {}
+                  },
+                  {
+                    "stage": "PreviewStarted",
+                    "status": "complete",
+                    "reason": "canonical_lifecycle_preview_started",
+                    "data": {
+                      "mode": "accepted_running"
+                    }
+                  },
+                  {
+                    "stage": "IntentResolutionStarted",
+                    "status": "complete",
+                    "reason": "canonical_intent_resolution_started",
+                    "data": {}
+                  },
+                  {
+                    "stage": "IntentResolutionFinished",
+                    "status": "complete",
+                    "reason": "canonical_intent_resolved",
+                    "data": {}
+                  },
+                  {
+                    "stage": "OperationContractSelected",
+                    "status": "complete",
+                    "reason": "operation_contract_selected",
+                    "data": {
+                      "operation_type": "workspace_analysis_readonly"
+                    }
+                  },
+                  {
+                    "stage": "TaskBootstrapStarted",
+                    "status": "complete",
+                    "reason": "task_bootstrap_required",
+                    "data": {}
+                  },
+                  {
+                    "stage": "TaskBootstrapFinished",
+                    "status": "complete",
+                    "reason": "task_bootstrap_finished",
+                    "data": {
+                      "task_id": "task_d82dc5cf7f694bd79ce32c22f48336dc"
+                    }
+                  },
+                  {
+                    "stage": "TaskCreated",
+                    "status": "complete",
+                    "reason": "task_created",
+                    "data": {
+                      "task_id": "task_d82dc5cf7f694bd79ce32c22f48336dc"
+                    }
+                  },
+                  {
+                    "stage": "TaskRunCreated",
+                    "status": "complete",
+                    "reason": "task_run_created",
+                    "data": {
+                      "task_run_id": "task_run_7ad05a3fbb6a426294d063dd866adda6"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "phase1_poll_count": 2,
+        "phase1_final_summary_status": "BLOCKED",
+        "phase1_final_result_status": "blocked",
+        "phase1_final_reason_code": null,
+        "phase2": {
+          "phase2_executed": false,
+          "reason": "skipped_due_to_phase1_not_completed_or_not_semantically_satisfied"
+        },
+        "post_queue": {
+          "status_code": 200,
+          "data": {
+            "status": "ok",
+            "active_runs": 0,
+            "queued_runs": 0,
+            "stale_runs": 0,
+            "pending_approvals": 0,
+            "active_sessions": 0,
+            "dispatcher_status": "available",
+            "worker_pool_capacity": 8,
+            "worker_pool_available_slots": 8,
+            "stale_run_ids": [],
+            "backpressure_required": false,
+            "reason_code": null
+          },
+          "error": null
+        }
+      },
+      "finding": "blocked_by_artifact_registry_utf8_bom_before_h1c0_semantic_gate"
+    },
+    {
+      "run_dir": "C:\\Dev\\AIpinho\\reports\\firetest5\\h1c0_phase1_phase2_clean_20260813_045509",
+      "observation": {
+        "stamp": "20260813_045509",
+        "run_dir": "C:\\Dev\\AIpinho\\reports\\firetest5\\h1c0_phase1_phase2_clean_20260813_045509",
+        "pre_queue": {
+          "status_code": 200,
+          "data": {
+            "status": "ok",
+            "active_runs": 0,
+            "queued_runs": 0,
+            "stale_runs": 0,
+            "pending_approvals": 0,
+            "active_sessions": 0,
+            "dispatcher_status": "available",
+            "worker_pool_capacity": 8,
+            "worker_pool_available_slots": 8,
+            "stale_run_ids": [],
+            "backpressure_required": false,
+            "reason_code": null
+          },
+          "error": null
+        },
+        "phase0_path": "C:\\Dev\\AIpinho\\reports\\firetest5\\h1c0_phase1_phase2_clean_20260813_045509\\phase0_cognitive_readiness_result.json",
+        "phase0_decision": "NO_GO_EXPECTED_BLOCK",
+        "phase0_predicted_frontier": "TRUTH_READINESS",
+        "phase0_predicted_reason_code": "PREDICTED_TRUTH_READINESS_GAP",
+        "phase1_task_run_id": "task_run_a7b57ac3e0034762a70db6290b8cfd61",
+        "phase1_client_status": "accepted_running",
+        "phase1_client_task_run_id_field": "task_run_a7b57ac3e0034762a70db6290b8cfd61",
+        "phase1_client_elapsed_ms": 6675,
+        "phase1_poll_count": 53,
+        "phase1_final_summary_status": "BLOCKED",
+        "phase1_final_result_status": "blocked",
+        "phase1_final_block_reason": null,
+        "phase1_artifact_count": 2,
+        "phase2": {
+          "phase2_executed": false,
+          "reason": "skipped_due_to_phase1_blocked_at_artifact_render_timeout"
+        },
+        "post_queue": {
+          "status_code": 200,
+          "data": {
+            "status": "ok",
+            "active_runs": 0,
+            "queued_runs": 0,
+            "stale_runs": 0,
+            "pending_approvals": 0,
+            "active_sessions": 0,
+            "dispatcher_status": "available",
+            "worker_pool_capacity": 8,
+            "worker_pool_available_slots": 8,
+            "stale_run_ids": [],
+            "backpressure_required": false,
+            "reason_code": null
+          },
+          "error": null
+        },
+        "phase1_final_after_reconcile": {
+          "summary_status": "BLOCKED",
+          "result_status": "blocked",
+          "artifacts_count": 2,
+          "event_count": 22,
+          "terminal_events": [
+            {
+              "event_id": "task_run_event_41b1be3d9ab84e379bf40c9e236536fa",
+              "run_id": "task_run_a7b57ac3e0034762a70db6290b8cfd61",
+              "sequence": 18,
+              "type": "run_blocked",
+              "status": "blocked",
+              "message": "TaskRun blocked by governed runtime budget.",
+              "step_id": null,
+              "timestamp": "2026-08-13T08:17:07.200224+00:00",
+              "metadata": {
+                "reason_code": "TASKRUN_LIFECYCLE_TIMEOUT",
+                "elapsed_seconds": 1308.776,
+                "max_runtime_seconds": 900.0
+              }
+            },
+            {
+              "event_id": "task_run_event_7e5b3e41a40f4007b87751ee8a08c04c",
+              "run_id": "task_run_a7b57ac3e0034762a70db6290b8cfd61",
+              "sequence": 19,
+              "type": "run_blocked",
+              "status": "blocked",
+              "message": "TaskRun blocked by governed runtime budget.",
+              "step_id": null,
+              "timestamp": "2026-08-13T08:17:07.943015+00:00",
+              "metadata": {
+                "reason_code": "TASKRUN_LIFECYCLE_TIMEOUT",
+                "elapsed_seconds": 1309.464,
+                "max_runtime_seconds": 900.0
+              }
+            }
+          ]
+        }
+      },
+      "finding": "blocked_by_artifact_render_timeout_before_music_inventory_semantic_validation"
+    }
+  ],
+  "final_phase1": {
+    "task_run_id": "task_run_a7b57ac3e0034762a70db6290b8cfd61",
+    "client_status": "accepted_running",
+    "client_task_run_id_field": "task_run_a7b57ac3e0034762a70db6290b8cfd61",
+    "client_elapsed_ms": 6675,
+    "summary_status": "BLOCKED",
+    "result_status": "blocked",
+    "truth_safe_to_report_success": false,
+    "artifacts_endpoint_count": 2,
+    "artifact_creation_started_count": 3,
+    "artifact_created_count": 2,
+    "terminal_event_count": 2,
+    "terminal_event_types": [
+      "run_blocked",
+      "run_blocked"
+    ],
+    "phase2_executed": false,
+    "phase2_skip_reason": "phase1_blocked_before_music_inventory_semantic_contract_could_be_validated"
+  },
+  "queue_health_after": {
+    "status_code": 200,
+    "data": {
+      "status": "ok",
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0,
+      "active_sessions": 0,
+      "dispatcher_status": "available",
+      "worker_pool_capacity": 8,
+      "worker_pool_available_slots": 8,
+      "stale_run_ids": [],
+      "backpressure_required": false,
+      "reason_code": null
+    },
+    "error": null
+  }
+}

@@ -1,0 +1,32 @@
+schema_version: 1
+
+formats:
+  markdown:
+    extensions: [.md]
+    validate_basic_structure: true
+    allow_code_blocks: true
+
+  text:
+    extensions: [.txt]
+    validate_non_empty: true
+
+  json:
+    extensions: [.json]
+    require_valid_json: true
+    pretty_print_preview: true
+
+  yaml:
+    extensions: [.yaml, .yml]
+    require_valid_yaml: false
+    allow_export_yaml: true
+    block_active_config_targets: true
+
+  csv:
+    extensions: [.csv]
+    require_consistent_columns: false
+
+  html:
+    extensions: [.html]
+    allow_static_html: true
+    block_script_tags: true
+    block_external_resources: true

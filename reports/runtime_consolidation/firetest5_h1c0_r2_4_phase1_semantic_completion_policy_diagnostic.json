@@ -1,0 +1,301 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_4_PHASE1_SEMANTIC_COMPLETION_POLICY_BLOCKED",
+  "observed_blocker": "TASKRUN_LIFECYCLE_TIMEOUT_CONSERVATIVE_RESULT_REPAIR_BEFORE_PHASE_SEMANTIC_COMPLETION_AUTHORITY",
+  "task_run_id": "task_run_128043624a614fa68c0bbd1c8ec81790",
+  "diagnosis": {
+    "partial_inventory_policy_code_added": true,
+    "terminal_completion_not_null_code_added": true,
+    "public_run_reached_taskrun": true,
+    "public_run_materialized_music_inventory_rows": true,
+    "phase_semantic_policy_became_terminal_authority": false,
+    "result_finalization_path": "TaskRunStore conservative repair, not ReadonlyAnalysisArtifactRuntimeService semantic completion decision",
+    "why_phase2_not_run": "Phase 1 stayed blocked and Truth safe_to_report_success=false"
+  },
+  "phase_semantic_completion_policy": {
+    "default_partial_inventory_allowed": false,
+    "expected_default_semantic_blocker": "MUSIC_INVENTORY_PARTIAL_NOT_ACCEPTED_BY_PHASE_CONTRACT",
+    "actual_public_reason_code": "TASKRUN_LIFECYCLE_TIMEOUT",
+    "mismatch": true,
+    "mismatch_explanation": "The public run was terminalized/repaired through lifecycle timeout before the semantic completion policy result path persisted the terminal result."
+  },
+  "artifact_evidence_state": {
+    "count": 4,
+    "phase1_discovery": {
+      "status": "ready",
+      "semantic_contract_status": "satisfied",
+      "safe_to_use": true,
+      "reason_code": null
+    },
+    "project_inventory": {
+      "status": "ready",
+      "semantic_contract_status": "satisfied",
+      "safe_to_use": true,
+      "reason_code": null
+    },
+    "music_inventory": {
+      "status": "blocked",
+      "validation_status": "blocked",
+      "semantic_contract_status": "partial",
+      "reason_code": "MUSIC_INVENTORY_PARTIAL_EVIDENCE",
+      "safe_to_use": false,
+      "partial_rows": 100,
+      "expected_rows": 1051,
+      "selected_rows": 100,
+      "bound_rows": 100,
+      "evidence_ref_count": 100,
+      "missing_columns": [
+        "size_bytes",
+        "channels",
+        "observations"
+      ],
+      "limitations": [
+        "media_inventory_source_root_role_missing",
+        "media_inventory_evidence_ref_missing",
+        "media_inventory_limitations_missing",
+        "ATTRIBUTE_NOT_OBSERVED:observations",
+        "artifact_render_entity_budget_partial",
+        "relationship_final_validation_missing",
+        "MUSIC_INVENTORY_PARTIAL_EVIDENCE"
+      ]
+    },
+    "music_inventory_row_evidence_coverage": {
+      "total_rows": 100,
+      "rows_with_evidence_ref": 100,
+      "rows_without_evidence_ref": 0,
+      "evidence_ref_count": 100,
+      "evidence_refs_sample": [
+        "file:D:\\rafa\\pinho music\\you're not gone, you're just dead!.m4a",
+        "file:D:\\rafa\\pinho music\\xvideos.m4a",
+        "file:D:\\rafa\\pinho music\\xanny.m4a",
+        "file:D:\\rafa\\pinho music\\xanny - 2.m4a",
+        "file:D:\\rafa\\pinho music\\whatsaheart - for her i will do it all for her.m4a",
+        "file:D:\\rafa\\pinho music\\whatsaheart - for her i will do it all for her - 2.m4a",
+        "file:D:\\rafa\\pinho music\\what's wrong.m4a",
+        "file:D:\\rafa\\pinho music\\wet dreams -artemas sped up.m4a",
+        "file:D:\\rafa\\pinho music\\we fell in love in october.m4a",
+        "file:D:\\rafa\\pinho music\\we are the people tekkno.m4a",
+        "file:D:\\rafa\\pinho music\\vanity.m4a",
+        "file:D:\\rafa\\pinho music\\vanity - 2.m4a",
+        "file:D:\\rafa\\pinho music\\tower of memories.m4a",
+        "file:D:\\rafa\\pinho music\\tower of memories - 2.m4a",
+        "file:D:\\rafa\\pinho music\\till death do us part.m4a",
+        "file:D:\\rafa\\pinho music\\till death do us part - 2.m4a",
+        "file:D:\\rafa\\pinho music\\the only one.m4a",
+        "file:D:\\rafa\\pinho music\\the idea of you mxmtoon.m4a",
+        "file:D:\\rafa\\pinho music\\the idea of you mxmtoon - 2.m4a",
+        "file:D:\\rafa\\pinho music\\taKe.m4a"
+      ],
+      "status": "satisfied",
+      "reason_code": null
+    },
+    "music_inventory_row_validation_summary": {
+      "status": "blocked",
+      "row_count": 100,
+      "column_coverage": {
+        "declared_columns": [
+          "name",
+          "extension",
+          "size_bytes",
+          "codec",
+          "container",
+          "bitrate",
+          "sample_rate",
+          "channels",
+          "duration",
+          "artwork",
+          "metadata",
+          "observations"
+        ],
+        "rendered_columns": [
+          "filename",
+          "extension",
+          "tamanho",
+          "codec",
+          "container",
+          "bitrate",
+          "sample_rate",
+          "canais",
+          "duration",
+          "artwork",
+          "metadata",
+          "observa_es"
+        ],
+        "missing_columns": [
+          "size_bytes",
+          "channels",
+          "observations"
+        ],
+        "extra_columns": [
+          "tamanho",
+          "canais",
+          "observa_es"
+        ],
+        "status": "missing_columns"
+      },
+      "row_evidence_coverage": {
+        "total_rows": 100,
+        "rows_with_evidence_ref": 100,
+        "rows_without_evidence_ref": 0,
+        "evidence_ref_count": 100,
+        "evidence_refs_sample": [
+          "file:D:\\rafa\\pinho music\\you're not gone, you're just dead!.m4a",
+          "file:D:\\rafa\\pinho music\\xvideos.m4a",
+          "file:D:\\rafa\\pinho music\\xanny.m4a",
+          "file:D:\\rafa\\pinho music\\xanny - 2.m4a",
+          "file:D:\\rafa\\pinho music\\whatsaheart - for her i will do it all for her.m4a",
+          "file:D:\\rafa\\pinho music\\whatsaheart - for her i will do it all for her - 2.m4a",
+          "file:D:\\rafa\\pinho music\\what's wrong.m4a",
+          "file:D:\\rafa\\pinho music\\wet dreams -artemas sped up.m4a",
+          "file:D:\\rafa\\pinho music\\we fell in love in october.m4a",
+          "file:D:\\rafa\\pinho music\\we are the people tekkno.m4a",
+          "file:D:\\rafa\\pinho music\\vanity.m4a",
+          "file:D:\\rafa\\pinho music\\vanity - 2.m4a",
+          "file:D:\\rafa\\pinho music\\tower of memories.m4a",
+          "file:D:\\rafa\\pinho music\\tower of memories - 2.m4a",
+          "file:D:\\rafa\\pinho music\\till death do us part.m4a",
+          "file:D:\\rafa\\pinho music\\till death do us part - 2.m4a",
+          "file:D:\\rafa\\pinho music\\the only one.m4a",
+          "file:D:\\rafa\\pinho music\\the idea of you mxmtoon.m4a",
+          "file:D:\\rafa\\pinho music\\the idea of you mxmtoon - 2.m4a",
+          "file:D:\\rafa\\pinho music\\taKe.m4a"
+        ],
+        "status": "satisfied",
+        "reason_code": null
+      },
+      "rows_with_required_identity": 100,
+      "rows_missing_required_identity": 0,
+      "value_counts_by_column": {
+        "filename": 100,
+        "extension": 100,
+        "tamanho": 100,
+        "codec": 41,
+        "container": 41,
+        "bitrate": 41,
+        "sample_rate": 41,
+        "canais": 41,
+        "duration": 41,
+        "metadata": 41,
+        "artwork": 10
+      },
+      "absence_counts_by_column": {
+        "artwork": {
+          "unknown": 31,
+          "": 59
+        },
+        "observa_es": {
+          "": 100
+        },
+        "codec": {
+          "": 59
+        },
+        "container": {
+          "": 59
+        },
+        "bitrate": {
+          "": 59
+        },
+        "sample_rate": {
+          "": 59
+        },
+        "canais": {
+          "": 59
+        },
+        "duration": {
+          "": 59
+        },
+        "metadata": {
+          "": 59
+        }
+      },
+      "missing_required_row_values": {
+        "artwork": 90,
+        "metadata": 59
+      },
+      "reason_codes": [
+        "ARTIFACT_RENDERED_COLUMNS_MISSING",
+        "ARTIFACT_REQUIRED_ROW_VALUES_PARTIAL"
+      ],
+      "limitations": [
+        "row_values_include_unknown_or_unavailable_states"
+      ],
+      "truth_eligible": false,
+      "metadata": {
+        "source": "row_level_semantic_validation",
+        "filesystem_observed": false,
+        "renderer_observer": false
+      }
+    },
+    "evidence_phase1": {
+      "status": "ready",
+      "validation_status": "validated",
+      "semantic_contract_status": "satisfied",
+      "safe_to_use": true,
+      "reason_code": null,
+      "size_bytes": 210609
+    }
+  },
+  "validation_completion_truth": {
+    "validation_status": "blocked",
+    "validation_reason_code": "TASKRUN_LIFECYCLE_TIMEOUT",
+    "completion_status": "blocked",
+    "completion_safe_to_report_success": false,
+    "truth_status": "blocked",
+    "truth_safe_to_report_success": false,
+    "truth_can_claim_success": null
+  },
+  "endpoint_timings": [
+    {
+      "endpoint": "summary",
+      "status": 200,
+      "ms": 2789,
+      "bytes": 6106
+    },
+    {
+      "endpoint": "result",
+      "status": 200,
+      "ms": 20,
+      "bytes": 15111
+    },
+    {
+      "endpoint": "truth",
+      "status": 200,
+      "ms": 27,
+      "bytes": 1246
+    },
+    {
+      "endpoint": "artifacts",
+      "status": 200,
+      "ms": 65,
+      "bytes": 27661
+    },
+    {
+      "endpoint": "events",
+      "status": 200,
+      "ms": 69,
+      "bytes": 56853
+    }
+  ],
+  "tests": {
+    "focused": "8 passed",
+    "focused_plus_regression_slice": "18 passed in 59.99s",
+    "integrated_regression": "89 passed in 77.87s",
+    "py_compile": "PASS",
+    "anti_hardcode": "PASS for changed production files"
+  },
+  "changed_files": [
+    "src/aipinho/services/runtime/phase_semantic_completion_policy.py",
+    "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "src/aipinho/services/runtime/task_run_store.py",
+    "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py",
+    "src/aipinho/schemas/runtime/task_completion.py",
+    "tests/unit/test_phase1_semantic_completion_policy.py",
+    "tests/unit/test_partial_artifact_acceptance_policy.py",
+    "tests/unit/test_terminal_completion_not_null.py",
+    "tests/unit/test_cvl_phase1_partial_completion_frontier.py"
+  ],
+  "recommended_patch_points": [
+    "Make semantic completion finalization execute before lifecycle timeout repair when artifacts are already materialized.",
+    "Preserve MUSIC_INVENTORY_PARTIAL_NOT_ACCEPTED_BY_PHASE_CONTRACT or completed_with_limitations as the terminal reason instead of TASKRUN_LIFECYCLE_TIMEOUT when no real runtime timeout evidence is dominant.",
+    "Keep result persistence idempotent and lightweight; do not reopen root binding/entity selection/renderer."
+  ]
+}

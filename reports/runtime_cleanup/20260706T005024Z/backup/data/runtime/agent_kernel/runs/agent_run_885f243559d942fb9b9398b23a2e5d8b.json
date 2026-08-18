@@ -1,0 +1,102 @@
+{
+  "run_id": "agent_run_885f243559d942fb9b9398b23a2e5d8b",
+  "session_id": "agent_session_465bb66bfaf74a3aae816e6bb73c4549",
+  "agent_id": "gemini",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "blocked",
+  "operation_type": "workspace_operation",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [
+    "read_workspace",
+    "scan_workspace",
+    "create_file",
+    "workspace_write"
+  ],
+  "started_at": "2026-06-15T03:39:15+00:00",
+  "completed_at": "2026-06-15T03:39:15+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": "gemini_executor_policy_blocked",
+  "metadata_sanitized": {
+    "policy": {
+      "allowed": false,
+      "reasons": [
+        "operation_not_allowed_by_workspace_role"
+      ],
+      "requires_approval": true,
+      "workspace": {
+        "status": "allowed",
+        "contract": {
+          "workspace_id": "aipinho_test_area",
+          "root_path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes",
+          "role": "target_mutable",
+          "read_allowed": true,
+          "write_allowed": true,
+          "shell_allowed": true,
+          "patch_allowed": true,
+          "approval_required": true,
+          "allowed_operations": [
+            "read_workspace",
+            "create_file",
+            "modify_file",
+            "apply_patch",
+            "run_shell_readonly",
+            "run_shell_test",
+            "run_shell_build"
+          ],
+          "forbidden_operations": [
+            "delete_file",
+            "move_file",
+            "git_write_shell",
+            "destructive_shell"
+          ],
+          "max_risk_without_approval": "low",
+          "human_label": "AIpinho governed test workspace",
+          "reason": "Target workspace authorized for governed test writes.",
+          "evidence": [
+            "operator_authorized_governed_execution"
+          ],
+          "matched_root": "C:\\Users\\rafae\\Documents\\AIpinhoTestes",
+          "path_within_workspace": true
+        },
+        "reason": "Target workspace authorized for governed test writes.",
+        "warnings": [],
+        "trace": [
+          {
+            "stage": "workspace_role_contract",
+            "decision": "allowed",
+            "reason": "Target workspace authorized for governed test writes.",
+            "source": "C:\\Dev\\AIpinho\\config\\workspaces\\workspace_registry.yaml",
+            "data": {
+              "workspace_id": "aipinho_test_area",
+              "role": "target_mutable",
+              "selection_rule": "longest_path_then_deny_override",
+              "candidates": [
+                {
+                  "workspace_id": "aipinho_test_area",
+                  "root_path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes",
+                  "role": "target_mutable",
+                  "root_length": 38,
+                  "restrictiveness": 2
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "blocked_capabilities": [
+        "scan_workspace"
+      ]
+    }
+  }
+}

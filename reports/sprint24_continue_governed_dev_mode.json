@@ -1,0 +1,27 @@
+{
+  "sprint": "24",
+  "name": "Continue Governed Dev Mode",
+  "verdict": "SPRINT24_CONTINUE_GOVERNED_DEV_READY_WITH_WARNINGS",
+  "tests": {
+    "pytest": "40 passed in 11.66s",
+    "py_compile": "passed"
+  },
+  "implemented_or_verified": [
+    "Continue governed_dev policy",
+    "conversation and math responses",
+    "capability-aware answers",
+    "attached context detection",
+    "write and shell approval flow",
+    "streaming SSE non-empty responses",
+    "model_route_decision metadata"
+  ],
+  "warnings": [
+    "VSCode visual smoke not executed in this run"
+  ],
+  "security": {
+    "openai_paid_called": false,
+    "direct_write_enabled": false,
+    "direct_shell_enabled": false,
+    "approval_required_for_side_effects": true
+  }
+}

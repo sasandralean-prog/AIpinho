@@ -1,0 +1,1190 @@
+schema_version: 1
+
+operation_order:
+  - product_planning_readonly
+  - session_execution_report
+  - workspace_readonly_audit_report
+  - session_diagnostic
+  - workspace_permission_list
+  - permission_status
+  - workspace_metadata_query
+  - governed_configuration_change
+  - dangerous_operation
+  - brainstorming_conversation
+  - local_file_read
+  - contextual_file_append
+  - sandbox_capability_test
+  - attachment_required_missing
+  - sandbox_batch_artifact_request
+  - workspace_evidence_bundle
+  - governed_change_plan
+  - governed_file_write
+  - governed_project_rebuild
+  - workspace_artifact_write_request
+  - filesystem_archive_request
+  - artifact_request
+  - readonly_analysis_with_artifact_output
+  - readonly_project_analysis
+  - public_fact_query
+  - operational_task_request
+  - followup_result_review
+  - followup_result_recall
+  - simple_conversation
+
+operations:
+  product_planning_readonly:
+    min_signal_matches: 2
+    explicit_intent_terms:
+      - product_planning_readonly
+      - planning_readonly
+      - analysis_only
+      - read_only_plan
+    planning_terms:
+      - somente planejamento textual
+      - analise de produto
+      - análise de produto
+      - relatorio e plano de acao
+      - relatório e plano de ação
+      - plano de acao
+      - plano de ação
+      - plano em sprints
+      - sprints
+      - roadmap
+      - backlog
+      - requisitos
+    safety_terms:
+      - nao implementar nada agora
+      - não implementar nada agora
+      - nao escrever arquivos
+      - não escrever arquivos
+      - nao criar approvalrequest
+      - não criar approvalrequest
+      - nao criar approval request
+      - não criar approval request
+      - nao criar taskpreview
+      - não criar taskpreview
+      - nao criar task preview
+      - não criar task preview
+      - nao criar grant
+      - não criar grant
+      - isto nao e pedido para criar grant
+      - isto não é pedido para criar grant
+      - isto nao e pedido para escrever arquivo
+      - isto não é pedido para escrever arquivo
+      - isto nao e configchangerequest
+      - isto não é configchangerequest
+  workspace_permission_list:
+    min_signal_matches: 2
+    action_terms:
+      - liste
+      - listar
+      - mostre
+      - mostrar
+      - quais
+      - qual
+      - pode listar
+    target_terms:
+      - workspaces aprovados
+      - workspace aprovados
+      - workspaces aprovados para escrita
+      - diretorios posso escrever
+      - diretórios posso escrever
+      - diretorios aprovados
+      - diretórios aprovados
+      - permissoes de workspace
+      - permissões de workspace
+      - workspace registry
+      - grants de workspace
+      - workspaces registrados
+      - diretorios com permissao
+      - diretórios com permissão
+  workspace_metadata_query:
+    min_signal_matches: 2
+    action_terms:
+      - leia
+      - ler
+      - liste
+      - listar
+      - mostre
+      - mostrar
+      - verifique
+      - verificar
+      - confira
+      - conferir
+      - existe
+      - existem
+      - quais
+    metadata_terms:
+      - metadados
+      - metadata
+      - workspace
+      - diretorio
+      - diretorio
+      - pasta
+      - arquivos
+      - arquivo
+      - entrada
+      - entradas
+      - entrypoint
+      - entrypoints
+    no_write_terms:
+      - nao crie
+      - nao gere
+      - nao escreva
+      - nao salve
+      - nao altere
+      - nao modifique
+      - sem criar
+      - sem gerar
+      - sem escrever
+      - sem alterar
+      - somente leitura
+      - apenas leitura
+      - read-only
+      - readonly
+      - leia apenas
+      - apenas metadados
+      - somente metadados
+    chat_only_terms:
+      - responda somente no chat
+      - responda apenas no chat
+      - somente no chat
+      - apenas no chat
+      - resposta no chat
+    entrypoint_patterns:
+      - package.json
+      - build.gradle
+      - settings.gradle
+      - pyproject.toml
+      - requirements.txt
+      - pom.xml
+      - Cargo.toml
+      - go.mod
+      - src
+      - app
+      - main.py
+      - README.md
+  governed_change_plan:
+    min_action_matches: 1
+    min_preview_matches: 1
+    min_defer_matches: 1
+    action_terms:
+      - prepare
+      - preparar
+      - crie
+      - criar
+      - gere
+      - gerar
+      - proponha
+      - propor
+    preview_terms:
+      - patch preview
+      - preview governado
+      - plano de patch
+      - proposta de patch
+      - diff preview
+      - gere preview
+      - gerar preview
+      - preview e plano
+      - plano de correcao
+      - plano de correção
+    defer_terms:
+      - ainda nao aplique
+      - nao aplique
+      - sem aplicar
+      - antes de alterar
+      - antes de escrever
+      - somente preview
+      - apenas preview
+  session_execution_report:
+    min_report_matches: 1
+    min_execution_matches: 1
+    report_terms:
+      - relatorio final
+      - report final
+      - fechamento
+      - resumo final
+      - resultado final
+      - relatorio honesto
+      - report honesto
+    execution_terms:
+      - execucao
+      - execution
+      - supervisionada
+      - teste de fogo
+      - apply
+      - approval
+      - validation
+      - validacao
+      - patch
+      - arquivos criados
+      - riscos
+  workspace_readonly_audit_report:
+    min_action_matches: 1
+    min_target_matches: 1
+    min_output_matches: 1
+    action_terms:
+      - prepare
+      - preparar
+      - regenere
+      - regenerar
+      - atualize
+      - atualizar
+      - planeje
+      - planejar
+      - investigue
+      - investigar
+      - audite
+      - auditar
+      - mapeie
+      - mapear
+      - procure
+      - procurar
+      - analise
+      - analisar
+      - diagnostique
+      - diagnosticar
+    target_terms:
+      - teste
+      - testes
+      - e2e
+      - integration
+      - unit
+      - codigo
+      - code
+      - config
+      - policy
+      - policies
+      - schema
+      - schemas
+      - router
+      - service
+      - services
+      - workspace
+      - workspaces
+      - runtime
+      - apk
+      - build
+      - bundle
+      - gradle
+      - patch
+      - plano
+      - planejamento
+      - correcao
+      - correção
+      - erro
+      - arquivo
+      - arquivos
+      - gate
+      - gates
+    output_terms:
+      - gere relatorio
+      - gerar relatorio
+      - relatorio em
+      - report em
+      - gere report
+      - generate report
+      - reports/
+      - reports\
+    no_write_terms:
+      - nao altere
+      - não altere
+      - nao corrija
+      - não corrija
+      - read-only
+      - readonly
+      - somente leitura
+      - sem alterar
+  project_bootstrap:
+    min_action_matches: 1
+    min_context_matches: 1
+    action_terms:
+      - iniciar projeto
+      - inicie projeto
+      - iniciar sprint
+      - criar projeto
+      - crie projeto
+      - implementar mvp
+      - implemente mvp
+      - criar blueprint
+      - crie blueprint
+      - criar taskpreview
+      - crie taskpreview
+      - criar task preview
+      - crie task preview
+      - criar approvalrequest
+      - crie approvalrequest
+      - criar approval request
+      - crie approval request
+      - criar preview
+      - crie preview
+      - aplicar patch
+      - aplique patch
+    context_terms:
+      - projeto
+      - studio
+      - workspace
+      - blueprint
+      - taskpreview
+      - task preview
+      - approvalrequest
+      - approval request
+      - approval
+      - governanca
+      - governança
+      - mvp
+      - sprint
+      - patch
+    negative_constraints:
+      - no_write_before_approval
+      - no_shell_before_approval
+      - no_reuse_old_approval
+      - no_false_ready
+  governed_project_rebuild:
+    min_action_matches: 1
+    min_context_matches: 1
+    action_terms:
+      - execute
+      - executar
+      - implemente
+      - implementar
+      - construa
+      - construir
+      - crie
+      - criar
+      - prossiga
+      - continuar
+      - continue
+      - corrija
+      - corrigir
+      - sincronize
+      - sincronizar
+      - atualize
+      - atualizar
+      - aplique
+      - aplicar
+      - patch
+      - preview governado
+      - gere um novo preview
+      - gerar um novo preview
+    context_terms:
+      - workspace alvo
+      - alvo
+      - target
+      - projeto novo
+      - rebuild
+      - reconstruir
+      - portabilidade
+      - sprint
+      - plano
+      - planejamento
+      - fluxo governado
+      - preview
+      - patch governado
+      - sincronizar alvo
+      - workspace alvo
+      - corrigindo apenas
+      - fluxo seguro
+      - approval
+      - aprovacao
+      - aprovaÃ§Ã£o
+      - validacao
+      - validaÃ§Ã£o
+    implementation_action_terms:
+      - implemente
+      - implementar
+      - corrija
+      - corrigir
+      - ajuste
+      - ajustar
+      - modifique
+      - modificar
+      - altere
+      - alterar
+      - aplique
+      - aplicar
+      - rode
+      - rodar
+      - execute
+      - executar
+    implementation_context_terms:
+      - bug
+      - correcao
+      - codigo
+      - fonte
+      - funcao
+      - teste
+      - build
+      - check
+      - persistencia
+      - load
+      - save
+      - app
+      - projeto
+      - validacao
+    implementation_execution_terms:
+      - rode
+      - rodar
+      - execute
+      - executar
+      - test
+      - teste
+      - build
+      - check
+      - compile
+      - compilar
+  phase_resume_implementation:
+    action_terms:
+      - continue
+      - continuar
+      - prossiga
+      - prosseguir
+      - inicie as proximas fases
+      - iniciar proximas fases
+      - implemente
+      - implementar
+      - comece a escrever
+      - comece a implementar
+      - com base no relatorio
+      - a partir do preflight
+      - a partir do relatorio
+    evidence_terms:
+      - relatorio
+      - report
+      - preflight
+      - auditoria
+      - diagnostic
+      - diagnostico
+      - mvp
+    next_phase: implementation_plan
+    evidence_globs:
+      - reports/*preflight*.md
+      - reports/*diagnos*.md
+      - reports/*audit*.md
+      - reports/*auditoria*.md
+  workspace_artifact_write_request:
+    action_terms:
+      - salve
+      - salvar
+      - grave
+      - gravar
+      - escreva
+      - escrever
+    destination_terms:
+      - dentro de
+      - dentro do
+      - dentro da
+      - no diretorio
+      - no diretório
+      - na pasta
+      - nesse diretorio
+      - nesse diretório
+      - nessa pasta
+  permission_status:
+    min_matches: 2
+    fuzzy_target_threshold: 0.78
+    action_terms:
+      - liste
+      - listar
+      - mostre
+      - mostrar
+      - explique
+      - informar
+      - informe
+      - quais
+      - qual
+    permission_terms:
+      - permissao
+      - permissoes
+      - permitido
+      - permitidos
+      - permitida
+      - permitidas
+      - autorizados
+      - autorizado
+      - autorizada
+      - autorizadas
+      - capabilities
+      - capability
+      - policy
+      - policies
+      - registrado
+      - registrados
+      - registrada
+      - registradas
+      - configurado
+      - configurados
+      - configurada
+      - configuradas
+    target_terms:
+      - diretorios
+      - diretorio
+      - roots
+      - raiz
+      - raizes
+      - workspaces
+      - workspace
+      - pastas
+      - pasta
+      - ler
+      - leitura
+      - escrever
+      - escrita
+      - patch
+      - artifact
+      - artefato
+      - shell
+      - network
+      - rede
+  governed_configuration_change:
+    action_terms:
+      - configure
+      - configurar
+      - altere
+      - alterar
+      - ajuste
+      - ajustar
+      - libere
+      - liberar
+      - habilite
+      - habilitar
+      - permita
+      - permitir
+      - registre
+      - registrar
+      - adicione
+      - adicionar
+      - remova
+      - remover
+      - desabilite
+      - desabilitar
+    target_terms:
+      policy:
+        - policy
+        - policies
+        - politica
+        - politicas
+        - permissao
+        - permissoes
+        - approval
+        - autoapproval
+        - gate
+        - gates
+      contract:
+        - contrato
+        - contratos
+        - contract
+        - contracts
+        - success contract
+        - capability contract
+        - task contract
+      config:
+        - config
+        - configs
+        - configuracao
+        - configuracoes
+        - yaml
+        - json
+        - runtime
+      workspace:
+        - workspace
+        - workspaces
+        - diretorio
+        - diretorios
+        - pasta
+        - pastas
+        - raiz
+        - raizes
+        - roots
+        - leitura
+        - escrita
+        - shell
+  dangerous_operation:
+    destructive_terms:
+      - apague
+      - apagar
+      - delete
+      - deletar
+      - remova
+      - remover
+      - exclua
+      - excluir
+      - recursivamente
+      - recursive
+      - permanently
+      - permanente
+    git_write_terms:
+      - git push
+      - push automaticamente
+      - commit automaticamente
+      - git commit
+      - git reset
+      - force push
+    target_terms:
+      - diretorio
+      - pasta
+      - projeto
+      - workspace
+      - arquivo
+      - git
+  brainstorming_conversation:
+    action_terms:
+      - ideia
+      - ideias
+      - sugestao
+      - sugestoes
+      - brainstorm
+      - conceito
+    defer_terms:
+      - para eu criar depois
+      - criar depois
+      - fazer depois
+      - implementar depois
+      - mais tarde
+      - futuramente
+  local_file_read:
+    action_terms:
+      - leia
+      - ler
+      - read
+      - abrir
+      - abra
+      - confirme
+      - mostrar
+      - mostre
+    content_terms:
+      - conteudo
+      - conteúdo
+      - arquivo
+      - file
+      - texto
+  contextual_file_append:
+    action_terms:
+      - adicione
+      - adicionar
+      - acrescente
+      - acrescentar
+      - append
+      - inclua
+      - incluir
+    reference_terms:
+      - mesmo arquivo
+      - arquivo anterior
+      - nesse arquivo
+      - neste arquivo
+      - no arquivo
+      - same file
+  sandbox_capability_test:
+    action_terms:
+      - teste
+      - testar
+      - test
+      - verifique
+      - verificar
+    capability_terms:
+      - consegue
+      - pode
+      - capaz
+      - capability
+      - permissao
+      - permissões
+      - sandbox
+    write_terms:
+      - escrever
+      - criar
+      - crie
+      - arquivo
+      - write
+      - create
+  attachment_required_missing:
+    requirement_terms:
+      - anexo obrigatorio
+      - anexo obrigatório
+      - attachment obrigatorio
+      - attachment required
+      - com anexo obrigatorio
+      - com anexo obrigatório
+      - precisa de anexo
+      - requer anexo
+  governed_file_write:
+    min_action_matches: 1
+    action_terms:
+      - crie
+      - criar
+      - gere
+      - gerar
+      - salve
+      - salvar
+      - grave
+      - gravar
+      - escreva
+      - escrever
+      - coloque
+      - colocar
+      - adicione
+      - adicionar
+      - create
+      - write
+      - save
+    modify_action_terms:
+      - modifique
+      - modificar
+      - altere
+      - alterar
+      - atualize
+      - atualizar
+      - edite
+      - editar
+      - adicione
+      - adicionar
+      - inclua
+      - incluir
+      - append
+      - update
+      - modify
+      - edit
+    ui_visible_text_terms:
+      - texto visivel
+      - texto visivel
+      - frase visivel
+      - mensagem visivel
+      - texto discreto
+      - texto de status
+      - mensagem de status
+      - status text
+      - status message
+      - visible text
+      - visible message
+    ui_surface_terms:
+      - tela
+      - dashboard
+      - boas-vindas
+      - boas vindas
+      - welcome
+      - home
+      - inicio
+      - app
+      - aplicativo
+      - interface
+      - ui
+      - ux
+    file_terms:
+      - arquivo
+      - ficheiro
+      - file
+      - documento
+      - relatorio
+      - relatório
+      - report
+      - txt
+      - md
+      - json
+  governed_shell_request:
+    min_action_matches: 1
+    min_command_matches: 1
+    action_terms:
+      - rode
+      - rodar
+      - execute
+      - executar
+      - run
+    command_terms:
+      - shell
+      - terminal
+      - comando
+      - command
+      - npm
+      - pytest
+      - python
+      - gradle
+      - mvn
+      - powershell
+      - cmd
+    approval_scope: governed_shell
+  sandbox_batch_artifact_request:
+    min_action_matches: 1
+    action_terms:
+      - crie
+      - criar
+      - gere
+      - gerar
+      - prepare
+      - preparar
+    directory_terms:
+      - pasta
+      - diretorio
+      - diretório
+      - folder
+      - directory
+    file_terms:
+      - arquivo
+      - arquivos
+      - txt
+      - md
+      - json
+    package_terms:
+      - zip
+      - compacte
+      - compactar
+      - arquivo zip
+  workspace_evidence_bundle:
+    action_terms:
+      - crie
+      - criar
+      - gere
+      - gerar
+      - prepare
+      - preparar
+      - execute
+      - executar
+    bundle_terms:
+      - pacote de evidencias
+      - pacote final
+      - evidence bundle
+      - resumo final
+      - relatorio final
+      - empacote
+      - empacotar
+      - compacte
+      - compactar
+      - arquivo zip
+      - zip
+      - zip deve incluir
+      - zip deve conter
+    include_terms:
+      - inclua
+      - incluir
+      - incluindo
+      - deve incluir
+      - deve conter
+      - contendo
+  session_diagnostic:
+    min_matches: 2
+    anchor_terms:
+      - conversa
+      - chat
+      - timeline
+      - mensagem
+      - resposta
+      - session
+      - sessao
+      - raw
+      - truncado
+      - viewmodel
+      - historico
+    terms:
+      - diagnostique
+      - investigar
+      - investigue
+      - bug
+      - erro
+      - incoerencia
+      - inconsistencia
+      - timeline
+      - mensagem
+      - conversa
+      - resposta
+      - session
+      - sessao
+      - raw
+      - truncado
+      - viewmodel
+      - persistencia
+      - historico
+  artifact_request:
+    require_any_group:
+      - create_terms
+      - package_terms
+    create_terms:
+      - crie
+      - criar
+      - gere
+      - gerar
+      - prepare
+      - preparar
+      - salve
+      - salvar
+      - grave
+      - gravar
+      - envie
+      - mandar
+      - baixar
+      - download
+      - solicito
+      - solicitar
+      - quero
+      - preciso de
+    package_terms:
+      - zip
+      - em um arquivo
+      - como arquivo
+      - arquivo para baixar
+      - arquivo baixavel
+      - arquivo baixável
+      - arquivo de resposta
+      - resposta.txt
+      - txt
+      - anexo
+      - baixavel
+      - baixável
+      - link
+  filesystem_archive_request:
+    require_artifact_request: true
+    require_explicit_path: true
+    source_terms:
+      - todos os arquivos
+      - todos arquivos
+      - pasta com todos
+      - contendo a pasta
+      - contendo os arquivos
+      - arquivos do projeto
+      - pasta inteira
+      - diretorio inteiro
+      - diretório inteiro
+      - zip da pasta
+      - zip dos arquivos
+      - compacte a pasta
+      - compactar a pasta
+      - inclua a pasta
+      - incluir a pasta
+      - inclua os arquivos
+      - incluir os arquivos
+      - arquivo separado
+      - arquivos separados
+  readonly_project_analysis:
+    require_path_or_project_term: true
+    analysis_terms:
+      - analise
+      - analisar
+      - resuma
+      - resumo
+      - explique
+      - verifique
+      - diagnostique
+      - mapear
+      - revisar
+    project_terms:
+      - projeto
+      - project
+      - source
+      - repository
+      - repositorio
+      - repositÃ³rio
+      - workspace
+      - pasta
+      - diretorio
+      - diretório
+      - codigo
+      - código
+    readonly_terms:
+      - nao altere
+      - não altere
+      - sem alterar
+      - apenas leia
+      - somente leitura
+      - read-only
+      - readonly
+  public_fact_query:
+    search_terms:
+      - pesquise na internet
+      - pesquisar na internet
+      - busque na web
+      - buscar na web
+      - procure na internet
+      - noticias recentes
+      - notícias recentes
+    fact_terms:
+      - governador
+      - governadores
+      - prefeito
+      - presidente
+      - ministro
+      - atual
+      - recentes
+      - ultimos
+      - últimos
+      - versao atual
+      - versão atual
+      - kotlin
+      - android studio
+      - lei
+      - leis
+      - documentacao
+      - documentação
+    question_terms:
+      - quem
+      - quais
+      - qual
+      - quando
+      - onde
+      - como
+    list_terms:
+      - nome
+      - nomes
+      - liste
+      - listar
+      - enumere
+      - enumerar
+      - cite
+      - citar
+      - resuma
+      - resumir
+    knowledge_terms:
+      - historia
+      - histórico
+      - historico
+      - eras
+      - era
+      - periodos
+      - períodos
+      - dinastias
+      - governos
+      - governantes
+      - reis
+      - imperadores
+      - presidentes
+      - cargos
+      - pais
+      - país
+      - estado
+      - cidade
+  operational_task_request:
+    min_action_matches: 1
+    min_target_matches: 1
+    action_terms:
+      - crie
+      - criar
+      - gere
+      - gerar
+      - implemente
+      - implementar
+      - construa
+      - construir
+      - compile
+      - compilar
+      - empacote
+      - empacotar
+      - rode
+      - rodar
+      - execute
+      - executar
+      - corrija
+      - corrigir
+      - conserte
+      - consertar
+      - arrume
+      - resolver
+      - resolva
+    target_terms:
+      - pasta
+      - diretorio
+      - diretório
+      - projeto
+      - app
+      - aplicativo
+      - android
+      - kotlin
+      - jogo
+      - game
+      - apk
+      - build
+      - wrapper
+      - gradle
+      - arquivo
+      - ficheiro
+      - workspace
+    build_terms:
+      - apk
+      - build
+      - compile
+      - compilar
+      - wrapper
+      - gradle
+    capability_hints:
+      create_directory:
+        terms:
+          - pasta
+          - diretorio
+          - diretório
+        actions:
+          - create_directory
+      create_project:
+        terms:
+          - projeto
+          - app
+          - aplicativo
+          - android
+          - kotlin
+          - jogo
+          - game
+        actions:
+          - create_project
+          - write_files
+      build_artifact:
+        terms:
+          - apk
+          - build
+          - compile
+          - compilar
+          - wrapper
+          - gradle
+        actions:
+          - run_build
+          - create_artifact
+  followup_result_recall:
+    min_matches: 1
+    terms:
+      - repita
+      - repetir
+      - mostre novamente
+      - me mostre
+      - envie novamente
+      - qual foi
+      - cadê
+      - cade
+      - resumo anterior
+      - resposta anterior
+      - resultado anterior
+    recall_kinds:
+      answer:
+        terms:
+          - resposta
+          - resultado
+      summary:
+        terms:
+          - resumo
+          - sumario
+          - relatorio
+          - analise
+  followup_result_review:
+    min_action_matches: 1
+    min_reference_matches: 1
+    action_terms:
+      - revise
+      - revisar
+      - revisao
+      - revisão
+      - avalie
+      - avaliar
+      - critica
+      - critique
+      - verifique
+      - validar
+      - valide
+    reference_terms:
+      - plano
+      - planejamento
+      - resultado
+      - resposta
+      - relatorio
+      - relatório
+      - analise
+      - análise
+      - anterior
+      - ultimo
+      - último
+      - gerado
+      - macro
+      - sprint
+      - execucao
+      - execução

@@ -1,0 +1,26 @@
+{
+  "wave": "H1C0.R2.14",
+  "scope": "project_analysis_reconciliation",
+  "verdict": "preserved",
+  "baseline_requirement": "Do not reopen ProjectAnalysis media corpus handoff unless a direct regression is observed.",
+  "public_validation": {
+    "task_run_id": "task_run_b8b2925ff06b4682938f28f3ec7af356",
+    "artifact_creation_started_count": 3,
+    "artifact_created_count": 2,
+    "music_inventory_reached": true,
+    "source_binding_frontier_reached": true,
+    "project_analysis_blocker": "not_observed_as_final_blocker",
+    "final_blocker": "MUSIC_INVENTORY_ARTIFACT_PERSIST_STALLED"
+  },
+  "reconciliation": {
+    "project_analysis_media_handoff_reopened": false,
+    "root_binding_reopened": false,
+    "source_readable_vs_inventory_eligible_policy_changed": false,
+    "artifact_runtime_continuation_preserved": true,
+    "observed_regression": false
+  },
+  "evidence": [
+    "firetest5_h1c0_r2_14_clean_phase0_to_6_validation_rerun.json",
+    "firetest5_h1c0_r2_14_source_binding_stage_trace.json"
+  ]
+}

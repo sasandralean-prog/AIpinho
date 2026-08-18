@@ -1,0 +1,105 @@
+schema_version: 1
+decisions:
+  event_contract_validation:
+    owner: event_contract_registry
+  speaker_truth:
+    owner: speaker_truth_policy
+  artifact_download:
+    owner: artifact_registry
+  token_auth:
+    owner: token_auth_service
+  feedback_persistence:
+    owner: feedback_service
+rules:
+  duplicate_owner_blocked: true
+  missing_owner_degraded: true
+context_kernel:
+  context_admission_owner: context_kernel
+  bundle_builder_owner: context_kernel
+  prompt_context_owner: context_kernel
+  role_builds_own_final_context: false
+  ui_builds_prompt_context: false
+decision_ownership:
+  skill_selection:
+    owner: skill_router
+    validators:
+    - policy_kernel
+    - capability_gate
+    - context_kernel
+  skill_execution_allowed:
+    owner: policy_kernel
+    validators:
+    - capability_gate
+    - approval_policy
+    - tool_policy
+  skill_tool_access:
+    owner: tool_policy
+    validators:
+    - capability_gate
+    - skill_contract_validator
+  skill_context_admission:
+    owner: context_kernel
+    validators:
+    - skill_contract_validator
+  skill_output_valid:
+    owner: skill_output_validator
+    validators:
+    - validation_gate
+  maintenance_diagnosis:
+    owner: maintenance_plane
+    validators:
+    - debugger
+    - event_contract_registry
+    - context_kernel
+  invariant_evaluation:
+    owner: invariant_checker
+    validators:
+    - policy_kernel
+    - validation_gate
+  repair_proposal:
+    owner: repair_planner
+    validators:
+    - policy_kernel
+    - capability_gate
+    - context_kernel
+  repair_execution_allowed:
+    owner: policy_kernel
+    validators:
+    - capability_gate
+    - approval_policy
+    - validation_gate
+  maintenance_patch_preview:
+    owner: patch_planning_pipeline
+    validators:
+    - patch_quality_gate
+    - repair_planner
+  maintenance_final_status:
+    owner: validation_gate
+    validators:
+    - task_runtime
+    - maintenance_plane
+  replay_capture:
+    owner: replay_harness
+    validators:
+    - event_contract_registry
+    - debugger
+  replay_sanitization:
+    owner: replay_sanitizer
+    validators:
+    - security_policy
+    - raw_policy
+  regression_expectation:
+    owner: regression_harness
+    validators:
+    - validation_gate
+    - maintenance_plane
+  regression_result:
+    owner: regression_runner
+    validators:
+    - regression_comparator
+    - validation_gate
+  regression_promotion:
+    owner: regression_case_manager
+    validators:
+    - approval_policy
+    - maintenance_plane

@@ -1,0 +1,6 @@
+schema_version: 1
+invariants:
+  enabled: true
+  read_only: true
+  unknown_invariant: blocked
+  critical_violation_blocks_handoff: true

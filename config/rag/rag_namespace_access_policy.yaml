@@ -1,0 +1,6 @@
+schema_version: 1
+
+access:
+  block_cross_role_namespace: true
+  model_cannot_select_namespace: true
+  unknown_namespace_default: block

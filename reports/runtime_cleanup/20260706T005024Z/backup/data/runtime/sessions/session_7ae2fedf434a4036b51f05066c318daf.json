@@ -1,0 +1,48 @@
+{
+  "session_id": "session_7ae2fedf434a4036b51f05066c318daf",
+  "status": "active",
+  "created_at": "2026-06-18T18:49:21.999197+00:00",
+  "updated_at": "2026-06-18T18:49:22.044765+00:00",
+  "expires_at": "2026-06-18T22:49:21.999197+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Corrija C:\\Windows",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_db3950575f0c48f3bb5e606931516740",
+    "intent_type": "patch_request",
+    "task_type": "patch_request",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Windows",
+      "declared": true,
+      "protected": true
+    }
+  },
+  "last_policy_decision": {
+    "status": "denied",
+    "contract_type": "patch_request",
+    "allowed_actions": [],
+    "denied_actions": [
+      "apply_patch",
+      "patch_preview"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [
+    "requires_clarification",
+    "protected_workspace_detected"
+  ],
+  "trace_refs": []
+}

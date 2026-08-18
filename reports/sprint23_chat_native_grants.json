@@ -1,0 +1,41 @@
+{
+  "sprint": "23",
+  "name": "Chat-Native Permission Grants e Approval Flow Multicanal",
+  "verdict": "SPRINT23_CHAT_NATIVE_GRANTS_READY_WITH_UX_BACKLOG",
+  "implemented": [
+    "SessionGrant schema",
+    "SessionGrantService runtime store",
+    "ChatPermissionGrantService natural-language parser",
+    "APROVAR/NEGAR GRANT textual commands",
+    "ChatService integration before operational routing",
+    "Config grant permanent request preview without automatic policy mutation"
+  ],
+  "files_changed": [
+    "src/aipinho/schemas/interaction/session_grant.py",
+    "src/aipinho/services/chat/session_grant_service.py",
+    "src/aipinho/services/chat/chat_permission_grant_service.py",
+    "src/aipinho/services/chat/chat_approval_command_service.py",
+    "src/aipinho/services/chat/chat_service.py",
+    "tests/unit/test_session_grant_service.py",
+    "tests/unit/test_chat_permission_grant_service.py"
+  ],
+  "tests": {
+    "py_compile": "passed",
+    "pytest": "7 passed in 1.64s",
+    "commands": [
+      "python -m py_compile <changed python files>",
+      "python -m pytest tests/unit/test_session_grant_service.py tests/unit/test_chat_permission_grant_service.py -q"
+    ]
+  },
+  "security": {
+    "persistent_config_mutation": false,
+    "side_effect_execution": false,
+    "delete_requires_explicit_strong_phrase": true,
+    "temporary_grants_are_scoped": true
+  },
+  "backlog": [
+    "Dedicated UX cards for grant requests in Mobile/Launcher",
+    "Optional /grants pending endpoint for Pipeline aggregation",
+    "Capability gate consumption of approved SessionGrant records"
+  ]
+}

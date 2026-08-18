@@ -1,0 +1,17 @@
+schema_version: 1
+
+semantic_runtime:
+  semantic_runtime_enabled: true
+  mode: parallel_isr_only
+  output: intermediate_semantic_representation
+
+semantic_interpreter:
+  role_id: semantic_interpreter
+  capability: semantic_understanding
+  creates_contracts: false
+  executes_runtime: false
+  calls_tools: false
+  calls_skills: false
+  writes_files: false
+  applies_patches: false
+  output_contract: semantic_interpreter_output

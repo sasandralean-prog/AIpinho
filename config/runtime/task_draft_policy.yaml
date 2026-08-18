@@ -1,0 +1,26 @@
+schema_version: 1
+
+task_drafts:
+  enabled: true
+  store: local_json
+  ttl_minutes: 240
+  max_drafts_per_session: 20
+  create_for_intents:
+    - readonly_analysis
+    - artifact_generation
+    - patch_request
+    - validation_request
+  never_create_for_intents:
+    - conversation
+    - self_analysis
+    - capability_explanation
+    - in_chat_final_report
+  safe_to_execute_default: false
+  require_policy_preview: true
+  require_workspace_confirmation: true
+
+safety:
+  forbidden_root_blocks_draft: true
+  ambiguity_blocks_ready_state: true
+  unknown_action_blocks_ready_state: true
+  side_effects_require_approval: true

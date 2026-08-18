@@ -1,0 +1,45 @@
+{
+  "session_id": "session_bc2b22b180a447a69e01ef81467aee72",
+  "status": "active",
+  "created_at": "2026-06-08T01:34:45.031586+00:00",
+  "updated_at": "2026-06-08T01:34:45.045474+00:00",
+  "expires_at": "2026-06-08T05:34:45.031586+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Conserte o bug no projeto C:\\Dev\\AIpinho",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_800d414eb0b64220abadb46082dd65a0",
+    "intent_type": "patch_request",
+    "task_type": "patch_request",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Dev\\AIpinho",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_approval",
+    "contract_type": "patch_request",
+    "allowed_actions": [
+      "patch_preview"
+    ],
+    "denied_actions": [],
+    "approval_required_for": [
+      "apply_patch"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Dev\\AIpinho",
+  "active_task_draft_id": "draft_269ad01ba3cc466097467513abf144c8",
+  "warnings": [],
+  "trace_refs": []
+}

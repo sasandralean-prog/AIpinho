@@ -1,0 +1,9 @@
+schema_version: 1
+
+prompts:
+  include_role_description: true
+  include_effective_policy: true
+  include_output_contract: true
+  include_safety_summary: true
+  forbid_raw_logs: true
+  forbid_tool_instructions: true

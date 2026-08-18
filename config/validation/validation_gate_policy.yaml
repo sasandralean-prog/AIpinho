@@ -1,0 +1,55 @@
+﻿schema_version: 1
+
+validation_gate:
+  enabled: true
+  deterministic_only: true
+  require_policy_snapshot: true
+  require_contract_snapshot: true
+  require_trace: true
+  require_audit: true
+  default_on_validator_error: degraded
+  fail_on_critical_violation: true
+  allow_passed_with_warnings: true
+  allow_needs_review: true
+
+targets:
+  task_run:
+    enabled: true
+    require_task_result: true
+    require_events: true
+    require_step_consistency: true
+    require_no_side_effects: true
+  project_report:
+    enabled: true
+    require_evidence: true
+    require_quality_gate: true
+  role_pipeline:
+    enabled: true
+    require_pass_evaluation: true
+    require_no_real_inference_auto: true
+  context_usage:
+    enabled: true
+    require_context_injection_plan: true
+    reject_fabricated_citation: true
+    reject_unsupported_source: true
+  model_doctor:
+    enabled: true
+    metadata_probe_only: true
+    reject_auto_model_load: true
+    require_path_validation: true
+    require_security_validation: true
+
+decisions:
+  pass_statuses: [passed, passed_with_warnings]
+  failure_statuses: [failed, rejected, degraded, needs_review]
+
+blocked:
+  write_detected: true
+  patch_detected: true
+  shell_detected: true
+  git_write_detected: true
+  forbidden_root_access_detected: true
+  memory_write_detected: true
+  rag_ingest_detected: true
+  model_tool_calling_detected: true
+  model_auto_load_detected: true

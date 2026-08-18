@@ -1,0 +1,54 @@
+﻿schema_version: 1
+
+role_pipeline:
+  enabled: true
+  default_mode: real_binding
+  real_inference_auto_use: true
+  allow_manual_real_inference: true
+  controlled_role_inference_enabled: true
+  chat_auto_role_inference: true
+  require_policy_decision: true
+  require_effective_role_policy: true
+  require_model_gate: true
+  require_prompt_assembly: true
+  require_output_contract: true
+  require_evaluation: true
+  require_trace: true
+  stop_on_required_pass_failure: true
+  continue_on_optional_pass_failure: true
+
+safety:
+  tools_enabled: false
+  write_enabled: false
+  patch_enabled: false
+  shell_enabled: false
+  git_write_enabled: false
+  memory_write_enabled: false
+  rag_enabled: false
+  model_tool_calling_enabled: false
+
+context_integration:
+  context_injection_plan_enabled: true
+  role_source_selection_enabled: false
+  retrieval_context_allowed_when_plan_valid: true
+  curated_memory_context_allowed: false
+
+limits:
+  max_passes_per_pipeline: 8
+  max_pipeline_runtime_seconds: 120
+  max_pass_output_chars: 8000
+  max_trace_items: 200
+
+task_runtime:
+  cognitive_step_enabled: true
+  model_mode: real_binding
+  allow_tools: false
+  allow_real_inference: true
+  allow_controlled_role_inference: true
+
+validation_integration:
+  enabled: true
+  attach_validation_summary: true
+  require_pass_evaluation: true
+  reject_real_inference_auto_use: false
+  require_role_model_gate_v2: true

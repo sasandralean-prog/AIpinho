@@ -1,0 +1,33 @@
+skill_packs_enabled: true
+registry_root: config/skills/packs
+require_pack_manifest: true
+require_skill_manifests: true
+require_pack_validation: true
+require_evidence_refs: true
+
+defaults:
+  status: active
+  risk_level: medium
+  dashboard_visible: true
+  debugger_trace_required: true
+  artifact_library_integration_required: true
+
+selection:
+  allow_autopilot_pack_selection: true
+  allow_lucio_pack_recommendation: true
+  allow_codex_pack_execution: true
+  allow_aipinho_pack_execution: true
+  allow_gemini_pack_suggestion: true
+
+security:
+  deny_remote_install: true
+  deny_unregistered_skill_execution: true
+  deny_shell_outside_policy: true
+  deny_source_readonly_write: true
+  require_policy_for_side_effects: true
+  require_validation_for_side_effects: true
+  token_in_url: false
+
+experimental:
+  allow_experimental_packs: false
+  require_explicit_enable: true

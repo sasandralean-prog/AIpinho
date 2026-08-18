@@ -1,0 +1,45 @@
+﻿schema_version: 1
+
+product_name: AIpinho
+stage: governed_runtime_patch_artifact_execution
+summary: Local modular policy-driven AI runtime with governed preview, approval, execution and validation flows.
+
+ready_capabilities:
+  - Respond simple chat messages without creating tasks.
+  - Analyze prompt intent through Prompt Intelligence.
+  - Generate an IntentMap without execution.
+  - Produce Policy Kernel contract previews.
+  - Explain policy blocks and approval requirements.
+  - Distinguish in-chat reports from file artifact requests.
+  - Detect protected workspace references through workspace policy.
+  - Maintain temporary sanitized session state.
+  - Create TaskContractDraft previews for operational requests.
+  - Create TaskPreview records from drafts.
+  - Record ApprovalRequest and ApprovalDecision lifecycle before side effects.
+  - Run read-only project analysis through workspace guards.
+  - Generate downloadable artifacts through governed artifact services.
+  - Create artifact write previews and execute approved non-code artifact writes.
+  - Create PatchPlan previews with diff, risk, validation and quality gate.
+  - Execute approved text patch apply through PatchApplyRun with backup, audit and post-apply validation.
+  - Register tools mapped to actions and capabilities with policy/approval gates.
+  - Keep git writes and dangerous routes blocked by default.
+
+known_limitations:
+  - Chat does not auto-write or auto-apply side effects; mutation requires preview, approval and explicit execution.
+  - Git write and dangerous route execution remain blocked by default.
+  - Shell and network capabilities require governed execution, approval and policy checks before real use.
+  - Local model, RAG and persistent memory runtimes remain policy-gated and must report degraded state when unavailable.
+  - Patch apply is limited to approved text files inside configured workspace roots with quality gate passed.
+  - Binary files, secrets, archives as source-code patches and generated lockfiles remain blocked unless explicitly configured.
+
+implemented_layers:
+  - foundation_boot
+  - policy_kernel_core
+  - prompt_intelligence_contracts
+  - chat_router_minimal
+  - session_state_task_contract_drafts
+  - preview_approval_lifecycle
+  - governed_artifact_runtime
+  - governed_patch_preview_quality_apply
+  - tool_registry_policy_gated
+

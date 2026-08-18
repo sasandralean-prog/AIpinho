@@ -1,0 +1,41 @@
+{
+  "session_id": "session_8f51a2c136ac4a13b55ab4cf872420ca",
+  "status": "active",
+  "created_at": "2026-06-09T19:45:14.346748+00:00",
+  "updated_at": "2026-06-09T19:45:26.516782+00:00",
+  "expires_at": "2026-06-09T23:45:14.346748+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Pinho, to entediado, pode me ajudar?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_86fdb098f33341eb854651164349f5f3",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

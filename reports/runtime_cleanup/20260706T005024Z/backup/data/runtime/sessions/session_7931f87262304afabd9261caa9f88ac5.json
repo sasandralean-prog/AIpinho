@@ -1,0 +1,41 @@
+{
+  "session_id": "session_7931f87262304afabd9261caa9f88ac5",
+  "status": "active",
+  "created_at": "2026-06-08T23:57:34.404024+00:00",
+  "updated_at": "2026-06-08T23:57:44.728601+00:00",
+  "expires_at": "2026-06-09T03:57:34.404024+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Pode me explicar o porque as mensagens de respostas aqui estão inconsistentes?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_85cfba0f6f4f42d8b966231cb7026bd2",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

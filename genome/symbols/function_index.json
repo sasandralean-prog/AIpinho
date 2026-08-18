@@ -1,0 +1,118 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "functions": [
+    {
+      "function": "create_app",
+      "file": "src/aipinho/app_factory.py",
+      "class": "UNKNOWN",
+      "module": "app_factory",
+      "signature": "() -> FastAPI",
+      "visibility": "public",
+      "who_calls": ["main"],
+      "who_uses": ["main"],
+      "parameters": [],
+      "return_type": "FastAPI"
+    },
+    {
+      "function": "load_local_environment",
+      "file": "src/aipinho/core/local_environment.py",
+      "class": "UNKNOWN",
+      "module": "core.local_environment",
+      "signature": "() -> None",
+      "visibility": "public",
+      "who_calls": ["app_factory"],
+      "who_uses": ["app_factory"],
+      "parameters": [],
+      "return_type": "None"
+    },
+    {
+      "function": "json_loader",
+      "file": "src/aipinho/utils/json_loader.py",
+      "class": "UNKNOWN",
+      "module": "utils.json_loader",
+      "signature": "(path: str) -> dict",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"],
+      "parameters": ["path"],
+      "return_type": "dict"
+    },
+    {
+      "function": "yaml_loader",
+      "file": "src/aipinho/utils/yaml_loader.py",
+      "class": "UNKNOWN",
+      "module": "utils.yaml_loader",
+      "signature": "(path: str) -> dict",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"],
+      "parameters": ["path"],
+      "return_type": "dict"
+    },
+    {
+      "function": "hash_string",
+      "file": "src/aipinho/utils/hashing.py",
+      "class": "UNKNOWN",
+      "module": "utils.hashing",
+      "signature": "(data: str) -> str",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"],
+      "parameters": ["data"],
+      "return_type": "str"
+    },
+    {
+      "function": "redact_data",
+      "file": "src/aipinho/utils/redaction.py",
+      "class": "UNKNOWN",
+      "module": "utils.redaction",
+      "signature": "(data: str, patterns: list) -> str",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"],
+      "parameters": ["data", "patterns"],
+      "return_type": "str"
+    },
+    {
+      "function": "safe_path",
+      "file": "src/aipinho/utils/safe_paths.py",
+      "class": "UNKNOWN",
+      "module": "utils.safe_paths",
+      "signature": "(path: str) -> Path",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"],
+      "parameters": ["path"],
+      "return_type": "Path"
+    },
+    {
+      "function": "diagnostic_check",
+      "file": "src/aipinho/utils/diagnostics.py",
+      "class": "UNKNOWN",
+      "module": "utils.diagnostics",
+      "signature": "() -> dict",
+      "visibility": "public",
+      "who_calls": ["UNKNOWN"],
+      "who_uses": ["UNKNOWN"],
+      "parameters": [],
+      "return_type": "dict"
+    }
+  ],
+  "total_functions": 8,
+  "modules": {
+    "app_factory": 1,
+    "core.local_environment": 1,
+    "utils.json_loader": 1,
+    "utils.yaml_loader": 1,
+    "utils.hashing": 1,
+    "utils.redaction": 1,
+    "utils.safe_paths": 1,
+    "utils.diagnostics": 1
+  },
+  "visibility": {
+    "public": 8,
+    "private": 0,
+    "protected": 0
+  }
+}

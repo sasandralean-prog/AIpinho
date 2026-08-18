@@ -1,0 +1,133 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_9_PROJECT_ANALYSIS_MEDIA_CORPUS_HANDOFF_BLOCKED_WITH_CORE_FIX_VALIDATED",
+  "firetest5_status": "NOT_READY",
+  "created_at": "2026-08-16T14:43:00+00:00",
+  "raw_capture_dir": "C:\\Dev\\AIpinho\\reports\\firetest5\\firetest5_h1c0_r2_9_clean_phase0_to_6_20260816_113105",
+  "precheck": {
+    "queue_health": {
+      "status": "ok",
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0
+    }
+  },
+  "phase0": {
+    "runtime_executed": false,
+    "task_created": false,
+    "task_run_created": false,
+    "operation_created": false,
+    "operational_artifacts_created": false,
+    "predicted_frontier": "PROJECT_ANALYSIS_MEDIA_CORPUS_HANDOFF",
+    "predicted_component": "ProjectAnalysisService",
+    "predicted_reason_code": "MEDIA_CORPUS_ROOT_HANDOFF_READY"
+  },
+  "phase1": {
+    "client_response_status": "accepted_running",
+    "client_response_status_code": 200,
+    "client_response_time_ms": 5406,
+    "task_run_id": "task_run_5822ecdb6a9a48a9a2134d6a7f91353b",
+    "operation_id": "op_f16d6eaf072746a2a8463fab619133ea",
+    "project_analysis": {
+      "status": "partial",
+      "reason_code": "MEDIA_CORPUS_ROOT_HANDOFF_READY",
+      "safe_to_continue": true,
+      "root_role": "library_root",
+      "files_discovered": 200,
+      "files_scan_attempted": 500,
+      "files_scanned": 499,
+      "files_read": 0,
+      "bytes_read": 0,
+      "source_readable_selected_count": 0,
+      "inventory_eligible_entities_count": 200,
+      "media_entity_candidates_count": 200,
+      "source_rejected_inventory_eligible_count": 200,
+      "source_rejection_reason": "EXTENSION_NOT_ALLOWED_FOR_SOURCE_READING",
+      "selection_reason_codes": [
+        "FILE_SELECTION_CHEAP_PATH_METADATA_RANKING",
+        "FILE_SELECTION_PARTIAL",
+        "MEDIA_CORPUS_FILE_SELECTION_REJECTED_AS_SOURCE_BUT_ELIGIBLE_FOR_INVENTORY",
+        "MEDIA_CORPUS_ROOT_HANDOFF_READY"
+      ],
+      "limitations": [
+        "file_context_partial",
+        "source_reading_not_applicable_to_media_corpus",
+        "media_metadata_requires_artifact_runtime_capability"
+      ]
+    },
+    "artifact_runtime": {
+      "artifact_creation_started_count": 3,
+      "artifact_created_count": 2,
+      "artifact_partial_count": 0,
+      "artifact_blocked_count": 0,
+      "artifact_failed_count": 0,
+      "phase1_discovery_reached": true,
+      "project_inventory_reached": true,
+      "music_inventory_reached": true,
+      "evidence_phase1_reached": false,
+      "last_event_type": "artifact_creation_started",
+      "last_event_logical_path": "reports/firetest5/music_inventory.csv",
+      "new_blocker": "ARTIFACT_WORKER_STALLED_AFTER_ARTIFACT_CREATION_STARTED_ON_MUSIC_INVENTORY"
+    },
+    "result": {
+      "result_json_exists": false,
+      "result_endpoint_status_code_initial": 404,
+      "result_endpoint_status_code_after_guard_window": "timeout",
+      "result_status": null,
+      "finished_at": null,
+      "terminal_event_count": 0
+    },
+    "endpoint_health_after_stall": {
+      "summary": "timeout",
+      "events": "timeout",
+      "result": "timeout",
+      "truth": "timeout",
+      "artifacts": "timeout",
+      "queue_health": "timeout_before_backend_restart"
+    }
+  },
+  "phase2_to_6": {
+    "phase2": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "PHASE1_NO_TERMINAL_RESULT"
+    },
+    "phase3": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "PHASE1_NO_TERMINAL_RESULT"
+    },
+    "phase4": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "PHASE1_NO_TERMINAL_RESULT"
+    },
+    "phase5": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "PHASE1_NO_TERMINAL_RESULT"
+    },
+    "phase6": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false,
+      "skip_reason": "PHASE1_NO_TERMINAL_RESULT"
+    }
+  },
+  "post_restart_health": {
+    "health": "ok",
+    "queue_health": {
+      "status": "ok",
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0
+    }
+  },
+  "conclusion": {
+    "project_analysis_degraded_generic_fixed": true,
+    "artifact_runtime_reached": true,
+    "music_inventory_reached": true,
+    "firetest5_ready": false,
+    "canonical_ready_blocker": "accepted-running worker can still stall at music_inventory without terminal TaskRunResult after ProjectAnalysis handoff"
+  }
+}

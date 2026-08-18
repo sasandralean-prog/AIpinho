@@ -1,0 +1,41 @@
+{
+  "session_id": "session_28ab6bed10ca4c7cbe027ef142a1151a",
+  "status": "active",
+  "created_at": "2026-06-09T02:15:02.288737+00:00",
+  "updated_at": "2026-06-09T02:15:06.673871+00:00",
+  "expires_at": "2026-06-09T06:15:02.288737+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Pode repetir o resumo?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_253550b1302f4cf28a5652dcd95e101f",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

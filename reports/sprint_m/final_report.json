@@ -1,0 +1,58 @@
+{
+  "verdict": "REAL_DELEGATION_RUNTIME_READY",
+  "implemented": [
+    "DelegationDecisionEngine",
+    "DelegationContract",
+    "DelegationPollingService",
+    "DelegationTruthValidator",
+    "WAITING_DELEGATION",
+    "delegation_parent_runtime_profile",
+    "external_delegation_routes",
+    "launcher_delegation_timeline",
+    "mobile_delegation_card"
+  ],
+  "endpoints": [
+    "POST /api/v1/external/delegation-decisions",
+    "POST /api/v1/external/delegations",
+    "GET /api/v1/external/delegations",
+    "GET /api/v1/external/delegations/{delegation_id}",
+    "POST /api/v1/external/delegations/{delegation_id}/poll"
+  ],
+  "tests": {
+    "python_focused": "35 passed",
+    "launcher_external_focused": "11 passed",
+    "android_unit_focused": "BUILD SUCCESSFUL",
+    "android_assemble_debug": "BUILD SUCCESSFUL",
+    "python_py_compile": "passed"
+  },
+  "smoke": {
+    "direct_response": {
+      "prompt": "2+2",
+      "mode": "direct_response",
+      "delegation_id": null,
+      "child_run_id": null
+    },
+    "delegated": {
+      "prompt": "Pergunte a AIpinho quanto e 2+2",
+      "delegation_id": "delegation_b210e32256a841af9552510221bc81ba",
+      "parent_run_id": "task_run_f377849a8821472ab32e93ca9237a6f0",
+      "child_run_id": "task_run_3a4c51816ef54e6584068428293a7c59",
+      "parent_status": "WAITING_DELEGATION",
+      "polling_count": 1,
+      "source": "universal_task_session"
+    }
+  },
+  "artifacts": {
+    "apk": "C:\\Dev\\AIpinho\\apps\\mobile\\android\\app\\build\\outputs\\apk\\debug\\app-debug.apk",
+    "launcher_dist": "C:\\Dev\\AIpinho\\dist\\AIpinhoLauncher.exe",
+    "launcher_desktop": "C:\\Users\\rafae\\Desktop\\AIpinhoLauncher.exe"
+  },
+  "device_install": {
+    "device": "ZF5253V88S",
+    "status": "Success"
+  },
+  "residual_risks": [
+    "child_run_execution_depends_on_existing_runtime_pipeline_for_selected_operation_profile",
+    "decision_engine_heuristics_can_be_moved_to_yaml_policy_in_future_hardening"
+  ]
+}

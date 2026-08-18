@@ -1,0 +1,10 @@
+schema_version: 1
+owner: CapabilityTruthService
+truth_source:
+  - GovernanceLifecycleService
+  - CanonicalPolicyService
+  - TaskRuntimeService
+rules:
+  operational_capability_questions_use_canonical_truth: true
+  generic_llm_must_not_deny_governed_capabilities: true
+  side_effects_require_policy_and_approval_when_configured: true

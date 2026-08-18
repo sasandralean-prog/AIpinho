@@ -1,0 +1,47 @@
+{
+  "session_id": "session_aec6e330226d4a87a0573c6c149da33c",
+  "status": "active",
+  "created_at": "2026-06-13T20:27:45.552629+00:00",
+  "updated_at": "2026-06-13T20:27:45.583306+00:00",
+  "expires_at": "2026-06-14T00:27:45.552629+00:00",
+  "surface": "unknown",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Modifique o arquivo README_EXISTENTE_RC2.md no workspace alvo adicionando a secao RC2 validation com uma frase curta.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_f7804334f8e247bdb037089817677655",
+    "intent_type": "patch_request",
+    "task_type": "patch_request",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_clarification",
+    "contract_type": "patch_request",
+    "allowed_actions": [
+      "patch_preview"
+    ],
+    "denied_actions": [],
+    "approval_required_for": [
+      "apply_patch"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": "draft_37ca50a4502b493cbf964f57f4983593",
+  "warnings": [
+    "requires_clarification"
+  ],
+  "trace_refs": []
+}

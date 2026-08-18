@@ -1,0 +1,4 @@
+canonical_completion_policy:
+  success_requires_all_expected_outputs: true
+  validation_passed_is_not_completion_success_without_outputs: true
+  speaker_success_requires_completion_success: true

@@ -1,0 +1,31 @@
+{
+  "run_id": "agent_run_a32b6bd426b941af82ec39494963b7c2",
+  "session_id": "agent_session_68b47e26e11b40d191d202e0c7dd2b11",
+  "agent_id": "codex",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "cancelled",
+  "operation_type": "codex_plan",
+  "workspace_id": null,
+  "capabilities_requested": [
+    "read_workspace",
+    "code_review",
+    "report_generate"
+  ],
+  "started_at": "2026-06-13T23:00:29+00:00",
+  "completed_at": "2026-06-14T01:10:37+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [
+    "agent_memory_candidate_155cf93629f044cb837aa474dabb94c5"
+  ],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": "stale_runtime_cleanup",
+  "metadata_sanitized": {
+    "hygiene_preview_id": "cleanup_preview_23d3f2307c0c4af490c97dc5134c2ece",
+    "previous_status": "running"
+  }
+}

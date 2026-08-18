@@ -1,0 +1,11 @@
+schema_version: 1
+
+bypass_patterns:
+  - "skip_validation"
+  - "disable_validation"
+  - "bypass_policy"
+  - "ignore_path_guard"
+  - "approval_required: false"
+  - "write_enabled: true"
+  - "apply_enabled: true"
+  - "safe_to_apply: true"

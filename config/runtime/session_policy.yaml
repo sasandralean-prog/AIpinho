@@ -1,0 +1,34 @@
+schema_version: 1
+
+session:
+  enabled: true
+  store: local_json
+  ttl_minutes: 240
+  max_recent_messages: 20
+  max_message_chars: 4000
+  store_raw_user_message: false
+  store_sanitized_message: true
+  store_intent_summary: true
+  store_policy_summary: true
+  store_trace_refs: true
+  allow_active_workspace_candidate: true
+  allow_active_task_draft: true
+
+reconciliation:
+  expire_sessions_on_read: true
+  clear_missing_active_task_draft: true
+  clear_active_task_draft_when_all_runs_terminal: true
+  active_task_draft_terminal_statuses:
+    - blocked
+    - approved_for_future_execution
+    - rejected
+    - cancelled
+    - expired
+    - invalidated_by_policy_change
+    - deleted
+
+safety:
+  redact_secrets: true
+  redact_paths: false
+  forbidden_root_as_active_workspace: false
+  raw_debug_in_session: false

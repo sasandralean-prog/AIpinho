@@ -1,0 +1,11 @@
+version: 1
+registry_root: config/templates/registry
+default_template_id: generic_files
+selection_policy:
+  prefer_project_type: true
+  prefer_language: true
+  prefer_platform: true
+  fallback_template_id: generic_files
+security:
+  remote_downloads_allowed: false
+  placeholders_allowed: true

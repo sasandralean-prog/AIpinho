@@ -1,0 +1,1 @@
+from aipinho.services.interaction.interaction_core import SpeakerMessageService

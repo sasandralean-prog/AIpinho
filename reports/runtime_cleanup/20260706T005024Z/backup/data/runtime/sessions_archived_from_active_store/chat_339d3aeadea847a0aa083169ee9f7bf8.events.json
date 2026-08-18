@@ -1,0 +1,72 @@
+[
+  {
+    "event_id": "session_event_e6a19810e9dd4883bec49cb976f85abc",
+    "session_id": "chat_339d3aeadea847a0aa083169ee9f7bf8",
+    "event_type": "session_created",
+    "created_at": "2026-06-15T03:10:41.748632+00:00",
+    "summary": "Sessao criada.",
+    "data": {},
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_9bdc450bb5e7415eafa1e47c000b4045",
+    "session_id": "chat_339d3aeadea847a0aa083169ee9f7bf8",
+    "event_type": "chat_message",
+    "created_at": "2026-06-15T03:10:41.800816+00:00",
+    "summary": "Mensagem processada com status preview.",
+    "data": {
+      "intent_type": "artifact_generation",
+      "task_draft_id": "draft_e62f773414dd420ab2799995c79ea8ab"
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_c5b65b9fdf0b49f19b2ecdfc28907a3a",
+    "session_id": "chat_339d3aeadea847a0aa083169ee9f7bf8",
+    "event_type": "task_draft_created",
+    "created_at": "2026-06-15T03:10:41.802822+00:00",
+    "summary": "Task draft registrado com status approval_required.",
+    "data": {
+      "draft_id": "draft_e62f773414dd420ab2799995c79ea8ab",
+      "draft_status": "approval_required",
+      "preview_id": "preview_0e5f207f18e843d8b204ba8286179f96"
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_f95d06a2957b4482bbbc4146a0e1183a",
+    "session_id": "chat_339d3aeadea847a0aa083169ee9f7bf8",
+    "event_type": "chat_message",
+    "created_at": "2026-06-15T03:11:43.724313+00:00",
+    "summary": "Mensagem processada com status ok.",
+    "data": {
+      "intent_type": "conversation",
+      "task_draft_id": null
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_9c4215d031854517930fd8e15028d902",
+    "session_id": "chat_339d3aeadea847a0aa083169ee9f7bf8",
+    "event_type": "chat_message",
+    "created_at": "2026-06-15T03:11:48.546699+00:00",
+    "summary": "Mensagem processada com status ok.",
+    "data": {
+      "intent_type": "conversation",
+      "task_draft_id": null
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_a4691c6dfe1e4490b9068c4664bff300",
+    "session_id": "chat_339d3aeadea847a0aa083169ee9f7bf8",
+    "event_type": "chat_message",
+    "created_at": "2026-06-15T03:19:49.217366+00:00",
+    "summary": "Mensagem processada com status ok.",
+    "data": {
+      "intent_type": "conversation",
+      "task_draft_id": null
+    },
+    "warnings": []
+  }
+]

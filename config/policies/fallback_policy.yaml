@@ -1,0 +1,7 @@
+schema_version: 1
+
+fallback:
+  critical_policy_missing: degraded
+  unknown_action: deny
+  unknown_capability: deny
+  silent_fallback_allowed: false

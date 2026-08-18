@@ -1,0 +1,44 @@
+schema_version: 1
+
+normal_chat:
+  real_inference_enabled: true
+  default_model_id: qwen3_1_7b_q6_k
+  default_provider_id: llama_cpp_text
+  allow_model_stub: true
+  output_contract_type: plain_text
+  max_output_tokens: 256
+  ctx_size: 8192
+  timeout_seconds: 20
+  temperature: 0.0
+  top_p: 1.0
+
+manual_chat:
+  enabled: false
+  require_request_opt_in: true
+  require_operator_confirmation: true
+  require_profile_enabled: true
+  require_manual_gate: true
+  require_real_inference_gate: true
+  require_model_response_evaluation: true
+  require_prompt_budget: true
+  require_safety_envelope: true
+  require_output_contract: true
+  default_profile_id: llama_cpp_manual_small
+  default_model_id: llama.local.placeholder
+  default_provider_id: llama_cpp.local
+  output_contract_type: chat_response
+  safety_envelope_id: local_manual_inference
+
+blocked_capabilities:
+  tool_calling: true
+  write_files: true
+  patch_apply: true
+  shell: true
+  rag_query: true
+  rag_ingest: true
+  memory_write: true
+  network: true
+  config_mutation: true
+
+allowed_profiles:
+  - llama_cpp_manual_small

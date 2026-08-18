@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-08-18T03:11:53+00:00",
+  "skills": [
+    {
+      "skill_id": "internal.artifact_bundle_exporter",
+      "slug": "artifact_bundle_exporter",
+      "display_name": "Artifact Bundle Exporter",
+      "version": "1.0.0",
+      "status": "active",
+      "category": "artifact_generation",
+      "risk_level": "low",
+      "compatible_agents": [
+        "aipinho",
+        "codex",
+        "lucio",
+        "gemini"
+      ]
+    },
+    {
+      "skill_id": "internal.artifact_reliability_validator",
+      "slug": "artifact_reliability_validator",
+      "display_name": "Artifact Reliability Validator",
+      "version": "1.0.0",
+      "status": "active",
+      "category": "validation",
+      "risk_level": "low",
+      "compatible_agents": [
+        "aipinho",
+        "codex",
+        "lucio",
+        "gemini"
+      ]
+    },
+    {
+      "skill_id": "internal.mobile_ux_static_audit",
+      "slug": "mobile_ux_static_audit",
+      "display_name": "Mobile UX Static Audit",
+      "version": "1.0.0",
+      "status": "experimental",
+      "category": "mobile_ux",
+      "risk_level": "low",
+      "compatible_agents": [
+        "aipinho",
+        "codex",
+        "lucio"
+      ]
+    },
+    {
+      "skill_id": "internal.project_readonly_inventory",
+      "slug": "project_readonly_inventory",
+      "display_name": "Project Read-only Inventory",
+      "version": "1.0.0",
+      "status": "active",
+      "category": "analysis",
+      "risk_level": "low",
+      "compatible_agents": [
+        "aipinho",
+        "codex",
+        "lucio",
+        "gemini"
+      ]
+    },
+    {
+      "skill_id": "internal.safe_markdown_report_generator",
+      "slug": "safe_markdown_report_generator",
+      "display_name": "Safe Markdown Report Generator",
+      "version": "1.0.0",
+      "status": "active",
+      "category": "reporting",
+      "risk_level": "low",
+      "compatible_agents": [
+        "aipinho",
+        "codex",
+        "lucio",
+        "gemini"
+      ]
+    },
+    {
+      "skill_id": "internal.sandbox_android_kotlin_game_generator",
+      "slug": "sandbox_android_kotlin_game_generator",
+      "display_name": "Sandbox Android Kotlin Game Generator",
+      "version": "1.0.0",
+      "status": "active",
+      "category": "artifact_generation",
+      "risk_level": "medium",
+      "compatible_agents": [
+        "aipinho",
+        "codex",
+        "lucio",
+        "gemini"
+      ]
+    },
+    {
+      "skill_id": "internal.sandbox_artifact_exporter",
+      "slug": "sandbox_artifact_exporter",
+      "display_name": "Sandbox Artifact Exporter",
+      "version": "1.0.0",
+      "status": "active",
+      "category": "artifact_generation",
+      "risk_level": "low",
+      "compatible_agents": [
+        "aipinho",
+        "codex",
+        "lucio",
+        "gemini"
+      ]
+    },
+    {
+      "skill_id": "internal.sandbox_asset_placeholder_generator",
+      "slug": "sandbox_asset_placeholder_generator",
+      "display_name": "Sandbox Asset Placeholder Generator",
+      "version": "1.0.0",
+      "status": "active",
+      "category": "artifact_generation",
+      "risk_level": "low",
+      "compatible_agents": [
+        "aipinho",
+        "codex",
+        "lucio",
+        "gemini"
+      ]
+    },
+    {
+      "skill_id": "internal.sandbox_file_writer",
+      "slug": "sandbox_file_writer",
+      "display_name": "Sandbox File Writer",
+      "version": "1.0.0",
+      "status": "active",
+      "category": "code_modification",
+      "risk_level": "low",
+      "compatible_agents": [
+        "aipinho",
+        "codex",
+        "lucio",
+        "gemini"
+      ]
+    },
+    {
+      "skill_id": "internal.sandbox_project_generator",
+      "slug": "sandbox_project_generator",
+      "display_name": "Sandbox Project Generator",
+      "version": "1.0.0",
+      "status": "active",
+      "category": "project_onboarding",
+      "risk_level": "low",
+      "compatible_agents": [
+        "aipinho",
+        "codex",
+        "lucio",
+        "gemini"
+      ]
+    },
+    {
+      "skill_id": "internal.sandbox_shell_runner",
+      "slug": "sandbox_shell_runner",
+      "display_name": "Sandbox Shell Runner",
+      "version": "1.0.0",
+      "status": "active",
+      "category": "validation",
+      "risk_level": "medium",
+      "compatible_agents": [
+        "aipinho",
+        "codex",
+        "gemini"
+      ]
+    },
+    {
+      "skill_id": "internal.sandbox_validation_runner",
+      "slug": "sandbox_validation_runner",
+      "display_name": "Sandbox Validation Runner",
+      "version": "1.0.0",
+      "status": "active",
+      "category": "validation",
+      "risk_level": "low",
+      "compatible_agents": [
+        "aipinho",
+        "codex",
+        "lucio",
+        "gemini"
+      ]
+    },
+    {
+      "skill_id": "internal.sandbox_zip_exporter",
+      "slug": "sandbox_zip_exporter",
+      "display_name": "Sandbox ZIP Exporter",
+      "version": "1.0.0",
+      "status": "active",
+      "category": "artifact_generation",
+      "risk_level": "low",
+      "compatible_agents": [
+        "aipinho",
+        "codex",
+        "lucio",
+        "gemini"
+      ]
+    },
+    {
+      "skill_id": "internal.validation_runner",
+      "slug": "validation_runner",
+      "display_name": "Validation Runner",
+      "version": "1.0.0",
+      "status": "active",
+      "category": "validation",
+      "risk_level": "medium",
+      "compatible_agents": [
+        "aipinho",
+        "codex"
+      ]
+    }
+  ]
+}

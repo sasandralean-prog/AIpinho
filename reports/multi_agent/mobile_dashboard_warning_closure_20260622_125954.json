@@ -1,0 +1,42 @@
+{
+  "report_id": "mobile_dashboard_warning_closure_20260622_125954",
+  "status": "READY_WITH_KNOWN_OPERATIONAL_WARNINGS",
+  "fixed": [
+    "dashboard_http0_timeout_root_cause",
+    "endpoint_inventory_false_degraded",
+    "multi_agent_dashboard_validation_error_for_historical_status",
+    "historical_failures_rendered_as_healthy",
+    "active_runs_warning_semantics",
+    "pending_approval_deduplication"
+  ],
+  "runtime_hygiene": {
+    "preview_id": "cleanup_preview_6bcff1cc4a6e40c988e350dd38f972b4",
+    "applied_count": 39,
+    "deletes_evidence": false
+  },
+  "files_changed": [
+    "src/aipinho/services/agents/multi_agent_observability_service.py",
+    "src/aipinho/services/mobile_view_models/dashboard_mobile_aggregator.py",
+    "src/aipinho/services/mobile_view_models/mobile_endpoint_inventory_service.py",
+    "src/aipinho/schemas/mobile_view_models/contracts.py",
+    "config/runtime/multi_agent_observability_policy.yaml",
+    "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/network/MobileViewModelClient.kt",
+    "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/ui/screens/DashboardScreen.kt",
+    "apps/mobile/android/app/src/test/java/br/com/aipinho/mobile/DashboardPolishTest.kt",
+    "tests/unit/test_mobile_endpoint_inventory_service.py",
+    "tests/unit/test_runtime_state_hygiene_service.py"
+  ],
+  "validations": [
+    {"command": "python -m pytest tests\\unit\\test_runtime_state_hygiene_service.py tests\\unit\\test_mobile_endpoint_inventory_service.py tests\\integration\\test_mobile_dashboard_view_model_api.py -q", "result": "13 passed"},
+    {"command": "python -m pytest tests\\unit\\test_runtime_state_hygiene_service.py tests\\integration\\test_mobile_dashboard_view_model_api.py -q", "result": "12 passed"},
+    {"command": "apps\\mobile\\android\\gradlew.bat -p apps\\mobile\\android testDebugUnitTest :app:assembleDebug", "result": "BUILD SUCCESSFUL"},
+    {"command": "physical_device_ui_validation", "result": "online_no_http0_endpoint_inventory_online"}
+  ],
+  "remaining_warnings": [
+    "Realtime/SSE unknown",
+    "Pending approvals",
+    "Legacy RAG degraded by governance"
+  ],
+  "no_hardcode": true,
+  "notes": "Correcoes foram por contrato, cache configuravel, fallback explicito e higiene oficial de runtime."
+}

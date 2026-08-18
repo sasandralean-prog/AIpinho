@@ -1,0 +1,40 @@
+{
+  "calibration_id": "cognitive_calibration_05f39f41438a4fd0bfe3be9819fe2e17",
+  "readiness_id": "cognitive_readiness_c42cd00b1ac744e194ba487c4d46bbb4",
+  "task_run_id": "task_run_6b571a6d279647ba842a8ae25a1243dc",
+  "actual_outcome": "blocked",
+  "actual_frontier": "ARTIFACT_RENDER_TERMINALITY",
+  "actual_component": "readonly_analysis_artifact_runtime",
+  "actual_reason_code": "ARTIFACT_RENDER_LATE_ARTIFACT_REJECTED",
+  "actual_contract": "analysis_readonly",
+  "actual_capability": null,
+  "actual_causal_chain": [
+    "Intent",
+    "Lifecycle",
+    "Workspace",
+    "Contracts",
+    "readonly_analysis_artifact_runtime",
+    "ARTIFACT_RENDER_LATE_ARTIFACT_REJECTED"
+  ],
+  "prediction_matched_outcome": true,
+  "prediction_matched_frontier": false,
+  "prediction_matched_component": false,
+  "prediction_matched_reason_code": false,
+  "prediction_matched_contract": true,
+  "prediction_matched_capability": false,
+  "prediction_matched_causal_chain": false,
+  "confidence_was_calibrated": false,
+  "confidence_error": 0.3677,
+  "specificity_score": 1.0,
+  "causal_accuracy_score": 0.3077,
+  "overall_accuracy_score": 0.3723,
+  "false_positive": false,
+  "false_negative": false,
+  "overconfidence": true,
+  "underconfidence": false,
+  "divergence_explanation": "Prediction diverged from actual runtime boundary. Predicted PROJECT_ANALYSIS/ProjectAnalysisService/PROJECT_ANALYSIS_PARTIAL_CONTEXT_AVAILABLE; actual ARTIFACT_RENDER_TERMINALITY/readonly_analysis_artifact_runtime/ARTIFACT_RENDER_LATE_ARTIFACT_REJECTED.",
+  "lessons": [
+    "Update CVL model with actual boundary ARTIFACT_RENDER_TERMINALITY and reason ARTIFACT_RENDER_LATE_ARTIFACT_REJECTED."
+  ],
+  "status": "mismatch"
+}

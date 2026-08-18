@@ -1,0 +1,29 @@
+schema_version: 1
+
+guard:
+  enabled: true
+  validate_before_create_run: true
+  validate_before_execute: true
+  validate_each_file_before_write: true
+  stop_on_first_blocking_violation: true
+
+quality:
+  allowed_statuses: [passed]
+  allow_passed_with_warnings: false
+
+approval:
+  require_scope: patch_apply
+  require_plan_id_match: true
+  require_diff_hash_match: true
+  require_target_files_match: true
+  require_not_expired: true
+
+targets:
+  require_inside_workspace: true
+  reject_forbidden_root: true
+  reject_path_traversal: true
+  reject_outside_workspace: true
+  reject_symlinks: true
+  reject_secret_files: true
+  reject_binary_files: true
+  reject_if_file_changed_since_quality_gate: true

@@ -1,0 +1,77 @@
+[
+  {
+    "event_id": "session_event_6f08b04397314ba2aa8819c4b9e6cc26",
+    "session_id": "chat_ce677e1c69b14211b90520121ba254ff",
+    "event_type": "session_created",
+    "created_at": "2026-06-21T19:37:06.710540+00:00",
+    "summary": "Sessao criada.",
+    "data": {},
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_bfbbfb0c242c47cd8bebd1ab645cbbd6",
+    "session_id": "chat_ce677e1c69b14211b90520121ba254ff",
+    "event_type": "chat_message",
+    "created_at": "2026-06-21T20:20:14.483668+00:00",
+    "summary": "Mensagem processada com status blocked.",
+    "data": {
+      "intent_type": "readonly_analysis",
+      "task_draft_id": null
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_fe1c684fd2c247a2b3120686b88893b3",
+    "session_id": "chat_ce677e1c69b14211b90520121ba254ff",
+    "event_type": "task_draft_created",
+    "created_at": "2026-06-21T20:20:14.485985+00:00",
+    "summary": "Task draft registrado com status blocked.",
+    "data": {
+      "draft_id": "draft_3e2b8434ebf24091b73e0dc9587d1291",
+      "draft_status": "blocked",
+      "preview_id": null,
+      "task_id": null,
+      "approval_id": null
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_651b99db16d642a2988438dad6a7b0aa",
+    "session_id": "chat_ce677e1c69b14211b90520121ba254ff",
+    "event_type": "chat_message",
+    "created_at": "2026-06-21T20:27:17.332699+00:00",
+    "summary": "Mensagem processada com status blocked.",
+    "data": {
+      "intent_type": "readonly_analysis",
+      "task_draft_id": null
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_27b51147659349bd9c31f2e952c49c95",
+    "session_id": "chat_ce677e1c69b14211b90520121ba254ff",
+    "event_type": "task_draft_created",
+    "created_at": "2026-06-21T20:27:17.336721+00:00",
+    "summary": "Task draft registrado com status blocked.",
+    "data": {
+      "draft_id": "draft_7d52a5d6dc9e4cd9843ae7634a0a92ba",
+      "draft_status": "blocked",
+      "preview_id": null,
+      "task_id": null,
+      "approval_id": null
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_6bac65b5127d4d49993053ccd14f323b",
+    "session_id": "chat_ce677e1c69b14211b90520121ba254ff",
+    "event_type": "chat_message",
+    "created_at": "2026-06-21T21:10:13.816744+00:00",
+    "summary": "Mensagem processada com status preview.",
+    "data": {
+      "intent_type": "filesystem_write_request",
+      "task_draft_id": null
+    },
+    "warnings": []
+  }
+]

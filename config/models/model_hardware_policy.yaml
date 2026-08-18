@@ -1,0 +1,23 @@
+schema_version: 1
+
+hardware:
+  cpu: "AMD Ryzen 5 5600G"
+  gpu_enabled: false
+  memory_gb: 24
+  memory_speed: "DDR4 2666"
+  default_auto_parameter_limit: 7b
+
+classes:
+  small_cpu:
+    parameter_classes: [1_5b, 1_7b, small]
+    fits_default_hardware: true
+    warning: null
+  medium_cpu:
+    parameter_classes: [4b, 7b]
+    fits_default_hardware: true
+    warning: "CPU-only latency expected."
+  large_cpu_slow:
+    parameter_classes: [14b]
+    fits_default_hardware: true
+    manual_only: true
+    warning: "Large CPU-only model. Manual-only and likely slow."

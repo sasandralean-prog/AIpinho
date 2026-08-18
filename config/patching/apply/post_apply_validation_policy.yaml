@@ -1,0 +1,18 @@
+schema_version: 1
+
+post_apply_validation:
+  enabled: true
+  require_all_files_exist: true
+  require_final_hashes: true
+  require_hunks_applied: true
+  require_no_unexpected_workspace_writes: true
+  require_no_temp_files_remaining: true
+  require_static_syntax_validation: true
+  require_backup_records: true
+  require_events_complete: true
+  require_audit_complete: true
+
+syntax:
+  execute_code: false
+  run_tests: false
+  shell: false

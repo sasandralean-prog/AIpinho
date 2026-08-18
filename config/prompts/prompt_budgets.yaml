@@ -1,0 +1,33 @@
+schema_version: 1
+
+budgets:
+  default:
+    max_input_chars: 20000
+    max_context_items: 20
+    max_chars_per_context_item: 4000
+    max_output_tokens: 512
+
+  chat:
+    max_input_chars: 24000
+    max_context_items: 10
+    max_chars_per_context_item: 3000
+    max_output_tokens: 512
+
+  project_report:
+    max_input_chars: 40000
+    max_context_items: 40
+    max_chars_per_context_item: 6000
+    max_output_tokens: 1200
+
+  code_analysis:
+    max_input_chars: 30000
+    max_context_items: 30
+    max_chars_per_context_item: 5000
+    max_output_tokens: 1000
+
+truncation:
+  strategy: priority_then_size
+  include_omission_reasons: true
+  never_split_json_contracts: true
+  preserve_safety_envelope: true
+  preserve_output_contract: true

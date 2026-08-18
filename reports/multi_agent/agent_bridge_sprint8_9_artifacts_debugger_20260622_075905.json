@@ -1,0 +1,71 @@
+{
+  "project": "AIpinho / PinhoabacaxiAI",
+  "root": "C:\\Dev\\AIpinho",
+  "timestamp": "20260622_075905",
+  "verdict": "AGENT_BRIDGE_SPRINT8_9_READY_WITH_WARNINGS",
+  "implemented": [
+    "ArtifactRequest schema",
+    "ArtifactGenerationResult schema",
+    "ArtifactGeneratorService",
+    "per-island artifact endpoints",
+    "artifact generate endpoint",
+    "artifact package-evidence endpoint",
+    "MultiIslandTrace schema",
+    "TraceEvent schema",
+    "MultiIslandTraceService",
+    "debugger trace list/filter endpoints",
+    "trace export endpoint"
+  ],
+  "endpoints": [
+    "POST /api/v1/agents/{agent_id}/artifacts",
+    "GET /api/v1/agents/{agent_id}/artifacts",
+    "POST /api/v1/artifacts/generate",
+    "POST /api/v1/artifacts/{artifact_id}/package-evidence",
+    "GET /api/v1/debugger/traces",
+    "GET /api/v1/debugger/by-bridge-task/{bridge_task_id}",
+    "GET /api/v1/debugger/by-task/{task_id}",
+    "GET /api/v1/debugger/by-agent/{agent_id}",
+    "GET /api/v1/debugger/by-artifact/{artifact_id}",
+    "GET /api/v1/debugger/recent",
+    "POST /api/v1/debugger/traces/{trace_id}/export"
+  ],
+  "files_created": [
+    "src/aipinho/schemas/artifacts/artifact_generation.py",
+    "src/aipinho/schemas/debugger/multi_island_trace.py",
+    "src/aipinho/services/artifacts/artifact_generator_service.py",
+    "src/aipinho/services/debugger/multi_island_trace_service.py",
+    "src/aipinho/api/routers/multi_island_artifact_router.py",
+    "tests/integration/test_agent_bridge_sprint8_9_artifacts_debugger.py"
+  ],
+  "files_modified": [
+    "src/aipinho/api/routers/__init__.py",
+    "src/aipinho/api/routers/artifact_router.py",
+    "src/aipinho/api/routers/debugger_router.py"
+  ],
+  "tests": {
+    "py_compile": "passed",
+    "sprint8_9": "6 passed in 5.75s",
+    "regression_4_5_6_7_8_9": "27 passed in 14.32s"
+  },
+  "acceptance_coverage": {
+    "aipinho_artifact": "covered_backend",
+    "lucio_artifact": "covered_backend",
+    "gemini_artifact": "covered_backend",
+    "codex_artifact": "covered_backend",
+    "universal_registry": "covered",
+    "ready_requires_file": "covered",
+    "stale_missing_detection": "covered",
+    "trace_bridge_task": "covered",
+    "trace_task_artifact_link": "covered",
+    "trace_export_markdown_json": "covered_markdown_in_tests_json_supported",
+    "secret_sanitization": "covered",
+    "single_terminal_final_answer": "covered_by_service_contract",
+    "mobile_visual": "not_run",
+    "launcher_visual": "not_run"
+  },
+  "warnings": [
+    "Mobile/Launcher visual QA was not executed in this sprint.",
+    "UI-specific buttons/cards were not rebuilt in this run; backend contracts are ready for UX binding.",
+    "Trace ZIP evidence is a recommended follow-up; markdown/json export is implemented."
+  ]
+}

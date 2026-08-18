@@ -1,0 +1,49 @@
+{
+  "session_id": "chat_248ba62957444c94b86d2576f859cd61",
+  "status": "active",
+  "created_at": "2026-07-05T20:37:03.031038+00:00",
+  "updated_at": "2026-07-05T20:46:12.006328+00:00",
+  "expires_at": "2026-07-06T00:37:03.031038+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "AIpinho? ola?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_2ff3615533dd4fdabb1ec74d1d5f35e7",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": true,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [
+    "active_task_runs_terminal"
+  ],
+  "trace_refs": []
+}

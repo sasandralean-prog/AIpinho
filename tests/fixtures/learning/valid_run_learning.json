@@ -1,0 +1,24 @@
+{
+  "source_type": "run_summary",
+  "source_id": "run_fixture",
+  "agent_id": "codex",
+  "run_id": "run_fixture",
+  "project_id": "project_fixture",
+  "skill_pack_id": "debug_pack",
+  "outcome": "completed_with_warnings",
+  "what_worked": ["Artifact validation found the missing download link."],
+  "what_failed": ["Initial artifact link was not visible in the mobile presentation."],
+  "reusable_lessons": [
+    {
+      "type": "artifact_learning",
+      "title": "Artifact links must be registered before presentation rendering.",
+      "summary": "When a generated file is ready, artifact metadata must include artifact_id and download endpoint before the mobile view-model renders actions.",
+      "reusable_when": ["artifact_lifecycle", "mobile_view_model"]
+    }
+  ],
+  "commands_successful": ["python -m pytest tests/artifact_library -q"],
+  "artifacts_created": ["artifact:report_zip"],
+  "artifact_ids": ["artifact_report_zip"],
+  "evidence_refs": ["run:run_fixture", "artifact:artifact_report_zip", "test:artifact_library"],
+  "tags": ["artifact", "mobile"]
+}

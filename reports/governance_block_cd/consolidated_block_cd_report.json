@@ -1,0 +1,42 @@
+{
+  "status": "CONSOLIDATED_BLOCK_CD_REPORT_READY",
+  "date": "2026-06-28",
+  "block_c_verdict": "GOVERNANCE_BLOCK_C_LEGACY_DELETION_READY",
+  "block_d_verdict": "GOVERNANCE_UNIFIED_SYSTEM_READY",
+  "unified_governance_flow_active": true,
+  "public_legacy_authority_active": false,
+  "open_p0": [],
+  "p1": [
+    "QA visual/mobile real para approval button ainda nao executado.",
+    "Criacao completa de app/projeto com TaskRun real, validation e artifact real ainda nao foi provada pelo Bloco D.",
+    "Pipeline nao teve firetest dedicado no Bloco D."
+  ],
+  "p2": [
+    "ChatService permanece como content provider com helpers internos legados.",
+    "Discovery real de workspace ainda e metadata/read-only inicial.",
+    "Historicos/reports antigos ainda podem citar nomes legacy."
+  ],
+  "legacy_remaining": {
+    "public_authority": [],
+    "quarantined": [
+      "src/aipinho/api/routers/chat_router.py",
+      "src/aipinho/api/routers/continue_integration_router.py"
+    ],
+    "retained_internal_helpers": [
+      "ChatService",
+      "ChatOperationRouterService",
+      "ChatPermissionGrantService"
+    ]
+  },
+  "app_creation_status": "APP_CREATION_ALLOWED_WITH_CAUTION",
+  "recommended_block_e": "App Creation Recovery & Canonical Project Bootstrap",
+  "evidence": {
+    "block_c_tests": "35 passed in 84.18s",
+    "block_d_tests": "G20-G26: 15 passed in 52.60s; matrix: 46 passed in 132.13s",
+    "reports": [
+      "C:\\Dev\\AIpinho\\reports\\governance_block_c\\block_c_summary.md",
+      "C:\\Dev\\AIpinho\\reports\\governance_block_d\\block_d_summary.md",
+      "C:\\Dev\\AIpinho\\reports\\governance_block_cd\\consolidated_block_cd_report.md"
+    ]
+  }
+}

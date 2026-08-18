@@ -1,0 +1,407 @@
+{
+  "status": "ready",
+  "result_id": "cvl_result_607d614735a14d39ac8f3c1f1018e5dd",
+  "profile_id": "firetest5_h1b4_3_3_public_diagnostic_phase0",
+  "prediction_reports": [
+    {
+      "prediction_id": "prediction_83edd68feab447a3812360b3fea96f1a",
+      "profile_id": "firetest5_h1b4_3_3_public_diagnostic_phase0",
+      "predicted_status": "blocked",
+      "probable_component": "truth_readiness",
+      "probable_contract": "analysis_readonly",
+      "probable_capability": null,
+      "confidence": 0.82,
+      "dependency_chain": [
+        "pipeline:public_chat_boundary",
+        "pipeline:task_run_bootstrap",
+        "pipeline:project_analysis_boundary",
+        "pipeline:artifact_render_budget",
+        "pipeline:terminal_event_idempotency",
+        "pipeline:artifact_index",
+        "pipeline:validation",
+        "pipeline:speaker_truth"
+      ],
+      "hypothesis": "Speaker Truth is not expected to be safe because assertions are not fully evidence-backed.",
+      "reason_codes": [
+        "PREDICTED_TRUTH_READINESS_GAP"
+      ],
+      "evidence_refs": [
+        "profile:firetest5_h1b4_3_3_public_diagnostic_phase0",
+        "semantic_maturity:truth_readiness"
+      ]
+    }
+  ],
+  "coverage_reports": [
+    {
+      "report_id": "coverage_report_4b0b53479b85434bb77b6295e52c46e9",
+      "profile_id": "firetest5_h1b4_3_3_public_diagnostic_phase0",
+      "metrics": [
+        {
+          "domain": "pipeline",
+          "coverage": 1.0,
+          "confidence": 1.0,
+          "health": "ready",
+          "criticality": "high",
+          "gaps": [],
+          "evidence_refs": [
+            "coverage:pipeline"
+          ]
+        },
+        {
+          "domain": "contracts",
+          "coverage": 1.0,
+          "confidence": 1.0,
+          "health": "ready",
+          "criticality": "high",
+          "gaps": [],
+          "evidence_refs": [
+            "coverage:contracts"
+          ]
+        },
+        {
+          "domain": "capabilities",
+          "coverage": 1.0,
+          "confidence": 1.0,
+          "health": "ready",
+          "criticality": "critical",
+          "gaps": [],
+          "evidence_refs": [
+            "coverage:capabilities"
+          ]
+        },
+        {
+          "domain": "artifacts",
+          "coverage": 1.0,
+          "confidence": 1.0,
+          "health": "ready",
+          "criticality": "medium",
+          "gaps": [],
+          "evidence_refs": [
+            "coverage:artifacts"
+          ]
+        },
+        {
+          "domain": "success_contract",
+          "coverage": 1.0,
+          "confidence": 1.0,
+          "health": "ready",
+          "criticality": "high",
+          "gaps": [],
+          "evidence_refs": [
+            "coverage:success_contract"
+          ]
+        },
+        {
+          "domain": "workspace_role_boundary",
+          "coverage": 1.0,
+          "confidence": 1.0,
+          "health": "ready",
+          "criticality": "high",
+          "gaps": [],
+          "evidence_refs": [
+            "coverage:workspace_role_boundary"
+          ]
+        },
+        {
+          "domain": "entity_selection_policy",
+          "coverage": 1.0,
+          "confidence": 1.0,
+          "health": "ready",
+          "criticality": "high",
+          "gaps": [],
+          "evidence_refs": [
+            "coverage:entity_selection_policy"
+          ]
+        },
+        {
+          "domain": "corpus_observation",
+          "coverage": 1.0,
+          "confidence": 1.0,
+          "health": "ready",
+          "criticality": "high",
+          "gaps": [],
+          "evidence_refs": [
+            "coverage:corpus_observation"
+          ]
+        },
+        {
+          "domain": "evidence_availability",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "partial"
+          ],
+          "evidence_refs": [
+            "coverage:evidence_availability"
+          ]
+        },
+        {
+          "domain": "knowledge_availability",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "knowledge_availability"
+          ],
+          "evidence_refs": [
+            "coverage:knowledge_availability"
+          ]
+        },
+        {
+          "domain": "semantic_completion",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "semantic_completion"
+          ],
+          "evidence_refs": [
+            "coverage:semantic_completion"
+          ]
+        },
+        {
+          "domain": "truth_readiness",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "not_ready"
+          ],
+          "evidence_refs": [
+            "coverage:truth_readiness"
+          ]
+        },
+        {
+          "domain": "validation_probability",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "low"
+          ],
+          "evidence_refs": [
+            "coverage:validation_probability"
+          ]
+        }
+      ],
+      "overall_coverage": 0.6154,
+      "overall_status": "partial",
+      "metadata": {
+        "available_capability_count": 3
+      }
+    }
+  ],
+  "simulation_results": [
+    {
+      "simulation_id": "simulation_2122392d98f04bf692712adbb4e694a5",
+      "request_id": "simulation_request_91f50c93e06a4134a5f5b086513c6f3a",
+      "profile_id": "firetest5_h1b4_3_3_public_diagnostic_phase0",
+      "status": "ready",
+      "steps": [
+        {
+          "step_id": "simulation_step_0e0e8c93062543f7adf3eaabc61b8588",
+          "index": 1,
+          "component": "public_chat_boundary",
+          "status": "predicted_success",
+          "expected_contracts": [],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.82
+        },
+        {
+          "step_id": "simulation_step_8257fb2eb748444b81fec646e47f7b99",
+          "index": 2,
+          "component": "task_run_bootstrap",
+          "status": "predicted_success",
+          "expected_contracts": [
+            "task_run_terminality"
+          ],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.82
+        },
+        {
+          "step_id": "simulation_step_3914b81944c84b8f9cbcf2bcc68d123f",
+          "index": 3,
+          "component": "project_analysis_boundary",
+          "status": "predicted_success",
+          "expected_contracts": [
+            "analysis_readonly"
+          ],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.82
+        },
+        {
+          "step_id": "simulation_step_1c2943e32b2b4aaba639d92cffc28fb8",
+          "index": 4,
+          "component": "artifact_render_budget",
+          "status": "predicted_success",
+          "expected_contracts": [
+            "artifact_runtime"
+          ],
+          "required_capabilities": [
+            "artifact_render_budget"
+          ],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.82
+        },
+        {
+          "step_id": "simulation_step_a889d68ede8f41ff8a88b3b0b191837a",
+          "index": 5,
+          "component": "terminal_event_idempotency",
+          "status": "predicted_success",
+          "expected_contracts": [],
+          "required_capabilities": [
+            "terminal_event_idempotency"
+          ],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.82
+        },
+        {
+          "step_id": "simulation_step_89c4c09510ab40b48b43024690f217d5",
+          "index": 6,
+          "component": "artifact_index",
+          "status": "predicted_success",
+          "expected_contracts": [
+            "artifact_runtime"
+          ],
+          "required_capabilities": [
+            "artifact_render_budget"
+          ],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.82
+        },
+        {
+          "step_id": "simulation_step_658b65744a89487aad49fb333c87043e",
+          "index": 7,
+          "component": "validation",
+          "status": "predicted_success",
+          "expected_contracts": [],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.82
+        },
+        {
+          "step_id": "simulation_step_676a7ca87c294fc38a570c7c9e34231d",
+          "index": 8,
+          "component": "speaker_truth",
+          "status": "predicted_success",
+          "expected_contracts": [],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.82
+        }
+      ],
+      "predicted_failures": [],
+      "predicted_successes": [
+        {
+          "success_id": "predicted_success_636789dfb17f4f049505a79b14c064c0",
+          "component": "public_chat_boundary",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.82,
+          "evidence_refs": [
+            "profile:firetest5_h1b4_3_3_public_diagnostic_phase0",
+            "component:public_chat_boundary"
+          ]
+        },
+        {
+          "success_id": "predicted_success_4cd18eb430004d23a4d12f7655428df4",
+          "component": "task_run_bootstrap",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.82,
+          "evidence_refs": [
+            "profile:firetest5_h1b4_3_3_public_diagnostic_phase0",
+            "component:task_run_bootstrap"
+          ]
+        },
+        {
+          "success_id": "predicted_success_b3c8b9455cf34a0c916fada710ff09c9",
+          "component": "project_analysis_boundary",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.82,
+          "evidence_refs": [
+            "profile:firetest5_h1b4_3_3_public_diagnostic_phase0",
+            "component:project_analysis_boundary"
+          ]
+        },
+        {
+          "success_id": "predicted_success_eb84c1e633e542808c898218b5ad2e43",
+          "component": "artifact_render_budget",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.82,
+          "evidence_refs": [
+            "profile:firetest5_h1b4_3_3_public_diagnostic_phase0",
+            "component:artifact_render_budget"
+          ]
+        },
+        {
+          "success_id": "predicted_success_6e8fcfcf5db94eb7bfe2d2cd1e57509c",
+          "component": "terminal_event_idempotency",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.82,
+          "evidence_refs": [
+            "profile:firetest5_h1b4_3_3_public_diagnostic_phase0",
+            "component:terminal_event_idempotency"
+          ]
+        },
+        {
+          "success_id": "predicted_success_d60956cf4b944aac8f00020e1532cfff",
+          "component": "artifact_index",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.82,
+          "evidence_refs": [
+            "profile:firetest5_h1b4_3_3_public_diagnostic_phase0",
+            "component:artifact_index"
+          ]
+        },
+        {
+          "success_id": "predicted_success_4b3253a7ea124456a6212542329368e9",
+          "component": "validation",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.82,
+          "evidence_refs": [
+            "profile:firetest5_h1b4_3_3_public_diagnostic_phase0",
+            "component:validation"
+          ]
+        },
+        {
+          "success_id": "predicted_success_1002f3e7045b4264af05bd65c7dc8a2f",
+          "component": "speaker_truth",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.82,
+          "evidence_refs": [
+            "profile:firetest5_h1b4_3_3_public_diagnostic_phase0",
+            "component:speaker_truth"
+          ]
+        }
+      ],
+      "confidence": 0.82,
+      "summary": "Speaker Truth is not expected to be safe because assertions are not fully evidence-backed."
+    }
+  ],
+  "report_paths": {
+    "firetest_lab": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\firetest5_h1b4_3_3_phase0_cvl\\firetest_lab.md",
+    "prediction_report": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\firetest5_h1b4_3_3_phase0_cvl\\prediction_report.md",
+    "dependency_graph": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\firetest5_h1b4_3_3_phase0_cvl\\dependency_graph.md",
+    "coverage_report": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\firetest5_h1b4_3_3_phase0_cvl\\coverage_report.md",
+    "simulation_report": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\firetest5_h1b4_3_3_phase0_cvl\\simulation_report.md",
+    "laboratory_summary": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\firetest5_h1b4_3_3_phase0_cvl\\laboratory_summary.md"
+  },
+  "expected_runtime_outcome": "FIRETEST5_H1B4_3_3_PUBLIC_DIAGNOSTIC_CONFIRMED_OR_BLOCKED",
+  "runtime_executed": false
+}

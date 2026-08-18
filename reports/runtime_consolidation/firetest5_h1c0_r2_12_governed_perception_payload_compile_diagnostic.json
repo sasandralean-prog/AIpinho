@@ -1,0 +1,98 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_12_GOVERNED_PERCEPTION_PAYLOAD_COMPILATION_READY",
+  "firetest5_status": "NOT_READY",
+  "generated_at": "2026-08-17T14:30:06.388419+00:00",
+  "root_cause_status": "proven",
+  "observed_previous_blocker": "MUSIC_INVENTORY_PERCEPTION_PAYLOAD_COMPILE_STALLED",
+  "root_cause": {
+    "summary": "ContractDrivenPerceptionService.compile() mixed compile with governed observation and relationship detection, making the perception payload boundary unobservable and capable of stalling without internal stage attribution.",
+    "confirmed_boundary_contamination": true,
+    "compiler_opened_filesystem_directly": false,
+    "compiler_rendered_csv": false,
+    "compiler_decided_completion_or_speaker_truth": false
+  },
+  "call_graph_real": [
+    "compile",
+    "compile_request_normalization",
+    "requirement_resolution",
+    "entity_projection",
+    "relationship_projection",
+    "observation_binding",
+    "fact_projection",
+    "payload_assembly",
+    "payload_bound_check",
+    "perception_compile_completed"
+  ],
+  "collections": {
+    "input_entity_count_observed_public": 2272,
+    "projected_entity_count_before_terminal": 2230,
+    "relationship_candidate_count_before_terminal": 0,
+    "observation_execution_result_count_before_terminal": 0,
+    "payload_ref_count_public": 0
+  },
+  "hypotheses": {
+    "A_eager_entity_materialization": {
+      "verdict": "partially_supported",
+      "evidence": "Public trace spends ~18s in entity projection and projects 2230 entities before moving on."
+    },
+    "B_cardinality_amplification": {
+      "verdict": "weakened",
+      "evidence": "relationship_candidate_count=0 before terminal; no relationship explosion observed."
+    },
+    "C_boundary_contamination": {
+      "verdict": "confirmed",
+      "evidence": "Original compile path executed relationship_detector.detect() and observation_boundary.execute(); patch introduced compile_only policy."
+    },
+    "D_unbounded_payload_projection": {
+      "verdict": "partially_mitigated",
+      "evidence": "Payload metrics and bounds added; public run did not reach payload assembly."
+    },
+    "E_repeated_copying_serialization": {
+      "verdict": "not_proven",
+      "evidence": "No direct repeated JSON/deepcopy trace confirmed."
+    },
+    "F_missing_payload_ref_boundary": {
+      "verdict": "not_proven",
+      "evidence": "Public compile did not reach payload assembly/bound check."
+    },
+    "G_lock_synchronous_long_section": {
+      "verdict": "weakened",
+      "evidence": "All endpoints and queue_runtime responded after terminal without restart."
+    },
+    "H_complexity_pathology": {
+      "verdict": "probable_with_evidence",
+      "evidence": "Fact projection did not complete before artifact terminality budget after entity/relationship/observation stages completed."
+    },
+    "I_observation_leakage": {
+      "verdict": "confirmed_as_boundary_risk",
+      "evidence": "Observer execution was reachable inside compile before compile_only policy."
+    },
+    "J_contract_over_request": {
+      "verdict": "not_proven",
+      "evidence": "No contract semantic reduction was applied or required for this wave."
+    }
+  },
+  "patch_plan_applied": [
+    "Added bounded internal compile stage trace to ContractPerceptionResult.",
+    "Added compile policy with compile_only mode for public artifact runtime.",
+    "Deferred observer execution and relationship detection inside compile_only.",
+    "Added bounded payload metrics and semantic payload/budget reasons.",
+    "Propagated generic stage-specific perception reasons through artifact runtime and store fallback.",
+    "Fixed checkpoint metadata so extra metadata cannot overwrite stage/bounded.",
+    "Prevented artifact_render_checkpoint emission after terminal event; late attempts become artifact_late_rejected only.",
+    "Added CVL perception payload compile frontier awareness."
+  ],
+  "public_rerun": {
+    "task_run_id": "task_run_343bb3198f2a4a978611eb7b0fd2e242",
+    "result_status": "blocked",
+    "result_reason_code": "PERCEPTION_FACT_PROJECTION_STALLED",
+    "finished_at": "2026-08-17T14:26:18.409430+00:00",
+    "terminal_event_count": 1,
+    "last_completed_internal_compile_stage": "before_fact_projection",
+    "after_perception_payload_compile_reached": false,
+    "metadata_coverage_reached": false,
+    "inventory_sufficiency_reached": false,
+    "evidence_phase1_reached": false,
+    "queue_runtime_status": "ok"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "sprint": "16",
+  "name": "Multi-Workspace Flow Rules",
+  "timestamp": "20260623_095754",
+  "status": "READY_WITH_WARNINGS",
+  "endpoints": [
+    "GET /api/v1/workspace-flows/rules",
+    "POST /api/v1/workspace-flows/rules",
+    "GET /api/v1/workspace-flows/rules/{flow_id}",
+    "PATCH /api/v1/workspace-flows/rules/{flow_id}",
+    "POST /api/v1/workspace-flows/plan",
+    "GET /api/v1/workspace-flows/plans/{flow_plan_id}",
+    "POST /api/v1/workspace-flows/plans/{flow_plan_id}/approve",
+    "POST /api/v1/workspace-flows/plans/{flow_plan_id}/deny",
+    "POST /api/v1/workspace-flows/plans/{flow_plan_id}/execute",
+    "GET /api/v1/workspace-flows/plans/by-run/{run_id}"
+  ],
+  "files_changed": [
+    "src/aipinho/schemas/workspace_flows/workspace_flow.py",
+    "src/aipinho/schemas/workspace_flows/__init__.py",
+    "src/aipinho/services/workspace_flows/workspace_flow_service.py",
+    "src/aipinho/services/workspace_flows/__init__.py",
+    "src/aipinho/api/routers/workspace_flow_router.py",
+    "src/aipinho/api/routers/__init__.py",
+    "tests/unit/test_workspace_flow_service.py"
+  ],
+  "validations": {
+    "py_compile": "passed",
+    "pytest_focused": "12 passed",
+    "route_registration": {
+      "workspace_flow_routes": 10,
+      "config_routes": 27
+    }
+  },
+  "warnings": [
+    "download_to_staging and git_push remain planned/governed until external executor integration",
+    "mutable endpoints require local token",
+    "git status unavailable because C:\\Dev\\AIpinho was not detected as a git worktree in this context"
+  ]
+}

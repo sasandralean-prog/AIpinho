@@ -1,0 +1,50 @@
+﻿{
+  "environment": {
+    "AIPINHO_ARTIFACT_RENDER_CANCEL_POLL_INTERVAL": "10",
+    "AIPINHO_ARTIFACT_RENDER_LATE_POLICY": "reject",
+    "AIPINHO_ARTIFACT_RENDER_MAX_ARTIFACT_SECONDS": "60",
+    "AIPINHO_ARTIFACT_RENDER_MAX_SECONDS": "120",
+    "AIPINHO_PHASE1_MAX_ARTIFACT_RENDER_SECONDS": "60",
+    "AIPINHO_PHASE1_MAX_RUNTIME_SECONDS": "120",
+    "AIPINHO_PROJECT_ANALYSIS_ALLOW_PARTIAL": "true",
+    "AIPINHO_PROJECT_ANALYSIS_MAX_BYTES_READ": "2000000",
+    "AIPINHO_PROJECT_ANALYSIS_MAX_FILES_READ": "80",
+    "AIPINHO_PROJECT_ANALYSIS_MAX_FILES_SCANNED": "5000",
+    "AIPINHO_PROJECT_ANALYSIS_MAX_SECONDS": "20"
+  },
+  "phase1": {
+    "max_runtime_seconds": 120.0,
+    "max_artifact_render_seconds": 60.0,
+    "max_csv_cell_bytes": 2000,
+    "max_csv_total_bytes": 5000000,
+    "cancel_poll_interval": 50,
+    "max_artifact_rows": 100000,
+    "max_artifact_columns": 200,
+    "max_artifact_cells": 2000000,
+    "allow_partial_artifact": false,
+    "late_artifact_policy": "reject"
+  },
+  "artifact_render": {
+    "max_total_seconds": 120.0,
+    "max_artifact_seconds": 60.0,
+    "max_rows": 100000,
+    "max_columns": 200,
+    "max_cells": 2000000,
+    "max_cell_bytes": 2000,
+    "max_total_bytes": 5000000,
+    "max_metadata_inline_bytes": 2000,
+    "max_evidence_refs_inline": 20,
+    "cancel_poll_interval": 10,
+    "allow_partial_artifact": false,
+    "late_artifact_policy": "reject"
+  },
+  "project_analysis": {
+    "max_total_seconds": 20.0,
+    "max_files_scanned": 5000,
+    "max_files_read": 80,
+    "max_bytes_read": 2000000,
+    "max_output_bytes": 1000000,
+    "cancel_poll_interval": 50,
+    "allow_partial_result": true
+  }
+}

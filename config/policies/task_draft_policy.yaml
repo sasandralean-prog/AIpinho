@@ -1,0 +1,8 @@
+schema_version: 1
+
+rules:
+  direct_chat_intents_do_not_create_draft: true
+  protected_workspace_blocks_ready_state: true
+  ambiguity_requires_clarification: true
+  side_effects_require_approval: true
+  safe_to_execute_always_false_in_this_sprint: true

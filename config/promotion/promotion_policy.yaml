@@ -1,0 +1,22 @@
+policy_id: sandbox_to_project_promotion_v1
+version: 1
+require_approval_for_apply: true
+allow_delete_by_default: false
+allow_binary_by_default: false
+validation_required_after_apply: true
+snapshot_before_apply: true
+blocked_operations:
+  - delete_without_explicit_policy
+  - path_escape
+  - source_readonly_write
+  - apply_without_preview
+  - apply_without_required_approval
+medium_risk_files:
+  - build.gradle
+  - build.gradle.kts
+  - settings.gradle
+  - settings.gradle.kts
+  - package.json
+  - pyproject.toml
+  - requirements.txt
+  - gradle.properties

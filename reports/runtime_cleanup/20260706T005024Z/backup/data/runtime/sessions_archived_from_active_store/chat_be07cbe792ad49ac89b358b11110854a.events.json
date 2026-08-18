@@ -1,0 +1,71 @@
+[
+  {
+    "event_id": "session_event_9217e34b5fd447959571dc490c51bad4",
+    "session_id": "chat_be07cbe792ad49ac89b358b11110854a",
+    "event_type": "session_created",
+    "created_at": "2026-06-25T03:21:47.953650+00:00",
+    "summary": "Sessao criada.",
+    "data": {},
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_b1b9e2ca04b7475b9a60bffbbab039f2",
+    "session_id": "chat_be07cbe792ad49ac89b358b11110854a",
+    "event_type": "chat_message",
+    "created_at": "2026-06-25T03:21:52.197217+00:00",
+    "summary": "Mensagem processada com status ok.",
+    "data": {
+      "intent_type": "conversation",
+      "task_draft_id": null
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_1775ad7f723345648d9ab3ff49f1c6f6",
+    "session_id": "chat_be07cbe792ad49ac89b358b11110854a",
+    "event_type": "chat_message",
+    "created_at": "2026-06-25T03:28:32.003406+00:00",
+    "summary": "Mensagem processada com status needs_clarification.",
+    "data": {
+      "intent_type": "unknown",
+      "task_draft_id": null
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_36cef2b7d47f479d801aae2c3d11ebc2",
+    "session_id": "chat_be07cbe792ad49ac89b358b11110854a",
+    "event_type": "chat_message",
+    "created_at": "2026-06-25T03:29:18.947991+00:00",
+    "summary": "Mensagem processada com status needs_clarification.",
+    "data": {
+      "intent_type": "unknown",
+      "task_draft_id": null
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_1d65eef5b3304cefa107eefc32414244",
+    "session_id": "chat_be07cbe792ad49ac89b358b11110854a",
+    "event_type": "chat_message",
+    "created_at": "2026-06-25T03:36:18.878774+00:00",
+    "summary": "Mensagem processada com status preview.",
+    "data": {
+      "intent_type": "filesystem_write_request",
+      "task_draft_id": null
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_9af30edb43064e6e8a6181c55840afd6",
+    "session_id": "chat_be07cbe792ad49ac89b358b11110854a",
+    "event_type": "chat_message",
+    "created_at": "2026-06-25T04:10:09.443484+00:00",
+    "summary": "Mensagem processada com status ok.",
+    "data": {
+      "intent_type": "unknown",
+      "task_draft_id": "agent_run_37c8d3fd67b642c5bebe8ec96247a58b"
+    },
+    "warnings": []
+  }
+]

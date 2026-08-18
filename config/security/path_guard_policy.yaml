@@ -1,0 +1,58 @@
+schema_version: 1
+
+path_guard:
+  normalize_case_on_windows: true
+  resolve_before_check: true
+  block_relative_escape: true
+  block_unc_paths: true
+  block_device_paths: true
+  block_reserved_names: true
+  block_symlink_escape: true
+
+protected_patterns:
+  - ".env"
+  - "*.key"
+  - "*.pem"
+  - "secrets.*"
+  - "credentials.*"
+  - "id_rsa"
+  - "id_ed25519"
+
+allowed_extensions_for_text_read:
+  - ".txt"
+  - ".md"
+  - ".py"
+  - ".yaml"
+  - ".yml"
+  - ".json"
+  - ".toml"
+  - ".ini"
+  - ".cfg"
+  - ".ps1"
+  - ".bat"
+  - ".sh"
+  - ".kt"
+  - ".kts"
+  - ".java"
+  - ".gradle"
+  - ".properties"
+  - ".xml"
+  - ".html"
+  - ".css"
+  - ".js"
+  - ".jsx"
+  - ".ts"
+  - ".tsx"
+  - ".cs"
+  - ".go"
+  - ".rs"
+
+blocked_extensions:
+  - ".exe"
+  - ".dll"
+  - ".bin"
+  - ".sqlite"
+  - ".db"
+  - ".zip"
+  - ".7z"
+  - ".rar"

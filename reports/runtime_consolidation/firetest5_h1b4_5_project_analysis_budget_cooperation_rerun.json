@@ -1,0 +1,423 @@
+{
+  "verdict": "FIRETEST5_H1B4_5_PROJECT_ANALYSIS_BUDGET_COOPERATION_READY",
+  "task_run_id": "task_run_d84888dc1f93473092f1c91440fce35e",
+  "client_response_status": null,
+  "client_response_time_ms": 300179,
+  "client_status": "client_timeout",
+  "client_error": "System.Net.WebException: O tempo limite da operação foi atingido\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.GetResponse(WebRequest request)\r\n   em Microsoft.PowerShell.Commands.WebRequestPSCmdlet.ProcessRecord()",
+  "run_status": "BLOCKED",
+  "result_status": "blocked",
+  "project_analysis": {
+    "status": "partial",
+    "reason_code": "PROJECT_ANALYSIS_PARTIAL_HANDOFF",
+    "safe_to_continue": true,
+    "files_discovered": 76,
+    "files_selected": 12,
+    "files_read": 0,
+    "bytes_read": 0,
+    "remaining_budget_ms_at_return": 4375,
+    "handoff_reserve_reached": true,
+    "partial_readiness": {
+      "safe_to_continue_to_artifact_runtime": true,
+      "confidence": 0.62,
+      "missing_context": [
+        "file_context"
+      ],
+      "reason_codes": [
+        "PROJECT_ANALYSIS_PARTIAL_CONTEXT_AVAILABLE",
+        "PROJECT_ANALYSIS_SELECTION_BUDGET_EXCEEDED",
+        "PROJECT_ANALYSIS_PARTIAL_HANDOFF"
+      ]
+    }
+  },
+  "budget_status": {
+    "max_total_seconds": 20.0,
+    "max_files_scanned": 5000,
+    "max_files_read": 80,
+    "max_bytes_read": 2000000,
+    "max_output_bytes": 1000000,
+    "cancel_poll_interval": 50,
+    "allow_partial_result": true
+  },
+  "budget_cooperation_policy": {
+    "max_total_seconds": 20.0,
+    "max_selection_seconds": 13.0,
+    "max_file_read_seconds": 9.0,
+    "max_single_file_read_ms": 3000,
+    "max_files_scanned": 5000,
+    "max_files_selected": 12,
+    "max_files_read": 80,
+    "max_bytes_read": 2000000,
+    "min_remaining_ms_for_handoff": 1500,
+    "min_remaining_ms_for_result_serialization": 750,
+    "allow_partial_result": true,
+    "allow_partial_handoff": true,
+    "required_minimum_summary": true
+  },
+  "artifact_creation_started_count": 1,
+  "artifact_created_count": 0,
+  "artifact_state": {
+    "status": "partial",
+    "count": 2,
+    "artifact_ids": [
+      "artifact_10c1824425b84d9fbf7d1e4092776145"
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "artifact_10c1824425b84d9fbf7d1e4092776145",
+        "logical_path": "reports/firetest5/phase1_discovery.md",
+        "storage_ref": "data\\artifacts\\universal\\artifact_10c1824425b84d9fbf7d1e4092776145_reports__firetest5__phase1_discovery.md",
+        "artifact_type": "readonly_analysis_report",
+        "producer_step": "readonly_analysis_artifact_runtime",
+        "event_id": "task_run_event_5a4382efa9504557ad13ed949fca0e81",
+        "task_id": "task_e2a1fadc8f7f45f980d221f5995b5090",
+        "task_run_id": "task_run_d84888dc1f93473092f1c91440fce35e",
+        "source_agent": "aipinho",
+        "owner_task_id": "task_run_d84888dc1f93473092f1c91440fce35e",
+        "bridge_task_id": null,
+        "session_id": "firetest5_h1b4_5_project_analysis_budget_cooperation_public_final_20260812",
+        "filename": "reports__firetest5__phase1_discovery.md",
+        "content_type": "text/markdown",
+        "size_bytes": 500,
+        "sha256": "ab84c1ff4acc41830ce4dd6479deea03f69b61dc35a506e37db927c3b404f7b6",
+        "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_10c1824425b84d9fbf7d1e4092776145_reports__firetest5__phase1_discovery.md",
+        "storage_path": "data\\artifacts\\universal\\artifact_10c1824425b84d9fbf7d1e4092776145_reports__firetest5__phase1_discovery.md",
+        "download_endpoint": "/api/v1/artifacts/artifact_10c1824425b84d9fbf7d1e4092776145/download",
+        "requires_token": true,
+        "status": "ready",
+        "validation_status": "validated",
+        "evidence_refs": [
+          "task_run:task_run_d84888dc1f93473092f1c91440fce35e",
+          "phase:phase_1"
+        ],
+        "provenance": {
+          "runtime": "readonly_analysis_artifact_runtime",
+          "workspace": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+          "workspace_context": {
+            "external_roots": [],
+            "library_roots": [
+              "D:\\rafa\\pinho music"
+            ],
+            "readonly_flags": {
+              "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop": true,
+              "D:\\rafa\\pinho music": true
+            },
+            "workspace_ids": [],
+            "project_root": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop"
+          },
+          "phase_id": "phase_1",
+          "logical_path": "reports/firetest5/phase1_discovery.md",
+          "project_analysis_status": "partial",
+          "project_analysis_reason_code": "PROJECT_ANALYSIS_PARTIAL_HANDOFF",
+          "project_analysis_partial_readiness": {
+            "safe_to_continue_to_artifact_runtime": true,
+            "minimum_context_available": true,
+            "workspace_root_resolved": true,
+            "tree_summary_available": true,
+            "file_selection_available": true,
+            "file_context_available": false,
+            "contract_context_available": true,
+            "known_limitations": [
+              "file_context_partial",
+              "PROJECT_ANALYSIS_SELECTION_BUDGET_EXCEEDED"
+            ],
+            "missing_context": [
+              "file_context"
+            ],
+            "reason_codes": [
+              "PROJECT_ANALYSIS_PARTIAL_CONTEXT_AVAILABLE",
+              "PROJECT_ANALYSIS_SELECTION_BUDGET_EXCEEDED",
+              "PROJECT_ANALYSIS_PARTIAL_HANDOFF"
+            ],
+            "confidence": 0.62
+          },
+          "declared_contract": {
+            "expected_kind": "document",
+            "expected_schema": [],
+            "artifact_logical_path": "reports/firetest5/phase1_discovery.md",
+            "artifact_kind": "document",
+            "canonical_schema": [],
+            "task_run_id": "task_run_d84888dc1f93473092f1c91440fce35e",
+            "workspace_context": {
+              "external_roots": [],
+              "library_roots": [
+                "D:\\rafa\\pinho music"
+              ],
+              "readonly_flags": {
+                "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop": true,
+                "D:\\rafa\\pinho music": true
+              },
+              "workspace_ids": [],
+              "project_root": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop"
+            }
+          },
+          "workspace_mutation": false,
+          "artifact_runtime": "canonical",
+          "storage_scope": "runtime_artifact_store",
+          "producer_step": "readonly_analysis_artifact_runtime",
+          "event_id": "task_run_event_5a4382efa9504557ad13ed949fca0e81"
+        },
+        "error_reason": null,
+        "message_id": null,
+        "direct_workspace_file": false,
+        "created_at": "2026-08-12T17:24:55+00:00",
+        "metadata": {
+          "logical_path": "reports/firetest5/phase1_discovery.md",
+          "artifact_type": "readonly_analysis_report",
+          "producer_step": "readonly_analysis_artifact_runtime",
+          "event_id": "task_run_event_5a4382efa9504557ad13ed949fca0e81",
+          "task_id": "task_e2a1fadc8f7f45f980d221f5995b5090",
+          "task_run_id": "task_run_d84888dc1f93473092f1c91440fce35e",
+          "evidence_refs": [
+            "task_run:task_run_d84888dc1f93473092f1c91440fce35e",
+            "phase:phase_1"
+          ],
+          "declared_contract": {
+            "expected_kind": "document",
+            "expected_schema": [],
+            "artifact_logical_path": "reports/firetest5/phase1_discovery.md",
+            "artifact_kind": "document",
+            "canonical_schema": [],
+            "task_run_id": "task_run_d84888dc1f93473092f1c91440fce35e",
+            "workspace_context": {
+              "external_roots": [],
+              "library_roots": [
+                "D:\\rafa\\pinho music"
+              ],
+              "readonly_flags": {
+                "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop": true,
+                "D:\\rafa\\pinho music": true
+              },
+              "workspace_ids": [],
+              "project_root": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop"
+            }
+          },
+          "phase_id": "phase_1",
+          "workspace": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+          "owner_task_id": "task_e2a1fadc8f7f45f980d221f5995b5090",
+          "artifact_generation": true,
+          "project_analysis_status": "partial",
+          "project_analysis_reason_code": "PROJECT_ANALYSIS_PARTIAL_HANDOFF",
+          "project_analysis_partial_readiness": {
+            "safe_to_continue_to_artifact_runtime": true,
+            "minimum_context_available": true,
+            "workspace_root_resolved": true,
+            "tree_summary_available": true,
+            "file_selection_available": true,
+            "file_context_available": false,
+            "contract_context_available": true,
+            "known_limitations": [
+              "file_context_partial",
+              "PROJECT_ANALYSIS_SELECTION_BUDGET_EXCEEDED"
+            ],
+            "missing_context": [
+              "file_context"
+            ],
+            "reason_codes": [
+              "PROJECT_ANALYSIS_PARTIAL_CONTEXT_AVAILABLE",
+              "PROJECT_ANALYSIS_SELECTION_BUDGET_EXCEEDED",
+              "PROJECT_ANALYSIS_PARTIAL_HANDOFF"
+            ],
+            "confidence": 0.62
+          },
+          "patch_plan_id": null,
+          "storage_scope": "runtime_artifact_store",
+          "workspace_mutation": false,
+          "visible_to_agent_ids": []
+        },
+        "size": 500
+      },
+      {
+        "artifact_id": null,
+        "logical_path": "reports/firetest5/phase1_discovery.md",
+        "task_run_id": "task_run_d84888dc1f93473092f1c91440fce35e",
+        "status": "interrupted",
+        "reason_code": "PHASE1_RUNTIME_BUDGET_EXCEEDED",
+        "storage_ref": null,
+        "partial_rows": null,
+        "expected_rows": null,
+        "rendered_columns": [],
+        "missing_columns": [],
+        "safe_to_use": false,
+        "visible_in_endpoint": true,
+        "source": "readonly_analysis_artifact_runtime"
+      }
+    ],
+    "reason_code": null,
+    "terminal_phase": "artifact_render",
+    "source": "task_run_result_and_registry"
+  },
+  "validation_status": "blocked",
+  "completion_status": "blocked",
+  "speaker_truth_safe_to_report_success": false,
+  "phase0": {
+    "readiness_id": "cognitive_readiness_280f1a39c4d34a169c22ee93ef815866",
+    "prediction_id": "cognitive_prediction_e14df601bb0145cc858b8df3f03c43e3",
+    "decision": "NO_GO_EXPECTED_BLOCK",
+    "confidence": 0.84,
+    "predicted_frontier": "PROJECT_ANALYSIS_FILE_READ",
+    "predicted_component": "ProjectAnalysisService",
+    "predicted_reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+    "simulated_blocking_point": "ProjectAnalysis",
+    "simulated_reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+    "safe_to_start_phase1": false,
+    "task_runs_before": 32,
+    "task_runs_after": 32,
+    "task_run_created_by_phase0": false,
+    "result_path": "reports/runtime_consolidation/firetest5_phase0_cognitive_readiness_result.json"
+  },
+  "phase0_calibration": {
+    "status": "partial_match",
+    "actual_frontier": "ARTIFACT_RENDER",
+    "actual_component": "readonly_analysis_artifact_runtime",
+    "actual_reason_code": "PHASE1_RUNTIME_BUDGET_EXCEEDED",
+    "overall_accuracy_score": 0.48,
+    "confidence_error": 0.36,
+    "divergence_explanation": "Prediction diverged from actual runtime boundary. Predicted PROJECT_ANALYSIS_FILE_READ/ProjectAnalysisService/PROJECT_ANALYSIS_FILE_READ_TIMEOUT; actual ARTIFACT_RENDER/readonly_analysis_artifact_runtime/PHASE1_RUNTIME_BUDGET_EXCEEDED."
+  },
+  "events": {
+    "event_count_total": 17,
+    "terminal_event_count": 1,
+    "terminalization_already_applied_count": 2,
+    "project_analysis_handoff_reserve_reached_count": 1,
+    "project_analysis_partial_count": 1,
+    "project_analysis_finished_count": 1,
+    "sequence": [
+      {
+        "sequence": 1,
+        "type": "run_created",
+        "status": "created",
+        "reason_code": null,
+        "logical_path": null
+      },
+      {
+        "sequence": 2,
+        "type": "task_bootstrap_created",
+        "status": "created",
+        "reason_code": null,
+        "logical_path": null
+      },
+      {
+        "sequence": 3,
+        "type": "PlanningStarted",
+        "status": "planning",
+        "reason_code": null,
+        "logical_path": null
+      },
+      {
+        "sequence": 4,
+        "type": "PlanningFinished",
+        "status": "planned",
+        "reason_code": null,
+        "logical_path": null
+      },
+      {
+        "sequence": 5,
+        "type": "ExecutionPlanCreated",
+        "status": "ready",
+        "reason_code": null,
+        "logical_path": null
+      },
+      {
+        "sequence": 6,
+        "type": "phase0_prediction_attached",
+        "status": "recorded",
+        "reason_code": null,
+        "logical_path": null
+      },
+      {
+        "sequence": 7,
+        "type": "run_queued",
+        "status": "queued",
+        "reason_code": null,
+        "logical_path": null
+      },
+      {
+        "sequence": 8,
+        "type": "run_started",
+        "status": "running",
+        "reason_code": null,
+        "logical_path": null
+      },
+      {
+        "sequence": 9,
+        "type": "project_analysis_started",
+        "status": "running",
+        "reason_code": null,
+        "logical_path": null
+      },
+      {
+        "sequence": 10,
+        "type": "project_analysis_handoff_reserve_reached",
+        "status": "partial",
+        "reason_code": "PROJECT_ANALYSIS_PARTIAL_HANDOFF",
+        "logical_path": null
+      },
+      {
+        "sequence": 11,
+        "type": "project_analysis_partial",
+        "status": "partial",
+        "reason_code": "PROJECT_ANALYSIS_PARTIAL_HANDOFF",
+        "logical_path": null
+      },
+      {
+        "sequence": 12,
+        "type": "project_analysis_finished",
+        "status": "completed",
+        "reason_code": "PROJECT_ANALYSIS_PARTIAL_HANDOFF",
+        "logical_path": null
+      },
+      {
+        "sequence": 13,
+        "type": "artifact_creation_started",
+        "status": "running",
+        "reason_code": null,
+        "logical_path": "reports/firetest5/phase1_discovery.md"
+      },
+      {
+        "sequence": 14,
+        "type": "run_blocked",
+        "status": "blocked",
+        "reason_code": "PHASE1_RUNTIME_BUDGET_EXCEEDED",
+        "logical_path": "reports/firetest5/phase1_discovery.md"
+      },
+      {
+        "sequence": 15,
+        "type": "terminalization_already_applied",
+        "status": "ignored",
+        "reason_code": null,
+        "logical_path": null
+      },
+      {
+        "sequence": 16,
+        "type": "phase0_prediction_calibrated",
+        "status": "partial_match",
+        "reason_code": null,
+        "logical_path": null
+      },
+      {
+        "sequence": 17,
+        "type": "terminalization_already_applied",
+        "status": "ignored",
+        "reason_code": null,
+        "logical_path": null
+      }
+    ]
+  },
+  "artifact_render_terminality": {
+    "exercised": true,
+    "frontier": "ARTIFACT_RENDER",
+    "reason_code": "PHASE1_RUNTIME_BUDGET_EXCEEDED",
+    "artifact_registered_before_terminal": true,
+    "artifact_created_completed_event_after_terminal": false
+  },
+  "files": {
+    "summary": "reports\\runtime_consolidation\\firetest5_h1b4_5_endpoint_summary.json",
+    "truth": "reports\\runtime_consolidation\\firetest5_h1b4_5_endpoint_truth.json",
+    "events": "reports\\runtime_consolidation\\firetest5_h1b4_5_endpoint_events.json",
+    "artifacts": "reports\\runtime_consolidation\\firetest5_h1b4_5_endpoint_artifacts.json",
+    "calibration": "reports\\runtime_consolidation\\firetest5_phase0_vs_phase1_calibration.json",
+    "analysis_status": "reports\\runtime_consolidation\\firetest5_h1b4_5_analysis_status.json"
+  },
+  "finding": "ARTIFACT_RENDER_RUNTIME_BUDGET_EXCEEDED_AFTER_PROJECT_ANALYSIS_PARTIAL_HANDOFF"
+}

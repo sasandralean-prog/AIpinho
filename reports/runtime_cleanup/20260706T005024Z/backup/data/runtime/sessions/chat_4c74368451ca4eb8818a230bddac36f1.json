@@ -1,0 +1,79 @@
+{
+  "session_id": "chat_4c74368451ca4eb8818a230bddac36f1",
+  "status": "active",
+  "created_at": "2026-06-14T11:11:04.215412+00:00",
+  "updated_at": "2026-06-14T11:37:32.293369+00:00",
+  "expires_at": "2026-06-14T15:11:04.215412+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Voxe conswgue conversar ckm o codex?",
+      "message_id": null,
+      "created_at": null
+    },
+    {
+      "role": "user",
+      "content": "Errei o portugues. Voce, AIpinho, consegue mandar prompts para o codex de alguma forma?",
+      "message_id": null,
+      "created_at": null
+    },
+    {
+      "role": "user",
+      "content": "Voce consegueresolver operações matematicas de integral e derivada?",
+      "message_id": null,
+      "created_at": null
+    },
+    {
+      "role": "user",
+      "content": "Quero que crie testes e corrija os erros em sapoandando em \"C:\\Users\\rafae\\Documents\\TestesIALocal\\SapoAndando\"",
+      "message_id": null,
+      "created_at": null
+    },
+    {
+      "role": "user",
+      "content": "Quero que o jogo seja funcional com ação de pulo ao toque, e que hajam obstaculos pequenos, menores que o pulo no caminho. Os obstaculos devem ser espaçados de forma aleatoria, mas sempre possivel de \"pular\" sequencialmente. Utilize uma imagem de um sapo pulando para o personagem principal e imagens de encanamentos verdes como obstaculos. Deve haver 10 segundos sem obstaculos ao inicio do jogo. Refaça o jogo \"sapo andando\" com base nisso.",
+      "message_id": null,
+      "created_at": null
+    },
+    {
+      "role": "user",
+      "content": "um . com os arquivos compilados do jogo que acabamos de propor",
+      "message_id": null,
+      "created_at": null
+    },
+    {
+      "role": "user",
+      "content": "Pode compilar o sapoandando e mandar o artifact.apk ",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_4118211ba54c4bf6a69df54828d095db",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\TestesIALocal\\SapoAndando",
+  "active_task_draft_id": "draft_b857392842624b57b2e646caa562fb2b",
+  "warnings": [
+    "requires_clarification"
+  ],
+  "trace_refs": []
+}

@@ -1,0 +1,30 @@
+schema_version: 1
+
+scope:
+  max_files_per_plan: 5
+  max_hunks_per_file: 8
+  max_total_hunks: 20
+  max_added_lines: 300
+  max_removed_lines: 300
+  max_diff_chars: 50000
+  require_explicit_affected_files: false
+  allow_file_discovery_from_evidence: true
+  allow_new_files: false
+  allow_delete_files: false
+  allow_rename_files: false
+
+allowed_change_types:
+  - modify_existing_text_file
+  - add_comments_or_docs_inside_allowed_file
+  - adjust_python_code_preview
+  - adjust_tests_preview
+
+blocked_change_types:
+  - create_file
+  - delete_file
+  - rename_file
+  - chmod
+  - binary_patch
+  - generated_lockfile_patch
+  - dependency_install
+  - secret_edit

@@ -1,0 +1,28 @@
+schema_version: 1
+
+risk:
+  low:
+    intents:
+      - conversation
+      - self_analysis
+      - capability_explanation
+      - in_chat_final_report
+  medium:
+    intents:
+      - readonly_analysis
+      - rag_query
+      - validation_request
+  high:
+    intents:
+      - artifact_generation
+      - memory_write
+    actions:
+      - patch_preview
+  critical:
+    actions:
+      - apply_patch
+      - git_push
+      - run_command
+    flags:
+      - forbidden_root
+      - unknown_destructive_request

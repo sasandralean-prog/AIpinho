@@ -1,0 +1,48 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "model_usage": {
+    "llama_cpp": {
+      "users": ["services.models.llama_cpp_provider"],
+      "services": ["services.chat.chat_service", "services.agents.agent_tool_gateway_service"],
+      "frequency": "UNKNOWN",
+      "context": "local inference"
+    },
+    "openai": {
+      "users": ["services.models.model_invocation_service"],
+      "services": ["services.chat.chat_service", "services.agents.agent_tool_gateway_service"],
+      "frequency": "UNKNOWN",
+      "context": "remote inference"
+    },
+    "gemini": {
+      "users": ["services.models.model_invocation_service"],
+      "services": ["services.chat.chat_service", "services.agents.agent_tool_gateway_service"],
+      "frequency": "UNKNOWN",
+      "context": "remote inference"
+    },
+    "claude": {
+      "users": ["services.models.model_invocation_service"],
+      "services": ["services.chat.chat_service", "services.agents.agent_tool_gateway_service"],
+      "frequency": "UNKNOWN",
+      "context": "remote inference"
+    },
+    "ocr_model": {
+      "users": ["services.vision.ocr_pipeline_service"],
+      "services": ["services.vision.vision_analysis_service"],
+      "frequency": "UNKNOWN",
+      "context": "vision processing"
+    },
+    "multimodal_model": {
+      "users": ["services.vision.vision_analysis_service"],
+      "services": ["services.vision.vision_analysis_service"],
+      "frequency": "UNKNOWN",
+      "context": "vision processing"
+    }
+  },
+  "total_models": 6,
+  "usage_contexts": {
+    "local_inference": 1,
+    "remote_inference": 3,
+    "vision_processing": 2
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "sprint": "25",
+  "name": "Model & Capability Router",
+  "verdict": "SPRINT25_MODEL_ROUTER_READY_WITH_WARNINGS",
+  "endpoints": [
+    "GET /api/v1/capabilities",
+    "GET /api/v1/capabilities/health",
+    "POST /api/v1/capabilities/workspace-search",
+    "GET /api/v1/models/registry",
+    "GET /api/v1/models/router",
+    "POST /api/v1/models/router/test",
+    "GET /api/v1/models/route-preview"
+  ],
+  "configs": [
+    "config/models/capability_router.yaml",
+    "config/models/fallbacks.yaml"
+  ],
+  "capabilities": [
+    "text_chat",
+    "code_assist",
+    "planning",
+    "intent_classification",
+    "policy_reasoning",
+    "embeddings",
+    "reranker",
+    "ocr",
+    "vision",
+    "workspace_search",
+    "file_summarization",
+    "patch_planning",
+    "shell_planning",
+    "artifact_summary"
+  ],
+  "tests": {
+    "pytest": "40 passed in 11.66s",
+    "py_compile": "passed"
+  },
+  "warnings": [
+    "OCR and vision are disabled by config",
+    "Embedding/reranker direct inference is not executed by normal tests",
+    "Dedicated Debugger/Pipeline UI for capability status remains UX backlog"
+  ],
+  "security": {
+    "paid_provider_called": false,
+    "missing_capabilities_are_not_reported_ready": true,
+    "workspace_search_uses_policy": true
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "run_id": "agent_run_515cfc92129d44a4bce5af8aaf5d5fe0",
+  "session_id": "agent_session_0c357ad2332d48a4b11c2bf2d5f20036",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "workspace_readonly_audit_report",
+  "workspace_id": "aipinho_test_area",
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [
+    "read_workspace",
+    "workspace_write",
+    "create_file",
+    "validation"
+  ],
+  "started_at": "2026-06-22T00:19:27+00:00",
+  "completed_at": "2026-06-22T00:19:29+00:00",
+  "validation_status": "passed",
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "operation_id": "chatop_9240f0f19d1c4676b02f452356551c9e",
+    "report_tool_invocation_id": "tool_invocation_bb0169c97d194574b35027b9cf7cfa59"
+  }
+}

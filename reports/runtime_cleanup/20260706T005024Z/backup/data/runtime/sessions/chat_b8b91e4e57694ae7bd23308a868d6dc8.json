@@ -1,0 +1,42 @@
+{
+  "session_id": "chat_b8b91e4e57694ae7bd23308a868d6dc8",
+  "status": "active",
+  "created_at": "2026-06-26T06:22:38.009398+00:00",
+  "updated_at": "2026-06-26T06:22:55.202230+00:00",
+  "expires_at": "2026-06-26T10:22:38.009398+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "pode listar os wrkspaces aprovados para escrita?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_05c20015210e4aeabfc7dd9debc4dfb6",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

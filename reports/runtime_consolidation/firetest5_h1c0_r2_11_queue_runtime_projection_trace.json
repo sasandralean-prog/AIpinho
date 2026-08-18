@@ -1,0 +1,70 @@
+{
+  "task_run_id": "task_run_86fb126c4ac446c3b87d35efd0f3bda7",
+  "precheck_queue_runtime": {
+    "ok": true,
+    "status_code": 200,
+    "elapsed_ms": 20,
+    "body": {
+      "status": "ok",
+      "cancelled_run_ids": [],
+      "cancelled_approval_ids": [],
+      "warnings": [],
+      "snapshot": {
+        "status": "ok",
+        "enabled": true,
+        "max_pending_tasks": 25,
+        "max_wait_seconds": 86400,
+        "active_count": 0,
+        "pending_count": 0,
+        "requires_decision_count": 0,
+        "total_visible": 0,
+        "items": [],
+        "last_reconciled_at": "2026-08-17T11:49:52.984838+00:00",
+        "warnings": []
+      }
+    }
+  },
+  "post_terminal_queue_runtime": {
+    "ok": true,
+    "status_code": 200,
+    "elapsed_ms": 2729,
+    "body": {
+      "status": "ok",
+      "cancelled_run_ids": [],
+      "cancelled_approval_ids": [],
+      "warnings": [],
+      "snapshot": {
+        "status": "ok",
+        "enabled": true,
+        "max_pending_tasks": 25,
+        "max_wait_seconds": 86400,
+        "active_count": 0,
+        "pending_count": 0,
+        "requires_decision_count": 0,
+        "total_visible": 0,
+        "items": [],
+        "last_reconciled_at": "2026-08-17T11:51:25.150701+00:00",
+        "warnings": []
+      }
+    }
+  },
+  "post_terminal_queue_hygiene": {
+    "ok": true,
+    "status_code": 200,
+    "elapsed_ms": 621,
+    "body": {
+      "status": "ok",
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0,
+      "active_sessions": 0,
+      "dispatcher_status": "available",
+      "worker_pool_capacity": 8,
+      "worker_pool_available_slots": 8,
+      "stale_run_ids": [],
+      "backpressure_required": false,
+      "reason_code": null
+    }
+  }
+}

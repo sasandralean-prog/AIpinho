@@ -1,0 +1,118 @@
+{
+  "created_at": "2026-08-13T07:49:42.048338+00:00",
+  "operation": "h1c0_dead_runtime_artifact_hygiene",
+  "preserved_task_run": "task_run_a413b174826f4a9faa6a351a6533f11f",
+  "archive_root": "D:\\AIpinho_runtime_hygiene\\h1c0_cleanup_20260813_081500",
+  "archive_items": [
+    {
+      "name": "artifacts_chat",
+      "path": "D:\\AIpinho_runtime_hygiene\\h1c0_cleanup_20260813_081500\\artifacts_chat",
+      "size_bytes": 12,
+      "files": 1,
+      "dirs": 0
+    },
+    {
+      "name": "artifacts_universal",
+      "path": "D:\\AIpinho_runtime_hygiene\\h1c0_cleanup_20260813_081500\\artifacts_universal",
+      "size_bytes": 4182081,
+      "files": 96,
+      "dirs": 0
+    },
+    {
+      "name": "artifact_index",
+      "path": "D:\\AIpinho_runtime_hygiene\\h1c0_cleanup_20260813_081500\\artifact_index",
+      "size_bytes": 808107,
+      "files": 342,
+      "dirs": 2
+    },
+    {
+      "name": "artifact_manifests",
+      "path": "D:\\AIpinho_runtime_hygiene\\h1c0_cleanup_20260813_081500\\artifact_manifests",
+      "size_bytes": 731671924,
+      "files": 1,
+      "dirs": 0
+    },
+    {
+      "name": "data_tmp_dirs",
+      "path": "D:\\AIpinho_runtime_hygiene\\h1c0_cleanup_20260813_081500\\data_tmp_dirs",
+      "size_bytes": 3126136350,
+      "files": 10873,
+      "dirs": 6417
+    },
+    {
+      "name": "phase_store",
+      "path": "D:\\AIpinho_runtime_hygiene\\h1c0_cleanup_20260813_081500\\phase_store",
+      "size_bytes": 112866,
+      "files": 1,
+      "dirs": 0
+    },
+    {
+      "name": "render_payload_refs",
+      "path": "D:\\AIpinho_runtime_hygiene\\h1c0_cleanup_20260813_081500\\render_payload_refs",
+      "size_bytes": 541852,
+      "files": 30,
+      "dirs": 29
+    },
+    {
+      "name": "runtime_approvals",
+      "path": "D:\\AIpinho_runtime_hygiene\\h1c0_cleanup_20260813_081500\\runtime_approvals",
+      "size_bytes": 429824,
+      "files": 140,
+      "dirs": 0
+    },
+    {
+      "name": "runtime_cleanup_archives",
+      "path": "D:\\AIpinho_runtime_hygiene\\h1c0_cleanup_20260813_081500\\runtime_cleanup_archives",
+      "size_bytes": 25424016,
+      "files": 3447,
+      "dirs": 141
+    },
+    {
+      "name": "runtime_sessions",
+      "path": "D:\\AIpinho_runtime_hygiene\\h1c0_cleanup_20260813_081500\\runtime_sessions",
+      "size_bytes": 312723,
+      "files": 422,
+      "dirs": 0
+    },
+    {
+      "name": "task_runs",
+      "path": "D:\\AIpinho_runtime_hygiene\\h1c0_cleanup_20260813_081500\\task_runs",
+      "size_bytes": 4508326558,
+      "files": 238,
+      "dirs": 68
+    }
+  ],
+  "archive_total_size_bytes": 8397946313,
+  "active_state": [
+    {
+      "path": "C:\\Dev\\AIpinho\\data\\runtime\\task_runs",
+      "exists": true,
+      "size_bytes": 6295428,
+      "files": 6,
+      "dirs": 2
+    },
+    {
+      "path": "C:\\Dev\\AIpinho\\data\\artifacts",
+      "exists": true,
+      "size_bytes": 7,
+      "files": 1,
+      "dirs": 3
+    },
+    {
+      "path": "C:\\Dev\\AIpinho\\data\\runtime\\artifact_index",
+      "exists": true,
+      "size_bytes": 0,
+      "files": 0,
+      "dirs": 2
+    },
+    {
+      "path": "C:\\Dev\\AIpinho\\data\\runtime\\render_payload_refs",
+      "exists": true,
+      "size_bytes": 0,
+      "files": 0,
+      "dirs": 0
+    }
+  ],
+  "active_artifact_registry_valid_empty": true,
+  "active_phase_store_valid_empty": true
+}

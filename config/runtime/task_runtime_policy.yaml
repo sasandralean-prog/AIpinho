@@ -1,0 +1,83 @@
+﻿schema_version: 1
+
+task_runtime:
+  enabled: true
+  mode: governed_controlled
+  require_task_contract: true
+  require_policy_decision: true
+  require_workspace_policy: true
+  require_capability_gate: true
+  require_preview: true
+  require_approval_when_policy_requires: true
+  require_explicit_start: false
+  allow_chat_auto_start: true
+  allow_background_execution: true
+  allow_parallel_runs: false
+  allow_retry: false
+  allow_direct_controlled: true
+
+allowed_contract_types:
+  - conversation
+  - delegation_request
+  - analysis_readonly
+  - readonly_analysis
+  - in_chat_final_report
+  - validation_request
+  - validation
+  - artifact_generation
+  - artifact_build
+  - patch_request
+  - patch_apply
+  - filesystem_write
+  - file_modification
+  - shell_execution
+  - project_generation
+  - project_build
+  - web_search
+
+allowed_actions:
+  - inspect_path
+  - list_directory
+  - read_files
+  - read_config
+  - project_tree
+  - project_context
+  - project_analysis
+  - project_report
+  - artifact_preview
+  - artifact_generate
+  - patch_preview
+  - role_pipeline_run
+  - validate_runtime
+  - compose_result
+  - write_files
+  - apply_patch
+  - run_command
+  - run_tests
+  - web_request
+  - artifact_generate
+
+blocked_actions:
+  - git_commit
+  - git_push
+  - delete_files
+  - move_files
+  - memory_write
+  - write_memory
+  - rag_ingest
+  - model_tool_calling
+
+side_effects:
+  workspace_write_enabled: true
+  patch_enabled: true
+  shell_enabled: true
+  network_enabled: true
+  git_write_enabled: false
+  memory_write_enabled: false
+  rag_write_enabled: false
+
+validation_integration:
+  enabled: true
+  validate_task_run_result: true
+  attach_validation_summary: true
+  invalid_result_max_status: degraded

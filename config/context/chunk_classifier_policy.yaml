@@ -1,0 +1,11 @@
+schema_version: 1
+chunk_classifier:
+  enabled: true
+  default_type: unknown
+  trust_by_type:
+    config_policy: verified
+    doc_section: cited
+    error_trace: derived
+    task_summary: derived
+    artifact_summary: cited
+    unknown: candidate

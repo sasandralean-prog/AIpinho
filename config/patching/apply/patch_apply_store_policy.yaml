@@ -1,0 +1,12 @@
+schema_version: 1
+
+store:
+  path: data/runtime/patch_apply_runs
+  save_runs: true
+  save_events: true
+  save_trace: true
+  save_results: true
+  save_audit: true
+  save_backup_refs: true
+  do_not_save_secrets: true
+  do_not_save_full_content_by_default: true

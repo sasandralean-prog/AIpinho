@@ -1,0 +1,47 @@
+{
+  "session_id": "session_69f8d19537e2426685ab1a3d23b1d138",
+  "status": "active",
+  "created_at": "2026-06-07T13:00:11.751252+00:00",
+  "updated_at": "2026-06-07T13:00:11.775431+00:00",
+  "expires_at": "2026-06-07T17:00:11.751252+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Arrume tudo",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_2a8e8deda78849dd8f723a8e2543ab2a",
+    "intent_type": "patch_request",
+    "task_type": "patch_request",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_clarification",
+    "contract_type": "patch_request",
+    "allowed_actions": [
+      "patch_preview"
+    ],
+    "denied_actions": [],
+    "approval_required_for": [
+      "apply_patch"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": "draft_6a0ee8c48e894a2c8a7e1186c307dd4f",
+  "warnings": [
+    "requires_clarification"
+  ],
+  "trace_refs": []
+}

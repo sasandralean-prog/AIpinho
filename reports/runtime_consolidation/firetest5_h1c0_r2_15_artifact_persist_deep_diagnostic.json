@@ -1,0 +1,99 @@
+{
+  "wave": "H1C0.R2.15",
+  "verdict": "FIRETEST5_H1C0_R2_15_ARTIFACT_PERSIST_PAYLOAD_REF_BOUNDARY_BLOCKED_WITH_CORE_FIX_VALIDATED",
+  "observed_frontier": "MUSIC_INVENTORY_ARTIFACT_PERSIST_STALLED",
+  "baseline": {
+    "source_wave": "H1C0.R2.14",
+    "task_run_id": "task_run_b8b2925ff06b4682938f28f3ec7af356",
+    "result_status": "blocked",
+    "result_reason_code": "MUSIC_INVENTORY_ARTIFACT_PERSIST_STALLED",
+    "last_completed_stage": "before_artifact_persist",
+    "estimated_payload_bytes": 17194840,
+    "materialized_payload_bytes": 17194840,
+    "payload_ref_count": 0,
+    "queue_runtime_status_code": 200,
+    "terminal_event_count": 1
+  },
+  "root_cause_status": "proven",
+  "primary_root_cause": "Artifact persist boundary had insufficient bounded progress instrumentation and manifest payload ref separation for large semantic payloads.",
+  "supporting_evidence": [
+    "ReadonlyAnalysisArtifactRuntimeService._create_artifact placed declared_contract, schema_coverage, metadata_coverage and inventory_sufficiency summaries into ArtifactRuntimeCreateRequest metadata/provenance.",
+    "ArtifactRuntimeService.create forwarded the full request into UniversalArtifactRegistryService.create.",
+    "UniversalArtifactRegistryService.create converted content to bytes, built ArtifactRecord with full metadata/provenance, wrote artifact content directly to the final file, then serialized sharded manifest/index.",
+    "R2.14 public metrics showed about 17.2 MB materialized and zero payload refs before the persist frontier.",
+    "No checkpoints existed inside payload classification, serialization, payload-ref decision, content write, manifest build, manifest persist, registry index update or commit."
+  ],
+  "disconfirming_evidence": [
+    "The 17.2 MB value alone does not prove payload refs are required.",
+    "R2.14 proved compile/fact/source binding completed; the new frontier is after those boundaries."
+  ],
+  "persist_call_graph_before_patch": [
+    "ReadonlyAnalysisArtifactRuntimeService._create_artifact",
+    "ArtifactRuntimeService.create",
+    "UniversalArtifactRegistryService.create",
+    "UniversalArtifactRegistryService._content_bytes",
+    "UniversalArtifactRegistryService._validate_ready_content",
+    "contains_secret(content/metadata/provenance)",
+    "ArtifactRecord(...)",
+    "path.write_bytes(content)",
+    "ArtifactRegistryRepository.save",
+    "ArtifactRegistryRepository._atomic_write_json(sharded record)",
+    "ArtifactRegistryRepository._write_light_index",
+    "UniversalArtifactRegistryService._index_by_task_run",
+    "EventPublisherService.publish"
+  ],
+  "payload_ref_findings": {
+    "existing_task_run_payload_ref_store": true,
+    "existing_artifact_manifest_payload_ref_store_before_patch": false,
+    "payload_ref_appropriate_for_boundary": "probable_with_evidence",
+    "reason": "Large semantic manifest subtrees can be referenced while the artifact content remains material and downloadable. This keeps manifest/index bounded without making payload_ref a success condition."
+  },
+  "patch_plan": [
+    "Add generic artifact persist progress callbacks through ArtifactRuntimeService and UniversalArtifactRegistryService.",
+    "Emit bounded persist checkpoints for materialization, serialization, payload ref decision, payload ref persist, artifact content write, manifest build, manifest persist, registry index update and commit.",
+    "Persist artifact content with temp + atomic replace instead of direct final write.",
+    "Spill oversized manifest metadata/provenance children to artifact payload refs using a generic configurable inline budget, not a fixture threshold.",
+    "Keep payload refs deterministic with byte size and sha256.",
+    "Do not mark artifact created before manifest/index commit completes.",
+    "Preserve bounded source/fact metrics in endpoint-safe projection."
+  ],
+  "issue_register": [
+    {
+      "issue_id": "R2_15_P0_ARTIFACT_PERSIST_STALLED",
+      "priority": "P0",
+      "status": "probable_with_evidence",
+      "architectural_owner": "artifact_persistence",
+      "fix_in_this_wave": true
+    },
+    {
+      "issue_id": "R2_14_P1_METRICS_PROJECTION_SPARSE",
+      "priority": "P1",
+      "status": "proven",
+      "architectural_owner": "runtime_observability",
+      "fix_in_this_wave": true
+    }
+  ],
+  "secondary_contributing_causes": [
+    "post-commit checkpoint could retroactively convert completed artifact persist into generic render timeout",
+    "report collector mixed persist stages across artifacts and used sparse latest-checkpoint metrics"
+  ],
+  "not_proven_hypotheses": [
+    "run-to-run divergence cause",
+    "CSV cell rendering cost model",
+    "GC/cache/scheduler contribution"
+  ],
+  "public_diagnostic_rerun": {
+    "task_run_id": "task_run_2494e9d32e2548e1896e074823b715c9",
+    "last_stage": "after_artifact_persist",
+    "after_artifact_persist_reached": true,
+    "result_reason_code": "ARTIFACT_RENDER_TIMEOUT"
+  },
+  "public_final_rerun": {
+    "task_run_id": "task_run_f23704fcec1f4874bdef0c2cfb972c9e",
+    "last_stage": "before_csv_cell_render",
+    "after_artifact_persist_reached_for_music_inventory": false,
+    "result_reason_code": "MUSIC_INVENTORY_CSV_STREAMING_STALLED",
+    "queue_runtime_elapsed_ms": 13
+  },
+  "issue_register_ref": "reports/runtime_consolidation/firetest5_h1c0_r2_15_issue_register.json"
+}

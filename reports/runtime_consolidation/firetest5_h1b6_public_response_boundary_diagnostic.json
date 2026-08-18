@@ -1,0 +1,61 @@
+{
+  "chat_endpoint_entrypoints": [
+    "src/aipinho/api/routers/governance_lifecycle_router.py:post_chat",
+    "src/aipinho/services/governance/lifecycle/canonical_public_chat_service.py:CanonicalPublicChatService.respond",
+    "src/aipinho/services/governance/lifecycle/canonical_public_chat_service.py:_readonly_response",
+    "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py:start_public_boundary"
+  ],
+  "synchronous_wait_points": [
+    {
+      "component": "CanonicalPublicChatService.__init__",
+      "finding": "public route construction eagerly initialized heavy services before routing; ChatArtifactFulfillmentService was made lazy"
+    },
+    {
+      "component": "ReadonlyAnalysisArtifactRuntimeService.start_public_boundary",
+      "finding": "initial implementation scanned TaskRunStore repeatedly to discover a run; replaced with instance-local create_run capture"
+    },
+    {
+      "component": "legacy conversation path",
+      "finding": "ordinary conversation can still wait on local model inference and is outside the H1B6 artifact-runtime gate"
+    }
+  ],
+  "long_running_operations": [
+    "ProjectAnalysisService.analyze_project",
+    "artifact runtime rendering",
+    "local model inference for conversation path"
+  ],
+  "result_finalization_points": [
+    "TaskRunStore.terminalize_if_runtime_budget_exceeded",
+    "ReadonlyAnalysisArtifactRuntimeService._emit_terminal_event"
+  ],
+  "terminalization_points": [
+    "run_blocked",
+    "run_completed",
+    "run_cancelled",
+    "terminalization_already_applied"
+  ],
+  "cleanup_paths": [
+    "RuntimeStateHygieneService.queue_health/preview/apply",
+    "TaskRunStore terminalization supervision from endpoints"
+  ],
+  "artifact_render_paths": [
+    "artifact_creation_started",
+    "artifact_created",
+    "artifact_late_rejected"
+  ],
+  "endpoint_read_paths": [
+    "UniversalTaskSessionService.summary",
+    "UniversalTaskSessionService.artifacts_for_run",
+    "TaskRuntimeService.get_runtime_truth",
+    "TaskRuntimeService.get_result"
+  ],
+  "phase_dependency_resolution_paths": [
+    "ReadonlyAnalysisArtifactRuntimeService._dependency_phase_ids",
+    "workspace_from_phase_dependencies"
+  ],
+  "public_boundary_risks": [
+    "public FireTest was not rerun to completion because operator was gaming and machine contention was visible",
+    "timeout_blocked fallback observed locally when TaskRun is not persisted before initial response budget",
+    "conversation path remains synchronous model inference and should be handled by a separate response policy if required"
+  ]
+}

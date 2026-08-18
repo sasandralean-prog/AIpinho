@@ -1,0 +1,109 @@
+{
+  "program": "AIpinho Engineering Evolution Program",
+  "block": "G",
+  "block_name": "Execution Graph",
+  "date": "2026-07-02",
+  "verdict": "BLOCK_G_EXECUTION_GRAPH_READY",
+  "objective": "Materialize TaskRun execution as an auditable DAG without workload-specific hardcode.",
+  "evidence_sources": [
+    "reports/governance_block_a_overview.md",
+    "reports/governance_block_b/block_b_final_summary.md",
+    "reports/governance_block_c/block_c_summary.md",
+    "reports/governance_block_cd/consolidated_block_cd_report.md",
+    "reports/governance_block_d/block_d_summary.md",
+    "reports/governance_block_e/block_e_summary.md",
+    "reports/governance_block_f/block_f_summary.md",
+    "reports/fire_tests",
+    "tests/governance/test_g21_readonly_analysis_intent.py",
+    "tests/unit/test_task_runtime_service.py"
+  ],
+  "contracts_created": [
+    "ExecutionGraph",
+    "ExecutionNode",
+    "ExecutionEdge",
+    "ExecutionContext",
+    "ExecutionLifecycle",
+    "ExecutionCheckpoint",
+    "ExecutionResume",
+    "ExecutionCancel",
+    "ExecutionMetrics"
+  ],
+  "services_created": [
+    "ExecutionGraphService",
+    "DependencyResolver",
+    "ExecutionScheduler"
+  ],
+  "files_changed": [
+    "src/aipinho/schemas/runtime/execution_graph.py",
+    "src/aipinho/schemas/runtime/task_run.py",
+    "src/aipinho/services/runtime/execution_graph_service.py",
+    "src/aipinho/services/runtime/task_runtime_service.py",
+    "src/aipinho/services/runtime/supervised_execution_loop.py",
+    "src/aipinho/api/routers/task_runtime_router.py",
+    "src/aipinho/services/mobile_view_models/debugger_mobile_aggregator.py",
+    "tests/unit/test_task_runtime_service.py",
+    "reports/engineering_evolution/block_g_execution_graph_report.md",
+    "reports/engineering_evolution/block_g_execution_graph_report.json"
+  ],
+  "tests": {
+    "py_compile": "passed",
+    "pytest_command": "python -m pytest tests/unit/test_task_runtime_service.py tests/unit/test_hotfix_policy_kernel_approval_gate.py tests/governance/test_g21_readonly_analysis_intent.py tests/governance/test_lifecycle_core.py tests/governance/test_g24_preview_quality_gate.py -q",
+    "pytest_result": "44 passed",
+    "app_factory_import": {
+      "command": "python -c \"from aipinho.app_factory import create_app; app=create_app(); print(app.title); print(len(app.routes))\"",
+      "result": "AIpinho / 942 routes"
+    },
+    "regression_assertions": [
+      "TaskRun has execution_graph",
+      "ExecutionGraph nodes match TaskRunPlan steps",
+      "ExecutionGraph checkpoints are persisted",
+      "ExecutionGraph status reaches completed after runtime completion",
+      "approval_id with permission_requires_approval waits for input instead of blocking"
+    ]
+  },
+  "live_backend_smoke": {
+    "backend_restarted": true,
+    "pid": 50904,
+    "health": {
+      "status": "ok",
+      "service": "AIpinho",
+      "version": "0.1.0",
+      "runtime": "local"
+    },
+    "run_id": "task_run_6afe37b2d331449b9f10f6b407bf2203",
+    "graph_id": "exec_graph_44bedfda5ce148c296e3107c160d1675",
+    "endpoint": "/api/v1/task-runs/task_run_6afe37b2d331449b9f10f6b407bf2203/execution-graph",
+    "endpoint_status": "ok",
+    "nodes": 3,
+    "edges": 1,
+    "checkpoints": 1,
+    "graph_status": "ready"
+  },
+  "integrations": {
+    "runtime": "TaskRun.execution_graph is built during TaskRuntimeService.create_run and updated by SupervisedExecutionLoop.",
+    "endpoint": "GET /api/v1/task-runs/{run_id}/execution-graph",
+    "debugger_mobile": "DebuggerMobileAggregator renders a read-only execution_graph card for task_run trace ids.",
+    "reports": "Markdown and JSON reports generated under reports/engineering_evolution.",
+    "artifacts": "No artifact write path was added; graph is runtime state/evidence.",
+    "telemetry": "Graph checkpoints and lifecycle fields are persisted in TaskRun state."
+  },
+  "rollback": [
+    "Remove TaskRun.execution_graph field.",
+    "Remove ExecutionGraphService calls from TaskRuntimeService.",
+    "Remove graph updates from SupervisedExecutionLoop.",
+    "Remove /execution-graph endpoint.",
+    "Remove Debugger mobile card.",
+    "Remove graph-specific tests."
+  ],
+  "limitations": [
+    "ExecutionScheduler exposes ready nodes but does not execute nodes in parallel yet.",
+    "The existing step loop still performs execution; the graph is the canonical observable lifecycle.",
+    "Blocks H-L must build on this graph instead of introducing a competing mission schema."
+  ],
+  "hardcode_check": {
+    "workload_specific_rules_added": false,
+    "path_specific_rules_added": false,
+    "filename_specific_rules_added": false,
+    "fire_test_specific_routes_added": false
+  }
+}

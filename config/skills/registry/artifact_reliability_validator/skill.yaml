@@ -1,0 +1,29 @@
+skill_id: internal.artifact_reliability_validator
+display_name: Artifact Reliability Validator
+slug: artifact_reliability_validator
+description: Validate artifact status, download contract, token protection and final answer consistency.
+version: 1.0.0
+status: active
+category: validation
+owner: aipinho
+compatible_agents: [aipinho, codex, lucio, gemini]
+compatible_project_stacks: [mixed, unknown]
+required_capabilities: [sandbox_validate]
+allowed_tools: [sandbox_validate]
+denied_tools: [run_shell, create_file, modify_file, patch_apply]
+input_schema: {type: object}
+output_schema: {type: object}
+side_effects: []
+workspace_policy: {outside_sandbox_write: false}
+sandbox_required: true
+sandbox_allowed: true
+sandbox_side_effects: []
+command_policy: {shell: blocked}
+artifact_policy: {ready_only_download: true, requires_token: true, token_in_url: false}
+memory_policy: {mode: none}
+validation_policy: {required: true, failure_policy: block_completion}
+speaker_truth_policy: {raw_hidden_by_default: true, must_cite_evidence: true}
+risk_level: low
+approval_policy: {required: false}
+docs_ref: docs/artifacts/ARTIFACT_STATUS_MODEL.md
+tests_ref: tests/project_factory

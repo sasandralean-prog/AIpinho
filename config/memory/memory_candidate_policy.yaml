@@ -1,0 +1,49 @@
+schema_version: 1
+
+memory_candidates:
+  enabled: true
+  mode: candidate_only
+  approved_memory_enabled: false
+  vectorstore_enabled: false
+  embeddings_enabled: false
+  rag_enabled: false
+  auto_persist_approved_memory: false
+  require_source: true
+  require_evidence_for_technical_memory: true
+  require_scope: true
+  require_validation: true
+  require_sensitivity_scan: true
+  require_dedupe: true
+  require_trace: true
+  require_audit: true
+  allow_chat_create_candidates: true
+  allow_chat_approve_memory: false
+
+blocked:
+  raw_logs: true
+  secrets: true
+  full_file_content: true
+  full_conversation: true
+  vectorstore_write: true
+  embedding_generation: true
+  approved_memory_write: true
+  automatic_learning: true
+  unscoped_memory: true
+  source_missing: true
+  evidence_missing_for_technical_memory: true
+  model_only_memory: true
+
+allowed_memory_kinds:
+  - architecture_decision
+  - policy_decision
+  - validation_learning
+  - bug_fix_summary
+  - patch_outcome
+  - runtime_behavior
+  - project_constraint
+  - user_instruction
+  - operational_procedure
+  - known_limitation
+  - testing_guidance
+  - risk_pattern
+  - design_rationale

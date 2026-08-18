@@ -1,0 +1,133 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_2_PUBLIC_CORPUS_ROOT_BINDING_BLOCKED",
+  "created_at": "2026-08-13T23:10:45.577001+00:00",
+  "previous_public_blocker": {
+    "task_run_id": "task_run_6aab93c7b31f486b882b7d2aa34591d8",
+    "reason_codes": [
+      "MEDIA_CORPUS_ENTITY_SELECTION_EMPTY",
+      "ARTIFACT_EVIDENCE_BINDING_MISSING"
+    ],
+    "expected_rows": 0,
+    "selected_rows": 0,
+    "bound_rows": 0,
+    "root_cause": "ObservedEntityCompilationService consumed the global entity window with project_root before binding library_root entities."
+  },
+  "public_prompt_root_extraction": {
+    "project_root_present": true,
+    "library_root_present": true,
+    "root_binding_service": "ReadonlyAnalysisArtifactRuntimeService._request_workspace_context + ObservedEntityCompilationService.root_bindings",
+    "path_authority": false,
+    "role_authority": "semantic prompt context + workspace_context root role markers"
+  },
+  "root_bindings": {
+    "bindings": [
+      {
+        "root_id": "observed_entity_b687764b348ff41890008618",
+        "role": "project_root",
+        "source": "workspace",
+        "purposes": [
+          "project"
+        ],
+        "policy_status": "allowed",
+        "observation_allowed": true,
+        "mutation_allowed": false,
+        "access_scope": [
+          "read_metadata",
+          "list_files"
+        ],
+        "reason_codes": [
+          "ROOT_OBSERVATION_READONLY_ALLOWED"
+        ],
+        "evidence_ref_count": 1
+      },
+      {
+        "root_id": "observed_entity_09499e3d065a4cc635180783",
+        "role": "library_root",
+        "source": "library_roots",
+        "purposes": [
+          "corpus"
+        ],
+        "policy_status": "allowed",
+        "observation_allowed": true,
+        "mutation_allowed": false,
+        "access_scope": [
+          "read_metadata",
+          "list_files"
+        ],
+        "reason_codes": [
+          "ROOT_OBSERVATION_READONLY_ALLOWED"
+        ],
+        "evidence_ref_count": 1
+      }
+    ],
+    "policy_decisions": [
+      {
+        "root_id": "observed_entity_b687764b348ff41890008618",
+        "role": "project_root",
+        "policy_status": "allowed",
+        "observation_allowed": true,
+        "reason_codes": [
+          "ROOT_OBSERVATION_READONLY_ALLOWED"
+        ]
+      },
+      {
+        "root_id": "observed_entity_09499e3d065a4cc635180783",
+        "role": "library_root",
+        "policy_status": "allowed",
+        "observation_allowed": true,
+        "reason_codes": [
+          "ROOT_OBSERVATION_READONLY_ALLOWED"
+        ]
+      }
+    ]
+  },
+  "observation_goals": {
+    "media_corpus_inventory_goal_source": "ArtifactIntentPlan -> ContractDrivenPerceptionService",
+    "goal_requires_root_roles": [
+      "library_root",
+      "corpus_root"
+    ],
+    "goal_requires_evidence": [
+      "entity_identity",
+      "root_role",
+      "source_path",
+      "observation_provenance"
+    ]
+  },
+  "observed_entity_projection": {
+    "roots_scanned_by_role": {
+      "project_root": [
+        "C:\\Dev\\AIpinho"
+      ],
+      "library_root": [
+        "D:\\rafa\\pinho music"
+      ]
+    },
+    "entities_by_root_role": {
+      "library_root": 1051,
+      "project_root": 18949
+    },
+    "corpus_entities_observed": 1051,
+    "entities_rejected_by_policy": 0,
+    "limitations": [
+      "ENTITY_CARDINALITY_TRUNCATED"
+    ]
+  },
+  "artifact_materialization_boundary": {
+    "renderer_observes_filesystem": false,
+    "renderer_inputs": [
+      "ObservedEntity graph",
+      "ArtifactIntentPlan",
+      "ContractDrivenPerceptionService perception payload",
+      "Evidence refs"
+    ],
+    "semantic_selection_service": "SemanticEntitySelectionService"
+  },
+  "recommended_patch_points": [
+    "ObservedEntityCompilationService role-aware root scan budget",
+    "RootBinding/RootBindingPolicyDecision IR projection",
+    "Artifact entity summary root policy projection",
+    "CVL observational binding frontier expansion"
+  ],
+  "public_rerun_blocker": "RESULT_FINALIZATION_MISSING_AFTER_ARTIFACT_BINDING"
+}

@@ -1,0 +1,30 @@
+schema_version: 1
+
+extraction:
+  deterministic_only: true
+  model_assisted_extraction_enabled: false
+  max_candidates_per_source: 20
+  max_candidate_text_chars: 1200
+  max_summary_chars: 500
+  require_atomic_claim: true
+  split_compound_claims: true
+  reject_vague_candidates: true
+  reject_temporary_noise: true
+
+extract_from:
+  project_report:
+    sections: [findings, recommendations, limitations, decisions, risks]
+  task_run_result:
+    fields: [summary, limitations, blocked_items, validation]
+  validation_result:
+    fields: [findings, blocked_reasons, recommendations]
+  patch_apply_result:
+    fields: [files_changed, post_apply_validation, rollback, warnings, blocked_reasons]
+
+blocked_patterns:
+  - talvez
+  - acho que
+  - sem fonte
+  - debug temporario
+  - raw log
+  - stack trace completo

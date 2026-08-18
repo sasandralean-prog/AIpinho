@@ -1,0 +1,25 @@
+﻿schema_version: 1
+
+services:
+  api:
+    purpose: official_api
+    host: "0.0.0.0"
+    port: 9088
+    env_host: AIPINHO_HOST
+    env_port: AIPINHO_PORT
+    public_internet_exposure: false
+
+  auxiliary:
+    purpose: reserved_realtime_or_worker
+    host: "0.0.0.0"
+    port: 9089
+    env_port: AIPINHO_AUX_PORT
+    enabled: false
+    public_internet_exposure: false
+
+network:
+  localhost_host: "127.0.0.1"
+  discover_lan_addresses: true
+  discover_tailscale_addresses: true
+  tailscale_cidr: "100.64.0.0/10"
+  firewall_public_profile_open: false

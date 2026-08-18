@@ -1,0 +1,23 @@
+schema_version: 1
+raw_viewer:
+  enabled: true
+  hidden_by_default: true
+  require_sanitized_raw: true
+  allow_copy: true
+  allow_search: true
+  allow_line_numbers: true
+  allow_wrap_toggle: true
+  max_display_chars: 50000
+  max_copy_chars: 50000
+redaction:
+  enforce_before_display: true
+  redact_tokens: true
+  redact_passwords: true
+  redact_private_keys: true
+  redact_api_keys: true
+  redact_bearer_tokens: true
+blocked:
+  display_unsanitized_raw: true
+  display_token: true
+  display_private_key: true
+  display_full_file_without_limit: true

@@ -1,0 +1,72 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "models": [
+    {
+      "model": "llama_cpp",
+      "who_uses": ["services.models.llama_cpp_provider"],
+      "pipeline": "model_pipeline",
+      "role": "model_invoker",
+      "fallback": "UNKNOWN",
+      "escalation": "UNKNOWN",
+      "path": "config/models/",
+      "file": "UNKNOWN"
+    },
+    {
+      "model": "openai",
+      "who_uses": ["services.models.model_invocation_service"],
+      "pipeline": "model_pipeline",
+      "role": "model_invoker",
+      "fallback": "UNKNOWN",
+      "escalation": "UNKNOWN",
+      "path": "config/models/",
+      "file": "UNKNOWN"
+    },
+    {
+      "model": "gemini",
+      "who_uses": ["services.models.model_invocation_service"],
+      "pipeline": "model_pipeline",
+      "role": "model_invoker",
+      "fallback": "UNKNOWN",
+      "escalation": "UNKNOWN",
+      "path": "config/models/",
+      "file": "UNKNOWN"
+    },
+    {
+      "model": "claude",
+      "who_uses": ["services.models.model_invocation_service"],
+      "pipeline": "model_pipeline",
+      "role": "model_invoker",
+      "fallback": "UNKNOWN",
+      "escalation": "UNKNOWN",
+      "path": "config/models/",
+      "file": "UNKNOWN"
+    },
+    {
+      "model": "ocr_model",
+      "who_uses": ["services.vision.ocr_pipeline_service"],
+      "pipeline": "vision_pipeline",
+      "role": "vision_processor",
+      "fallback": "UNKNOWN",
+      "escalation": "UNKNOWN",
+      "path": "config/vision/",
+      "file": "UNKNOWN"
+    },
+    {
+      "model": "multimodal_model",
+      "who_uses": ["services.vision.vision_analysis_service"],
+      "pipeline": "vision_pipeline",
+      "role": "vision_processor",
+      "fallback": "UNKNOWN",
+      "escalation": "UNKNOWN",
+      "path": "config/vision/",
+      "file": "UNKNOWN"
+    }
+  ],
+  "total_models": 6,
+  "model_types": {
+    "llm": 4,
+    "vision": 2
+  },
+  "model_source": "config/models/, config/vision/"
+}

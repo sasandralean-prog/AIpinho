@@ -1,0 +1,47 @@
+schema_version: 1
+modes:
+  diagnose:
+    enabled: true
+    side_effects_allowed: false
+    allowed_sources:
+    - events
+    - debugger
+    - context
+    - skills
+    - validation
+    - supervisor
+    - configs
+    output:
+    - diagnosis_result
+    - invariant_results
+    - anomaly_signals
+  repair_proposal:
+    enabled: true
+    side_effects_allowed: false
+    requires_diagnosis: true
+    output:
+    - repair_proposal
+    - repair_risk
+    - repair_validation_plan
+  patch_preview:
+    enabled: true
+    side_effects_allowed: false
+    requires_repair_proposal: true
+    delegates_to: patch_planning_pipeline
+    output:
+    - maintenance_patch_preview
+    - diff_proposal_ref
+  validation_proposal:
+    enabled: true
+    side_effects_allowed: false
+    output:
+    - validation_recommendation
+    - validation_plan
+  handoff_only:
+    enabled: true
+    side_effects_allowed: false
+    output:
+    - repair_handoff
+    - approval_request_preview
+blocked:
+  apply_mode_real_execution: true

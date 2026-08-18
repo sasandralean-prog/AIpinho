@@ -1,0 +1,2149 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-06-11T13:07:38",
+  "project": "AIpinho",
+  "purpose": "Operational certification inventory for governed chat/task/artifact/write/shell/mobile flows.",
+  "operation_types": [
+    {
+      "operation_type": "simple_chat",
+      "description": "Operational contract for simple_chat.",
+      "can_create_task": false,
+      "can_read_workspace": false,
+      "can_write_workspace": false,
+      "can_run_shell": false,
+      "can_generate_artifact": false,
+      "requires_preview": false,
+      "requires_approval": false,
+      "requires_validation": false,
+      "allowed_workspace_roles": [],
+      "forbidden_workspace_roles": [
+        "forbidden"
+      ],
+      "required_events": [
+        "message_received"
+      ],
+      "required_trace_fields": [
+        "operation_id",
+        "operation_type",
+        "policy_decision_id"
+      ],
+      "allowed_final_statuses": [
+        "completed",
+        "completed_with_warnings",
+        "blocked",
+        "failed"
+      ],
+      "mobile_normal_rendering": "User message plus AIpinho answer only.",
+      "mobile_details_rendering": "Ids, policy, evidence and trace when available.",
+      "raw_visibility": "hidden_by_default",
+      "regression_triggers": [
+        "blocked_without_code",
+        "raw_visible",
+        "endpoint_mobile_divergence"
+      ]
+    },
+    {
+      "operation_type": "simple_conversation",
+      "description": "Operational contract for simple_conversation.",
+      "can_create_task": false,
+      "can_read_workspace": false,
+      "can_write_workspace": false,
+      "can_run_shell": false,
+      "can_generate_artifact": false,
+      "requires_preview": false,
+      "requires_approval": false,
+      "requires_validation": false,
+      "allowed_workspace_roles": [],
+      "forbidden_workspace_roles": [
+        "forbidden"
+      ],
+      "required_events": [
+        "operation_created",
+        "validation_finished"
+      ],
+      "required_trace_fields": [
+        "operation_id",
+        "operation_type",
+        "policy_decision_id"
+      ],
+      "allowed_final_statuses": [
+        "completed",
+        "completed_with_warnings",
+        "blocked",
+        "failed"
+      ],
+      "mobile_normal_rendering": "Runtime alias for simple chat conversation.",
+      "mobile_details_rendering": "Ids, policy, evidence and trace when available.",
+      "raw_visibility": "hidden_by_default",
+      "regression_triggers": [
+        "blocked_without_code",
+        "raw_visible",
+        "endpoint_mobile_divergence"
+      ]
+    },
+    {
+      "operation_type": "artifact_request",
+      "description": "Operational contract for artifact_request.",
+      "can_create_task": false,
+      "can_read_workspace": false,
+      "can_write_workspace": false,
+      "can_run_shell": false,
+      "can_generate_artifact": true,
+      "requires_preview": false,
+      "requires_approval": false,
+      "requires_validation": true,
+      "allowed_workspace_roles": [],
+      "forbidden_workspace_roles": [
+        "forbidden"
+      ],
+      "required_events": [
+        "operation_created",
+        "validation_finished"
+      ],
+      "required_trace_fields": [
+        "operation_id",
+        "operation_type",
+        "policy_decision_id"
+      ],
+      "allowed_final_statuses": [
+        "completed",
+        "completed_with_warnings",
+        "blocked",
+        "failed"
+      ],
+      "mobile_normal_rendering": "Answer plus artifact download actions.",
+      "mobile_details_rendering": "Ids, policy, evidence and trace when available.",
+      "raw_visibility": "hidden_by_default",
+      "regression_triggers": [
+        "blocked_without_code",
+        "raw_visible",
+        "endpoint_mobile_divergence"
+      ]
+    },
+    {
+      "operation_type": "readonly_analysis",
+      "description": "Operational contract for readonly_analysis.",
+      "can_create_task": true,
+      "can_read_workspace": true,
+      "can_write_workspace": false,
+      "can_run_shell": false,
+      "can_generate_artifact": false,
+      "requires_preview": false,
+      "requires_approval": false,
+      "requires_validation": true,
+      "allowed_workspace_roles": [
+        "source_readonly",
+        "target_mutable",
+        "system_mutable",
+        "protected"
+      ],
+      "forbidden_workspace_roles": [
+        "forbidden"
+      ],
+      "required_events": [
+        "operation_created",
+        "validation_finished"
+      ],
+      "required_trace_fields": [
+        "operation_id",
+        "operation_type",
+        "policy_decision_id"
+      ],
+      "allowed_final_statuses": [
+        "completed",
+        "completed_with_warnings",
+        "blocked",
+        "failed"
+      ],
+      "mobile_normal_rendering": "Human summary or explicit blocked state.",
+      "mobile_details_rendering": "Ids, policy, evidence and trace when available.",
+      "raw_visibility": "hidden_by_default",
+      "regression_triggers": [
+        "blocked_without_code",
+        "raw_visible",
+        "endpoint_mobile_divergence"
+      ]
+    },
+    {
+      "operation_type": "readonly_analysis_with_artifact_output",
+      "description": "Operational contract for readonly_analysis_with_artifact_output.",
+      "can_create_task": true,
+      "can_read_workspace": true,
+      "can_write_workspace": false,
+      "can_run_shell": false,
+      "can_generate_artifact": true,
+      "requires_preview": false,
+      "requires_approval": false,
+      "requires_validation": true,
+      "allowed_workspace_roles": [
+        "source_readonly",
+        "target_mutable",
+        "system_mutable",
+        "protected"
+      ],
+      "forbidden_workspace_roles": [
+        "forbidden"
+      ],
+      "required_events": [
+        "operation_created",
+        "validation_finished"
+      ],
+      "required_trace_fields": [
+        "operation_id",
+        "operation_type",
+        "policy_decision_id"
+      ],
+      "allowed_final_statuses": [
+        "completed",
+        "completed_with_warnings",
+        "blocked",
+        "failed"
+      ],
+      "mobile_normal_rendering": "Summary plus artifact downloads.",
+      "mobile_details_rendering": "Ids, policy, evidence and trace when available.",
+      "raw_visibility": "hidden_by_default",
+      "regression_triggers": [
+        "blocked_without_code",
+        "raw_visible",
+        "endpoint_mobile_divergence"
+      ]
+    },
+    {
+      "operation_type": "patch_preview",
+      "description": "Operational contract for patch_preview.",
+      "can_create_task": true,
+      "can_read_workspace": true,
+      "can_write_workspace": false,
+      "can_run_shell": false,
+      "can_generate_artifact": false,
+      "requires_preview": true,
+      "requires_approval": false,
+      "requires_validation": true,
+      "allowed_workspace_roles": [
+        "source_readonly",
+        "target_mutable",
+        "system_mutable",
+        "protected"
+      ],
+      "forbidden_workspace_roles": [
+        "forbidden"
+      ],
+      "required_events": [
+        "operation_created",
+        "validation_finished"
+      ],
+      "required_trace_fields": [
+        "operation_id",
+        "operation_type",
+        "policy_decision_id"
+      ],
+      "allowed_final_statuses": [
+        "completed",
+        "completed_with_warnings",
+        "blocked",
+        "failed"
+      ],
+      "mobile_normal_rendering": "Patch preview and approval explanation.",
+      "mobile_details_rendering": "Ids, policy, evidence and trace when available.",
+      "raw_visibility": "hidden_by_default",
+      "regression_triggers": [
+        "blocked_without_code",
+        "raw_visible",
+        "endpoint_mobile_divergence"
+      ]
+    },
+    {
+      "operation_type": "patch_apply",
+      "description": "Operational contract for patch_apply.",
+      "can_create_task": true,
+      "can_read_workspace": true,
+      "can_write_workspace": true,
+      "can_run_shell": false,
+      "can_generate_artifact": false,
+      "requires_preview": true,
+      "requires_approval": true,
+      "requires_validation": true,
+      "allowed_workspace_roles": [
+        "target_mutable",
+        "system_mutable"
+      ],
+      "forbidden_workspace_roles": [
+        "forbidden",
+        "source_readonly",
+        "protected"
+      ],
+      "required_events": [
+        "operation_created",
+        "validation_finished"
+      ],
+      "required_trace_fields": [
+        "operation_id",
+        "operation_type",
+        "policy_decision_id"
+      ],
+      "allowed_final_statuses": [
+        "completed",
+        "completed_with_warnings",
+        "blocked",
+        "failed"
+      ],
+      "mobile_normal_rendering": "Applied/failed/blocked state with validation.",
+      "mobile_details_rendering": "Ids, policy, evidence and trace when available.",
+      "raw_visibility": "hidden_by_default",
+      "regression_triggers": [
+        "blocked_without_code",
+        "raw_visible",
+        "endpoint_mobile_divergence"
+      ]
+    },
+    {
+      "operation_type": "shell_command",
+      "description": "Operational contract for shell_command.",
+      "can_create_task": true,
+      "can_read_workspace": true,
+      "can_write_workspace": false,
+      "can_run_shell": true,
+      "can_generate_artifact": false,
+      "requires_preview": true,
+      "requires_approval": true,
+      "requires_validation": true,
+      "allowed_workspace_roles": [
+        "source_readonly",
+        "target_mutable",
+        "system_mutable",
+        "protected"
+      ],
+      "forbidden_workspace_roles": [
+        "forbidden",
+        "source_readonly",
+        "protected"
+      ],
+      "required_events": [
+        "operation_created",
+        "validation_finished"
+      ],
+      "required_trace_fields": [
+        "operation_id",
+        "operation_type",
+        "policy_decision_id"
+      ],
+      "allowed_final_statuses": [
+        "completed",
+        "completed_with_warnings",
+        "blocked",
+        "failed"
+      ],
+      "mobile_normal_rendering": "Sanitized command status; details in debugger.",
+      "mobile_details_rendering": "Ids, policy, evidence and trace when available.",
+      "raw_visibility": "hidden_by_default",
+      "regression_triggers": [
+        "blocked_without_code",
+        "raw_visible",
+        "endpoint_mobile_divergence"
+      ]
+    }
+  ],
+  "workspace_roles": {
+    "source_readonly": {
+      "read_allowed": true,
+      "write_allowed": false,
+      "patch_allowed": false,
+      "shell_allowed": false,
+      "shell_write_allowed": false,
+      "artifact_source_allowed": true,
+      "artifact_target_allowed": false,
+      "approval_required": false,
+      "validation_required": true,
+      "forbidden_actions": [
+        "write_file",
+        "apply_patch",
+        "run_shell_write"
+      ]
+    },
+    "target_mutable": {
+      "read_allowed": true,
+      "write_allowed": true,
+      "patch_allowed": true,
+      "shell_allowed": true,
+      "shell_write_allowed": true,
+      "artifact_source_allowed": true,
+      "artifact_target_allowed": true,
+      "approval_required": true,
+      "validation_required": true,
+      "forbidden_actions": [
+        "delete_file",
+        "move_file",
+        "destructive_shell",
+        "git_push_by_default"
+      ]
+    },
+    "system_mutable": {
+      "read_allowed": true,
+      "write_allowed": true,
+      "patch_allowed": true,
+      "shell_allowed": true,
+      "shell_write_allowed": true,
+      "artifact_source_allowed": true,
+      "artifact_target_allowed": true,
+      "approval_required": true,
+      "validation_required": true,
+      "forbidden_actions": [
+        "delete_file",
+        "move_file",
+        "destructive_shell",
+        "git_push_by_default"
+      ]
+    },
+    "protected": {
+      "read_allowed": true,
+      "write_allowed": false,
+      "patch_allowed": false,
+      "shell_allowed": false,
+      "shell_write_allowed": false,
+      "artifact_source_allowed": true,
+      "artifact_target_allowed": false,
+      "approval_required": true,
+      "validation_required": true,
+      "forbidden_actions": [
+        "write_file",
+        "apply_patch",
+        "run_shell_write"
+      ]
+    },
+    "forbidden": {
+      "read_allowed": false,
+      "write_allowed": false,
+      "patch_allowed": false,
+      "shell_allowed": false,
+      "shell_write_allowed": false,
+      "artifact_source_allowed": false,
+      "artifact_target_allowed": false,
+      "approval_required": true,
+      "validation_required": false,
+      "forbidden_actions": [
+        "read_file",
+        "write_file",
+        "apply_patch",
+        "run_command"
+      ]
+    }
+  },
+  "capabilities_actions": [
+    {
+      "capability_required": "chat",
+      "action": "answer_message",
+      "preconditions": "none",
+      "operation_types_allowed": [
+        "simple_chat",
+        "simple_conversation"
+      ],
+      "workspace_roles_allowed": "any",
+      "preview_required": false,
+      "approval_required": false,
+      "validation_required": false,
+      "risk_level": "low",
+      "blocked_by_default": false,
+      "mobile_safe_action_allowed": true,
+      "required_policy_decision": "policy_decision_created",
+      "required_event": "operation_created",
+      "required_trace": [
+        "operation_id",
+        "capability",
+        "action",
+        "policy_decision_id"
+      ]
+    },
+    {
+      "capability_required": "read_workspace",
+      "action": "scan_workspace",
+      "preconditions": "registered readable workspace plus budget",
+      "operation_types_allowed": [
+        "readonly_analysis",
+        "readonly_analysis_with_artifact_output"
+      ],
+      "workspace_roles_allowed": "source_readonly,target_mutable,system_mutable,protected",
+      "preview_required": false,
+      "approval_required": false,
+      "validation_required": true,
+      "risk_level": "medium",
+      "blocked_by_default": false,
+      "mobile_safe_action_allowed": true,
+      "required_policy_decision": "policy_decision_created",
+      "required_event": "operation_created",
+      "required_trace": [
+        "operation_id",
+        "capability",
+        "action",
+        "policy_decision_id"
+      ]
+    },
+    {
+      "capability_required": "artifact",
+      "action": "create_artifact",
+      "preconditions": "artifact store policy allows output",
+      "operation_types_allowed": [
+        "artifact_request",
+        "readonly_analysis_with_artifact_output"
+      ],
+      "workspace_roles_allowed": "artifact_store",
+      "preview_required": false,
+      "approval_required": false,
+      "validation_required": true,
+      "risk_level": "low",
+      "blocked_by_default": false,
+      "mobile_safe_action_allowed": true,
+      "required_policy_decision": "policy_decision_created",
+      "required_event": "operation_created",
+      "required_trace": [
+        "operation_id",
+        "capability",
+        "action",
+        "policy_decision_id"
+      ]
+    },
+    {
+      "capability_required": "artifact",
+      "action": "package_artifact_zip",
+      "preconditions": "artifact_id exists and zip policy allows format",
+      "operation_types_allowed": [
+        "artifact_request",
+        "readonly_analysis_with_artifact_output"
+      ],
+      "workspace_roles_allowed": "artifact_store",
+      "preview_required": false,
+      "approval_required": false,
+      "validation_required": true,
+      "risk_level": "low",
+      "blocked_by_default": false,
+      "mobile_safe_action_allowed": true,
+      "required_policy_decision": "policy_decision_created",
+      "required_event": "operation_created",
+      "required_trace": [
+        "operation_id",
+        "capability",
+        "action",
+        "policy_decision_id"
+      ]
+    },
+    {
+      "capability_required": "patch",
+      "action": "create_preview",
+      "preconditions": "mutable target workspace",
+      "operation_types_allowed": [
+        "patch_preview",
+        "patch_apply"
+      ],
+      "workspace_roles_allowed": "target_mutable,system_mutable",
+      "preview_required": true,
+      "approval_required": false,
+      "validation_required": true,
+      "risk_level": "medium",
+      "blocked_by_default": false,
+      "mobile_safe_action_allowed": true,
+      "required_policy_decision": "policy_decision_created",
+      "required_event": "operation_created",
+      "required_trace": [
+        "operation_id",
+        "capability",
+        "action",
+        "policy_decision_id"
+      ]
+    },
+    {
+      "capability_required": "patch",
+      "action": "apply_patch",
+      "preconditions": "preview plus matching approval",
+      "operation_types_allowed": [
+        "patch_apply"
+      ],
+      "workspace_roles_allowed": "target_mutable,system_mutable",
+      "preview_required": true,
+      "approval_required": true,
+      "validation_required": true,
+      "risk_level": "high",
+      "blocked_by_default": true,
+      "mobile_safe_action_allowed": false,
+      "required_policy_decision": "policy_decision_created",
+      "required_event": "task_blocked",
+      "required_trace": [
+        "operation_id",
+        "capability",
+        "action",
+        "policy_decision_id"
+      ]
+    },
+    {
+      "capability_required": "workspace_write",
+      "action": "write_file",
+      "preconditions": "preview plus approval plus validation",
+      "operation_types_allowed": [
+        "patch_apply",
+        "artifact_write"
+      ],
+      "workspace_roles_allowed": "target_mutable,system_mutable",
+      "preview_required": true,
+      "approval_required": true,
+      "validation_required": true,
+      "risk_level": "high",
+      "blocked_by_default": true,
+      "mobile_safe_action_allowed": false,
+      "required_policy_decision": "policy_decision_created",
+      "required_event": "task_blocked",
+      "required_trace": [
+        "operation_id",
+        "capability",
+        "action",
+        "policy_decision_id"
+      ]
+    },
+    {
+      "capability_required": "shell",
+      "action": "run_command",
+      "preconditions": "allowlisted executable, workspace, timeout, approval",
+      "operation_types_allowed": [
+        "shell_command"
+      ],
+      "workspace_roles_allowed": "target_mutable,system_mutable",
+      "preview_required": true,
+      "approval_required": true,
+      "validation_required": true,
+      "risk_level": "medium-high",
+      "blocked_by_default": true,
+      "mobile_safe_action_allowed": false,
+      "required_policy_decision": "policy_decision_created",
+      "required_event": "task_blocked",
+      "required_trace": [
+        "operation_id",
+        "capability",
+        "action",
+        "policy_decision_id"
+      ]
+    },
+    {
+      "capability_required": "validation",
+      "action": "validate_result",
+      "preconditions": "operation requires validation",
+      "operation_types_allowed": [
+        "readonly_analysis",
+        "patch_apply",
+        "shell_command"
+      ],
+      "workspace_roles_allowed": "any",
+      "preview_required": false,
+      "approval_required": false,
+      "validation_required": false,
+      "risk_level": "low",
+      "blocked_by_default": false,
+      "mobile_safe_action_allowed": true,
+      "required_policy_decision": "policy_decision_created",
+      "required_event": "operation_created",
+      "required_trace": [
+        "operation_id",
+        "capability",
+        "action",
+        "policy_decision_id"
+      ]
+    }
+  ],
+  "policy_decisions": [
+    "allowed",
+    "denied",
+    "pending_approval",
+    "blocked",
+    "needs_clarification"
+  ],
+  "approval_requirements": {
+    "side_effects": "approval required",
+    "patch_apply": "approval required",
+    "shell_side_effects": "approval required",
+    "artifact_store_output": "no approval by default unless policy escalates"
+  },
+  "patch_lifecycle_states": [
+    "preview_created",
+    "needs_approval",
+    "approved",
+    "apply_started",
+    "apply_finished",
+    "post_validation_passed",
+    "post_validation_failed",
+    "completed",
+    "failed",
+    "blocked"
+  ],
+  "shell_categories": [
+    "readonly_shell",
+    "git_read_shell",
+    "test_shell",
+    "build_shell",
+    "package_shell",
+    "network_shell",
+    "process_control_shell",
+    "write_shell",
+    "destructive_shell",
+    "unknown_shell"
+  ],
+  "validation_gates": [
+    {
+      "validation_id": "file_exists",
+      "operation_types": [
+        "artifact_write",
+        "patch_apply"
+      ],
+      "pass_criteria": "Path exists when required.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "directory_exists",
+      "operation_types": [
+        "readonly_analysis",
+        "shell_command"
+      ],
+      "pass_criteria": "Source directory exists.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "artifact_registered",
+      "operation_types": [
+        "artifact_request",
+        "readonly_analysis_with_artifact_output"
+      ],
+      "pass_criteria": "Artifact registry contains artifact_id.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "artifact_downloadable",
+      "operation_types": [
+        "artifact_download"
+      ],
+      "pass_criteria": "Download endpoint available and token required.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "zip_contains_expected_file",
+      "operation_types": [
+        "artifact_request",
+        "readonly_analysis_with_artifact_output"
+      ],
+      "pass_criteria": "Zip includes requested logical file.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "diff_matches_preview",
+      "operation_types": [
+        "patch_apply"
+      ],
+      "pass_criteria": "Applied diff matches preview.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "no_write_to_source",
+      "operation_types": [
+        "readonly_analysis_with_artifact_output"
+      ],
+      "pass_criteria": "Read-only source was not mutated.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "no_secret_leak",
+      "operation_types": [
+        "all"
+      ],
+      "pass_criteria": "Output and raw are sanitized.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "py_compile",
+      "operation_types": [
+        "patch_apply"
+      ],
+      "pass_criteria": "Changed Python files compile when applicable.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "unit_tests",
+      "operation_types": [
+        "patch_apply",
+        "shell_test_or_build"
+      ],
+      "pass_criteria": "Focused tests pass when applicable.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "android_unit_tests",
+      "operation_types": [
+        "patch_apply"
+      ],
+      "pass_criteria": "Android tests pass when Android changed.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "assemble_debug",
+      "operation_types": [
+        "patch_apply"
+      ],
+      "pass_criteria": "APK build passes when Android app changed.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "shell_exit_code",
+      "operation_types": [
+        "shell_command"
+      ],
+      "pass_criteria": "Command exits as expected.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "report_contains_required_sections",
+      "operation_types": [
+        "readonly_analysis_with_artifact_output"
+      ],
+      "pass_criteria": "Report has required sections.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "event_trace_exists",
+      "operation_types": [
+        "all"
+      ],
+      "pass_criteria": "Traceable events exist.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "mobile_viewmodel_matches_endpoint",
+      "operation_types": [
+        "all_mobile"
+      ],
+      "pass_criteria": "Mobile state matches endpoint state.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    },
+    {
+      "validation_id": "task_state_consistent",
+      "operation_types": [
+        "task"
+      ],
+      "pass_criteria": "Task lifecycle is coherent.",
+      "fail_criteria": "missing or failing evidence",
+      "evidence_refs": [
+        "event_id",
+        "trace_id"
+      ],
+      "mobile_presentation": "details/debugger",
+      "report_requirements": "include status and evidence"
+    }
+  ],
+  "artifact_lifecycle": [
+    "artifact_requested",
+    "artifact_content_created",
+    "artifact_packaged",
+    "artifact_registered",
+    "artifact_validated",
+    "artifact_link_created",
+    "artifact_download_requested",
+    "artifact_download_completed",
+    "artifact_download_failed"
+  ],
+  "event_contracts": [
+    {
+      "event_type": "operation_created",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "intent_classified",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "workspace_resolved",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "policy_decision_created",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "approval_requested",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "approval_granted",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "approval_denied",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "preview_created",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "patch_apply_started",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "patch_apply_finished",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "shell_command_started",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "shell_command_finished",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "readonly_scan_started",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "readonly_scan_finished",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "artifact_created",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "artifact_packaged",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "artifact_registered",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "validation_started",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "validation_finished",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "task_blocked",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "task_failed",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "task_completed",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "report_generated",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    },
+    {
+      "event_type": "regression_candidate_created",
+      "required_fields": [
+        "event_id",
+        "source_service",
+        "status",
+        "severity",
+        "human_summary",
+        "technical_summary",
+        "visibility",
+        "copy_policy",
+        "created_at"
+      ],
+      "optional_fields": [
+        "task_id",
+        "operation_id",
+        "artifact_id",
+        "approval_id",
+        "validation_id"
+      ],
+      "redaction_rules": [
+        "no token",
+        "no raw secret",
+        "raw by ref only"
+      ],
+      "mobile_debugger_visibility": "public or debugger unless hidden"
+    }
+  ],
+  "mobile_viewmodel_states": [
+    {
+      "state": "idle",
+      "endpoint_state": "idle",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "running",
+      "endpoint_state": "running",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "pending_approval",
+      "endpoint_state": "pending_approval",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "approve/cancel"
+    },
+    {
+      "state": "pending_validation",
+      "endpoint_state": "pending_validation",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "validating",
+      "endpoint_state": "validating",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "completed",
+      "endpoint_state": "completed",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "completed_with_warnings",
+      "endpoint_state": "completed_with_warnings",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "degraded",
+      "endpoint_state": "degraded",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "blocked",
+      "endpoint_state": "blocked",
+      "mobile_normal_expected": "human blocked reason",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "failed",
+      "endpoint_state": "failed",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "validation_failed",
+      "endpoint_state": "validation_failed",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    }
+  ],
+  "block_reason_codes": [
+    "path_outside_workspace",
+    "path_traversal_blocked",
+    "workspace_role_forbids_write",
+    "workspace_role_forbids_shell",
+    "source_readonly_write_denied",
+    "forbidden_workspace",
+    "workspace_resolution_failed",
+    "capability_missing",
+    "action_not_available",
+    "policy_denied",
+    "risk_above_allowed_threshold",
+    "approval_required",
+    "approval_denied",
+    "approval_expired",
+    "approval_mismatch",
+    "preview_required",
+    "preview_missing",
+    "preview_mismatch",
+    "apply_denied",
+    "actual_changes_mismatch",
+    "write_envelope_invalid",
+    "shell_category_denied",
+    "destructive_shell_denied",
+    "git_write_denied",
+    "network_shell_denied",
+    "process_control_denied",
+    "unknown_shell_denied",
+    "shell_timeout",
+    "shell_exit_failed",
+    "artifact_output_policy_denied",
+    "artifact_creation_failed",
+    "artifact_packaging_failed",
+    "artifact_registration_failed",
+    "artifact_missing_id",
+    "artifact_download_unavailable",
+    "validation_required",
+    "validation_not_started",
+    "validation_failed",
+    "validation_evidence_missing",
+    "operation_contract_invalid",
+    "task_runtime_failed",
+    "execution_exception",
+    "budget_exceeded",
+    "unsupported_file_type",
+    "encoding_failed",
+    "speaker_truth_violation",
+    "mobile_state_mismatch",
+    "endpoint_mobile_divergence",
+    "raw_sanitization_required",
+    "unknown_block_reason"
+  ],
+  "regression_candidate_triggers": [
+    "operation blocked without code",
+    "source_readonly write allowed",
+    "artifact output confused with workspace write",
+    "approval required but blocked",
+    "validation failed but completed",
+    "speaker truth violation",
+    "mobile endpoint divergence",
+    "raw/token leaked",
+    "shell dangerous allowed",
+    "event trace missing",
+    "artifact id missing after creation",
+    "stale task reused",
+    "unknown block reason"
+  ],
+  "golden_path_matrix": [
+    {
+      "id": "simple_chat",
+      "prompt_or_input": "Generic input for simple_chat.",
+      "expected_operation_type": "simple_chat",
+      "expected_task_behavior": "no task",
+      "expected_workspace_behavior": "no workspace",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "no approval",
+      "expected_validation": "not required",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "message_received"
+      ],
+      "expected_mobile": "clean chat answer",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "simple_chat_with_artifact",
+      "prompt_or_input": "Generic input for simple_chat_with_artifact.",
+      "expected_operation_type": "artifact_request",
+      "expected_task_behavior": "no task by default",
+      "expected_workspace_behavior": "artifact store only",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "no approval",
+      "expected_validation": "artifact validation",
+      "expected_artifacts": "artifact links",
+      "expected_events": [
+        "artifact_created"
+      ],
+      "expected_mobile": "download card",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "readonly_analysis",
+      "prompt_or_input": "Generic input for readonly_analysis.",
+      "expected_operation_type": "readonly_analysis",
+      "expected_task_behavior": "task or operation",
+      "expected_workspace_behavior": "read only",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "none unless policy requires",
+      "expected_validation": "analysis validation",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "readonly_scan_started"
+      ],
+      "expected_mobile": "summary",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "readonly_analysis_with_artifact_output",
+      "prompt_or_input": "Generic input for readonly_analysis_with_artifact_output.",
+      "expected_operation_type": "readonly_analysis_with_artifact_output",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "read source; write artifact store only",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "none unless broad scan policy requires",
+      "expected_validation": "artifact/report validations",
+      "expected_artifacts": "txt/zip artifact",
+      "expected_events": [
+        "artifact_created",
+        "validation_finished"
+      ],
+      "expected_mobile": "summary plus download",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "target_workspace_patch_preview",
+      "prompt_or_input": "Generic input for target_workspace_patch_preview.",
+      "expected_operation_type": "patch_preview",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "read target no apply",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "approval later",
+      "expected_validation": "preview validation",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "preview_created"
+      ],
+      "expected_mobile": "preview card",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "target_workspace_patch_apply",
+      "prompt_or_input": "Generic input for target_workspace_patch_apply.",
+      "expected_operation_type": "patch_apply",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "mutate target only",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "required",
+      "expected_validation": "post apply validation",
+      "expected_artifacts": "optional report",
+      "expected_events": [
+        "approval_granted",
+        "patch_apply_finished"
+      ],
+      "expected_mobile": "final state",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "shell_readonly",
+      "prompt_or_input": "Generic input for shell_readonly.",
+      "expected_operation_type": "shell_command",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "read-only shell",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "maybe",
+      "expected_validation": "exit/evidence",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "shell_command_finished"
+      ],
+      "expected_mobile": "sanitized status",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "shell_test_or_build",
+      "prompt_or_input": "Generic input for shell_test_or_build.",
+      "expected_operation_type": "shell_command",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "test/build category",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "required when side effects",
+      "expected_validation": "exit/evidence",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "shell_command_finished"
+      ],
+      "expected_mobile": "test status",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "blocked_write_to_readonly",
+      "prompt_or_input": "Generic input for blocked_write_to_readonly.",
+      "expected_operation_type": "blocked_policy_message",
+      "expected_task_behavior": "maybe task",
+      "expected_workspace_behavior": "blocked",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "none",
+      "expected_validation": "block evidence",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "task_blocked"
+      ],
+      "expected_mobile": "blocked with reason",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "destructive_shell_blocked",
+      "prompt_or_input": "Generic input for destructive_shell_blocked.",
+      "expected_operation_type": "blocked_policy_message",
+      "expected_task_behavior": "task or preview",
+      "expected_workspace_behavior": "blocked",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "none",
+      "expected_validation": "block evidence",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "task_blocked"
+      ],
+      "expected_mobile": "blocked with reason",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "approval_required",
+      "prompt_or_input": "Generic input for approval_required.",
+      "expected_operation_type": "approval_request",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "pending side effect",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "required",
+      "expected_validation": "pending",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "approval_requested"
+      ],
+      "expected_mobile": "approval action",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "approval_denied",
+      "prompt_or_input": "Generic input for approval_denied.",
+      "expected_operation_type": "approval_denied",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "no mutation",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "denied",
+      "expected_validation": "terminal/blocked",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "approval_denied"
+      ],
+      "expected_mobile": "denied state",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "validation_failed",
+      "prompt_or_input": "Generic input for validation_failed.",
+      "expected_operation_type": "validation_result",
+      "expected_task_behavior": "task",
+      "expected_workspace_behavior": "no success",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "depends",
+      "expected_validation": "failed",
+      "expected_artifacts": "maybe report",
+      "expected_events": [
+        "validation_finished"
+      ],
+      "expected_mobile": "not completed",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "artifact_download",
+      "prompt_or_input": "Generic input for artifact_download.",
+      "expected_operation_type": "artifact_download",
+      "expected_task_behavior": "no task",
+      "expected_workspace_behavior": "artifact store only",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "token/header",
+      "expected_validation": "integrity optional",
+      "expected_artifacts": "downloaded file",
+      "expected_events": [
+        "artifact_download_completed"
+      ],
+      "expected_mobile": "download notification",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    },
+    {
+      "id": "mobile_endpoint_divergence_detection",
+      "prompt_or_input": "Generic input for mobile_endpoint_divergence_detection.",
+      "expected_operation_type": "diagnostic",
+      "expected_task_behavior": "regression candidate",
+      "expected_workspace_behavior": "none",
+      "expected_policy": "must follow operation contract",
+      "expected_approval": "none",
+      "expected_validation": "divergence evidence",
+      "expected_artifacts": "none",
+      "expected_events": [
+        "regression_candidate_created"
+      ],
+      "expected_mobile": "diagnostic warning",
+      "expected_endpoint": "structured response with matching status and ids",
+      "tests_covering_it": [
+        "tests/certification/test_operational_contract_inventory.py"
+      ]
+    }
+  ],
+  "mobile_endpoint_parity_matrix": [
+    {
+      "state": "idle",
+      "endpoint_state": "idle",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "running",
+      "endpoint_state": "running",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "pending_approval",
+      "endpoint_state": "pending_approval",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "approve/cancel"
+    },
+    {
+      "state": "pending_validation",
+      "endpoint_state": "pending_validation",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "validating",
+      "endpoint_state": "validating",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "completed",
+      "endpoint_state": "completed",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "completed_with_warnings",
+      "endpoint_state": "completed_with_warnings",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "degraded",
+      "endpoint_state": "degraded",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "blocked",
+      "endpoint_state": "blocked",
+      "mobile_normal_expected": "human blocked reason",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "failed",
+      "endpoint_state": "failed",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    },
+    {
+      "state": "validation_failed",
+      "endpoint_state": "validation_failed",
+      "mobile_normal_expected": "human status",
+      "mobile_details_expected": "ids, policy, evidence and trace when available",
+      "debugger_expected": "sanitized events and raw refs only",
+      "raw_visibility": "hidden_by_default",
+      "action_buttons_expected": "download if artifact_id exists"
+    }
+  ]
+}

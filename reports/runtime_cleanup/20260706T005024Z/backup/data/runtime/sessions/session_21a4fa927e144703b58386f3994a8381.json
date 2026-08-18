@@ -1,0 +1,54 @@
+{
+  "session_id": "session_21a4fa927e144703b58386f3994a8381",
+  "status": "active",
+  "created_at": "2026-06-08T02:18:23.302456+00:00",
+  "updated_at": "2026-06-08T02:18:23.959428+00:00",
+  "expires_at": "2026-06-08T06:18:23.302456+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Use C:\\Dev\\AIpinho como projeto",
+      "message_id": null,
+      "created_at": null
+    },
+    {
+      "role": "user",
+      "content": "Explique a arquitetura sem alterar nada",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_43806e755f0e469c83f8f2845584fe3c",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_clarification",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": "C:\\Dev\\AIpinho",
+  "active_task_draft_id": "draft_ae066241677d41adb953f42a20200557",
+  "warnings": [
+    "workspace_candidate_requires_confirmation"
+  ],
+  "trace_refs": []
+}

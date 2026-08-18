@@ -1,0 +1,187 @@
+schema_version: 1
+
+action_constraints:
+  preview_only:
+    concept_ids:
+      - preview_only_constraint
+    allowed_actions:
+      - patch_preview
+
+classification_overrides:
+  deferred_creation_conversation:
+    signal_terms:
+      - ideia
+      - ideias
+      - sugestao
+      - sugestoes
+      - brainstorm
+      - conceito
+    defer_terms:
+      - criar depois
+      - fazer depois
+      - implementar depois
+      - para eu criar depois
+      - mais tarde
+      - futuramente
+  project_repair_request:
+    repair_terms:
+      - bug
+      - erro
+      - falha
+      - correcao
+      - corrigir
+      - corrija
+      - consertar
+      - conserte
+      - ajustar
+      - ajuste
+      - reparar
+      - repare
+      - persistencia
+      - load
+      - save
+      - estado
+      - validacao
+      - validação
+  executable_artifact_request:
+    strong_terms:
+      - apk
+      - executavel
+      - executável
+      - installer
+      - instalador
+
+intents:
+  conversation:
+    requires_task: false
+    requires_workspace: false
+    default_actions: []
+    output_channel: chat
+
+  self_analysis:
+    requires_task: false
+    requires_workspace: false
+    default_actions: []
+    policy_hint: grounded_self_knowledge_future
+    output_channel: chat
+
+  capability_explanation:
+    requires_task: false
+    requires_workspace: false
+    default_actions: []
+    output_channel: chat
+
+  in_chat_final_report:
+    requires_task: false
+    requires_workspace: false
+    default_actions: []
+    output_channel: chat
+
+  readonly_analysis:
+    requires_task: true
+    requires_workspace: true
+    default_actions:
+      - read_files
+    output_channel: chat
+
+  artifact_generation:
+    requires_task: true
+    requires_workspace: true
+    default_actions:
+      - write_files
+    requires_approval: true
+    output_channel: artifact
+
+  filesystem_write_request:
+    requires_task: true
+    requires_workspace: true
+    default_actions:
+      - write_files
+    requires_approval: true
+    output_channel: task_report
+
+  file_modification_request:
+    requires_task: true
+    requires_workspace: true
+    default_actions:
+      - write_files
+    requires_approval: true
+    output_channel: task_report
+
+  project_generation_request:
+    requires_task: true
+    requires_workspace: true
+    default_actions:
+      - write_files
+    requires_approval: true
+    output_channel: task_report
+
+  android_project_generation:
+    requires_task: true
+    requires_workspace: true
+    default_actions:
+      - write_files
+      - run_command
+    requires_approval: true
+    output_channel: task_report
+
+  artifact_build_request:
+    requires_task: true
+    requires_workspace: true
+    default_actions:
+      - run_command
+      - write_files
+    requires_approval: true
+    output_channel: task_report
+
+  patch_request:
+    requires_task: true
+    requires_workspace: true
+    default_actions:
+      - patch_preview
+      - apply_patch
+    requires_approval: true
+    output_channel: patch
+
+  validation_request:
+    requires_task: true
+    requires_workspace: true
+    default_actions:
+      - run_tests
+    output_channel: task_report
+
+  public_fact_query:
+    requires_task: false
+    requires_workspace: false
+    default_actions:
+      - web_request
+    output_channel: chat
+
+  rag_query:
+    requires_task: false
+    requires_workspace: false
+    default_actions:
+      - use_rag
+    output_channel: chat
+
+  memory_request:
+    requires_task: false
+    requires_workspace: false
+    default_actions:
+      - memory_read
+    output_channel: chat
+
+  memory_write:
+    requires_task: true
+    requires_workspace: false
+    default_actions:
+      - write_memory
+    requires_approval: true
+    output_channel: task_report
+
+  unknown:
+    requires_task: false
+    requires_workspace: false
+    default_actions: []
+    requires_clarification: true
+    output_channel: unknown

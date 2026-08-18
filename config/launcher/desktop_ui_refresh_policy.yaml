@@ -1,0 +1,14 @@
+schema_version: 1
+refresh:
+  dashboard_interval_seconds: 5
+  services_interval_seconds: 5
+  resources_interval_seconds: 10
+  chat_poll_fallback_seconds: 10
+  pipeline_interval_seconds: 5
+  debugger_interval_seconds: 10
+  events_poll_fallback_seconds: 5
+  use_sse_when_available: true
+  fallback_to_polling: true
+  reconnect_backoff_seconds: [1, 2, 5, 10]
+blocked:
+  aggressive_polling: true

@@ -1,0 +1,46 @@
+{
+  "session_id": "session_d496c2ca272948058cce0d60a593a496",
+  "status": "active",
+  "created_at": "2026-06-07T16:29:38.060871+00:00",
+  "updated_at": "2026-06-07T16:29:38.070403+00:00",
+  "expires_at": "2026-06-07T20:29:38.060871+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Corrija C:\\PinhoabacaxiAI",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_3c64a74e42264fe593ddf10a80500a8b",
+    "intent_type": "patch_request",
+    "task_type": "patch_request",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\PinhoabacaxiAI",
+      "declared": true,
+      "protected": true
+    }
+  },
+  "last_policy_decision": {
+    "status": "denied",
+    "contract_type": "patch_request",
+    "allowed_actions": [],
+    "denied_actions": [
+      "apply_patch",
+      "patch_preview"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [
+    "protected_workspace_detected"
+  ],
+  "trace_refs": []
+}

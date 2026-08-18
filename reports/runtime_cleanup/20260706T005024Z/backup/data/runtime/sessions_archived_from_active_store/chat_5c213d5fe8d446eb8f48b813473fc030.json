@@ -1,0 +1,29 @@
+{
+  "session_id": "chat_5c213d5fe8d446eb8f48b813473fc030",
+  "status": "active",
+  "created_at": "2026-06-18T19:22:50.435593+00:00",
+  "updated_at": "2026-06-18T19:22:50.499402+00:00",
+  "expires_at": "2026-06-18T23:22:50.435593+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Crie a pasta C:\\Dev\\AIpinho\\sandboxes\\runtime_parity_test, gere tres arquivos txt dentro dela, depois gere um zip chamado runtime_parity_test.zip contendo esses tres arquivos. Ao final valide que o zip existe e tem tamanho maior que zero.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {},
+  "last_policy_decision": {},
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {
+    "operation_type": "sandbox_batch_artifact_request",
+    "path": "C:\\Dev\\AIpinho\\sandboxes\\runtime_parity_test\\runtime_parity_test.zip",
+    "run_id": "sandbox_run_0eb727ea6c9f4f339d9905a3a4e107f1"
+  },
+  "warnings": [
+    "active_task_draft_missing"
+  ],
+  "trace_refs": []
+}

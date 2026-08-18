@@ -1,0 +1,39 @@
+schema_version: 1
+
+stages:
+  - stage_id: baseline
+    title: "Evidence baseline"
+    objective: "Consolidate observed behavior, architecture, risks and acceptance criteria before implementation."
+    validation: [evidence coverage, source remains unchanged, target snapshot recorded]
+  - stage_id: foundation
+    title: "Target foundation"
+    objective: "Establish the smallest buildable target structure and its validation harness."
+    validation: [build succeeds, smoke test exists, no legacy write]
+  - stage_id: domain_portability
+    title: "Domain portability"
+    objective: "Port cohesive domain capabilities in small slices without blind file copying."
+    validation: [behavioral tests, contract checks, source-target comparison]
+  - stage_id: user_workflows
+    title: "User workflows"
+    objective: "Rebuild observable user workflows with traceable acceptance criteria."
+    validation: [workflow smoke, UX contract, error states]
+  - stage_id: hardening
+    title: "Hardening and release"
+    objective: "Close validation gaps, document limitations and prepare rollback/release evidence."
+    validation: [regression suite, security policy, report and rollback evidence]
+
+first_sprint:
+  empty_target:
+    objective: "Create a minimal buildable foundation in the target after a governed preview."
+    scope: "Project skeleton, build configuration, one smoke path and initial tests."
+    excluded: "Domain migration, broad UI work and bulk copying."
+  existing_target:
+    objective: "Validate the existing target baseline and close the smallest structural gap."
+    scope: "Inventory, build/smoke validation and one bounded correction proposal."
+    excluded: "Broad refactors and unrelated feature work."
+
+validation_strategy:
+  - "Capture source and target snapshots before and after each sprint."
+  - "Require preview and approval for every target write."
+  - "Run the smallest relevant build, unit and smoke validations."
+  - "Reject completion when requested deliverables or cited evidence are missing."

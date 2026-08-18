@@ -1,0 +1,10 @@
+schema_version: 1
+
+rules:
+  role_cannot_expand_permissions: true
+  denied_wins_allowed: true
+  policy_denied_blocks_role: true
+  disabled_role_blocks: true
+  force_no_tools_this_sprint: true
+  force_no_write_this_sprint: true
+  force_no_patch_this_sprint: true

@@ -1,0 +1,23 @@
+schema_version: 1
+
+governed_runtime_contracts_v2:
+  enabled: true
+  mode: compatibility_layer
+  runtime_uses_v2_when_enabled: true
+  legacy_runtime_fallback_when_disabled: true
+
+contract_version:
+  current: "2.0"
+  supported: ["2.0"]
+  backward_compatible_inputs: ["1.0"]
+
+validation:
+  forbidden_field_names:
+    - prompt
+    - raw_prompt
+    - user_text
+    - free_text_execution
+  require_deterministic: true
+  forbid_execution_enabled_by_compiler: true
+  forbid_tool_invocation_by_default: true
+  forbid_skill_invocation_by_default: true

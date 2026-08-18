@@ -1,0 +1,79 @@
+schema_version: 1
+
+model_patch_planner:
+  enabled: true
+  role_id: patch_planner
+  source_type: file_context_bundle
+  require_completed_model_run: true
+  allow_fallback_output: false
+  require_context_file: true
+  max_candidate_files: 8
+  max_context_chars: 48000
+  max_evidence_context_chars: 3000
+  max_file_context_chars: 12000
+  max_role_objective_chars: 300
+  max_candidate_field_chars: 240
+  max_replacement_context_chars: 3400
+  max_replacement_evidence_context_chars: 1400
+  max_output_tokens: 192
+  timeout_seconds: 90
+  max_stdout_chars: 12000
+  max_stderr_chars: 8000
+  max_replacements_per_plan: 1
+  max_focus_paths_from_evidence: 24
+  focus_path_extensions: [".py", ".md", ".txt", ".json", ".yaml", ".yml", ".toml", ".kt", ".kts", ".properties", ".xml", ".html", ".css", ".js", ".ts", ".tsx"]
+  actionability:
+    min_score: 75
+    min_objective_terms: 2
+    max_file_edit_chars: 3400
+    generic_behavior_terms:
+      - apply
+      - aplicar
+      - artifact
+      - artifacts
+      - candidate
+      - candidato
+      - causa
+      - codigo
+      - code
+      - concrete
+      - correcao
+      - correction
+      - diff
+      - evidence
+      - evidencia
+      - file
+      - files
+      - funcao
+      - funcoes
+      - function
+      - functions
+      - gerar
+      - hunk
+      - hunks
+      - patch
+      - plan
+      - planning
+      - preview
+      - produce
+      - replacement
+      - return
+      - risco
+      - riscos
+      - risk
+      - rollback
+      - safe
+      - selected
+      - strategy
+      - target
+  accepted_plan_statuses: [ready_for_review, needs_review]
+  output:
+    format: json
+    required_fields: [target, intent, concrete_change, rollback, impact, risks]
+    replacement_fields: [concrete_change.suggested_replacement]
+  safety:
+    model_can_read_context_only: true
+    model_can_write_workspace: false
+    model_can_apply_patch: false
+    model_can_run_tools: false
+    model_can_use_network: false

@@ -1,0 +1,9 @@
+schema_version: 1
+uploads:
+  enabled: true
+  require_token_auth: true
+  send_to_artifact_service: true
+  never_write_workspace_directly: true
+  show_upload_progress: true
+  show_backend_rejection_reason: true
+blocked_extensions: [.exe, .dll, .bat, .cmd, .ps1, .sh, .msi]

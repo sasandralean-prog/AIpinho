@@ -1,0 +1,10 @@
+﻿schema_version: 1
+
+truncation:
+  detect_incomplete_json: true
+  detect_unclosed_markdown_fence: true
+  detect_cut_sentence: true
+  detect_finish_reason_length: true
+  reject_incomplete_json: true
+  needs_retry_on_finish_reason_length: true
+  warn_on_cut_sentence: true

@@ -1,0 +1,66 @@
+{
+  "date": "2026-06-25",
+  "verdict": "POLICY_KERNEL_APPROVAL_GATE_READY",
+  "fixed": [
+    "policy_ask_write_files_apply_patch_creates_approval",
+    "approval_request_bootstrap_not_blocked",
+    "approval_text_resumes_preview_without_linked_task_run",
+    "runtime_profile_preserved_from_draft",
+    "valid_write_file_runtime_profile_used",
+    "profile_specific_runtime_timeout_used",
+    "agent_event_session_sequence_uses_persistent_counter",
+    "blocked_message_contradiction_removed",
+    "runtime_data_dir_registered_as_system_mutable"
+  ],
+  "files_changed": [
+    "config/policies/governed_tool_execution_policy.yaml",
+    "config/workspaces/workspace_registry.yaml",
+    "config/runtime/profiles/write_file.yaml",
+    "src/aipinho/services/speaker/speaker_service.py",
+    "src/aipinho/services/runtime/task_runtime_service.py",
+    "src/aipinho/services/approvals/approval_task_continuation_service.py",
+    "src/aipinho/services/chat/chat_service.py",
+    "src/aipinho/api/routers/chat_router.py",
+    "src/aipinho/services/chat/governed_write_chat_service.py",
+    "src/aipinho/services/runtime/task_run_guard.py",
+    "src/aipinho/services/agents/agent_session_store.py",
+    "tests/unit/test_effective_policy_builder.py",
+    "tests/unit/test_task_run_guard.py",
+    "tests/unit/test_hotfix_policy_kernel_approval_gate.py"
+  ],
+  "tests": {
+    "focused_pytest": {
+      "command": "python -m pytest tests\\unit\\test_hotfix_policy_kernel_approval_gate.py tests\\unit\\test_hotfix_approval_bootstrap_phase_resume.py tests\\unit\\test_effective_policy_builder.py tests\\unit\\test_approval_preview_lifecycle.py tests\\unit\\test_governed_tool_execution_service.py tests\\unit\\test_governed_approval_continuation.py tests\\unit\\test_task_run_guard.py tests\\unit\\test_agent_event_bus_timeline.py tests\\unit\\test_agent_tool_gateway_service.py -q",
+      "result": "70 passed in 27.73s"
+    },
+    "py_compile": {
+      "result": "passed"
+    }
+  },
+  "smoke": {
+    "prompt": "Crie um arquivo reports\\kernel_policy_smoke_test.md com o texto teste no workspace \"C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main\".",
+    "approval_id": "approval_d74313e838204465b8a11812495b4753",
+    "file_existed_before_approval": false,
+    "approved_by_chat": true,
+    "file_created_after_approval": true,
+    "created_file": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main\\reports\\kernel_policy_smoke_test.md",
+    "task_run_id": "task_run_051e6307a9594002a18a6ff1110c3ec1",
+    "task_run_status": "completed"
+  },
+  "policy_changes": {
+    "relaxed": [
+      "write_files removed from governed tool denied_actions",
+      "apply_patch removed from governed tool denied_actions",
+      "write_files/apply_patch allowed to reach approval bootstrap for target_mutable workspaces"
+    ],
+    "still_guarded": [
+      "write execution requires preview/policy/approval/validation",
+      "delete/move/git dangerous actions remain blocked or strong approval",
+      "runtime internal directories are system_mutable only for runtime state"
+    ]
+  },
+  "residual_risks": [
+    "some approval requests still wait for synchronous execution response instead of returning immediately",
+    "write_file profile timeout is now 600 seconds and should be monitored under high queue load"
+  ]
+}

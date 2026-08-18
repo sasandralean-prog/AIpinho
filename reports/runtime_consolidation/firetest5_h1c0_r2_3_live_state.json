@@ -1,0 +1,3363 @@
+{
+  "session_id": "firetest5_h1c0_r2_3_clean_phase0_to_6_20260814_004919",
+  "created_at": "2026-08-14T00:49:25.716679+00:00",
+  "phase0": {
+    "readiness_id": "cognitive_readiness_64bd385353e74c54b163fe3b8f7351e6",
+    "decision": "NO_GO_EXPECTED_BLOCK",
+    "confidence": 0.82,
+    "predicted_frontier": "RESULT_FINALIZATION",
+    "predicted_component": "PublicRunFinalizationGuard",
+    "predicted_reason_code": "RESULT_FINALIZATION_MISSING_AFTER_ARTIFACT_BINDING",
+    "safe_to_start_phase1": false
+  },
+  "phase1_prompt": "Fase 1 ? Discovery Governado do FireTest 5.\nProjeto/app workspace:\nC:\\Dev\\AIpinho\n\nBiblioteca/corpus de m?dia:\nD:\\rafa\\pinho music\n\nExecutar descoberta read-only e gerar exatamente estes artifacts:\nreports/firetest5/phase1_discovery.md\nreports/firetest5/project_inventory.md\nreports/firetest5/music_inventory.csv\nreports/firetest5/evidence_phase1.zip\n\nO music inventory deve ser invent?rio de corpus de m?dia com binding observacional governado, evidence_ref por linha, metadata como not_configured/not_observed quando capability n?o estiver dispon?vel, e relationship candidates apenas como candidates quando existirem. N?o escrever no workspace, n?o aplicar patch, n?o declarar sucesso sem Validation/Completion/Speaker Truth.",
+  "phase1_client_response_status_code": 200,
+  "phase1_client_response_time_ms": 6272,
+  "phase1_client_response": {
+    "response_id": "chat_accepted_running_203d361f51244508b0f72e8fe7d40dda",
+    "session_id": "firetest5_h1c0_r2_3_clean_phase0_to_6_20260814_004919",
+    "task_draft_id": null,
+    "preview_id": null,
+    "task_id": "task_36261b8fa33041118346310a08369615",
+    "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+    "approval_id": null,
+    "task_preview_id": null,
+    "artifact_id": null,
+    "artifact_preview_id": null,
+    "artifact_links": [],
+    "result_ref_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+    "operation_id": "op_47ef6bfb17a1448f9ddf47fba19adf49",
+    "operation_type": "workspace_analysis_readonly",
+    "message_type": "task_status_update",
+    "status": "accepted_running",
+    "message": "PUBLIC_RUNTIME_ACCEPTED_RUNNING\ntask_run_id=task_run_72f9f0706d27438eb74fb4988346e9fd\nworkspace=C:\\Dev\\AIpinho\nsafe_to_report_success=false\nRun accepted and still executing under governed runtime.",
+    "intent": {
+      "intent_type": "workspace_analysis_readonly",
+      "requires_task": true,
+      "readonly": true,
+      "artifact_generation": true
+    },
+    "policy": {
+      "read_only": true,
+      "workspace_mutation": false,
+      "artifact_generation": true,
+      "public_response_boundary": {
+        "status": "accepted_running",
+        "client_response_budget_ms": 2500,
+        "continuation_available": true,
+        "polling_available": true,
+        "result_finalized": false,
+        "reason_codes": [
+          "RUN_ACCEPTED_ASYNC"
+        ],
+        "safe_to_report_success": false
+      },
+      "canonical_lifecycle": {
+        "lifecycle_id": "life_ef4504b8a93c4b12ad19b97075721df5",
+        "state": "plan_only_preview",
+        "reason_code": "readonly_or_planning",
+        "permission": "allowed",
+        "approval_gate_status": "not_required",
+        "completion_status": "completed",
+        "safe_to_report_success": true,
+        "speaker_can_claim_success": false
+      }
+    },
+    "contract_preview": {
+      "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+      "run_status": "created",
+      "safe_to_report_success": false,
+      "accepted_at": "2026-08-14T00:49:25.685169+00:00",
+      "polling": {
+        "summary_url": "/api/v1/task_runs/task_run_72f9f0706d27438eb74fb4988346e9fd/summary",
+        "truth_url": "/api/v1/task_runs/task_run_72f9f0706d27438eb74fb4988346e9fd/truth",
+        "events_url": "/api/v1/task_runs/task_run_72f9f0706d27438eb74fb4988346e9fd/events",
+        "artifacts_url": "/api/v1/task_runs/task_run_72f9f0706d27438eb74fb4988346e9fd/artifacts",
+        "result_url": "/api/v1/task-runs/task_run_72f9f0706d27438eb74fb4988346e9fd/result"
+      },
+      "current_phase": "phase_1",
+      "known_frontier": null
+    },
+    "actions": [],
+    "next_actions": [],
+    "warnings": [
+      "accepted_running_is_not_success",
+      "canonical_lifecycle:readonly_or_planning"
+    ],
+    "trace": [],
+    "raw_debug_ref": null,
+    "model_used": "readonly_analysis_artifact_runtime",
+    "real_inference": false,
+    "model_warnings": [],
+    "evaluation_status": null,
+    "evaluation_warnings": [],
+    "fallback_used": false,
+    "context_plan_id": null,
+    "citation_map": {},
+    "evidence_refs": [],
+    "requires_user_action": false,
+    "is_final_answer": false,
+    "grounded": true,
+    "grounding_required": false,
+    "grounding_missing_reason": null,
+    "policy_block": null,
+    "governance_lifecycle": {
+      "lifecycle_id": "life_ef4504b8a93c4b12ad19b97075721df5",
+      "state": "plan_only_preview",
+      "reason_code": "readonly_or_planning",
+      "intent": {
+        "intent_type": "workspace_analysis_readonly",
+        "operation_type": "workspace_analysis_readonly",
+        "requires_task": true,
+        "side_effect_requested": false,
+        "readonly": true,
+        "source_channel": "api_chat",
+        "negative_constraints": {
+          "patch_forbidden": true,
+          "write_forbidden": true,
+          "approval_forbidden": true
+        },
+        "confidence": 1.0,
+        "evidence": [
+          "readonly_analysis_with_artifact_output",
+          "positive:knowledge_only",
+          "negative:knowledge_only",
+          "negative:workspace_mutation",
+          "readonly_contract",
+          "artifact_output",
+          "observational_intent"
+        ],
+        "semantic_intent_graph": {
+          "observational_intent": true,
+          "planning_intent": false,
+          "mutation_intent": false,
+          "execution_intent": false,
+          "approval_intent": false,
+          "knowledge_output": true,
+          "artifact_output": true,
+          "readonly_contract": true,
+          "state_effect": "knowledge_only",
+          "workspace_effect": "immutable",
+          "filesystem_effect": "prohibited",
+          "runtime_effect": "none",
+          "prohibited_effects": [
+            "knowledge_only",
+            "workspace_mutation"
+          ],
+          "requested_effects": [
+            "knowledge_only"
+          ],
+          "evidence": [
+            "positive:knowledge_only",
+            "negative:knowledge_only",
+            "negative:workspace_mutation",
+            "readonly_contract",
+            "artifact_output",
+            "observational_intent"
+          ]
+        }
+      },
+      "operation_contract": {
+        "operation_id": "op_4dc6e4859e724cdd90a64a1749100770",
+        "session_id": "firetest5_h1c0_r2_3_clean_phase0_to_6_20260814_004919",
+        "source_channel": "api_chat",
+        "intent_type": "workspace_analysis_readonly",
+        "operation_type": "workspace_analysis_readonly",
+        "contract_type": "workspace_analysis_readonly",
+        "runtime_profile": "workspace_analysis_readonly",
+        "requested_actions": [],
+        "target_paths": [],
+        "workspace_path": "C:\\Dev\\AIpinho",
+        "risk_level": "low",
+        "trace": [
+          {
+            "stage": "canonical_contract",
+            "source": "GovernanceLifecycleService"
+          }
+        ]
+      },
+      "policy": {
+        "permission": "allowed",
+        "allowed_actions": [],
+        "ask_actions": [],
+        "denied_actions": [],
+        "reason_code": "readonly_or_planning",
+        "reason": "Read-only or non-executing operation.",
+        "source": "effective_policy_decision",
+        "requires_approval": false,
+        "trace": []
+      },
+      "context_gate": {
+        "status": "not_required",
+        "can_create_write_approval": true,
+        "reason_code": "none",
+        "source_message_id": null,
+        "context_ref": null,
+        "workspace_snapshot_ref": null,
+        "discovery_ref": null,
+        "analysis_ref": null,
+        "missing_requirements": [],
+        "trace": []
+      },
+      "execution_plan": {
+        "preview_kind": "plan_only_preview",
+        "executable": false,
+        "executable_plan_ref": null,
+        "plan_kind": null,
+        "expected_outputs": [],
+        "target_paths": [],
+        "blocked_reason": "readonly_or_planning",
+        "trace": [
+          {
+            "stage": "canonical_runtime",
+            "mode": "plan_only"
+          }
+        ]
+      },
+      "preview_quality": {
+        "status": "not_required",
+        "can_create_approval": true,
+        "reason_code": "none",
+        "missing_requirements": [],
+        "trace": []
+      },
+      "approval_gate": {
+        "required": false,
+        "can_create_approval": false,
+        "approval_id": null,
+        "preview_id": null,
+        "draft_id": null,
+        "status": "not_required",
+        "reason_code": "none",
+        "trace": []
+      },
+      "validation": {
+        "status": "not_run",
+        "safe_to_continue": false,
+        "missing_outputs": [],
+        "evidence_refs": [],
+        "reason_code": "none"
+      },
+      "completion": {
+        "status": "completed",
+        "safe_to_report_success": true,
+        "expected_outputs": [],
+        "fulfilled_outputs": [],
+        "missing_outputs": [],
+        "reason_code": "none"
+      },
+      "speaker_truth": {
+        "can_claim_success": false,
+        "message_status": "blocked",
+        "required_disclosures": [
+          "readonly_or_planning"
+        ],
+        "forbidden_claims": [
+          "executed",
+          "implemented",
+          "created",
+          "modified",
+          "applied",
+          "validated",
+          "completed"
+        ],
+        "reason_code": "speaker_truth_blocked"
+      },
+      "artifacts": [],
+      "task_run_id": null,
+      "warnings": [],
+      "trace": [
+        {
+          "stage": "intent",
+          "intent_type": "workspace_analysis_readonly",
+          "operation_type": "workspace_analysis_readonly"
+        },
+        {
+          "stage": "policy",
+          "permission": "allowed",
+          "reason_code": "readonly_or_planning"
+        },
+        {
+          "stage": "context_gate",
+          "status": "not_required",
+          "reason_code": "none"
+        },
+        {
+          "stage": "plan",
+          "preview_kind": "plan_only_preview",
+          "executable": false
+        },
+        {
+          "stage": "preview_quality",
+          "status": "not_required",
+          "reason_code": "none"
+        },
+        {
+          "stage": "approval",
+          "status": "not_required"
+        },
+        {
+          "stage": "completion",
+          "status": "completed"
+        }
+      ],
+      "semantic_ingress_doctor": {
+        "report_id": "semantic_ingress_8c03b1f95be44ed1baa9e0f8f4f45ec8",
+        "status": "complete",
+        "prompt_normalization": {
+          "normalization_id": "prompt_norm_ee5d082ffcbd41b096399767c82e49a1",
+          "original_text": "Fase 1 ? Discovery Governado do FireTest 5.\nProjeto/app workspace:\nC:\\Dev\\AIpinho\n\nBiblioteca/corpus de m?dia:\nD:\\rafa\\pinho music\n\nExecutar descoberta read-only e gerar exatamente estes artifacts:\nreports/firetest5/phase1_discovery.md\nreports/firetest5/project_inventory.md\nreports/firetest5/music_inventory.csv\nreports/firetest5/evidence_phase1.zip\n\nO music inventory deve ser invent?rio de corpus de m?dia com binding observacional governado, evidence_ref por linha, metadata como not_configured/not_observed quando capability n?o estiver dispon?vel, e relationship candidates apenas como candidates quando existirem. N?o escrever no workspace, n?o aplicar patch, n?o declarar sucesso sem Validation/Completion/Speaker Truth.",
+          "normalized_text": "fase 1 ? discovery governado do firetest 5. projeto/app workspace: c:\\dev\\aipinho biblioteca/corpus de m?dia: d:\\rafa\\pinho music executar descoberta read-only e gerar exatamente estes artifacts: reports/firetest5/phase1_discovery.md reports/firetest5/project_inventory.md reports/firetest5/music_inventory.csv reports/firetest5/evidence_phase1.zip o music inventory deve ser invent?rio de corpus de m?dia com binding observacional governado, evidence_ref por linha, metadata como not_configured/not_observed quando capability nao estiver dispon?vel, e relationship candidates apenas como candidates quando existirem. nao escrever no workspace, nao aplicar patch, nao declarar sucesso sem validation/completion/speaker truth.",
+          "encoding_detected": "unicode_text",
+          "encoding_issues": [],
+          "transformations": [
+            "unicode_nfkd",
+            "casefold",
+            "whitespace_collapsed"
+          ],
+          "text_variants": {},
+          "confidence": 1.0
+        },
+        "semantic_propositions": [
+          {
+            "proposition_id": "semantic_prop_548c915d5c994e0a8ffac728015b9b73",
+            "proposition_type": "objective",
+            "subject": "operator",
+            "predicate": "submitted_prompt",
+            "object_value": {
+              "prompt_chars": 728
+            },
+            "polarity": "neutral",
+            "confidence": 1.0,
+            "evidence_refs": [
+              "prompt:original_text"
+            ]
+          },
+          {
+            "proposition_id": "semantic_prop_888ddcd30340474793f30ea413b9db65",
+            "proposition_type": "effect_expected",
+            "subject": "state",
+            "predicate": "requests",
+            "object_value": "knowledge_only",
+            "polarity": "positive",
+            "confidence": 1.0,
+            "evidence_refs": [
+              "semantic_graph:requested_effect:knowledge_only"
+            ]
+          },
+          {
+            "proposition_id": "semantic_prop_a5b4ac2b809a4506a2aed5f90d3beda3",
+            "proposition_type": "restriction",
+            "subject": "state",
+            "predicate": "prohibits",
+            "object_value": "knowledge_only",
+            "polarity": "negative",
+            "confidence": 1.0,
+            "evidence_refs": [
+              "semantic_graph:prohibited_effect:knowledge_only"
+            ]
+          },
+          {
+            "proposition_id": "semantic_prop_bab89ae069534e68ac3fc826613a3d1d",
+            "proposition_type": "restriction",
+            "subject": "state",
+            "predicate": "prohibits",
+            "object_value": "workspace_mutation",
+            "polarity": "negative",
+            "confidence": 1.0,
+            "evidence_refs": [
+              "semantic_graph:prohibited_effect:workspace_mutation"
+            ]
+          },
+          {
+            "proposition_id": "semantic_prop_88c574cdd1d34cebb254b3d78c7228c5",
+            "proposition_type": "intent_signal",
+            "subject": "semantic_graph",
+            "predicate": "observational_intent",
+            "object_value": true,
+            "polarity": "neutral",
+            "confidence": 1.0,
+            "evidence_refs": [
+              "semantic_graph:observational_intent"
+            ]
+          },
+          {
+            "proposition_id": "semantic_prop_3595e3d00dea4357a6cc162aee1ee7ae",
+            "proposition_type": "intent_signal",
+            "subject": "semantic_graph",
+            "predicate": "knowledge_output",
+            "object_value": true,
+            "polarity": "neutral",
+            "confidence": 1.0,
+            "evidence_refs": [
+              "semantic_graph:knowledge_output"
+            ]
+          },
+          {
+            "proposition_id": "semantic_prop_91557325f8cb4aa7af99c14c532938cb",
+            "proposition_type": "intent_signal",
+            "subject": "semantic_graph",
+            "predicate": "artifact_output",
+            "object_value": true,
+            "polarity": "neutral",
+            "confidence": 1.0,
+            "evidence_refs": [
+              "semantic_graph:artifact_output"
+            ]
+          },
+          {
+            "proposition_id": "semantic_prop_f9d3ebff493f4cf19ada4351e7a886c9",
+            "proposition_type": "intent_signal",
+            "subject": "semantic_graph",
+            "predicate": "readonly_contract",
+            "object_value": true,
+            "polarity": "neutral",
+            "confidence": 1.0,
+            "evidence_refs": [
+              "semantic_graph:readonly_contract"
+            ]
+          }
+        ],
+        "state_effects": [
+          {
+            "effect_id": "state_effect_cbce8e84545c4d57b6adef8d5605ba1a",
+            "target": "workspace",
+            "effect": "immutable",
+            "confidence": 1.0,
+            "evidence_refs": [
+              "semantic_graph:workspace_effect",
+              "semantic_graph:evidence:positive:knowledge_only",
+              "semantic_graph:evidence:negative:knowledge_only",
+              "semantic_graph:evidence:negative:workspace_mutation",
+              "semantic_graph:evidence:readonly_contract",
+              "semantic_graph:evidence:artifact_output",
+              "semantic_graph:evidence:observational_intent"
+            ],
+            "reason_codes": []
+          },
+          {
+            "effect_id": "state_effect_a76a4ddd316a47e0baba061716a95781",
+            "target": "filesystem",
+            "effect": "prohibited",
+            "confidence": 1.0,
+            "evidence_refs": [
+              "semantic_graph:filesystem_effect",
+              "semantic_graph:evidence:positive:knowledge_only",
+              "semantic_graph:evidence:negative:knowledge_only",
+              "semantic_graph:evidence:negative:workspace_mutation",
+              "semantic_graph:evidence:readonly_contract",
+              "semantic_graph:evidence:artifact_output",
+              "semantic_graph:evidence:observational_intent"
+            ],
+            "reason_codes": []
+          },
+          {
+            "effect_id": "state_effect_8d49c2588d784f448d27a9bc8671029a",
+            "target": "runtime",
+            "effect": "none",
+            "confidence": 1.0,
+            "evidence_refs": [
+              "semantic_graph:runtime_effect",
+              "semantic_graph:evidence:positive:knowledge_only",
+              "semantic_graph:evidence:negative:knowledge_only",
+              "semantic_graph:evidence:negative:workspace_mutation",
+              "semantic_graph:evidence:readonly_contract",
+              "semantic_graph:evidence:artifact_output",
+              "semantic_graph:evidence:observational_intent"
+            ],
+            "reason_codes": []
+          },
+          {
+            "effect_id": "state_effect_fc257d2d4e11451385a9197355885c34",
+            "target": "knowledge",
+            "effect": "read_only",
+            "confidence": 1.0,
+            "evidence_refs": [
+              "semantic_graph:knowledge_output",
+              "semantic_graph:observational_intent"
+            ],
+            "reason_codes": []
+          }
+        ],
+        "intent_decision": {
+          "decision_id": "intent_decision_279df4cef4ec4d58b3dc2056531154fd",
+          "selected_intent_id": "workspace_analysis_readonly",
+          "selected_operation_type": "workspace_analysis_readonly",
+          "candidates": [
+            {
+              "intent_id": "workspace_analysis_readonly",
+              "operation_type": "workspace_analysis_readonly",
+              "confidence": 1.0,
+              "supporting_propositions": [
+                "semantic_prop_548c915d5c994e0a8ffac728015b9b73",
+                "semantic_prop_888ddcd30340474793f30ea413b9db65",
+                "semantic_prop_bab89ae069534e68ac3fc826613a3d1d",
+                "semantic_prop_f9d3ebff493f4cf19ada4351e7a886c9"
+              ],
+              "rejected_reason": null,
+              "arbitration_score": 1.0
+            },
+            {
+              "intent_id": "product_planning_readonly",
+              "operation_type": "product_planning_readonly",
+              "confidence": 0.3,
+              "supporting_propositions": [],
+              "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+              "arbitration_score": 0.3
+            },
+            {
+              "intent_id": "proposal_only",
+              "operation_type": "patch_preview",
+              "confidence": 0.0,
+              "supporting_propositions": [],
+              "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+              "arbitration_score": 0.0
+            },
+            {
+              "intent_id": "patch_or_write_request",
+              "operation_type": "patch_request",
+              "confidence": 0.0,
+              "supporting_propositions": [],
+              "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+              "arbitration_score": 0.0
+            },
+            {
+              "intent_id": "governed_shell_request",
+              "operation_type": "run_command",
+              "confidence": 0.0,
+              "supporting_propositions": [],
+              "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+              "arbitration_score": 0.0
+            },
+            {
+              "intent_id": "approval_command",
+              "operation_type": "approval_command",
+              "confidence": 0.3,
+              "supporting_propositions": [],
+              "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+              "arbitration_score": 0.3
+            },
+            {
+              "intent_id": "conversation",
+              "operation_type": "conversation",
+              "confidence": 0.3,
+              "supporting_propositions": [],
+              "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+              "arbitration_score": 0.3
+            }
+          ],
+          "criteria": [
+            "selected_by_existing_canonical_intent_router",
+            "state_effect_observed_not_overridden",
+            "readonly_constraints_preserved_when_selected"
+          ],
+          "evidence_refs": [
+            "readonly_analysis_with_artifact_output",
+            "positive:knowledge_only",
+            "negative:knowledge_only",
+            "negative:workspace_mutation",
+            "readonly_contract",
+            "artifact_output",
+            "observational_intent"
+          ],
+          "confidence": 1.0,
+          "reason_codes": [],
+          "decision_source": "canonical_intent_router"
+        },
+        "operation_contract_decision": {
+          "decision_id": "operation_contract_decision_ca3ec2b8b06747498bf38945c18fa5e1",
+          "selected_contract_type": "workspace_analysis_readonly",
+          "selected_operation_type": "workspace_analysis_readonly",
+          "candidates": [
+            {
+              "contract_type": "analysis_readonly",
+              "operation_type": "workspace_analysis_readonly",
+              "confidence": 1.0,
+              "state_effect_alignment": "aligned",
+              "supporting_intent": "workspace_analysis_readonly",
+              "rejected_reason": null,
+              "evidence_refs": [
+                "intent_candidate:workspace_analysis_readonly"
+              ]
+            },
+            {
+              "contract_type": "analysis_readonly",
+              "operation_type": "product_planning_readonly",
+              "confidence": 0.3,
+              "state_effect_alignment": "aligned",
+              "supporting_intent": "product_planning_readonly",
+              "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+              "evidence_refs": [
+                "intent_candidate:product_planning_readonly"
+              ]
+            },
+            {
+              "contract_type": "patch_request",
+              "operation_type": "patch_preview",
+              "confidence": 0.0,
+              "state_effect_alignment": "partial",
+              "supporting_intent": "proposal_only",
+              "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+              "evidence_refs": [
+                "intent_candidate:proposal_only"
+              ]
+            },
+            {
+              "contract_type": "patch_request",
+              "operation_type": "patch_request",
+              "confidence": 0.0,
+              "state_effect_alignment": "conflict",
+              "supporting_intent": "patch_or_write_request",
+              "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+              "evidence_refs": [
+                "intent_candidate:patch_or_write_request"
+              ]
+            },
+            {
+              "contract_type": "shell_build_test",
+              "operation_type": "run_command",
+              "confidence": 0.0,
+              "state_effect_alignment": "conflict",
+              "supporting_intent": "governed_shell_request",
+              "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+              "evidence_refs": [
+                "intent_candidate:governed_shell_request"
+              ]
+            },
+            {
+              "contract_type": "approval_command",
+              "operation_type": "approval_command",
+              "confidence": 0.3,
+              "state_effect_alignment": "partial",
+              "supporting_intent": "approval_command",
+              "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+              "evidence_refs": [
+                "intent_candidate:approval_command"
+              ]
+            },
+            {
+              "contract_type": "conversation",
+              "operation_type": "conversation",
+              "confidence": 0.3,
+              "state_effect_alignment": "aligned",
+              "supporting_intent": "conversation",
+              "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+              "evidence_refs": [
+                "intent_candidate:conversation"
+              ]
+            }
+          ],
+          "relation_to_intent": "selected_contract_derived_from_existing_intent_decision",
+          "relation_to_state_effects": "aligned",
+          "evidence_refs": [
+            "actual_operation_contract"
+          ],
+          "confidence": 1.0,
+          "reason_codes": [],
+          "decision_source": "governance_lifecycle"
+        },
+        "reason_codes": [],
+        "warnings": [],
+        "trace": [
+          {
+            "stage": "PromptNormalization",
+            "status": "ok"
+          },
+          {
+            "stage": "SemanticPropositionExtraction",
+            "count": 8
+          },
+          {
+            "stage": "StateEffectResolution",
+            "state_effect": "knowledge_only"
+          },
+          {
+            "stage": "IntentArbitration",
+            "selected": "workspace_analysis_readonly"
+          },
+          {
+            "stage": "OperationContractSelection",
+            "selected": "workspace_analysis_readonly"
+          }
+        ]
+      },
+      "pre_task_bootstrap": {
+        "status": "complete",
+        "requires_task": true,
+        "task_id": "task_36261b8fa33041118346310a08369615",
+        "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+        "stages": [
+          {
+            "stage": "ChatIngressReceived",
+            "status": "complete",
+            "reason": "prompt_received",
+            "data": {
+              "source_channel": "api_chat"
+            }
+          },
+          {
+            "stage": "PromptNormalized",
+            "status": "complete",
+            "reason": "prompt_normalized",
+            "data": {}
+          },
+          {
+            "stage": "PreviewStarted",
+            "status": "complete",
+            "reason": "canonical_lifecycle_preview_started",
+            "data": {
+              "mode": "accepted_running"
+            }
+          },
+          {
+            "stage": "IntentResolutionStarted",
+            "status": "complete",
+            "reason": "canonical_intent_resolution_started",
+            "data": {}
+          },
+          {
+            "stage": "IntentResolutionFinished",
+            "status": "complete",
+            "reason": "canonical_intent_resolved",
+            "data": {}
+          },
+          {
+            "stage": "OperationContractSelected",
+            "status": "complete",
+            "reason": "operation_contract_selected",
+            "data": {
+              "operation_type": "workspace_analysis_readonly"
+            }
+          },
+          {
+            "stage": "TaskBootstrapStarted",
+            "status": "complete",
+            "reason": "task_bootstrap_required",
+            "data": {}
+          },
+          {
+            "stage": "TaskBootstrapFinished",
+            "status": "complete",
+            "reason": "task_bootstrap_finished",
+            "data": {
+              "task_id": "task_36261b8fa33041118346310a08369615"
+            }
+          },
+          {
+            "stage": "TaskCreated",
+            "status": "complete",
+            "reason": "task_created",
+            "data": {
+              "task_id": "task_36261b8fa33041118346310a08369615"
+            }
+          },
+          {
+            "stage": "TaskRunCreated",
+            "status": "complete",
+            "reason": "task_run_created",
+            "data": {
+              "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+  "result_ref_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+  "operation_id": "op_47ef6bfb17a1448f9ddf47fba19adf49",
+  "phase1_poll_snapshot": [
+    {
+      "attempt": 1,
+      "summary_status": null,
+      "result_available": null,
+      "elapsed_ms": 20009,
+      "status_code": null
+    },
+    {
+      "attempt": 2,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 2939,
+      "status_code": 200
+    },
+    {
+      "attempt": 3,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 3106,
+      "status_code": 200
+    },
+    {
+      "attempt": 4,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 3219,
+      "status_code": 200
+    },
+    {
+      "attempt": 5,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 3977,
+      "status_code": 200
+    },
+    {
+      "attempt": 6,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 26,
+      "status_code": 200
+    },
+    {
+      "attempt": 7,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 34,
+      "status_code": 200
+    },
+    {
+      "attempt": 8,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 33,
+      "status_code": 200
+    },
+    {
+      "attempt": 9,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 17,
+      "status_code": 200
+    },
+    {
+      "attempt": 10,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 31,
+      "status_code": 200
+    },
+    {
+      "attempt": 11,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 21,
+      "status_code": 200
+    },
+    {
+      "attempt": 12,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 16,
+      "status_code": 200
+    },
+    {
+      "attempt": 13,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 21,
+      "status_code": 200
+    },
+    {
+      "attempt": 14,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 26,
+      "status_code": 200
+    },
+    {
+      "attempt": 15,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 19694,
+      "status_code": 200
+    },
+    {
+      "attempt": 16,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 4233,
+      "status_code": 200
+    },
+    {
+      "attempt": 17,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 4498,
+      "status_code": 200
+    },
+    {
+      "attempt": 18,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 6489,
+      "status_code": 200
+    },
+    {
+      "attempt": 19,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 64,
+      "status_code": 200
+    },
+    {
+      "attempt": 20,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 34,
+      "status_code": 200
+    },
+    {
+      "attempt": 21,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 21,
+      "status_code": 200
+    },
+    {
+      "attempt": 22,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 47,
+      "status_code": 200
+    },
+    {
+      "attempt": 23,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 36,
+      "status_code": 200
+    },
+    {
+      "attempt": 24,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 72,
+      "status_code": 200
+    },
+    {
+      "attempt": 25,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 26,
+      "status_code": 200
+    },
+    {
+      "attempt": 26,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 47,
+      "status_code": 200
+    },
+    {
+      "attempt": 27,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 16,
+      "status_code": 200
+    },
+    {
+      "attempt": 28,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 94,
+      "status_code": 200
+    },
+    {
+      "attempt": 29,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 4484,
+      "status_code": 200
+    },
+    {
+      "attempt": 30,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 6228,
+      "status_code": 200
+    },
+    {
+      "attempt": 31,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 20190,
+      "status_code": 200
+    },
+    {
+      "attempt": 32,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 4237,
+      "status_code": 200
+    },
+    {
+      "attempt": 33,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 3391,
+      "status_code": 200
+    },
+    {
+      "attempt": 34,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 3619,
+      "status_code": 200
+    },
+    {
+      "attempt": 35,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 2964,
+      "status_code": 200
+    },
+    {
+      "attempt": 36,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "elapsed_ms": 1868,
+      "status_code": 200
+    },
+    {
+      "attempt": 37,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "artifact_count": 2,
+      "artifact_state": "available",
+      "summary_ms": 34,
+      "artifacts_ms": 31
+    },
+    {
+      "attempt": 38,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "artifact_count": 2,
+      "artifact_state": "available",
+      "summary_ms": 48,
+      "artifacts_ms": 53
+    },
+    {
+      "attempt": 39,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "artifact_count": 2,
+      "artifact_state": "available",
+      "summary_ms": 24,
+      "artifacts_ms": 30
+    },
+    {
+      "attempt": 40,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "artifact_count": 2,
+      "artifact_state": "available",
+      "summary_ms": 34,
+      "artifacts_ms": 27
+    },
+    {
+      "attempt": 41,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "artifact_count": 2,
+      "artifact_state": "available",
+      "summary_ms": 93,
+      "artifacts_ms": 51
+    },
+    {
+      "attempt": 42,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "artifact_count": 2,
+      "artifact_state": "available",
+      "summary_ms": 33,
+      "artifacts_ms": 80
+    },
+    {
+      "attempt": 43,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "artifact_count": 2,
+      "artifact_state": "available",
+      "summary_ms": 17,
+      "artifacts_ms": 27
+    },
+    {
+      "attempt": 44,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "artifact_count": 3,
+      "artifact_state": "partial",
+      "summary_ms": 4747,
+      "artifacts_ms": 1493
+    },
+    {
+      "attempt": 45,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "artifact_count": 3,
+      "artifact_state": "partial",
+      "summary_ms": 56,
+      "artifacts_ms": 36
+    },
+    {
+      "attempt": 46,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "artifact_count": 3,
+      "artifact_state": "partial",
+      "summary_ms": 68,
+      "artifacts_ms": 27
+    },
+    {
+      "attempt": 47,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "artifact_count": 3,
+      "artifact_state": "partial",
+      "summary_ms": 6912,
+      "artifacts_ms": 14013
+    },
+    {
+      "attempt": 48,
+      "summary_status": null,
+      "result_available": null,
+      "artifact_count": 3,
+      "artifact_state": "partial",
+      "summary_ms": 20002,
+      "artifacts_ms": 12190
+    },
+    {
+      "attempt": 49,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "result_endpoint_status_code": null,
+      "result_status": null,
+      "artifact_count": 3,
+      "artifact_state": "partial",
+      "music_status": "blocked",
+      "music_bound_rows": 100,
+      "music_evidence_ref_count": 100,
+      "summary_ms": 5070,
+      "artifacts_ms": 4798,
+      "result_ms": 10012
+    },
+    {
+      "attempt": 50,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "result_endpoint_status_code": 404,
+      "result_status": null,
+      "artifact_count": 3,
+      "artifact_state": "partial",
+      "music_status": "blocked",
+      "music_bound_rows": 100,
+      "music_evidence_ref_count": 100,
+      "summary_ms": 1656,
+      "artifacts_ms": 1736,
+      "result_ms": 1676
+    },
+    {
+      "attempt": 51,
+      "summary_status": "RUNNING",
+      "result_available": false,
+      "result_endpoint_status_code": 200,
+      "result_status": "blocked",
+      "artifact_count": 3,
+      "artifact_state": "partial",
+      "music_status": "blocked",
+      "music_bound_rows": 100,
+      "music_evidence_ref_count": 100,
+      "summary_ms": 10110,
+      "artifacts_ms": 23319,
+      "result_ms": 48
+    },
+    {
+      "attempt": 52,
+      "summary_status": "BLOCKED",
+      "result_available": true,
+      "result_endpoint_status_code": 200,
+      "result_status": "blocked",
+      "artifact_count": 3,
+      "artifact_state": "partial",
+      "music_status": "blocked",
+      "music_bound_rows": 100,
+      "music_evidence_ref_count": 100,
+      "summary_ms": 42,
+      "artifacts_ms": 25,
+      "result_ms": 34
+    }
+  ],
+  "phase1_endpoints": {
+    "summary": {
+      "status_code": 200,
+      "elapsed_ms": 2176,
+      "body": {
+        "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+        "status": "BLOCKED",
+        "finished_at": "2026-08-14T01:04:35.989027+00:00",
+        "phase": "blocked",
+        "progress": {
+          "percent": 0,
+          "completed_units": 0,
+          "total_units": 8,
+          "basis": "workflow_phases",
+          "is_estimated": false
+        },
+        "current_step": null,
+        "approval": {
+          "status": "not_required",
+          "approval_id": null,
+          "required_actions": [],
+          "risk_level": null,
+          "expires_at": null,
+          "decided_at": null,
+          "source": "task_run_policy_snapshot"
+        },
+        "validation": {
+          "status": "blocked",
+          "validation_id": null,
+          "safe_to_report_success": false,
+          "missing_outputs": [],
+          "summary": "TaskRun reached a governed runtime budget before producing a terminal result.",
+          "source": "task_run_result"
+        },
+        "artifacts": {
+          "status": "partial",
+          "count": 4,
+          "artifact_ids": [
+            "artifact_c458759918a7420a953d791218ab0a81",
+            "artifact_72df9b5ff4a748cf86a2a6c058df3625",
+            "artifact_b8b9fc7837c04263a6954d43a2642569",
+            "artifact_276722c7a73d47b498eb09839dcc916a"
+          ]
+        },
+        "result": {
+          "status": "blocked",
+          "summary": "TaskRun reached a governed runtime budget before producing a terminal result.",
+          "safe_to_display": true,
+          "safe_to_report_success": false,
+          "result_available": true,
+          "block_reason_code": "TASKRUN_LIFECYCLE_TIMEOUT",
+          "source": "task_run_result"
+        },
+        "project_analysis": null,
+        "public_response_boundary": {
+          "status": "blocked",
+          "client_response_budget_ms": 2500,
+          "client_response_time_ms": null,
+          "continuation_available": true,
+          "polling_available": true,
+          "result_finalized": true,
+          "reason_codes": [
+            "RUN_ACCEPTED_ASYNC",
+            "TASKRUN_LIFECYCLE_TIMEOUT"
+          ],
+          "terminal_event_count": 1,
+          "safe_to_report_success": false
+        },
+        "observational_cognition": {
+          "status": "blocked",
+          "blocking_reason": "MUSIC_INVENTORY_PARTIAL_EVIDENCE",
+          "semantic_coverage": {
+            "structural": null,
+            "entity": null,
+            "attribute": null,
+            "capability": null,
+            "evidence": null,
+            "knowledge": null,
+            "truth": null,
+            "semantic": null
+          },
+          "missing_capabilities": [],
+          "missing_attributes": [],
+          "knowledge": {
+            "records": 0,
+            "assertions": 0,
+            "truth_eligible_assertions": 0,
+            "self_review_truth_readiness": null,
+            "self_review_can_speaker_claim": null,
+            "self_review_reason_codes": []
+          },
+          "observation_goals": {
+            "total": 1,
+            "blocked": 0,
+            "ready": 1
+          },
+          "roots_scanned_by_role": {},
+          "entities_by_root_role": {},
+          "entities_selected_by_artifact": {
+            "reports/firetest5/music_inventory.csv": 100
+          },
+          "entities_rejected_by_policy": 0,
+          "workspace_role_mismatches": 0,
+          "media_metadata_capability": {
+            "status": "unknown_due_to_payload_ref",
+            "capability_id": "media_metadata_reader",
+            "primary_backend": "mutagen",
+            "selected_backend": null,
+            "available_backends": [],
+            "blocked_backends": [],
+            "globally_blocked_backends": [],
+            "partially_blocked_backends": [],
+            "missing_dependency": [],
+            "attempted_backends": [],
+            "successful_backends": [],
+            "fallback_backends_used": [],
+            "backend_error_counts": {},
+            "evidence_records_created": 0,
+            "attributes_observed": [
+              "bitrate",
+              "codec",
+              "container",
+              "duration",
+              "sample_rate"
+            ],
+            "attributes_missing": [],
+            "limitations": [
+              "capability_provenance_not_inline_in_summary"
+            ],
+            "source": "artifact_observation_binding"
+          },
+          "relationship_cognition": {
+            "status": "not_available",
+            "candidate_count": 0,
+            "observation_count": 0,
+            "evidence_count": 0,
+            "provenance_trace_count": 0,
+            "conflict_count": 0,
+            "negative_evidence_count": 0,
+            "rendered_field_count": 0,
+            "evidence_ref_count": 0,
+            "provenance_ref_count": 0,
+            "validation_ready_count": 0,
+            "validated_relationship_count": 0,
+            "conflicted_relationship_count": 0,
+            "relation_families": [],
+            "confidence_summary": {
+              "count": 0,
+              "max": 0.0,
+              "average": 0.0
+            },
+            "truth_eligible": false,
+            "validation_status": "blocked",
+            "reason_codes": [
+              "RELATIONSHIP_OBSERVATION_NOT_BOUND"
+            ],
+            "source": "artifact_relationship_binding"
+          },
+          "evidence": {
+            "total_bound_observations": 100,
+            "by_attribute": {
+              "evidence_ref": 100,
+              "entity_id": 100,
+              "source_root_role": 100,
+              "relative_path": 100,
+              "filename": 100,
+              "extension": 100,
+              "media_type": 100,
+              "duration": 41,
+              "codec": 41,
+              "container": 41,
+              "bitrate": 41,
+              "sample_rate": 41,
+              "metadata_status": 100,
+              "limitations": 100,
+              "validation_status": 100
+            },
+            "source": "artifact_observation_binding"
+          },
+          "reason_codes": [
+            "MUSIC_INVENTORY_PARTIAL_EVIDENCE"
+          ],
+          "semantic_gap_count": 1,
+          "source": "artifact_observation_binding"
+        },
+        "media_metadata_capability": {
+          "status": "unknown_due_to_payload_ref",
+          "capability_id": "media_metadata_reader",
+          "primary_backend": "mutagen",
+          "selected_backend": null,
+          "available_backends": [],
+          "blocked_backends": [],
+          "globally_blocked_backends": [],
+          "partially_blocked_backends": [],
+          "missing_dependency": [],
+          "attempted_backends": [],
+          "successful_backends": [],
+          "fallback_backends_used": [],
+          "backend_error_counts": {},
+          "evidence_records_created": 0,
+          "attributes_observed": [
+            "bitrate",
+            "codec",
+            "container",
+            "duration",
+            "sample_rate"
+          ],
+          "attributes_missing": [],
+          "limitations": [
+            "capability_provenance_not_inline_in_summary"
+          ],
+          "source": "artifact_observation_binding"
+        },
+        "relationship_cognition": {
+          "status": "not_available",
+          "candidate_count": 0,
+          "observation_count": 0,
+          "evidence_count": 0,
+          "provenance_trace_count": 0,
+          "conflict_count": 0,
+          "negative_evidence_count": 0,
+          "rendered_field_count": 0,
+          "evidence_ref_count": 0,
+          "provenance_ref_count": 0,
+          "validation_ready_count": 0,
+          "validated_relationship_count": 0,
+          "conflicted_relationship_count": 0,
+          "relation_families": [],
+          "confidence_summary": {
+            "count": 0,
+            "max": 0.0,
+            "average": 0.0
+          },
+          "truth_eligible": false,
+          "validation_status": "blocked",
+          "reason_codes": [
+            "RELATIONSHIP_OBSERVATION_NOT_BOUND"
+          ],
+          "source": "artifact_relationship_binding"
+        },
+        "cognitive_readiness": {
+          "readiness_id": "cognitive_readiness_64bd385353e74c54b163fe3b8f7351e6",
+          "decision": "NO_GO_EXPECTED_BLOCK",
+          "confidence": 0.82,
+          "predicted_frontier": "RESULT_FINALIZATION",
+          "predicted_component": "PublicRunFinalizationGuard",
+          "predicted_reason_code": "RESULT_FINALIZATION_MISSING_AFTER_ARTIFACT_BINDING",
+          "runtime_executed_despite_no_go": true,
+          "calibration": {
+            "status": "pending",
+            "overall_accuracy_score": null
+          },
+          "details_ref": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\firetest5_phase0_cognitive_readiness_result.json"
+        },
+        "last_event": {
+          "event_id": "task_run_event_a342c2acf0374a1a99d395185fffe403",
+          "sequence": 23,
+          "type": "terminalization_already_applied",
+          "status": "ignored",
+          "message": "Terminalization ignored because the TaskRun already has a terminal event.",
+          "timestamp": "2026-08-14T01:05:25.706530+00:00"
+        },
+        "links": {
+          "self": "/api/v1/task_runs/task_run_72f9f0706d27438eb74fb4988346e9fd",
+          "events": "/api/v1/task_runs/task_run_72f9f0706d27438eb74fb4988346e9fd/events",
+          "timeline": "/api/v1/task_runs/task_run_72f9f0706d27438eb74fb4988346e9fd/timeline",
+          "artifacts": "/api/v1/task_runs/task_run_72f9f0706d27438eb74fb4988346e9fd/artifacts",
+          "summary": "/api/v1/task_runs/task_run_72f9f0706d27438eb74fb4988346e9fd/summary",
+          "legacy_trace": "/api/v1/task-runs/task_run_72f9f0706d27438eb74fb4988346e9fd/trace"
+        }
+      }
+    },
+    "truth": {
+      "status_code": 200,
+      "elapsed_ms": 1204,
+      "body": {
+        "truth_id": "runtime_truth_task_run_72f9f0706d27438eb74fb4988346e9fd",
+        "task_id": "task_36261b8fa33041118346310a08369615",
+        "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+        "status": "blocked",
+        "phase": "phase_001_validate_runtime",
+        "reason_code": "runtime_status:blocked",
+        "safe_to_report_success": false,
+        "runtime_status": "blocked",
+        "workflow_status": "created",
+        "completion_status": "blocked",
+        "validation_status": "blocked",
+        "timeline_status": null,
+        "ui_status": "blocked",
+        "speaker_truth_status": "evidence_required",
+        "evidence": [
+          {
+            "evidence_type": "task_run",
+            "evidence_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "status": "blocked",
+            "summary": "",
+            "metadata": {}
+          },
+          {
+            "evidence_type": "task",
+            "evidence_id": "task_36261b8fa33041118346310a08369615",
+            "status": "blocked",
+            "summary": "",
+            "metadata": {}
+          },
+          {
+            "evidence_type": "workflow",
+            "evidence_id": "workflow_0db76eff0a8e48b7a5778ac0a28b6c07",
+            "status": "created",
+            "summary": "",
+            "metadata": {}
+          },
+          {
+            "evidence_type": "completion",
+            "evidence_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "status": "blocked",
+            "summary": "",
+            "metadata": {
+              "safe_to_display": true
+            }
+          },
+          {
+            "evidence_type": "validation",
+            "evidence_id": "",
+            "status": "blocked",
+            "summary": "",
+            "metadata": {}
+          }
+        ],
+        "contradictions": [],
+        "missing_evidence": [
+          "timeline"
+        ],
+        "source": "runtime_truth_engine"
+      }
+    },
+    "events": {
+      "status_code": 200,
+      "elapsed_ms": 6562,
+      "body": {
+        "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+        "events": [
+          {
+            "event_id": "task_run_event_a4c12f2cb23441368ef01262ca2cc892",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 1,
+            "type": "run_created",
+            "status": "created",
+            "message": "TaskRun created without execution.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:49:25.669301+00:00",
+            "metadata": {
+              "source_type": "direct",
+              "task_id": "task_36261b8fa33041118346310a08369615",
+              "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "operation_id": "op_47ef6bfb17a1448f9ddf47fba19adf49",
+              "workspace_id": "aipinho_system",
+              "project_id": "project_aipinho_system",
+              "parent_task_id": null,
+              "workflow_id": "workflow_0db76eff0a8e48b7a5778ac0a28b6c07",
+              "contract_type": "analysis_readonly",
+              "auto_run_requested": false
+            }
+          },
+          {
+            "event_id": "task_run_event_4a1076abae604e1483cfc7523e1c69d5",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 2,
+            "type": "task_bootstrap_created",
+            "status": "created",
+            "message": "Universal Task identity created before execution.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:49:25.669301+00:00",
+            "metadata": {
+              "task_id": "task_36261b8fa33041118346310a08369615",
+              "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "operation_id": "op_47ef6bfb17a1448f9ddf47fba19adf49",
+              "runtime_profile": "readonly_analysis",
+              "workspace_id": "aipinho_system",
+              "project_id": "project_aipinho_system",
+              "current_phase": "phase_1",
+              "workflow_id": "workflow_0db76eff0a8e48b7a5778ac0a28b6c07",
+              "parent_task_id": null,
+              "execution_allowed_to_start": false
+            }
+          },
+          {
+            "event_id": "task_run_event_ab1cdba9ba6c4fec9b8daffa4b16ad63",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 3,
+            "type": "PlanningStarted",
+            "status": "planning",
+            "message": "Canonical planning started before execution.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:49:25.685169+00:00",
+            "metadata": {
+              "task_id": "task_36261b8fa33041118346310a08369615",
+              "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd"
+            }
+          },
+          {
+            "event_id": "task_run_event_40af14d507d740c0b714e13cb3afa34a",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 4,
+            "type": "PlanningFinished",
+            "status": "planned",
+            "message": "Canonical planning finished.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:49:25.685169+00:00",
+            "metadata": {
+              "plan_id": "task_run_plan_3ab193a10332492e8f9ccb511847f4be",
+              "blocked_reasons": []
+            }
+          },
+          {
+            "event_id": "task_run_event_97efd5e648344e06acf0e20dd9fd6728",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 4,
+            "type": "public_response_accepted_running",
+            "status": "accepted_running",
+            "message": "Public chat response returned while governed runtime continues.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:49:25.685169+00:00",
+            "metadata": {
+              "status": "accepted_running",
+              "client_response_budget_ms": 2500,
+              "continuation_available": true,
+              "polling_available": true,
+              "result_finalized": false,
+              "reason_codes": [
+                "RUN_ACCEPTED_ASYNC"
+              ],
+              "safe_to_report_success": false,
+              "accepted_at": "2026-08-14T00:49:25.685169+00:00"
+            }
+          },
+          {
+            "event_id": "task_run_event_c519367d883a4cb39675c1c0b5e8056b",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 5,
+            "type": "ExecutionPlanCreated",
+            "status": "ready",
+            "message": "Canonical ExecutionPlan created as execution boundary.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:49:25.685169+00:00",
+            "metadata": {
+              "execution_id": "execution_fbd91545ac474d5a99aa1a73ef6cd795",
+              "approval_required": false,
+              "targets": []
+            }
+          },
+          {
+            "event_id": "task_run_event_ceca8670eb7d4020922b568403a15df2",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 7,
+            "type": "phase0_prediction_attached",
+            "status": "recorded",
+            "message": "Phase 0 cognitive readiness reference attached to Phase 1 TaskRun.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:49:25.764016+00:00",
+            "metadata": {
+              "cognitive_readiness_id": "cognitive_readiness_64bd385353e74c54b163fe3b8f7351e6",
+              "phase0_result_ref": "C:\\Dev\\AIpinho\\reports\\runtime_consolidation\\firetest5_phase0_cognitive_readiness_result.json",
+              "phase0_prediction_id": "cognitive_prediction_36ea05b9e435484e9fef9f353a06d86d",
+              "phase0_decision": "NO_GO_EXPECTED_BLOCK",
+              "runtime_executed_despite_cvl_no_go": true
+            }
+          },
+          {
+            "event_id": "task_run_event_b6f570d576dc4d7f837f74337a96bb51",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 8,
+            "type": "run_queued",
+            "status": "queued",
+            "message": "Read-only artifact analysis queued.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:49:25.764016+00:00",
+            "metadata": {}
+          },
+          {
+            "event_id": "task_run_event_40f30e42356048dca6cdcf1905176c7e",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 9,
+            "type": "run_started",
+            "status": "running",
+            "message": "Read-only artifact analysis started.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:49:25.779989+00:00",
+            "metadata": {}
+          },
+          {
+            "event_id": "task_run_event_3fb7945be3e7400cbcf03fd1a3b5add3",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 10,
+            "type": "project_analysis_started",
+            "status": "running",
+            "message": "Project analysis started.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:49:25.795773+00:00",
+            "metadata": {}
+          },
+          {
+            "event_id": "task_run_event_8d2ba7eef0914ceba055549607565b43",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 11,
+            "type": "project_analysis_partial",
+            "status": "partial",
+            "message": "Project analysis returned a governed partial result safe for artifact runtime handoff.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:49:29.707577+00:00",
+            "metadata": {
+              "analysis_result_id": "project_analysis_f26df2b4ae93497fb9d87a150a641909",
+              "analysis_status": "partial",
+              "reason_code": "PROJECT_ANALYSIS_COMPLETED",
+              "duration_ms": 3906,
+              "last_checkpoint": "after_result_serialization",
+              "last_completed_checkpoint": "after_result_serialization",
+              "elapsed_ms_by_checkpoint": {
+                "before_path_resolution": 0,
+                "after_path_resolution": 15,
+                "before_workspace_root_scan": 15,
+                "after_workspace_root_scan": 15,
+                "before_file_enumeration": 15,
+                "during_file_enumeration": 203,
+                "after_file_enumeration": 203,
+                "before_file_selection": 218,
+                "project_analysis_selection_started": 218,
+                "project_analysis_selection_checkpoint": 3562,
+                "project_analysis_selection_finished": 3562,
+                "after_file_selection": 3562,
+                "project_analysis_file_read_started": 3562,
+                "before_file_read_batch": 3562,
+                "before_file_read_item": 3860,
+                "after_file_read_item": 3875,
+                "after_file_read_batch": 3875,
+                "before_symbol_extraction": 3890,
+                "after_symbol_extraction_batch": 3890,
+                "before_result_serialization": 3890,
+                "after_result_serialization": 3906
+              },
+              "files_discovered": 200,
+              "files_scan_attempted": 500,
+              "files_scanned": 442,
+              "files_read": 12,
+              "bytes_read": 7110,
+              "current_root": "C:\\Dev\\AIpinho",
+              "current_path_sample": "tests/unit/test_event_cursor_store.py",
+              "blocking_operation": "result_serialization",
+              "budget_exceeded_at": null,
+              "safe_to_continue": true,
+              "budget_exceeded": false,
+              "error_type": null,
+              "error_message": null,
+              "files_selected": 12,
+              "remaining_budget_ms_at_return": 296094,
+              "handoff_reserve_reached": false,
+              "partial_readiness": {
+                "safe_to_continue_to_artifact_runtime": true,
+                "minimum_context_available": true,
+                "workspace_root_resolved": true,
+                "tree_summary_available": true,
+                "file_selection_available": true,
+                "file_context_available": true,
+                "contract_context_available": true,
+                "known_limitations": [],
+                "missing_context": [],
+                "reason_codes": [
+                  "PROJECT_ANALYSIS_PARTIAL_CONTEXT_AVAILABLE"
+                ],
+                "confidence": 0.72
+              },
+              "file_selection_plan": {
+                "plan_id": "file_selection_plan_c9d0ef083dc54d7e91d5e0c79a1aa5da",
+                "workspace_root": "C:\\Dev\\AIpinho",
+                "candidate_count": 200,
+                "selected_count": 12,
+                "selection_strategy": "cheap_path_metadata_ranking",
+                "selection_budget_ms": 195000,
+                "selection_started_at": "2026-08-14T00:49:26.016397+00:00",
+                "selection_finished_at": "2026-08-14T00:49:29.358580+00:00",
+                "elapsed_ms": 3343,
+                "rejected_files_summary": {
+                  "max_files_budget": 188
+                },
+                "selection_reason_codes": [
+                  "FILE_SELECTION_CHEAP_PATH_METADATA_RANKING",
+                  "FILE_SELECTION_PARTIAL"
+                ],
+                "budget_exceeded": false,
+                "partial": true,
+                "selected_files_count": 12,
+                "selected_files_sample": [
+                  {
+                    "path": "tests/unit/test_artifact_secret_scanner.py",
+                    "score": 650,
+                    "reason": "semantic_query_match",
+                    "size_bytes": 400,
+                    "blocked": false,
+                    "blocked_reason": null
+                  },
+                  {
+                    "path": "tests/unit/test_artifact_semantic_contract_music_inventory.py",
+                    "score": 650,
+                    "reason": "semantic_query_match",
+                    "size_bytes": 4574,
+                    "blocked": false,
+                    "blocked_reason": null
+                  },
+                  {
+                    "path": "tests/unit/test_capability_gate.py",
+                    "score": 560,
+                    "reason": "project_profile_pattern:**/test_*.py",
+                    "size_bytes": 0,
+                    "blocked": false,
+                    "blocked_reason": null
+                  },
+                  {
+                    "path": "tests/unit/test_event_card_component.py",
+                    "score": 560,
+                    "reason": "project_profile_pattern:**/test_*.py",
+                    "size_bytes": 153,
+                    "blocked": false,
+                    "blocked_reason": null
+                  },
+                  {
+                    "path": "tests/unit/test_artifact_link_card_component.py",
+                    "score": 560,
+                    "reason": "project_profile_pattern:**/test_*.py",
+                    "size_bytes": 183,
+                    "blocked": false,
+                    "blocked_reason": null
+                  },
+                  {
+                    "path": "tests/unit/test_debugger_event_card_component.py",
+                    "score": 560,
+                    "reason": "project_profile_pattern:**/test_*.py",
+                    "size_bytes": 187,
+                    "blocked": false,
+                    "blocked_reason": null
+                  },
+                  {
+                    "path": "tests/unit/test_download_integrity_utils.py",
+                    "score": 560,
+                    "reason": "project_profile_pattern:**/test_*.py",
+                    "size_bytes": 216,
+                    "blocked": false,
+                    "blocked_reason": null
+                  },
+                  {
+                    "path": "tests/unit/test_download_job_service.py",
+                    "score": 560,
+                    "reason": "project_profile_pattern:**/test_*.py",
+                    "size_bytes": 236,
+                    "blocked": false,
+                    "blocked_reason": null
+                  },
+                  {
+                    "path": "tests/unit/test_context_prompt_injection_guard.py",
+                    "score": 560,
+                    "reason": "project_profile_pattern:**/test_*.py",
+                    "size_bytes": 276,
+                    "blocked": false,
+                    "blocked_reason": null
+                  },
+                  {
+                    "path": "tests/unit/test_anomaly_detector.py",
+                    "score": 560,
+                    "reason": "project_profile_pattern:**/test_*.py",
+                    "size_bytes": 289,
+                    "blocked": false,
+                    "blocked_reason": null
+                  }
+                ]
+              },
+              "file_read_plan": {
+                "plan_id": "file_read_plan_6929dce6810144a4b8cfeef603f2e626",
+                "max_files_read": 12,
+                "max_bytes_read": 120000,
+                "max_single_file_read_ms": 3000,
+                "read_started_at": "2026-08-14T00:49:29.364700+00:00",
+                "read_finished_at": "2026-08-14T00:49:29.675782+00:00",
+                "files_read": 12,
+                "files_partial_read": 0,
+                "files_skipped": 0,
+                "bytes_read": 7110,
+                "bytes_skipped_estimated": 0,
+                "read_decisions": [
+                  {
+                    "candidate_path": "tests/unit/test_artifact_secret_scanner.py",
+                    "relative_path": "tests/unit/test_artifact_secret_scanner.py",
+                    "file_size_bytes": 400,
+                    "estimated_read_cost": 1,
+                    "remaining_stage_budget_ms": null,
+                    "remaining_total_budget_ms": null,
+                    "remaining_context_bytes": 120000,
+                    "single_file_budget_ms": 3000,
+                    "decision": "read",
+                    "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+                    "bytes_requested": 30000,
+                    "provenance": "FileContextBuilder._read_decision"
+                  },
+                  {
+                    "candidate_path": "tests/unit/test_artifact_semantic_contract_music_inventory.py",
+                    "relative_path": "tests/unit/test_artifact_semantic_contract_music_inventory.py",
+                    "file_size_bytes": 4574,
+                    "estimated_read_cost": 4,
+                    "remaining_stage_budget_ms": null,
+                    "remaining_total_budget_ms": null,
+                    "remaining_context_bytes": 119600,
+                    "single_file_budget_ms": 3000,
+                    "decision": "read",
+                    "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+                    "bytes_requested": 30000,
+                    "provenance": "FileContextBuilder._read_decision"
+                  },
+                  {
+                    "candidate_path": "tests/unit/test_capability_gate.py",
+                    "relative_path": "tests/unit/test_capability_gate.py",
+                    "file_size_bytes": 0,
+                    "estimated_read_cost": 1,
+                    "remaining_stage_budget_ms": null,
+                    "remaining_total_budget_ms": null,
+                    "remaining_context_bytes": 115026,
+                    "single_file_budget_ms": 3000,
+                    "decision": "read",
+                    "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+                    "bytes_requested": 30000,
+                    "provenance": "FileContextBuilder._read_decision"
+                  },
+                  {
+                    "candidate_path": "tests/unit/test_event_card_component.py",
+                    "relative_path": "tests/unit/test_event_card_component.py",
+                    "file_size_bytes": 153,
+                    "estimated_read_cost": 1,
+                    "remaining_stage_budget_ms": null,
+                    "remaining_total_budget_ms": null,
+                    "remaining_context_bytes": 115026,
+                    "single_file_budget_ms": 3000,
+                    "decision": "read",
+                    "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+                    "bytes_requested": 30000,
+                    "provenance": "FileContextBuilder._read_decision"
+                  },
+                  {
+                    "candidate_path": "tests/unit/test_artifact_link_card_component.py",
+                    "relative_path": "tests/unit/test_artifact_link_card_component.py",
+                    "file_size_bytes": 183,
+                    "estimated_read_cost": 1,
+                    "remaining_stage_budget_ms": null,
+                    "remaining_total_budget_ms": null,
+                    "remaining_context_bytes": 114873,
+                    "single_file_budget_ms": 3000,
+                    "decision": "read",
+                    "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+                    "bytes_requested": 30000,
+                    "provenance": "FileContextBuilder._read_decision"
+                  },
+                  {
+                    "candidate_path": "tests/unit/test_debugger_event_card_component.py",
+                    "relative_path": "tests/unit/test_debugger_event_card_component.py",
+                    "file_size_bytes": 187,
+                    "estimated_read_cost": 1,
+                    "remaining_stage_budget_ms": null,
+                    "remaining_total_budget_ms": null,
+                    "remaining_context_bytes": 114690,
+                    "single_file_budget_ms": 3000,
+                    "decision": "read",
+                    "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+                    "bytes_requested": 30000,
+                    "provenance": "FileContextBuilder._read_decision"
+                  },
+                  {
+                    "candidate_path": "tests/unit/test_download_integrity_utils.py",
+                    "relative_path": "tests/unit/test_download_integrity_utils.py",
+                    "file_size_bytes": 216,
+                    "estimated_read_cost": 1,
+                    "remaining_stage_budget_ms": null,
+                    "remaining_total_budget_ms": null,
+                    "remaining_context_bytes": 114503,
+                    "single_file_budget_ms": 3000,
+                    "decision": "read",
+                    "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+                    "bytes_requested": 30000,
+                    "provenance": "FileContextBuilder._read_decision"
+                  },
+                  {
+                    "candidate_path": "tests/unit/test_download_job_service.py",
+                    "relative_path": "tests/unit/test_download_job_service.py",
+                    "file_size_bytes": 236,
+                    "estimated_read_cost": 1,
+                    "remaining_stage_budget_ms": null,
+                    "remaining_total_budget_ms": null,
+                    "remaining_context_bytes": 114287,
+                    "single_file_budget_ms": 3000,
+                    "decision": "read",
+                    "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+                    "bytes_requested": 30000,
+                    "provenance": "FileContextBuilder._read_decision"
+                  },
+                  {
+                    "candidate_path": "tests/unit/test_context_prompt_injection_guard.py",
+                    "relative_path": "tests/unit/test_context_prompt_injection_guard.py",
+                    "file_size_bytes": 276,
+                    "estimated_read_cost": 1,
+                    "remaining_stage_budget_ms": null,
+                    "remaining_total_budget_ms": null,
+                    "remaining_context_bytes": 114051,
+                    "single_file_budget_ms": 3000,
+                    "decision": "read",
+                    "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+                    "bytes_requested": 30000,
+                    "provenance": "FileContextBuilder._read_decision"
+                  },
+                  {
+                    "candidate_path": "tests/unit/test_anomaly_detector.py",
+                    "relative_path": "tests/unit/test_anomaly_detector.py",
+                    "file_size_bytes": 289,
+                    "estimated_read_cost": 1,
+                    "remaining_stage_budget_ms": null,
+                    "remaining_total_budget_ms": null,
+                    "remaining_context_bytes": 113775,
+                    "single_file_budget_ms": 3000,
+                    "decision": "read",
+                    "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+                    "bytes_requested": 30000,
+                    "provenance": "FileContextBuilder._read_decision"
+                  },
+                  {
+                    "candidate_path": "tests/unit/test_chunk_dedupe_service.py",
+                    "relative_path": "tests/unit/test_chunk_dedupe_service.py",
+                    "file_size_bytes": 298,
+                    "estimated_read_cost": 1,
+                    "remaining_stage_budget_ms": null,
+                    "remaining_total_budget_ms": null,
+                    "remaining_context_bytes": 113486,
+                    "single_file_budget_ms": 3000,
+                    "decision": "read",
+                    "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+                    "bytes_requested": 30000,
+                    "provenance": "FileContextBuilder._read_decision"
+                  },
+                  {
+                    "candidate_path": "tests/unit/test_event_cursor_store.py",
+                    "relative_path": "tests/unit/test_event_cursor_store.py",
+                    "file_size_bytes": 298,
+                    "estimated_read_cost": 1,
+                    "remaining_stage_budget_ms": null,
+                    "remaining_total_budget_ms": null,
+                    "remaining_context_bytes": 113188,
+                    "single_file_budget_ms": 3000,
+                    "decision": "read",
+                    "reason_code": "PROJECT_ANALYSIS_FILE_READ_COMPLETED",
+                    "bytes_requested": 30000,
+                    "provenance": "FileContextBuilder._read_decision"
+                  }
+                ],
+                "budget_exceeded": false,
+                "partial": true,
+                "selected_files_count": 12,
+                "selected_files_sample": [
+                  "tests/unit/test_artifact_secret_scanner.py",
+                  "tests/unit/test_artifact_semantic_contract_music_inventory.py",
+                  "tests/unit/test_capability_gate.py",
+                  "tests/unit/test_event_card_component.py",
+                  "tests/unit/test_artifact_link_card_component.py",
+                  "tests/unit/test_debugger_event_card_component.py",
+                  "tests/unit/test_download_integrity_utils.py",
+                  "tests/unit/test_download_job_service.py",
+                  "tests/unit/test_context_prompt_injection_guard.py",
+                  "tests/unit/test_anomaly_detector.py"
+                ],
+                "read_order_count": 12,
+                "read_order_sample": [
+                  "tests/unit/test_artifact_secret_scanner.py",
+                  "tests/unit/test_artifact_semantic_contract_music_inventory.py",
+                  "tests/unit/test_capability_gate.py",
+                  "tests/unit/test_event_card_component.py",
+                  "tests/unit/test_artifact_link_card_component.py",
+                  "tests/unit/test_debugger_event_card_component.py",
+                  "tests/unit/test_download_integrity_utils.py",
+                  "tests/unit/test_download_job_service.py",
+                  "tests/unit/test_context_prompt_injection_guard.py",
+                  "tests/unit/test_anomaly_detector.py"
+                ],
+                "skipped_files_count": 100,
+                "skipped_files_sample": [
+                  {
+                    "path": "tests/unit/test_context_sensitivity_filter.py",
+                    "reason": "max_files_budget",
+                    "size_bytes": 313
+                  },
+                  {
+                    "path": "tests/unit/test_download_state_store.py",
+                    "reason": "max_files_budget",
+                    "size_bytes": 316
+                  },
+                  {
+                    "path": "tests/unit/test_context_layer_resolver.py",
+                    "reason": "max_files_budget",
+                    "size_bytes": 324
+                  },
+                  {
+                    "path": "tests/unit/test_chunk_classifier.py",
+                    "reason": "max_files_budget",
+                    "size_bytes": 336
+                  },
+                  {
+                    "path": "tests/unit/test_context_purpose_policy_service.py",
+                    "reason": "max_files_budget",
+                    "size_bytes": 343
+                  },
+                  {
+                    "path": "tests/unit/test_chat_model_fallback_service.py",
+                    "reason": "max_files_budget",
+                    "size_bytes": 345
+                  },
+                  {
+                    "path": "tests/unit/test_artifact_write_event_service.py",
+                    "reason": "max_files_budget",
+                    "size_bytes": 348
+                  },
+                  {
+                    "path": "tests/unit/test_debug_sanitizer.py",
+                    "reason": "max_files_budget",
+                    "size_bytes": 348
+                  },
+                  {
+                    "path": "tests/unit/test_affected_file_resolver.py",
+                    "reason": "max_files_budget",
+                    "size_bytes": 355
+                  },
+                  {
+                    "path": "tests/unit/test_diagnosis_service.py",
+                    "reason": "max_files_budget",
+                    "size_bytes": 361
+                  }
+                ],
+                "read_errors_count": 0,
+                "read_errors_sample": []
+              }
+            }
+          },
+          {
+            "event_id": "task_run_event_c769cbbb72b948eab68f65ccce8d9ab5",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 12,
+            "type": "project_analysis_finished",
+            "status": "completed",
+            "message": "Project analysis finished.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:49:35.877894+00:00",
+            "metadata": {
+              "analysis_result_id": "project_analysis_f26df2b4ae93497fb9d87a150a641909",
+              "analysis_status": "partial",
+              "reason_code": "PROJECT_ANALYSIS_COMPLETED",
+              "safe_to_continue": true,
+              "partial_readiness": {
+                "safe_to_continue_to_artifact_runtime": true,
+                "minimum_context_available": true,
+                "workspace_root_resolved": true,
+                "tree_summary_available": true,
+                "file_selection_available": true,
+                "file_context_available": true,
+                "contract_context_available": true,
+                "known_limitations": [],
+                "missing_context": [],
+                "reason_codes": [
+                  "PROJECT_ANALYSIS_PARTIAL_CONTEXT_AVAILABLE"
+                ],
+                "confidence": 0.72
+              }
+            }
+          },
+          {
+            "event_id": "task_run_event_8aea45b4428d48709560a38d22bc0573",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 13,
+            "type": "artifact_creation_started",
+            "status": "running",
+            "message": "Artifact creation started for reports/firetest5/phase1_discovery.md.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:49:35.893541+00:00",
+            "metadata": {
+              "logical_path": "reports/firetest5/phase1_discovery.md",
+              "producer_step": "readonly_analysis_artifact_runtime"
+            }
+          },
+          {
+            "event_id": "task_run_event_4bfc76fbde3e461ab9968bca3138a105",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 14,
+            "type": "artifact_created",
+            "status": "completed",
+            "message": "Artifact ready for reports/firetest5/phase1_discovery.md.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:52:42.451453+00:00",
+            "metadata": {
+              "logical_path": "reports/firetest5/phase1_discovery.md",
+              "artifact_id": "artifact_c458759918a7420a953d791218ab0a81",
+              "storage_ref": "data\\artifacts\\universal\\artifact_c458759918a7420a953d791218ab0a81_reports__firetest5__phase1_discovery.md",
+              "size_bytes": 3813,
+              "producer_step": "readonly_analysis_artifact_runtime",
+              "created_event_source_id": "task_run_event_8aea45b4428d48709560a38d22bc0573",
+              "reason_code": null,
+              "semantic_contract_status": "satisfied",
+              "safe_to_use": true
+            }
+          },
+          {
+            "event_id": "task_run_event_cab223307e264ce6a58bfea64bd3062c",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 15,
+            "type": "artifact_creation_started",
+            "status": "running",
+            "message": "Artifact creation started for reports/firetest5/project_inventory.md.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:52:42.469939+00:00",
+            "metadata": {
+              "logical_path": "reports/firetest5/project_inventory.md",
+              "producer_step": "readonly_analysis_artifact_runtime"
+            }
+          },
+          {
+            "event_id": "task_run_event_3fad64cc07944455ac455509cfffab4c",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 16,
+            "type": "artifact_created",
+            "status": "completed",
+            "message": "Artifact ready for reports/firetest5/project_inventory.md.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:55:29.984741+00:00",
+            "metadata": {
+              "logical_path": "reports/firetest5/project_inventory.md",
+              "artifact_id": "artifact_72df9b5ff4a748cf86a2a6c058df3625",
+              "storage_ref": "data\\artifacts\\universal\\artifact_72df9b5ff4a748cf86a2a6c058df3625_reports__firetest5__project_inventory.md",
+              "size_bytes": 3814,
+              "producer_step": "readonly_analysis_artifact_runtime",
+              "created_event_source_id": "task_run_event_cab223307e264ce6a58bfea64bd3062c",
+              "reason_code": null,
+              "semantic_contract_status": "satisfied",
+              "safe_to_use": true
+            }
+          },
+          {
+            "event_id": "task_run_event_11a3123374ea4529a746149b922aac93",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 17,
+            "type": "artifact_creation_started",
+            "status": "running",
+            "message": "Artifact creation started for reports/firetest5/music_inventory.csv.",
+            "step_id": null,
+            "timestamp": "2026-08-14T00:55:30.000648+00:00",
+            "metadata": {
+              "logical_path": "reports/firetest5/music_inventory.csv",
+              "producer_step": "readonly_analysis_artifact_runtime"
+            }
+          },
+          {
+            "event_id": "task_run_event_88e94886702d4588895a8f1392b00a78",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 18,
+            "type": "artifact_blocked",
+            "status": "blocked",
+            "message": "Artifact blocked for reports/firetest5/music_inventory.csv.",
+            "step_id": null,
+            "timestamp": "2026-08-14T01:00:05.428550+00:00",
+            "metadata": {
+              "logical_path": "reports/firetest5/music_inventory.csv",
+              "artifact_id": "artifact_b8b9fc7837c04263a6954d43a2642569",
+              "storage_ref": "data\\artifacts\\universal\\artifact_b8b9fc7837c04263a6954d43a2642569_reports__firetest5__music_inventory.csv",
+              "size_bytes": 36948,
+              "producer_step": "readonly_analysis_artifact_runtime",
+              "created_event_source_id": "task_run_event_11a3123374ea4529a746149b922aac93",
+              "reason_code": "MUSIC_INVENTORY_PARTIAL_EVIDENCE",
+              "semantic_contract_status": "partial",
+              "safe_to_use": false
+            }
+          },
+          {
+            "event_id": "task_run_event_a6b98c1a0da64c83bb1cb8e41e547be3",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 19,
+            "type": "artifact_creation_started",
+            "status": "running",
+            "message": "Artifact creation started for reports/firetest5/evidence_phase1.zip.",
+            "step_id": null,
+            "timestamp": "2026-08-14T01:00:57.431640+00:00",
+            "metadata": {
+              "logical_path": "reports/firetest5/evidence_phase1.zip",
+              "producer_step": "readonly_analysis_artifact_runtime"
+            }
+          },
+          {
+            "event_id": "task_run_event_952f52829c984e1d80b17813a2bd55f6",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 20,
+            "type": "run_blocked",
+            "status": "blocked",
+            "message": "TaskRun blocked by governed runtime budget.",
+            "step_id": null,
+            "timestamp": "2026-08-14T01:04:48.808798+00:00",
+            "metadata": {
+              "reason_code": "TASKRUN_LIFECYCLE_TIMEOUT",
+              "elapsed_seconds": 910.209,
+              "max_runtime_seconds": 900.0
+            }
+          },
+          {
+            "event_id": "task_run_event_6c78ab6d01424a5981bce62018b020ea",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 21,
+            "type": "artifact_late_rejected",
+            "status": "rejected",
+            "message": "Artifact render rejected after terminal event for reports/firetest5/evidence_phase1.zip.",
+            "step_id": null,
+            "timestamp": "2026-08-14T01:05:25.690436+00:00",
+            "metadata": {
+              "logical_path": "reports/firetest5/evidence_phase1.zip",
+              "reason_code": "ARTIFACT_RENDER_LATE_ARTIFACT_REJECTED",
+              "terminal_event_id": "task_run_event_952f52829c984e1d80b17813a2bd55f6",
+              "terminal_sequence": 20,
+              "stage": "after_registry_create_before_event",
+              "safe_to_use": false,
+              "rows_rendered": null,
+              "rows_expected": null,
+              "cells_rendered": null
+            }
+          },
+          {
+            "event_id": "task_run_event_ab26bb2a05ae42768bd1986326a106c2",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 22,
+            "type": "artifact_late_rejected",
+            "status": "rejected",
+            "message": "Artifact render ended as rejected for reports/firetest5/evidence_phase1.zip.",
+            "step_id": null,
+            "timestamp": "2026-08-14T01:05:25.706530+00:00",
+            "metadata": {
+              "artifact_id": null,
+              "logical_path": "reports/firetest5/evidence_phase1.zip",
+              "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "status": "rejected",
+              "reason_code": "ARTIFACT_RENDER_LATE_ARTIFACT_REJECTED",
+              "storage_ref": null,
+              "partial_rows": null,
+              "expected_rows": null,
+              "rendered_columns": [],
+              "missing_columns": [],
+              "safe_to_use": false,
+              "visible_in_endpoint": true,
+              "source": "readonly_analysis_artifact_runtime"
+            }
+          },
+          {
+            "event_id": "task_run_event_a342c2acf0374a1a99d395185fffe403",
+            "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "sequence": 23,
+            "type": "terminalization_already_applied",
+            "status": "ignored",
+            "message": "Terminalization ignored because the TaskRun already has a terminal event.",
+            "step_id": null,
+            "timestamp": "2026-08-14T01:05:25.706530+00:00",
+            "metadata": {
+              "terminal_event_id": "task_run_event_952f52829c984e1d80b17813a2bd55f6",
+              "terminal_status": "blocked",
+              "terminal_reason_code": "TASKRUN_LIFECYCLE_TIMEOUT",
+              "attempted_event_type": "run_blocked",
+              "attempted_status": "blocked",
+              "attempted_reason_code": "ARTIFACT_RENDER_LATE_ARTIFACT_REJECTED",
+              "ignored": true,
+              "reason": "terminal_state_already_set"
+            }
+          }
+        ],
+        "count": 23,
+        "event_count_total": 23,
+        "events_truncated": false,
+        "next_cursor": null,
+        "source": "task_run_store"
+      }
+    },
+    "artifacts": {
+      "status_code": 200,
+      "elapsed_ms": 1032,
+      "body": {
+        "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+        "artifact_state": {
+          "status": "partial",
+          "count": 4,
+          "artifact_ids": [
+            "artifact_c458759918a7420a953d791218ab0a81",
+            "artifact_72df9b5ff4a748cf86a2a6c058df3625",
+            "artifact_b8b9fc7837c04263a6954d43a2642569",
+            "artifact_276722c7a73d47b498eb09839dcc916a"
+          ],
+          "artifacts": [
+            {
+              "artifact_id": "artifact_c458759918a7420a953d791218ab0a81",
+              "logical_path": "reports/firetest5/phase1_discovery.md",
+              "task_id": "task_36261b8fa33041118346310a08369615",
+              "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "owner_task_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "session_id": "firetest5_h1c0_r2_3_clean_phase0_to_6_20260814_004919",
+              "storage_ref": "data\\artifacts\\universal\\artifact_c458759918a7420a953d791218ab0a81_reports__firetest5__phase1_discovery.md",
+              "storage_path": "data\\artifacts\\universal\\artifact_c458759918a7420a953d791218ab0a81_reports__firetest5__phase1_discovery.md",
+              "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_c458759918a7420a953d791218ab0a81_reports__firetest5__phase1_discovery.md",
+              "content_type": "text/markdown",
+              "artifact_type": "readonly_analysis_report",
+              "producer_step": "readonly_analysis_artifact_runtime",
+              "event_id": "task_run_event_8aea45b4428d48709560a38d22bc0573",
+              "status": "ready",
+              "validation_status": "validated",
+              "reason_code": null,
+              "semantic_contract_status": "satisfied",
+              "safe_to_use": true,
+              "limitations": [],
+              "partial_rows": null,
+              "expected_rows": null,
+              "selected_rows": null,
+              "bound_rows": null,
+              "evidence_ref_count": null,
+              "evidence_refs": [
+                "task_run:task_run_72f9f0706d27438eb74fb4988346e9fd",
+                "phase:phase_1"
+              ],
+              "evidence_refs_sample": [],
+              "row_evidence_coverage": {},
+              "row_validation_summary": {},
+              "rendered_columns": [],
+              "missing_columns": [],
+              "size_bytes": 3813,
+              "sha256": "33ffe73a71313d4dab55b30d8da590b412da0bedd44ba50480ac0dc5c4594356",
+              "download_endpoint": "/api/v1/artifacts/artifact_c458759918a7420a953d791218ab0a81/download",
+              "created_at": "2026-08-14T00:49:35+00:00",
+              "source": "artifact_index",
+              "requires_token": true,
+              "size": 3813,
+              "metadata": {},
+              "provenance": {
+                "source": "artifact_index"
+              }
+            },
+            {
+              "artifact_id": "artifact_72df9b5ff4a748cf86a2a6c058df3625",
+              "logical_path": "reports/firetest5/project_inventory.md",
+              "task_id": "task_36261b8fa33041118346310a08369615",
+              "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "owner_task_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "session_id": "firetest5_h1c0_r2_3_clean_phase0_to_6_20260814_004919",
+              "storage_ref": "data\\artifacts\\universal\\artifact_72df9b5ff4a748cf86a2a6c058df3625_reports__firetest5__project_inventory.md",
+              "storage_path": "data\\artifacts\\universal\\artifact_72df9b5ff4a748cf86a2a6c058df3625_reports__firetest5__project_inventory.md",
+              "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_72df9b5ff4a748cf86a2a6c058df3625_reports__firetest5__project_inventory.md",
+              "content_type": "text/markdown",
+              "artifact_type": "readonly_analysis_report",
+              "producer_step": "readonly_analysis_artifact_runtime",
+              "event_id": "task_run_event_cab223307e264ce6a58bfea64bd3062c",
+              "status": "ready",
+              "validation_status": "validated",
+              "reason_code": null,
+              "semantic_contract_status": "satisfied",
+              "safe_to_use": true,
+              "limitations": [],
+              "partial_rows": null,
+              "expected_rows": null,
+              "selected_rows": null,
+              "bound_rows": null,
+              "evidence_ref_count": null,
+              "evidence_refs": [
+                "task_run:task_run_72f9f0706d27438eb74fb4988346e9fd",
+                "phase:phase_1"
+              ],
+              "evidence_refs_sample": [],
+              "row_evidence_coverage": {},
+              "row_validation_summary": {},
+              "rendered_columns": [],
+              "missing_columns": [],
+              "size_bytes": 3814,
+              "sha256": "f760b446d40fdc6142cc1d5b5a160abb575f6ad666b7d06fcbfa97c2856be2b2",
+              "download_endpoint": "/api/v1/artifacts/artifact_72df9b5ff4a748cf86a2a6c058df3625/download",
+              "created_at": "2026-08-14T00:52:42+00:00",
+              "source": "artifact_index",
+              "requires_token": true,
+              "size": 3814,
+              "metadata": {},
+              "provenance": {
+                "source": "artifact_index"
+              }
+            },
+            {
+              "artifact_id": "artifact_b8b9fc7837c04263a6954d43a2642569",
+              "logical_path": "reports/firetest5/music_inventory.csv",
+              "task_id": "task_36261b8fa33041118346310a08369615",
+              "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "owner_task_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "session_id": "firetest5_h1c0_r2_3_clean_phase0_to_6_20260814_004919",
+              "storage_ref": "data\\artifacts\\universal\\artifact_b8b9fc7837c04263a6954d43a2642569_reports__firetest5__music_inventory.csv",
+              "storage_path": "data\\artifacts\\universal\\artifact_b8b9fc7837c04263a6954d43a2642569_reports__firetest5__music_inventory.csv",
+              "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_b8b9fc7837c04263a6954d43a2642569_reports__firetest5__music_inventory.csv",
+              "content_type": "text/csv",
+              "artifact_type": "readonly_analysis_report",
+              "producer_step": "readonly_analysis_artifact_runtime",
+              "event_id": "task_run_event_11a3123374ea4529a746149b922aac93",
+              "status": "blocked",
+              "validation_status": "blocked",
+              "reason_code": "MUSIC_INVENTORY_PARTIAL_EVIDENCE",
+              "semantic_contract_status": "partial",
+              "safe_to_use": false,
+              "limitations": [
+                "ENTITY_CARDINALITY_TRUNCATED",
+                "ATTRIBUTE_NOT_OBSERVED:entity_id",
+                "ATTRIBUTE_NOT_OBSERVED:metadata_status",
+                "ATTRIBUTE_NOT_OBSERVED:evidence_ref",
+                "ATTRIBUTE_NOT_OBSERVED:limitations",
+                "ATTRIBUTE_NOT_OBSERVED:validation_status",
+                "artifact_render_entity_budget_partial",
+                "relationship_final_validation_missing",
+                "MUSIC_INVENTORY_PARTIAL_EVIDENCE"
+              ],
+              "partial_rows": 100,
+              "expected_rows": 1051,
+              "selected_rows": 100,
+              "bound_rows": 100,
+              "evidence_ref_count": 100,
+              "evidence_refs": [
+                "task_run:task_run_72f9f0706d27438eb74fb4988346e9fd",
+                "phase:phase_1",
+                "file:D:\\rafa\\pinho music\\n A.m4a",
+                "file:D:\\rafa\\pinho music\\novinho depressivo Speed up 720 X 1280.mp4",
+                "file:D:\\rafa\\pinho music\\parasite.m4a",
+                "file:D:\\rafa\\pinho music\\penhasco.m4a",
+                "file:D:\\rafa\\pinho music\\please don't humble me.m4a",
+                "file:D:\\rafa\\pinho music\\prettygrunge.m4a",
+                "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life - 2.m4a",
+                "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life.m4a",
+                "file:D:\\rafa\\pinho music\\relacionamento a b e r t o.m4a",
+                "file:D:\\rafa\\pinho music\\rises the moon - 2.m4a",
+                "file:D:\\rafa\\pinho music\\rises the moon.m4a",
+                "file:D:\\rafa\\pinho music\\shall we celebrate.m4a",
+                "file:D:\\rafa\\pinho music\\she's green - graze Official.m4a",
+                "file:D:\\rafa\\pinho music\\signs.m4a",
+                "file:D:\\rafa\\pinho music\\snarky - 2.m4a",
+                "file:D:\\rafa\\pinho music\\snarky.m4a",
+                "file:D:\\rafa\\pinho music\\so hard to quit you - 2.m4a",
+                "file:D:\\rafa\\pinho music\\so hard to quit you.m4a",
+                "file:D:\\rafa\\pinho music\\soul ties.m4a",
+                "file:D:\\rafa\\pinho music\\taKe - 2.m4a"
+              ],
+              "evidence_refs_sample": [
+                "file:D:\\rafa\\pinho music\\n A.m4a",
+                "file:D:\\rafa\\pinho music\\novinho depressivo Speed up 720 X 1280.mp4",
+                "file:D:\\rafa\\pinho music\\parasite.m4a",
+                "file:D:\\rafa\\pinho music\\penhasco.m4a",
+                "file:D:\\rafa\\pinho music\\please don't humble me.m4a",
+                "file:D:\\rafa\\pinho music\\prettygrunge.m4a",
+                "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life - 2.m4a",
+                "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life.m4a",
+                "file:D:\\rafa\\pinho music\\relacionamento a b e r t o.m4a",
+                "file:D:\\rafa\\pinho music\\rises the moon - 2.m4a",
+                "file:D:\\rafa\\pinho music\\rises the moon.m4a",
+                "file:D:\\rafa\\pinho music\\shall we celebrate.m4a",
+                "file:D:\\rafa\\pinho music\\she's green - graze Official.m4a",
+                "file:D:\\rafa\\pinho music\\signs.m4a",
+                "file:D:\\rafa\\pinho music\\snarky - 2.m4a",
+                "file:D:\\rafa\\pinho music\\snarky.m4a",
+                "file:D:\\rafa\\pinho music\\so hard to quit you - 2.m4a",
+                "file:D:\\rafa\\pinho music\\so hard to quit you.m4a",
+                "file:D:\\rafa\\pinho music\\soul ties.m4a",
+                "file:D:\\rafa\\pinho music\\taKe - 2.m4a"
+              ],
+              "row_evidence_coverage": {
+                "total_rows": 100,
+                "rows_with_evidence_ref": 100,
+                "rows_without_evidence_ref": 0,
+                "evidence_ref_count": 100,
+                "evidence_refs_sample": [
+                  "file:D:\\rafa\\pinho music\\n A.m4a",
+                  "file:D:\\rafa\\pinho music\\novinho depressivo Speed up 720 X 1280.mp4",
+                  "file:D:\\rafa\\pinho music\\parasite.m4a",
+                  "file:D:\\rafa\\pinho music\\penhasco.m4a",
+                  "file:D:\\rafa\\pinho music\\please don't humble me.m4a",
+                  "file:D:\\rafa\\pinho music\\prettygrunge.m4a",
+                  "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life - 2.m4a",
+                  "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life.m4a",
+                  "file:D:\\rafa\\pinho music\\relacionamento a b e r t o.m4a",
+                  "file:D:\\rafa\\pinho music\\rises the moon - 2.m4a",
+                  "file:D:\\rafa\\pinho music\\rises the moon.m4a",
+                  "file:D:\\rafa\\pinho music\\shall we celebrate.m4a",
+                  "file:D:\\rafa\\pinho music\\she's green - graze Official.m4a",
+                  "file:D:\\rafa\\pinho music\\signs.m4a",
+                  "file:D:\\rafa\\pinho music\\snarky - 2.m4a",
+                  "file:D:\\rafa\\pinho music\\snarky.m4a",
+                  "file:D:\\rafa\\pinho music\\so hard to quit you - 2.m4a",
+                  "file:D:\\rafa\\pinho music\\so hard to quit you.m4a",
+                  "file:D:\\rafa\\pinho music\\soul ties.m4a",
+                  "file:D:\\rafa\\pinho music\\taKe - 2.m4a"
+                ],
+                "status": "satisfied",
+                "reason_code": null
+              },
+              "row_validation_summary": {
+                "status": "satisfied",
+                "row_count": 100,
+                "column_coverage": {
+                  "declared_columns": [
+                    "entity_id",
+                    "source_root_role",
+                    "relative_path",
+                    "name",
+                    "extension",
+                    "media_type",
+                    "track_title",
+                    "artist",
+                    "album",
+                    "duration",
+                    "codec",
+                    "container",
+                    "bitrate",
+                    "sample_rate",
+                    "metadata_status",
+                    "evidence_ref",
+                    "limitations",
+                    "relationship_candidate_refs",
+                    "validation_status"
+                  ],
+                  "rendered_columns": [
+                    "entity_id",
+                    "source_root_role",
+                    "relative_path",
+                    "filename",
+                    "extension",
+                    "media_type",
+                    "track_title",
+                    "artist",
+                    "album",
+                    "duration",
+                    "codec",
+                    "container",
+                    "bitrate",
+                    "sample_rate",
+                    "metadata_status",
+                    "evidence_ref",
+                    "limitations",
+                    "relationship_candidate_refs",
+                    "validation_status"
+                  ],
+                  "missing_columns": [],
+                  "extra_columns": [],
+                  "status": "satisfied"
+                },
+                "row_evidence_coverage": {
+                  "total_rows": 100,
+                  "rows_with_evidence_ref": 100,
+                  "rows_without_evidence_ref": 0,
+                  "evidence_ref_count": 100,
+                  "evidence_refs_sample": [
+                    "file:D:\\rafa\\pinho music\\n A.m4a",
+                    "file:D:\\rafa\\pinho music\\novinho depressivo Speed up 720 X 1280.mp4",
+                    "file:D:\\rafa\\pinho music\\parasite.m4a",
+                    "file:D:\\rafa\\pinho music\\penhasco.m4a",
+                    "file:D:\\rafa\\pinho music\\please don't humble me.m4a",
+                    "file:D:\\rafa\\pinho music\\prettygrunge.m4a",
+                    "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life - 2.m4a",
+                    "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life.m4a",
+                    "file:D:\\rafa\\pinho music\\relacionamento a b e r t o.m4a",
+                    "file:D:\\rafa\\pinho music\\rises the moon - 2.m4a",
+                    "file:D:\\rafa\\pinho music\\rises the moon.m4a",
+                    "file:D:\\rafa\\pinho music\\shall we celebrate.m4a",
+                    "file:D:\\rafa\\pinho music\\she's green - graze Official.m4a",
+                    "file:D:\\rafa\\pinho music\\signs.m4a",
+                    "file:D:\\rafa\\pinho music\\snarky - 2.m4a",
+                    "file:D:\\rafa\\pinho music\\snarky.m4a",
+                    "file:D:\\rafa\\pinho music\\so hard to quit you - 2.m4a",
+                    "file:D:\\rafa\\pinho music\\so hard to quit you.m4a",
+                    "file:D:\\rafa\\pinho music\\soul ties.m4a",
+                    "file:D:\\rafa\\pinho music\\taKe - 2.m4a"
+                  ],
+                  "status": "satisfied",
+                  "reason_code": null
+                },
+                "rows_with_required_identity": 100,
+                "rows_missing_required_identity": 0,
+                "value_counts_by_column": {
+                  "entity_id": 100,
+                  "source_root_role": 100,
+                  "relative_path": 100,
+                  "filename": 100,
+                  "extension": 100,
+                  "media_type": 100,
+                  "duration": 41,
+                  "codec": 41,
+                  "container": 41,
+                  "bitrate": 41,
+                  "sample_rate": 41,
+                  "metadata_status": 100,
+                  "evidence_ref": 100,
+                  "limitations": 100,
+                  "validation_status": 100
+                },
+                "absence_counts_by_column": {
+                  "track_title": {
+                    "": 100
+                  },
+                  "artist": {
+                    "": 100
+                  },
+                  "album": {
+                    "": 100
+                  },
+                  "relationship_candidate_refs": {
+                    "": 100
+                  },
+                  "duration": {
+                    "": 59
+                  },
+                  "codec": {
+                    "": 59
+                  },
+                  "container": {
+                    "": 59
+                  },
+                  "bitrate": {
+                    "": 59
+                  },
+                  "sample_rate": {
+                    "": 59
+                  }
+                },
+                "missing_required_row_values": {},
+                "reason_codes": [],
+                "limitations": [],
+                "truth_eligible": false,
+                "metadata": {
+                  "source": "row_level_semantic_validation",
+                  "filesystem_observed": false,
+                  "renderer_observer": false
+                }
+              },
+              "rendered_columns": [
+                "entity_id",
+                "source_root_role",
+                "relative_path",
+                "name",
+                "extension",
+                "media_type",
+                "track_title",
+                "artist",
+                "album",
+                "duration",
+                "codec",
+                "container",
+                "bitrate",
+                "sample_rate",
+                "metadata_status",
+                "evidence_ref",
+                "limitations",
+                "relationship_candidate_refs",
+                "validation_status"
+              ],
+              "missing_columns": [],
+              "size_bytes": 36948,
+              "sha256": "b2e4377d22fdce9fb38e34a695314fbd62e2073d81b0342a121a2ce702093259",
+              "download_endpoint": "/api/v1/artifacts/artifact_b8b9fc7837c04263a6954d43a2642569/download",
+              "created_at": "2026-08-14T00:56:04+00:00",
+              "source": "artifact_index",
+              "requires_token": true,
+              "size": 36948,
+              "metadata": {},
+              "provenance": {
+                "source": "artifact_index"
+              }
+            },
+            {
+              "artifact_id": "artifact_276722c7a73d47b498eb09839dcc916a",
+              "logical_path": "reports/firetest5/evidence_phase1.zip",
+              "task_id": "task_36261b8fa33041118346310a08369615",
+              "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "owner_task_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "session_id": "firetest5_h1c0_r2_3_clean_phase0_to_6_20260814_004919",
+              "storage_ref": "data\\artifacts\\universal\\artifact_276722c7a73d47b498eb09839dcc916a_reports__firetest5__evidence_phase1.zip",
+              "storage_path": "data\\artifacts\\universal\\artifact_276722c7a73d47b498eb09839dcc916a_reports__firetest5__evidence_phase1.zip",
+              "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_276722c7a73d47b498eb09839dcc916a_reports__firetest5__evidence_phase1.zip",
+              "content_type": "application/zip",
+              "artifact_type": "readonly_analysis_report",
+              "producer_step": "readonly_analysis_artifact_runtime",
+              "event_id": "task_run_event_a6b98c1a0da64c83bb1cb8e41e547be3",
+              "status": "ready",
+              "validation_status": "validated",
+              "reason_code": null,
+              "semantic_contract_status": "satisfied",
+              "safe_to_use": true,
+              "limitations": [],
+              "partial_rows": null,
+              "expected_rows": null,
+              "selected_rows": null,
+              "bound_rows": null,
+              "evidence_ref_count": null,
+              "evidence_refs": [
+                "task_run:task_run_72f9f0706d27438eb74fb4988346e9fd",
+                "phase:phase_1"
+              ],
+              "evidence_refs_sample": [],
+              "row_evidence_coverage": {},
+              "row_validation_summary": {},
+              "rendered_columns": [],
+              "missing_columns": [],
+              "size_bytes": 1694829,
+              "sha256": "def50828a5a4b70a8da305eb91dd066611391e86105382f183fe09d5bd2784fd",
+              "download_endpoint": "/api/v1/artifacts/artifact_276722c7a73d47b498eb09839dcc916a/download",
+              "created_at": "2026-08-14T01:01:23+00:00",
+              "source": "artifact_index",
+              "requires_token": true,
+              "size": 1694829,
+              "metadata": {},
+              "provenance": {
+                "source": "artifact_index"
+              }
+            }
+          ],
+          "reason_code": null,
+          "terminal_phase": null,
+          "source": "task_run_result_and_registry"
+        },
+        "artifacts": [
+          {
+            "artifact_id": "artifact_c458759918a7420a953d791218ab0a81",
+            "logical_path": "reports/firetest5/phase1_discovery.md",
+            "task_id": "task_36261b8fa33041118346310a08369615",
+            "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "owner_task_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "session_id": "firetest5_h1c0_r2_3_clean_phase0_to_6_20260814_004919",
+            "storage_ref": "data\\artifacts\\universal\\artifact_c458759918a7420a953d791218ab0a81_reports__firetest5__phase1_discovery.md",
+            "storage_path": "data\\artifacts\\universal\\artifact_c458759918a7420a953d791218ab0a81_reports__firetest5__phase1_discovery.md",
+            "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_c458759918a7420a953d791218ab0a81_reports__firetest5__phase1_discovery.md",
+            "content_type": "text/markdown",
+            "artifact_type": "readonly_analysis_report",
+            "producer_step": "readonly_analysis_artifact_runtime",
+            "event_id": "task_run_event_8aea45b4428d48709560a38d22bc0573",
+            "status": "ready",
+            "validation_status": "validated",
+            "reason_code": null,
+            "semantic_contract_status": "satisfied",
+            "safe_to_use": true,
+            "limitations": [],
+            "partial_rows": null,
+            "expected_rows": null,
+            "selected_rows": null,
+            "bound_rows": null,
+            "evidence_ref_count": null,
+            "evidence_refs": [
+              "task_run:task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "phase:phase_1"
+            ],
+            "evidence_refs_sample": [],
+            "row_evidence_coverage": {},
+            "row_validation_summary": {},
+            "rendered_columns": [],
+            "missing_columns": [],
+            "size_bytes": 3813,
+            "sha256": "33ffe73a71313d4dab55b30d8da590b412da0bedd44ba50480ac0dc5c4594356",
+            "download_endpoint": "/api/v1/artifacts/artifact_c458759918a7420a953d791218ab0a81/download",
+            "created_at": "2026-08-14T00:49:35+00:00",
+            "source": "artifact_index",
+            "requires_token": true,
+            "size": 3813,
+            "metadata": {},
+            "provenance": {
+              "source": "artifact_index"
+            }
+          },
+          {
+            "artifact_id": "artifact_72df9b5ff4a748cf86a2a6c058df3625",
+            "logical_path": "reports/firetest5/project_inventory.md",
+            "task_id": "task_36261b8fa33041118346310a08369615",
+            "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "owner_task_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "session_id": "firetest5_h1c0_r2_3_clean_phase0_to_6_20260814_004919",
+            "storage_ref": "data\\artifacts\\universal\\artifact_72df9b5ff4a748cf86a2a6c058df3625_reports__firetest5__project_inventory.md",
+            "storage_path": "data\\artifacts\\universal\\artifact_72df9b5ff4a748cf86a2a6c058df3625_reports__firetest5__project_inventory.md",
+            "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_72df9b5ff4a748cf86a2a6c058df3625_reports__firetest5__project_inventory.md",
+            "content_type": "text/markdown",
+            "artifact_type": "readonly_analysis_report",
+            "producer_step": "readonly_analysis_artifact_runtime",
+            "event_id": "task_run_event_cab223307e264ce6a58bfea64bd3062c",
+            "status": "ready",
+            "validation_status": "validated",
+            "reason_code": null,
+            "semantic_contract_status": "satisfied",
+            "safe_to_use": true,
+            "limitations": [],
+            "partial_rows": null,
+            "expected_rows": null,
+            "selected_rows": null,
+            "bound_rows": null,
+            "evidence_ref_count": null,
+            "evidence_refs": [
+              "task_run:task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "phase:phase_1"
+            ],
+            "evidence_refs_sample": [],
+            "row_evidence_coverage": {},
+            "row_validation_summary": {},
+            "rendered_columns": [],
+            "missing_columns": [],
+            "size_bytes": 3814,
+            "sha256": "f760b446d40fdc6142cc1d5b5a160abb575f6ad666b7d06fcbfa97c2856be2b2",
+            "download_endpoint": "/api/v1/artifacts/artifact_72df9b5ff4a748cf86a2a6c058df3625/download",
+            "created_at": "2026-08-14T00:52:42+00:00",
+            "source": "artifact_index",
+            "requires_token": true,
+            "size": 3814,
+            "metadata": {},
+            "provenance": {
+              "source": "artifact_index"
+            }
+          },
+          {
+            "artifact_id": "artifact_b8b9fc7837c04263a6954d43a2642569",
+            "logical_path": "reports/firetest5/music_inventory.csv",
+            "task_id": "task_36261b8fa33041118346310a08369615",
+            "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "owner_task_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "session_id": "firetest5_h1c0_r2_3_clean_phase0_to_6_20260814_004919",
+            "storage_ref": "data\\artifacts\\universal\\artifact_b8b9fc7837c04263a6954d43a2642569_reports__firetest5__music_inventory.csv",
+            "storage_path": "data\\artifacts\\universal\\artifact_b8b9fc7837c04263a6954d43a2642569_reports__firetest5__music_inventory.csv",
+            "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_b8b9fc7837c04263a6954d43a2642569_reports__firetest5__music_inventory.csv",
+            "content_type": "text/csv",
+            "artifact_type": "readonly_analysis_report",
+            "producer_step": "readonly_analysis_artifact_runtime",
+            "event_id": "task_run_event_11a3123374ea4529a746149b922aac93",
+            "status": "blocked",
+            "validation_status": "blocked",
+            "reason_code": "MUSIC_INVENTORY_PARTIAL_EVIDENCE",
+            "semantic_contract_status": "partial",
+            "safe_to_use": false,
+            "limitations": [
+              "ENTITY_CARDINALITY_TRUNCATED",
+              "ATTRIBUTE_NOT_OBSERVED:entity_id",
+              "ATTRIBUTE_NOT_OBSERVED:metadata_status",
+              "ATTRIBUTE_NOT_OBSERVED:evidence_ref",
+              "ATTRIBUTE_NOT_OBSERVED:limitations",
+              "ATTRIBUTE_NOT_OBSERVED:validation_status",
+              "artifact_render_entity_budget_partial",
+              "relationship_final_validation_missing",
+              "MUSIC_INVENTORY_PARTIAL_EVIDENCE"
+            ],
+            "partial_rows": 100,
+            "expected_rows": 1051,
+            "selected_rows": 100,
+            "bound_rows": 100,
+            "evidence_ref_count": 100,
+            "evidence_refs": [
+              "task_run:task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "phase:phase_1",
+              "file:D:\\rafa\\pinho music\\n A.m4a",
+              "file:D:\\rafa\\pinho music\\novinho depressivo Speed up 720 X 1280.mp4",
+              "file:D:\\rafa\\pinho music\\parasite.m4a",
+              "file:D:\\rafa\\pinho music\\penhasco.m4a",
+              "file:D:\\rafa\\pinho music\\please don't humble me.m4a",
+              "file:D:\\rafa\\pinho music\\prettygrunge.m4a",
+              "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life - 2.m4a",
+              "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life.m4a",
+              "file:D:\\rafa\\pinho music\\relacionamento a b e r t o.m4a",
+              "file:D:\\rafa\\pinho music\\rises the moon - 2.m4a",
+              "file:D:\\rafa\\pinho music\\rises the moon.m4a",
+              "file:D:\\rafa\\pinho music\\shall we celebrate.m4a",
+              "file:D:\\rafa\\pinho music\\she's green - graze Official.m4a",
+              "file:D:\\rafa\\pinho music\\signs.m4a",
+              "file:D:\\rafa\\pinho music\\snarky - 2.m4a",
+              "file:D:\\rafa\\pinho music\\snarky.m4a",
+              "file:D:\\rafa\\pinho music\\so hard to quit you - 2.m4a",
+              "file:D:\\rafa\\pinho music\\so hard to quit you.m4a",
+              "file:D:\\rafa\\pinho music\\soul ties.m4a",
+              "file:D:\\rafa\\pinho music\\taKe - 2.m4a"
+            ],
+            "evidence_refs_sample": [
+              "file:D:\\rafa\\pinho music\\n A.m4a",
+              "file:D:\\rafa\\pinho music\\novinho depressivo Speed up 720 X 1280.mp4",
+              "file:D:\\rafa\\pinho music\\parasite.m4a",
+              "file:D:\\rafa\\pinho music\\penhasco.m4a",
+              "file:D:\\rafa\\pinho music\\please don't humble me.m4a",
+              "file:D:\\rafa\\pinho music\\prettygrunge.m4a",
+              "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life - 2.m4a",
+              "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life.m4a",
+              "file:D:\\rafa\\pinho music\\relacionamento a b e r t o.m4a",
+              "file:D:\\rafa\\pinho music\\rises the moon - 2.m4a",
+              "file:D:\\rafa\\pinho music\\rises the moon.m4a",
+              "file:D:\\rafa\\pinho music\\shall we celebrate.m4a",
+              "file:D:\\rafa\\pinho music\\she's green - graze Official.m4a",
+              "file:D:\\rafa\\pinho music\\signs.m4a",
+              "file:D:\\rafa\\pinho music\\snarky - 2.m4a",
+              "file:D:\\rafa\\pinho music\\snarky.m4a",
+              "file:D:\\rafa\\pinho music\\so hard to quit you - 2.m4a",
+              "file:D:\\rafa\\pinho music\\so hard to quit you.m4a",
+              "file:D:\\rafa\\pinho music\\soul ties.m4a",
+              "file:D:\\rafa\\pinho music\\taKe - 2.m4a"
+            ],
+            "row_evidence_coverage": {
+              "total_rows": 100,
+              "rows_with_evidence_ref": 100,
+              "rows_without_evidence_ref": 0,
+              "evidence_ref_count": 100,
+              "evidence_refs_sample": [
+                "file:D:\\rafa\\pinho music\\n A.m4a",
+                "file:D:\\rafa\\pinho music\\novinho depressivo Speed up 720 X 1280.mp4",
+                "file:D:\\rafa\\pinho music\\parasite.m4a",
+                "file:D:\\rafa\\pinho music\\penhasco.m4a",
+                "file:D:\\rafa\\pinho music\\please don't humble me.m4a",
+                "file:D:\\rafa\\pinho music\\prettygrunge.m4a",
+                "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life - 2.m4a",
+                "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life.m4a",
+                "file:D:\\rafa\\pinho music\\relacionamento a b e r t o.m4a",
+                "file:D:\\rafa\\pinho music\\rises the moon - 2.m4a",
+                "file:D:\\rafa\\pinho music\\rises the moon.m4a",
+                "file:D:\\rafa\\pinho music\\shall we celebrate.m4a",
+                "file:D:\\rafa\\pinho music\\she's green - graze Official.m4a",
+                "file:D:\\rafa\\pinho music\\signs.m4a",
+                "file:D:\\rafa\\pinho music\\snarky - 2.m4a",
+                "file:D:\\rafa\\pinho music\\snarky.m4a",
+                "file:D:\\rafa\\pinho music\\so hard to quit you - 2.m4a",
+                "file:D:\\rafa\\pinho music\\so hard to quit you.m4a",
+                "file:D:\\rafa\\pinho music\\soul ties.m4a",
+                "file:D:\\rafa\\pinho music\\taKe - 2.m4a"
+              ],
+              "status": "satisfied",
+              "reason_code": null
+            },
+            "row_validation_summary": {
+              "status": "satisfied",
+              "row_count": 100,
+              "column_coverage": {
+                "declared_columns": [
+                  "entity_id",
+                  "source_root_role",
+                  "relative_path",
+                  "name",
+                  "extension",
+                  "media_type",
+                  "track_title",
+                  "artist",
+                  "album",
+                  "duration",
+                  "codec",
+                  "container",
+                  "bitrate",
+                  "sample_rate",
+                  "metadata_status",
+                  "evidence_ref",
+                  "limitations",
+                  "relationship_candidate_refs",
+                  "validation_status"
+                ],
+                "rendered_columns": [
+                  "entity_id",
+                  "source_root_role",
+                  "relative_path",
+                  "filename",
+                  "extension",
+                  "media_type",
+                  "track_title",
+                  "artist",
+                  "album",
+                  "duration",
+                  "codec",
+                  "container",
+                  "bitrate",
+                  "sample_rate",
+                  "metadata_status",
+                  "evidence_ref",
+                  "limitations",
+                  "relationship_candidate_refs",
+                  "validation_status"
+                ],
+                "missing_columns": [],
+                "extra_columns": [],
+                "status": "satisfied"
+              },
+              "row_evidence_coverage": {
+                "total_rows": 100,
+                "rows_with_evidence_ref": 100,
+                "rows_without_evidence_ref": 0,
+                "evidence_ref_count": 100,
+                "evidence_refs_sample": [
+                  "file:D:\\rafa\\pinho music\\n A.m4a",
+                  "file:D:\\rafa\\pinho music\\novinho depressivo Speed up 720 X 1280.mp4",
+                  "file:D:\\rafa\\pinho music\\parasite.m4a",
+                  "file:D:\\rafa\\pinho music\\penhasco.m4a",
+                  "file:D:\\rafa\\pinho music\\please don't humble me.m4a",
+                  "file:D:\\rafa\\pinho music\\prettygrunge.m4a",
+                  "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life - 2.m4a",
+                  "file:D:\\rafa\\pinho music\\quannnic - Life Imitates Life.m4a",
+                  "file:D:\\rafa\\pinho music\\relacionamento a b e r t o.m4a",
+                  "file:D:\\rafa\\pinho music\\rises the moon - 2.m4a",
+                  "file:D:\\rafa\\pinho music\\rises the moon.m4a",
+                  "file:D:\\rafa\\pinho music\\shall we celebrate.m4a",
+                  "file:D:\\rafa\\pinho music\\she's green - graze Official.m4a",
+                  "file:D:\\rafa\\pinho music\\signs.m4a",
+                  "file:D:\\rafa\\pinho music\\snarky - 2.m4a",
+                  "file:D:\\rafa\\pinho music\\snarky.m4a",
+                  "file:D:\\rafa\\pinho music\\so hard to quit you - 2.m4a",
+                  "file:D:\\rafa\\pinho music\\so hard to quit you.m4a",
+                  "file:D:\\rafa\\pinho music\\soul ties.m4a",
+                  "file:D:\\rafa\\pinho music\\taKe - 2.m4a"
+                ],
+                "status": "satisfied",
+                "reason_code": null
+              },
+              "rows_with_required_identity": 100,
+              "rows_missing_required_identity": 0,
+              "value_counts_by_column": {
+                "entity_id": 100,
+                "source_root_role": 100,
+                "relative_path": 100,
+                "filename": 100,
+                "extension": 100,
+                "media_type": 100,
+                "duration": 41,
+                "codec": 41,
+                "container": 41,
+                "bitrate": 41,
+                "sample_rate": 41,
+                "metadata_status": 100,
+                "evidence_ref": 100,
+                "limitations": 100,
+                "validation_status": 100
+              },
+              "absence_counts_by_column": {
+                "track_title": {
+                  "": 100
+                },
+                "artist": {
+                  "": 100
+                },
+                "album": {
+                  "": 100
+                },
+                "relationship_candidate_refs": {
+                  "": 100
+                },
+                "duration": {
+                  "": 59
+                },
+                "codec": {
+                  "": 59
+                },
+                "container": {
+                  "": 59
+                },
+                "bitrate": {
+                  "": 59
+                },
+                "sample_rate": {
+                  "": 59
+                }
+              },
+              "missing_required_row_values": {},
+              "reason_codes": [],
+              "limitations": [],
+              "truth_eligible": false,
+              "metadata": {
+                "source": "row_level_semantic_validation",
+                "filesystem_observed": false,
+                "renderer_observer": false
+              }
+            },
+            "rendered_columns": [
+              "entity_id",
+              "source_root_role",
+              "relative_path",
+              "name",
+              "extension",
+              "media_type",
+              "track_title",
+              "artist",
+              "album",
+              "duration",
+              "codec",
+              "container",
+              "bitrate",
+              "sample_rate",
+              "metadata_status",
+              "evidence_ref",
+              "limitations",
+              "relationship_candidate_refs",
+              "validation_status"
+            ],
+            "missing_columns": [],
+            "size_bytes": 36948,
+            "sha256": "b2e4377d22fdce9fb38e34a695314fbd62e2073d81b0342a121a2ce702093259",
+            "download_endpoint": "/api/v1/artifacts/artifact_b8b9fc7837c04263a6954d43a2642569/download",
+            "created_at": "2026-08-14T00:56:04+00:00",
+            "source": "artifact_index",
+            "requires_token": true,
+            "size": 36948,
+            "metadata": {},
+            "provenance": {
+              "source": "artifact_index"
+            }
+          },
+          {
+            "artifact_id": "artifact_276722c7a73d47b498eb09839dcc916a",
+            "logical_path": "reports/firetest5/evidence_phase1.zip",
+            "task_id": "task_36261b8fa33041118346310a08369615",
+            "task_run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "owner_task_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+            "session_id": "firetest5_h1c0_r2_3_clean_phase0_to_6_20260814_004919",
+            "storage_ref": "data\\artifacts\\universal\\artifact_276722c7a73d47b498eb09839dcc916a_reports__firetest5__evidence_phase1.zip",
+            "storage_path": "data\\artifacts\\universal\\artifact_276722c7a73d47b498eb09839dcc916a_reports__firetest5__evidence_phase1.zip",
+            "local_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_276722c7a73d47b498eb09839dcc916a_reports__firetest5__evidence_phase1.zip",
+            "content_type": "application/zip",
+            "artifact_type": "readonly_analysis_report",
+            "producer_step": "readonly_analysis_artifact_runtime",
+            "event_id": "task_run_event_a6b98c1a0da64c83bb1cb8e41e547be3",
+            "status": "ready",
+            "validation_status": "validated",
+            "reason_code": null,
+            "semantic_contract_status": "satisfied",
+            "safe_to_use": true,
+            "limitations": [],
+            "partial_rows": null,
+            "expected_rows": null,
+            "selected_rows": null,
+            "bound_rows": null,
+            "evidence_ref_count": null,
+            "evidence_refs": [
+              "task_run:task_run_72f9f0706d27438eb74fb4988346e9fd",
+              "phase:phase_1"
+            ],
+            "evidence_refs_sample": [],
+            "row_evidence_coverage": {},
+            "row_validation_summary": {},
+            "rendered_columns": [],
+            "missing_columns": [],
+            "size_bytes": 1694829,
+            "sha256": "def50828a5a4b70a8da305eb91dd066611391e86105382f183fe09d5bd2784fd",
+            "download_endpoint": "/api/v1/artifacts/artifact_276722c7a73d47b498eb09839dcc916a/download",
+            "created_at": "2026-08-14T01:01:23+00:00",
+            "source": "artifact_index",
+            "requires_token": true,
+            "size": 1694829,
+            "metadata": {},
+            "provenance": {
+              "source": "artifact_index"
+            }
+          }
+        ],
+        "count": 4,
+        "source": "artifact_runtime"
+      }
+    },
+    "result": {
+      "status_code": 200,
+      "elapsed_ms": 301,
+      "body": {
+        "run_id": "task_run_72f9f0706d27438eb74fb4988346e9fd",
+        "status": "blocked",
+        "summary": "TaskRun reached a governed runtime budget before producing a terminal result.",
+        "outputs": {
+          "runtime_budget": {
+            "reason_code": "TASKRUN_LIFECYCLE_TIMEOUT",
+            "elapsed_seconds": 910.209,
+            "max_runtime_seconds": 900.0,
+            "terminal_reason": "TASKRUN_LIFECYCLE_TIMEOUT",
+            "server_completed": false
+          }
+        },
+        "step_summaries": [],
+        "limitations": [],
+        "blocked_items": [
+          "TASKRUN_LIFECYCLE_TIMEOUT"
+        ],
+        "warnings": [
+          "runtime_budget_exceeded"
+        ],
+        "events_count": 0,
+        "trace_ref": null,
+        "safe_to_display": true,
+        "validation": {
+          "status": "blocked",
+          "safe_to_display": true,
+          "blocking_findings": [
+            "TASKRUN_LIFECYCLE_TIMEOUT"
+          ]
+        },
+        "block_cause": null,
+        "completion": null
+      }
+    },
+    "queue_after": {
+      "status_code": 200,
+      "elapsed_ms": 858,
+      "body": {
+        "status": "ok",
+        "active_runs": 0,
+        "queued_runs": 0,
+        "stale_runs": 0,
+        "pending_approvals": 0,
+        "active_sessions": 0,
+        "dispatcher_status": "available",
+        "worker_pool_capacity": 8,
+        "worker_pool_available_slots": 8,
+        "stale_run_ids": [],
+        "backpressure_required": false,
+        "reason_code": null
+      }
+    }
+  },
+  "phase1_store": {
+    "run_json_exists": true,
+    "run_json_bytes": 156870,
+    "result_json_exists": true,
+    "result_json_bytes": 877,
+    "events_json_exists": true,
+    "events_json_bytes": 33299,
+    "run_index_exists": true
+  },
+  "storage_after": {
+    "status": "ok",
+    "run_dirs_seen": 13,
+    "missing_index_count": 0,
+    "missing_index_run_ids": [],
+    "large_run_count": 0,
+    "large_runs": [],
+    "threshold_bytes": 1000000
+  },
+  "phases_2_to_6": {
+    "2": {
+      "phase": 2,
+      "status": "skipped_due_to_prior_block",
+      "called_public_chat": false,
+      "prior_blocking_phase": "1",
+      "prior_blocking_reason": "TASKRUN_LIFECYCLE_TIMEOUT",
+      "reason_code": "PHASE_SKIPPED_DUE_TO_PRIOR_BLOCK",
+      "safe_to_report_success": false
+    },
+    "3": {
+      "phase": 3,
+      "status": "skipped_due_to_prior_block",
+      "called_public_chat": false,
+      "prior_blocking_phase": "1",
+      "prior_blocking_reason": "TASKRUN_LIFECYCLE_TIMEOUT",
+      "reason_code": "PHASE_SKIPPED_DUE_TO_PRIOR_BLOCK",
+      "safe_to_report_success": false
+    },
+    "4": {
+      "phase": 4,
+      "status": "skipped_due_to_prior_block",
+      "called_public_chat": false,
+      "prior_blocking_phase": "1",
+      "prior_blocking_reason": "TASKRUN_LIFECYCLE_TIMEOUT",
+      "reason_code": "PHASE_SKIPPED_DUE_TO_PRIOR_BLOCK",
+      "safe_to_report_success": false
+    },
+    "5": {
+      "phase": 5,
+      "status": "skipped_due_to_prior_block",
+      "called_public_chat": false,
+      "prior_blocking_phase": "1",
+      "prior_blocking_reason": "TASKRUN_LIFECYCLE_TIMEOUT",
+      "reason_code": "PHASE_SKIPPED_DUE_TO_PRIOR_BLOCK",
+      "safe_to_report_success": false
+    },
+    "6": {
+      "phase": 6,
+      "status": "skipped_due_to_prior_block",
+      "called_public_chat": false,
+      "prior_blocking_phase": "1",
+      "prior_blocking_reason": "TASKRUN_LIFECYCLE_TIMEOUT",
+      "reason_code": "PHASE_SKIPPED_DUE_TO_PRIOR_BLOCK",
+      "safe_to_report_success": false
+    }
+  },
+  "updated_at": "2026-08-14T01:06:00.045950+00:00"
+}

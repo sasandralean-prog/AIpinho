@@ -1,0 +1,7 @@
+schema_version: 1
+copy_actions:
+  enabled: true
+  always_redact: true
+  preserve_full_text: true
+blocked:
+  copy_secret: true

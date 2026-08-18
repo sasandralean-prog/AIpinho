@@ -1,0 +1,27 @@
+﻿schema_version: 1
+
+safety:
+  reject_if_claims_execution_without_tool_result: true
+  reject_if_claims_file_written_without_artifact_result: true
+  reject_if_claims_patch_applied_without_patch_result: true
+  reject_if_instructs_user_to_bypass_policy: true
+  reject_if_contains_raw_secret: true
+  warn_if_overconfident_without_evidence: true
+  warn_if_ignores_read_only_constraint: true
+  warn_if_mentions_unavailable_capability_as_active: true
+
+patterns:
+  execution_claims:
+    - "arquivo foi criado"
+    - "patch aplicado"
+    - "executei"
+    - "rodei o comando"
+    - "salvei em"
+  bypass_claims:
+    - "ignore a politica"
+    - "ignore a política"
+    - "bypass"
+    - "desative a validacao"
+    - "desative a validação"
+  secret_like:
+    - "(?i)(api[_-]?key|secret|token|password)\\s*[:=]\\s*[^\\s]+"

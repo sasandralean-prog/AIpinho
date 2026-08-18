@@ -1,0 +1,28 @@
+version: 1
+matrix_name: security_regression
+cases:
+  - write_source_readonly_blocked
+  - write_protected_blocked
+  - forbidden_workspace_blocked
+  - path_traversal_blocked
+  - symlink_escape_blocked_or_safely_handled
+  - destructive_shell_blocked
+  - network_shell_blocked_by_default
+  - git_write_blocked_by_default
+  - process_control_shell_blocked_by_default
+  - unknown_shell_blocked_by_default
+  - secret_access_blocked
+  - token_in_url_blocked
+  - authorization_header_redacted
+  - provider_key_redacted
+  - env_secret_not_ingested_to_memory
+  - cookie_redacted
+  - system_prompt_not_exposed
+  - chain_of_thought_not_exposed
+  - raw_hidden_by_default
+  - debug_bundle_secret_redaction
+  - external_upload_requires_consent
+  - source_readonly_patch_apply_blocked
+  - delete_evidence_blocked
+  - destructive_self_healing_blocked
+

@@ -1,0 +1,21 @@
+schema_version: 1
+
+recommendations:
+  allow_patch_instruction: false
+  allow_shell_instruction: false
+  allow_direct_write_instruction: false
+  allowed_next_actions:
+    - future_sprint
+    - add_test
+    - add_contract
+    - update_config
+    - document
+    - audit
+    - review
+  write_keywords:
+    - escrever
+    - alterar
+    - criar arquivo
+    - atualizar arquivo
+    - patch
+    - aplicar

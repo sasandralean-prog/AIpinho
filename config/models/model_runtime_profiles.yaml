@@ -1,0 +1,25 @@
+﻿schema_version: 1
+
+profiles:
+  stub:
+    real_inference: false
+    timeout_seconds: 5
+    max_output_tokens: 512
+
+  llama_cpp_manual:
+    real_inference: true
+    enabled: false
+    timeout_seconds: 60
+    max_output_tokens: 512
+    max_ctx_size: 4096
+    allow_chat_auto_use: false
+    allow_report_auto_use: false
+
+  llama_cpp_test:
+    real_inference: true
+    enabled: false
+    timeout_seconds: 30
+    max_output_tokens: 128
+    max_ctx_size: 2048
+    allow_chat_auto_use: false
+    allow_report_auto_use: false

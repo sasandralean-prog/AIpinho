@@ -1,0 +1,41 @@
+skill_pack_id: sandbox_pack
+display_name: Sandbox Pack v1
+slug: sandbox_pack
+version: 1.0.0
+status: active
+category: sandbox
+description: Governed local sandbox read, write, safe shell, validation, project generation and zip export.
+included_skills:
+  - internal.sandbox_file_writer
+  - internal.sandbox_project_generator
+  - internal.sandbox_shell_runner
+  - internal.sandbox_zip_exporter
+  - internal.sandbox_validation_runner
+required_capabilities:
+  - sandbox_write
+  - sandbox_shell
+  - sandbox_artifact_export
+  - sandbox_validate
+optional_capabilities:
+  - sandbox_cleanup
+supported_agents: [aipinho, lucio, codex, gemini, autopilot]
+supported_project_stacks: [android_gradle, python, node, mixed, unknown]
+supported_execution_modes: [sandbox_play, sandbox_project_generation, sandbox_autopilot, governed_autorun, assisted_execution]
+risk_level: medium
+policy_profile: governed_local_sandbox
+validation_profile: sandbox_validation
+artifact_policy: token_protected_artifacts
+memory_policy: propose_candidate_with_evidence
+dashboard_visible: true
+debugger_trace_required: true
+docs_ref: docs/skills/SANDBOX_PACK.md
+tests_ref: tests/skill_packs
+examples:
+  - label: Sandbox work
+    prompt: Create files in the governed sandbox, validate and export them.
+    expected_pack_selection: [sandbox_pack, artifact_pack]
+limitations:
+  - No writes are allowed outside the selected sandbox task.
+evidence_refs: [skill_pack_manifest:sandbox_pack]
+metadata_sanitized:
+  side_effect_scope: sandbox_only

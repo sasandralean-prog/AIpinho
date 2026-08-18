@@ -1,0 +1,6 @@
+schema_version: 1
+output_validation:
+  enabled: true
+  require_declared_contract: true
+  sanitize_before_return: true
+  block_authority_fields: true

@@ -1,0 +1,33 @@
+skill_id: internal.sandbox_validation_runner
+display_name: Sandbox Validation Runner
+slug: sandbox_validation_runner
+description: Validate declared files and artifacts produced inside a governed sandbox task.
+version: 1.0.0
+status: active
+category: validation
+owner: aipinho
+compatible_agents: [aipinho, codex, lucio, gemini]
+compatible_project_stacks: [android_gradle, python, node, mixed, unknown]
+required_capabilities: [sandbox_validate]
+allowed_tools: [sandbox_validate]
+denied_tools: [patch_apply, run_shell]
+input_schema:
+  type: object
+  properties:
+    relative_paths: {type: array}
+    artifact_ids: {type: array}
+output_schema: {type: object}
+side_effects: [validation_record]
+workspace_policy: {source_readonly_write: false, outside_sandbox_write: false}
+sandbox_required: true
+sandbox_allowed: true
+sandbox_side_effects: [validation]
+command_policy: {shell: blocked}
+artifact_policy: {enabled: false}
+memory_policy: {mode: propose_candidate, requires_evidence: true}
+validation_policy: {required: true, failure_policy: block_completion}
+speaker_truth_policy: {raw_hidden_by_default: true, must_cite_validation: true}
+risk_level: low
+approval_policy: {required: false}
+docs_ref: docs/testing/SANDBOX_REGRESSION_MATRIX.md
+tests_ref: tests/sandbox

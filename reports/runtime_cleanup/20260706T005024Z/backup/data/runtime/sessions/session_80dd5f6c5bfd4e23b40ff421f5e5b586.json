@@ -1,0 +1,41 @@
+{
+  "session_id": "session_80dd5f6c5bfd4e23b40ff421f5e5b586",
+  "status": "active",
+  "created_at": "2026-06-18T01:27:19.560530+00:00",
+  "updated_at": "2026-06-18T01:27:30.686367+00:00",
+  "expires_at": "2026-06-18T05:27:19.560530+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Explique o que foi a Revolu??o Francesa em poucas linhas.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_694e1bcb20894969a04b05c7781f73c8",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

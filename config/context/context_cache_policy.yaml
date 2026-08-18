@@ -1,0 +1,7 @@
+schema_version: 1
+cache:
+  enabled: true
+  key_fields: [purpose, scope, candidates_hash, policy_version]
+  invalidate_on_policy_change: true
+  invalidate_on_source_hash_change: true
+  invalidate_on_memory_superseded: true

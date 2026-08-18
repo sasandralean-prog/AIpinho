@@ -1,0 +1,3477 @@
+{
+  "sessions": [
+    {
+      "session_id": "agent_session_815e700ad05c4a3fab695af3ed85eab0",
+      "agent_id": "lucio",
+      "title": "RC1 Lucio Delegation Retest",
+      "created_at": "2026-06-13T17:59:57+00:00",
+      "updated_at": "2026-06-23T03:50:50+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_185cd36c97c444c7900247471a0ceb38",
+      "agent_id": "gemini",
+      "title": "Gemini bridge de785d6d",
+      "created_at": "2026-06-13T17:59:57+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_954dcee6dd384882a7bf88cbde785d6d",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_69ca61b6feb64cf590cd8c70f9ec0ab9",
+      "agent_id": "lucio",
+      "title": "RC1 post capability hotfix Lucio",
+      "created_at": "2026-06-13T18:08:03+00:00",
+      "updated_at": "2026-06-23T03:50:53+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_c593f4b1e0fb4f82916e31ea5098385b",
+      "agent_id": "lucio",
+      "title": "RC1 post restart Lucio",
+      "created_at": "2026-06-13T18:10:26+00:00",
+      "updated_at": "2026-06-23T03:51:06+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_78f2b61680554edd86d1432b52c0d1eb",
+      "agent_id": "aipinho",
+      "title": "Delegated from lucio",
+      "created_at": "2026-06-13T18:10:27+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "delegation_id": "delegation_25c4888911fa4156a4e4b97fa843fec3",
+        "parent_agent_id": "lucio",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_1d6b2581a03f46c7a61ad0c3e932ad0b",
+      "agent_id": "gemini",
+      "title": "Gemini bridge fc999c14",
+      "created_at": "2026-06-13T18:10:28+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_61d841c5e04d41368dbba395fc999c14",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_64baf530d55b4949919f95c56398e893",
+      "agent_id": "lucio",
+      "title": "RC1 post gemini hotfix Lucio",
+      "created_at": "2026-06-13T18:16:38+00:00",
+      "updated_at": "2026-06-23T03:50:39+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_d24f43a5784f4a688e23ce6e9648e282",
+      "agent_id": "aipinho",
+      "title": "Delegated from lucio",
+      "created_at": "2026-06-13T18:16:38+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "delegation_id": "delegation_cfd404532bc8478daeb50fd56f182f77",
+        "parent_agent_id": "lucio",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_b279e2d4cc6c47c2a5a4b5eb41c848ac",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 1f77d59e",
+      "created_at": "2026-06-13T18:16:38+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_f63d75ecf6984d5eaf53b7581f77d59e",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_2183a841ce4e43cb9288126acd11da7f",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "created_at": "2026-06-13T18:16:39+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "delegation_id": "delegation_a6c80e3c40264968b8587f8d6a192f01",
+        "parent_agent_id": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_f40eb6faf6b84d48ba841b69805a69c2",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-13T19:34:01+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_project",
+      "metadata_sanitized": {
+        "chat_session_id": "session_d30757885eeb41b3b29c7196d253768f",
+        "operation_type": "governed_file_write",
+        "operation_id": "chatop_a97972211ef74d70949c21f9d93971ef",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_a9967d73eefd4f019dff4bb90365ad40",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-13T19:41:16+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_temp_target",
+      "metadata_sanitized": {
+        "chat_session_id": "session_d03487717c184f1a82ac0e61f065ea86",
+        "operation_type": "governed_file_write",
+        "operation_id": "chatop_bf4b7a3a6d7b4da39f11e2c33430e13d",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_13c1cf9e4a4c40b58fe2f455cdee9877",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-13T20:25:18+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "rc2_target_mutable",
+      "metadata_sanitized": {
+        "chat_session_id": "session_00b90c1f3c0744d1af6f2a774a4c3d72",
+        "operation_type": "governed_file_write",
+        "operation_id": "chatop_83d566ef199648bcb3020b8900f7c433",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_b8dd48ad70264bc79d077c72f951c4e2",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-13T20:26:57+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "rc2_target_mutable",
+      "metadata_sanitized": {
+        "chat_session_id": "session_f4103930a14b4a98bb7726f9ad987783",
+        "operation_type": "governed_file_write",
+        "operation_id": "chatop_04f03be504c3479292cd73e2d4b7fe4b",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_33f3776980af4c5494f0484a9543c75e",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-13T20:27:44+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "rc2_target_mutable",
+      "metadata_sanitized": {
+        "chat_session_id": "session_aee1eb5d6b834d8691f58ef21f25cf3f",
+        "operation_type": "governed_file_write",
+        "operation_id": "chatop_13017f0006dd484b8cec6dfe033dae1d",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_bb54e7cb28a24e23aae790985b484748",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-13T20:40:07+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "rc2_target_mutable",
+      "metadata_sanitized": {
+        "chat_session_id": "session_cc05457e0f544237b29840667d6b365d",
+        "operation_type": "governed_file_write",
+        "operation_id": "chatop_4432f1cfc4d7443ba4558346bccd5f3d",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_d531275af08249fa80344ac15cf58f2e",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-13T20:40:10+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "rc2_target_mutable",
+      "metadata_sanitized": {
+        "chat_session_id": "session_52d9254b85024cbf90df5f121961e368",
+        "operation_type": "governed_file_write",
+        "operation_id": "chatop_6f54cf297b28463da6d8088e905ee50f",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_68b47e26e11b40d191d202e0c7dd2b11",
+      "agent_id": "codex",
+      "title": "Codex bridge 98f4d083",
+      "created_at": "2026-06-13T23:00:29+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "codex_session_id": "codex_session_2657c86739ac46e4af045ddbe9f187ea",
+        "codex_run_id": "codex_run_446ec667dcc14b38b2a80a2198f4d083",
+        "bridge": "codex_agent_tool_gateway",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_1c34fc646df341098623d881245afb18",
+      "agent_id": "aipinho",
+      "title": "Sprint 20 Dogfood",
+      "created_at": "2026-06-13T23:04:18+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_c4141db4dc3e4fc88bf5053a76a33905",
+      "agent_id": "lucio",
+      "title": "Lucio AIpinho",
+      "created_at": "2026-06-14T10:47:39+00:00",
+      "updated_at": "2026-06-23T03:50:36+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_d1cbe966ee8140c68474a70a662d30e5",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "created_at": "2026-06-14T10:50:19+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_0823d24c641c46e6af388ba1c505b592",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_3a705f2e964141b2970c2b59ccfbb3da",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "created_at": "2026-06-14T10:51:05+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_0823d24c641c46e6af388ba1c505b592",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_eee45f53ac094456814510926243f032",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "created_at": "2026-06-14T10:56:10+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_0823d24c641c46e6af388ba1c505b592",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_96358935b58f4e549b28774b13360266",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "created_at": "2026-06-14T10:56:10+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "delegation_id": "delegation_5ca81b22710e45c5a12da0de6201844f",
+        "parent_agent_id": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_7b84757d87074a328a40932c222d531d",
+      "agent_id": "codex",
+      "title": "Codex bridge 668a7759",
+      "created_at": "2026-06-14T11:04:17+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "codex_session_id": "codex_session_69c78e0c304247fb985b9a0b074d6f5c",
+        "codex_run_id": "codex_run_5c897e04ce3a4c1eb6dad20e668a7759",
+        "bridge": "codex_agent_tool_gateway",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_7bcb66bd372744299cffeebcfd7e46d8",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "created_at": "2026-06-14T11:43:57+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_0823d24c641c46e6af388ba1c505b592",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_96b1813cfb174936a790357c46f18f57",
+      "agent_id": "aipinho",
+      "title": "skill smoke",
+      "created_at": "2026-06-14T12:15:49+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_7d7831d9cc3847a0bae683c65b5223bd",
+      "agent_id": "aipinho",
+      "title": "skill smoke",
+      "created_at": "2026-06-14T12:16:54+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_4af0a480896f41d8b24cbdd3211afc7a",
+      "agent_id": "aipinho",
+      "title": "skill smoke",
+      "created_at": "2026-06-14T12:17:40+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_715c65975db14fd7baa31363a0f9c8de",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:20:49+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_35b6dbf0cfbd4add95afe854f011762e",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:20:49+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_4e46b76fbb1646bd84ab61a24f7b45aa",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:20:49+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_0d8faa3440f340a883de548b3dfa6a17",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:20:50+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_eeedf13606684fad8e8881d4e6583296",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:24:39+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_50b7eef2769f4398ad8f1a483461fac1",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:24:39+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_f363c686f7bc44e9ae624d47da3eacdf",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:24:39+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_783b2a76930049ab8c79496ba94ecf82",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:24:40+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_5ea3a98d676d49aaa61e24cd647c7a70",
+      "agent_id": "aipinho",
+      "title": "skills regression",
+      "created_at": "2026-06-14T12:24:41+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_28929391c20b4b76a8b727e7e7582406",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:28:26+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_9b1cf72459dd44d893ddc3d809c07892",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:28:26+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_889c1c8856d841d5ad68247eba3b739e",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:28:27+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_a5dec78f02f84b10957b5c27f7c5f346",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:28:27+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_8a3cee6df1ea4d649ed108dc8f9c6c62",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:28:27+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_0484fcfddc954339a28e24031d82df9a",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:28:27+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_6ac5de3b616b428f85df5b509f45715d",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:28:27+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_76e5c4985a06428fa62d15c873294007",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "created_at": "2026-06-14T12:28:27+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_6c2a49bc190e42fe87ff3e7221c9c4fb",
+      "agent_id": "aipinho",
+      "title": "skills regression",
+      "created_at": "2026-06-14T12:28:28+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_789fa7a10b6f490ea147f279b810b572",
+      "agent_id": "aipinho",
+      "title": "skills regression",
+      "created_at": "2026-06-14T12:28:29+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_548502a1ec824320a491234e0bd6942a",
+      "agent_id": "aipinho",
+      "title": "Sprint24 skill smoke",
+      "created_at": "2026-06-14T12:35:33+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_9b170ea860a44432b6b066ba93726139",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "created_at": "2026-06-14T17:09:25+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_abb0a73cd4034f4bb3f20500e0bacb95",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "created_at": "2026-06-14T17:09:28+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_e9c82f88c92f4c688460090e4acbd839",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "created_at": "2026-06-14T17:09:31+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_7b45aea8b9484653abecc0530960e568",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "created_at": "2026-06-14T17:11:00+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_91585c6dffa349d98bf2cb766a576c1a",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "created_at": "2026-06-14T17:11:04+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_64c1f79bd551437fba506e6651003004",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "created_at": "2026-06-14T17:11:07+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_6f57fb1d1b084dff99e3c14bc287c4f2",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "created_at": "2026-06-14T17:11:09+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_36d909b6c8614ab7b149fc261bfab32a",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "created_at": "2026-06-14T17:12:45+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_7f4000abb38c4d48bfd56df3903c5767",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "created_at": "2026-06-14T17:12:50+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_f67ecdb7d11247ad829ba781c17e6187",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "created_at": "2026-06-14T17:12:53+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_e67b4162336a4c6980213e7285230113",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "created_at": "2026-06-14T17:12:55+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_471c64f6a99c409f820b18e553da4d67",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - Android",
+      "created_at": "2026-06-14T17:31:55+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_065f11c80216433cbd1a654eb6bb0d64",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "created_at": "2026-06-14T17:34:17+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_99f6583ca54e4dc8ab6589f4fe9f2dc0",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "created_at": "2026-06-14T17:34:22+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_731786f26941470b8bc66561d98f1629",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "created_at": "2026-06-14T17:34:25+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_77d394fe4082449085921fe11c24b98d",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "created_at": "2026-06-14T17:34:28+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_da947a958ed749ac948434b95beb131d",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "created_at": "2026-06-14T17:36:00+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_ee0046a986064361a79d80bf49f56aa0",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "created_at": "2026-06-14T17:39:58+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_abdbed7378334eaa82532493406d35fe",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "created_at": "2026-06-14T17:40:04+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_472cb774b8934defb2b8699cccbc4a80",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "created_at": "2026-06-14T17:40:08+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_9b0121dcef714b52b7e2677d5b35c3b2",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "created_at": "2026-06-14T17:40:11+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_d4ddfcd007a143e691be624bcbe43467",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonSite",
+      "created_at": "2026-06-14T17:48:36+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_cc1bc003b8534abbafa8c2dd2165fc5c",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiRunner",
+      "created_at": "2026-06-14T17:48:39+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_83d300b452f542399fc27e25b3f33196",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonSite",
+      "created_at": "2026-06-14T17:49:13+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_3ad68ac77c264bcfb32669ab78997214",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiRunner",
+      "created_at": "2026-06-14T17:49:16+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_52dd9e3faede4b1eaf4763472572b00e",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FieldRunner",
+      "created_at": "2026-06-14T17:51:15+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_87e110d3a0d34425b11ba64a70d83e76",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonSite",
+      "created_at": "2026-06-14T21:01:06+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_613921de5d4040f689de95389bd32ae9",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiRunner",
+      "created_at": "2026-06-14T21:01:10+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_1b055e5cf3124aae9f20ff2a2104a961",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "created_at": "2026-06-14T21:01:14+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_7057987983144261a453b76c9253186f",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "created_at": "2026-06-14T21:01:22+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_292dc58465c94f478a1d90dc2a3f4ec6",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "created_at": "2026-06-14T21:01:26+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_ca85e79c65974c5cab0936f23d3e96f8",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "created_at": "2026-06-14T21:01:30+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_6ca20a46b32744a690b2f51fda77efd6",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonSite",
+      "created_at": "2026-06-14T21:02:05+00:00",
+      "updated_at": "2026-06-25T02:20:44+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_b076bb147e814ed1a66c73f87ad3799d",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "created_at": "2026-06-14T21:02:07+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_a61c54eb2bfb4ff1a0873379f5639c80",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiRunner",
+      "created_at": "2026-06-14T21:02:11+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_fab3ae2775324488a5979da5f0730181",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "created_at": "2026-06-14T21:02:17+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_83e8305c1d7b40f0abecd14c9b0a92a5",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "created_at": "2026-06-14T21:02:22+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_a7418f401de947a08955a0b30f1dfc1f",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "created_at": "2026-06-14T21:02:27+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_32d03f6d9d3b466b8aa1afb14e5b9857",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - CleanRunner",
+      "created_at": "2026-06-14T21:03:59+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_9a65e2f9fc4f4fa3aa50bbb975c391fb",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "created_at": "2026-06-14T21:37:59+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_0d184fc79b7a42ee86d84014245d8339",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "created_at": "2026-06-14T21:38:10+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_1815840a80aa448dbaac01246d7f6d86",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "created_at": "2026-06-14T21:38:17+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_82073d7c3bb74aa095b34bf213fbd343",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "created_at": "2026-06-14T21:38:22+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_a5eca1e7cdc746f9bfc0ea407fc42c07",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonSite",
+      "created_at": "2026-06-14T21:38:29+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_7f66fb72670f4f4b986639f86fefa661",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiRunner",
+      "created_at": "2026-06-14T21:38:35+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_18c5352f9a1b444d9b1aec82d1cb94ed",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonSite",
+      "created_at": "2026-06-14T21:39:38+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_c993ec86a46f44edaf55f429b93cc651",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiRunner",
+      "created_at": "2026-06-14T21:39:44+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_b2a9e2c3b77447d6916d8e2307be74bf",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "created_at": "2026-06-14T21:40:59+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_ed146bab6d3b47498daf61ac885b89ba",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "created_at": "2026-06-14T21:41:11+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_199f4270fd254b51a03dcba406818668",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "created_at": "2026-06-14T21:41:19+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_42be7363ee1a44308f8b3660cc8210b7",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "created_at": "2026-06-14T21:41:25+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_bed6d951b6c24e53adcc7231e70a394b",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonSite",
+      "created_at": "2026-06-14T21:41:32+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_623e75cbb4f74f909264ad2b349b6193",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiRunner",
+      "created_at": "2026-06-14T21:41:38+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_0551a033134341d9b4df8d1d33f550d9",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiDemo",
+      "created_at": "2026-06-14T22:31:42+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_f89451c7ca4d493287bf9b2029ac9fc5",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - DocsDemo",
+      "created_at": "2026-06-14T22:31:55+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_c2d1eb4ac9e945dc897b1358e4d60df4",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "created_at": "2026-06-14T22:32:42+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_5f1d90c14ba84a6eb03a628b983c00d5",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiDemo",
+      "created_at": "2026-06-14T22:32:48+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_452b2be879884a3a8261eb86d52084b7",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - DocsDemo",
+      "created_at": "2026-06-14T22:33:01+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_78ec21da571042fe958ee8d1851d14a9",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "created_at": "2026-06-14T22:33:02+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_3c3ceb6f9bbc4348b08a4091c9d826d0",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "created_at": "2026-06-14T22:33:10+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_0ab3ab8a04794919a9a653eced3d8988",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiDemo",
+      "created_at": "2026-06-14T22:33:22+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_4075f36b88774632b628d2eff9508c3f",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - DocsDemo",
+      "created_at": "2026-06-14T22:33:35+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_ccb545d58b774537b2161c35565f68f4",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "created_at": "2026-06-15T01:52:15+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_0823d24c641c46e6af388ba1c505b592",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_ef09ecdca0b64648b1a3cbf3bbb29eb7",
+      "agent_id": "codex",
+      "title": "Codex bridge da352f2d",
+      "created_at": "2026-06-15T02:23:02+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "codex_session_id": "codex_session_6eb07525f70f49fb86f80777bbf14b80",
+        "codex_run_id": "codex_run_e4722c30f2db423c9ebf310dda352f2d",
+        "bridge": "codex_agent_tool_gateway",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_0407ede2a55f449eac90fca2d07a93c9",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "created_at": "2026-06-15T02:55:01+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_0823d24c641c46e6af388ba1c505b592",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_7e12f2fc2b9a4335b0ebe4786df536ac",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "created_at": "2026-06-15T03:02:27+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_0823d24c641c46e6af388ba1c505b592",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_9a9724800c3c47819b64c87a1458d564",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "created_at": "2026-06-15T03:02:28+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "delegation_id": "delegation_4e6755b73e2b4eef9e8660886cf84ef3",
+        "parent_agent_id": "gemini",
+        "project_profile_id": null,
+        "project_context_summary_sanitized": {},
+        "skill_id": null,
+        "skill_version": null,
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_875ba68fbc6b48bca833f99c616348f0",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "created_at": "2026-06-15T03:06:53+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_0823d24c641c46e6af388ba1c505b592",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_628c8009e1514b1c86b03b25a84b2a08",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "created_at": "2026-06-15T03:06:53+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "delegation_id": "delegation_1d26eede61f847539b567af9935ca531",
+        "parent_agent_id": "gemini",
+        "project_profile_id": null,
+        "project_context_summary_sanitized": {},
+        "skill_id": null,
+        "skill_version": null,
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_ef97baeb9e5e40f794e3ad939be17fdc",
+      "agent_id": "aipinho",
+      "title": "diagnostic tool gateway smoke",
+      "created_at": "2026-06-15T03:23:01+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_ce76f0f58fa44657b6fa8f60809cb471",
+      "agent_id": "lucio",
+      "title": "smoke lucio",
+      "created_at": "2026-06-15T03:25:31+00:00",
+      "updated_at": "2026-06-23T03:50:59+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_ca537ad85afb4cb4bb502370425f0db6",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 7a1ad0d6",
+      "created_at": "2026-06-15T03:25:37+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_ebc5b79248684d56a9a230537a1ad0d6",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_2ef47a9d46944155ace1ce6f994d47ae",
+      "agent_id": "codex",
+      "title": "Codex bridge 6a1152ce",
+      "created_at": "2026-06-15T03:25:40+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "codex_session_id": "codex_session_f93a2863a89f481abf3605e9395c8b3b",
+        "codex_run_id": "codex_run_aa55009866384b74b13139e16a1152ce",
+        "bridge": "codex_agent_tool_gateway",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_ab1ae58dbbd54ab1b687f82dcb78b71c",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 5e41cc44",
+      "created_at": "2026-06-15T03:38:40+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_3d6443d86c99426b9224b0445e41cc44",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_f17e87bada974654adaf6cebffe5f856",
+      "agent_id": "gemini",
+      "title": "Gemini bridge eaefb80c",
+      "created_at": "2026-06-15T03:38:41+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_a9539d67106242fbb0eb4770eaefb80c",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_d5f05975c86640b680b022d86c0909a8",
+      "agent_id": "lucio",
+      "title": "smoke lucio delegate",
+      "created_at": "2026-06-15T03:38:41+00:00",
+      "updated_at": "2026-06-23T03:50:12+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_68cb1c2a49cd44da931a06183aeef853",
+      "agent_id": "aipinho",
+      "title": "Delegated from lucio",
+      "created_at": "2026-06-15T03:38:42+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "C:\\Users\\rafae\\Documents\\AIpinhoTestes",
+      "metadata_sanitized": {
+        "delegation_id": "delegation_cd1894904c9c4590aaa4e2e15005dcc0",
+        "parent_agent_id": "lucio",
+        "project_profile_id": null,
+        "project_context_summary_sanitized": {},
+        "skill_id": null,
+        "skill_version": null,
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_465bb66bfaf74a3aae816e6bb73c4549",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 92ed0227",
+      "created_at": "2026-06-15T03:39:15+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_e8853177e42348b18e35398992ed0227",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_2fe052b34edf40b8b0e7f47199a60df2",
+      "agent_id": "gemini",
+      "title": "Gemini bridge bad5badc",
+      "created_at": "2026-06-15T13:18:02+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_b1fc8ed065d14be291da110abad5badc",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_fcf5e73cf717478d85e03e08ea5b19b5",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "created_at": "2026-06-15T13:18:03+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "delegation_id": "delegation_fdee239e9af14dc3870683ba1761de96",
+        "parent_agent_id": "gemini",
+        "project_profile_id": null,
+        "project_context_summary_sanitized": {},
+        "skill_id": null,
+        "skill_version": null,
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_55bd69eca2f3445ca9cb93b2cbe290f9",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "created_at": "2026-06-15T14:52:44+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_0823d24c641c46e6af388ba1c505b592",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_518ffc5e972342e2b73772dfb5c8fea7",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "created_at": "2026-06-15T14:54:17+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_0823d24c641c46e6af388ba1c505b592",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_4f44294e705c4ce0a7676094ef666e07",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "created_at": "2026-06-15T14:54:17+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "delegation_id": "delegation_8af0d8c7c9e94582aa57b001f5c1efaf",
+        "parent_agent_id": "gemini",
+        "project_profile_id": null,
+        "project_context_summary_sanitized": {},
+        "skill_id": null,
+        "skill_version": null,
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_c74adf667a9149f8b37ce927cf1bc36a",
+      "agent_id": "lucio",
+      "title": "Diagnostico Lucio",
+      "created_at": "2026-06-15T15:08:06+00:00",
+      "updated_at": "2026-06-23T03:50:21+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_440d604f9e0148c18261c10ac1333359",
+      "agent_id": "lucio",
+      "title": "Smoke Lucio provider",
+      "created_at": "2026-06-15T16:26:55+00:00",
+      "updated_at": "2026-06-23T03:50:23+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_7b35a196768f49b3be79dcd2ce238337",
+      "agent_id": "lucio",
+      "title": "Lucio",
+      "created_at": "2026-06-15T18:49:47+00:00",
+      "updated_at": "2026-06-23T03:50:17+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_e65fc4e296314cdf9e3f35a69dec484b",
+      "agent_id": "lucio",
+      "title": "Smoke Lucio provider",
+      "created_at": "2026-06-16T00:44:31+00:00",
+      "updated_at": "2026-06-23T03:51:03+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_cddc5398d394418587b2fc20da16e487",
+      "agent_id": "gemini",
+      "title": "Gemini bridge d61f35f9",
+      "created_at": "2026-06-16T00:46:10+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_dc9d7c0468984522bb7a03d6d61f35f9",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_6bc9089fd3b74bc48230338e55056b5a",
+      "agent_id": "lucio",
+      "title": "Smoke Lucio provider",
+      "created_at": "2026-06-16T00:46:17+00:00",
+      "updated_at": "2026-06-23T03:50:26+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_75a4e918618d4fea838b12d03cb916a8",
+      "agent_id": "codex",
+      "title": "Codex bridge 83c72023",
+      "created_at": "2026-06-16T17:44:07+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "codex_session_id": "codex_session_69c78e0c304247fb985b9a0b074d6f5c",
+        "codex_run_id": "codex_run_f75910afd36a4c03b907de8383c72023",
+        "bridge": "codex_agent_tool_gateway",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_7b09a5bcd77941719ec19d2e7f66906d",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "created_at": "2026-06-17T00:03:26+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_0823d24c641c46e6af388ba1c505b592",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_18d8767f2365446594a0ebafc2e3d8b9",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "created_at": "2026-06-18T18:44:55+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_0823d24c641c46e6af388ba1c505b592",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_aac6584e88f84674a33dba35af8db007",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T02:45:09+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_047ef42c0f6f4978be548213f293dedd",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_90d452445de0475fb1057e97a47246c3",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_3049aaa559d340a59284fcb93f95cb26",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T02:48:13+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_e6e4a06fcfc342ba93701c5dbf7a9bd1",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_f8441ecbfeb24118a93a9e78de2dbfbe",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_e1f415cb983f4243abfef9960d14053b",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T02:51:27+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_d6a9acef93924e5284f2a81b5630c3b1",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_0100c8d8342447b1a78a43ee2575b994",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_a14a65f5b502490bb974141e630a3ebb",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T05:11:22+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_d6a9acef93924e5284f2a81b5630c3b1",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_f60ca33d29214ebfb9bafaf8650115cb",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_f663b6df5659452fb6dea5c4ccee09ff",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T05:34:45+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_d6a9acef93924e5284f2a81b5630c3b1",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_5b06dc473f4f4ad084623f7883cf5dd9",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_b653d94510c04aeb942313900c4c6d85",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T05:39:23+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_d6a9acef93924e5284f2a81b5630c3b1",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_bf3aaada8e9f438483400f958d71f539",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_999f36b859fe4da08136e29d62b2381e",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T05:45:10+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_d6a9acef93924e5284f2a81b5630c3b1",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_0801a179c73f4fcba5554d354e8127e7",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_602f5f791df64149ac74c5162923af15",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T05:59:35+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_d6a9acef93924e5284f2a81b5630c3b1",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_0c6d4c8fdeab4df49df9665291142c23",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_0c3a7ebc247747d19538c0829df95bbb",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T06:25:54+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_d6a9acef93924e5284f2a81b5630c3b1",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_696949fba17342c999f0eccdddfe6799",
+        "target_resolution": "infer_ui_source",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_bfffe505b9914429a497c06ebb815684",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T06:34:12+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_d6a9acef93924e5284f2a81b5630c3b1",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_853a4c2b81904b5daa4aba55bbcdbafe",
+        "target_resolution": "infer_ui_source",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_063a53369305434ab724067fe1b695b4",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T21:26:04+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_d6a9acef93924e5284f2a81b5630c3b1",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_b6abccfd2559495da4217246abbad537",
+        "target_resolution": "",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_692308bd2fa042e9aafd5dc9de0430c3",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T21:35:55+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_d6a9acef93924e5284f2a81b5630c3b1",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_d9a44e41961246dcbe0d844cdef81436",
+        "target_resolution": "",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_eabe272fc1ab41b08085149f8628ccf3",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T21:45:48+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_d6a9acef93924e5284f2a81b5630c3b1",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_80d03040396c486c8c91c6d1401042b4",
+        "target_resolution": "",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_cf0c229d99ef497bb24fc75d9f611278",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T21:52:48+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_d6a9acef93924e5284f2a81b5630c3b1",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_c0ade265d3c7429199c17560ee61309a",
+        "target_resolution": "",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_17b6c9079b9d47e6bd77a573f21d7997",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-20T21:54:36+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_d6a9acef93924e5284f2a81b5630c3b1",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_0363078ea07642c9b5743dddf8409857",
+        "target_resolution": "",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_299870c7f9844ca79c3bae778a45c2d5",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "created_at": "2026-06-21T05:08:08+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "task_runtime",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_5ffd0cf85d394428afa8bf6ff7d61d0a",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "created_at": "2026-06-21T05:19:58+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "task_runtime",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_ff0195a40ca8431082d8194b72bc0ace",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "created_at": "2026-06-21T05:24:17+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "task_runtime",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_a52671da75154a7ba9078a77eb69c947",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "created_at": "2026-06-21T06:36:02+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "task_runtime",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_31e780f4b5844a9abb027eed0882f25d",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "created_at": "2026-06-21T06:40:50+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "task_runtime",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_4a1709787d5f412baf50669450b28a9d",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "created_at": "2026-06-21T06:42:05+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "task_runtime",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_d4734feb700647be927c1ffe81092cc5",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "created_at": "2026-06-21T06:42:35+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "task_runtime",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_ea60ac59918444258ab0d8cafd218a9e",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "created_at": "2026-06-21T06:47:33+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "task_runtime",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_6db77e3c24d2442ba25c73e71385a473",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "created_at": "2026-06-21T06:48:07+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "task_runtime",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_c23c3d5ebfe7418080067fcc3687aa92",
+      "agent_id": "aipinho",
+      "title": "AIpinho governed evidence bundle",
+      "created_at": "2026-06-21T21:03:50+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_ce677e1c69b14211b90520121ba254ff",
+        "operation_id": "chatop_86ff289a066d48ce839a66cded0807be",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_4e8f8c59fb494529ae521df40e9ce53d",
+      "agent_id": "aipinho",
+      "title": "AIpinho governed evidence bundle",
+      "created_at": "2026-06-21T21:06:53+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_ce677e1c69b14211b90520121ba254ff",
+        "operation_id": "chatop_f1bd20a9cfd34e2691ddef7b03183477",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_503562dc47344ec2acdef27676187dd5",
+      "agent_id": "aipinho",
+      "title": "AIpinho static reachability QA",
+      "created_at": "2026-06-21T21:19:10+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_ce677e1c69b14211b90520121ba254ff",
+        "operation_id": "chatop_64d77efd6dd84de6ace41a2da878e095",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_3254f8901513472181ce7de6e50ef169",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "created_at": "2026-06-21T21:59:42+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_project",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_ce677e1c69b14211b90520121ba254ff",
+        "operation_id": "chatop_2cea2fd495ff44418b578eb717762d5d",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_f60e8d1f95d54b2b931ba444a05c914c",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "created_at": "2026-06-21T22:14:28+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_project",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_ce677e1c69b14211b90520121ba254ff",
+        "operation_id": "chatop_2d8f8a4cd1974fada79dc4bb5b0efc0e",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_5189c4e1086e49c5b97a0e82cdfaf174",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-21T22:20:07+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_24d4b657fe1047afae267796095ef9a6",
+        "target_resolution": "",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_d8dd9363f1dc40998bf83b8ea4f639af",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-21T22:33:38+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_15060790361e42d2a07462082b37ce8f",
+        "target_resolution": "",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_ac8436b578cb4eca9e783562ae27ad8d",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-21T22:34:16+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_d9004858704041dfb9f270456373b725",
+        "target_resolution": "",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_b089a7978f3540479b928115fbfb89d3",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-21T22:41:18+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_2485a1a899144137a32cd330c93535b1",
+        "target_resolution": "",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_4adec095aad14e34b6e3ddff505a3e46",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-21T22:48:27+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_beaca10115ed4066ac8d44c981db56bd",
+        "target_resolution": "",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_ee355d41333f4b57b532a4585554f844",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-21T22:59:09+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_1d898cf840954850aa7d32fa53e69252",
+        "target_resolution": "",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_3697297738c64cf29d0cf87ccf8c97f6",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-21T23:09:44+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_project",
+      "metadata_sanitized": {
+        "chat_session_id": "session_10369cb9151f46bf88b03ed4005ea392",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_bbd8cd62062540e3ba7f4f28f103078f",
+        "target_resolution": "",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_192d79f3b11e465890f0a603c26a066f",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "created_at": "2026-06-21T23:45:19+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+        "operation_id": "chatop_b2746b7ed02643df85de125d523f9290",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_fd854971fe3049fbad7e2f6a1c84e8aa",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "created_at": "2026-06-21T23:57:32+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+        "operation_id": "chatop_8ea42a86afb742cc9e1dde6bea41a92a",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_0c357ad2332d48a4b11c2bf2d5f20036",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "created_at": "2026-06-22T00:19:27+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+        "operation_id": "chatop_9240f0f19d1c4676b02f452356551c9e",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_5e6da1ee5c724264868429f697a7b3ba",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "created_at": "2026-06-22T00:37:35+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+        "operation_id": "chatop_ecd93e575798444da3f22ec1ec2b0cd3",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_8c78423abea447efbe38d57428078c7b",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-22T00:40:29+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_a2752c690037413cb3e8cd2b7673eec5",
+        "target_resolution": "",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_12fb7c39be6f46a3a6b8a05f0273ca58",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-22T01:21:11+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_project",
+      "metadata_sanitized": {
+        "chat_session_id": "session_e9db3eae51fd4319ae4b5cd055a51d42",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_9c85bbbe7b36472499288035fa74b847",
+        "target_resolution": "",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_977a150472e7440d8c61b289aa7a62b7",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "created_at": "2026-06-22T02:41:54+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "task_runtime",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_1b06e925235a4ea793263a4d61efbab4",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "created_at": "2026-06-22T02:43:39+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "task_runtime",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_4e86f36300984aaebb43bb3d02a71ff0",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "created_at": "2026-06-22T02:53:13+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "task_runtime",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_3910d8755c4041ec94e81d0fbb0af837",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "created_at": "2026-06-22T02:54:22+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "task_runtime",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_0930e136a21a4b32859947d190c798fd",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "created_at": "2026-06-22T03:06:40+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "task_run_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source": "task_runtime",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_93c3309d1cf544998904033f07161705",
+      "agent_id": "lucio",
+      "title": "Lucio",
+      "created_at": "2026-06-22T13:00:37+00:00",
+      "updated_at": "2026-06-23T03:50:30+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_4c3ef37dd5784368be1e8b485f7e2e4a",
+      "agent_id": "codex",
+      "title": "Codex hybrid delegation",
+      "created_at": "2026-06-23T03:14:30+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\sprint11_closure_20260623_001417_84d79cf9\\codex_delegate",
+      "metadata_sanitized": {
+        "source_mode": "codex_hybrid",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_e0f6005938fe420c96f28cf6f7280a5f",
+      "agent_id": "lucio",
+      "title": "Lucio interpretation",
+      "created_at": "2026-06-23T03:14:31+00:00",
+      "updated_at": "2026-06-23T06:53:37+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\sprint11_closure_20260623_001417_84d79cf9\\lucio_delegate",
+      "metadata_sanitized": {
+        "local_execution_allowed": false
+      }
+    },
+    {
+      "session_id": "agent_session_3ffd9ae472c04afaa468f2502d1f2044",
+      "agent_id": "aipinho",
+      "title": "Delegated from lucio",
+      "created_at": "2026-06-23T03:14:32+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\sprint11_closure_20260623_001417_84d79cf9\\lucio_delegate",
+      "metadata_sanitized": {
+        "delegation_id": "delegation_7c106219587542479f251f89c4c6c1a5",
+        "parent_agent_id": "lucio",
+        "project_profile_id": null,
+        "project_context_summary_sanitized": {},
+        "skill_id": null,
+        "skill_version": null,
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_81eaf3a09c6d41838f87518bb89136c2",
+      "agent_id": "gemini",
+      "title": "Gemini interpretation",
+      "created_at": "2026-06-23T03:14:33+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\sprint11_closure_20260623_001417_84d79cf9\\gemini_delegate",
+      "metadata_sanitized": {
+        "local_execution_allowed": false,
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_811e8bc2f2a042d8977d6f241e0650ed",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "created_at": "2026-06-23T03:14:34+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\sprint11_closure_20260623_001417_84d79cf9\\gemini_delegate",
+      "metadata_sanitized": {
+        "delegation_id": "delegation_359dc946c7774128858f63a749a70bba",
+        "parent_agent_id": "gemini",
+        "project_profile_id": null,
+        "project_context_summary_sanitized": {},
+        "skill_id": null,
+        "skill_version": null,
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_903d400f1a734e4d9fb0d3063d0fc633",
+      "agent_id": "lucio",
+      "title": "Lucio",
+      "created_at": "2026-06-23T03:14:36+00:00",
+      "updated_at": "2026-06-23T03:51:15+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_a371298aeb8f404c81ed009156672d2f",
+      "agent_id": "gemini",
+      "title": "Gemini bridge d9bda765",
+      "created_at": "2026-06-23T03:14:41+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_e0ddd9b958a745b9a965ed0ad9bda765",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_ec6db6f62b94466ba99aee83723845c6",
+      "agent_id": "codex",
+      "title": "Codex hybrid delegation",
+      "created_at": "2026-06-23T03:17:24+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\sprint11_closure_rerun_20260623_001706_87ea109d\\codex_diagnostics",
+      "metadata_sanitized": {
+        "source_mode": "codex_hybrid",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_89891d7679b24c1ba7bb9e16adcc7976",
+      "agent_id": "aipinho",
+      "title": "Delegated from codex",
+      "created_at": "2026-06-23T03:17:24+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\sprint11_closure_rerun_20260623_001706_87ea109d\\codex_diagnostics",
+      "metadata_sanitized": {
+        "delegation_id": "delegation_38624a5b5f7548c2a8246bae3225dc0a",
+        "parent_agent_id": "codex",
+        "project_profile_id": null,
+        "project_context_summary_sanitized": {},
+        "skill_id": null,
+        "skill_version": null,
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_733331c56ad84ca6b28467f4ab29112a",
+      "agent_id": "codex",
+      "title": "Codex hybrid delegation",
+      "created_at": "2026-06-23T03:17:26+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\sprint11_closure_rerun_20260623_001706_87ea109d\\codex_build",
+      "metadata_sanitized": {
+        "source_mode": "codex_hybrid",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_bdc6805f286a43ac922f457741354b29",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 00177c2b",
+      "created_at": "2026-06-23T03:37:08+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_663aa4777db24c52a471bca500177c2b",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_095f888567654bea995c420284c826cc",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 00177c2b",
+      "created_at": "2026-06-23T03:40:13+00:00",
+      "updated_at": "2026-06-25T02:20:45+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_663aa4777db24c52a471bca500177c2b",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_52b69fa78190432981fb4d83b2680242",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "created_at": "2026-06-23T03:40:16+00:00",
+      "updated_at": "2026-06-25T02:20:46+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "delegation_id": "delegation_f0c2d4207bc741dd8a1791247ccfd7d0",
+        "parent_agent_id": "gemini",
+        "project_profile_id": null,
+        "project_context_summary_sanitized": {},
+        "skill_id": null,
+        "skill_version": null,
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_49423de13f4f4b4385aa517b70aa3362",
+      "agent_id": "codex",
+      "title": "Codex bridge 6b074d83",
+      "created_at": "2026-06-23T03:41:29+00:00",
+      "updated_at": "2026-06-25T02:20:46+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "codex_session_id": "codex_session_6eb07525f70f49fb86f80777bbf14b80",
+        "codex_run_id": "codex_run_70022304b9ab4c1496fbac3e6b074d83",
+        "bridge": "codex_agent_tool_gateway",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_def039f584d84d8ca0f90184df055519",
+      "agent_id": "lucio",
+      "title": "Lucio",
+      "created_at": "2026-06-23T03:51:16+00:00",
+      "updated_at": "2026-06-23T04:39:51+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_3033c0f48978494aaaf173bb6e044d1d",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 35361efe",
+      "created_at": "2026-06-23T03:52:33+00:00",
+      "updated_at": "2026-06-25T02:20:46+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_f922b1ecde154538bc69cd5d35361efe",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_6c21132810c94116b2bf23b6bf17ec85",
+      "agent_id": "lucio",
+      "title": "Lucio",
+      "created_at": "2026-06-23T04:00:53+00:00",
+      "updated_at": "2026-06-23T04:39:56+00:00",
+      "archived": true,
+      "deleted": true,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel"
+      }
+    },
+    {
+      "session_id": "agent_session_2d507e57445249e9b3e095280a2c9f9b",
+      "agent_id": "gemini",
+      "title": "hotfix repro gemini capability negotiation",
+      "created_at": "2026-06-23T04:04:33+00:00",
+      "updated_at": "2026-06-25T02:20:46+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_3b7f28579ed94779820e9ce303c6f265",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 2786fdc0",
+      "created_at": "2026-06-23T04:32:29+00:00",
+      "updated_at": "2026-06-25T02:20:46+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_4dd3eb73ea094b61879f6d002786fdc0",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_110cf383e13949e9a72c600939bfa8c3",
+      "agent_id": "gemini",
+      "title": "hotfix delegation smoke",
+      "created_at": "2026-06-23T04:33:06+00:00",
+      "updated_at": "2026-06-25T02:20:46+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_cf9836d5aa3446a5a3773b37919e74d3",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "created_at": "2026-06-23T04:33:07+00:00",
+      "updated_at": "2026-06-25T02:20:46+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "sapoandando_context",
+      "metadata_sanitized": {
+        "delegation_id": "delegation_f5348e48e63b4ab18c5f27a24f4109de",
+        "parent_agent_id": "gemini",
+        "project_profile_id": null,
+        "project_context_summary_sanitized": {},
+        "skill_id": null,
+        "skill_version": null,
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_ce974167cb74437ba5df86e41104d0df",
+      "agent_id": "lucio",
+      "title": "Lucio",
+      "created_at": "2026-06-23T04:40:08+00:00",
+      "updated_at": "2026-06-25T02:20:46+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "provider": "openai",
+        "history_source": "agent_session_kernel",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_dc130c0290d646739bb74c2aca74f341",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "created_at": "2026-06-23T07:04:49+00:00",
+      "updated_at": "2026-06-25T02:20:46+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_2bf22feec7054a1095b85665112af49a",
+        "operation_id": "chatop_f701d19983a44e3a97d190b7909ab309",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_e1e80a123c1f4e31a0f3a3a71b2677a9",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "created_at": "2026-06-24T00:26:33+00:00",
+      "updated_at": "2026-06-25T02:20:46+00:00",
+      "archived": true,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_247e661fad4841f699e1720e6b459683",
+        "operation_id": "chatop_a50d13f3c2344d7784ab40e36369ae49",
+        "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863"
+      }
+    },
+    {
+      "session_id": "agent_session_14cece459dbd4c46a0d6252e564ca082",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-25T04:07:45+00:00",
+      "updated_at": "2026-06-25T04:10:09+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_be07cbe792ad49ac89b358b11110854a",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_4e46a0c46f564c0382ad13c2c7f3a76a",
+        "target_resolution": ""
+      }
+    },
+    {
+      "session_id": "agent_session_1888246a4d4242b8bacaae2c0aa46711",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "created_at": "2026-06-25T04:10:46+00:00",
+      "updated_at": "2026-06-25T04:11:24+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_1821e2536a954cc8844bba49ff1188da",
+        "operation_type": "filesystem_write_file",
+        "operation_id": "chatop_7a49fbca975342b58eb529c18705ebfc",
+        "target_resolution": ""
+      }
+    },
+    {
+      "session_id": "agent_session_83d3ba735e084406847b0911cba14ca4",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "created_at": "2026-06-25T13:42:25+00:00",
+      "updated_at": "2026-06-25T13:42:27+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_3e1d61278ed14e6c93d767d3a311c7b3",
+        "operation_id": "chatop_baecf886e7314f48b3e132ddba37389e"
+      }
+    },
+    {
+      "session_id": "agent_session_345128727815458c8193302541c7d35e",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "created_at": "2026-06-25T13:49:32+00:00",
+      "updated_at": "2026-06-25T13:49:34+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_3e1d61278ed14e6c93d767d3a311c7b3",
+        "operation_id": "chatop_fae8630ff25f429eb2502c81a5253d18"
+      }
+    },
+    {
+      "session_id": "agent_session_2a262cf136e54505b5e6e95035cc0574",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "created_at": "2026-06-25T13:54:01+00:00",
+      "updated_at": "2026-06-25T13:54:03+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": "aipinho_test_area",
+      "metadata_sanitized": {
+        "chat_session_id": "chat_3e1d61278ed14e6c93d767d3a311c7b3",
+        "operation_id": "chatop_6950845ca8304b06ab95f7348859c4d3"
+      }
+    },
+    {
+      "session_id": "agent_session_06a20019bc96421f96b9bfb363138376",
+      "agent_id": "codex",
+      "title": "Codex bridge 1d32dea9",
+      "created_at": "2026-06-25T14:17:09+00:00",
+      "updated_at": "2026-06-25T14:25:14+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "codex_session_id": "codex_session_60ae6a1bf2c249118e1bbcaaf8d56ced",
+        "codex_run_id": "codex_run_d9ef3a471fa44b41b3c982601d32dea9",
+        "bridge": "codex_agent_tool_gateway"
+      }
+    },
+    {
+      "session_id": "agent_session_d1c7ff0f9ea24c7585eb5818ac1f4c2d",
+      "agent_id": "codex",
+      "title": "Codex bridge dd73fb91",
+      "created_at": "2026-06-25T14:40:44+00:00",
+      "updated_at": "2026-06-25T14:40:46+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "codex_session_id": "codex_session_60ae6a1bf2c249118e1bbcaaf8d56ced",
+        "codex_run_id": "codex_run_8e2870433a4a41c2b6ecc294dd73fb91",
+        "bridge": "codex_agent_tool_gateway"
+      }
+    },
+    {
+      "session_id": "agent_session_a22aa021b78649678022ff937d75b099",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 82a712e7",
+      "created_at": "2026-07-03T21:47:56+00:00",
+      "updated_at": "2026-07-03T21:48:11+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_e7f756dc31df4cb7a0dc837782a712e7",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_b0b7d62745f04dc6adc34cced0c0b8c2",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 82a712e7",
+      "created_at": "2026-07-03T21:55:52+00:00",
+      "updated_at": "2026-07-03T21:55:59+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_e7f756dc31df4cb7a0dc837782a712e7",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_afe02e707708451fab7d1ceb065c814b",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 82a712e7",
+      "created_at": "2026-07-03T21:57:38+00:00",
+      "updated_at": "2026-07-03T21:57:59+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_e7f756dc31df4cb7a0dc837782a712e7",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_a153602c002b4d3ba0ddb4ee43b9b529",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 82a712e7",
+      "created_at": "2026-07-03T22:05:34+00:00",
+      "updated_at": "2026-07-03T22:05:49+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_e7f756dc31df4cb7a0dc837782a712e7",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_6015d8c17b3b4ca895413f2c0ca70c63",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 82a712e7",
+      "created_at": "2026-07-03T22:10:46+00:00",
+      "updated_at": "2026-07-03T22:10:59+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_e7f756dc31df4cb7a0dc837782a712e7",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_6ff1333bf36849b68442f889e6989d9c",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 791813dd",
+      "created_at": "2026-07-03T23:29:47+00:00",
+      "updated_at": "2026-07-03T23:29:54+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_4f5ea8385dca4fb98b82c14b791813dd",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_4d962b9ebd1f4444a773ef19cd0344b0",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 791813dd",
+      "created_at": "2026-07-03T23:33:33+00:00",
+      "updated_at": "2026-07-03T23:33:37+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_4f5ea8385dca4fb98b82c14b791813dd",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_27e7532a166847b59279f0785cf519db",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 791813dd",
+      "created_at": "2026-07-03T23:34:31+00:00",
+      "updated_at": "2026-07-03T23:34:48+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_4f5ea8385dca4fb98b82c14b791813dd",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_6b814dabb52545589f05a0be12fa678d",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 791813dd",
+      "created_at": "2026-07-03T23:37:08+00:00",
+      "updated_at": "2026-07-03T23:37:20+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_4f5ea8385dca4fb98b82c14b791813dd",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_d57b805bc19442269daa5375ad50345c",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 791813dd",
+      "created_at": "2026-07-03T23:40:29+00:00",
+      "updated_at": "2026-07-03T23:40:42+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_4f5ea8385dca4fb98b82c14b791813dd",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_115ce95bdcfd4bf8b8c246d29fdd129e",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 791813dd",
+      "created_at": "2026-07-04T01:55:51+00:00",
+      "updated_at": "2026-07-04T01:55:58+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_4f5ea8385dca4fb98b82c14b791813dd",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_c4b4392fcad94afca6aeea5eb346fea6",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 2c201944",
+      "created_at": "2026-07-04T01:59:32+00:00",
+      "updated_at": "2026-07-04T01:59:34+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_41e71066c32d482c8f5481342c201944",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_c17e0950b638427a964be59727007d5a",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 2c201944",
+      "created_at": "2026-07-04T02:00:35+00:00",
+      "updated_at": "2026-07-04T02:00:37+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_41e71066c32d482c8f5481342c201944",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_fcf3cda5be3e4af9b07b156020ee1146",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 2c201944",
+      "created_at": "2026-07-04T02:05:04+00:00",
+      "updated_at": "2026-07-04T02:05:20+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_41e71066c32d482c8f5481342c201944",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_fca9034ba72c4d1b976f0303d838c5ab",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 2c201944",
+      "created_at": "2026-07-04T02:09:34+00:00",
+      "updated_at": "2026-07-04T02:09:45+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_41e71066c32d482c8f5481342c201944",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_3f41f21a4bfb4acba3dee47650fd018a",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 2c201944",
+      "created_at": "2026-07-04T02:15:03+00:00",
+      "updated_at": "2026-07-04T02:15:15+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "gemini_executor_session_id": "gemini_session_41e71066c32d482c8f5481342c201944",
+        "bridge": "gemini_executor_multi_agent",
+        "provider": "gemini"
+      }
+    },
+    {
+      "session_id": "agent_session_e775ab6ddd714a34bc253116633d53b3",
+      "agent_id": "codex",
+      "title": "Codex bridge 5c66e4bd",
+      "created_at": "2026-07-04T12:50:40+00:00",
+      "updated_at": "2026-07-04T12:51:32+00:00",
+      "archived": false,
+      "deleted": false,
+      "active_workspace_id": null,
+      "metadata_sanitized": {
+        "codex_session_id": "codex_session_60ae6a1bf2c249118e1bbcaaf8d56ced",
+        "codex_run_id": "codex_run_cceb113906d94d1ab6d0f8f35c66e4bd",
+        "bridge": "codex_agent_tool_gateway"
+      }
+    }
+  ]
+}

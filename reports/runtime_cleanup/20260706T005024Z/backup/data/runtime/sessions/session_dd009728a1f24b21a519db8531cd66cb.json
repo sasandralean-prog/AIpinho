@@ -1,0 +1,45 @@
+{
+  "session_id": "session_dd009728a1f24b21a519db8531cd66cb",
+  "status": "active",
+  "created_at": "2026-06-17T22:45:45.791224+00:00",
+  "updated_at": "2026-06-17T22:45:45.847774+00:00",
+  "expires_at": "2026-06-18T02:45:45.791224+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Crie uma pasta em C:\\\\Users\\\\rafae\\\\Documents\\\\TestesIALocal\\\\NovaPasta.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_f2c0d3d015b74af580e3710fe81e47b3",
+    "intent_type": "patch_request",
+    "task_type": "patch_request",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\TestesIALocal\\NovaPasta",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_approval",
+    "contract_type": "patch_request",
+    "allowed_actions": [
+      "patch_preview"
+    ],
+    "denied_actions": [],
+    "approval_required_for": [
+      "apply_patch"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\TestesIALocal\\NovaPasta",
+  "active_task_draft_id": "draft_53606f0c9ae4469684c389c4c98a16a8",
+  "warnings": [],
+  "trace_refs": []
+}

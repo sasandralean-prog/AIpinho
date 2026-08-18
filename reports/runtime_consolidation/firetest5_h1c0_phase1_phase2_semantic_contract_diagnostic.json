@@ -1,0 +1,113 @@
+{
+  "created_at": "2026-08-13T08:20:37.296322+00:00",
+  "verdict": "FIRETEST5_H1C0_PHASE1_PHASE2_SEMANTIC_CONTRACT_BLOCKED",
+  "artifact_contract_paths": [
+    "config/artifacts/artifact_semantic_contract_policy.yaml",
+    "src/aipinho/services/artifacts/artifact_semantic_contract_service.py"
+  ],
+  "music_inventory_contract_existing": {
+    "contract_id": "media_corpus_inventory_artifact",
+    "selection": "generic path token groups for media/music/audio + inventory/catalog/corpus",
+    "not_path_specific": true,
+    "rejects_findings_shape": true
+  },
+  "music_inventory_materialization_path": [
+    "readonly_analysis_artifact_runtime_service._artifact_content",
+    "readonly_analysis_artifact_runtime_service._contract_tabular_collection_content",
+    "readonly_analysis_artifact_runtime_service._semantic_inventory_field_value",
+    "ArtifactSemanticContractService.validate_artifact"
+  ],
+  "validation_paths": [
+    "ArtifactSemanticContractService._semantic_gaps",
+    "ArtifactSemanticContractService._media_corpus_inventory_gaps",
+    "readonly_analysis_artifact_runtime_service._validate_artifact_semantic_contract"
+  ],
+  "completion_paths": [
+    "readonly_analysis_artifact_runtime_service._completion_result",
+    "TaskRunStore.save_result"
+  ],
+  "speaker_truth_paths": [
+    "UniversalTaskSessionService.summary/truth projection",
+    "task runtime truth endpoint remains blocked when validation/completion blocked"
+  ],
+  "phase_dependency_paths": [
+    "readonly_analysis_artifact_runtime_service._validate_phase_dependencies",
+    "ArtifactSemanticContractService.validate_artifact for dependency artifacts"
+  ],
+  "observational_cognition_binding_paths": [
+    "ObservedEntityGraph / ArtifactSemanticProfile perception_payload",
+    "summary.observational_cognition projection from artifact_observation_binding"
+  ],
+  "relationship_cognition_binding_paths": [
+    "ArtifactSemanticProfile relationship binding from H1B5 stack",
+    "summary.relationship_cognition lightweight projection"
+  ],
+  "why_findings_csv_passed_before": [
+    "Artifact validation treated artifact existence/shape as sufficient for logical path.",
+    "No media/corpus inventory semantic contract rejected severity,title,summary as findings schema.",
+    "Semantic profile did not require entity/evidence/metadata/limitations fields for media inventory outputs."
+  ],
+  "why_phase2_did_not_block_before": [
+    "Phase dependency check accepted physical artifact availability without revalidating dependency semantic contract.",
+    "Dependency gate lacked propagation of semantic insufficiency from Phase 1 artifact profile into Phase 2 blocking reason."
+  ],
+  "recommended_patch_points": [
+    "Implemented generic media_corpus_inventory_artifact contract.",
+    "Implemented media inventory semantic gap checks for findings-shape and missing evidence/limitations.",
+    "Implemented phase dependency semantic revalidation.",
+    "Implemented structured accepted_running.task_run_id.",
+    "Implemented BOM-tolerant artifact registry read after public storage hygiene exposed legacy BOM issue."
+  ],
+  "public_rerun_findings": {
+    "first_after_hygiene_run": {
+      "run_dir": "C:\\Dev\\AIpinho\\reports\\firetest5\\h1c0_phase1_phase2_clean_20260813_045156",
+      "task_run_id": "task_run_7ad05a3fbb6a426294d063dd866adda6",
+      "status": "BLOCKED",
+      "blocker": "ArtifactRegistryRepository failed on UTF-8 BOM stub before artifact index creation"
+    },
+    "second_after_bom_fix_run": {
+      "run_dir": "C:\\Dev\\AIpinho\\reports\\firetest5\\h1c0_phase1_phase2_clean_20260813_045509",
+      "task_run_id": "task_run_a7b57ac3e0034762a70db6290b8cfd61",
+      "status": "BLOCKED",
+      "result_status": "blocked",
+      "artifact_creation_started_count": 3,
+      "artifact_created_count": 2,
+      "artifact_count_endpoint": 2,
+      "terminal_event_count": 2,
+      "terminal_events": [
+        {
+          "event_id": "task_run_event_41b1be3d9ab84e379bf40c9e236536fa",
+          "run_id": "task_run_a7b57ac3e0034762a70db6290b8cfd61",
+          "sequence": 18,
+          "type": "run_blocked",
+          "status": "blocked",
+          "message": "TaskRun blocked by governed runtime budget.",
+          "step_id": null,
+          "timestamp": "2026-08-13T08:17:07.200224+00:00",
+          "metadata": {
+            "reason_code": "TASKRUN_LIFECYCLE_TIMEOUT",
+            "elapsed_seconds": 1308.776,
+            "max_runtime_seconds": 900.0
+          }
+        },
+        {
+          "event_id": "task_run_event_7e5b3e41a40f4007b87751ee8a08c04c",
+          "run_id": "task_run_a7b57ac3e0034762a70db6290b8cfd61",
+          "sequence": 19,
+          "type": "run_blocked",
+          "status": "blocked",
+          "message": "TaskRun blocked by governed runtime budget.",
+          "step_id": null,
+          "timestamp": "2026-08-13T08:17:07.943015+00:00",
+          "metadata": {
+            "reason_code": "TASKRUN_LIFECYCLE_TIMEOUT",
+            "elapsed_seconds": 1309.464,
+            "max_runtime_seconds": 900.0
+          }
+        }
+      ],
+      "frontier": "ARTIFACT_RENDER_TERMINALITY / music inventory render did not finish under public runtime budget",
+      "phase2_executed": false
+    }
+  }
+}

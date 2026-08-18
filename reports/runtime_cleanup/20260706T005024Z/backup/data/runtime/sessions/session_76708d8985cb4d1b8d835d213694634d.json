@@ -1,0 +1,44 @@
+{
+  "session_id": "session_76708d8985cb4d1b8d835d213694634d",
+  "status": "active",
+  "created_at": "2026-06-22T01:49:55.319918+00:00",
+  "updated_at": "2026-06-22T01:49:55.422812+00:00",
+  "expires_at": "2026-06-22T05:49:55.319918+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Prepare um patch preview governado para o projeto C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Projeto. Ainda nao aplique.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_10d6fc7cd9904ac7bced053dd2f83645",
+    "intent_type": "patch_request",
+    "task_type": "patch_request",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Projeto",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "patch_request",
+    "allowed_actions": [
+      "patch_preview"
+    ],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": true,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Projeto",
+  "active_task_draft_id": "draft_04a61555378c4b6dacb96ce62451e1c4",
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

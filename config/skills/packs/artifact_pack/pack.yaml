@@ -1,0 +1,38 @@
+skill_pack_id: artifact_pack
+display_name: Artifact Pack v1
+slug: artifact_pack
+version: 1.0.0
+status: active
+category: artifact
+description: Governed artifact query, preview, bundling, reliability validation and token-protected download flows.
+included_skills:
+  - internal.artifact_bundle_exporter
+  - internal.artifact_reliability_validator
+  - internal.safe_markdown_report_generator
+required_capabilities:
+  - artifact_download
+  - artifact_create
+  - sandbox_validate
+optional_capabilities:
+  - report_generate
+supported_agents: [aipinho, lucio, codex, gemini, autopilot]
+supported_project_stacks: [android_gradle, python, node, mixed, unknown]
+supported_execution_modes: [assisted_execution, governed_autorun, safe_chat]
+risk_level: low
+policy_profile: artifact_library_default
+validation_profile: artifact_reliability
+artifact_policy: token_protected_artifacts
+memory_policy: none
+dashboard_visible: true
+debugger_trace_required: true
+docs_ref: docs/skills/ARTIFACT_PACK.md
+tests_ref: tests/skill_packs
+examples:
+  - label: Diagnose artifact download
+    prompt: Analyze why the latest artifact is not downloadable.
+    expected_pack_selection: [artifact_pack, debug_pack]
+limitations:
+  - Cleanup apply remains conservative and requires explicit confirmation flow.
+evidence_refs: [skill_pack_manifest:artifact_pack]
+metadata_sanitized:
+  library_filter: artifact

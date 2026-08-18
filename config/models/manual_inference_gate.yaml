@@ -1,0 +1,34 @@
+﻿schema_version: 1
+
+manual_inference:
+  enabled: false
+  allow_smoke_test: false
+  require_profile_enabled: true
+  require_request_opt_in: true
+  require_operator_confirmation: true
+  require_real_inference_gate: true
+  require_valid_executable: true
+  require_valid_model_path: true
+  require_prompt_id_allowlist: true
+  require_safety_envelope: true
+  require_output_contract: true
+  require_timeout: true
+  require_audit: true
+
+defaults:
+  fallback_to_stub: false
+  run_if_unavailable: false
+  chat_auto_use: false
+  report_auto_use: false
+  analysis_auto_use: false
+
+blocked:
+  tool_calling: true
+  arbitrary_prompt_for_smoke: true
+  arbitrary_shell: true
+  network: true
+  model_download: true
+  write_files: true
+  patch_apply: true
+  memory_write: true
+  rag_ingest: true

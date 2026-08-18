@@ -1,0 +1,16 @@
+schema_version: 1
+
+backup:
+  enabled: true
+  required_for_overwrite: true
+  location: "data/runtime/artifact_backups"
+  store_existing_content: true
+  store_metadata: true
+  max_backup_bytes: 300000
+  sanitize_before_store: true
+  do_not_backup_secret_files: true
+  backup_id_prefix: "artifact_backup"
+
+restore:
+  automatic_restore_on_failed_write: true
+  expose_restore_endpoint: false

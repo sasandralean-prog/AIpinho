@@ -1,0 +1,22 @@
+schema_version: 1
+
+versioning:
+  enabled: true
+  initial_version: 1
+  immutable_versions: true
+  update_creates_new_version: true
+  supersede_instead_of_overwrite: true
+  require_supersede_reason: true
+  require_source_for_new_version: true
+  require_approval_for_new_version: true
+
+statuses:
+  active: true
+  superseded: true
+  expired: true
+  rejected: true
+
+blocked:
+  silent_edit: true
+  delete_memory_item: true
+  mutate_existing_version: true

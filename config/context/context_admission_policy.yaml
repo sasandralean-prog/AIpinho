@@ -1,0 +1,10 @@
+schema_version: 1
+admission:
+  reject_missing_source_ref: true
+  reject_unknown_purpose: true
+  reject_unknown_event_contract: true
+  reject_direct_workspace_path_artifact: true
+  reject_legacy_vectorstore: true
+  degraded_candidate_memory: true
+  require_citation_for_contextual_sources: true
+  track_rejected_items: true

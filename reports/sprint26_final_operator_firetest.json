@@ -1,0 +1,50 @@
+{
+  "generated_at": "2026-06-25T12:44:23.003407+00:00",
+  "verdict": "SPRINT26_RAG_MULTIMODAL_READY_WITH_WARNINGS",
+  "controlled_fixture": true,
+  "pytest": "47 passed in 15.34s",
+  "py_compile": "passed",
+  "index_preview": "previewed",
+  "index_start": "indexed",
+  "workspace_search": {
+    "generated_at": "2026-06-25T12:44:23.003407+00:00",
+    "status": "ok",
+    "controlled_fixture": true,
+    "workspace_id": "sprint26_fixture",
+    "query": "workspace keyword main",
+    "capabilities_used": {
+      "workspace_search": true,
+      "embeddings_used": false,
+      "reranker_used": false,
+      "fallback": "keyword_search"
+    },
+    "sample_results": [
+      {
+        "path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace\\src\\main.py",
+        "snippet": "def main(): return workspace search keyword",
+        "score": 1.0
+      }
+    ],
+    "note": "Full service payload intentionally compacted for review package; detailed behavior is covered by tests/integration/test_sprint26_rag_multimodal.py."
+  },
+  "project_analysis_readonly": {
+    "status": "ok",
+    "readonly": true,
+    "write_enabled": false,
+    "shell_enabled": false,
+    "build_enabled": false
+  },
+  "warnings": [
+    "Evidence package uses a small controlled workspace fixture to avoid long-running indexing during certification.",
+    "OCR/Vision services are structured but real OCR/vision runtime with a real image was not proven in this smoke.",
+    "Mobile/Launcher/VSCode visual firetest was not executed in this evidence pass."
+  ],
+  "reports": [
+    "sprint26_rag_multimodal_firetest.md",
+    "sprint26_workspace_index_report.md",
+    "sprint26_workspace_search_report.md",
+    "sprint26_ocr_vision_report.md",
+    "sprint26_project_analysis_report.md",
+    "sprint26_final_operator_firetest.md"
+  ]
+}

@@ -1,0 +1,5 @@
+﻿schema_version: 1
+event_store:
+  path: data/runtime/events/store/events.jsonl
+  append_only: true
+

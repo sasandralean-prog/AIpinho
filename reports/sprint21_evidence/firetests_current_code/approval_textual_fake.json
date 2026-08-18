@@ -1,0 +1,52 @@
+{
+  "http_status": 200,
+  "body": {
+    "response_id": "approval_cmd_approval_inexistente",
+    "session_id": "chat_sprint21_approval_textual_fake",
+    "task_draft_id": null,
+    "preview_id": null,
+    "task_id": null,
+    "approval_id": null,
+    "task_preview_id": null,
+    "artifact_id": null,
+    "artifact_preview_id": null,
+    "artifact_links": [],
+    "result_ref_id": null,
+    "operation_id": null,
+    "operation_type": "approval_command",
+    "message_type": "blocked_policy_message",
+    "status": "blocked",
+    "message": "Nao consegui executar esse comando de approval. Motivo: approval_not_found. Use um approval_id pendente ou um task_id com approvals seguros.",
+    "intent": {
+      "intent_type": "approval_command",
+      "requires_task": false
+    },
+    "policy": {
+      "approval_command": true,
+      "reason_code": "approval_not_found"
+    },
+    "contract_preview": {},
+    "actions": [],
+    "next_actions": [],
+    "warnings": [
+      "approval_not_found"
+    ],
+    "trace": [],
+    "raw_debug_ref": null,
+    "model_used": null,
+    "real_inference": null,
+    "model_warnings": [],
+    "evaluation_status": null,
+    "evaluation_warnings": [],
+    "fallback_used": false,
+    "context_plan_id": null,
+    "citation_map": {},
+    "evidence_refs": [],
+    "requires_user_action": true,
+    "is_final_answer": false,
+    "grounded": true,
+    "grounding_required": false,
+    "grounding_missing_reason": null,
+    "policy_block": null
+  }
+}

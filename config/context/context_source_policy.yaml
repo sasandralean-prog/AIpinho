@@ -1,0 +1,8 @@
+schema_version: 1
+source_policy:
+  require_source_ref: true
+  blocked_source_types: [raw_prompt, raw_model_output, raw_log, legacy_vectorstore, direct_workspace_path]
+  contextual_source_types: [curated_memory, rag_chunk, vector_rag_hit, artifact_record, artifact_manifest, visual_evidence, ocr_text_block, file_summary, project_analysis]
+
+legacy_pinhoabacaxi_curated:
+  current_truth_allowed: false

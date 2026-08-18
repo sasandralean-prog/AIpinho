@@ -1,0 +1,108 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_16_CSV_CARDINALITY_STREAMING_DETERMINISM_BLOCKED_WITH_CORE_FIX_VALIDATED",
+  "issues": [
+    {
+      "issue_id": "R2_16_P0_CSV_STALL_MISCLASSIFIED_AS_NO_PROGRESS",
+      "priority": "P0",
+      "status": "proven",
+      "resolution_status": "fixed",
+      "title": "CSV renderer progress was terminalized as generic stall instead of budget-exceeded progressing work.",
+      "relationship_to_frontier": "core_boundary",
+      "architectural_owner": "ReadonlyAnalysisArtifactRuntimeService artifact render guard",
+      "supporting_evidence": [
+        "R2.15 final reason was MUSIC_INVENTORY_CSV_STREAMING_STALLED",
+        "R2.16 A/B reason is MUSIC_INVENTORY_CSV_STREAMING_BUDGET_EXCEEDED",
+        "progress_semantics=progressing with rows/cells rendered"
+      ],
+      "disconfirming_evidence": [],
+      "fix_in_this_wave": true,
+      "tests": [
+        "test_music_inventory_artifact_worker_stall_terminality.py"
+      ],
+      "public_validation": "A/B terminal result used budget-exceeded reason with terminal_event_count=1"
+    },
+    {
+      "issue_id": "R2_16_P1_CARDINALITY_DOMAIN_AMBIGUITY",
+      "priority": "P1",
+      "status": "proven",
+      "resolution_status": "fixed",
+      "title": "Selected/projected entity count and row-model CSV row count were conflated.",
+      "relationship_to_frontier": "observability/correctness",
+      "architectural_owner": "ReadonlyAnalysisArtifactRuntimeService CSV row model",
+      "supporting_evidence": [
+        "A/B stable: source_input_entity_count=2286, selected_entity_count=2272, projected_entity_count=2272, row_model_accepted_count=2230, row_model_skipped_count=42",
+        "digests stable across A/B"
+      ],
+      "disconfirming_evidence": [],
+      "fix_in_this_wave": true,
+      "tests": [
+        "test_csv_cardinality_render_metrics.py"
+      ],
+      "public_validation": "firetest5_h1c0_r2_16_run_to_run_determinism.json"
+    },
+    {
+      "issue_id": "R2_16_P1_CSV_CELL_VALUE_EXTRACTION_COST",
+      "priority": "P1",
+      "status": "proven",
+      "resolution_status": "open_new_frontier",
+      "title": "Full cell processing dominates CSV render cost; serialization itself is negligible.",
+      "relationship_to_frontier": "new_frontier",
+      "architectural_owner": "ReadonlyAnalysisArtifactRuntimeService tabular row/cell renderer",
+      "supporting_evidence": [
+        "B csv_cell_render_elapsed_ms=239110",
+        "B csv_cell_serialization_elapsed_ms=16",
+        "B rows_per_second=6.675; cells_per_second=166.878",
+        "B ended with MUSIC_INVENTORY_CSV_STREAMING_BUDGET_EXCEEDED before completion"
+      ],
+      "disconfirming_evidence": [
+        "row_model_build_elapsed_ms=0",
+        "row_order_elapsed_ms=0"
+      ],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "Requires a new focused boundary around indexed observed-value lookup/cell extraction semantics; optimizing inside R2.16 without separating lookup cost from truth/provenance risk would be premature.",
+      "tests": [],
+      "public_validation": "B blocked terminally with endpoints healthy"
+    },
+    {
+      "issue_id": "R2_15_P1_PAYLOAD_REF_SEMANTIC_SUBTREE_AMPLIFICATION",
+      "priority": "P1",
+      "status": "proven",
+      "resolution_status": "fixed_unit_validated_not_public_reached",
+      "title": "Duplicate manifest semantic subtrees produced duplicate payload-ref physical bytes.",
+      "relationship_to_frontier": "carry_in_payload_boundary",
+      "architectural_owner": "UniversalArtifactRegistryService",
+      "supporting_evidence": [
+        "R2.15 diagnostic observed about 402,921,183 physical payload-ref bytes and duplicate declared_contract subtrees",
+        "R2.16 unit proves duplicate subtrees reuse the same content_ref by digest"
+      ],
+      "disconfirming_evidence": [
+        "R2.16 public runs did not reach artifact persist, so public end-to-end payload-ref dedup was not exercised"
+      ],
+      "fix_in_this_wave": true,
+      "tests": [
+        "test_duplicate_manifest_subtrees_reuse_payload_ref_by_digest"
+      ],
+      "public_validation": "not_reached_in_R2_16_public_A_B"
+    },
+    {
+      "issue_id": "R2_14_P1_METRICS_PROJECTION_SPARSE",
+      "priority": "P1",
+      "status": "proven",
+      "resolution_status": "resolved_for_events_and_reports",
+      "title": "Bounded aggregate metrics were present in raw events but sparse in latest compact projections.",
+      "relationship_to_frontier": "observability",
+      "architectural_owner": "Runtime checkpoint projection/report collector",
+      "supporting_evidence": [
+        "B bounded_metric_count=57 from events endpoint",
+        "phase1 compact checkpoints remain intentionally sparse",
+        "reports preserve known aggregate counters without hydrating payload arrays"
+      ],
+      "disconfirming_evidence": [],
+      "fix_in_this_wave": true,
+      "tests": [
+        "test_csv_cardinality_render_metrics.py"
+      ],
+      "public_validation": "firetest5_h1c0_r2_16_bounded_metrics_projection.json"
+    }
+  ]
+}

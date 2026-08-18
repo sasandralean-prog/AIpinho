@@ -1,0 +1,48 @@
+{
+  "session_id": "chat_cff0df8859a04991b303fc5de53733d9",
+  "status": "active",
+  "created_at": "2026-06-23T14:43:12.803578+00:00",
+  "updated_at": "2026-06-23T14:43:58.099320+00:00",
+  "expires_at": "2026-06-23T18:43:12.803578+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "No workspace do projeto NeonSys / Guardião do Celular, crie ou atualize apenas o arquivo:\n\nreports\\neonsys_mvp_spec.md\n\nObjetivo:\ndocumentar o MVP do NeonSys Mobile como app de diagnóstico/guardião do celular.\n\nNão implemente código ainda.\nNão rode build ainda.\nUse fluxo governado.\nSe precisar escrever arquivo, crie ApprovalRequest.\nMostre no Pipeline o approval.\nAguarde minha aprovação.\nDepois gere artifact/report com evidências.",
+      "message_id": null,
+      "created_at": null
+    },
+    {
+      "role": "user",
+      "content": "o workspace é: C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_a175e6bf07df4c77ac022c6dc733f983",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main",
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

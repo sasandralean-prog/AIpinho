@@ -1,0 +1,17 @@
+from aipinho.schemas.patching.quality.diff_parse_result import DiffParseResult, ParsedDiffHunk
+from aipinho.schemas.patching.quality.hardcode_detection_result import HardcodeDetectionResult
+from aipinho.schemas.patching.quality.hunk_validation_result import HunkValidationResult
+from aipinho.schemas.patching.quality.import_impact_result import ImportImpactResult
+from aipinho.schemas.patching.quality.patch_quality_finding import PatchQualityFinding
+from aipinho.schemas.patching.quality.patch_quality_gate_request import PatchQualityGateRequest
+from aipinho.schemas.patching.quality.patch_quality_gate_result import PatchQualityGateResult
+from aipinho.schemas.patching.quality.patch_quality_score import PatchQualityScore
+from aipinho.schemas.patching.quality.patch_quality_trace import PatchQualityTrace
+from aipinho.schemas.patching.quality.policy_bypass_detection_result import PolicyBypassDetectionResult
+from aipinho.schemas.patching.quality.rollback_validation_result import RollbackValidationResult
+from aipinho.schemas.patching.quality.schema_api_impact_result import SchemaApiImpactResult
+from aipinho.schemas.patching.quality.security_regression_result import SecurityRegressionResult
+from aipinho.schemas.patching.quality.static_validation_result import StaticValidationResult
+from aipinho.schemas.patching.quality.syntax_validation_result import SyntaxValidationResult
+from aipinho.schemas.patching.quality.target_snapshot_validation import TargetSnapshotValidation
+from aipinho.schemas.patching.quality.test_plan_validation_result import TestPlanValidationResult

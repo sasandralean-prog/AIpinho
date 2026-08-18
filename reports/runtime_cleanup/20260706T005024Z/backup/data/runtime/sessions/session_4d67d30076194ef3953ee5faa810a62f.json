@@ -1,0 +1,29 @@
+{
+  "session_id": "session_4d67d30076194ef3953ee5faa810a62f",
+  "status": "active",
+  "created_at": "2026-06-18T02:16:00.451340+00:00",
+  "updated_at": "2026-06-18T02:16:00.492341+00:00",
+  "expires_at": "2026-06-18T06:16:00.451340+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Crie um arquivo em C:\\Dev\\AIpinho\\sandboxes\\dopamine_test\\contexto.txt com o texto: Primeira linha.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {},
+  "last_policy_decision": {},
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {
+    "operation_type": "filesystem_write_file",
+    "path": "C:\\Dev\\AIpinho\\sandboxes\\capability_probe\\probe_b789c8d301aa425b9b8237aa60ca2e7e.txt",
+    "run_id": "sandbox_run_91b17f36fff14737aa86503922510019"
+  },
+  "warnings": [
+    "active_task_draft_missing"
+  ],
+  "trace_refs": []
+}

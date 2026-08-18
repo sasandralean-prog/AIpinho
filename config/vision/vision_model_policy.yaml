@@ -1,0 +1,23 @@
+schema_version: 1
+
+vision_models:
+  primary:
+    model_id: qwen2_5_vl_7b_q4_k_m
+    provider: llama_cpp_vision
+    required_capabilities: [vision, image_understanding]
+    require_doctor_healthy_or_degraded: true
+  fallback:
+    model_id: llava_v1_6_mistral_7b_q4_k_m
+    provider: llama_cpp_vision
+    required_capabilities: [vision, image_caption]
+    require_mmproj: true
+    require_doctor_healthy_or_degraded: true
+    use_only_when: [primary_failed, primary_blocked, explicit_crosscheck_requested]
+
+blocked:
+  text_model_as_vision: true
+  embedding_model_as_vision: true
+  reranker_model_as_vision: true
+  ocr_model_as_general_vision: true
+  model_without_doctor: true
+  model_health_blocked: true

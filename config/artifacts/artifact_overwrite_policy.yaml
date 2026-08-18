@@ -1,0 +1,19 @@
+schema_version: 1
+
+overwrite:
+  enabled: true
+  allow_overwrite_existing_non_code_artifacts: true
+  require_preview_would_overwrite: true
+  require_explicit_overwrite_approval: true
+  require_existing_file_snapshot: true
+  require_backup_before_overwrite: true
+  block_overwrite_if_existing_file_changed_since_preview: true
+  block_overwrite_for_source_code: true
+  block_overwrite_for_active_config: true
+  block_overwrite_for_scripts: true
+  block_overwrite_for_binary: true
+  block_overwrite_for_secret_files: true
+
+new_file:
+  allowed: true
+  require_parent_allowed: true

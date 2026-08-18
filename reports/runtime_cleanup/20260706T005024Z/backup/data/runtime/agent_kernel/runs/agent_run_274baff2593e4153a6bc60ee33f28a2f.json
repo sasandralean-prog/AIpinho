@@ -1,0 +1,29 @@
+{
+  "run_id": "agent_run_274baff2593e4153a6bc60ee33f28a2f",
+  "session_id": "agent_session_2183a841ce4e43cb9288126acd11da7f",
+  "agent_id": "aipinho",
+  "parent_run_id": "agent_run_cd9f50aa540140f6be89a38588ec20cc",
+  "delegation_id": "delegation_a6c80e3c40264968b8587f8d6a192f01",
+  "status": "cancelled",
+  "operation_type": "artifact_request",
+  "workspace_id": null,
+  "capabilities_requested": [
+    "artifact_write",
+    "delegation",
+    "read_workspace"
+  ],
+  "started_at": "2026-06-13T18:16:39+00:00",
+  "completed_at": "2026-06-13T21:42:52+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": "stale_runtime_cleanup",
+  "metadata_sanitized": {
+    "hygiene_preview_id": "cleanup_preview_700204db3c974dbfbd73bd08b3aac442",
+    "previous_status": "running"
+  }
+}

@@ -1,0 +1,176 @@
+schema_version: 1
+
+capabilities:
+  semantic_understanding:
+    display_name: SemanticUnderstanding
+    enabled: true
+    aliases: [classification, routing, lightweight_routing, instruction, summarization]
+    required_model_capabilities: [instruction]
+    primary_model: qwen3_1_7b_q6_k
+    fallback_models: []
+    escalation_models: []
+  conversation:
+    display_name: Conversation
+    enabled: true
+    aliases: [text_generation, instruction, conversation, summarization]
+    required_model_capabilities: [conversation, instruction]
+    primary_model: qwen3_1_7b_q6_k
+  reporting:
+    display_name: Reporting
+    enabled: true
+    aliases: [reporting, report_summary, summarization, instruction]
+    required_model_capabilities: [reporting, summarization, instruction]
+    primary_model: qwen2_5_7b_instruct_q5_k_m
+  planning:
+    display_name: Planning
+    enabled: true
+    aliases: [planning, reasoning, supervision, validation_assistance, debugging]
+    required_model_capabilities: [reasoning, instruction]
+    primary_model: deepseek_r1_distill_qwen_7b_q5_k_m
+    fallback_models: [qwen3_4b_thinking_distill_q4_k_m]
+    escalation_models: [deepseek_r1_distill_qwen_14b_q4_k_m]
+  code_generation:
+    display_name: CodeGeneration
+    enabled: true
+    aliases: [code, patch_planning, test_suggestion, code_summary]
+    required_model_capabilities: [code, instruction]
+    primary_model: qwen2_5_coder_7b_q4_k_m
+    fallback_models: [qwen2_5_coder_1_5b_q8_0]
+    escalation_models: [qwen2_5_coder_14b_q5_k_m]
+  code_review:
+    display_name: CodeReview
+    enabled: true
+    aliases: [code_review, patch_quality_review, patch_planning, code]
+    required_model_capabilities: [code, code_review]
+    primary_model: qwen2_5_coder_7b_q4_k_m
+    fallback_models: [qwen2_5_coder_1_5b_q8_0]
+    escalation_models: [qwen2_5_coder_14b_q5_k_m, deepseek_r1_distill_qwen_14b_q4_k_m]
+  debugging:
+    display_name: Debugging
+    enabled: true
+    aliases: [debugging, reasoning, planning]
+    required_model_capabilities: [reasoning, planning]
+    primary_model: qwen3_4b_thinking_distill_q4_k_m
+    fallback_models: [deepseek_r1_distill_qwen_7b_q5_k_m]
+  vision:
+    display_name: Vision
+    enabled: true
+    aliases: [vision, image_understanding, ui_inspection, diagram_reading, visual_crosscheck, image_caption]
+    required_model_capabilities: [vision]
+    primary_model: qwen2_5_vl_7b_q4_k_m
+    fallback_models: [llava_v1_6_mistral_7b_q4_k_m]
+  ocr:
+    display_name: OCR
+    enabled: true
+    aliases: [ocr, document_text_extraction, image_text_extraction]
+    required_model_capabilities: [ocr]
+    primary_model: nanonets_ocr_s_q5_k_m
+  embedding:
+    display_name: Embedding
+    enabled: false
+    aliases: [embedding]
+    required_model_capabilities: [embedding]
+    primary_model: qwen3_embedding_4b_q5_k_m
+    metadata:
+      reason: "Embedding runtime remains disabled until the semantic learning sprints."
+  reranking:
+    display_name: Reranking
+    enabled: false
+    aliases: [reranking, rerank, reranker]
+    required_model_capabilities: [rerank]
+    primary_model: qwen3_reranker_4b_q5_k_m
+    metadata:
+      reason: "Reranking runtime remains disabled until the retrieval sprints."
+
+role_capability_bindings:
+  intent_classifier:
+    capability: semantic_understanding
+    primary: qwen3_1_7b_q6_k
+    fallback: deterministic_intent_classifier
+    output_contract: intent_classification_output
+  semantic_interpreter:
+    capability: semantic_understanding
+    primary: qwen3_1_7b_q6_k
+    fallback: deterministic_semantic_interpreter
+    output_contract: semantic_interpreter_output
+  speaker:
+    capability: conversation
+    primary: qwen3_1_7b_q6_k
+    fallback: deterministic_speaker
+    output_contract: speaker_output
+  interpreter:
+    capability: conversation
+    primary: qwen2_5_7b_instruct_q5_k_m
+    fallback: deterministic_interpreter
+    output_contract: interpreter_output
+  reporter:
+    capability: reporting
+    primary: qwen2_5_7b_instruct_q5_k_m
+    fallback: deterministic_reporter
+    output_contract: report_summary_output
+  planner:
+    capability: planning
+    primary: deepseek_r1_distill_qwen_7b_q5_k_m
+    fallback: qwen3_4b_thinking_distill_q4_k_m
+    escalation: deepseek_r1_distill_qwen_14b_q4_k_m
+    output_contract: planning_output
+  supervisor:
+    capability: planning
+    primary: deepseek_r1_distill_qwen_7b_q5_k_m
+    fallback: qwen3_4b_thinking_distill_q4_k_m
+    escalation: deepseek_r1_distill_qwen_14b_q4_k_m
+    output_contract: supervision_output
+  small_code_assistant:
+    capability: code_generation
+    primary: qwen2_5_coder_1_5b_q8_0
+    fallback: deterministic_code_summary
+    output_contract: code_summary_output
+  coder:
+    capability: code_generation
+    primary: qwen2_5_coder_7b_q4_k_m
+    fallback: qwen2_5_coder_1_5b_q8_0
+    escalation: qwen2_5_coder_14b_q5_k_m
+    output_contract: coder_output
+  patch_planner:
+    capability: code_generation
+    primary: qwen2_5_coder_7b_q4_k_m
+    fallback: qwen2_5_coder_1_5b_q8_0
+    escalation: deepseek_r1_distill_qwen_14b_q4_k_m
+    output_contract: patch_plan_draft_output
+  code_reviewer:
+    capability: code_review
+    primary: qwen2_5_coder_7b_q4_k_m
+    fallback: qwen2_5_coder_1_5b_q8_0
+    escalation: qwen2_5_coder_14b_q5_k_m
+    output_contract: code_review_output
+  patch_quality_reviewer:
+    capability: code_review
+    primary: qwen2_5_coder_7b_q4_k_m
+    fallback: qwen2_5_coder_1_5b_q8_0
+    escalation: [qwen2_5_coder_14b_q5_k_m, deepseek_r1_distill_qwen_14b_q4_k_m]
+    output_contract: patch_quality_review_output
+  debugger:
+    capability: debugging
+    primary: qwen3_4b_thinking_distill_q4_k_m
+    fallback: deepseek_r1_distill_qwen_7b_q5_k_m
+    output_contract: debugger_explanation_output
+  memory_curator:
+    capability: reporting
+    primary: qwen2_5_7b_instruct_q5_k_m
+    fallback: deterministic_memory_validator
+    output_contract: memory_candidate_review_output
+  vision_analyst:
+    capability: vision
+    primary: qwen2_5_vl_7b_q4_k_m
+    fallback: llava_v1_6_mistral_7b_q4_k_m
+    output_contract: vision_analysis_output
+  ocr_specialist:
+    capability: ocr
+    primary: nanonets_ocr_s_q5_k_m
+    fallback: deterministic_ocr_summary
+    output_contract: ocr_extraction_output
+  document_reader:
+    capability: ocr
+    primary: nanonets_ocr_s_q5_k_m
+    fallback: qwen2_5_vl_7b_q4_k_m
+    output_contract: document_read_output

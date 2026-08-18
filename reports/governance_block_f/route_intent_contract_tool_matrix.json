@@ -1,0 +1,1857 @@
+{
+  "generated_at": "2026-06-28T15:44:57.208267+00:00",
+  "route_count": 929,
+  "routes_sample": [
+    {
+      "endpoint": "/api/v1/admin/status",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\admin_router.py",
+      "owner": "admin",
+      "classification": "LIVE_HELPER",
+      "source_channel": "admin",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agent-bridge/status",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_bridge_router.py",
+      "owner": "agent_bridge",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_bridge",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agent-bridge/active",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_bridge_router.py",
+      "owner": "agent_bridge",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_bridge",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agent-bridge/tasks/{bridge_task_id}/details",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_bridge_router.py",
+      "owner": "agent_bridge",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_bridge",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/agent-bridge/tasks/{bridge_task_id}/cancel",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_bridge_router.py",
+      "owner": "agent_bridge",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_bridge",
+      "side_effects_possible": true,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/agents/{agent_id}/runs/{run_id}/delegate",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_delegation_router.py",
+      "owner": "agent_delegation",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_delegation",
+      "side_effects_possible": true,
+      "actions": [
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/agents/delegations/{delegation_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_delegation_router.py",
+      "owner": "agent_delegation",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_delegation",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/delegations/{delegation_id}/events",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_delegation_router.py",
+      "owner": "agent_delegation",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_delegation",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/delegations/{delegation_id}/result",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_delegation_router.py",
+      "owner": "agent_delegation",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_delegation",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/delegations/{delegation_id}/cancel",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_delegation_router.py",
+      "owner": "agent_delegation",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_delegation",
+      "side_effects_possible": true,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/delegations/{delegation_id}/check-timeout",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_delegation_router.py",
+      "owner": "agent_delegation",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_delegation",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/runs/{run_id}/children",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_delegation_router.py",
+      "owner": "agent_delegation",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_delegation",
+      "side_effects_possible": false,
+      "actions": [
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/agents/runs/{run_id}/parent",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_delegation_router.py",
+      "owner": "agent_delegation",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_delegation",
+      "side_effects_possible": false,
+      "actions": [
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/agents/status",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/runs/{run_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": false,
+      "actions": [
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/agents/runs/{run_id}/events",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": false,
+      "actions": [
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/agents",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/{agent_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/{agent_id}/sessions",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/{agent_id}/sessions",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/{agent_id}/sessions/{session_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/{agent_id}/sessions/{session_id}",
+      "method": "PATCH",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/{agent_id}/sessions/{session_id}",
+      "method": "DELETE",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/{agent_id}/sessions/{session_id}/messages",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/{agent_id}/sessions/{session_id}/messages",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/runs/{run_id}/events",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": true,
+      "actions": [
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/agents/{agent_id}/sessions/{session_id}/timeline",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/{agent_id}/view-model",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_kernel_router.py",
+      "owner": "agent_kernel",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_kernel",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/memory/status",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_memory_gateway_router.py",
+      "owner": "agent_memory_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_memory_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/memory/namespaces",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_memory_gateway_router.py",
+      "owner": "agent_memory_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_memory_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/memory/{namespace}/records",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_memory_gateway_router.py",
+      "owner": "agent_memory_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_memory_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/memory/{namespace}/records",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_memory_gateway_router.py",
+      "owner": "agent_memory_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_memory_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/memory/records/{memory_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_memory_gateway_router.py",
+      "owner": "agent_memory_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_memory_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/memory/records/{memory_id}",
+      "method": "PATCH",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_memory_gateway_router.py",
+      "owner": "agent_memory_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_memory_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/memory/search",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_memory_gateway_router.py",
+      "owner": "agent_memory_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_memory_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/memory/candidates",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_memory_gateway_router.py",
+      "owner": "agent_memory_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_memory_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/memory/candidates",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_memory_gateway_router.py",
+      "owner": "agent_memory_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_memory_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/memory/candidates/{candidate_id}/accept",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_memory_gateway_router.py",
+      "owner": "agent_memory_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_memory_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/memory/candidates/{candidate_id}/reject",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_memory_gateway_router.py",
+      "owner": "agent_memory_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_memory_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/memory/records/{memory_id}/supersede",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_memory_gateway_router.py",
+      "owner": "agent_memory_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_memory_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/memory/agents/{agent_id}/context",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_memory_gateway_router.py",
+      "owner": "agent_memory_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_memory_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/memory/runs/{run_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_memory_gateway_router.py",
+      "owner": "agent_memory_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_memory_gateway",
+      "side_effects_possible": false,
+      "actions": [
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/tools",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_tool_gateway_router.py",
+      "owner": "agent_tool_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_tool_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/tools/{tool_name}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_tool_gateway_router.py",
+      "owner": "agent_tool_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_tool_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/{agent_id}/runs/{run_id}/tools/{tool_name}/invoke",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_tool_gateway_router.py",
+      "owner": "agent_tool_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_tool_gateway",
+      "side_effects_possible": true,
+      "actions": [
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/agents/runs/{run_id}/tools",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_tool_gateway_router.py",
+      "owner": "agent_tool_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_tool_gateway",
+      "side_effects_possible": false,
+      "actions": [
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/tools/invocations/{tool_invocation_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_tool_gateway_router.py",
+      "owner": "agent_tool_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_tool_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/tools/invocations/{tool_invocation_id}/cancel",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_tool_gateway_router.py",
+      "owner": "agent_tool_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_tool_gateway",
+      "side_effects_possible": true,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/{agent_id}/sessions/{session_id}/artifacts/upload",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_tool_gateway_router.py",
+      "owner": "agent_tool_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_tool_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/{agent_id}/sessions/{session_id}/artifacts",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_tool_gateway_router.py",
+      "owner": "agent_tool_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_tool_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/agents/artifacts/{artifact_id}/download",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\agent_tool_gateway_router.py",
+      "owner": "agent_tool_gateway",
+      "classification": "LIVE_HELPER",
+      "source_channel": "agent_tool_gateway",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/analysis/status",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\analysis_router.py",
+      "owner": "analysis",
+      "classification": "LIVE_HELPER",
+      "source_channel": "analysis",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/analysis/project",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\analysis_router.py",
+      "owner": "analysis",
+      "classification": "LIVE_HELPER",
+      "source_channel": "analysis",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/analysis/project/tree",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\analysis_router.py",
+      "owner": "analysis",
+      "classification": "LIVE_HELPER",
+      "source_channel": "analysis",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/analysis/project/context",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\analysis_router.py",
+      "owner": "analysis",
+      "classification": "LIVE_HELPER",
+      "source_channel": "analysis",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/analysis/project/report",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\analysis_router.py",
+      "owner": "analysis",
+      "classification": "LIVE_HELPER",
+      "source_channel": "analysis",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/approvals",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\approval_router.py",
+      "owner": "approval",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "approval",
+      "side_effects_possible": false,
+      "actions": [
+        "approval_decision"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/approvals/pending",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\approval_router.py",
+      "owner": "approval",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "approval",
+      "side_effects_possible": false,
+      "actions": [
+        "approval_decision"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/approvals/batch/approve",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\approval_router.py",
+      "owner": "approval",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "approval",
+      "side_effects_possible": true,
+      "actions": [
+        "approval_decision"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/approvals/batch/deny",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\approval_router.py",
+      "owner": "approval",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "approval",
+      "side_effects_possible": true,
+      "actions": [
+        "approval_decision"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/approvals/batch/reject",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\approval_router.py",
+      "owner": "approval",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "approval",
+      "side_effects_possible": false,
+      "actions": [
+        "approval_decision"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/approvals/{approval_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\approval_router.py",
+      "owner": "approval",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "approval",
+      "side_effects_possible": false,
+      "actions": [
+        "approval_decision"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/approvals/{approval_id}/events",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\approval_router.py",
+      "owner": "approval",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "approval",
+      "side_effects_possible": false,
+      "actions": [
+        "approval_decision"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/approvals/{approval_id}/approve",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\approval_router.py",
+      "owner": "approval",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "approval",
+      "side_effects_possible": true,
+      "actions": [
+        "approval_decision"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/approvals/{approval_id}/reject",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\approval_router.py",
+      "owner": "approval",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "approval",
+      "side_effects_possible": false,
+      "actions": [
+        "approval_decision"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/approvals/{approval_id}/deny",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\approval_router.py",
+      "owner": "approval",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "approval",
+      "side_effects_possible": true,
+      "actions": [
+        "approval_decision"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/approvals/{approval_id}/cancel",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\approval_router.py",
+      "owner": "approval",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "approval",
+      "side_effects_possible": true,
+      "actions": [
+        "approval_decision"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/approvals/{approval_id}/refresh-policy",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\approval_router.py",
+      "owner": "approval",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "approval",
+      "side_effects_possible": false,
+      "actions": [
+        "approval_decision"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifact-library/health",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_library_router.py",
+      "owner": "artifact_library",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_library",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifact-library",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_library_router.py",
+      "owner": "artifact_library",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_library",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifact-library/query",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_library_router.py",
+      "owner": "artifact_library",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_library",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifact-library/reindex",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_library_router.py",
+      "owner": "artifact_library",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_library",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifact-library/bundles",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_library_router.py",
+      "owner": "artifact_library",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_library",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifact-library/bundles/{bundle_artifact_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_library_router.py",
+      "owner": "artifact_library",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_library",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifact-library/cleanup/preview",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_library_router.py",
+      "owner": "artifact_library",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_library",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifact-library/cleanup/apply",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_library_router.py",
+      "owner": "artifact_library",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_library",
+      "side_effects_possible": true,
+      "actions": [
+        "write_files"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifact-library/{artifact_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_library_router.py",
+      "owner": "artifact_library",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_library",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifact-library/{artifact_id}/preview",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_library_router.py",
+      "owner": "artifact_library",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_library",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifact-library/{artifact_id}/use-as-context",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_library_router.py",
+      "owner": "artifact_library",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_library",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifact-library/{artifact_id}/trace",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_library_router.py",
+      "owner": "artifact_library",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_library",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/artifacts",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_library_router.py",
+      "owner": "artifact_library",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_library",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/artifact-library",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_library_router.py",
+      "owner": "artifact_library",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_library",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/status",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/by-agent/{agent_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/by-task/{task_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/artifacts/by-bridge-task/{bridge_task_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/artifacts/drafts",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/drafts/{draft_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/previews",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/previews/from-report/{report_id}",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/previews/from-task-run/{run_id}",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": true,
+      "actions": [
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/artifacts/previews/{preview_id}/refresh-validation",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/previews/{preview_id}/request-approval",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [
+        "approval_decision"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/previews/{preview_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/previews/{preview_id}/diff",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/previews/{preview_id}/trace",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/previews",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/upload",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/zip",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/generate",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/{artifact_id}/package-evidence",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/from-task-run/{run_id}/summary-zip",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": true,
+      "actions": [
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/artifacts/{artifact_id}/link-to-message/{message_id}",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/{artifact_id}/provenance",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/{artifact_id}/revalidate",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/{artifact_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_router.py",
+      "owner": "artifact",
+      "classification": "LIVE_CANONICAL",
+      "source_channel": "artifact",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/links/policy",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_status_router.py",
+      "owner": "artifact_status",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_status",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/{artifact_id}/metadata",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_status_router.py",
+      "owner": "artifact_status",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_status",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/{artifact_id}/manifest",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_status_router.py",
+      "owner": "artifact_status",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_status",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/{artifact_id}/download",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_status_router.py",
+      "owner": "artifact_status",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_status",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/zip/{artifact_id}/download",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_status_router.py",
+      "owner": "artifact_status",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_status",
+      "side_effects_possible": false,
+      "actions": [],
+      "policy_used": true,
+      "approval_used": false,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/write/status",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_write_router.py",
+      "owner": "artifact_write",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_write",
+      "side_effects_possible": false,
+      "actions": [
+        "write_files"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/write/from-preview/{preview_id}",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_write_router.py",
+      "owner": "artifact_write",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_write",
+      "side_effects_possible": true,
+      "actions": [
+        "write_files"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": false
+    },
+    {
+      "endpoint": "/api/v1/artifacts/write/{write_run_id}/execute",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_write_router.py",
+      "owner": "artifact_write",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_write",
+      "side_effects_possible": true,
+      "actions": [
+        "write_files",
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/artifacts/write/{write_run_id}/cancel",
+      "method": "POST",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_write_router.py",
+      "owner": "artifact_write",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_write",
+      "side_effects_possible": true,
+      "actions": [
+        "write_files",
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/artifacts/write/runs/{write_run_id}",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_write_router.py",
+      "owner": "artifact_write",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_write",
+      "side_effects_possible": false,
+      "actions": [
+        "write_files",
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/artifacts/write/runs/{write_run_id}/events",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_write_router.py",
+      "owner": "artifact_write",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_write",
+      "side_effects_possible": false,
+      "actions": [
+        "write_files",
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    },
+    {
+      "endpoint": "/api/v1/artifacts/write/runs/{write_run_id}/trace",
+      "method": "GET",
+      "handler_file": "src\\aipinho\\api\\routers\\artifact_write_router.py",
+      "owner": "artifact_write",
+      "classification": "LIVE_HELPER",
+      "source_channel": "artifact_write",
+      "side_effects_possible": false,
+      "actions": [
+        "write_files",
+        "run_command"
+      ],
+      "policy_used": true,
+      "approval_used": true,
+      "runtime_used": true
+    }
+  ],
+  "intent_contracts": [
+    {
+      "prompt_class": "conversation_simple",
+      "intent_type": "conversation",
+      "operation_type": "conversation",
+      "runtime_profile": "conversation",
+      "read_only": true,
+      "actions": [],
+      "requires_runtime": false,
+      "roles": [
+        "speaker"
+      ]
+    },
+    {
+      "prompt_class": "planning_readonly",
+      "intent_type": "product_planning_readonly",
+      "operation_type": "product_planning_readonly",
+      "runtime_profile": "readonly_analysis",
+      "read_only": true,
+      "actions": [
+        "read_file",
+        "list_files"
+      ],
+      "requires_runtime": false,
+      "roles": [
+        "planner",
+        "speaker"
+      ]
+    },
+    {
+      "prompt_class": "workspace_permission_list",
+      "intent_type": "workspace_permission_list",
+      "operation_type": "workspace_registry_query",
+      "runtime_profile": "readonly_analysis",
+      "read_only": true,
+      "actions": [
+        "list_files"
+      ],
+      "requires_runtime": false,
+      "roles": [
+        "capability_truth",
+        "speaker"
+      ]
+    },
+    {
+      "prompt_class": "project_generation",
+      "intent_type": "project_bootstrap",
+      "operation_type": "project_generation",
+      "runtime_profile": "project_generation",
+      "read_only": false,
+      "actions": [
+        "write_files"
+      ],
+      "requires_runtime": true,
+      "roles": [
+        "planner",
+        "coder",
+        "validator",
+        "speaker"
+      ]
+    },
+    {
+      "prompt_class": "patch_request",
+      "intent_type": "patch_request",
+      "operation_type": "governed_file_write",
+      "runtime_profile": "patch",
+      "read_only": false,
+      "actions": [
+        "apply_patch"
+      ],
+      "requires_runtime": true,
+      "roles": [
+        "coder",
+        "reviewer",
+        "validator"
+      ]
+    },
+    {
+      "prompt_class": "approval_command",
+      "intent_type": "approval_command",
+      "operation_type": "approval_decision",
+      "runtime_profile": null,
+      "read_only": false,
+      "actions": [
+        "approval_decision"
+      ],
+      "requires_runtime": false,
+      "roles": [
+        "approval_runtime"
+      ]
+    },
+    {
+      "prompt_class": "shell_build_test",
+      "intent_type": "shell_request",
+      "operation_type": "governed_shell",
+      "runtime_profile": "shell",
+      "read_only": false,
+      "actions": [
+        "run_command"
+      ],
+      "requires_runtime": true,
+      "roles": [
+        "tool_planner",
+        "tool_executor",
+        "validator"
+      ]
+    },
+    {
+      "prompt_class": "artifact_report",
+      "intent_type": "artifact_request",
+      "operation_type": "artifact_generation",
+      "runtime_profile": "artifact_generation",
+      "read_only": false,
+      "actions": [
+        "artifact_create"
+      ],
+      "requires_runtime": true,
+      "roles": [
+        "artifact_writer",
+        "validator",
+        "speaker"
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "tool_id": "file_read",
+      "action": "read_file",
+      "policy_action": "read_file",
+      "side_effect": false,
+      "through_gateway": true,
+      "contract_action_missing": false,
+      "approval_policy": "allowed"
+    },
+    {
+      "tool_id": "file_list",
+      "action": "list_files",
+      "policy_action": "list_files",
+      "side_effect": false,
+      "through_gateway": true,
+      "contract_action_missing": false,
+      "approval_policy": "allowed"
+    },
+    {
+      "tool_id": "file_write",
+      "action": "write_files",
+      "policy_action": "write_files",
+      "side_effect": true,
+      "through_gateway": true,
+      "contract_action_missing": false,
+      "approval_policy": "ask",
+      "approval_scope": "project_write"
+    },
+    {
+      "tool_id": "create_directory",
+      "action": "create_directory",
+      "policy_action": "create_directory",
+      "side_effect": true,
+      "through_gateway": true,
+      "contract_action_missing": false,
+      "approval_policy": "ask",
+      "approval_scope": "project_write"
+    },
+    {
+      "tool_id": "patch_apply",
+      "action": "apply_patch",
+      "policy_action": "apply_patch",
+      "side_effect": true,
+      "through_gateway": true,
+      "contract_action_missing": false,
+      "approval_policy": "ask",
+      "approval_scope": "patch_write"
+    },
+    {
+      "tool_id": "shell_command",
+      "action": "run_command",
+      "policy_action": "run_command",
+      "side_effect": true,
+      "through_gateway": true,
+      "contract_action_missing": false,
+      "approval_policy": "ask",
+      "approval_scope": "governed_shell"
+    },
+    {
+      "tool_id": "artifact_register",
+      "action": "artifact_create",
+      "policy_action": "artifact_create",
+      "side_effect": true,
+      "through_gateway": true,
+      "contract_action_missing": false,
+      "approval_policy": "ask",
+      "approval_scope": "artifact"
+    },
+    {
+      "tool_id": "approval_create",
+      "action": "approval_create",
+      "policy_action": "approval_create",
+      "side_effect": false,
+      "through_gateway": true,
+      "contract_action_missing": false,
+      "approval_policy": "allowed"
+    },
+    {
+      "tool_id": "model_inference",
+      "action": "model_inference",
+      "policy_action": "model_inference",
+      "side_effect": false,
+      "through_gateway": true,
+      "contract_action_missing": false,
+      "approval_policy": "allowed"
+    },
+    {
+      "tool_id": "browser_localhost_qa",
+      "action": "browser_qa",
+      "policy_action": "browser_qa",
+      "side_effect": false,
+      "through_gateway": true,
+      "contract_action_missing": false,
+      "approval_policy": "allowed"
+    }
+  ],
+  "canonical_rule": "Public side-effect routes must use canonical governance lifecycle or ToolGateway ownership."
+}

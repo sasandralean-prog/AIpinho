@@ -1,0 +1,342 @@
+schema_version: 1
+
+matching:
+  normalize_accents: true
+  casefold: true
+  prefix_matching:
+    enabled: true
+    min_token_length: 5
+    min_ratio: 0.72
+  fuzzy_matching:
+    enabled: false
+
+concepts:
+  self_actor:
+    type: actor
+    aliases:
+      - vocÃª
+      - voce
+      - sua
+      - seu
+      - teu
+      - sistema
+      - esta IA
+      - essa IA
+      - ai
+
+  workspace_actor:
+    type: actor
+    aliases:
+      - projeto
+      - workspace
+      - repositÃ³rio
+      - repositorio
+      - cÃ³digo
+      - codigo
+
+  capability_object:
+    type: object
+    aliases:
+      - capacidades
+      - funcionalidades
+      - consegue fazer
+      - pode fazer
+      - sabe fazer
+      - recursos
+
+  architecture_object:
+    type: object
+    aliases:
+      - arquitetura
+      - funcionamento
+      - estrutura
+      - pipeline
+      - componentes
+
+  conversation_state_object:
+    type: object_conversation_state
+    aliases:
+      - conversa
+      - mensagem
+      - resposta
+      - intent
+      - classificaÃ§Ã£o
+      - classificacao
+      - classific
+
+  runtime_failure_object:
+    type: object_runtime_failure
+    aliases:
+      - falha
+      - falh
+      - erro
+      - timeout
+      - fallback
+      - modelo
+      - confund
+      - confundiu
+      - errone
+      - erronea
+      - erroneamente
+      - falhou
+
+  project_object:
+    type: object
+    aliases:
+      - projeto
+      - workspace
+      - repositÃ³rio
+      - repositorio
+      - codebase
+      - cÃ³digo
+      - codigo
+
+  report_object:
+    type: object
+    aliases:
+      - relatÃ³rio
+      - relatorio
+      - report
+      - resumo
+
+  information_operation:
+    type: operation_information
+    aliases:
+      - explique
+      - explica
+      - descreva
+      - liste
+      - mostre
+      - resumo
+      - resumir
+      - como funciona
+      - como
+      - quais sÃ£o
+      - quais sao
+      - o que
+      - por que
+      - porque
+      - bom dia
+      - boa tarde
+      - boa noite
+      - olÃ¡
+      - ola
+
+  analysis_operation:
+    type: operation_analysis
+    aliases:
+      - analise
+      - analisar
+      - revise
+      - revisar
+      - verifique
+      - verificar
+      - avaliar
+      - avalie
+
+  mutation_operation:
+    type: operation_mutation
+    aliases:
+      - corrija
+      - conserte
+      - altere
+      - modifique
+      - edite
+      - refatore
+      - aplique
+      - gere patch
+      - arrume
+      - resolva
+      - crie
+      - criar
+      - gere
+      - gerar
+      - implemente
+      - implementar
+      - construa
+      - construir
+      - compile
+      - compilar
+      - empacote
+      - empacotar
+
+  build_operation:
+    type: operation_execution
+    aliases:
+      - build
+      - compile
+      - compilar
+      - gerar apk
+      - gere apk
+      - apk
+      - wrapper gradle
+
+  executable_artifact_object:
+    type: object
+    aliases:
+      - apk
+      - build
+      - executavel
+      - executável
+      - pacote
+
+  directory_object:
+    type: object
+    aliases:
+      - pasta
+      - diretorio
+      - diretório
+      - folder
+      - directory
+
+  public_fact_object:
+    type: object_public_fact
+    aliases:
+      - governador
+      - governadores
+      - presidente
+      - ministro
+      - prefeito
+      - versao atual
+      - versão atual
+      - noticias recentes
+      - notícias recentes
+      - atual
+      - recentes
+      - ultimos
+      - últimos
+      - lei
+      - leis
+      - documentacao
+      - documentação
+      - versao
+      - versão
+
+  web_search_operation:
+    type: operation_web_search
+    aliases:
+      - pesquise na internet
+      - pesquisar na internet
+      - busque na web
+      - buscar na web
+      - procure na internet
+      - notícias recentes
+      - noticias recentes
+      - atual
+      - versão atual
+      - versao atual
+
+  validation_operation:
+    type: operation_validation
+    aliases:
+      - valide
+      - validar
+      - rode testes
+      - rodar testes
+      - execute testes
+      - pytest
+
+  memory_operation:
+    type: operation_memory
+    aliases:
+      - lembre
+      - memorize
+      - salve memÃ³ria
+      - salve memoria
+      - guardar memÃ³ria
+      - guardar memoria
+
+  retrieval_operation:
+    type: operation_retrieval
+    aliases:
+      - procure
+      - busque
+      - pesquise
+      - consulte
+
+  create_artifact_operation:
+    type: operation_artifact
+    aliases:
+      - crie arquivo
+      - gere arquivo
+      - salvar em
+      - salve em
+      - exporte
+      - gerar relatÃ³rio em
+      - gerar relatorio em
+
+  no_write_constraint:
+    type: constraint
+    aliases:
+      - sem alterar nada
+      - nÃ£o altere nada
+      - nao altere nada
+      - nao altere
+      - sem alterar
+      - nao modifique
+      - sem modificar
+      - read-only
+      - somente leitura
+      - sem escrever
+      - nÃ£o escreva
+      - nao escreva
+
+  preview_only_constraint:
+    type: constraint
+    aliases:
+      - ainda nao aplique
+      - nao aplique
+      - sem aplicar
+      - somente preview
+      - apenas preview
+      - antes de alterar
+      - antes de escrever
+
+  approval_gated_write_constraint:
+    type: constraint
+    aliases:
+      - ate approval
+      - até approval
+      - ate aprovacao
+      - até aprovacao
+      - ate aprovação
+      - até aprovação
+      - apos approval
+      - após approval
+      - depois da aprovacao
+      - depois da aprovação
+
+  chat_report_object:
+    type: output_chat_summary
+    aliases:
+      - report final desta conversa
+      - resumo final
+      - recapitulaÃ§Ã£o
+      - recapitulacao
+      - fechamento
+      - relatÃ³rio no chat
+      - relatorio no chat
+      - report no chat
+      - gere um report no chat
+      - resumo no chat
+
+  artifact_report_object:
+    type: output_artifact
+    aliases:
+      - relatÃ³rio em arquivo
+      - relatorio em arquivo
+      - salve o relatÃ³rio
+      - salve o relatorio
+      - salvar report
+      - gerar md
+      - reports/
+      - .md
+
+  ambiguity_light:
+    type: ambiguity_marker
+    aliases:
+      - tudo
+      - isso
+      - aquilo
+      - negÃ³cio
+      - negocio

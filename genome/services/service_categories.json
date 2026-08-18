@@ -1,0 +1,86 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "service_categories": {
+    "governance": {
+      "services": [
+        "policy_kernel_service",
+        "capability_gate_service",
+        "workspace_role_contract_service"
+      ],
+      "count": 3,
+      "critical": true
+    },
+    "runtime": {
+      "services": [
+        "task_runtime_service",
+        "execution_graph_service",
+        "intelligent_planner_service"
+      ],
+      "count": 3,
+      "critical": true
+    },
+    "chat": {
+      "services": [
+        "chat_service",
+        "chat_operation_router_service"
+      ],
+      "count": 2,
+      "critical": true
+    },
+    "agents": {
+      "services": [
+        "agent_tool_gateway_service",
+        "agent_local_action_planner"
+      ],
+      "count": 2,
+      "critical": true
+    },
+    "models": {
+      "services": [
+        "llama_cpp_provider"
+      ],
+      "count": 1,
+      "critical": true
+    },
+    "tools": {
+      "services": [
+        "governed_tool_execution_service"
+      ],
+      "count": 1,
+      "critical": true
+    },
+    "validation": {
+      "services": [
+        "validation_gate_service"
+      ],
+      "count": 1,
+      "critical": true
+    },
+    "rag": {
+      "services": [
+        "retrieval_service"
+      ],
+      "count": 1,
+      "critical": false
+    },
+    "memory": {
+      "services": [
+        "memory_candidate_service"
+      ],
+      "count": 1,
+      "critical": false
+    },
+    "artifacts": {
+      "services": [
+        "artifact_generator_service"
+      ],
+      "count": 1,
+      "critical": false
+    }
+  },
+  "total_categories": 10,
+  "total_services": 15,
+  "critical_categories": 7,
+  "non_critical_categories": 3
+}

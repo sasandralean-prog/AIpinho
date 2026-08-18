@@ -1,0 +1,58 @@
+{
+  "report_id": "continue_connection_openai_adapter_hotfix_20260625",
+  "date": "2026-06-25",
+  "verdict": "CONTINUE_OPENAI_ADAPTER_READY_WITH_WARNINGS",
+  "adapter_base_url": "http://127.0.0.1:9088/v1",
+  "port_decision": {
+    "selected_port": 9088,
+    "proxy_8088_created": false,
+    "reason": "AIpinho backend is already canonical on 9088; docs/config were aligned to 9088."
+  },
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/v1/models",
+      "status": "implemented",
+      "smoke_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "stream_false": "implemented",
+      "stream_true": "implemented_sse_fallback_chunked",
+      "smoke_status": 200
+    }
+  ],
+  "files_changed": [
+    "src/aipinho/api/routers/continue_integration_router.py",
+    "tests/integration/test_continue_openai_compat_api.py",
+    "docs/integrations/continue_vscode_aipinho.md"
+  ],
+  "tests": {
+    "py_compile": "passed",
+    "pytest": {
+      "command": "python -m pytest C:\\Dev\\AIpinho\\tests\\integration\\test_continue_openai_compat_api.py -q",
+      "result": "14 passed in 6.09s"
+    }
+  },
+  "smoke": {
+    "backend_pid": 49528,
+    "models_endpoint": "passed",
+    "chat_non_stream": "passed",
+    "chat_stream_sse": "passed",
+    "stream_done_marker": true,
+    "continue_vscode_ui": "not_executed_in_this_round"
+  },
+  "security": {
+    "uses_openai": false,
+    "requires_openai_key": false,
+    "openai_enabled_false_supported": true,
+    "write_shell_patch_allowed_via_continue": false,
+    "authorization_token_logged": false
+  },
+  "limitations": [
+    "Streaming is SSE-compatible but currently chunked from a completed internal response when native model streaming is unavailable.",
+    "Real VS Code Continue UI smoke still needs manual validation after reloading extension/config.",
+    "Continue direct side-effect execution remains disabled until a governed bridge is implemented."
+  ]
+}

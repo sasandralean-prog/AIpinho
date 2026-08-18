@@ -1,0 +1,10 @@
+{
+  "source_type": "raw_log",
+  "source_id": "raw_fixture",
+  "agent_id": "codex",
+  "metadata_sanitized": {
+    "raw_log": "Traceback (most recent call last): should not be stored as memory"
+  },
+  "reusable_lessons": ["A raw log should never become curated memory."],
+  "evidence_refs": ["run:raw_fixture"]
+}

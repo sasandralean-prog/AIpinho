@@ -1,0 +1,26 @@
+template_id: generic_files
+display_name: Generic Files
+slug: generic-files
+version: "1.0.0"
+status: active
+category: generic
+description: Generic sandbox file scaffold for requests without a precise project type.
+supported_project_types: [generic_files, unknown]
+supported_languages: [markdown]
+supported_platforms: [sandbox]
+generator_key: generic_files
+required_files:
+  - README.md
+  - PROJECT_MANIFEST.json
+validation_profile:
+  structural: true
+build_profile:
+  build_required: false
+artifact_policy:
+  zip_required: true
+risk_level: low
+required_capabilities: [create_sandbox_files, create_artifact]
+compatible_skills: [sandbox_project_generation]
+compatible_autopilot_modes: [governed_autorun]
+examples:
+  - criar arquivos genericos

@@ -1,0 +1,16 @@
+schema_version: 1
+
+filesystem:
+  dry_run_allowed: true
+  execute_allowed: true
+  execute_mode: read_only
+  adapters: [filesystem]
+  allowed_execute_tools:
+    - filesystem.inspect_path
+    - filesystem.list_directory
+    - filesystem.read_file
+    - config.read
+  blocked_execute_tools:
+    - filesystem.write_file
+    - filesystem.delete_file
+    - filesystem.move_file

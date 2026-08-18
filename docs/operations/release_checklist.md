@@ -1,0 +1,22 @@
+# Release Checklist
+
+- [x] Backend Python compile validation.
+- [x] Multi-agent regression quick.
+- [x] Multi-agent regression all.
+- [x] Security/freedom/speaker-truth matrices present.
+- [x] Memory matrix present.
+- [x] Self-healing endpoints implemented.
+- [x] Dashboard/Debugger multi-agent endpoints implemented.
+- [x] Release docs generated.
+- [x] Physical-device mobile dashboard smoke confirms backend online.
+- [x] LAN/Tailscale smoke passed for 9088.
+- [x] Lucio and Gemini delegation aliases validated after Sprint 16 hotfix.
+- [x] Main chat explicit write flow creates governed create_file contract.
+- [x] Runtime hygiene preview/apply exists and preserves evidence.
+- [x] Health semantics separate backend, operational and observability states.
+- [x] Sprint 20 controlled dogfood passed governed read/write/shell/validation/artifact flow.
+- [x] Agent view-model no longer treats resolved tool-level policy blocks as final run failure.
+- [x] Governed shell tool requires explicit workspace policy context.
+- [ ] Full mobile visual QA across all tabs.
+- [ ] Full launcher visual smoke rerun in this sprint.
+- [ ] Real provider smoke for every external provider.

@@ -1,0 +1,57 @@
+﻿schema_version: 1
+
+approval_lifecycle:
+  default_ttl_minutes: 120
+  allow_approve_only_pending: true
+  allow_redecision: false
+  require_policy_snapshot: true
+  invalidate_on_policy_change: true
+  never_execute_on_approval: false
+  resume_task_after_approval: true
+  resume_through_runtime_queue_only: true
+
+approvable_actions:
+  - read_file
+  - list_files
+  - create_directory
+  - write_files
+  - apply_patch
+  - run_command
+  - git_commit
+  - git_push
+  - write_memory
+
+never_approve_if_denied:
+  - forbidden_root
+  - unknown_action
+  - policy_violation
+  - missing_policy_snapshot
+
+blocked_actions_this_sprint:
+  - git_commit
+  - git_push
+  - write_memory
+
+safe_batch:
+  enabled: true
+  same_task_only: true
+  same_workspace_only: true
+  excluded_actions:
+    - delete_file
+    - delete_files
+    - move_file
+    - move_files
+    - git_commit
+    - git_push
+    - destructive_shell
+    - network_shell
+    - process_control_shell
+
+notes:
+  execution_runtime_enabled: true
+  approval_scope_future_execution_only: true
+runtime_execution:
+  read_only_actions_do_not_require_approval: true
+  approved_side_effect_execution_enabled: true
+  runtime_must_recheck_policy: true
+  resume_after_approval: true

@@ -1,0 +1,43 @@
+skill_pack_id: android_pack
+display_name: Android Pack v1
+slug: android_pack
+version: 1.0.0
+status: active
+category: android
+description: Governed Android/Kotlin project generation, inventory, validation and artifact export for sandbox-first work.
+included_skills:
+  - internal.sandbox_project_generator
+  - internal.sandbox_android_kotlin_game_generator
+  - internal.sandbox_asset_placeholder_generator
+  - internal.sandbox_artifact_exporter
+  - internal.sandbox_validation_runner
+  - internal.artifact_reliability_validator
+required_capabilities:
+  - sandbox_mkdir
+  - sandbox_write
+  - sandbox_artifact_export
+  - sandbox_validate
+optional_capabilities:
+  - read_workspace
+  - report_generate
+supported_agents: [aipinho, lucio, codex, gemini, autopilot]
+supported_project_stacks: [android_gradle, kotlin_android, mixed, unknown]
+supported_execution_modes: [sandbox_project_generation, sandbox_autopilot, governed_autorun, assisted_execution]
+risk_level: medium
+policy_profile: sandbox_android_default
+validation_profile: sandbox_android_structural
+artifact_policy: token_protected_artifacts
+memory_policy: propose_candidate_with_evidence
+dashboard_visible: true
+debugger_trace_required: true
+docs_ref: docs/skills/ANDROID_PACK.md
+tests_ref: tests/skill_packs
+examples:
+  - label: Create governed Android sandbox project
+    prompt: Create a simple Android project in the sandbox and export a zip.
+    expected_pack_selection: [android_pack, sandbox_pack, artifact_pack]
+limitations:
+  - Full Gradle build depends on local Android tooling availability.
+evidence_refs: [skill_pack_manifest:android_pack]
+metadata_sanitized:
+  template_hint: android_kotlin_game

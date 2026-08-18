@@ -1,0 +1,51 @@
+{
+  "run_id": "agent_run_eb3d73c8cff94f548001971883cf486e",
+  "session_id": "agent_session_f89451c7ca4d493287bf9b2029ac9fc5",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "sandbox_project_generation",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [],
+  "started_at": "2026-06-14T22:31:55+00:00",
+  "completed_at": "2026-06-14T22:32:04+00:00",
+  "validation_status": null,
+  "artifact_ids": [
+    "agent_artifact_bf8f9b5eefc0430b8deaf1f8ca1c97b9"
+  ],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "project_generation_id": "project_generation_ebe9fd4e047c4bbe917cde99a6db9a99",
+    "project_type": "docs_pack",
+    "sandbox_task_id": "sandbox_task_fbfe627bc96e45b380266866d0b20654",
+    "sandbox_workspace_id": "sandbox_ws_default",
+    "latest_summary_sanitized": "Projeto DocsDemo gerado no sandbox. Artifact pronto: DocsDemo.zip. Artifact ID: agent_artifact_bf8f9b5eefc0430b8deaf1f8ca1c97b9.",
+    "evidence_refs": [
+      "sandbox_task:sandbox_task_fbfe627bc96e45b380266866d0b20654",
+      "run:agent_run_eb3d73c8cff94f548001971883cf486e",
+      "tool:tool_invocation_0d766c8b391848e298c5e6b49790a29e",
+      "tool:tool_invocation_fc411c136fc84a5c9333ae960bf45f21",
+      "tool:tool_invocation_e204d3dde7c947aca9c7964338fc8778",
+      "tool:tool_invocation_518a5b65013046af8cd00eb944b74cdf",
+      "tool:tool_invocation_5d05b944513546ecb1c9d9586a72693e",
+      "tool:tool_invocation_fd9dbafc35c84fd5b11e6228d076fcd3",
+      "sandbox_validation:project_structure",
+      "sandbox_task:sandbox_task_fbfe627bc96e45b380266866d0b20654",
+      "artifact:agent_artifact_bf8f9b5eefc0430b8deaf1f8ca1c97b9",
+      "tool:tool_invocation_de6b4bb916d04e56a0532127144ad768"
+    ],
+    "template_id": "docs_pack",
+    "template_version": "1.0.0",
+    "template_execution_id": "template_exec_af9c81e5e7b645b3b0a1a5ddf9785b51"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "timestamp": "2026-06-23T02:09:36-03:00",
+  "project": "AIpinho",
+  "hotfix": "lucio_direct_response_provider_fallback_adendum",
+  "verdict": "LUCIO_DIRECT_RESPONSE_FALLBACK_READY_WITH_WARNINGS",
+  "root_cause": "Lucio direct_response had no safe local fallback or structured provider_unavailable response when the external provider failed before generation.",
+  "files_changed": [
+    "src/aipinho/services/lucio_agent/lucio_safe_fallback_service.py",
+    "src/aipinho/services/lucio_agent/lucio_agent_service.py",
+    "src/aipinho/services/lucio_agent/lucio_agent_config_service.py",
+    "src/aipinho/schemas/lucio_agent.py",
+    "tests/unit/test_lucio_agent_service.py"
+  ],
+  "fallback_policy": {
+    "allowed": [
+      "greeting",
+      "simple_social_reply",
+      "trivial_low_risk_fact",
+      "simple_help_request"
+    ],
+    "forbidden": [
+      "operational_request",
+      "deep_technical_analysis",
+      "recent_or_source_required_fact",
+      "legal_medical_financial",
+      "unsafe_or_policy_sensitive"
+    ]
+  },
+  "metadata_fields": [
+    "route",
+    "route_type",
+    "provider",
+    "model",
+    "provider_error",
+    "fallback_used",
+    "fallback_type",
+    "model_invoked",
+    "provider_invocation_failed",
+    "local_execution_started",
+    "tool_invoked",
+    "delegation_started",
+    "final_status"
+  ],
+  "provider_status_fields": [
+    "provider_configured",
+    "auth_present",
+    "model_configured",
+    "model_available_or_unknown",
+    "last_provider_error",
+    "last_provider_error_at"
+  ],
+  "validations": [
+    {
+      "command": "python -m py_compile src\\aipinho\\services\\lucio_agent\\lucio_agent_service.py src\\aipinho\\services\\lucio_agent\\lucio_safe_fallback_service.py src\\aipinho\\services\\lucio_agent\\lucio_agent_config_service.py src\\aipinho\\schemas\\lucio_agent.py",
+      "status": "passed"
+    },
+    {
+      "command": "python -m pytest tests\\unit\\test_lucio_agent_service.py -q",
+      "status": "passed",
+      "summary": "17 passed in 2.73s"
+    },
+    {
+      "command": "python -m pytest tests\\integration\\test_lucio_agent_api.py tests\\integration\\test_multi_island_sprint10_11_routing.py -q",
+      "status": "passed",
+      "summary": "6 passed in 6.39s"
+    }
+  ],
+  "security": {
+    "secret_leak_detected": false,
+    "local_tool_invoked_for_simple_chat": false,
+    "delegation_started_for_simple_chat": false,
+    "model_invoked_on_auth_failure": false
+  },
+  "risks_remaining": [
+    "Trivial local fallback remains intentionally narrow.",
+    "Real provider health still depends on external credential and project configuration."
+  ]
+}

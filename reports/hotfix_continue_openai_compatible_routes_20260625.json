@@ -1,0 +1,56 @@
+{
+  "report_id": "hotfix_continue_openai_compatible_routes_20260625",
+  "date": "2026-06-25",
+  "verdict": "CONTINUE_CONNECTION_ENDPOINT_READY",
+  "objective": "Expose OpenAI-compatible local Continue routes without OpenAI dependency or side-effect execution.",
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/v1/models",
+      "status": "implemented",
+      "smoke_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/chat/completions",
+      "status": "implemented",
+      "smoke_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/v1/integrations/vscode/actions/execute",
+      "status": "disabled_in_connection_phase",
+      "expected_status": 403
+    }
+  ],
+  "files_changed": [
+    "src/aipinho/api/routers/continue_integration_router.py",
+    "tests/integration/test_continue_openai_compat_api.py"
+  ],
+  "tests": {
+    "py_compile": "passed",
+    "pytest": {
+      "command": "python -m pytest C:\\Dev\\AIpinho\\tests\\integration\\test_continue_openai_compat_api.py -q",
+      "result": "9 passed in 7.16s"
+    }
+  },
+  "smoke": {
+    "backend_pid": 41828,
+    "models_endpoint": "passed",
+    "chat_completions_endpoint": "passed",
+    "response_content": "AIpinho conectada."
+  },
+  "security": {
+    "uses_openai": false,
+    "requires_openai_key": false,
+    "openai_enabled_false_supported": true,
+    "continue_write_shell_allowed": false,
+    "direct_vscode_execute_disabled": true,
+    "events_sanitized": true
+  },
+  "remaining_risks": [
+    "SSE streaming is not implemented yet; stream=true returns explicit non-stream fallback.",
+    "Advanced Continue clients may request additional OpenAI-compatible fields not covered by the basic connection contract.",
+    "Side-effect execution from Continue remains disabled until a governed preview/approval/apply/validation bridge is designed."
+  ]
+}

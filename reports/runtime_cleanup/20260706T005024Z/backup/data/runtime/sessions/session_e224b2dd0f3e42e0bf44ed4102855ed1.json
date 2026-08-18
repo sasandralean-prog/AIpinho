@@ -1,0 +1,47 @@
+{
+  "session_id": "session_e224b2dd0f3e42e0bf44ed4102855ed1",
+  "status": "active",
+  "created_at": "2026-06-07T06:41:16.993413+00:00",
+  "updated_at": "2026-06-07T06:41:17.010061+00:00",
+  "expires_at": "2026-06-07T10:41:16.993413+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Salve um relatorio em reports/final.md no projeto C:\\Dev\\AIpinho",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_0006103d5fe44c248f3c6e3e6649e67a",
+    "intent_type": "artifact_generation",
+    "task_type": "artifact_generation",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Dev\\AIpinho",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_approval",
+    "contract_type": "artifact_generation",
+    "allowed_actions": [],
+    "denied_actions": [
+      "apply_patch",
+      "git_commit",
+      "git_push"
+    ],
+    "approval_required_for": [
+      "write_files"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Dev\\AIpinho",
+  "active_task_draft_id": "draft_b453c7f92673452989b694dc95ce5702",
+  "warnings": [],
+  "trace_refs": []
+}

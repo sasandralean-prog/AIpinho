@@ -1,0 +1,3 @@
+python -m py_compile src/aipinho/schemas/workspace_flows/workspace_flow.py src/aipinho/services/workspace_flows/workspace_flow_service.py src/aipinho/api/routers/workspace_flow_router.py apps/launcher/ui/api/governance_client.py apps/launcher/ui/tabs/settings_tab.py apps/launcher/ui/launcher_app.py
+python -m pytest tests\unit\test_workspace_flow_service.py tests\unit\test_mobile_view_model_service.py -q -> 13 passed
+cmd /c apps\mobile\android\gradlew.bat -p apps\mobile\android :app:compileDebugKotlin -> BUILD SUCCESSFUL

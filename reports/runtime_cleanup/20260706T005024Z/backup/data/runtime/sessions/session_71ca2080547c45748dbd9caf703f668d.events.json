@@ -1,0 +1,35 @@
+[
+  {
+    "event_id": "session_event_458fc54fba384696ae08649306674d5f",
+    "session_id": "session_71ca2080547c45748dbd9caf703f668d",
+    "event_type": "session_created",
+    "created_at": "2026-06-18T19:21:53.673668+00:00",
+    "summary": "Sessao criada.",
+    "data": {},
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_c85b7da8aeb74636bb5ad2477ffe1e89",
+    "session_id": "session_71ca2080547c45748dbd9caf703f668d",
+    "event_type": "chat_message",
+    "created_at": "2026-06-18T19:21:53.705146+00:00",
+    "summary": "Mensagem processada com status ready.",
+    "data": {
+      "intent_type": "unknown",
+      "task_draft_id": "sandbox_run_b6929578feb2420a9d0f770534011395"
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_7737cae06a5a44c4b948d2d63e4f0cc7",
+    "session_id": "session_71ca2080547c45748dbd9caf703f668d",
+    "event_type": "operational_context_updated",
+    "created_at": "2026-06-18T19:21:53.705146+00:00",
+    "summary": "Contexto operacional recente atualizado.",
+    "data": {
+      "operation_type": "filesystem_write_file",
+      "path": "C:\\Dev\\AIpinho\\sandboxes\\capability_probe\\probe_f4354f1eeca84745864587a63b90dbc7.txt"
+    },
+    "warnings": []
+  }
+]

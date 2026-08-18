@@ -1,0 +1,40 @@
+schema_version: 1
+maintenance_plane:
+  enabled: true
+  mode: supervised_autocure
+  require_context_kernel: true
+  require_event_contract_registry: true
+  require_debugger_trace: true
+  require_invariant_registry: true
+  require_policy_decision_for_repair: true
+  require_capability_gate_for_repair: true
+  require_approval_for_apply: true
+  require_validation_plan: true
+  require_trace: true
+  require_audit: true
+allowed_modes:
+- diagnose
+- repair_proposal
+- patch_preview
+- validation_proposal
+- handoff_only
+blocked:
+  autonomous_apply: true
+  direct_patch_apply: true
+  direct_config_write: true
+  direct_policy_write: true
+  direct_memory_write: true
+  direct_skill_install: true
+  direct_shell: true
+  direct_git: true
+  direct_external_api: true
+  ignore_approval: true
+  ignore_capability_gate: true
+  ignore_context_kernel: true
+  claim_fixed_without_apply_event: true
+replay_regression_integration:
+  suggest_regression_candidates: true
+  promote_without_approval: false
+
+legacy_pinhoabacaxi_curated:
+  current_truth_allowed: false

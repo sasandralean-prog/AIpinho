@@ -1,0 +1,48 @@
+schema_version: 1
+formats:
+  json:
+    require_valid_json: true
+    allow_markdown_fence: true
+    reject_trailing_text: false
+  markdown:
+    require_required_sections: true
+    section_heading_styles:
+    - '#'
+    - '##'
+    - '###'
+  text:
+    allow_plain_text: true
+    max_empty_ratio: 0.8
+contracts:
+  chat_response:
+    required_sections:
+    - answer
+    allow_plain_text_fallback: true
+  markdown_report:
+    required_sections:
+    - executive_summary
+    - findings
+    - recommendations
+    - limitations
+    require_evidence_refs: true
+  json_findings:
+    require_valid_json: true
+    required_fields:
+    - findings
+    - limitations
+  task_preview:
+    require_valid_json: true
+    required_fields:
+    - summary
+    - allowed_actions
+    - denied_actions
+    - approval_required_for
+  validation_summary:
+    format: text
+  debug_summary:
+    format: text
+  artifact_preview:
+    format: markdown
+    required_sections:
+    - summary
+    - limitations

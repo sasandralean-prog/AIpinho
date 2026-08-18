@@ -1,0 +1,76 @@
+schema_version: 1
+
+planning:
+  enabled: true
+  default_strategy: risk_aware_cooperative_graph
+  default_review_required: true
+  default_memory_candidate_node: true
+  default_supervisor_authority: aipinho
+
+task_type_markers:
+  android:
+    - android
+    - apk
+    - gradle
+    - kotlin
+    - java
+    - react native
+    - mobile
+  python:
+    - python
+    - pytest
+    - pip
+    - pyproject
+    - requirements.txt
+  multimodal:
+    - multimodal
+    - screenshot
+    - imagem
+    - image
+    - visual
+    - tela
+    - ui
+  ocr:
+    - ocr
+    - extrair texto
+    - texto da imagem
+  vision:
+    - vision
+    - analise visual
+    - visual
+    - screenshot
+  coding:
+    - implemente
+    - implementar
+    - codigo
+    - code
+    - corrigir
+    - feature
+  debug:
+    - debug
+    - diagnosticar
+    - erro
+    - falha
+    - build
+    - teste
+  review:
+    - review
+    - revisar
+    - auditoria
+    - validar
+  artifact:
+    - artifact
+    - relatorio
+    - report
+    - zip
+
+requested_node_aliases:
+  planner: node_planner
+  executor: node_executor
+  debugger: node_debugger
+  vision: node_vision
+  ocr: node_ocr
+  review: node_review
+  memory: node_memory
+  supervisor: node_supervisor
+  final: node_final

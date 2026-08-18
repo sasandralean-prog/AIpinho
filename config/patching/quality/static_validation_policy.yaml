@@ -1,0 +1,7 @@
+schema_version: 1
+
+static_validation:
+  enabled: true
+  execute_code: false
+  write_temp_files: false
+  supported_extensions: [.py, .json, .yaml, .yml, .toml]

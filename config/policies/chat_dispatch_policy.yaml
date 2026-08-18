@@ -1,0 +1,28 @@
+schema_version: 1
+
+defaults:
+  execution_enabled: false
+  model_calls_enabled: false
+  tools_enabled: false
+  rag_enabled: false
+  memory_persistence_enabled: false
+  task_creation_enabled: false
+  patch_apply_enabled: false
+
+direct_chat_intents:
+  - conversation
+  - self_analysis
+  - capability_explanation
+  - in_chat_final_report
+
+preview_intents:
+  - readonly_analysis
+  - artifact_generation
+  - patch_request
+  - validation_request
+  - memory_write
+  - rag_query
+
+blocked_conditions:
+  - protected_workspace
+  - policy_denied

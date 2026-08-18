@@ -1,0 +1,10 @@
+schema_version: 1
+integration:
+  strategy: domain_clients_to_mobile_aggregators
+  direct_endpoint_screen: false
+  fallback_to_direct_endpoint_allowed: true
+  fallback_status: degraded
+  official_prefix: /api/v1
+  blocked_prefixes:
+    - /v2
+

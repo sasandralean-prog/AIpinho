@@ -1,0 +1,52 @@
+﻿{
+    "sprint":  "4+5",
+    "generated_at":  "2026-06-22T00:00:00-03:00",
+    "files_changed":  [
+                          "src/aipinho/api/routers/__init__.py",
+                          "src/aipinho/api/routers/approval_router.py",
+                          "src/aipinho/api/routers/artifact_router.py",
+                          "src/aipinho/services/artifacts/universal_artifact_registry_service.py",
+                          "apps/launcher/ui/launcher_app.py"
+                      ],
+    "risks":  [
+                  "visual QA manual still recommended",
+                  "lock override remains high-risk manual action",
+                  "git status unavailable because C:\\Dev\\AIpinho is not a git repository root in this session"
+              ],
+    "verdict":  "READY_WITH_WARNINGS",
+    "files_created":  [
+                          "src/aipinho/schemas/agents/ownership.py",
+                          "src/aipinho/services/agents/workspace_lock_service.py",
+                          "src/aipinho/api/routers/agent_bridge_router.py",
+                          "src/aipinho/api/routers/workspace_lock_router.py",
+                          "apps/launcher/ui/api/agent_console_client.py",
+                          "apps/launcher/ui/tabs/agent_console_tab.py",
+                          "tests/integration/test_agent_bridge_sprint4_5_backend.py",
+                          "tests/integration/test_launcher_agent_console_contract.py"
+                      ],
+    "validations":  [
+                        {
+                            "command":  "python -m py_compile focused",
+                            "status":  "passed"
+                        },
+                        {
+                            "command":  "python -m pytest focused sprint4_5/backend/launcher/artifacts/tool_gateway",
+                            "status":  "22 passed"
+                        },
+                        {
+                            "output":  "C:\\Dev\\AIpinho\\dist\\AIpinhoLauncher.exe",
+                            "status":  "passed",
+                            "command":  "scripts/package_launcher_desktop.ps1"
+                        }
+                    ],
+    "endpoints":  [
+                      "/api/v1/agent-bridge/status",
+                      "/api/v1/agent-bridge/active",
+                      "/api/v1/agent-bridge/tasks/{bridge_task_id}/details",
+                      "/api/v1/locks",
+                      "/api/v1/locks/by-workspace",
+                      "/api/v1/approvals/pending",
+                      "/api/v1/artifacts/{artifact_id}/provenance",
+                      "/api/v1/artifacts/{artifact_id}/revalidate"
+                  ]
+}

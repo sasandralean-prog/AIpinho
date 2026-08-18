@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-06-25T12:44:23.003407+00:00",
+  "status": "ok",
+  "controlled_fixture": true,
+  "workspace_id": "sprint26_fixture",
+  "query": "workspace keyword main",
+  "capabilities_used": {
+    "workspace_search": true,
+    "embeddings_used": false,
+    "reranker_used": false,
+    "fallback": "keyword_search"
+  },
+  "sample_results": [
+    {
+      "path": "C:\\Dev\\AIpinho\\data\\runtime\\sprint26_report_fixture\\workspace\\src\\main.py",
+      "snippet": "def main(): return workspace search keyword",
+      "score": 1.0
+    }
+  ],
+  "note": "Full service payload intentionally compacted for review package; detailed behavior is covered by tests/integration/test_sprint26_rag_multimodal.py."
+}

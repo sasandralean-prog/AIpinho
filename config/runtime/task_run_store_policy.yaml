@@ -1,0 +1,17 @@
+﻿schema_version: 1
+
+store:
+  path: data/runtime/task_runs
+  format: json
+  save_events: true
+  save_trace: true
+  save_result: true
+  sanitize_before_save: true
+  do_not_save_raw_file_content_by_default: true
+  do_not_save_secrets: true
+  do_not_save_full_prompt_by_default: true
+  do_not_save_full_model_output_by_default: true
+
+retention:
+  max_runs: 1000
+  cleanup_enabled: false

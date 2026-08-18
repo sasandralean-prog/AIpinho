@@ -1,0 +1,42 @@
+schema_version: 1
+
+templates:
+  architecture_overview:
+    sections:
+      - executive_summary
+      - project_structure
+      - api_routes
+      - configs_and_policies
+      - schemas_and_contracts
+      - services
+      - tests
+      - findings
+      - recommendations
+      - limitations
+
+  policy_audit:
+    sections:
+      - executive_summary
+      - policies
+      - action_registry
+      - capability_gate
+      - role_policy
+      - findings
+      - recommendations
+      - limitations
+
+  general:
+    sections:
+      - executive_summary
+      - project_structure
+      - findings
+      - recommendations
+      - limitations
+
+formatting:
+  markdown:
+    include_table_of_contents: true
+    include_evidence_refs: true
+    include_limitations: true
+    include_generated_at: true
+    include_no_write_disclaimer: true

@@ -1,0 +1,69 @@
+schema_version: 1
+poll_interval_seconds: 5
+
+terminal_task_statuses:
+  - completed
+  - partial
+  - failed
+  - cancelled
+  - blocked
+  - expired
+
+significant_statuses:
+  - waiting_input
+  - queued
+  - running
+  - completed
+  - partial
+  - failed
+  - cancelled
+  - blocked
+  - passed
+  - pending
+
+significant_event_types:
+  - PlanningStarted
+  - PlanningFinished
+  - ExecutionPlanCreated
+  - ExecutionPlanApproved
+  - ExecutionStarted
+  - StepStarted
+  - StepFinished
+  - ValidationStarted
+  - ValidationFinished
+  - ArtifactsCreated
+  - CompletionGenerated
+  - SpeakerTruthGenerated
+  - run_created
+  - run_queued
+  - run_waiting_input
+  - run_started
+  - run_completed
+  - run_failed
+  - run_cancelled
+  - run_blocked
+  - approval_required
+  - approval_granted
+  - approval_denied
+  - plan_created
+  - plan_blocked_by_capability_gate
+  - step_started
+  - step_completed
+  - step_failed
+  - validation_started
+  - validation_passed
+  - validation_failed
+  - task_blocked_by_policy
+
+message_type_by_event:
+  approval_required: approval_request
+  approval_denied: warning
+  run_completed: final_answer
+  run_failed: error_update
+  validation_failed: error_update
+  task_blocked_by_policy: warning
+
+message_type_by_status:
+  failed: error_update
+  blocked: warning
+  completed: final_answer

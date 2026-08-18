@@ -1,0 +1,68 @@
+﻿schema_version: 1
+
+llama_cpp:
+  enabled: true
+  real_inference: true
+  provider_id: llama_cpp_text
+  registered_provider_ids:
+    - llama_cpp_text
+    - llama_cpp_vision
+    - llama_cpp_ocr
+    - llama_cpp_reranker
+    - llama_cpp_embedding
+  executable_path: 'C:\Dev\AIpinho\tools\llama_cpp\b9558_vulkan\llama-cli.exe'
+  working_directory: null
+  allow_custom_args: false
+  allowed_args:
+    - "--model"
+    - "--prompt"
+    - "--ctx-size"
+    - "--n-predict"
+    - "--temp"
+    - "--top-p"
+    - "--threads"
+    - "--no-display-prompt"
+    - "--simple-io"
+    - "--no-perf"
+    - "--single-turn"
+    - "--reasoning"
+    - "--reasoning-budget"
+  blocked_args:
+    - "--file"
+    - "--interactive"
+    - "--server"
+    - "--host"
+    - "--port"
+  use_shell: false
+  timeout_seconds: 60
+  max_stdout_chars: 20000
+  max_stderr_chars: 8000
+  kill_on_timeout: true
+
+runtime:
+  default_ctx_size: 2048
+  max_ctx_size: 8192
+  default_n_predict: 256
+  max_n_predict: 1024
+  default_temperature: 0.2
+  default_top_p: 0.9
+  default_threads: null
+  default_args:
+    - "--no-display-prompt"
+    - "--simple-io"
+    - "--no-perf"
+    - "--single-turn"
+    - "--reasoning"
+    - "off"
+    - "--reasoning-budget"
+    - "0"
+
+safety:
+  require_prompt_assembly: true
+  require_safety_envelope: true
+  sanitize_stdout: true
+  sanitize_stderr: true
+  block_tool_syntax_execution: true
+  do_not_parse_model_output_as_commands: true
+  status_and_doctor_only: false
+  auto_load_enabled: false

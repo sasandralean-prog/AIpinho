@@ -1,0 +1,53 @@
+{
+  "created_at": "2026-07-06T00:50:57+00:00",
+  "queue_snapshot": {
+    "status": "ok",
+    "enabled": true,
+    "max_pending_tasks": 25,
+    "max_wait_seconds": 86400,
+    "active_count": 0,
+    "pending_count": 0,
+    "requires_decision_count": 0,
+    "total_visible": 0,
+    "items": [],
+    "last_reconciled_at": "2026-07-06T00:50:57.113547+00:00",
+    "warnings": []
+  },
+  "hygiene_health": {
+    "status": "ok",
+    "active_runs": 0,
+    "queued_runs": 0,
+    "stale_runs": 0,
+    "pending_approvals": 0,
+    "active_sessions": 0,
+    "dispatcher_status": "available",
+    "worker_pool_capacity": 8,
+    "worker_pool_available_slots": 8,
+    "stale_run_ids": [],
+    "backpressure_required": false,
+    "reason_code": null
+  },
+  "task_run_status_counts": {
+    "blocked": 29,
+    "partial": 11,
+    "cancelled": 20,
+    "completed": 29,
+    "failed": 6
+  },
+  "approval_status_counts": {
+    "expired": 307,
+    "rejected": 20,
+    "approved": 745,
+    "cancelled": 7
+  },
+  "draft_status_counts": {
+    "cancelled": 2188,
+    "approved_for_future_execution": 346,
+    "rejected": 20,
+    "blocked": 586,
+    "invalidated_by_policy_change": 8
+  },
+  "chat_session_count": 0,
+  "generic_session_file_count": 0,
+  "agent_session_count": 237
+}

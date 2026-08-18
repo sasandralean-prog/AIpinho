@@ -1,0 +1,31 @@
+{
+  "run_id": "agent_run_cda4fb200424491080e963d4eb8aa908",
+  "session_id": "agent_session_64baf530d55b4949919f95c56398e893",
+  "agent_id": "lucio",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "cancelled",
+  "operation_type": "lucio_chat",
+  "workspace_id": null,
+  "capabilities_requested": [
+    "read_workspace",
+    "create_artifact",
+    "delegate"
+  ],
+  "started_at": "2026-06-13T18:16:38+00:00",
+  "completed_at": "2026-06-13T21:42:52+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [
+    "agent_memory_candidate_13d44dd7db624e47ba90211eb684080f"
+  ],
+  "memory_warnings": [],
+  "final_message_id": "agent_msg_28c1348521994321986ecff31494265d",
+  "error_code": "stale_runtime_cleanup",
+  "metadata_sanitized": {
+    "hygiene_preview_id": "cleanup_preview_700204db3c974dbfbd73bd08b3aac442",
+    "previous_status": "delegation_running"
+  }
+}

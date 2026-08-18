@@ -1,0 +1,40 @@
+schema_version: 1
+
+workspace_resolution:
+  explicit_path_precedence: true
+  session_workspace_precedence: false
+  vague_project_reference_requires_clarification: true
+  detect_windows_paths: true
+  do_not_check_filesystem_existence: true
+
+path_extraction:
+  windows_drive:
+    quoted_regex: '(?i)["`'']([A-Z]:[\\/][^\r\n"`'']+)["`'']'
+    bare_regex: '(?i)(?:^|\s)([A-Z]:[\\/][^\r\n"`''<>|]+?)(?=\s+[A-Z]:[\\/]|[\r\n]|$)'
+    normalize_separator: "\\"
+    strip_trailing: ".,;)"
+    split_before_next_drive: true
+    bare_stop_words:
+      - workspace
+      - workload
+      - e
+      - fonte
+      - source
+      - target
+      - alvo
+      - futuro
+      - sem
+      - somente
+      - apenas
+      - comece
+      - nao
+      - retorne
+      - responda
+      - faca
+      - crie
+      - implemente
+      - utilize
+      - use
+      - objetivo
+      - esperado
+      - expected

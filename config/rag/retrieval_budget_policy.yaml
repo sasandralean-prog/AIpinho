@@ -1,0 +1,15 @@
+schema_version: 1
+
+budget:
+  max_sources_per_request: 5
+  max_hits_total: 20
+  max_hits_per_source: 8
+  max_files_read: 20
+  max_file_bytes: 200000
+  max_total_bytes: 500000
+  max_context_chars: 30000
+  max_hit_excerpt_chars: 1200
+  max_citation_excerpt_chars: 500
+  max_query_chars: 1000
+  truncate_large_hits: true
+  include_truncation_warning: true

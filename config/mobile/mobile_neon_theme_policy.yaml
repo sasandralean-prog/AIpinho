@@ -1,0 +1,30 @@
+schema_version: 1
+policy_id: mobile_neon_theme_policy
+theme_id: cyberpunk_matrix_neon
+enabled: true
+colors:
+  matrix_black: "#020406"
+  terminal_black: "#03070A"
+  terminal_dark_gray: "#0A1014"
+  card_blue_gray: "#16232D"
+  card_blue_gray_deep: "#0E1821"
+  neon_cyan: "#00E5FF"
+  neon_green: "#39FF14"
+  neon_pink: "#FF2BD6"
+  danger_pink: "#FF1493"
+  warning_pink: "#FF4DA6"
+  muted_cyan: "#7DEBFF"
+  disabled_gray: "#60707A"
+shape:
+  card_radius_dp: 18
+  terminal_radius_dp: 14
+  button_radius_dp: 14
+  tab_radius_dp: 16
+border:
+  default_width_dp: 1
+  focused_width_dp: 1.5
+  error_width_dp: 1.5
+  glow_enabled: true
+accessibility:
+  neon_reduced_mode_future: true
+  avoid_excessive_glow: true

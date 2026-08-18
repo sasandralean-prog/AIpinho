@@ -1,0 +1,70 @@
+{
+  "hygiene_id": "taskrun_hygiene_d1f03d56f5a142da8c4158c1c509db5d",
+  "created_at": "2026-08-13T01:10:00.119444+00:00",
+  "status": "ok",
+  "scope": "TaskRunStore non-terminal stale runs only",
+  "deletes_evidence": false,
+  "candidates": [
+    {
+      "run_id": "task_run_c34f13ea90424209ae2742f7b30a9ee3",
+      "session_id": "firetest5_h1b4_3_3_public_artifact_terminality_20260812",
+      "status_before": "created",
+      "created_at": "2026-08-12T13:24:20.778191+00:00",
+      "started_at": null,
+      "finished_at": null,
+      "event_count_before": 5,
+      "latest_event_type": "ExecutionPlanCreated",
+      "latest_event_status": "ready",
+      "latest_event_timestamp": "2026-08-12T13:24:20.801093+00:00"
+    },
+    {
+      "run_id": "task_run_e0996a23a45b4ca6a86b1968cfc05a45",
+      "session_id": "firetest5_h1b4_3_public_validation_20260812_033847",
+      "status_before": "running",
+      "created_at": "2026-08-12T06:41:27.142898+00:00",
+      "started_at": "2026-08-12T06:43:10.977846+00:00",
+      "finished_at": null,
+      "event_count_before": 13,
+      "latest_event_type": "run_cancel_requested",
+      "latest_event_status": "running",
+      "latest_event_timestamp": "2026-08-12T06:56:16.139612+00:00"
+    }
+  ],
+  "applied": [
+    {
+      "run_id": "task_run_c34f13ea90424209ae2742f7b30a9ee3",
+      "session_id": "firetest5_h1b4_3_3_public_artifact_terminality_20260812",
+      "status_before": "created",
+      "created_at": "2026-08-12T13:24:20.778191+00:00",
+      "started_at": null,
+      "finished_at": null,
+      "event_count_before": 5,
+      "latest_event_type": "ExecutionPlanCreated",
+      "latest_event_status": "ready",
+      "latest_event_timestamp": "2026-08-12T13:24:20.801093+00:00",
+      "action": "cancelled_terminalized",
+      "status_after": "cancelled"
+    },
+    {
+      "run_id": "task_run_e0996a23a45b4ca6a86b1968cfc05a45",
+      "session_id": "firetest5_h1b4_3_public_validation_20260812_033847",
+      "status_before": "running",
+      "created_at": "2026-08-12T06:41:27.142898+00:00",
+      "started_at": "2026-08-12T06:43:10.977846+00:00",
+      "finished_at": null,
+      "event_count_before": 13,
+      "latest_event_type": "run_cancel_requested",
+      "latest_event_status": "running",
+      "latest_event_timestamp": "2026-08-12T06:56:16.139612+00:00",
+      "action": "cancelled_terminalized",
+      "status_after": "cancelled"
+    }
+  ],
+  "active_after": [],
+  "active_after_count": 0,
+  "status_counts_after": {
+    "blocked": 25,
+    "cancelled": 3,
+    "completed": 6
+  }
+}

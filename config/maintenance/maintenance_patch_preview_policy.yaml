@@ -1,0 +1,7 @@
+schema_version: 1
+patch_preview:
+  enabled: true
+  delegates_to: patch_planning_pipeline
+  apply: false
+  write: false
+  quality_gate_required_for_future_flow: true

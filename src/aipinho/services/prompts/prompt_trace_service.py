@@ -1,0 +1,8 @@
+from __future__ import annotations
+
+from typing import Any
+
+
+class PromptTraceService:
+    def item(self, stage: str, status: str, reason: str, *, source: str | None = None, data: dict[str, Any] | None = None) -> dict[str, Any]:
+        return {"stage": stage, "status": status, "reason": reason, "source": source, "data": data or {}}

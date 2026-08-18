@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-06-28T16:19:16.143410+00:00",
+  "verdict": "BLOCK_F_P1_CLOSURE_READY_WITH_UI_ENVIRONMENT_NOTE",
+  "severity_counts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 0,
+    "UNKNOWN": 0
+  },
+  "closed_p1": [
+    "duplicate_public_tools_routes",
+    "pipeline_full_path_certification",
+    "artifact_zip_binary_registry_certification",
+    "role_model_live_inference_invocation",
+    "mobile_launcher_build_and_scroll_contract_qa"
+  ],
+  "environment_notes": [
+    "ADB is available at C:\\Dev\\Dependencias\\Android\\Sdk\\platform-tools\\adb.exe, but no devices are attached.",
+    "AVD Pixel_4_API_33 exists but cannot load because its Google APIs x86_64 API 33 system image is missing.",
+    "sdkmanager could not fetch remote package manifests in this environment, so emulator visual screenshot QA could not be completed here."
+  ],
+  "evidence_files": [
+    "reports/governance_block_f/block_f_p1_closure_evidence.json",
+    "reports/governance_block_f/block_f_p1_closure.md",
+    "reports/governance_block_f/live_alignment_conflicts.json"
+  ],
+  "tests_executed": [
+    "python -m pytest tests\\integration\\test_block_f_p1_closure.py tests\\unit\\test_model_invocation_service.py tests\\contract\\test_route_registry.py -q",
+    "python -m pytest tests\\integration\\test_tool_api.py tests\\integration\\test_tool_registry_api.py tests\\integration\\test_agent_tool_gateway_api.py -q",
+    "python -m py_compile src\\aipinho\\api\\routers\\agent_tool_gateway_router.py src\\aipinho\\api\\routers\\tool_registry_router.py src\\aipinho\\api\\routers\\tool_router.py src\\aipinho\\services\\models\\model_invocation_service.py tests\\integration\\test_block_f_p1_closure.py tests\\unit\\test_model_invocation_service.py tests\\contract\\test_route_registry.py tests\\integration\\test_agent_tool_gateway_api.py",
+    "./gradlew.bat :app:assembleDebug",
+    "./gradlew.bat :app:testDebugUnitTest --tests br.com.aipinho.mobile.MultiAgentMobileUiContractTest --tests br.com.aipinho.mobile.Sprint19MobileUxContractTest --tests br.com.aipinho.mobile.NeonTerminalCardTest --tests br.com.aipinho.mobile.HumanizedViewModelTerminalTest",
+    "python -m py_compile apps\\launcher\\...\\*.py",
+    "python -m pytest tests\\integration\\test_launcher_ui_boot_flow.py tests\\integration\\test_launcher_bootstrap_flow.py tests\\unit\\test_launcher_bootstrap_service.py -q",
+    "python -m pytest tests\\unit\\test_live_alignment_conflict_detector.py -q"
+  ]
+}

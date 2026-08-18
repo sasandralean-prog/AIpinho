@@ -1,0 +1,26 @@
+schema_version: 1
+routing:
+  default_model_id: qwen3_1_7b_q6_k
+  real_inference_enabled: true
+  allow_disabled_models: false
+  allow_real_provider_selection: true
+  default_by_purpose:
+    chat: qwen3_1_7b_q6_k
+    project_report: qwen2_5_7b_instruct_q5_k_m
+    code_analysis: qwen2_5_coder_1_5b_q8_0
+    self_analysis: qwen3_1_7b_q6_k
+    capability_explanation: qwen3_1_7b_q6_k
+    task_preview: deepseek_r1_distill_qwen_7b_q5_k_m
+    planning: deepseek_r1_distill_qwen_7b_q5_k_m
+    explanation: qwen3_1_7b_q6_k
+    policy_explanation: qwen3_1_7b_q6_k
+    final_response: qwen3_1_7b_q6_k
+    validation: deepseek_r1_distill_qwen_7b_q5_k_m
+    supervision: deepseek_r1_distill_qwen_7b_q5_k_m
+    debug_trace: qwen3_4b_thinking_distill_q4_k_m
+    artifact_preview: qwen2_5_7b_instruct_q5_k_m
+  default_by_role:
+    speaker: qwen3_1_7b_q6_k
+    reporter: qwen2_5_7b_instruct_q5_k_m
+    analyst: qwen2_5_coder_1_5b_q8_0
+    interpreter: qwen2_5_7b_instruct_q5_k_m

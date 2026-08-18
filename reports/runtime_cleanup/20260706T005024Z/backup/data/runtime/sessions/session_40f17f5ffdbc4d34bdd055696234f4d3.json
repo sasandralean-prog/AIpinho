@@ -1,0 +1,47 @@
+{
+  "session_id": "session_40f17f5ffdbc4d34bdd055696234f4d3",
+  "status": "active",
+  "created_at": "2026-06-07T15:40:24.385770+00:00",
+  "updated_at": "2026-06-07T15:40:25.053047+00:00",
+  "expires_at": "2026-06-07T19:40:24.385770+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Explique a arquitetura do projeto C:\\Dev\\AIpinho sem alterar nada",
+      "message_id": null,
+      "created_at": null
+    },
+    {
+      "role": "user",
+      "content": "E agora gere um report no chat",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_a09ea54e6fd047a3b6529d5bdab3312f",
+    "intent_type": "in_chat_final_report",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Dev\\AIpinho",
+  "active_task_draft_id": "draft_3f68be8a12564efe9968950d6d654c9e",
+  "warnings": [],
+  "trace_refs": []
+}

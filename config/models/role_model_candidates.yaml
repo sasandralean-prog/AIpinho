@@ -1,0 +1,17 @@
+schema_version: 1
+
+future_candidates:
+  planner:
+    preferred: [qwen2_5_7b_instruct_q5_k_m, deepseek_r1_distill_qwen_7b_q5_k_m]
+  executor:
+    preferred: [qwen2_5_coder_7b_q4_k_m, qwen2_5_coder_1_5b_q8_0]
+  reviewer:
+    preferred: [qwen2_5_coder_7b_q4_k_m, starcoder2_7b_q5_k_m]
+  validator:
+    preferred: [qwen2_5_coder_1_5b_q8_0, qwen3_1_7b_q6_k]
+  speaker:
+    preferred: [qwen2_5_7b_instruct_q5_k_m, qwen3_1_7b_q6_k]
+
+activation:
+  enabled: false
+  reason: "Sprint 27 registers candidates only; RolePipeline remains deterministic/stub."

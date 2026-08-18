@@ -1,0 +1,90 @@
+﻿{
+    "verdict":  "AIPINHO_FIRETEST_PINHOFORGE_READY_WITH_WARNINGS",
+    "timestamp_local":  "2026-06-21T18:36:37",
+    "workspace_aipinho":  "C:\\Dev\\AIpinho",
+    "workspace_target":  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2",
+    "phase7":  {
+                   "status":  "READY",
+                   "summary_path":  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2\\reports\\aipinho_firetest_summary.md",
+                   "evidence_zip_path":  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2\\reports\\aipinho_firetest_evidence.zip",
+                   "zip_size_bytes":  185450,
+                   "entries_validated":  7,
+                   "run_id":  "agent_run_95eb23c5ec2b436ea3f911c36605b250",
+                   "summary_tool_id":  "tool_invocation_dbf583f3f2694fb193ae213559b38739",
+                   "archive_tool_id":  "tool_invocation_93b4f37a224249939aad3501836f75f4",
+                   "artifact_id":  "agent_artifact_b047693df17b40f087f30ec1fb10896f",
+                   "validation":  "passed"
+               },
+    "zip_entries":  [
+                        {
+                            "bytes":  2625,
+                            "path":  "reports/aipinho_firetest_health.md"
+                        },
+                        {
+                            "bytes":  2721,
+                            "path":  "reports/aipinho_firetest_project_scan.md"
+                        },
+                        {
+                            "bytes":  3156,
+                            "path":  "reports/aipinho_firetest_persistence_diagnosis.md"
+                        },
+                        {
+                            "bytes":  913,
+                            "path":  "reports/aipinho_firetest_persistence_fix.md"
+                        },
+                        {
+                            "bytes":  45904,
+                            "path":  "src/main/kotlin/com/pinhoforge/studio/ui/PinhoForgeApp.kt"
+                        },
+                        {
+                            "bytes":  183736,
+                            "path":  "build/libs/PinhoForgeStudio.jar"
+                        },
+                        {
+                            "bytes":  2857,
+                            "path":  "reports/aipinho_firetest_summary.md"
+                        }
+                    ],
+    "visual_qa":  {
+                      "status":  "READY_WITH_WARNINGS",
+                      "report_path":  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2\\reports\\aipinho_firetest_visual_qa.md",
+                      "verdict":  "render_qa_passed_with_warning",
+                      "screenshot":  false,
+                      "run_id":  "agent_run_b0c33b42fe35473abe2f3b61d7cfc503",
+                      "validation":  "passed"
+                  },
+    "stale_e2e":  {
+                      "aipinho_requested":  true,
+                      "aipinho_generated_report":  false,
+                      "aipinho_route":  "session_diagnostic",
+                      "supervisor_report":  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2\\reports\\aipinho_firetest_stale_e2e_diagnosis.md",
+                      "verdict":  "diagnosed_with_warning"
+                  },
+    "regression":  {
+                       "report_path":  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2\\reports\\aipinho_firetest3_1_regression.md",
+                       "overall":  "regression_passed_with_warnings",
+                       "r1_health":  "PASS",
+                       "r2_project_scan":  "PASS",
+                       "r3_readme":  "PASS",
+                       "r4_ux_marker":  "PASS_WITH_WARNING",
+                       "r5_persistence_diagnosis":  "PASS",
+                       "r6_persistence_fix":  "PASS",
+                       "r7_evidence_zip":  "PASS"
+                   },
+    "tests":  {
+                  "py_compile":  "passed",
+                  "focused_pytest":  "56 passed in 4.63s"
+              },
+    "risks_remaining":  [
+                            "visual_screenshot_unavailable",
+                            "stale_e2e_router_misclassified_as_session_diagnostic",
+                            "test_profiles_need_parametrization_for_real_inference_and_forbidden_roots",
+                            "summary_reporter_model_used_manifest_fallback"
+                        ],
+    "reports":  {
+                    "stale_e2e":  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2\\reports\\aipinho_firetest_stale_e2e_diagnosis.md",
+                    "regression":  "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2\\reports\\aipinho_firetest3_1_regression.md",
+                    "closure_md":  "C:\\Dev\\AIpinho\\reports\\aipinho_firetest3_1_closure_20260621_183637.md",
+                    "closure_json":  "C:\\Dev\\AIpinho\\reports\\aipinho_firetest3_1_closure_20260621_183637.json"
+                }
+}

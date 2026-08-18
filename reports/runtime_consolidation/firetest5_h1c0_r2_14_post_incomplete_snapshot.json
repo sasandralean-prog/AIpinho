@@ -1,0 +1,95 @@
+{
+  "events": {
+    "error": "ReadTimeout",
+    "message": "HTTPConnectionPool(host='127.0.0.1', port=9088): Read timed out. (read timeout=20)",
+    "elapsed_ms": 20011
+  },
+  "summary": {
+    "error": "ReadTimeout",
+    "message": "HTTPConnectionPool(host='127.0.0.1', port=9088): Read timed out. (read timeout=20)",
+    "elapsed_ms": 20014
+  },
+  "result": {
+    "status_code": 404,
+    "elapsed_ms": 16823,
+    "body": {
+      "detail": "task_run_result_not_found"
+    }
+  },
+  "truth": {
+    "status_code": 200,
+    "elapsed_ms": 3383,
+    "body": {
+      "truth_id": "runtime_truth_task_run_77384e18daaf4ee282246ce5cb41b1d7",
+      "task_id": "task_8dbfb4d2ae394ae697ff8978a1ab2f10",
+      "task_run_id": "task_run_77384e18daaf4ee282246ce5cb41b1d7",
+      "status": "running",
+      "phase": "phase_001_validate_runtime",
+      "reason_code": "runtime_status:running",
+      "safe_to_report_success": false,
+      "runtime_status": "running",
+      "workflow_status": "created",
+      "completion_status": null,
+      "validation_status": "not_started",
+      "timeline_status": null,
+      "ui_status": "active",
+      "speaker_truth_status": "evidence_required",
+      "evidence": [
+        {
+          "evidence_type": "task_run",
+          "evidence_id": "task_run_77384e18daaf4ee282246ce5cb41b1d7",
+          "status": "running",
+          "summary": "",
+          "metadata": {}
+        },
+        {
+          "evidence_type": "task",
+          "evidence_id": "task_8dbfb4d2ae394ae697ff8978a1ab2f10",
+          "status": "running",
+          "summary": "",
+          "metadata": {}
+        },
+        {
+          "evidence_type": "workflow",
+          "evidence_id": "workflow_389b7c23b2fc4243b8cf3f34a1bc0487",
+          "status": "created",
+          "summary": "",
+          "metadata": {}
+        }
+      ],
+      "contradictions": [],
+      "missing_evidence": [
+        "timeline"
+      ],
+      "source": "runtime_truth_engine"
+    }
+  },
+  "artifacts": {
+    "error": "ReadTimeout",
+    "message": "HTTPConnectionPool(host='127.0.0.1', port=9088): Read timed out. (read timeout=20)",
+    "elapsed_ms": 20009
+  },
+  "queue": {
+    "error": "ReadTimeout",
+    "message": "HTTPConnectionPool(host='127.0.0.1', port=9088): Read timed out. (read timeout=20)",
+    "elapsed_ms": 20004
+  },
+  "hygiene": {
+    "status_code": 200,
+    "elapsed_ms": 1240,
+    "body": {
+      "status": "ok",
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0,
+      "active_sessions": 0,
+      "dispatcher_status": "available",
+      "worker_pool_capacity": 8,
+      "worker_pool_available_slots": 8,
+      "stale_run_ids": [],
+      "backpressure_required": false,
+      "reason_code": null
+    }
+  }
+}

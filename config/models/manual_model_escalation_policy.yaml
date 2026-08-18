@@ -1,0 +1,12 @@
+schema_version: 1
+
+manual_escalation:
+  enabled: true
+  runtime_enabled: true
+  requires_operator_confirmation: true
+  requires_latency_warning: true
+  requires_reason: true
+  manual_only_models:
+    - deepseek_r1_distill_qwen_14b_q4_k_m
+    - qwen2_5_coder_14b_q5_k_m
+  message: "Manual-only models require explicit escalation endpoint, operator confirmation and latency acknowledgement."

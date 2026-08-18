@@ -1,0 +1,34 @@
+schema_version: 1
+
+preview:
+  enabled: true
+  persist_preview_metadata: true
+  persist_content_preview: true
+  max_preview_chars: 20000
+  include_content_hash: true
+  include_target_snapshot: true
+  include_existing_file_summary: true
+  include_diff_if_existing: true
+  include_validation_summary: true
+  include_risk_summary: true
+  safe_to_execute: false
+
+lifecycle:
+  states:
+    - draft
+    - preview_ready
+    - blocked
+    - needs_approval
+    - approval_pending
+    - approved_for_future_write
+    - rejected
+    - cancelled
+    - expired
+    - invalidated
+  terminal_states:
+    - blocked
+    - approved_for_future_write
+    - rejected
+    - cancelled
+    - expired
+    - invalidated

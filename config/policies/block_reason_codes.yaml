@@ -1,0 +1,1106 @@
+schema_version: 1
+codes:
+- code: sandbox_allowed_low_risk
+  category: sandbox
+  human_reason_template: Operacao permitida dentro do sandbox governado.
+  technical_meaning: Sandbox operation stayed inside the governed local sandbox.
+  safe_alternatives:
+  - Continuar dentro do sandbox governado.
+  severity: info
+  regression_candidate_required: false
+  mobile_normal_message: Operacao sandbox permitida.
+  mobile_details_fields:
+  - sandbox_workspace_id
+  - sandbox_task_id
+  - evidence_refs
+- code: sandbox_shell_allowed
+  category: sandbox
+  human_reason_template: Shell seguro permitido dentro do sandbox governado.
+  technical_meaning: Shell category is allowed and cwd is confined to sandbox.
+  safe_alternatives:
+  - Continuar com comandos readonly/test/build/package.
+  severity: info
+  regression_candidate_required: false
+  mobile_normal_message: Shell sandbox permitido.
+  mobile_details_fields:
+  - command
+  - category
+  - evidence_refs
+- code: sandbox_artifact_export_allowed
+  category: sandbox
+  human_reason_template: Exportacao de artifact permitida para conteudo do sandbox.
+  technical_meaning: Sandbox artifact export passed policy and token-protected artifact lifecycle.
+  safe_alternatives:
+  - Baixar pelo endpoint autenticado.
+  severity: info
+  regression_candidate_required: false
+  mobile_normal_message: Artifact sandbox pronto para download.
+  mobile_details_fields:
+  - artifact_id
+  - download_endpoint
+  - evidence_refs
+- code: sandbox_validation_allowed
+  category: sandbox
+  human_reason_template: Validacao sandbox permitida.
+  technical_meaning: Sandbox validation is read-only and evidence-producing.
+  safe_alternatives:
+  - Revisar checks e evidence refs.
+  severity: info
+  regression_candidate_required: false
+  mobile_normal_message: Validacao sandbox permitida.
+  mobile_details_fields:
+  - validation_id
+  - evidence_refs
+- code: sandbox_cleanup_preview_allowed
+  category: sandbox
+  human_reason_template: Limpeza sandbox permitida apos preview.
+  technical_meaning: Cleanup was previewed before apply.
+  safe_alternatives:
+  - Revisar preview antes de aplicar limpeza.
+  severity: info
+  regression_candidate_required: false
+  mobile_normal_message: Limpeza sandbox governada.
+  mobile_details_fields:
+  - cleanup_preview_id
+  - evidence_refs
+- code: sandbox_escape_blocked
+  category: sandbox
+  human_reason_template: Operacao bloqueada porque sairia do sandbox governado.
+  technical_meaning: Resolved path is outside the sandbox root or workspace root.
+  safe_alternatives:
+  - Use um caminho relativo dentro do sandbox.
+  severity: warning
+  regression_candidate_required: true
+  mobile_normal_message: Caminho bloqueado fora do sandbox.
+  mobile_details_fields:
+  - relative_path
+  - evidence_refs
+- code: sandbox_path_traversal_blocked
+  category: sandbox
+  human_reason_template: Operacao bloqueada por tentativa de path traversal.
+  technical_meaning: Relative path contains traversal or absolute path markers.
+  safe_alternatives:
+  - Use um caminho relativo simples dentro do workspace sandbox.
+  severity: warning
+  regression_candidate_required: true
+  mobile_normal_message: Caminho com travessia bloqueado.
+  mobile_details_fields:
+  - relative_path
+  - evidence_refs
+- code: sandbox_symlink_escape_blocked
+  category: sandbox
+  human_reason_template: Symlink ou junction para fora do sandbox foi bloqueado.
+  technical_meaning: Existing symlink resolves outside the sandbox root.
+  safe_alternatives:
+  - Copie o conteudo para dentro do sandbox antes de operar.
+  severity: warning
+  regression_candidate_required: true
+  mobile_normal_message: Link para fora do sandbox bloqueado.
+  mobile_details_fields:
+  - relative_path
+  - evidence_refs
+- code: sandbox_outside_write_blocked
+  category: sandbox
+  human_reason_template: Escrita fora do sandbox foi bloqueada.
+  technical_meaning: Write target resolved outside sandbox root.
+  safe_alternatives:
+  - Gere artifact ou escreva em workspace sandbox.
+  severity: warning
+  regression_candidate_required: true
+  mobile_normal_message: Escrita fora do sandbox bloqueada.
+  mobile_details_fields:
+  - relative_path
+  - evidence_refs
+- code: sandbox_outside_delete_blocked
+  category: sandbox
+  human_reason_template: Delete fora do sandbox foi bloqueado.
+  technical_meaning: Safe delete target resolved outside sandbox root.
+  safe_alternatives:
+  - Use delete-safe apenas em arquivos do sandbox.
+  severity: warning
+  regression_candidate_required: true
+  mobile_normal_message: Delete fora do sandbox bloqueado.
+  mobile_details_fields:
+  - relative_path
+  - evidence_refs
+- code: sandbox_network_blocked
+  category: sandbox
+  human_reason_template: Comando de rede bloqueado no sandbox.
+  technical_meaning: Shell command matched network command denylist.
+  safe_alternatives:
+  - Baixe dependencias por processo aprovado fora da execucao sandbox.
+  severity: warning
+  regression_candidate_required: true
+  mobile_normal_message: Rede bloqueada no sandbox.
+  mobile_details_fields:
+  - command
+  - evidence_refs
+- code: sandbox_destructive_command_blocked
+  category: sandbox
+  human_reason_template: Comando destrutivo ou desconhecido bloqueado no sandbox.
+  technical_meaning: Shell category/pattern is unsafe or unclassified.
+  safe_alternatives:
+  - Use comandos readonly/test/build/package classificados.
+  severity: warning
+  regression_candidate_required: true
+  mobile_normal_message: Comando bloqueado no sandbox.
+  mobile_details_fields:
+  - command
+  - category
+  - evidence_refs
+- code: sandbox_secret_access_blocked
+  category: sandbox
+  human_reason_template: Acesso a segredo bloqueado no sandbox.
+  technical_meaning: Secret access policy denied operation.
+  safe_alternatives:
+  - Use variaveis redigidas ou artifacts sanitizados.
+  severity: warning
+  regression_candidate_required: true
+  mobile_normal_message: Segredo bloqueado no sandbox.
+  mobile_details_fields:
+  - evidence_refs
+- code: sandbox_artifact_too_large
+  category: sandbox
+  human_reason_template: Artifact sandbox excede o limite permitido.
+  technical_meaning: Estimated artifact size is greater than sandbox artifact max bytes.
+  safe_alternatives:
+  - Exporte um subconjunto menor ou aumente policy explicitamente.
+  severity: warning
+  regression_candidate_required: true
+  mobile_normal_message: Artifact grande demais.
+  mobile_details_fields:
+  - size
+  - evidence_refs
+- code: sandbox_cleanup_requires_preview
+  category: sandbox
+  human_reason_template: Limpeza do sandbox exige preview antes de aplicar.
+  technical_meaning: Cleanup apply was requested without preview id.
+  safe_alternatives:
+  - Execute cleanup preview e revise candidatos.
+  severity: warning
+  regression_candidate_required: true
+  mobile_normal_message: Limpeza exige preview.
+  mobile_details_fields:
+  - cleanup_preview_id
+  - evidence_refs
+- code: path_outside_workspace
+  category: workspace
+  human_reason_template: 'Operacao bloqueada: path_outside_workspace.'
+  technical_meaning: Policy/runtime reason code path_outside_workspace.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: path_outside_workspace.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: path_traversal_blocked
+  category: workspace
+  human_reason_template: 'Operacao bloqueada: path_traversal_blocked.'
+  technical_meaning: Policy/runtime reason code path_traversal_blocked.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: path_traversal_blocked.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: workspace_role_forbids_write
+  category: workspace
+  human_reason_template: 'Operacao bloqueada: workspace_role_forbids_write.'
+  technical_meaning: Policy/runtime reason code workspace_role_forbids_write.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: workspace_role_forbids_write.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: workspace_role_forbids_shell
+  category: workspace
+  human_reason_template: 'Operacao bloqueada: workspace_role_forbids_shell.'
+  technical_meaning: Policy/runtime reason code workspace_role_forbids_shell.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: workspace_role_forbids_shell.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: source_readonly_write_denied
+  category: workspace
+  human_reason_template: 'Operacao bloqueada: source_readonly_write_denied.'
+  technical_meaning: Policy/runtime reason code source_readonly_write_denied.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: source_readonly_write_denied.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: forbidden_workspace
+  category: workspace
+  human_reason_template: 'Operacao bloqueada: forbidden_workspace.'
+  technical_meaning: Policy/runtime reason code forbidden_workspace.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: forbidden_workspace.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: workspace_resolution_failed
+  category: workspace
+  human_reason_template: 'Operacao bloqueada: workspace_resolution_failed.'
+  technical_meaning: Policy/runtime reason code workspace_resolution_failed.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: workspace_resolution_failed.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: capability_missing
+  category: policy_capability
+  human_reason_template: 'Operacao bloqueada: capability_missing.'
+  technical_meaning: Policy/runtime reason code capability_missing.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: capability_missing.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: action_not_available
+  category: policy_capability
+  human_reason_template: 'Operacao bloqueada: action_not_available.'
+  technical_meaning: Policy/runtime reason code action_not_available.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: action_not_available.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: policy_denied
+  category: policy_capability
+  human_reason_template: 'Operacao bloqueada: policy_denied.'
+  technical_meaning: Policy/runtime reason code policy_denied.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: policy_denied.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: risk_above_allowed_threshold
+  category: policy_capability
+  human_reason_template: 'Operacao bloqueada: risk_above_allowed_threshold.'
+  technical_meaning: Policy/runtime reason code risk_above_allowed_threshold.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: risk_above_allowed_threshold.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: approval_required
+  category: policy_capability
+  human_reason_template: 'Operacao bloqueada: approval_required.'
+  technical_meaning: Policy/runtime reason code approval_required.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: approval_required.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: approval_denied
+  category: policy_capability
+  human_reason_template: 'Operacao bloqueada: approval_denied.'
+  technical_meaning: Policy/runtime reason code approval_denied.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: approval_denied.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: approval_expired
+  category: policy_capability
+  human_reason_template: 'Operacao bloqueada: approval_expired.'
+  technical_meaning: Policy/runtime reason code approval_expired.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: approval_expired.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: approval_mismatch
+  category: policy_capability
+  human_reason_template: 'Operacao bloqueada: approval_mismatch.'
+  technical_meaning: Policy/runtime reason code approval_mismatch.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: approval_mismatch.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: preview_required
+  category: patch_write
+  human_reason_template: 'Operacao bloqueada: preview_required.'
+  technical_meaning: Policy/runtime reason code preview_required.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: preview_required.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: preview_missing
+  category: patch_write
+  human_reason_template: 'Operacao bloqueada: preview_missing.'
+  technical_meaning: Policy/runtime reason code preview_missing.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: preview_missing.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: preview_mismatch
+  category: patch_write
+  human_reason_template: 'Operacao bloqueada: preview_mismatch.'
+  technical_meaning: Policy/runtime reason code preview_mismatch.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: preview_mismatch.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: apply_denied
+  category: patch_write
+  human_reason_template: 'Operacao bloqueada: apply_denied.'
+  technical_meaning: Policy/runtime reason code apply_denied.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: apply_denied.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: actual_changes_mismatch
+  category: patch_write
+  human_reason_template: 'Operacao bloqueada: actual_changes_mismatch.'
+  technical_meaning: Policy/runtime reason code actual_changes_mismatch.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: actual_changes_mismatch.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: write_envelope_invalid
+  category: patch_write
+  human_reason_template: 'Operacao bloqueada: write_envelope_invalid.'
+  technical_meaning: Policy/runtime reason code write_envelope_invalid.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: write_envelope_invalid.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: shell_category_denied
+  category: shell
+  human_reason_template: 'Operacao bloqueada: shell_category_denied.'
+  technical_meaning: Policy/runtime reason code shell_category_denied.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: shell_category_denied.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: destructive_shell_denied
+  category: shell
+  human_reason_template: 'Operacao bloqueada: destructive_shell_denied.'
+  technical_meaning: Policy/runtime reason code destructive_shell_denied.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: destructive_shell_denied.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: git_write_denied
+  category: shell
+  human_reason_template: 'Operacao bloqueada: git_write_denied.'
+  technical_meaning: Policy/runtime reason code git_write_denied.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: git_write_denied.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: network_shell_denied
+  category: shell
+  human_reason_template: 'Operacao bloqueada: network_shell_denied.'
+  technical_meaning: Policy/runtime reason code network_shell_denied.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: network_shell_denied.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: process_control_denied
+  category: shell
+  human_reason_template: 'Operacao bloqueada: process_control_denied.'
+  technical_meaning: Policy/runtime reason code process_control_denied.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: process_control_denied.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: unknown_shell_denied
+  category: shell
+  human_reason_template: 'Operacao bloqueada: unknown_shell_denied.'
+  technical_meaning: Policy/runtime reason code unknown_shell_denied.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: unknown_shell_denied.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: shell_timeout
+  category: shell
+  human_reason_template: 'Operacao bloqueada: shell_timeout.'
+  technical_meaning: Policy/runtime reason code shell_timeout.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: shell_timeout.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: shell_exit_failed
+  category: shell
+  human_reason_template: 'Operacao bloqueada: shell_exit_failed.'
+  technical_meaning: Policy/runtime reason code shell_exit_failed.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: shell_exit_failed.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: artifact_output_policy_denied
+  category: artifact
+  human_reason_template: 'Operacao bloqueada: artifact_output_policy_denied.'
+  technical_meaning: Policy/runtime reason code artifact_output_policy_denied.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: artifact_output_policy_denied.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: artifact_creation_failed
+  category: artifact
+  human_reason_template: 'Operacao bloqueada: artifact_creation_failed.'
+  technical_meaning: Policy/runtime reason code artifact_creation_failed.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: artifact_creation_failed.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: artifact_packaging_failed
+  category: artifact
+  human_reason_template: 'Operacao bloqueada: artifact_packaging_failed.'
+  technical_meaning: Policy/runtime reason code artifact_packaging_failed.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: artifact_packaging_failed.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: artifact_registration_failed
+  category: artifact
+  human_reason_template: 'Operacao bloqueada: artifact_registration_failed.'
+  technical_meaning: Policy/runtime reason code artifact_registration_failed.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: artifact_registration_failed.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: artifact_missing_id
+  category: artifact
+  human_reason_template: 'Operacao bloqueada: artifact_missing_id.'
+  technical_meaning: Policy/runtime reason code artifact_missing_id.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: true
+  mobile_normal_message: 'Operacao bloqueada: artifact_missing_id.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: artifact_download_unavailable
+  category: artifact
+  human_reason_template: 'Operacao bloqueada: artifact_download_unavailable.'
+  technical_meaning: Policy/runtime reason code artifact_download_unavailable.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: artifact_download_unavailable.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: validation_required
+  category: validation
+  human_reason_template: 'Operacao bloqueada: validation_required.'
+  technical_meaning: Policy/runtime reason code validation_required.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: validation_required.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: validation_not_started
+  category: validation
+  human_reason_template: 'Operacao bloqueada: validation_not_started.'
+  technical_meaning: Policy/runtime reason code validation_not_started.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: validation_not_started.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: validation_failed
+  category: validation
+  human_reason_template: 'Operacao bloqueada: validation_failed.'
+  technical_meaning: Policy/runtime reason code validation_failed.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: validation_failed.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: validation_evidence_missing
+  category: validation
+  human_reason_template: 'Operacao bloqueada: validation_evidence_missing.'
+  technical_meaning: Policy/runtime reason code validation_evidence_missing.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: true
+  mobile_normal_message: 'Operacao bloqueada: validation_evidence_missing.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: operation_contract_invalid
+  category: runtime
+  human_reason_template: 'Operacao bloqueada: operation_contract_invalid.'
+  technical_meaning: Policy/runtime reason code operation_contract_invalid.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: operation_contract_invalid.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: task_runtime_failed
+  category: runtime
+  human_reason_template: 'Operacao bloqueada: task_runtime_failed.'
+  technical_meaning: Policy/runtime reason code task_runtime_failed.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: task_runtime_failed.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: execution_exception
+  category: runtime
+  human_reason_template: 'Operacao bloqueada: execution_exception.'
+  technical_meaning: Policy/runtime reason code execution_exception.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: execution_exception.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: budget_exceeded
+  category: runtime
+  human_reason_template: 'Operacao bloqueada: budget_exceeded.'
+  technical_meaning: Policy/runtime reason code budget_exceeded.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: budget_exceeded.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: unsupported_file_type
+  category: runtime
+  human_reason_template: 'Operacao bloqueada: unsupported_file_type.'
+  technical_meaning: Policy/runtime reason code unsupported_file_type.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: unsupported_file_type.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: encoding_failed
+  category: runtime
+  human_reason_template: 'Operacao bloqueada: encoding_failed.'
+  technical_meaning: Policy/runtime reason code encoding_failed.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: encoding_failed.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: speaker_truth_violation
+  category: speaker_mobile
+  human_reason_template: 'Operacao bloqueada: speaker_truth_violation.'
+  technical_meaning: Policy/runtime reason code speaker_truth_violation.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: true
+  mobile_normal_message: 'Operacao bloqueada: speaker_truth_violation.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: mobile_state_mismatch
+  category: speaker_mobile
+  human_reason_template: 'Operacao bloqueada: mobile_state_mismatch.'
+  technical_meaning: Policy/runtime reason code mobile_state_mismatch.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: mobile_state_mismatch.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: endpoint_mobile_divergence
+  category: speaker_mobile
+  human_reason_template: 'Operacao bloqueada: endpoint_mobile_divergence.'
+  technical_meaning: Policy/runtime reason code endpoint_mobile_divergence.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: true
+  mobile_normal_message: 'Operacao bloqueada: endpoint_mobile_divergence.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: raw_sanitization_required
+  category: speaker_mobile
+  human_reason_template: 'Operacao bloqueada: raw_sanitization_required.'
+  technical_meaning: Policy/runtime reason code raw_sanitization_required.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: warning
+  regression_candidate_required: false
+  mobile_normal_message: 'Operacao bloqueada: raw_sanitization_required.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+- code: unknown_block_reason
+  category: runtime
+  human_reason_template: 'Operacao bloqueada: unknown_block_reason.'
+  technical_meaning: Policy/runtime reason code unknown_block_reason.
+  safe_alternatives:
+  - Ver detalhes sanitizados.
+  - Usar fluxo governado equivalente.
+  severity: error
+  regression_candidate_required: true
+  mobile_normal_message: 'Operacao bloqueada: unknown_block_reason.'
+  mobile_details_fields:
+  - policy_name
+  - capability
+  - action
+  - workspace_role
+  - evidence_refs
+  - trace_id
+
+
+block_reason_codes:
+  - reason_code: workspace_unknown
+    human_reason: Workspace nao registrado ou nao resolvido.
+    safe_alternative: Escolha um workspace autorizado antes de executar a ferramenta.
+    severity: warning
+  - reason_code: workspace_forbidden
+    human_reason: Workspace bloqueado pela politica.
+    safe_alternative: Use um workspace target_mutable ou source_readonly permitido.
+    severity: error
+  - reason_code: workspace_protected
+    human_reason: Workspace protegido nao permite esta operacao.
+    safe_alternative: Solicite uma acao em workspace autorizado ou reduza o escopo para leitura.
+    severity: error
+  - reason_code: source_readonly_write_denied
+    human_reason: "Escrita bloqueada: este workspace e somente leitura."
+    safe_alternative: Gere artifact externo ou use um workspace target_mutable.
+    severity: warning
+  - reason_code: path_traversal_denied
+    human_reason: Path bloqueado por tentativa de sair do workspace.
+    safe_alternative: Use caminhos relativos dentro do workspace autorizado.
+    severity: error
+  - reason_code: capability_not_allowed
+    human_reason: Capability nao permitida no modo atual.
+    safe_alternative: Altere para modo governado apropriado ou solicite uma acao de menor risco.
+    severity: warning
+  - reason_code: tool_disabled
+    human_reason: Ferramenta desabilitada.
+    safe_alternative: Use uma ferramenta equivalente habilitada.
+    severity: warning
+  - reason_code: agent_not_allowed
+    human_reason: Agente nao autorizado para esta ferramenta.
+    safe_alternative: Delegue para um agente autorizado.
+    severity: warning
+  - reason_code: risk_too_high
+    human_reason: Risco alto demais para execucao automatica.
+    safe_alternative: Divida a acao em passos menores e validaveis.
+    severity: error
+  - reason_code: approval_required
+    human_reason: Esta acao precisa de aprovacao humana.
+    safe_alternative: Revise preview, risco e efeitos esperados antes de aprovar.
+    severity: warning
+  - reason_code: destructive_shell_blocked
+    human_reason: Shell destrutivo bloqueado por padrao.
+    safe_alternative: Use comando readonly/test/build ou solicite plano seguro.
+    severity: error
+  - reason_code: network_shell_blocked
+    human_reason: Shell com rede bloqueado por padrao.
+    safe_alternative: Use rotas governadas de download/upload ou peca aprovacao explicita em modo apropriado.
+    severity: error
+  - reason_code: git_write_blocked
+    human_reason: Operacao git write bloqueada por padrao.
+    safe_alternative: Gere patch/artifact e valide antes de qualquer acao git.
+    severity: error
+  - reason_code: process_control_blocked
+    human_reason: Controle amplo de processos bloqueado.
+    safe_alternative: Use o backend controlado por endpoints oficiais.
+    severity: error
+  - reason_code: unknown_shell_blocked
+    human_reason: Categoria de shell desconhecida bloqueada.
+    safe_alternative: Classifique o comando como readonly/test/build/package quando aplicavel.
+    severity: error
+  - reason_code: secret_access_blocked
+    human_reason: Possivel acesso ou vazamento de segredo bloqueado.
+    safe_alternative: Remova tokens/secrets do payload e use referencias seguras.
+    severity: error
+  - reason_code: policy_unclassified
+    human_reason: Politica nao conseguiu classificar a acao com seguranca.
+    safe_alternative: Especifique workspace, capability e efeito esperado.
+    severity: warning

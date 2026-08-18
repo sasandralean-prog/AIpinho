@@ -1,0 +1,35 @@
+template_id: android_kotlin_game
+display_name: Android Kotlin Game
+slug: android-kotlin-game
+version: "1.0.0"
+status: active
+category: android_game
+description: Minimal Android Kotlin game scaffold with local placeholder vector assets.
+supported_project_types: [android_kotlin]
+supported_languages: [kotlin]
+supported_platforms: [android]
+generator_key: android_kotlin_game
+required_files:
+  - settings.gradle.kts
+  - build.gradle.kts
+  - app/build.gradle.kts
+  - app/src/main/AndroidManifest.xml
+  - README.md
+  - PROJECT_MANIFEST.json
+generated_assets:
+  - app/src/main/res/drawable/character.xml
+  - app/src/main/res/drawable/obstacle.xml
+validation_profile:
+  structural: true
+  android_game_checks: true
+build_profile:
+  build_if_available: true
+artifact_policy:
+  zip_required: true
+risk_level: low
+required_capabilities: [create_sandbox_files, create_artifact]
+compatible_skills: [sandbox_project_generation, android_project_scaffold]
+compatible_autopilot_modes: [governed_autorun]
+examples:
+  - criar jogo android kotlin
+  - generate android game

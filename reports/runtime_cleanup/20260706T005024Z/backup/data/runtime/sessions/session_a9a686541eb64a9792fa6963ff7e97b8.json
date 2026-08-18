@@ -1,0 +1,42 @@
+{
+  "session_id": "session_a9a686541eb64a9792fa6963ff7e97b8",
+  "status": "active",
+  "created_at": "2026-06-26T12:37:07.816067+00:00",
+  "updated_at": "2026-06-26T12:37:13.198193+00:00",
+  "expires_at": "2026-06-26T16:37:07.816067+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Ola, responda curto.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_95c2b4a1dd144298adf8f40b8161ebf5",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

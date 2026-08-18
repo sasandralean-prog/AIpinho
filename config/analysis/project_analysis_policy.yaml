@@ -1,0 +1,75 @@
+﻿schema_version: 1
+project_analysis:
+  enabled: true
+  mode: readonly
+  auto_execute_from_chat: false
+  allow_write: false
+  allow_patch: false
+  allow_shell: false
+  allow_git_write: false
+  allow_memory_write: false
+  allow_vectorstore_write: false
+  allow_llm_calls: false
+  report_max_findings: 20
+  report_requires_file_context: true
+  semantic_evidence_groups:
+    playback:
+      - player
+      - playback
+      - reproducao
+      - audio
+      - track
+      - song
+    decoding:
+      - decoder
+      - codec
+      - container
+      - m4a
+      - aac
+      - mp3
+      - wav
+      - flac
+    metadata:
+      - metadata
+      - tag
+      - tags
+      - artwork
+      - cover
+      - duration
+      - bitrate
+      - samplerate
+    library_scan:
+      - scanner
+      - scan
+      - index
+      - inventory
+      - biblioteca
+      - library
+    playlist:
+      - playlist
+      - queue
+      - list
+    cache:
+      - cache
+      - database
+      - jdbc
+      - db
+    signal_processing:
+      - dsp
+      - equalizer
+      - compressor
+      - limiter
+      - reverb
+      - waveform
+    error_handling:
+      - error
+      - exception
+      - failure
+      - fallback
+      - catch
+      - log
+
+task_runtime:
+  enabled: true
+  return_sanitized_summary: true
+  persist_raw_context: false

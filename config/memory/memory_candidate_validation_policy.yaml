@@ -1,0 +1,32 @@
+schema_version: 1
+
+validation:
+  enabled: true
+  require_kind: true
+  require_scope: true
+  require_source: true
+  require_evidence: true
+  require_confidence: true
+  require_sensitivity_scan: true
+  reject_empty_text: true
+  reject_unbounded_claim: true
+  reject_raw_log_like_text: true
+  reject_secret_like_text: true
+  reject_full_file_content: true
+  reject_model_only_claim: true
+  reject_without_trace: true
+
+technical_memory:
+  require_evidence: true
+  require_source_path_or_result_id: true
+
+user_instruction:
+  require_explicit_user_intent: true
+  require_candidate_only_status: true
+
+status_rules:
+  valid_candidate_status: candidate
+  missing_evidence_status: blocked
+  duplicate_status: duplicate
+  conflict_status: needs_review
+  sensitive_status: blocked

@@ -1,0 +1,24 @@
+schema_version: 1
+policy_id: mobile_debugger_filter_policy
+filters:
+  - events
+  - policy
+  - context
+  - rag
+  - memory
+  - skill
+  - maintenance
+  - model
+  - validation
+  - patch
+  - artifact
+  - supervisor
+  - mobile_sync
+  - speaker
+  - raw_sanitized
+severity_filters:
+  - info
+  - warning
+  - error
+  - critical
+read_only: true

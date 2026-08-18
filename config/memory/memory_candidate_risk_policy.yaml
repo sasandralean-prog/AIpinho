@@ -1,0 +1,31 @@
+schema_version: 1
+
+risk:
+  enabled: true
+  default: medium
+
+levels:
+  low:
+    candidate_allowed: true
+    needs_review: false
+  medium:
+    candidate_allowed: true
+    needs_review: true
+  high:
+    candidate_allowed: true
+    needs_review: true
+    approval_future_required: true
+  critical:
+    candidate_allowed: false
+    blocked: true
+
+signals:
+  secret: critical
+  raw_log: critical
+  full_file_content: critical
+  no_source: critical
+  no_scope: critical
+  no_evidence_for_technical_memory: critical
+  conflicts_existing_candidate: high
+  project_wide_policy_claim: high
+  user_instruction_without_scope: medium

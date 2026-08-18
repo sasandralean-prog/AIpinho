@@ -1,0 +1,28 @@
+schema_version: 1
+
+preview:
+  enabled: true
+  safe_to_execute_default: false
+  include_policy_snapshot: true
+  include_trace: true
+  include_potential_side_effects: true
+  allow_preview_for:
+    - readonly_analysis
+    - artifact_generation
+    - filesystem_write
+    - patch_request
+    - validation_request
+  never_preview_for:
+    - conversation
+    - self_analysis
+    - capability_explanation
+    - in_chat_final_report
+
+side_effect_descriptions:
+  create_directory: "Pode criar diretorio se aprovado e validado pelo runtime governado."
+  write_files: "Pode criar ou alterar arquivos se aprovado em runtime futuro."
+  apply_patch: "Pode modificar codigo se aprovado e executado por runtime futuro."
+  run_command: "Pode executar comando se aprovado e suportado por runtime futuro."
+  git_commit: "Pode criar commit se aprovado e suportado por runtime futuro."
+  git_push: "Pode publicar alteracoes se aprovado e suportado por runtime futuro."
+  write_memory: "Pode salvar memoria se aprovado por politica de memoria futura."

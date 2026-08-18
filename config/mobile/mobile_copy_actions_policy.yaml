@@ -1,0 +1,8 @@
+schema_version: 1
+policy_id: mobile_copy_actions_policy
+copy_message: true
+copy_response: true
+copy_conversation_filtered: true
+copy_raw_sanitized_when_available: true
+token_redaction_required: true
+raw_copy_requires_explicit_action: true

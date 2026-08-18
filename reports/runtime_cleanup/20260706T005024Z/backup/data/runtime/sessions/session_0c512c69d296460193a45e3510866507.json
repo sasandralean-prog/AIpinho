@@ -1,0 +1,29 @@
+{
+  "session_id": "session_0c512c69d296460193a45e3510866507",
+  "status": "active",
+  "created_at": "2026-06-18T02:52:05.066402+00:00",
+  "updated_at": "2026-06-18T02:52:05.138278+00:00",
+  "expires_at": "2026-06-18T06:52:05.066402+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Crie um arquivo em C:\\Dev\\AIpinho\\sandboxes\\dopamine_test\\resultado.txt com o texto: AIpinho funcionou.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {},
+  "last_policy_decision": {},
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {
+    "operation_type": "filesystem_write_file",
+    "path": "C:\\Dev\\AIpinho\\sandboxes\\dopamine_test\\resultado.txt",
+    "run_id": "sandbox_run_eff5c83b4b834c7ab053dae4f4315d85"
+  },
+  "warnings": [
+    "active_task_draft_missing"
+  ],
+  "trace_refs": []
+}

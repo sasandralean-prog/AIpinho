@@ -1,0 +1,19 @@
+﻿schema_version: 1
+
+step_types:
+  validate_runtime: {enabled: true, action: validate_runtime, side_effect: false, required: true}
+  validate_workspace: {enabled: true, action: inspect_path, side_effect: false, required: true}
+  build_project_tree: {enabled: true, action: project_tree, side_effect: false, required: true}
+  build_file_context: {enabled: true, action: project_context, side_effect: false, required: true}
+  run_project_analysis: {enabled: true, action: project_analysis, side_effect: false, required: true}
+  generate_project_report: {enabled: true, action: project_report, side_effect: false, required: false}
+  run_role_pipeline: {enabled: true, action: role_pipeline_run, side_effect: false, required: false}
+  compose_final_result: {enabled: true, action: compose_result, side_effect: false, required: true}
+
+pipelines:
+  readonly_analysis:
+    steps: [validate_runtime, validate_workspace, build_project_tree, build_file_context, run_project_analysis, generate_project_report, run_role_pipeline, compose_final_result]
+  in_chat_final_report:
+    steps: [validate_runtime, run_role_pipeline, compose_final_result]
+  validation_request:
+    steps: [validate_runtime, validate_workspace, build_project_tree, build_file_context, run_project_analysis, compose_final_result]

@@ -1,0 +1,41 @@
+{
+  "session_id": "session_ef409e8e13884b09af16d8da6cf5d781",
+  "status": "active",
+  "created_at": "2026-06-08T09:42:22.657665+00:00",
+  "updated_at": "2026-06-08T09:42:22.669183+00:00",
+  "expires_at": "2026-06-08T13:42:22.657665+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "O que voce consegue fazer?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_1abd43ae246d4f99a4d5dd30ab6f7fd5",
+    "intent_type": "capability_explanation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

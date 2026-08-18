@@ -1,0 +1,8 @@
+schema_version: 1
+
+approval_store:
+  enabled: true
+  store: local_json
+  root: data/runtime/approvals
+  keep_events: true
+  raw_debug_in_store: false

@@ -1,0 +1,30 @@
+schema_version: 1
+
+node_costs:
+  planner: 1
+  executor: 3
+  debugger: 2
+  vision: 2
+  ocr: 2
+  review: 2
+  memory: 1
+  supervisor: 1
+  final_result: 1
+
+risk_actions:
+  high:
+    - delete
+    - move
+    - git_push
+    - install
+    - format
+  medium:
+    - run_command
+    - shell
+    - apply_patch
+    - write_file
+    - write_files
+    - create_file
+    - create_directory
+    - build
+    - clean

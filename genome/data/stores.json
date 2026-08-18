@@ -1,0 +1,79 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "stores": [
+    {
+      "store": "task_store",
+      "path": "src/aipinho/stores/task_store.py",
+      "type": "store",
+      "data_source": "UNKNOWN",
+      "critical": true
+    },
+    {
+      "store": "artifact_store",
+      "path": "src/aipinho/stores/artifact_store.py",
+      "type": "store",
+      "data_source": "UNKNOWN",
+      "critical": true
+    },
+    {
+      "store": "memory_store",
+      "path": "src/aipinho/stores/memory_store.py",
+      "type": "store",
+      "data_source": "UNKNOWN",
+      "critical": false
+    },
+    {
+      "store": "event_store",
+      "path": "src/aipinho/stores/event_store.py",
+      "type": "store",
+      "data_source": "UNKNOWN",
+      "critical": false
+    },
+    {
+      "store": "validation_store",
+      "path": "src/aipinho/stores/validation_store.py",
+      "type": "store",
+      "data_source": "UNKNOWN",
+      "critical": false
+    },
+    {
+      "store": "rag_store",
+      "path": "src/aipinho/stores/rag_store.py",
+      "type": "store",
+      "data_source": "UNKNOWN",
+      "critical": false
+    },
+    {
+      "store": "workspace_store",
+      "path": "src/aipinho/stores/workspace_store.py",
+      "type": "store",
+      "data_source": "UNKNOWN",
+      "critical": false
+    },
+    {
+      "store": "tool_store",
+      "path": "src/aipinho/stores/tool_store.py",
+      "type": "store",
+      "data_source": "UNKNOWN",
+      "critical": false
+    },
+    {
+      "store": "model_store",
+      "path": "src/aipinho/stores/model_store.py",
+      "type": "store",
+      "data_source": "UNKNOWN",
+      "critical": false
+    },
+    {
+      "store": "transfer_store",
+      "path": "src/aipinho/stores/transfer_store.py",
+      "type": "store",
+      "data_source": "UNKNOWN",
+      "critical": false
+    }
+  ],
+  "total_stores": 10,
+  "critical_stores": 2,
+  "non_critical_stores": 8
+}

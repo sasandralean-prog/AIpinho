@@ -1,0 +1,196 @@
+workers:
+  - worker_id: ArchitectWorker
+    display_name: Architect Worker
+    responsibilities:
+      - define architecture
+      - inspect structure
+      - propose system boundaries
+    accepted_actions:
+      - architecture_plan
+      - project_bootstrap
+    accepted_step_keywords:
+      - architect
+      - architecture
+      - blueprint
+      - bootstrap
+    capabilities:
+      - planning
+      - readonly_analysis
+    output_contracts:
+      - architecture_result
+      - blueprint_result
+
+  - worker_id: PlannerWorker
+    display_name: Planner Worker
+    responsibilities:
+      - compose plans
+      - coordinate neutral steps
+      - prepare final response
+    accepted_actions:
+      - role_pipeline_run
+      - compose_result
+      - plan_task
+    accepted_step_keywords:
+      - plan
+      - compose
+      - role_pipeline
+    capabilities:
+      - planning
+      - model_inference
+    output_contracts:
+      - plan_result
+      - final_response
+
+  - worker_id: ResearchWorker
+    display_name: Research Worker
+    responsibilities:
+      - read authorized workspace data
+      - scan project structure
+      - perform readonly analysis
+    accepted_actions:
+      - read_workspace
+      - scan_workspace
+      - readonly_analysis
+      - analyze_project
+    accepted_step_keywords:
+      - read
+      - scan
+      - readonly
+      - analysis
+    capabilities:
+      - read_workspace
+      - scan_workspace
+      - readonly_analysis
+    output_contracts:
+      - discovery_result
+      - analysis_result
+
+  - worker_id: ReviewerWorker
+    display_name: Reviewer Worker
+    responsibilities:
+      - review generated plans
+      - inspect risk and quality before execution
+    accepted_actions:
+      - review_plan
+      - auto_review
+    accepted_step_keywords:
+      - review
+      - audit
+      - inspect
+    capabilities:
+      - validation
+      - policy_review
+    output_contracts:
+      - review_result
+
+  - worker_id: ImplementationWorker
+    display_name: Implementation Worker
+    responsibilities:
+      - create files through governed execution
+      - modify files through governed execution
+      - apply approved patches
+    accepted_actions:
+      - write_files
+      - create_file
+      - create_directory
+      - modify_file
+      - apply_patch
+    accepted_step_keywords:
+      - write
+      - create
+      - modify
+      - patch
+    capabilities:
+      - workspace_write
+      - patch
+      - create_file
+    output_contracts:
+      - patch_result
+      - write_result
+
+  - worker_id: ValidationWorker
+    display_name: Validation Worker
+    responsibilities:
+      - validate runtime state
+      - run governed tests when approved
+      - evaluate expected outcomes
+    accepted_actions:
+      - validate_runtime
+      - validate_changes
+      - run_tests
+      - test
+    accepted_step_keywords:
+      - validate
+      - validation
+      - test
+    capabilities:
+      - validation
+      - run_tests
+    output_contracts:
+      - validation_result
+      - test_result
+
+  - worker_id: SecurityWorker
+    display_name: Security Worker
+    responsibilities:
+      - classify shell and command risk
+      - run approved shell commands
+      - block dangerous execution
+    accepted_actions:
+      - run_command
+      - shell
+      - shell_build
+      - shell_test
+    accepted_step_keywords:
+      - shell
+      - command
+      - build
+      - install
+    capabilities:
+      - shell
+      - policy_guard
+    output_contracts:
+      - command_result
+      - shell_result
+
+  - worker_id: DocumentationWorker
+    display_name: Documentation Worker
+    responsibilities:
+      - generate documentation
+      - summarize implementation results
+    accepted_actions:
+      - generate_docs
+      - documentation
+    accepted_step_keywords:
+      - doc
+      - documentation
+      - changelog
+    capabilities:
+      - report_generate
+      - artifact_create
+    output_contracts:
+      - documentation_result
+
+  - worker_id: ReportingWorker
+    display_name: Reporting Worker
+    responsibilities:
+      - create reports
+      - register artifacts
+      - publish final evidence
+    accepted_actions:
+      - report_generate
+      - create_artifact
+      - artifact_generate
+      - publish_result
+    accepted_step_keywords:
+      - report
+      - artifact
+      - publish
+    capabilities:
+      - artifact_create
+      - report_generate
+    output_contracts:
+      - artifact_result
+      - report_result
+
+default_worker: PlannerWorker

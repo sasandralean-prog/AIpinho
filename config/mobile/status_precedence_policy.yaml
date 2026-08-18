@@ -1,0 +1,32 @@
+schema_version: 1
+mobile_status_precedence:
+  enabled: true
+  order:
+    - blocked
+    - failed
+    - validation_failed
+    - degraded
+    - pending_approval
+    - pending_validation
+    - running
+    - validating
+    - completed
+    - healthy
+    - idle
+    - unknown
+  aliases:
+    cancelled: blocked
+    expired: blocked
+    waiting_input: pending_approval
+    waiting_approval: pending_approval
+    created: pending_validation
+    queued: pending_validation
+    partial: degraded
+    succeeded: completed
+    success: completed
+  card_status:
+    validation_failed: failed
+    pending_approval: pending
+    pending_validation: pending
+    validating: running
+    idle: healthy

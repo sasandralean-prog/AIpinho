@@ -1,0 +1,382 @@
+schema_version: 1
+
+roles:
+  planner:
+    enabled: true
+    description: "Estrutura plano conceitual sem executar."
+    purpose: "Create conceptual plans inside the active contract."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [task_preview, planning]
+    default_model_policy: stub_only
+    output_contract: task_preview
+
+  analyst:
+    enabled: true
+    description: "Analisa contexto read-only e produz achados."
+    purpose: "Analyze provided read-only context and produce evidence-bound findings."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [code_analysis, project_report]
+    default_model_policy: stub_only
+    output_contract: json_findings
+
+  reporter:
+    enabled: true
+    description: "Compoe relatorio tecnico com evidencias."
+    purpose: "Summarize completed analysis into a report without writing files."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [project_report]
+    default_model_policy: stub_only
+    output_contract: markdown_report
+
+  interpreter:
+    enabled: true
+    description: "Explica estado tecnico e decisoes."
+    purpose: "Interpret state and policy decisions."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [explanation, policy_explanation, chat]
+    default_model_policy: deterministic_or_stub
+    output_contract: plain_text
+
+  speaker:
+    enabled: true
+    description: "Humaniza resposta final."
+    purpose: "Generate human-facing responses."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [chat, final_response]
+    default_model_policy: deterministic_or_stub
+    output_contract: chat_response
+
+  supervisor:
+    enabled: true
+    description: "Verifica coerencia de outputs e pipeline."
+    purpose: "Check policy, risk, approval and contract consistency."
+    can_call_model: false
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [validation, supervision]
+    default_model_policy: deterministic_only
+    output_contract: validation_summary
+
+  debugger:
+    enabled: true
+    description: "Resume trace e falhas de forma tecnica."
+    purpose: "Expose sanitized diagnostics and traces."
+    can_call_model: false
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [debug_trace]
+    default_model_policy: deterministic_only
+    output_contract: debug_summary
+
+  artifact_writer:
+    enabled: true
+    description: "Futuro writer de artefatos. Nesta sprint nao escreve."
+    purpose: "Preview controlled artifacts without writing files."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [artifact_preview]
+    default_model_policy: stub_only
+    output_contract: artifact_preview
+    forbidden_actions: [apply_patch, git_commit, git_push, write_files]
+
+  executor:
+    enabled: false
+    description: "Executor desabilitado nesta sprint."
+    purpose: "Disabled execution role placeholder."
+    can_call_model: false
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: []
+    default_model_policy: deterministic_only
+    output_contract: validation_summary
+
+  observer:
+    enabled: true
+    description: "Observa estado sem alterar execucao."
+    purpose: "Observe task state without changing execution."
+    can_call_model: false
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [supervision]
+    default_model_policy: deterministic_only
+    output_contract: validation_summary
+
+  reviewer:
+    enabled: true
+    description: "Revisa planos e outputs sem executar."
+    purpose: "Review plans and outputs without side effects."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [validation, supervision]
+    default_model_policy: stub_only
+    output_contract: validation_summary
+
+  validator:
+    enabled: true
+    description: "Valida semanticamente outputs sem executar testes reais nesta sprint."
+    purpose: "Validate outputs semantically without executing tools."
+    can_call_model: false
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [validation]
+    default_model_policy: deterministic_only
+    output_contract: validation_summary
+
+  retriever:
+    enabled: false
+    description: "Retriever real desabilitado nesta sprint."
+    purpose: "Disabled governed retrieval placeholder."
+    can_call_model: false
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: []
+    default_model_policy: deterministic_only
+    output_contract: validation_summary
+
+  reranker:
+    enabled: false
+    description: "Reranker real desabilitado nesta sprint."
+    purpose: "Disabled reranking placeholder."
+    can_call_model: false
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: []
+    default_model_policy: deterministic_only
+    output_contract: validation_summary
+
+  memory_curator:
+    enabled: false
+    description: "Curadoria de memoria persistente desabilitada nesta sprint."
+    purpose: "Disabled memory curation placeholder."
+    can_call_model: false
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: []
+    default_model_policy: deterministic_only
+    output_contract: validation_summary
+
+  patch_reviewer:
+    enabled: true
+    description: "Revisa previews de patch sem aplicar."
+    purpose: "Review patch previews and quality gates."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [validation, supervision]
+    default_model_policy: stub_only
+    output_contract: validation_summary
+
+  intent_classifier:
+    enabled: true
+    description: "Classifica intencao sem executar."
+    purpose: "Classify prompt intent inside the active contract."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [classification, routing]
+    default_model_policy: stub_only
+    output_contract: intent_classification_output
+
+  semantic_interpreter:
+    enabled: true
+    description: "Interpreta linguagem natural e produz ISR preliminar sem efeitos colaterais."
+    purpose: "Produce Intermediate Semantic Representation only."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [semantic_understanding, interpretation]
+    default_model_policy: stub_only
+    output_contract: semantic_interpreter_output
+    forbidden_actions: [write_files, apply_patch, run_command, git_commit, git_push, write_memory, web_request]
+
+  small_code_assistant:
+    enabled: true
+    description: "Resume codigo e ajuda com tarefas leves sem executar."
+    purpose: "Assist with small code summaries inside the active contract."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [code_analysis, code_summary]
+    default_model_policy: stub_only
+    output_contract: code_summary_output
+
+  coder:
+    enabled: true
+    description: "Produz raciocinio textual de codigo sem aplicar alteracoes."
+    purpose: "Generate code reasoning or patch planning text inside the active contract."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [code_analysis, patch_planning]
+    default_model_policy: stub_only
+    output_contract: coder_output
+
+  patch_planner:
+    enabled: true
+    description: "Planeja patch sem gerar apply nem escrever."
+    purpose: "Draft patch plans without applying changes."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [patch_planning]
+    default_model_policy: stub_only
+    output_contract: patch_plan_draft_output
+
+  code_reviewer:
+    enabled: true
+    description: "Revisa codigo e diffs sem executar ferramentas."
+    purpose: "Review code text inside the active contract."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [code_analysis, code_review]
+    default_model_policy: stub_only
+    output_contract: code_review_output
+
+  patch_quality_reviewer:
+    enabled: true
+    description: "Revisa qualidade de patch sem aplicar."
+    purpose: "Review patch quality gate evidence without side effects."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [validation, patch_planning]
+    default_model_policy: stub_only
+    output_contract: patch_quality_review_output
+
+  security_guard:
+    enabled: true
+    description: "Inspeciona decisoes de policy e guard rails."
+    purpose: "Inspect policy, security and workspace guard decisions."
+    can_call_model: false
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [supervision]
+    default_model_policy: deterministic_only
+    output_contract: validation_summary
+
+  vision_analyst:
+    enabled: true
+    description: "Analisa imagens e screenshots dentro de pipeline governado."
+    purpose: "Produce citation-bound visual summaries and evidence without side effects."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [vision_analysis, ui_inspection, diagram_analysis]
+    default_model_policy: governed_pipeline_only
+    output_contract: vision_analysis_output
+
+  ocr_specialist:
+    enabled: true
+    description: "Extrai texto via OCR dentro de pipeline governado."
+    purpose: "Produce confidence-bound OCR blocks with citations without side effects."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [ocr_extraction, document_text_extraction]
+    default_model_policy: governed_pipeline_only
+    output_contract: ocr_extraction_output
+
+  document_reader:
+    enabled: true
+    description: "Le documentos como paginas citaveis usando OCR/vision governado."
+    purpose: "Read document pages into cited summaries and OCR blocks without side effects."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [document_read, ocr_extraction, vision_analysis]
+    default_model_policy: governed_pipeline_only
+    output_contract: document_read_output

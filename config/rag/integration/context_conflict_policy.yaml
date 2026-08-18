@@ -1,0 +1,20 @@
+schema_version: 1
+
+conflicts:
+  enabled: true
+  detect_memory_vs_memory_conflict: true
+  detect_memory_vs_retrieval_conflict: true
+  detect_source_status_conflict: true
+  detect_old_vs_new_conflict: true
+
+decisions:
+  unresolved_high_conflict_status: blocked
+  unresolved_medium_conflict_status: admitted_with_warnings
+  low_conflict_status: admitted_with_warnings
+
+patterns:
+  pairs:
+    - [enabled, disabled]
+    - [allowed, blocked]
+    - [passed, failed]
+    - [active, superseded]

@@ -1,0 +1,9 @@
+schema_version: 1
+
+rollback:
+  enabled: true
+  require_rollback_notes: true
+  require_affected_files_list: true
+  require_original_hashes: true
+  require_manual_rollback_summary: true
+  automatic_rollback_enabled: false

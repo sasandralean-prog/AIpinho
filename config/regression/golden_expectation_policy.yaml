@@ -1,0 +1,44 @@
+schema_version: 1
+golden_expectations:
+  enabled: true
+  require_expectation_type: true
+  require_expected_status: true
+  require_assertions: true
+  require_tolerance_policy: true
+  require_failure_severity: true
+expectation_types:
+- intent
+- policy
+- capability
+- context
+- rag
+- memory
+- skill
+- maintenance
+- patch
+- artifact
+- speaker
+- mobile_sync
+- model_routing
+- event_contract
+- validation
+tolerance:
+  exact_required_for:
+  - policy
+  - capability
+  - safety
+  - event_contract
+  - speaker_truth
+  - patch_blocking
+  semantic_allowed_for:
+  - human_summary
+  - explanation
+  - report_text
+  forbidden_drift:
+  - allowed_action_expands
+  - write_allowed_when_previously_denied
+  - patch_allowed_in_read_only
+  - 14b_auto_selected
+  - speaker_claims_false_progress
+  - uncited_rag_admitted
+  - expired_memory_admitted

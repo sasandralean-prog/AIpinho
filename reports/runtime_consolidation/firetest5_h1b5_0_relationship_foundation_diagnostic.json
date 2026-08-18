@@ -1,0 +1,68 @@
+{
+  "wave": "H1B5.0",
+  "title": "Media Relationship Capability Foundation",
+  "existing_entities": [
+    "src/aipinho/schemas/artifacts/observed_entity.py::ObservedEntity",
+    "src/aipinho/schemas/artifacts/observed_entity.py::EntityEvidenceGraph",
+    "src/aipinho/schemas/artifacts/contract_perception.py::CandidateEntity",
+    "src/aipinho/schemas/artifacts/contract_perception.py::CandidateEntitySet"
+  ],
+  "existing_evidence_models": [
+    "src/aipinho/schemas/artifacts/contract_perception.py::EvidenceRecord",
+    "src/aipinho/schemas/artifacts/contract_perception.py::EvidenceSet",
+    "src/aipinho/schemas/artifacts/contract_perception.py::AttributeObservation",
+    "src/aipinho/schemas/artifacts/contract_perception.py::SemanticAssertion"
+  ],
+  "existing_capability_registry_path": "src/aipinho/services/artifacts/contract_driven_perception_service.py::CapabilityRegistry",
+  "existing_artifact_profile_path": "src/aipinho/schemas/artifacts/artifact_semantic_profile.py::ArtifactSemanticProfile",
+  "relationship_support_existing": false,
+  "extension_points": [
+    "ContractObservationPlan.expected_relationships",
+    "ContractDrivenPerceptionService.compile",
+    "CapabilityRegistry relationship capability descriptors",
+    "EvidenceRecord/EvidenceSet",
+    "ArtifactSemanticProfile expected_relationships",
+    "ArtifactSemanticContractService declared_contract/perception binding",
+    "UniversalTaskSessionService observational_cognition summary",
+    "CognitiveValidationLaboratoryService profile metadata"
+  ],
+  "risk_of_parallel_flow": [
+    {
+      "risk": "detector_called_directly_by_renderer",
+      "mitigation": "runtime compacting only preserves perception payload; detector is selected by ContractDrivenPerceptionService via CapabilityRegistry"
+    },
+    {
+      "risk": "extension_or_filename_promoted_to_truth",
+      "mitigation": "signals set is generic and every RelationshipEvidenceSignal has is_sufficient_alone=false"
+    },
+    {
+      "risk": "relationship_candidate_treated_as_validation_pass",
+      "mitigation": "SemanticSelfReview adds RELATIONSHIP_VALIDATION_REQUIRED as a blocking quality question"
+    },
+    {
+      "risk": "summary_payload_too_large",
+      "mitigation": "summary exposes counts, families and confidence only"
+    }
+  ],
+  "implemented_relationship_support": true,
+  "late_public_path_dependency": "public /api/v1/chat boundary remains external to H1B5.0",
+  "hardcode_audit": {
+    "searched_terms": [
+      "Pinhoabacaxi",
+      "music_inventory",
+      "local Windows paths",
+      ".lrc",
+      ".jpg",
+      ".mp4",
+      ".m4a",
+      "lyrics_for",
+      "artwork_for",
+      "album_art_for",
+      "sidecar_of"
+    ],
+    "new_specific_rule_matches": 0,
+    "benign_existing_matches": [
+      "FireTestProfile and FireTestLaboratoryService names in CVL module/tests"
+    ]
+  }
+}

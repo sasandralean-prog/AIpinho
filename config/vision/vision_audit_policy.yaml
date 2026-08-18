@@ -1,0 +1,7 @@
+schema_version: 1
+
+audit:
+  enabled: true
+  store_dir: data/runtime/vision/audit
+  trace_dir: data/runtime/vision/traces
+  redact_sensitive_text: true

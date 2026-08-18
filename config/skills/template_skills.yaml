@@ -1,0 +1,37 @@
+version: 1
+skills:
+  - skill_id: sandbox_project_generation
+    display_name: Sandbox Project Generation
+    description: Generate sandbox projects from declarative templates and export governed artifacts.
+    template_registry_required: true
+    allowed_template_categories:
+      - android
+      - android_game
+      - python
+      - web
+      - docs
+      - mobile_component
+      - launcher_tool
+      - generic
+    capabilities:
+      - create_sandbox_files
+      - run_sandbox_build
+      - create_artifact
+    side_effect_scope: sandbox_only
+    approval_required: false
+  - skill_id: template_catalog_browser
+    display_name: Template Catalog Browser
+    description: Read-only inspection of available templates for mobile, launcher, debugger, and planning surfaces.
+    template_registry_required: true
+    capabilities:
+      - read_config
+    side_effect_scope: none
+    approval_required: false
+  - skill_id: template_asset_placeholder_generation
+    display_name: Template Asset Placeholder Generation
+    description: Generate local placeholder assets declared by templates without remote downloads.
+    template_registry_required: true
+    capabilities:
+      - create_sandbox_files
+    side_effect_scope: sandbox_only
+    approval_required: false

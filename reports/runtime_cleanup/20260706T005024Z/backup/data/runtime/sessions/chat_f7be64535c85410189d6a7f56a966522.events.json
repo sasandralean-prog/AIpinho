@@ -1,0 +1,35 @@
+[
+  {
+    "event_id": "session_event_fabbf27f06a349b49d27b520b5b590d8",
+    "session_id": "chat_f7be64535c85410189d6a7f56a966522",
+    "event_type": "session_created",
+    "created_at": "2026-06-18T18:46:50.414328+00:00",
+    "summary": "Sessao criada.",
+    "data": {},
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_3f74af2ce908454493f7acbf731ca94e",
+    "session_id": "chat_f7be64535c85410189d6a7f56a966522",
+    "event_type": "chat_message",
+    "created_at": "2026-06-18T18:46:50.451868+00:00",
+    "summary": "Mensagem processada com status ready.",
+    "data": {
+      "intent_type": "unknown",
+      "task_draft_id": "sandbox_run_00b20a991c6a4984aaef40c8a0c51766"
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_bc13e3625d2e474d888fff0651458af5",
+    "session_id": "chat_f7be64535c85410189d6a7f56a966522",
+    "event_type": "operational_context_updated",
+    "created_at": "2026-06-18T18:46:50.459589+00:00",
+    "summary": "Contexto operacional recente atualizado.",
+    "data": {
+      "operation_type": "sandbox_batch_artifact_request",
+      "path": "C:\\Dev\\AIpinho\\sandboxes\\runtime_parity_test\\runtime_parity_test.zip"
+    },
+    "warnings": []
+  }
+]

@@ -1,0 +1,1930 @@
+{
+  "readiness_id": "cognitive_readiness_df3c78f0bb12476a926941d55eff21d9",
+  "firetest_id": "firetest5",
+  "firetest_version": "h1c0_r2_7",
+  "phase": 0,
+  "status": "blocked",
+  "created_at": "2026-08-16T07:47:29.297952+00:00",
+  "input_prompt_hash": "851e19eddd7bc740a61d223d661637f360d795b2a8d1f939ed99197dea7bf9c3",
+  "workspace_ref": "public_chat_context",
+  "context_ref": "h1c0_r2_7_clean_phase0_to_6",
+  "runtime_executed": false,
+  "task_created": false,
+  "task_run_created": false,
+  "operation_created": false,
+  "operational_artifacts_created": false,
+  "decision": {
+    "decision": "NO_GO_EXPECTED_BLOCK",
+    "confidence": 0.86,
+    "rationale": "CVL predicts the current dominant governed boundary before Runtime execution.",
+    "expected_risk_level": "high",
+    "expected_blocking_frontier": "ACCEPTED_RUNNING_ARTIFACT_WORKER_TERMINALIZATION_GAP",
+    "expected_blocking_component": "artifact_worker_terminalization_guard",
+    "expected_blocking_reason_code": "ARTIFACT_RUNTIME_STALLED_AFTER_ARTIFACT_CREATION_STARTED",
+    "safe_to_start_phase1": false,
+    "requires_user_override": true
+  },
+  "prediction": {
+    "prediction_id": "cognitive_prediction_d5bf2a41ab334096a41e96780dc13783",
+    "predicted_outcome": "blocked",
+    "predicted_frontier": "ACCEPTED_RUNNING_ARTIFACT_WORKER_TERMINALIZATION_GAP",
+    "predicted_component": "artifact_worker_terminalization_guard",
+    "predicted_contract": "analysis_readonly",
+    "predicted_capability": null,
+    "predicted_observer": null,
+    "predicted_reason_code": "ARTIFACT_RUNTIME_STALLED_AFTER_ARTIFACT_CREATION_STARTED",
+    "predicted_blocking_stage": null,
+    "predicted_failure_mode": "cognitive_block",
+    "confidence": 0.86,
+    "causal_chain": [
+      "Intent",
+      "Lifecycle",
+      "Workspace",
+      "Contracts",
+      "ProjectAnalysis",
+      "ObservedEntity",
+      "Perception",
+      "Capability",
+      "Observer",
+      "ArtifactRuntime",
+      "Validation",
+      "Completion",
+      "SpeakerTruth"
+    ],
+    "critical_dependencies": [
+      "read_workspace",
+      "artifact_generate",
+      "analysis_readonly",
+      "task_run_terminality",
+      "artifact_runtime",
+      "speaker_truth"
+    ],
+    "alternative_hypotheses": [],
+    "false_positive_risks": [],
+    "false_negative_risks": []
+  },
+  "dependency_graph": {
+    "graph": {
+      "graph_id": "dependency_graph_665b7a7386e748728614a947fa22a1dd",
+      "source_profile_id": "firetest5_h1c0_r2_7_phase0_profile",
+      "nodes": [
+        {
+          "node_id": "pipeline:intent",
+          "node_type": "pipeline",
+          "label": "Intent",
+          "depends_on": [
+            "contract:analysis_readonly",
+            "contract:task_run_terminality",
+            "contract:artifact_runtime",
+            "contract:speaker_truth"
+          ],
+          "dependents": [
+            "pipeline:lifecycle"
+          ],
+          "impact": "pipeline_progression",
+          "criticality": "high",
+          "metadata": {}
+        },
+        {
+          "node_id": "pipeline:lifecycle",
+          "node_type": "pipeline",
+          "label": "Lifecycle",
+          "depends_on": [
+            "pipeline:intent"
+          ],
+          "dependents": [
+            "pipeline:workspace"
+          ],
+          "impact": "pipeline_progression",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "pipeline:workspace",
+          "node_type": "pipeline",
+          "label": "Workspace",
+          "depends_on": [
+            "pipeline:lifecycle"
+          ],
+          "dependents": [
+            "pipeline:contracts"
+          ],
+          "impact": "pipeline_progression",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "pipeline:contracts",
+          "node_type": "pipeline",
+          "label": "Contracts",
+          "depends_on": [
+            "pipeline:workspace"
+          ],
+          "dependents": [
+            "pipeline:projectanalysis"
+          ],
+          "impact": "pipeline_progression",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "pipeline:projectanalysis",
+          "node_type": "pipeline",
+          "label": "ProjectAnalysis",
+          "depends_on": [
+            "pipeline:contracts"
+          ],
+          "dependents": [
+            "pipeline:observedentity"
+          ],
+          "impact": "pipeline_progression",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "pipeline:observedentity",
+          "node_type": "pipeline",
+          "label": "ObservedEntity",
+          "depends_on": [
+            "pipeline:projectanalysis"
+          ],
+          "dependents": [
+            "pipeline:perception"
+          ],
+          "impact": "pipeline_progression",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "pipeline:perception",
+          "node_type": "pipeline",
+          "label": "Perception",
+          "depends_on": [
+            "pipeline:observedentity"
+          ],
+          "dependents": [
+            "pipeline:capability"
+          ],
+          "impact": "pipeline_progression",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "pipeline:capability",
+          "node_type": "pipeline",
+          "label": "Capability",
+          "depends_on": [
+            "pipeline:perception",
+            "capability:read_workspace",
+            "capability:artifact_generate"
+          ],
+          "dependents": [
+            "pipeline:observer"
+          ],
+          "impact": "pipeline_progression",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "pipeline:observer",
+          "node_type": "pipeline",
+          "label": "Observer",
+          "depends_on": [
+            "pipeline:capability"
+          ],
+          "dependents": [
+            "pipeline:artifactruntime"
+          ],
+          "impact": "pipeline_progression",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "pipeline:artifactruntime",
+          "node_type": "pipeline",
+          "label": "ArtifactRuntime",
+          "depends_on": [
+            "pipeline:observer"
+          ],
+          "dependents": [
+            "pipeline:validation"
+          ],
+          "impact": "pipeline_progression",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "pipeline:validation",
+          "node_type": "pipeline",
+          "label": "Validation",
+          "depends_on": [
+            "pipeline:artifactruntime"
+          ],
+          "dependents": [
+            "pipeline:completion"
+          ],
+          "impact": "pipeline_progression",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "pipeline:completion",
+          "node_type": "pipeline",
+          "label": "Completion",
+          "depends_on": [
+            "pipeline:validation"
+          ],
+          "dependents": [
+            "pipeline:speakertruth"
+          ],
+          "impact": "pipeline_progression",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "pipeline:speakertruth",
+          "node_type": "pipeline",
+          "label": "SpeakerTruth",
+          "depends_on": [
+            "pipeline:completion"
+          ],
+          "dependents": [],
+          "impact": "pipeline_progression",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "contract:analysis_readonly",
+          "node_type": "contract",
+          "label": "analysis_readonly",
+          "depends_on": [],
+          "dependents": [
+            "pipeline:intent"
+          ],
+          "impact": "contract_satisfaction",
+          "criticality": "high",
+          "metadata": {}
+        },
+        {
+          "node_id": "contract:task_run_terminality",
+          "node_type": "contract",
+          "label": "task_run_terminality",
+          "depends_on": [],
+          "dependents": [
+            "pipeline:intent"
+          ],
+          "impact": "contract_satisfaction",
+          "criticality": "high",
+          "metadata": {}
+        },
+        {
+          "node_id": "contract:artifact_runtime",
+          "node_type": "contract",
+          "label": "artifact_runtime",
+          "depends_on": [],
+          "dependents": [
+            "pipeline:intent"
+          ],
+          "impact": "contract_satisfaction",
+          "criticality": "high",
+          "metadata": {}
+        },
+        {
+          "node_id": "contract:speaker_truth",
+          "node_type": "contract",
+          "label": "speaker_truth",
+          "depends_on": [],
+          "dependents": [
+            "pipeline:intent"
+          ],
+          "impact": "contract_satisfaction",
+          "criticality": "high",
+          "metadata": {}
+        },
+        {
+          "node_id": "module:governancelifecycleservice",
+          "node_type": "module",
+          "label": "GovernanceLifecycleService",
+          "depends_on": [],
+          "dependents": [],
+          "impact": "implementation_support",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "module:readonlyanalysisartifactruntimeservice",
+          "node_type": "module",
+          "label": "ReadonlyAnalysisArtifactRuntimeService",
+          "depends_on": [],
+          "dependents": [],
+          "impact": "implementation_support",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "module:projectanalysisservice",
+          "node_type": "module",
+          "label": "ProjectAnalysisService",
+          "depends_on": [],
+          "dependents": [],
+          "impact": "implementation_support",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "module:projecttreeservice",
+          "node_type": "module",
+          "label": "ProjectTreeService",
+          "depends_on": [],
+          "dependents": [],
+          "impact": "implementation_support",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "module:filecontextbuilder",
+          "node_type": "module",
+          "label": "FileContextBuilder",
+          "depends_on": [],
+          "dependents": [],
+          "impact": "implementation_support",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "module:artifactruntimeservice",
+          "node_type": "module",
+          "label": "ArtifactRuntimeService",
+          "depends_on": [],
+          "dependents": [],
+          "impact": "implementation_support",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "module:universaltasksessionservice",
+          "node_type": "module",
+          "label": "UniversalTaskSessionService",
+          "depends_on": [],
+          "dependents": [],
+          "impact": "implementation_support",
+          "criticality": "medium",
+          "metadata": {}
+        },
+        {
+          "node_id": "capability:read_workspace",
+          "node_type": "capability",
+          "label": "read_workspace",
+          "depends_on": [],
+          "dependents": [
+            "pipeline:capability"
+          ],
+          "impact": "knowledge_or_observation_required",
+          "criticality": "high",
+          "metadata": {}
+        },
+        {
+          "node_id": "capability:artifact_generate",
+          "node_type": "capability",
+          "label": "artifact_generate",
+          "depends_on": [],
+          "dependents": [
+            "pipeline:capability"
+          ],
+          "impact": "knowledge_or_observation_required",
+          "criticality": "high",
+          "metadata": {}
+        }
+      ],
+      "edges": [
+        {
+          "from": "pipeline:intent",
+          "to": "pipeline:lifecycle"
+        },
+        {
+          "from": "pipeline:lifecycle",
+          "to": "pipeline:workspace"
+        },
+        {
+          "from": "pipeline:workspace",
+          "to": "pipeline:contracts"
+        },
+        {
+          "from": "pipeline:contracts",
+          "to": "pipeline:projectanalysis"
+        },
+        {
+          "from": "pipeline:projectanalysis",
+          "to": "pipeline:observedentity"
+        },
+        {
+          "from": "pipeline:observedentity",
+          "to": "pipeline:perception"
+        },
+        {
+          "from": "pipeline:perception",
+          "to": "pipeline:capability"
+        },
+        {
+          "from": "pipeline:capability",
+          "to": "pipeline:observer"
+        },
+        {
+          "from": "pipeline:observer",
+          "to": "pipeline:artifactruntime"
+        },
+        {
+          "from": "pipeline:artifactruntime",
+          "to": "pipeline:validation"
+        },
+        {
+          "from": "pipeline:validation",
+          "to": "pipeline:completion"
+        },
+        {
+          "from": "pipeline:completion",
+          "to": "pipeline:speakertruth"
+        },
+        {
+          "from": "contract:analysis_readonly",
+          "to": "pipeline:intent"
+        },
+        {
+          "from": "contract:task_run_terminality",
+          "to": "pipeline:intent"
+        },
+        {
+          "from": "contract:artifact_runtime",
+          "to": "pipeline:intent"
+        },
+        {
+          "from": "contract:speaker_truth",
+          "to": "pipeline:intent"
+        },
+        {
+          "from": "capability:read_workspace",
+          "to": "pipeline:capability"
+        },
+        {
+          "from": "capability:artifact_generate",
+          "to": "pipeline:capability"
+        }
+      ],
+      "metadata": {}
+    },
+    "nodes": [
+      {
+        "node_id": "pipeline:intent",
+        "node_type": "pipeline",
+        "label": "Intent",
+        "depends_on": [
+          "contract:analysis_readonly",
+          "contract:task_run_terminality",
+          "contract:artifact_runtime",
+          "contract:speaker_truth"
+        ],
+        "dependents": [
+          "pipeline:lifecycle"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "high",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:lifecycle",
+        "node_type": "pipeline",
+        "label": "Lifecycle",
+        "depends_on": [
+          "pipeline:intent"
+        ],
+        "dependents": [
+          "pipeline:workspace"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:workspace",
+        "node_type": "pipeline",
+        "label": "Workspace",
+        "depends_on": [
+          "pipeline:lifecycle"
+        ],
+        "dependents": [
+          "pipeline:contracts"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:contracts",
+        "node_type": "pipeline",
+        "label": "Contracts",
+        "depends_on": [
+          "pipeline:workspace"
+        ],
+        "dependents": [
+          "pipeline:projectanalysis"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:projectanalysis",
+        "node_type": "pipeline",
+        "label": "ProjectAnalysis",
+        "depends_on": [
+          "pipeline:contracts"
+        ],
+        "dependents": [
+          "pipeline:observedentity"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:observedentity",
+        "node_type": "pipeline",
+        "label": "ObservedEntity",
+        "depends_on": [
+          "pipeline:projectanalysis"
+        ],
+        "dependents": [
+          "pipeline:perception"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:perception",
+        "node_type": "pipeline",
+        "label": "Perception",
+        "depends_on": [
+          "pipeline:observedentity"
+        ],
+        "dependents": [
+          "pipeline:capability"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:capability",
+        "node_type": "pipeline",
+        "label": "Capability",
+        "depends_on": [
+          "pipeline:perception",
+          "capability:read_workspace",
+          "capability:artifact_generate"
+        ],
+        "dependents": [
+          "pipeline:observer"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:observer",
+        "node_type": "pipeline",
+        "label": "Observer",
+        "depends_on": [
+          "pipeline:capability"
+        ],
+        "dependents": [
+          "pipeline:artifactruntime"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:artifactruntime",
+        "node_type": "pipeline",
+        "label": "ArtifactRuntime",
+        "depends_on": [
+          "pipeline:observer"
+        ],
+        "dependents": [
+          "pipeline:validation"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:validation",
+        "node_type": "pipeline",
+        "label": "Validation",
+        "depends_on": [
+          "pipeline:artifactruntime"
+        ],
+        "dependents": [
+          "pipeline:completion"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:completion",
+        "node_type": "pipeline",
+        "label": "Completion",
+        "depends_on": [
+          "pipeline:validation"
+        ],
+        "dependents": [
+          "pipeline:speakertruth"
+        ],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "pipeline:speakertruth",
+        "node_type": "pipeline",
+        "label": "SpeakerTruth",
+        "depends_on": [
+          "pipeline:completion"
+        ],
+        "dependents": [],
+        "impact": "pipeline_progression",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "contract:analysis_readonly",
+        "node_type": "contract",
+        "label": "analysis_readonly",
+        "depends_on": [],
+        "dependents": [
+          "pipeline:intent"
+        ],
+        "impact": "contract_satisfaction",
+        "criticality": "high",
+        "metadata": {}
+      },
+      {
+        "node_id": "contract:task_run_terminality",
+        "node_type": "contract",
+        "label": "task_run_terminality",
+        "depends_on": [],
+        "dependents": [
+          "pipeline:intent"
+        ],
+        "impact": "contract_satisfaction",
+        "criticality": "high",
+        "metadata": {}
+      },
+      {
+        "node_id": "contract:artifact_runtime",
+        "node_type": "contract",
+        "label": "artifact_runtime",
+        "depends_on": [],
+        "dependents": [
+          "pipeline:intent"
+        ],
+        "impact": "contract_satisfaction",
+        "criticality": "high",
+        "metadata": {}
+      },
+      {
+        "node_id": "contract:speaker_truth",
+        "node_type": "contract",
+        "label": "speaker_truth",
+        "depends_on": [],
+        "dependents": [
+          "pipeline:intent"
+        ],
+        "impact": "contract_satisfaction",
+        "criticality": "high",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:governancelifecycleservice",
+        "node_type": "module",
+        "label": "GovernanceLifecycleService",
+        "depends_on": [],
+        "dependents": [],
+        "impact": "implementation_support",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:readonlyanalysisartifactruntimeservice",
+        "node_type": "module",
+        "label": "ReadonlyAnalysisArtifactRuntimeService",
+        "depends_on": [],
+        "dependents": [],
+        "impact": "implementation_support",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:projectanalysisservice",
+        "node_type": "module",
+        "label": "ProjectAnalysisService",
+        "depends_on": [],
+        "dependents": [],
+        "impact": "implementation_support",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:projecttreeservice",
+        "node_type": "module",
+        "label": "ProjectTreeService",
+        "depends_on": [],
+        "dependents": [],
+        "impact": "implementation_support",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:filecontextbuilder",
+        "node_type": "module",
+        "label": "FileContextBuilder",
+        "depends_on": [],
+        "dependents": [],
+        "impact": "implementation_support",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:artifactruntimeservice",
+        "node_type": "module",
+        "label": "ArtifactRuntimeService",
+        "depends_on": [],
+        "dependents": [],
+        "impact": "implementation_support",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "module:universaltasksessionservice",
+        "node_type": "module",
+        "label": "UniversalTaskSessionService",
+        "depends_on": [],
+        "dependents": [],
+        "impact": "implementation_support",
+        "criticality": "medium",
+        "metadata": {}
+      },
+      {
+        "node_id": "capability:read_workspace",
+        "node_type": "capability",
+        "label": "read_workspace",
+        "depends_on": [],
+        "dependents": [
+          "pipeline:capability"
+        ],
+        "impact": "knowledge_or_observation_required",
+        "criticality": "high",
+        "metadata": {}
+      },
+      {
+        "node_id": "capability:artifact_generate",
+        "node_type": "capability",
+        "label": "artifact_generate",
+        "depends_on": [],
+        "dependents": [
+          "pipeline:capability"
+        ],
+        "impact": "knowledge_or_observation_required",
+        "criticality": "high",
+        "metadata": {}
+      }
+    ],
+    "edges": [
+      {
+        "from": "pipeline:intent",
+        "to": "pipeline:lifecycle"
+      },
+      {
+        "from": "pipeline:lifecycle",
+        "to": "pipeline:workspace"
+      },
+      {
+        "from": "pipeline:workspace",
+        "to": "pipeline:contracts"
+      },
+      {
+        "from": "pipeline:contracts",
+        "to": "pipeline:projectanalysis"
+      },
+      {
+        "from": "pipeline:projectanalysis",
+        "to": "pipeline:observedentity"
+      },
+      {
+        "from": "pipeline:observedentity",
+        "to": "pipeline:perception"
+      },
+      {
+        "from": "pipeline:perception",
+        "to": "pipeline:capability"
+      },
+      {
+        "from": "pipeline:capability",
+        "to": "pipeline:observer"
+      },
+      {
+        "from": "pipeline:observer",
+        "to": "pipeline:artifactruntime"
+      },
+      {
+        "from": "pipeline:artifactruntime",
+        "to": "pipeline:validation"
+      },
+      {
+        "from": "pipeline:validation",
+        "to": "pipeline:completion"
+      },
+      {
+        "from": "pipeline:completion",
+        "to": "pipeline:speakertruth"
+      },
+      {
+        "from": "contract:analysis_readonly",
+        "to": "pipeline:intent"
+      },
+      {
+        "from": "contract:task_run_terminality",
+        "to": "pipeline:intent"
+      },
+      {
+        "from": "contract:artifact_runtime",
+        "to": "pipeline:intent"
+      },
+      {
+        "from": "contract:speaker_truth",
+        "to": "pipeline:intent"
+      },
+      {
+        "from": "capability:read_workspace",
+        "to": "pipeline:capability"
+      },
+      {
+        "from": "capability:artifact_generate",
+        "to": "pipeline:capability"
+      }
+    ],
+    "critical_path": [
+      "Intent",
+      "Lifecycle",
+      "Workspace",
+      "Contracts",
+      "ProjectAnalysis",
+      "ObservedEntity",
+      "Perception",
+      "Capability",
+      "Observer",
+      "ArtifactRuntime",
+      "Validation",
+      "Completion",
+      "SpeakerTruth"
+    ],
+    "critical_dependencies": [
+      "read_workspace",
+      "artifact_generate",
+      "analysis_readonly",
+      "task_run_terminality",
+      "artifact_runtime",
+      "speaker_truth"
+    ],
+    "expected_modules": [
+      "GovernanceLifecycleService",
+      "ReadonlyAnalysisArtifactRuntimeService",
+      "ProjectAnalysisService",
+      "ProjectTreeService",
+      "FileContextBuilder",
+      "ArtifactRuntimeService",
+      "UniversalTaskSessionService"
+    ],
+    "expected_contracts": [
+      "analysis_readonly",
+      "task_run_terminality",
+      "artifact_runtime",
+      "speaker_truth"
+    ],
+    "expected_capabilities": [
+      "read_workspace",
+      "artifact_generate"
+    ],
+    "expected_observers": [],
+    "expected_artifacts": [],
+    "expected_validation_gates": [
+      "Validation",
+      "Completion"
+    ],
+    "expected_truth_gates": [
+      "SpeakerTruth"
+    ],
+    "possible_bottlenecks": [
+      "ACCEPTED_RUNNING_ARTIFACT_WORKER_TERMINALIZATION_GAP"
+    ]
+  },
+  "coverage_report": {
+    "coverage": {
+      "report_id": "coverage_report_6b53c360ea2d4cf5b2fe57719150b08f",
+      "profile_id": "firetest5_h1c0_r2_7_phase0_profile",
+      "metrics": [
+        {
+          "domain": "pipeline",
+          "coverage": 1.0,
+          "confidence": 1.0,
+          "health": "ready",
+          "criticality": "high",
+          "gaps": [],
+          "evidence_refs": [
+            "coverage:pipeline"
+          ]
+        },
+        {
+          "domain": "contracts",
+          "coverage": 1.0,
+          "confidence": 1.0,
+          "health": "ready",
+          "criticality": "high",
+          "gaps": [],
+          "evidence_refs": [
+            "coverage:contracts"
+          ]
+        },
+        {
+          "domain": "capabilities",
+          "coverage": 1.0,
+          "confidence": 1.0,
+          "health": "ready",
+          "criticality": "critical",
+          "gaps": [],
+          "evidence_refs": [
+            "coverage:capabilities"
+          ]
+        },
+        {
+          "domain": "artifacts",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "medium",
+          "gaps": [
+            "expected_artifacts"
+          ],
+          "evidence_refs": [
+            "coverage:artifacts"
+          ]
+        },
+        {
+          "domain": "success_contract",
+          "coverage": 1.0,
+          "confidence": 1.0,
+          "health": "ready",
+          "criticality": "high",
+          "gaps": [],
+          "evidence_refs": [
+            "coverage:success_contract"
+          ]
+        },
+        {
+          "domain": "project_analysis_file_read",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "file_read_status"
+          ],
+          "evidence_refs": [
+            "coverage:project_analysis_file_read"
+          ]
+        },
+        {
+          "domain": "project_analysis_partial_context",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "partial_context_status"
+          ],
+          "evidence_refs": [
+            "coverage:project_analysis_partial_context"
+          ]
+        },
+        {
+          "domain": "project_analysis_selection_read_cooperation",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "cooperation_status"
+          ],
+          "evidence_refs": [
+            "coverage:project_analysis_selection_read_cooperation"
+          ]
+        },
+        {
+          "domain": "public_response_boundary",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "response_mode"
+          ],
+          "evidence_refs": [
+            "coverage:public_response_boundary"
+          ]
+        },
+        {
+          "domain": "public_response_acceptance",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "accepted_running_status"
+          ],
+          "evidence_refs": [
+            "coverage:public_response_acceptance"
+          ]
+        },
+        {
+          "domain": "public_response_timeout_blocked",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "timeout_blocked_status"
+          ],
+          "evidence_refs": [
+            "coverage:public_response_timeout_blocked"
+          ]
+        },
+        {
+          "domain": "accepted_worker_terminalization",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "artifact_worker_terminalization"
+          ],
+          "evidence_refs": [
+            "coverage:accepted_worker_terminalization"
+          ]
+        },
+        {
+          "domain": "artifact_runtime_terminality",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "stalled_after_artifact_creation_started"
+          ],
+          "evidence_refs": [
+            "coverage:artifact_runtime_terminality"
+          ]
+        },
+        {
+          "domain": "result_endpoint_after_artifact_start",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "result_endpoint_after_artifact_start"
+          ],
+          "evidence_refs": [
+            "coverage:result_endpoint_after_artifact_start"
+          ]
+        },
+        {
+          "domain": "public_result_finalization",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "result_finalization_status"
+          ],
+          "evidence_refs": [
+            "coverage:public_result_finalization"
+          ]
+        },
+        {
+          "domain": "public_endpoint_health",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "endpoint_health"
+          ],
+          "evidence_refs": [
+            "coverage:public_endpoint_health"
+          ]
+        },
+        {
+          "domain": "phase_dependency_boundary",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "phase_dependency_boundary"
+          ],
+          "evidence_refs": [
+            "coverage:phase_dependency_boundary"
+          ]
+        },
+        {
+          "domain": "public_preacceptance",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "preacceptance_status"
+          ],
+          "evidence_refs": [
+            "coverage:public_preacceptance"
+          ]
+        },
+        {
+          "domain": "taskrun_bootstrap",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "taskrun_bootstrap_status"
+          ],
+          "evidence_refs": [
+            "coverage:taskrun_bootstrap"
+          ]
+        },
+        {
+          "domain": "phase_progression_stop_condition",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "phase_progression_status"
+          ],
+          "evidence_refs": [
+            "coverage:phase_progression_stop_condition"
+          ]
+        },
+        {
+          "domain": "evidence_availability",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "evidence_availability"
+          ],
+          "evidence_refs": [
+            "coverage:evidence_availability"
+          ]
+        },
+        {
+          "domain": "knowledge_availability",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "knowledge_availability"
+          ],
+          "evidence_refs": [
+            "coverage:knowledge_availability"
+          ]
+        },
+        {
+          "domain": "semantic_completion",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "semantic_completion"
+          ],
+          "evidence_refs": [
+            "coverage:semantic_completion"
+          ]
+        },
+        {
+          "domain": "truth_readiness",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "not_ready"
+          ],
+          "evidence_refs": [
+            "coverage:truth_readiness"
+          ]
+        },
+        {
+          "domain": "validation_probability",
+          "coverage": 0.0,
+          "confidence": 1.0,
+          "health": "blocked",
+          "criticality": "high",
+          "gaps": [
+            "validation_probability"
+          ],
+          "evidence_refs": [
+            "coverage:validation_probability"
+          ]
+        }
+      ],
+      "overall_coverage": 0.16,
+      "overall_status": "partial",
+      "metadata": {
+        "available_capability_count": 2
+      }
+    },
+    "coverage_by_domain": {
+      "pipeline": 1.0,
+      "contracts": 1.0,
+      "capabilities": 1.0,
+      "artifacts": 0.0,
+      "success_contract": 1.0,
+      "project_analysis_file_read": 0.0,
+      "project_analysis_partial_context": 0.0,
+      "project_analysis_selection_read_cooperation": 0.0,
+      "public_response_boundary": 0.0,
+      "public_response_acceptance": 0.0,
+      "public_response_timeout_blocked": 0.0,
+      "accepted_worker_terminalization": 0.0,
+      "artifact_runtime_terminality": 0.0,
+      "result_endpoint_after_artifact_start": 0.0,
+      "public_result_finalization": 0.0,
+      "public_endpoint_health": 0.0,
+      "phase_dependency_boundary": 0.0,
+      "public_preacceptance": 0.0,
+      "taskrun_bootstrap": 0.0,
+      "phase_progression_stop_condition": 0.0,
+      "evidence_availability": 0.0,
+      "knowledge_availability": 0.0,
+      "semantic_completion": 0.0,
+      "truth_readiness": 0.0,
+      "validation_probability": 0.0
+    },
+    "overall_coverage": 0.16,
+    "critical_coverage": 0.1667,
+    "coverage_confidence": 1.0,
+    "unknown_areas": [],
+    "weak_areas": [
+      "artifacts",
+      "project_analysis_file_read",
+      "project_analysis_partial_context",
+      "project_analysis_selection_read_cooperation",
+      "public_response_boundary",
+      "public_response_acceptance",
+      "public_response_timeout_blocked",
+      "accepted_worker_terminalization",
+      "artifact_runtime_terminality",
+      "result_endpoint_after_artifact_start",
+      "public_result_finalization",
+      "public_endpoint_health",
+      "phase_dependency_boundary",
+      "public_preacceptance",
+      "taskrun_bootstrap",
+      "phase_progression_stop_condition",
+      "evidence_availability",
+      "knowledge_availability",
+      "semantic_completion",
+      "truth_readiness",
+      "validation_probability"
+    ],
+    "strong_areas": [
+      "pipeline",
+      "contracts",
+      "capabilities",
+      "success_contract"
+    ],
+    "coverage_reason_codes": [
+      "COVERAGE_PIPELINE_READY",
+      "COVERAGE_CONTRACTS_READY",
+      "COVERAGE_CAPABILITIES_READY",
+      "COVERAGE_ARTIFACTS_BLOCKED",
+      "COVERAGE_SUCCESS_CONTRACT_READY",
+      "COVERAGE_PROJECT_ANALYSIS_FILE_READ_BLOCKED",
+      "COVERAGE_PROJECT_ANALYSIS_PARTIAL_CONTEXT_BLOCKED",
+      "COVERAGE_PROJECT_ANALYSIS_SELECTION_READ_COOPERATION_BLOCKED",
+      "COVERAGE_PUBLIC_RESPONSE_BOUNDARY_BLOCKED",
+      "COVERAGE_PUBLIC_RESPONSE_ACCEPTANCE_BLOCKED",
+      "COVERAGE_PUBLIC_RESPONSE_TIMEOUT_BLOCKED_BLOCKED",
+      "COVERAGE_ACCEPTED_WORKER_TERMINALIZATION_BLOCKED",
+      "COVERAGE_ARTIFACT_RUNTIME_TERMINALITY_BLOCKED",
+      "COVERAGE_RESULT_ENDPOINT_AFTER_ARTIFACT_START_BLOCKED",
+      "COVERAGE_PUBLIC_RESULT_FINALIZATION_BLOCKED",
+      "COVERAGE_PUBLIC_ENDPOINT_HEALTH_BLOCKED",
+      "COVERAGE_PHASE_DEPENDENCY_BOUNDARY_BLOCKED",
+      "COVERAGE_PUBLIC_PREACCEPTANCE_BLOCKED",
+      "COVERAGE_TASKRUN_BOOTSTRAP_BLOCKED",
+      "COVERAGE_PHASE_PROGRESSION_STOP_CONDITION_BLOCKED",
+      "COVERAGE_EVIDENCE_AVAILABILITY_BLOCKED",
+      "COVERAGE_KNOWLEDGE_AVAILABILITY_BLOCKED",
+      "COVERAGE_SEMANTIC_COMPLETION_BLOCKED",
+      "COVERAGE_TRUTH_READINESS_BLOCKED",
+      "COVERAGE_VALIDATION_PROBABILITY_BLOCKED"
+    ]
+  },
+  "simulation_result": {
+    "simulation": {
+      "simulation_id": "simulation_a7011ea1373a470c8fe56764b33feaf4",
+      "request_id": "simulation_request_3ddc3f48f9464fdc9a0f5602eb4b57a0",
+      "profile_id": "firetest5_h1c0_r2_7_phase0_profile",
+      "status": "blocked",
+      "steps": [
+        {
+          "step_id": "simulation_step_d6b47d5d670d4d768cfa4469543be7d8",
+          "index": 1,
+          "component": "Intent",
+          "status": "predicted_success",
+          "expected_contracts": [],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.86
+        },
+        {
+          "step_id": "simulation_step_295db28a25384a74b0d5938bb86ad4b1",
+          "index": 2,
+          "component": "Lifecycle",
+          "status": "predicted_success",
+          "expected_contracts": [],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.86
+        },
+        {
+          "step_id": "simulation_step_667c1aecb10046d088541fcefaa6b3e2",
+          "index": 3,
+          "component": "Workspace",
+          "status": "predicted_success",
+          "expected_contracts": [],
+          "required_capabilities": [
+            "read_workspace"
+          ],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.86
+        },
+        {
+          "step_id": "simulation_step_e8ff1cd85fd746879606454ea5376763",
+          "index": 4,
+          "component": "Contracts",
+          "status": "predicted_success",
+          "expected_contracts": [],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.86
+        },
+        {
+          "step_id": "simulation_step_71ba49c1b40f4171a696a98a1cbaa884",
+          "index": 5,
+          "component": "ProjectAnalysis",
+          "status": "predicted_success",
+          "expected_contracts": [
+            "analysis_readonly"
+          ],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.86
+        },
+        {
+          "step_id": "simulation_step_284cc5e559b14f71a377894ccee4d90b",
+          "index": 6,
+          "component": "ObservedEntity",
+          "status": "predicted_success",
+          "expected_contracts": [],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.86
+        },
+        {
+          "step_id": "simulation_step_cfffb9e842e7483294bd524b154fa8b6",
+          "index": 7,
+          "component": "Perception",
+          "status": "predicted_success",
+          "expected_contracts": [],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.86
+        },
+        {
+          "step_id": "simulation_step_dbd9e3744f984a03b96f3a8f48abb829",
+          "index": 8,
+          "component": "Capability",
+          "status": "predicted_success",
+          "expected_contracts": [],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.86
+        },
+        {
+          "step_id": "simulation_step_2640d60b237f43b9b1a42595d88c856c",
+          "index": 9,
+          "component": "Observer",
+          "status": "predicted_success",
+          "expected_contracts": [],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.86
+        },
+        {
+          "step_id": "simulation_step_6362e556225144369432f4963c928873",
+          "index": 10,
+          "component": "ArtifactRuntime",
+          "status": "predicted_success",
+          "expected_contracts": [
+            "artifact_runtime"
+          ],
+          "required_capabilities": [
+            "artifact_generate"
+          ],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.86
+        },
+        {
+          "step_id": "simulation_step_c3c40fabab144800b955e0e834507782",
+          "index": 11,
+          "component": "Validation",
+          "status": "predicted_success",
+          "expected_contracts": [],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.86
+        },
+        {
+          "step_id": "simulation_step_56e676bf329843a1a6cb1461d37bc7c0",
+          "index": 12,
+          "component": "Completion",
+          "status": "predicted_success",
+          "expected_contracts": [],
+          "required_capabilities": [],
+          "reason_code": null,
+          "explanation": "No declared blocker predicted for this component.",
+          "confidence": 0.86
+        },
+        {
+          "step_id": "simulation_step_3072fefdf5a448aea72c18caa979435a",
+          "index": 13,
+          "component": "SpeakerTruth",
+          "status": "predicted_blocked",
+          "expected_contracts": [
+            "speaker_truth"
+          ],
+          "required_capabilities": [],
+          "reason_code": "ARTIFACT_RUNTIME_STALLED_AFTER_ARTIFACT_CREATION_STARTED",
+          "explanation": "Explicit frontier context predicts this component as the current governed boundary.",
+          "confidence": 0.86
+        }
+      ],
+      "predicted_failures": [],
+      "predicted_successes": [
+        {
+          "success_id": "predicted_success_2c7bba827b30489c90aecd4c2876b06e",
+          "component": "Intent",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.86,
+          "evidence_refs": [
+            "profile:firetest5_h1c0_r2_7_phase0_profile",
+            "component:Intent"
+          ]
+        },
+        {
+          "success_id": "predicted_success_2ea19f12a049471180be4c681b1ec739",
+          "component": "Lifecycle",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.86,
+          "evidence_refs": [
+            "profile:firetest5_h1c0_r2_7_phase0_profile",
+            "component:Lifecycle"
+          ]
+        },
+        {
+          "success_id": "predicted_success_6d4b8517b7a3427689d4bb9fd52520fa",
+          "component": "Workspace",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.86,
+          "evidence_refs": [
+            "profile:firetest5_h1c0_r2_7_phase0_profile",
+            "component:Workspace"
+          ]
+        },
+        {
+          "success_id": "predicted_success_891eb3ed6d9b476e972f85312c939f05",
+          "component": "Contracts",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.86,
+          "evidence_refs": [
+            "profile:firetest5_h1c0_r2_7_phase0_profile",
+            "component:Contracts"
+          ]
+        },
+        {
+          "success_id": "predicted_success_3e0975b109bd4544a9b2641c7281c7d5",
+          "component": "ProjectAnalysis",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.86,
+          "evidence_refs": [
+            "profile:firetest5_h1c0_r2_7_phase0_profile",
+            "component:ProjectAnalysis"
+          ]
+        },
+        {
+          "success_id": "predicted_success_f0128a54d30f40e2888a62f107400abb",
+          "component": "ObservedEntity",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.86,
+          "evidence_refs": [
+            "profile:firetest5_h1c0_r2_7_phase0_profile",
+            "component:ObservedEntity"
+          ]
+        },
+        {
+          "success_id": "predicted_success_beb0bee0b34845ca9f8156491bd2776f",
+          "component": "Perception",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.86,
+          "evidence_refs": [
+            "profile:firetest5_h1c0_r2_7_phase0_profile",
+            "component:Perception"
+          ]
+        },
+        {
+          "success_id": "predicted_success_e06cb0bd5fe24b8984c44e223d4cc771",
+          "component": "Capability",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.86,
+          "evidence_refs": [
+            "profile:firetest5_h1c0_r2_7_phase0_profile",
+            "component:Capability"
+          ]
+        },
+        {
+          "success_id": "predicted_success_6036ae0de3f34dfc8dbb8ac7790378f7",
+          "component": "Observer",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.86,
+          "evidence_refs": [
+            "profile:firetest5_h1c0_r2_7_phase0_profile",
+            "component:Observer"
+          ]
+        },
+        {
+          "success_id": "predicted_success_abad7203c5d24a498f4b2c6f250e2607",
+          "component": "ArtifactRuntime",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.86,
+          "evidence_refs": [
+            "profile:firetest5_h1c0_r2_7_phase0_profile",
+            "component:ArtifactRuntime"
+          ]
+        },
+        {
+          "success_id": "predicted_success_abf14936f9cc4f5aa17cef600ecada61",
+          "component": "Validation",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.86,
+          "evidence_refs": [
+            "profile:firetest5_h1c0_r2_7_phase0_profile",
+            "component:Validation"
+          ]
+        },
+        {
+          "success_id": "predicted_success_1b4c81abfdc849e9a7c09ce8afdd9fdf",
+          "component": "Completion",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.86,
+          "evidence_refs": [
+            "profile:firetest5_h1c0_r2_7_phase0_profile",
+            "component:Completion"
+          ]
+        },
+        {
+          "success_id": "predicted_success_7c66aa24ce0741bbaaf31894a61445c9",
+          "component": "SpeakerTruth",
+          "summary": "No declared blocker predicted for this component.",
+          "confidence": 0.86,
+          "evidence_refs": [
+            "profile:firetest5_h1c0_r2_7_phase0_profile",
+            "component:SpeakerTruth"
+          ]
+        }
+      ],
+      "confidence": 0.86,
+      "summary": "Artifact runtime is expected to stall after artifact creation starts without a terminal result."
+    },
+    "simulation_id": "simulation_a7011ea1373a470c8fe56764b33feaf4",
+    "simulated_path": [
+      "Intent",
+      "Lifecycle",
+      "Workspace",
+      "Contracts",
+      "ProjectAnalysis",
+      "ObservedEntity",
+      "Perception",
+      "Capability",
+      "Observer",
+      "ArtifactRuntime",
+      "Validation",
+      "Completion",
+      "SpeakerTruth"
+    ],
+    "simulated_steps": [
+      {
+        "step_id": "simulation_step_d6b47d5d670d4d768cfa4469543be7d8",
+        "index": 1,
+        "component": "Intent",
+        "status": "predicted_success",
+        "expected_contracts": [],
+        "required_capabilities": [],
+        "reason_code": null,
+        "explanation": "No declared blocker predicted for this component.",
+        "confidence": 0.86
+      },
+      {
+        "step_id": "simulation_step_295db28a25384a74b0d5938bb86ad4b1",
+        "index": 2,
+        "component": "Lifecycle",
+        "status": "predicted_success",
+        "expected_contracts": [],
+        "required_capabilities": [],
+        "reason_code": null,
+        "explanation": "No declared blocker predicted for this component.",
+        "confidence": 0.86
+      },
+      {
+        "step_id": "simulation_step_667c1aecb10046d088541fcefaa6b3e2",
+        "index": 3,
+        "component": "Workspace",
+        "status": "predicted_success",
+        "expected_contracts": [],
+        "required_capabilities": [
+          "read_workspace"
+        ],
+        "reason_code": null,
+        "explanation": "No declared blocker predicted for this component.",
+        "confidence": 0.86
+      },
+      {
+        "step_id": "simulation_step_e8ff1cd85fd746879606454ea5376763",
+        "index": 4,
+        "component": "Contracts",
+        "status": "predicted_success",
+        "expected_contracts": [],
+        "required_capabilities": [],
+        "reason_code": null,
+        "explanation": "No declared blocker predicted for this component.",
+        "confidence": 0.86
+      },
+      {
+        "step_id": "simulation_step_71ba49c1b40f4171a696a98a1cbaa884",
+        "index": 5,
+        "component": "ProjectAnalysis",
+        "status": "predicted_success",
+        "expected_contracts": [
+          "analysis_readonly"
+        ],
+        "required_capabilities": [],
+        "reason_code": null,
+        "explanation": "No declared blocker predicted for this component.",
+        "confidence": 0.86
+      },
+      {
+        "step_id": "simulation_step_284cc5e559b14f71a377894ccee4d90b",
+        "index": 6,
+        "component": "ObservedEntity",
+        "status": "predicted_success",
+        "expected_contracts": [],
+        "required_capabilities": [],
+        "reason_code": null,
+        "explanation": "No declared blocker predicted for this component.",
+        "confidence": 0.86
+      },
+      {
+        "step_id": "simulation_step_cfffb9e842e7483294bd524b154fa8b6",
+        "index": 7,
+        "component": "Perception",
+        "status": "predicted_success",
+        "expected_contracts": [],
+        "required_capabilities": [],
+        "reason_code": null,
+        "explanation": "No declared blocker predicted for this component.",
+        "confidence": 0.86
+      },
+      {
+        "step_id": "simulation_step_dbd9e3744f984a03b96f3a8f48abb829",
+        "index": 8,
+        "component": "Capability",
+        "status": "predicted_success",
+        "expected_contracts": [],
+        "required_capabilities": [],
+        "reason_code": null,
+        "explanation": "No declared blocker predicted for this component.",
+        "confidence": 0.86
+      },
+      {
+        "step_id": "simulation_step_2640d60b237f43b9b1a42595d88c856c",
+        "index": 9,
+        "component": "Observer",
+        "status": "predicted_success",
+        "expected_contracts": [],
+        "required_capabilities": [],
+        "reason_code": null,
+        "explanation": "No declared blocker predicted for this component.",
+        "confidence": 0.86
+      },
+      {
+        "step_id": "simulation_step_6362e556225144369432f4963c928873",
+        "index": 10,
+        "component": "ArtifactRuntime",
+        "status": "predicted_success",
+        "expected_contracts": [
+          "artifact_runtime"
+        ],
+        "required_capabilities": [
+          "artifact_generate"
+        ],
+        "reason_code": null,
+        "explanation": "No declared blocker predicted for this component.",
+        "confidence": 0.86
+      },
+      {
+        "step_id": "simulation_step_c3c40fabab144800b955e0e834507782",
+        "index": 11,
+        "component": "Validation",
+        "status": "predicted_success",
+        "expected_contracts": [],
+        "required_capabilities": [],
+        "reason_code": null,
+        "explanation": "No declared blocker predicted for this component.",
+        "confidence": 0.86
+      },
+      {
+        "step_id": "simulation_step_56e676bf329843a1a6cb1461d37bc7c0",
+        "index": 12,
+        "component": "Completion",
+        "status": "predicted_success",
+        "expected_contracts": [],
+        "required_capabilities": [],
+        "reason_code": null,
+        "explanation": "No declared blocker predicted for this component.",
+        "confidence": 0.86
+      },
+      {
+        "step_id": "simulation_step_3072fefdf5a448aea72c18caa979435a",
+        "index": 13,
+        "component": "SpeakerTruth",
+        "status": "predicted_blocked",
+        "expected_contracts": [
+          "speaker_truth"
+        ],
+        "required_capabilities": [],
+        "reason_code": "ARTIFACT_RUNTIME_STALLED_AFTER_ARTIFACT_CREATION_STARTED",
+        "explanation": "Explicit frontier context predicts this component as the current governed boundary.",
+        "confidence": 0.86
+      }
+    ],
+    "simulated_blocking_point": "SpeakerTruth",
+    "simulated_reason_code": "ARTIFACT_RUNTIME_STALLED_AFTER_ARTIFACT_CREATION_STARTED",
+    "simulated_confidence": 0.86,
+    "contracts_involved": [
+      "analysis_readonly",
+      "task_run_terminality",
+      "artifact_runtime",
+      "speaker_truth"
+    ],
+    "capabilities_involved": [
+      "read_workspace",
+      "artifact_generate"
+    ],
+    "observers_required": [],
+    "evidence_required": [
+      "runtime_evidence",
+      "validation_evidence",
+      "speaker_truth_evidence"
+    ],
+    "artifacts_expected": [],
+    "validation_expected": [
+      "Validation must be based on real execution, not CVL."
+    ],
+    "truth_expected": [
+      "Speaker Truth must be based on real execution, not CVL."
+    ],
+    "simulation_limitations": [
+      "Simulation is cognitive only and does not execute Runtime."
+    ]
+  },
+  "frontier_report": {
+    "frontier_id": "cognitive_frontier_bf3675cf623c4312b58d3605b45b1030",
+    "primary_frontier": "ACCEPTED_RUNNING_ARTIFACT_WORKER_TERMINALIZATION_GAP",
+    "secondary_frontiers": [],
+    "frontier_chain": [
+      "Intent",
+      "Lifecycle",
+      "Workspace",
+      "Contracts",
+      "ProjectAnalysis",
+      "ObservedEntity",
+      "Perception",
+      "Capability",
+      "Observer",
+      "ArtifactRuntime",
+      "Validation",
+      "Completion",
+      "SpeakerTruth"
+    ],
+    "frontier_confidence": 0.86,
+    "why_this_frontier": "Predicted reason code is ARTIFACT_RUNTIME_STALLED_AFTER_ARTIFACT_CREATION_STARTED.",
+    "what_would_move_frontier_forward": [
+      "Improve ProjectAnalysis file selection/read cooperation under budget.",
+      "Repeat H1B4.3.3 artifact terminality diagnostic after ProjectAnalysis crosses."
+    ],
+    "required_capabilities": [
+      "read_workspace",
+      "artifact_generate",
+      "analysis_readonly",
+      "task_run_terminality",
+      "artifact_runtime",
+      "speaker_truth"
+    ],
+    "required_observability": [
+      "checkpoint_metrics",
+      "reason_code_specificity",
+      "runtime_terminal_events"
+    ],
+    "required_runtime_changes": [
+      "file_read_budget_cooperation",
+      "public_chat_governed_response_boundary"
+    ]
+  },
+  "go_no_go_recommendation": "NO_GO_EXPECTED_BLOCK",
+  "confidence": 0.86,
+  "reason_codes": [
+    "ARTIFACT_RUNTIME_STALLED_AFTER_ARTIFACT_CREATION_STARTED",
+    "PROFILE_SELECTED_BY_READONLY_ARTIFACT_DISCOVERY",
+    "FRONTIER_CONTEXT_ATTACHED"
+  ],
+  "critical_dependencies": [
+    "read_workspace",
+    "artifact_generate",
+    "analysis_readonly",
+    "task_run_terminality",
+    "artifact_runtime",
+    "speaker_truth"
+  ],
+  "expected_blockers": [
+    "ARTIFACT_RUNTIME_STALLED_AFTER_ARTIFACT_CREATION_STARTED"
+  ],
+  "limitations": [
+    "phase0_is_cognitive_only",
+    "phase0_does_not_execute_runtime",
+    "prediction_is_not_truth"
+  ],
+  "safe_to_start_phase1": false,
+  "profile_id": "firetest5_h1c0_r2_7_phase0_profile",
+  "profile_selection_method": "heuristic_prompt_profile_selection",
+  "profile_selection_confidence": 0.86,
+  "profile_selection_reason_codes": [
+    "PROFILE_SELECTED_BY_READONLY_ARTIFACT_DISCOVERY",
+    "FRONTIER_CONTEXT_ATTACHED"
+  ],
+  "report_paths": {
+    "firetest_lab": "C:\\Dev\\AIpinho\\reports\\firetest5\\phase0_cognitive_readiness.md",
+    "prediction_report": "C:\\Dev\\AIpinho\\reports\\firetest5\\phase0_prediction.md",
+    "dependency_graph": "C:\\Dev\\AIpinho\\reports\\firetest5\\phase0_dependency_graph.md",
+    "coverage_report": "C:\\Dev\\AIpinho\\reports\\firetest5\\phase0_coverage.md",
+    "simulation_report": "C:\\Dev\\AIpinho\\reports\\firetest5\\phase0_simulation.md",
+    "laboratory_summary": "C:\\Dev\\AIpinho\\reports\\firetest5\\phase0_frontier.md"
+  }
+}

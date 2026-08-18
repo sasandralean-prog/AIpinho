@@ -1,0 +1,36 @@
+{
+  "run_id": "agent_run_65aeb22b35d747018467c6b05581540b",
+  "session_id": "agent_session_49423de13f4f4b4385aa517b70aa3362",
+  "agent_id": "codex",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "cancelled",
+  "operation_type": "codex_chat",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [],
+  "started_at": "2026-06-23T03:41:29+00:00",
+  "completed_at": "2026-06-25T02:20:40+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [
+    "agent_memory_candidate_e5e02b60bc6848ea87b3ac1f6299c0f6"
+  ],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": "stale_runtime_cleanup",
+  "metadata_sanitized": {
+    "codex_session_id": "codex_session_6eb07525f70f49fb86f80777bbf14b80",
+    "codex_run_id": "codex_run_70022304b9ab4c1496fbac3e6b074d83",
+    "workspace_context": null,
+    "hygiene_preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863",
+    "previous_status": "running",
+    "previous_effective_status": "running",
+    "stale_reason": "active_run_without_recent_event"
+  }
+}

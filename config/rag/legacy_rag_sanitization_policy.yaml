@@ -1,0 +1,7 @@
+schema_version: 1
+max_read_bytes: 1500000
+max_chunk_chars: 2200
+overlap_chars: 160
+redact_secrets: true
+redact_protected_legacy_roots: true
+raw_logs_require_sanitized_summary: true

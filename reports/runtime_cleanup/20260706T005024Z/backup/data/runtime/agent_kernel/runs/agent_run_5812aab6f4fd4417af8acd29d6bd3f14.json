@@ -1,0 +1,47 @@
+{
+  "run_id": "agent_run_5812aab6f4fd4417af8acd29d6bd3f14",
+  "session_id": "agent_session_3ad68ac77c264bcfb32669ab78997214",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "sandbox_project_generation",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [],
+  "started_at": "2026-06-14T17:49:16+00:00",
+  "completed_at": "2026-06-14T17:49:20+00:00",
+  "validation_status": null,
+  "artifact_ids": [
+    "agent_artifact_d7d4e5ddb8ec4abcba435311942a041a"
+  ],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "project_generation_id": "project_generation_565cf2c7eb60432c814089a7db1aff54",
+    "project_type": "python_cli",
+    "sandbox_task_id": "sandbox_task_d1090d9469fe405ba4482385dfa93bb6",
+    "sandbox_workspace_id": "sandbox_ws_default",
+    "latest_summary_sanitized": "Projeto ApiRunner gerado no sandbox. Artifact pronto: ApiRunner.zip. Artifact ID: agent_artifact_d7d4e5ddb8ec4abcba435311942a041a.",
+    "evidence_refs": [
+      "sandbox_task:sandbox_task_d1090d9469fe405ba4482385dfa93bb6",
+      "run:agent_run_5812aab6f4fd4417af8acd29d6bd3f14",
+      "tool:tool_invocation_84ef8abbc4bd4c949d2fab7e648640e5",
+      "tool:tool_invocation_8f1ab5c9f7a04971a408f9dd020dae47",
+      "tool:tool_invocation_c8265f3dded244d68cb4f6022abe69fb",
+      "tool:tool_invocation_662330f500d04d08b21945fc542ec648",
+      "tool:tool_invocation_def722bb78a04e57a414376f0337ad3c",
+      "sandbox_validation:project_structure",
+      "sandbox_task:sandbox_task_d1090d9469fe405ba4482385dfa93bb6",
+      "artifact:agent_artifact_d7d4e5ddb8ec4abcba435311942a041a",
+      "tool:tool_invocation_17a907ee91b549c2a18dc5508efb1e6a"
+    ]
+  }
+}

@@ -1,0 +1,3 @@
+from aipinho.services.config_governance.workspace_permission_matrix_service import WorkspacePermissionMatrixService
+
+__all__ = ["WorkspacePermissionMatrixService"]

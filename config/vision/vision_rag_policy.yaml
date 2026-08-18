@@ -1,0 +1,16 @@
+schema_version: 1
+
+vision_rag:
+  enabled: true
+  vision_namespace: vision_rag
+  ocr_namespace: ocr_rag
+  raw_image_blob_indexing_enabled: false
+  raw_pdf_blob_indexing_enabled: false
+  require_preview: true
+  require_approval: true
+  require_execute_endpoint: true
+  require_citations: true
+  require_confidence: true
+  sources:
+    vision_rag: [visual_evidence, vision_analysis_summary, ui_inspection_summary, diagram_analysis_summary]
+    ocr_rag: [ocr_text_block, document_read_summary, ocr_evidence]

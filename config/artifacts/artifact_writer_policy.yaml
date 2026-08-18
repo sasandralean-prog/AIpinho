@@ -1,0 +1,36 @@
+schema_version: 1
+
+artifact_writer:
+  enabled: true
+  mode: preview_only
+  write_enabled: false
+  require_target_validation: true
+  require_content_validation: true
+  require_risk_assessment: true
+  require_approval_for_future_write: true
+  require_validation_gate_for_report_sources: true
+  require_trace: true
+  require_audit: true
+  allow_chat_create_preview: true
+  allow_chat_write: false
+
+blocked:
+  real_write: true
+  overwrite: true
+  source_code_targets: true
+  config_mutation_targets: true
+  script_targets: true
+  forbidden_root: true
+  path_traversal: true
+  binary_content: true
+  secret_content: true
+  executable_content: true
+  patch_content: true
+
+allowed_source_types:
+  - project_report
+  - task_run_result
+  - validation_result
+  - role_pipeline_run
+  - user_provided_content
+  - deterministic_export

@@ -1,0 +1,41 @@
+﻿schema_version: 1
+
+smoke_test:
+  enabled: false
+  manual_only: true
+  allowed_profiles:
+    - llama_cpp_smoke
+  allowed_prompt_ids:
+    - smoke_minimal_pt
+    - smoke_minimal_en
+  default_prompt_id: smoke_minimal_pt
+  allow_custom_prompt: false
+  max_prompt_chars: 500
+  max_output_tokens: 64
+  timeout_seconds: 20
+  expected_min_output_chars: 1
+  expected_max_output_chars: 5000
+  require_clean_exit: false
+  allow_nonzero_exit_with_stdout: false
+
+prompts:
+  smoke_minimal_pt:
+    text: "Responda apenas: OK"
+    expected_contains_any:
+      - "OK"
+      - "ok"
+
+  smoke_minimal_en:
+    text: "Reply only: OK"
+    expected_contains_any:
+      - "OK"
+      - "ok"
+
+safety:
+  no_tools: true
+  no_commands: true
+  no_files: true
+  no_network: true
+  no_memory: true
+  no_rag: true
+  no_patch: true

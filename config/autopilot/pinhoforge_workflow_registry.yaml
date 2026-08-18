@@ -1,0 +1,326 @@
+version: 1
+default_source_scope: sandbox
+prepend_readiness_steps: true
+recipes:
+  - recipe_id: bridge_readiness_summary
+    provider_id: pinhoforge_hardware_profiler
+    tool_name: pinhoforge_readiness_summary_get
+    capability_id: pinhoforge_readiness_summary_read
+    operation: get_readiness_summary
+    keywords:
+      - readiness
+      - environment
+      - toolchain
+      - provider
+      - workflow
+      - bridge
+    categories:
+      - readiness
+      - diagnostics
+    risk_level: low
+    source_scope: artifact_workspace
+    requires_preview: false
+    requires_approval: false
+    side_effects_expected: false
+    expected_outputs:
+      - readiness_summary
+    default_input:
+      include_tools: true
+      include_hardware: true
+      include_android: true
+      include_media: true
+      include_development: true
+
+  - recipe_id: bridge_hardware_profile
+    provider_id: pinhoforge_hardware_profiler
+    tool_name: pinhoforge_hardware_profile_get
+    capability_id: pinhoforge_hardware_profile_read
+    operation: get_environment_profile
+    keywords:
+      - hardware
+      - profile
+      - environment
+      - diagnostics
+    categories:
+      - diagnostics
+    risk_level: low
+    source_scope: artifact_workspace
+    requires_preview: false
+    requires_approval: false
+    side_effects_expected: false
+    expected_outputs:
+      - environment_profile
+    default_input:
+      include_tools: true
+      include_hardware: true
+
+  - recipe_id: bridge_command_search
+    provider_id: pinhoforge_command_catalog
+    tool_name: pinhoforge_command_search
+    capability_id: pinhoforge_command_catalog_read
+    operation: search
+    keywords:
+      - command
+      - catalog
+      - commandos
+      - powershell
+      - cli
+      - search
+    categories:
+      - diagnostics
+      - planning
+    risk_level: low
+    source_scope: artifact_workspace
+    requires_preview: false
+    requires_approval: false
+    side_effects_expected: false
+    expected_outputs:
+      - command_catalog_matches
+    default_input:
+      query: "{user_goal}"
+      include_dangerous: false
+      include_blocked: false
+      max_results: 10
+
+  - recipe_id: bridge_android_detect
+    provider_id: pinhoforge_android_workbench
+    tool_name: pinhoforge_android_project_detect
+    capability_id: pinhoforge_android_project_detect
+    operation: detect_project
+    keywords:
+      - android
+      - gradle
+      - manifest
+      - build.gradle
+      - sdk
+      - mobile
+    categories:
+      - android
+      - diagnostics
+    risk_level: low
+    source_scope: registered_workspace
+    requires_preview: false
+    requires_approval: false
+    side_effects_expected: false
+    expected_outputs:
+      - android_project_profile
+    default_input:
+      project_path: "{workspace_ref}"
+
+  - recipe_id: bridge_android_readiness
+    provider_id: pinhoforge_android_workbench
+    tool_name: pinhoforge_android_environment_readiness
+    capability_id: pinhoforge_android_environment_readiness
+    operation: environment_readiness
+    keywords:
+      - android
+      - readiness
+      - adb
+      - gradle
+      - emulator
+    categories:
+      - android
+      - diagnostics
+    risk_level: low
+    source_scope: artifact_workspace
+    requires_preview: false
+    requires_approval: false
+    side_effects_expected: false
+    expected_outputs:
+      - android_readiness
+    default_input: {}
+
+  - recipe_id: bridge_android_gradle_tasks
+    provider_id: pinhoforge_android_workbench
+    tool_name: pinhoforge_android_gradle_task_list
+    capability_id: pinhoforge_android_gradle_task_list
+    operation: list_gradle_tasks
+    keywords:
+      - gradle
+      - tasks
+      - android
+      - build
+    categories:
+      - android
+      - planning
+    risk_level: low
+    source_scope: registered_workspace
+    requires_preview: false
+    requires_approval: false
+    side_effects_expected: false
+    expected_outputs:
+      - gradle_tasks
+    default_input:
+      project_path: "{workspace_ref}"
+
+  - recipe_id: bridge_android_gradle_execute
+    provider_id: pinhoforge_android_workbench
+    tool_name: pinhoforge_android_gradle_task_execute
+    capability_id: pinhoforge_android_gradle_task_execute
+    operation: execute_gradle_task
+    keywords:
+      - gradle execute
+      - build
+      - assemble
+      - test android
+    categories:
+      - android
+      - execution
+    risk_level: medium
+    source_scope: sandbox
+    requires_preview: false
+    requires_approval: true
+    side_effects_expected: true
+    expected_outputs:
+      - gradle_execution
+      - gradle_artifacts
+    default_input:
+      project_path: "{workspace_ref}"
+      task_id: tasks
+
+  - recipe_id: bridge_conversion_dry_run
+    provider_id: pinhoforge_conversion
+    tool_name: pinhoforge_conversion_dry_run
+    capability_id: pinhoforge_conversion_preview
+    operation: dry_run
+    keywords:
+      - convert
+      - conversao
+      - export
+      - format
+      - document
+      - image
+    categories:
+      - conversion
+      - planning
+    risk_level: low
+    source_scope: registered_workspace
+    requires_preview: true
+    requires_approval: false
+    side_effects_expected: false
+    expected_outputs:
+      - conversion_preview
+    default_input:
+      input_path: "{workspace_ref}"
+      target_format: text-markdown
+
+  - recipe_id: bridge_conversion_execute
+    provider_id: pinhoforge_conversion
+    tool_name: pinhoforge_conversion_execute
+    capability_id: pinhoforge_conversion_execute
+    operation: execute
+    keywords:
+      - convert execute
+      - conversion execute
+      - export file
+    categories:
+      - conversion
+      - execution
+    risk_level: medium
+    source_scope: sandbox
+    requires_preview: true
+    requires_approval: true
+    side_effects_expected: true
+    expected_outputs:
+      - converted_artifact
+    default_input:
+      input_path: "{workspace_ref}"
+      target_format: text-markdown
+      requested_output_name: converted-output.md
+
+  - recipe_id: bridge_media_image
+    provider_id: pinhoforge_media_image
+    tool_name: pinhoforge_media_image_operation
+    capability_id: pinhoforge_media_image_operation
+    operation: generate_report
+    keywords:
+      - image
+      - media
+      - screenshot
+      - visual
+      - report image
+    categories:
+      - media
+      - diagnostics
+    risk_level: low
+    source_scope: artifact_library
+    requires_preview: false
+    requires_approval: false
+    side_effects_expected: false
+    expected_outputs:
+      - media_report
+    default_input:
+      operation: list_capabilities
+
+  - recipe_id: bridge_media_3d
+    provider_id: pinhoforge_media_3d
+    tool_name: pinhoforge_media_3d_operation
+    capability_id: pinhoforge_media_3d_operation
+    operation: list_capabilities
+    keywords:
+      - 3d
+      - scene
+      - mesh
+      - obj
+      - glb
+    categories:
+      - media
+      - diagnostics
+    risk_level: low
+    source_scope: artifact_library
+    requires_preview: false
+    requires_approval: false
+    side_effects_expected: false
+    expected_outputs:
+      - media_3d_capabilities
+    default_input:
+      operation: list_capabilities
+
+  - recipe_id: bridge_terminal_preview
+    provider_id: pinhoforge_terminal
+    tool_name: pinhoforge_terminal_preview
+    capability_id: pinhoforge_terminal_preview
+    operation: preview
+    keywords:
+      - terminal
+      - shell
+      - command preview
+      - powershell
+      - command line
+    categories:
+      - terminal
+      - execution
+    risk_level: low
+    source_scope: sandbox
+    requires_preview: true
+    requires_approval: false
+    side_effects_expected: false
+    expected_outputs:
+      - terminal_preview
+    default_input:
+      command_source: catalog
+      command_id: powershell-files-recursive
+      cwd: "{workspace_ref}"
+
+  - recipe_id: bridge_terminal_execute
+    provider_id: pinhoforge_terminal
+    tool_name: pinhoforge_terminal_execute
+    capability_id: pinhoforge_terminal_execute
+    operation: execute
+    keywords:
+      - terminal execute
+      - shell execute
+      - run command
+    categories:
+      - terminal
+      - execution
+    risk_level: medium
+    source_scope: sandbox
+    requires_preview: true
+    requires_approval: true
+    side_effects_expected: true
+    expected_outputs:
+      - terminal_output
+      - terminal_report
+    default_input:
+      expected_outputs: []

@@ -1,0 +1,109 @@
+{
+  "report_type": "firetest3_consolidated_for_lucio",
+  "date": "2026-06-21",
+  "project": "PinhoForgeStudio2",
+  "workspace": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2",
+  "supervisor": "Codex",
+  "executor": "AIpinho canonical chat",
+  "verdict": "AIPINHO_FIRETEST_PINHOFORGE_READY_WITH_WARNINGS",
+  "backend_status_at_consolidation": "ok",
+  "phases": [
+    {
+      "phase": 0,
+      "name": "preflight_baseline",
+      "verdict": "PASS_WITH_RISKS",
+      "evidence": ["fire_test_3_plan.md", "fire_test_3_final_report.md"]
+    },
+    {
+      "phase": 1,
+      "name": "health_file",
+      "verdict": "PASS",
+      "run_id": "agent_run_aa00df285aa242a48347b67d1e7a64e6",
+      "tool_invocation_id": "tool_invocation_7adb9cc0fe04455791b589cc9cda860a",
+      "output": "reports\\aipinho_firetest_health.md",
+      "validation": "passed"
+    },
+    {
+      "phase": 2,
+      "name": "readonly_project_scan",
+      "verdict": "PASS",
+      "run_id": "agent_run_d6d4d6bd57d6400d979ba475f97a55c7",
+      "tool_invocation_id": "tool_invocation_bb19dc9aa0a44ea6a8bac12cdc0f6344",
+      "output": "reports\\aipinho_firetest_project_scan.md",
+      "validation": "passed"
+    },
+    {
+      "phase": 3,
+      "name": "readme_documentation",
+      "verdict": "PASS_WITH_WARNINGS",
+      "run_id": "agent_run_c2a0326c6ffc407b946d0ca657599950",
+      "tool_invocation_id": "tool_invocation_67ea3fd02d5242c1b2fbbf99a7e05847",
+      "output": "README.md",
+      "validation": "passed",
+      "warning": "Earlier attempts were blocked or requested redundant clarification."
+    },
+    {
+      "phase": 4,
+      "name": "small_ux_change",
+      "verdict": "PASS_WITH_WARNINGS",
+      "run_id": "agent_run_54ac0d87de094b86bc2687f4393b1103",
+      "tool_invocation_id": "tool_invocation_68d972cc3ff24650b746e23c607842f1",
+      "output": "src\\main\\kotlin\\com\\pinhoforge\\studio\\ui\\PinhoForgeApp.kt",
+      "validation": "passed",
+      "warning": "Source marker was validated, but independent visual QA was not recorded in this cycle."
+    },
+    {
+      "phase": 5,
+      "name": "persistence_diagnosis",
+      "verdict": "PASS",
+      "run_id": "agent_run_65eba0c81a4e4db4b752be16e3eb25db",
+      "tool_invocation_id": "tool_invocation_3c359c5c8ef842ed9184812b4d39be77",
+      "output": "reports\\aipinho_firetest_persistence_diagnosis.md",
+      "diagnostic_verdict": "persistence_real",
+      "validation": "passed"
+    },
+    {
+      "phase": 6,
+      "name": "persistence_correction",
+      "verdict": "PASS",
+      "task_id": "task_run_91f36bf91e5140678e47c0bc2a022d00",
+      "approval_id": "approval_d9196b2b3835406b9974ceee76d1c0fb",
+      "output": "reports\\aipinho_firetest_persistence_fix.md",
+      "patch_status": "no_changes_needed",
+      "reason": "prior_diagnostic_indicates_no_patch_needed",
+      "validation": "passed",
+      "validation_score": 1.0,
+      "safe_to_report_success": true
+    },
+    {
+      "phase": 7,
+      "name": "evidence_zip",
+      "verdict": "PENDING_NOT_EXECUTED",
+      "expected_outputs": [
+        "reports\\aipinho_firetest_evidence.zip",
+        "reports\\aipinho_firetest_summary.md"
+      ],
+      "outputs_present": false
+    }
+  ],
+  "validation_summary": {
+    "phase1_tests": "45 passed",
+    "wrapper_tests": "21 passed",
+    "persistence_runtime_tests": "101 passed in 34.15s",
+    "py_compile": "passed",
+    "own_gradle_wrapper_present": true,
+    "build_jar_present": true
+  },
+  "known_backlog": [
+    "Phase 7 evidence ZIP and final summary are absent.",
+    "Phase 4 lacks independent visual QA evidence in the current cycle.",
+    "Two historical E2E expectations conflict with current authorized workspace and real-inference configuration.",
+    "Some structured governed operations recorded real_inference=false.",
+    "The built JAR retains the PinhoForgeStudio.jar name."
+  ],
+  "promotion_requirements": [
+    "Execute and validate phase 7.",
+    "Record independent visual QA for phase 4.",
+    "Align stale historical E2E expectations with current authorized configuration."
+  ]
+}

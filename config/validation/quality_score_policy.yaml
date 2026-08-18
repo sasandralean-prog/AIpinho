@@ -1,0 +1,25 @@
+﻿schema_version: 1
+
+score:
+  start: 1.0
+  minimum_pass: 0.80
+  minimum_pass_with_warnings: 0.65
+  minimum_needs_review: 0.45
+
+penalties:
+  missing_required_section: 0.20
+  missing_evidence: 0.35
+  invalid_evidence: 0.30
+  missing_limitations_when_partial: 0.25
+  status_inconsistency: 0.40
+  side_effect_signal: 1.0
+  forbidden_root_signal: 1.0
+  secret_leak: 1.0
+  unsupported_claim: 0.25
+  empty_output: 0.50
+
+caps:
+  finding_without_evidence_max_status: rejected
+  side_effect_max_status: failed
+  forbidden_root_max_status: failed
+  secret_leak_max_status: rejected

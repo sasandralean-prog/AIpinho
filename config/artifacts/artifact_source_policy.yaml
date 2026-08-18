@@ -1,0 +1,28 @@
+schema_version: 1
+
+sources:
+  project_report:
+    require_report_exists: true
+    require_quality_gate: true
+    allowed_formats: [markdown, json]
+  task_run_result:
+    require_run_exists: true
+    require_validation_summary: true
+    allowed_formats: [markdown, json]
+  validation_result:
+    require_validation_exists: true
+    allowed_formats: [markdown, json]
+  role_pipeline_run:
+    require_run_exists: true
+    require_validation_summary: false
+    allowed_formats: [markdown, json]
+  user_provided_content:
+    require_content_validation: true
+    allowed_formats: [markdown, text, json, yaml, csv, html]
+  deterministic_export:
+    require_content_validation: true
+    allowed_formats: [markdown, text, json, yaml, csv, html]
+
+missing_source:
+  block_preview: true
+  do_not_invent_content: true

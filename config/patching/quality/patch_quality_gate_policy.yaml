@@ -1,0 +1,16 @@
+schema_version: 1
+
+patch_quality_gate:
+  enabled: true
+  mode: governed_static_validation
+  apply_enabled: true
+  write_enabled: true
+  shell_enabled: false
+  git_enabled: false
+  test_execution_enabled: false
+
+decision:
+  critical_finding_status: rejected
+  blocking_finding_status: failed
+  warning_finding_status: passed_with_warnings
+  passed_status: passed

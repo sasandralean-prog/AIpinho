@@ -1,0 +1,49 @@
+{
+  "verdict": "SERVICE_EQUIVALENT_METADATA_PROBE_IMPLEMENTED_PUBLIC_NOT_REACHED",
+  "created_at": "2026-08-15T07:32:21.402210+00:00",
+  "capability_id": "media_metadata_observation",
+  "public_reached_metadata_probe": false,
+  "public_blocker": "ARTIFACT_RUNTIME_STALLED_AFTER_ARTIFACT_CREATION_STARTED_WITHOUT_TERMINAL_RESULT",
+  "service_equivalent_validation": {
+    "focused_r2_6_tests": "38 passed, 1 skipped in 14.79s",
+    "integrated_core_regression": "98 passed in 206.44s",
+    "additional_specific_suite": "59 passed, 1 skipped in 22.15s",
+    "synthetic_render_check": {
+      "status": "completed",
+      "semantic_contract_status": "satisfied",
+      "metadata_coverage_summary.status": "satisfied",
+      "inventory_sufficiency_summary.status": "satisfied",
+      "safe_to_use": true,
+      "full_truth_claim": false,
+      "note": "Synthetic governed entity/probe path exercised metadata projection without renderer scanning."
+    }
+  },
+  "public_phase1": {
+    "client_response_status": "accepted_running",
+    "client_response_status_code": 200,
+    "client_response_time_ms": 6992,
+    "task_run_id": "task_run_ac1b9a417c6f4da1a739143d28bf42d3",
+    "task_run_id_structured": "task_run_ac1b9a417c6f4da1a739143d28bf42d3",
+    "result_ref_id": "task_run_ac1b9a417c6f4da1a739143d28bf42d3",
+    "operation_id": "op_0a583c02125647568b26a2bfc1e0175c",
+    "run_status_from_run_json": "created",
+    "run_status_from_index": "created",
+    "result_json_exists": false,
+    "result_endpoint_status_code": 404,
+    "finished_at": null,
+    "terminal_event_count": 1,
+    "terminal_event_types": [
+      "project_analysis_finished"
+    ],
+    "last_event_type": "artifact_creation_started",
+    "last_event_status": "running",
+    "last_event_message": "Artifact creation started for reports/firetest5/phase1_discovery.md.",
+    "artifact_creation_started_count": 1,
+    "artifact_created_count": 0,
+    "artifact_partial_count": 0,
+    "artifact_blocked_count": 0,
+    "artifact_late_rejected_count": 0,
+    "run_json_bytes": 76700,
+    "events_json_bytes": 28589
+  }
+}

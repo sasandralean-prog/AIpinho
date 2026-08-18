@@ -1,0 +1,39 @@
+schema_version: 1
+
+patch_planning:
+  enabled: true
+  mode: governed_apply_review
+  require_evidence: true
+  require_readonly_file_access: true
+  require_target_guard: true
+  require_diff_validation: true
+  require_risk_assessment: true
+  require_trace: true
+  require_audit: true
+  allow_model_assisted_draft: true
+  model_assisted_default: false
+  apply_enabled: true
+  write_enabled: true
+  approval_for_apply_enabled: true
+
+allowed_sources:
+  - project_report
+  - task_run_result
+  - validation_result
+  - role_pipeline_run
+  - user_request
+  - file_context_bundle
+
+blocked:
+  apply_patch: false
+  write_files: false
+  direct_workspace_mutation: true
+  shell: true
+  git_write: true
+  network: true
+  memory_write: true
+  rag_ingest: true
+  model_tool_calling: true
+  patch_without_evidence: true
+  patch_outside_workspace: true
+  patch_forbidden_root: true

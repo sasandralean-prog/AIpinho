@@ -1,0 +1,42 @@
+{
+  "session_id": "session_311b4382e21247d1ae8ab7b1c2dab262",
+  "status": "active",
+  "created_at": "2026-06-26T12:41:19.341496+00:00",
+  "updated_at": "2026-06-26T12:41:24.511143+00:00",
+  "expires_at": "2026-06-26T16:41:19.341496+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Ola, responda de forma breve.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_bc14dfe650cd49059b712eef9b62dbdd",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

@@ -1,0 +1,23 @@
+schema_version: 1
+
+allowed_model_roots:
+  - 'C:\Dev\AI\models'
+
+blocked_model_roots: []
+
+validation:
+  require_existing_file: true
+  require_gguf_extension: true
+  block_network_paths: true
+  block_forbidden_roots: true
+  block_path_traversal: true
+  block_symlinks: true
+
+models:
+  llama_placeholder:
+    model_id: llama.local.placeholder
+    provider_id: llama_cpp.local
+    enabled: false
+    path: null
+    notes:
+      - "Compatibility placeholder kept for earlier local provider tests."

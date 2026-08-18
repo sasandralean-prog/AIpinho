@@ -1,0 +1,81 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "runtime_state": {
+    "task_queue": {
+      "status": "UNKNOWN",
+      "queue_size": "UNKNOWN",
+      "pending_tasks": "UNKNOWN",
+      "running_tasks": "UNKNOWN",
+      "completed_tasks": "UNKNOWN",
+      "failed_tasks": "UNKNOWN"
+    },
+    "execution_graph": {
+      "status": "UNKNOWN",
+      "active_graphs": "UNKNOWN",
+      "completed_graphs": "UNKNOWN",
+      "failed_graphs": "UNKNOWN"
+    },
+    "policy_kernel": {
+      "status": "UNKNOWN",
+      "active_policies": "UNKNOWN",
+      "policy_checks_performed": "UNKNOWN",
+      "capability_checks_performed": "UNKNOWN"
+    },
+    "chat_sessions": {
+      "status": "UNKNOWN",
+      "active_sessions": "UNKNOWN",
+      "total_sessions": "UNKNOWN"
+    },
+    "agent_executions": {
+      "status": "UNKNOWN",
+      "active_agents": "UNKNOWN",
+      "total_executions": "UNKNOWN"
+    },
+    "tool_executions": {
+      "status": "UNKNOWN",
+      "active_tools": "UNKNOWN",
+      "total_executions": "UNKNOWN"
+    },
+    "model_invocations": {
+      "status": "UNKNOWN",
+      "active_models": "UNKNOWN",
+      "total_invocations": "UNKNOWN"
+    },
+    "validation_gates": {
+      "status": "UNKNOWN",
+      "active_gates": "UNKNOWN",
+      "passed_validations": "UNKNOWN",
+      "failed_validations": "UNKNOWN"
+    },
+    "artifact_generation": {
+      "status": "UNKNOWN",
+      "active_generations": "UNKNOWN",
+      "total_artifacts": "UNKNOWN"
+    },
+    "memory_operations": {
+      "status": "UNKNOWN",
+      "active_operations": "UNKNOWN",
+      "total_candidates": "UNKNOWN",
+      "total_curated": "UNKNOWN"
+    },
+    "rag_retrievals": {
+      "status": "UNKNOWN",
+      "active_retrievals": "UNKNOWN",
+      "total_retrievals": "UNKNOWN"
+    }
+  },
+  "state_sources": {
+    "task_queue": "services.runtime.task_queue_service",
+    "execution_graph": "services.runtime.execution_graph_service",
+    "policy_kernel": "services.policy_kernel.policy_kernel_service",
+    "chat_sessions": "services.chat.chat_service",
+    "agent_executions": "services.agents.agent_tool_gateway_service",
+    "tool_executions": "services.tools.governed_tool_execution_service",
+    "model_invocations": "services.models.llama_cpp_provider",
+    "validation_gates": "services.validation.validation_gate_service",
+    "artifact_generation": "services.artifacts.artifact_generator_service",
+    "memory_operations": "services.memory.memory_candidate_service",
+    "rag_retrievals": "services.rag.retrieval_service"
+  }
+}

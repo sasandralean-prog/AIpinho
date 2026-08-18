@@ -1,0 +1,60 @@
+{
+  "sprint": "19",
+  "name": "Hardening, Regression, Security Gates e Speaker Truth",
+  "timestamp": "20260623_113827",
+  "sprint18_report_read": "reports/sprint18_operator_firetest_20260623_113400.md",
+  "verdict": "SPRINT19_HARDENING_READY_WITH_OPERATOR_UX_FIELD_WARNING",
+  "fixes": [
+    {
+      "id": "s18-token-http-mutation",
+      "status": "fixed",
+      "root_cause": "Backend token store was configured with a different token preview than the current operator/mobile token, so protected HTTP mutation endpoints returned local_token_required.",
+      "fix": "Realigned local token hash to the official operator token without printing plaintext; verified HTTP create/approve/apply/rollback through protected config endpoints.",
+      "evidence": "HTTP temporary workspace probe applied and rolled back; temp_still_present=false; pairing preview Qswi...G75k; plaintext_available=false."
+    },
+    {
+      "id": "s18-approvalrequest-extra-fields-historical-log",
+      "status": "closed_not_reproduced_current_schema",
+      "root_cause": "Historical log came from an older schema/runtime mismatch. Current ApprovalRequest schema includes run_id, task_id, agent_id, workspace_id, workspace_path, operation_type, target_paths, commands, preview, policy_refs, allowed_by_policy and forbidden_operations.",
+      "fix": "No code patch needed; workspace_flow approvals were created successfully in fresh flow plans.",
+      "evidence": "copy_file and git_push plans both created approval_id successfully after restart."
+    }
+  ],
+  "remaining_warnings": [
+    {
+      "id": "operator-ux-field-validation",
+      "severity": "warning",
+      "description": "Mobile/Launcher compile and backend contracts pass, but real manual UX operation across device/launcher was not completed in this run."
+    },
+    {
+      "id": "speaker-truth-field-validation",
+      "severity": "warning",
+      "description": "Speaker Truth for a full user-visible task/approval/resume cycle still needs field validation through UX."
+    }
+  ],
+  "tests": [
+    "python -m pytest tests\\unit\\test_workspace_flow_service.py tests\\unit\\test_token_auth_service.py tests\\unit\\test_mobile_pairing_service.py tests\\integration\\test_mobile_pairing_api.py tests\\unit\\test_mobile_view_model_service.py -q -> 16 passed",
+    "python -m py_compile workspace_flow/config/token/launcher modules -> passed",
+    "cmd /c apps\\mobile\\android\\gradlew.bat -p apps\\mobile\\android :app:compileDebugKotlin -> BUILD SUCCESSFUL"
+  ],
+  "security_gates": {
+    "http_config_mutation_requires_token": true,
+    "token_plaintext_in_status": false,
+    "workspace_flow_write_requires_approval": true,
+    "git_push_requires_approval": true,
+    "route_duplication_added": false,
+    "dangerous_free_execution_observed": false
+  },
+  "changed_files_since_sprint18": [
+    "data/runtime/security/mobile_pairing/token.json (environment state realigned; plaintext not stored)"
+  ],
+  "validated_code_changes_from_sprint18": [
+    "src/aipinho/schemas/workspace_flows/workspace_flow.py",
+    "src/aipinho/services/workspace_flows/workspace_flow_service.py",
+    "tests/unit/test_workspace_flow_service.py",
+    "apps/launcher/ui/api/governance_client.py",
+    "apps/launcher/ui/tabs/settings_tab.py",
+    "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/network/GovernanceClient.kt",
+    "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/ui/screens/SettingsScreen.kt"
+  ]
+}

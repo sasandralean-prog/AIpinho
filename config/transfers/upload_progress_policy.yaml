@@ -1,0 +1,12 @@
+schema_version: 1
+uploads:
+  enabled: true
+  require_token_auth: true
+  show_progress: true
+  record_upload_job: true
+  show_backend_rejection_reason: true
+  allow_retry: true
+blocked:
+  direct_workspace_upload: true
+  executable_upload: true
+  upload_without_artifact_record: true

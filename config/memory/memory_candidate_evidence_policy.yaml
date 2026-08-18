@@ -1,0 +1,27 @@
+schema_version: 1
+
+evidence:
+  enabled: true
+  require_evidence_for_technical_memory: true
+  accepted_evidence_types:
+    - report_finding
+    - validation_finding
+    - task_result
+    - patch_apply_result
+    - file_path_reference
+    - policy_decision
+    - approval_decision
+    - post_apply_validation
+    - user_explicit_instruction
+  require_evidence_id: true
+  require_source_ref: true
+  require_excerpt_or_summary: true
+  reject_secret_evidence: true
+  reject_blocked_file_evidence: true
+  reject_raw_log_evidence: true
+
+confidence:
+  high_requires_evidence_count: 2
+  medium_requires_evidence_count: 1
+  user_instruction_can_be_medium: true
+  no_evidence_confidence: low

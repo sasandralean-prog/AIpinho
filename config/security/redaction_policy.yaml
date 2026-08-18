@@ -1,0 +1,12 @@
+schema_version: 1
+
+redaction:
+  enabled: true
+  redact_secrets: true
+  redact_paths: false
+  replacement: "[redacted]"
+  secret_patterns:
+    - name: generic_assignment_secret
+      regex: "(?i)(api[_-]?key|token|secret|password)\\s*[:=]\\s*[^\\s]+"
+    - name: openai_like_key
+      regex: "sk-[A-Za-z0-9_-]{12,}"

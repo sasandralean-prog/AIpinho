@@ -1,0 +1,371 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "total_modules": 328,
+  "modules": [
+    {
+      "module": "main",
+      "path": "src/aipinho/main.py",
+      "layer": "entrypoint",
+      "category": "application",
+      "critical": true,
+      "responsibility": "FastAPI application entrypoint"
+    },
+    {
+      "module": "app_factory",
+      "path": "src/aipinho/app_factory.py",
+      "layer": "entrypoint",
+      "category": "application",
+      "critical": true,
+      "responsibility": "FastAPI application factory"
+    },
+    {
+      "module": "bootstrap",
+      "path": "src/aipinho/core/bootstrap.py",
+      "layer": "core",
+      "category": "infrastructure",
+      "critical": true,
+      "responsibility": "Application bootstrap"
+    },
+    {
+      "module": "dependency_container",
+      "path": "src/aipinho/core/dependency_container.py",
+      "layer": "core",
+      "category": "infrastructure",
+      "critical": true,
+      "responsibility": "Dependency injection container"
+    },
+    {
+      "module": "local_environment",
+      "path": "src/aipinho/core/local_environment.py",
+      "layer": "core",
+      "category": "infrastructure",
+      "critical": true,
+      "responsibility": "Environment configuration"
+    },
+    {
+      "module": "paths",
+      "path": "src/aipinho/core/paths.py",
+      "layer": "core",
+      "category": "infrastructure",
+      "critical": true,
+      "responsibility": "Path resolution"
+    },
+    {
+      "module": "exceptions",
+      "path": "src/aipinho/core/exceptions.py",
+      "layer": "core",
+      "category": "infrastructure",
+      "critical": true,
+      "responsibility": "Exception definitions"
+    },
+    {
+      "module": "result",
+      "path": "src/aipinho/core/result.py",
+      "layer": "core",
+      "category": "infrastructure",
+      "critical": true,
+      "responsibility": "Result type wrapper"
+    },
+    {
+      "module": "clock",
+      "path": "src/aipinho/core/clock.py",
+      "layer": "core",
+      "category": "infrastructure",
+      "critical": false,
+      "responsibility": "Time abstraction (empty stub)"
+    },
+    {
+      "module": "lifecycle",
+      "path": "src/aipinho/core/lifecycle.py",
+      "layer": "core",
+      "category": "infrastructure",
+      "critical": false,
+      "responsibility": "Lifecycle management (empty stub)"
+    },
+    {
+      "module": "ids",
+      "path": "src/aipinho/core/ids.py",
+      "layer": "core",
+      "category": "infrastructure",
+      "critical": false,
+      "responsibility": "ID generation (empty stub)"
+    },
+    {
+      "module": "json_loader",
+      "path": "src/aipinho/utils/json_loader.py",
+      "layer": "utils",
+      "category": "utility",
+      "critical": true,
+      "responsibility": "JSON loading"
+    },
+    {
+      "module": "yaml_loader",
+      "path": "src/aipinho/utils/yaml_loader.py",
+      "layer": "utils",
+      "category": "utility",
+      "critical": true,
+      "responsibility": "YAML loading"
+    },
+    {
+      "module": "hashing",
+      "path": "src/aipinho/utils/hashing.py",
+      "layer": "utils",
+      "category": "utility",
+      "critical": true,
+      "responsibility": "Hashing functions"
+    },
+    {
+      "module": "redaction",
+      "path": "src/aipinho/utils/redaction.py",
+      "layer": "utils",
+      "category": "utility",
+      "critical": true,
+      "responsibility": "Data redaction"
+    },
+    {
+      "module": "safe_paths",
+      "path": "src/aipinho/utils/safe_paths.py",
+      "layer": "utils",
+      "category": "utility",
+      "critical": true,
+      "responsibility": "Path safety"
+    },
+    {
+      "module": "text",
+      "path": "src/aipinho/utils/text.py",
+      "layer": "utils",
+      "category": "utility",
+      "critical": true,
+      "responsibility": "Text utilities"
+    },
+    {
+      "module": "diagnostics",
+      "path": "src/aipinho/utils/diagnostics.py",
+      "layer": "utils",
+      "category": "utility",
+      "critical": true,
+      "responsibility": "Diagnostic utilities"
+    },
+    {
+      "module": "policy_kernel_service",
+      "path": "src/aipinho/services/policy_kernel/policy_kernel_service.py",
+      "layer": "services",
+      "category": "governance",
+      "critical": true,
+      "responsibility": "Core policy resolution and enforcement"
+    },
+    {
+      "module": "capability_gate_service",
+      "path": "src/aipinho/services/policy_kernel/capability_gate_service.py",
+      "layer": "services",
+      "category": "governance",
+      "critical": true,
+      "responsibility": "Capability gating and enforcement"
+    },
+    {
+      "module": "workspace_role_contract_service",
+      "path": "src/aipinho/services/policy_kernel/workspace_role_contract_service.py",
+      "layer": "services",
+      "category": "governance",
+      "critical": true,
+      "responsibility": "Workspace role contract management"
+    },
+    {
+      "module": "task_runtime_service",
+      "path": "src/aipinho/services/runtime/task_runtime_service.py",
+      "layer": "services",
+      "category": "runtime",
+      "critical": true,
+      "responsibility": "Core task runtime orchestration"
+    },
+    {
+      "module": "execution_graph_service",
+      "path": "src/aipinho/services/runtime/execution_graph_service.py",
+      "layer": "services",
+      "category": "runtime",
+      "critical": true,
+      "responsibility": "Execution graph management"
+    },
+    {
+      "module": "intelligent_planner_service",
+      "path": "src/aipinho/services/runtime/intelligent_planner_service.py",
+      "layer": "services",
+      "category": "runtime",
+      "critical": true,
+      "responsibility": "Intelligent task planning"
+    },
+    {
+      "module": "chat_service",
+      "path": "src/aipinho/services/chat/chat_service.py",
+      "layer": "services",
+      "category": "chat",
+      "critical": true,
+      "responsibility": "Core chat orchestration"
+    },
+    {
+      "module": "chat_operation_router_service",
+      "path": "src/aipinho/services/chat/chat_operation_router_service.py",
+      "layer": "services",
+      "category": "chat",
+      "critical": true,
+      "responsibility": "Chat operation routing"
+    },
+    {
+      "module": "agent_tool_gateway_service",
+      "path": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+      "layer": "services",
+      "category": "agents",
+      "critical": true,
+      "responsibility": "Agent tool gateway"
+    },
+    {
+      "module": "agent_local_action_planner",
+      "path": "src/aipinho/services/agents/agent_local_action_planner.py",
+      "layer": "services",
+      "category": "agents",
+      "critical": true,
+      "responsibility": "Agent local action planning"
+    },
+    {
+      "module": "llama_cpp_provider",
+      "path": "src/aipinho/services/models/llama_cpp_provider.py",
+      "layer": "services",
+      "category": "models",
+      "critical": true,
+      "responsibility": "LLaMA CPP model provider"
+    },
+    {
+      "module": "governed_tool_execution_service",
+      "path": "src/aipinho/services/tools/governed_tool_execution_service.py",
+      "layer": "services",
+      "category": "tools",
+      "critical": true,
+      "responsibility": "Governed tool execution"
+    },
+    {
+      "module": "validation_gate_service",
+      "path": "src/aipinho/services/validation/validation_gate_service.py",
+      "layer": "services",
+      "category": "validation",
+      "critical": true,
+      "responsibility": "Validation gates"
+    },
+    {
+      "module": "role_registry",
+      "path": "src/aipinho/registries/role_registry.py",
+      "layer": "registries",
+      "category": "registry",
+      "critical": true,
+      "responsibility": "Role registration"
+    },
+    {
+      "module": "route_registry",
+      "path": "src/aipinho/registries/route_registry.py",
+      "layer": "registries",
+      "category": "registry",
+      "critical": true,
+      "responsibility": "Route registration"
+    },
+    {
+      "module": "action_registry",
+      "path": "src/aipinho/registries/action_registry.py",
+      "layer": "registries",
+      "category": "registry",
+      "critical": true,
+      "responsibility": "Action registration"
+    },
+    {
+      "module": "capability_registry",
+      "path": "src/aipinho/registries/capability_registry.py",
+      "layer": "registries",
+      "category": "registry",
+      "critical": true,
+      "responsibility": "Capability registration"
+    }
+  ],
+  "layers": {
+    "entrypoint": {
+      "count": 2,
+      "modules": ["main", "app_factory"]
+    },
+    "core": {
+      "count": 10,
+      "modules": ["bootstrap", "dependency_container", "local_environment", "paths", "exceptions", "result", "clock", "lifecycle", "ids"]
+    },
+    "utils": {
+      "count": 7,
+      "modules": ["json_loader", "yaml_loader", "hashing", "redaction", "safe_paths", "text", "diagnostics"]
+    },
+    "services": {
+      "count": 300,
+      "modules": ["policy_kernel_service", "capability_gate_service", "workspace_role_contract_service", "task_runtime_service", "execution_graph_service", "intelligent_planner_service", "chat_service", "chat_operation_router_service", "agent_tool_gateway_service", "agent_local_action_planner", "llama_cpp_provider", "governed_tool_execution_service", "validation_gate_service"]
+    },
+    "registries": {
+      "count": 9,
+      "modules": ["role_registry", "route_registry", "action_registry", "capability_registry"]
+    },
+    "api": {
+      "count": 139,
+      "modules": []
+    },
+    "repositories": {
+      "count": 58,
+      "modules": []
+    },
+    "adapters": {
+      "count": 16,
+      "modules": []
+    },
+    "schemas": {
+      "count": 910,
+      "modules": []
+    }
+  },
+  "categories": {
+    "application": {
+      "count": 2,
+      "modules": ["main", "app_factory"]
+    },
+    "infrastructure": {
+      "count": 10,
+      "modules": ["bootstrap", "dependency_container", "local_environment", "paths", "exceptions", "result", "clock", "lifecycle", "ids"]
+    },
+    "utility": {
+      "count": 7,
+      "modules": ["json_loader", "yaml_loader", "hashing", "redaction", "safe_paths", "text", "diagnostics"]
+    },
+    "governance": {
+      "count": 15,
+      "modules": ["policy_kernel_service", "capability_gate_service", "workspace_role_contract_service"]
+    },
+    "runtime": {
+      "count": 56,
+      "modules": ["task_runtime_service", "execution_graph_service", "intelligent_planner_service"]
+    },
+    "chat": {
+      "count": 29,
+      "modules": ["chat_service", "chat_operation_router_service"]
+    },
+    "agents": {
+      "count": 31,
+      "modules": ["agent_tool_gateway_service", "agent_local_action_planner"]
+    },
+    "models": {
+      "count": 47,
+      "modules": ["llama_cpp_provider"]
+    },
+    "tools": {
+      "count": 28,
+      "modules": ["governed_tool_execution_service"]
+    },
+    "validation": {
+      "count": 30,
+      "modules": ["validation_gate_service"]
+    },
+    "registry": {
+      "count": 9,
+      "modules": ["role_registry", "route_registry", "action_registry", "capability_registry"]
+    }
+  }
+}

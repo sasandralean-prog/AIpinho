@@ -1,0 +1,27 @@
+﻿schema_version: 1
+
+hallucination_signals:
+  enabled: true
+  deterministic_only: true
+
+signals:
+  claims_unseen_files:
+    severity: medium
+    description: "Resposta cita arquivo que nao existe no contexto/evidence."
+
+  claims_unavailable_features:
+    severity: medium
+    description: "Resposta afirma capacidade ativa marcada como disabled/unavailable."
+
+  unsupported_specific_numbers:
+    severity: low
+    description: "Resposta usa numeros especificos sem fonte."
+
+  unsupported_architecture_claim:
+    severity: medium
+    description: "Resposta descreve arquitetura sem evidencia."
+
+rules:
+  reject_on_high_confidence_unsupported_claims: false
+  warn_on_unseen_file_claims: true
+  warn_on_unavailable_feature_claims: true

@@ -1,0 +1,37 @@
+schema_version: 1
+
+sandbox:
+  enabled: true
+  mode: governed_controlled
+  read_capable_modes:
+    - read_only
+    - governed_controlled
+  root_mode: workspace_bound
+  allow_absolute_paths: true
+  allow_relative_paths: true
+  allow_outside_workspace: false
+  allow_temp_reads: false
+  allow_network: true
+  allow_shell: true
+  allow_write: true
+
+enforcement:
+  require_workspace: true
+  normalize_paths: true
+  resolve_paths: true
+  block_path_traversal: true
+  block_symlinks_escaping_workspace: true
+  block_protected_roots: true
+
+audit:
+  enabled: true
+  log_allowed_reads: true
+  log_blocked_attempts: true
+
+governed_execution:
+  require_policy_decision: true
+  require_approval: true
+  allow_shell: true
+  allow_network: true
+  allow_workspace_write: true
+  allow_git_write: false

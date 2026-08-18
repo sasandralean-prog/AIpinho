@@ -1,0 +1,181 @@
+{
+  "verdict": "FIRETEST5_H1C0_R1_MUSIC_INVENTORY_RENDER_SEMANTIC_PROOF_READY",
+  "created_at": "2026-08-13T11:14:00-03:00",
+  "scope": "Phase 1 music inventory artifact render lifecycle, semantic proof, artifact endpoint projection, and terminal event idempotency.",
+  "public_run_observed": {
+    "task_run_id": "task_run_5b70e373d0de48ae81294b860cc7a8e9",
+    "session_id": "firetest5_h1c0_r1_phase1_final_20260813_105736",
+    "client_response_status": "accepted_running",
+    "run_status": "blocked",
+    "result_status": "blocked",
+    "summary_status": "BLOCKED",
+    "finished_at": "2026-08-13T10:57:51.517993+00:00",
+    "terminal_event_count": 1,
+    "terminalization_already_applied_count": 1,
+    "artifact_creation_started_count": 4,
+    "artifact_created_count": 2,
+    "artifact_blocked_count": 2,
+    "artifact_late_rejected_count": 0
+  },
+  "music_inventory_render_path": [
+    "/api/v1/chat",
+    "accepted_running public boundary",
+    "TaskRunStore.create_run",
+    "ProjectAnalysis partial safe_to_continue",
+    "ReadonlyAnalysisArtifactRuntimeService",
+    "Artifact contract resolution",
+    "ArtifactSemanticProfile",
+    "tabular artifact projection",
+    "semantic contract validation",
+    "ArtifactRegistry create",
+    "artifact_blocked event",
+    "TaskRunResult finalization",
+    "runtime truth evaluation",
+    "summary/truth/artifacts/events endpoints"
+  ],
+  "artifact_contract_resolution": {
+    "contract_kind": "media_corpus_inventory",
+    "shape_guard": "findings_csv_shape_is_not_valid_music_inventory",
+    "semantic_proof_required_before_ready_event": true,
+    "created_event_requires_semantic_status": [
+      "satisfied"
+    ],
+    "partial_or_blocked_event_required_for_incomplete_semantics": true
+  },
+  "semantic_contract_status_before_render": {
+    "phase1_discovery.md": "satisfied",
+    "project_inventory.md": "satisfied",
+    "music_inventory.csv": "partial_but_artifact_blocked",
+    "evidence_phase1.zip": "insufficient"
+  },
+  "observational_inputs": {
+    "project_analysis_status": "partial",
+    "project_analysis_safe_to_continue": true,
+    "observational_cognition_status": "not_available",
+    "relationship_cognition_status": "not_available",
+    "media_metadata_capability_status": "not_configured",
+    "truth_eligible": false
+  },
+  "artifact_render_steps": [
+    {
+      "step": "before_entity_collection",
+      "implemented": true,
+      "result": "bounded entity window applied before perception compile"
+    },
+    {
+      "step": "after_entity_collection",
+      "implemented": true,
+      "result": "expected entity count and partial window recorded"
+    },
+    {
+      "step": "before_row_projection",
+      "implemented": true,
+      "result": "semantic gaps retained"
+    },
+    {
+      "step": "after_semantic_validation",
+      "implemented": true,
+      "result": "artifact status derived from contract validation"
+    },
+    {
+      "step": "before_registry_write",
+      "implemented": true,
+      "result": "terminal state checked before registry create"
+    },
+    {
+      "step": "after_registry_write",
+      "implemented": true,
+      "result": "runtime semantic state persisted into result artifact row"
+    }
+  ],
+  "long_running_steps": [
+    {
+      "step": "perception_compile_for_tabular_inventory",
+      "risk_before": "large observed entity graph could exceed artifact budget before internal checkpoints",
+      "mitigation": "general max_entities render budget bounds the graph before compile"
+    },
+    {
+      "step": "endpoint_projection_for_compacted_runs",
+      "risk_before": "run.json payload refs could break TaskRun validation",
+      "mitigation": "TaskRunStore hydrates spilled payload refs when get_run needs a full model"
+    }
+  ],
+  "budget_checkpoints": [
+    "artifact_render_budget.max_entities",
+    "before_registry_create terminal check",
+    "semantic validation status check before emitted event"
+  ],
+  "cancel_checkpoints": [
+    "terminal_state_ref checked before registry create",
+    "late completed artifact rejected if terminal state exists"
+  ],
+  "terminal_checks": [
+    "TaskRunStore.append_event terminal idempotency",
+    "TaskRunStore.terminalize_if_runtime_budget_exceeded terminal idempotency",
+    "artifact_created completed prohibited after terminal state"
+  ],
+  "artifact_registry_writes": [
+    {
+      "component": "ReadonlyAnalysisArtifactRuntimeService._create_artifact",
+      "behavior_after": "record payload and indexed payload are merged with runtime semantic state taking precedence"
+    },
+    {
+      "component": "UniversalArtifactRegistryService.revalidate",
+      "behavior_after": "existing non-ready status is preserved instead of being promoted to ready solely because a file exists"
+    }
+  ],
+  "result_finalization_paths": [
+    "TaskRunResult stores created/blocked artifact rows",
+    "UniversalTaskSessionService merges result artifact rows into registry projection",
+    "UniversalTaskSessionService derives result.block_reason_code from blocked_items/validation/artifact_state"
+  ],
+  "terminal_event_emitters": [
+    "ReadonlyAnalysisArtifactRuntimeService terminal event path",
+    "TaskRunStore terminalize_if_runtime_budget_exceeded",
+    "cleanup/reconciliation terminal attempts represented as terminalization_already_applied"
+  ],
+  "duplicate_terminal_event_analysis": {
+    "before": {
+      "terminal_event_count": 2,
+      "terminal_event_types": [
+        "run_blocked",
+        "run_blocked"
+      ],
+      "impact": "run terminality was not a single authority boundary"
+    },
+    "after": {
+      "terminal_event_count": 1,
+      "terminal_event_types": [
+        "run_blocked"
+      ],
+      "terminalization_already_applied_count": 1,
+      "impact": "first terminal wins; later attempts are non-terminal diagnostics"
+    }
+  },
+  "why_music_inventory_did_not_complete": [
+    "The artifact reached a final governed state instead of staying stuck: status=blocked.",
+    "Semantic contract proof was not complete: semantic_contract_status=partial, safe_to_use=false.",
+    "The artifact used the semantic inventory shape, not the findings CSV shape.",
+    "Observed media metadata and relationship cognition were not available in this public Phase 1 run.",
+    "The bounded render window prevented the previous long-running perception compile from hanging the run."
+  ],
+  "recommended_patch_points": [
+    {
+      "priority": "P0 next",
+      "component": "media corpus entity selection before bounded render window",
+      "reason": "The final state is honest, but partial_rows=0 with expected_rows=2286 shows the next frontier is useful corpus row selection/binding, not terminality."
+    },
+    {
+      "priority": "P1",
+      "component": "Observational Cognition public binding",
+      "reason": "media_metadata_capability remains not_configured and relationship_cognition remains not_available when no governed observations are bound."
+    }
+  ],
+  "anti_hardcode_audit": {
+    "production_source_matches": 0,
+    "test_fixture_matches": [
+      "tests/unit/test_universal_task_session_service.py uses reports/firetest5/music_inventory.csv as fixture/asserted logical path"
+    ],
+    "blocking_findings": []
+  }
+}

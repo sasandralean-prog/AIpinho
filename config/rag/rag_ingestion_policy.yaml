@@ -1,0 +1,12 @@
+schema_version: 1
+
+ingestion:
+  enabled: true
+  auto_ingest_enabled: false
+  persistent_ingestion_requires_approval: true
+  preview_writes_index: false
+  block_raw_log: true
+  block_secret: true
+  block_uncited_chunk: true
+  block_unknown_namespace: true
+  block_disabled_namespace: true

@@ -1,0 +1,44 @@
+schema_version: 1
+runtime_defaults:
+  enabled: true
+  default_model: gemini-2.5-flash
+  default_execution_mode: governed_autorun
+  timeout_seconds: 90
+  max_prompt_chars: 200000
+  max_output_chars: 65536
+  allow_write: true
+  allow_shell: true
+  require_approval_for_write: true
+  require_approval_for_shell: true
+  use_memory_gateway: true
+  use_delegation: true
+  prefer_aipinho_executor: true
+  allow_direct_local_tools: false
+  autorun_enabled: true
+  autoreview_enabled: true
+  autoapproval_enabled: true
+  raw_default_visible: false
+  cloud_warning_visible: true
+capabilities:
+  read_workspace:
+    side_effect: false
+  scan_workspace:
+    side_effect: false
+  create_artifact:
+    side_effect: false
+  create_patch_preview:
+    side_effect: false
+    requires_approval_before_apply: true
+  apply_approved_patch:
+    side_effect: true
+    requires_approval: true
+    requires_validation: true
+  run_approved_shell:
+    side_effect: true
+    requires_approval: true
+    requires_validation: true
+blocked_shell_categories:
+  - destructive_shell
+  - git_write_shell
+  - network_shell
+  - unknown_shell

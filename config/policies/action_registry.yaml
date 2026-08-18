@@ -1,0 +1,149 @@
+﻿schema_version: 1
+
+actions:
+  read_files:
+    aliases: [read_file, file_read, read_workspace]
+    category: filesystem_read
+    side_effect: false
+    requires_approval: false
+    capability: read_workspace
+
+  list_directory:
+    aliases: [list_dir, directory_list, inspect_directory]
+    category: filesystem_read
+    side_effect: false
+    requires_approval: false
+    capability: read_workspace
+
+  inspect_path:
+    aliases: [path_info, stat_path, inspect_file]
+    category: filesystem_read
+    side_effect: false
+    requires_approval: false
+    capability: read_workspace
+
+  read_config:
+    aliases: [config_read, inspect_config]
+    category: filesystem_read
+    side_effect: false
+    requires_approval: false
+    capability: read_workspace
+
+  write_files:
+    aliases: [write_file, file_write, write_workspace, filesystem_write, filesystem_write_file, file_modify, modify_file, create_file, create_directory, project_write, create_project, write_text_file, append_text_file]
+    category: filesystem_write
+    side_effect: true
+    requires_approval: true
+    capability: write_workspace
+
+  apply_patch:
+    aliases: [patch_apply, patch_apply_request]
+    category: patch
+    side_effect: true
+    requires_approval: true
+    capability: write_workspace
+
+  run_command:
+    aliases: [shell, run_shell, shell_execute, build_run, run_build]
+    category: shell
+    side_effect: true
+    requires_approval: true
+    capability: shell
+
+  run_tests:
+    aliases: [pytest, validation_command, test_run, run_unit_tests]
+    category: validation
+    side_effect: false
+    requires_approval: false
+    capability: shell
+
+  use_rag:
+    aliases: [rag_query, retrieve_context]
+    category: retrieval
+    side_effect: false
+    requires_approval: false
+    capability: rag
+
+  write_memory:
+    aliases: [save_memory, memory_write]
+    category: memory
+    side_effect: true
+    requires_approval: true
+    capability: memory_write
+
+  git_commit:
+    aliases: [commit]
+    category: git_write
+    side_effect: true
+    requires_approval: true
+    capability: git
+
+  git_push:
+    aliases: [push]
+    category: git_write
+    side_effect: true
+    requires_approval: true
+    capability: git
+
+  patch_preview:
+    aliases: [preview_patch, diff_preview]
+    category: patch
+    side_effect: false
+    requires_approval: false
+    capability: patch_preview
+
+  memory_read:
+    aliases: [read_memory, memory_search]
+    category: memory
+    side_effect: false
+    requires_approval: false
+    capability: memory_read
+
+  git_status:
+    aliases: [status]
+    category: git_read
+    side_effect: false
+    requires_approval: false
+    capability: git
+
+  web_request:
+    aliases: [http_request, fetch_url, web_search, search_web, public_fact_query]
+    category: web
+    side_effect: true
+    requires_approval: true
+    capability: network
+
+  project_tree:
+    aliases: [build_project_tree]
+    category: project_read
+    side_effect: false
+    requires_approval: false
+    capability: read_workspace
+
+  project_context:
+    aliases: [build_file_context]
+    category: project_read
+    side_effect: false
+    requires_approval: false
+    capability: read_workspace
+
+  project_analysis:
+    aliases: [analyze_project]
+    category: project_read
+    side_effect: false
+    requires_approval: false
+    capability: read_workspace
+
+  project_report:
+    aliases: [deterministic_project_report]
+    category: report_read
+    side_effect: false
+    requires_approval: false
+    capability: read_workspace
+
+  role_pipeline_run:
+    aliases: [run_role_pipeline]
+    category: cognitive
+    side_effect: false
+    requires_approval: false
+    capability: model_inference

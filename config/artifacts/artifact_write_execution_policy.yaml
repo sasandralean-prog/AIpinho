@@ -1,0 +1,29 @@
+schema_version: 1
+
+execution:
+  enabled: true
+  require_explicit_execute_endpoint: true
+  execute_immediately_from_preview: false
+  allow_background_execution: false
+  allow_parallel_writes: false
+  duplicate_execute_behavior: return_existing_result
+  max_write_bytes: 300000
+  max_write_chars: 120000
+  timeout_seconds: 30
+
+directories:
+  allow_create_parent_dirs: true
+  require_parent_dir_under_allowed_base: true
+  max_dirs_to_create: 3
+  create_dirs_only_for_allowed_targets: true
+
+file_modes:
+  text_only: true
+  encoding: "utf-8"
+  newline: "preserve_or_lf"
+
+safety:
+  fsync_after_write: false
+  verify_hash_after_write: true
+  cleanup_temp_on_failure: true
+  fail_if_target_changes_after_preview: true

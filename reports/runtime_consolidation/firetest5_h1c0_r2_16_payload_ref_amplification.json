@@ -1,0 +1,19 @@
+{
+  "task_run_id": "task_run_0b0cbc1d3a74411a9fd47b751039e45c",
+  "public_r2_16_music_inventory_persist_reached": false,
+  "public_r2_16_payload_ref_count": 0,
+  "r2_15_carry_in": {
+    "issue_id": "R2_15_P1_PAYLOAD_REF_SEMANTIC_SUBTREE_AMPLIFICATION",
+    "status": "proven_in_r2_15_diagnostic; not_reached_in_r2_16_public_final",
+    "physical_payload_ref_bytes_observed": 402921183,
+    "duplicate_subtrees": [
+      "metadata.declared_contract",
+      "provenance.declared_contract"
+    ]
+  },
+  "r2_16_fix": {
+    "production_change": "UniversalArtifactRegistryService deduplicates manifest payload refs by content digest within an artifact manifest projection.",
+    "public_validation": "not_reached because R2.16 public runs blocked before artifact persist.",
+    "unit_validation": "test_duplicate_manifest_subtrees_reuse_payload_ref_by_digest passed in focused and regression suites."
+  }
+}

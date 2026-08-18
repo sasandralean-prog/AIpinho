@@ -1,0 +1,34 @@
+{
+  "sprint": "17",
+  "name": "Settings UX Governance Console",
+  "timestamp": "20260623_095754",
+  "status": "READY_WITH_UX_FOLLOWUP",
+  "files_changed": [
+    "apps/launcher/ui/api/governance_client.py",
+    "apps/launcher/ui/launcher_app.py",
+    "apps/launcher/ui/tabs/settings_tab.py",
+    "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/network/GovernanceClient.kt",
+    "apps/mobile/android/app/src/main/java/br/com/aipinho/mobile/ui/screens/SettingsScreen.kt",
+    "src/aipinho/services/mobile_view_models/config_mobile_aggregator.py"
+  ],
+  "ui_contract": {
+    "direct_config_file_editing": false,
+    "uses_config_change_flow": true,
+    "raw_visible_by_default": false,
+    "token_visible": false
+  },
+  "validations": {
+    "py_compile": "passed",
+    "pytest_focused": "12 passed",
+    "route_registration": {
+      "workspace_flow_routes": 10,
+      "config_routes": 27
+    },
+    "android_compile": "BUILD SUCCESSFUL"
+  },
+  "warnings": [
+    "rich visual editors are follow-up; current UI exposes read/preview/action panels",
+    "manual visual QA on device not executed in this round",
+    "git status unavailable because C:\\Dev\\AIpinho was not detected as a git worktree in this context"
+  ]
+}

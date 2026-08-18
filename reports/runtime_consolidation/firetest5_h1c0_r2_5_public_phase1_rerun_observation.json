@@ -1,0 +1,163 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_5_PUBLIC_PHASE1_SEMANTIC_HANDOFF_BLOCKED_AS_EXPECTED",
+  "created_at": "2026-08-15T05:40:37.654258+00:00",
+  "raw_capture_dir": "C:\\Dev\\AIpinho\\reports\\firetest5\\firetest5_h1c0_r2_5_clean_phase0_to_6_20260815_022142",
+  "client_response": {
+    "status": "accepted_running",
+    "status_code": 200,
+    "elapsed_ms": 5376,
+    "task_run_id": "task_run_b59d89c948fb4a47a1c7e150a02808a3"
+  },
+  "run": {
+    "task_run_id": "task_run_b59d89c948fb4a47a1c7e150a02808a3",
+    "summary_status": "BLOCKED",
+    "result_status": "blocked",
+    "result_source": "phase_semantic_completion_policy",
+    "finished_at": "2026-08-15T05:36:52.375909+00:00",
+    "terminal_event_count": 1,
+    "terminal_event_types": [
+      "run_blocked"
+    ]
+  },
+  "result": {
+    "exists": true,
+    "endpoint_status_code": 200,
+    "status": "blocked",
+    "source": "phase_semantic_completion_policy",
+    "reason_code": "MUSIC_INVENTORY_PARTIAL_NOT_ACCEPTED_BY_PHASE_CONTRACT",
+    "summary": "Phase semantic completion policy blocked terminal success.",
+    "warnings": [],
+    "terminal_result_finalization": {
+      "reason_code": "MUSIC_INVENTORY_PARTIAL_NOT_ACCEPTED_BY_PHASE_CONTRACT",
+      "source": "phase_semantic_completion_policy",
+      "finalized_from_terminal_run": true,
+      "semantic_result_finalization": "completed",
+      "safe_to_report_success": false,
+      "store_repair_suppressed_due_to_semantic_artifact_state": true
+    }
+  },
+  "semantic_policy": {
+    "called": true,
+    "decision_persisted": true,
+    "decision_status": "blocked",
+    "decision_reason_code": "MUSIC_INVENTORY_PARTIAL_NOT_ACCEPTED_BY_PHASE_CONTRACT",
+    "semantic_result_persisted": true,
+    "store_repair_suppressed": true
+  },
+  "validation_completion_truth": {
+    "validation_status": "blocked",
+    "validation_reason_code": "MUSIC_INVENTORY_PARTIAL_NOT_ACCEPTED_BY_PHASE_CONTRACT",
+    "completion_status": "blocked",
+    "completion_safe_to_report_success": false,
+    "truth_status": "blocked",
+    "truth_safe_to_report_success": false,
+    "truth_can_claim_success": null
+  },
+  "artifacts": {
+    "count": 4,
+    "music_inventory": {
+      "status": "blocked",
+      "validation_status": "blocked",
+      "semantic_contract_status": "partial",
+      "reason_code": "MUSIC_INVENTORY_PARTIAL_EVIDENCE",
+      "safe_to_use": false,
+      "expected_rows": 1051,
+      "selected_rows": 100,
+      "bound_rows": 100,
+      "partial_rows": 100,
+      "evidence_ref_count": 100,
+      "missing_columns": [
+        "size_bytes",
+        "channels",
+        "observations"
+      ],
+      "limitations": [
+        "media_inventory_source_root_role_missing",
+        "media_inventory_evidence_ref_missing",
+        "media_inventory_limitations_missing",
+        "ATTRIBUTE_NOT_OBSERVED:observations",
+        "artifact_render_entity_budget_partial",
+        "relationship_final_validation_missing",
+        "MUSIC_INVENTORY_PARTIAL_EVIDENCE"
+      ]
+    },
+    "music_inventory_row_evidence_coverage": {
+      "total_rows": 100,
+      "rows_with_evidence_ref": 100,
+      "rows_without_evidence_ref": 0,
+      "evidence_ref_count": 100,
+      "evidence_refs_sample": [
+        "file:D:\\rafa\\pinho music\\you're not gone, you're just dead!.m4a",
+        "file:D:\\rafa\\pinho music\\xvideos.m4a",
+        "file:D:\\rafa\\pinho music\\xanny.m4a",
+        "file:D:\\rafa\\pinho music\\xanny - 2.m4a",
+        "file:D:\\rafa\\pinho music\\whatsaheart - for her i will do it all for her.m4a",
+        "file:D:\\rafa\\pinho music\\whatsaheart - for her i will do it all for her - 2.m4a",
+        "file:D:\\rafa\\pinho music\\what's wrong.m4a",
+        "file:D:\\rafa\\pinho music\\wet dreams -artemas sped up.m4a",
+        "file:D:\\rafa\\pinho music\\we fell in love in october.m4a",
+        "file:D:\\rafa\\pinho music\\we are the people tekkno.m4a",
+        "file:D:\\rafa\\pinho music\\vanity.m4a",
+        "file:D:\\rafa\\pinho music\\vanity - 2.m4a",
+        "file:D:\\rafa\\pinho music\\tower of memories.m4a",
+        "file:D:\\rafa\\pinho music\\tower of memories - 2.m4a",
+        "file:D:\\rafa\\pinho music\\till death do us part.m4a",
+        "file:D:\\rafa\\pinho music\\till death do us part - 2.m4a",
+        "file:D:\\rafa\\pinho music\\the only one.m4a",
+        "file:D:\\rafa\\pinho music\\the idea of you mxmtoon.m4a",
+        "file:D:\\rafa\\pinho music\\the idea of you mxmtoon - 2.m4a",
+        "file:D:\\rafa\\pinho music\\taKe.m4a"
+      ],
+      "status": "satisfied",
+      "reason_code": null
+    },
+    "evidence_phase1": {
+      "status": "ready",
+      "validation_status": "validated",
+      "semantic_contract_status": "satisfied",
+      "safe_to_use": true,
+      "reason_code": null,
+      "size_bytes": 210607
+    }
+  },
+  "endpoint_timings": {
+    "summary": {
+      "status_code": 200,
+      "elapsed_ms": 1775
+    },
+    "result": {
+      "status_code": 200,
+      "elapsed_ms": 525
+    },
+    "truth": {
+      "status_code": 200,
+      "elapsed_ms": 859
+    },
+    "artifacts": {
+      "status_code": 200,
+      "elapsed_ms": 1433
+    },
+    "events": {
+      "status_code": 200,
+      "elapsed_ms": 7672
+    }
+  },
+  "queue_storage_after": {
+    "counts": {
+      "blocked": 15
+    },
+    "active_count": 0,
+    "active_runs": [],
+    "large_run_count": 0,
+    "missing_index_count": 0,
+    "run_json_bytes": 159545,
+    "result_json_bytes": 28114,
+    "events_json_bytes": 34722,
+    "payload_ref_count": 3
+  },
+  "canonical_progression_decision": {
+    "phase1_allows_phase2": false,
+    "phase2_to_6": "skipped_due_to_prior_block",
+    "reason": "Phase 1 result.status=blocked and Speaker Truth safe_to_report_success=false"
+  }
+}

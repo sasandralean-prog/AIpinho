@@ -1,0 +1,9 @@
+schema_version: 1
+
+rollback:
+  enabled: true
+  use_internal_backups: true
+  use_git: false
+  use_shell: false
+  require_apply_run: true
+  restore_only_run_targets: true

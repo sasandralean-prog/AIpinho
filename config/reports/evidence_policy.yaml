@@ -1,0 +1,25 @@
+schema_version: 1
+
+evidence:
+  require_evidence_for_findings: true
+  max_excerpt_chars: 600
+  max_evidence_per_finding: 5
+  include_line_numbers: true
+  compute_hash: true
+  allow_absence_evidence: true
+  allow_tree_metadata_evidence: true
+  redact_secrets: true
+  block_secret_evidence: true
+
+confidence:
+  strong:
+    min_evidence_count: 2
+  medium:
+    min_evidence_count: 1
+  low:
+    allow_inference_only: false
+
+validation_gate:
+  require_evidence_for_findings: true
+  finding_without_evidence_status: rejected
+  deterministic_only: true

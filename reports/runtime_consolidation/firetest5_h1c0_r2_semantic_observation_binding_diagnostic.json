@@ -1,0 +1,111 @@
+{
+  "created_at": "2026-08-13T17:27:12.473541+00:00",
+  "verdict": "FIRETEST5_H1C0_R2_SEMANTIC_OBSERVATION_BINDING_READY",
+  "zero_row_diagnosis": {
+    "previous_partial_rows": 0,
+    "previous_expected_rows": 2286,
+    "current_expected_rows": 1051,
+    "current_selected_rows": 100,
+    "current_bound_rows": 100,
+    "current_evidence_ref_count": 100,
+    "finding": "zero-row was caused by semantic entity binding not being projected into the inventory rows before H1C0.R2; current run binds a governed window of corpus rows."
+  },
+  "expected_entity_source": {
+    "source": "ObservedEntity graph compiled from workspace roles and library/corpus roots",
+    "renderer_scanned_filesystem": false,
+    "path_authority_used": false
+  },
+  "semantic_intent_resolution": {
+    "resolver": "SemanticArtifactIntentResolver",
+    "artifact_kind": "media_corpus_inventory",
+    "semantic_domain": "media_corpus",
+    "logical_path_hint_only": true
+  },
+  "required_artifact_contracts": [
+    "media_corpus_inventory_artifact"
+  ],
+  "required_evidence_contracts": [
+    "entity_identity",
+    "source_root_role",
+    "source_path",
+    "observation_provenance"
+  ],
+  "observation_goal_generation": [
+    "ArtifactIntentPlan -> media corpus observation requirements"
+  ],
+  "capability_matching": {
+    "media_metadata_reader": "not_configured",
+    "relationship_detector": "not_available"
+  },
+  "observed_entity_pipeline": {
+    "selected_rows": 100,
+    "bound_rows": 100,
+    "evidence_ref_count": 100,
+    "safe_to_use": false
+  },
+  "workspace_role_binding": {
+    "selected_by_root_role_and_evidence": true,
+    "hardcoded_local_path": false
+  },
+  "media_metadata_capability_status": {
+    "status": "not_configured",
+    "capability_id": "media_metadata_reader",
+    "primary_backend": "mutagen",
+    "selected_backend": null,
+    "available_backends": [],
+    "blocked_backends": [],
+    "globally_blocked_backends": [],
+    "partially_blocked_backends": [],
+    "missing_dependency": [],
+    "attempted_backends": [],
+    "successful_backends": [],
+    "fallback_backends_used": [],
+    "backend_error_counts": {},
+    "evidence_records_created": 0,
+    "attributes_observed": [],
+    "attributes_missing": [],
+    "limitations": []
+  },
+  "relationship_cognition_activation": {
+    "status": "not_available",
+    "candidate_count": 0,
+    "observation_count": 0,
+    "evidence_count": 0,
+    "provenance_trace_count": 0,
+    "conflict_count": 0,
+    "negative_evidence_count": 0,
+    "rendered_field_count": 0,
+    "evidence_ref_count": 0,
+    "provenance_ref_count": 0,
+    "validation_ready_count": 0,
+    "validated_relationship_count": 0,
+    "conflicted_relationship_count": 0,
+    "relation_families": [],
+    "confidence_summary": {
+      "count": 0,
+      "max": 0.0,
+      "average": 0.0
+    },
+    "truth_eligible": false,
+    "validation_status": "blocked",
+    "reason_codes": [
+      "RELATIONSHIP_OBSERVATION_NOT_BOUND"
+    ],
+    "source": "artifact_relationship_binding"
+  },
+  "evidence_phase1_requirements": {
+    "status": "blocked",
+    "reason_code": "MUSIC_INVENTORY_SEMANTIC_EVIDENCE_INSUFFICIENT",
+    "semantic_contract_status": "insufficient",
+    "diagnostic_package_size_bytes": 210298
+  },
+  "why_rows_were_not_bound": [
+    "Before H1C0.R2, bounded artifact rendering selected/projected entities before semantic corpus selection, so project/build entities could consume the render window and leave the media inventory with zero bound rows.",
+    "Endpoint summary relied on inline declared contracts; lightweight artifact index did not expose enough counters to lift observational_cognition out of not_available."
+  ],
+  "recommended_patch_points": [
+    "Continue optimizing RuntimeTruth/timeline endpoint projection; truth remains slower than summary/events/artifacts.",
+    "Configure/enable a governed media_metadata_reader backend when metadata attributes must move beyond not_configured/not_observed.",
+    "Mature relationship observation binding if relationship candidate fields become phase dependency requirements."
+  ]
+}

@@ -1,0 +1,19 @@
+schema_version: 1
+
+sensitivity:
+  enabled: true
+  block_secrets: true
+  block_raw_logs: true
+  block_full_file_content: true
+  redact_trace: true
+  max_candidate_text_chars: 1200
+  max_raw_text_chars: 5000
+
+detect:
+  api_keys: true
+  tokens: true
+  passwords: true
+  private_keys: true
+  stack_traces: true
+  dumps: true
+  forbidden_paths: true

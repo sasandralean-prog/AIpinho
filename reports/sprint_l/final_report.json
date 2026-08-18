@@ -1,0 +1,42 @@
+{
+  "verdict": "OPERATOR_EXPERIENCE_SPEAKER_TRUTH_READY",
+  "implemented": [
+    "external_speaker_truth_auditor",
+    "universal_task_session_public_status_restriction",
+    "launcher_operator_toolbar",
+    "mobile_operator_toolbar",
+    "independent_internal_scroll",
+    "selectable_copyable_messages",
+    "non_invasive_new_message_notice"
+  ],
+  "allowed_public_task_states": [
+    "CREATED",
+    "QUEUED",
+    "RUNNING",
+    "WAITING_APPROVAL",
+    "WAITING_USER",
+    "COMPLETED",
+    "FAILED",
+    "CANCELLED",
+    "TIMEOUT"
+  ],
+  "tests": {
+    "python_py_compile": "passed",
+    "python_pytest_focused": "25 passed",
+    "android_unit_focused": "BUILD SUCCESSFUL",
+    "android_assemble_debug": "BUILD SUCCESSFUL"
+  },
+  "artifacts": {
+    "apk": "C:\\Dev\\AIpinho\\apps\\mobile\\android\\app\\build\\outputs\\apk\\debug\\app-debug.apk",
+    "launcher_dist": "C:\\Dev\\AIpinho\\dist\\AIpinhoLauncher.exe",
+    "launcher_desktop": "C:\\Users\\rafae\\Desktop\\AIpinhoLauncher.exe"
+  },
+  "device_install": {
+    "device": "ZF5253V88S",
+    "status": "Success"
+  },
+  "residual_risks": [
+    "visual_qa_recommended_for_small_mobile_viewports",
+    "auditor_patterns_may_need_configurable_expansion_for_future_providers"
+  ]
+}

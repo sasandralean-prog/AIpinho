@@ -1,0 +1,8 @@
+﻿schema_version: 1
+
+validation_store:
+  enabled: true
+  path: data/runtime/validations
+  sanitize_before_save: true
+  raw_content_enabled: false
+  max_string_chars: 30000

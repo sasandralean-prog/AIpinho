@@ -1,0 +1,53 @@
+{
+  "run_id": "agent_run_e3e05988aa464795ae8e66c42a324958",
+  "session_id": "agent_session_065f11c80216433cbd1a654eb6bb0d64",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "sandbox_project_generation",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [],
+  "started_at": "2026-06-14T17:34:17+00:00",
+  "completed_at": "2026-06-14T17:34:22+00:00",
+  "validation_status": null,
+  "artifact_ids": [
+    "agent_artifact_b41b397cab8d4cef8b66daab25dba567"
+  ],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "project_generation_id": "project_generation_a6a3732f85c743e3bb3c0d746912fc56",
+    "project_type": "android_kotlin",
+    "sandbox_task_id": "sandbox_task_8e58ded46eaa4850b2de05e95a70f249",
+    "sandbox_workspace_id": "sandbox_ws_default",
+    "latest_summary_sanitized": "Projeto SapoAndando gerado no sandbox. Artifact pronto: sapoandando.zip. Artifact ID: agent_artifact_b41b397cab8d4cef8b66daab25dba567. Ha warnings documentados nos detalhes.",
+    "evidence_refs": [
+      "sandbox_task:sandbox_task_8e58ded46eaa4850b2de05e95a70f249",
+      "run:agent_run_e3e05988aa464795ae8e66c42a324958",
+      "tool:tool_invocation_aced1c09ef2b4fdb911dedbe0bc1c005",
+      "tool:tool_invocation_cb2627e4cc274e25af7ece12a35fb999",
+      "tool:tool_invocation_1d4ff200797d4e8ea9991304a0218bba",
+      "tool:tool_invocation_af464c31a03a4eb782aa1ae4f7683c92",
+      "tool:tool_invocation_6c26d6b0f02e4ae7bc8351de8825adbc",
+      "tool:tool_invocation_d1d60267c50849bbb289514be49d274b",
+      "tool:tool_invocation_882a9f215c3b41248e3063b3b0238187",
+      "tool:tool_invocation_b6b145b4c82b43b687478fa00d1c2bd3",
+      "tool:tool_invocation_907a99970efc4a6ebebca6305617a3b6",
+      "tool:tool_invocation_c3bbd8fc8606480ebceed4fe13c3c450",
+      "tool:tool_invocation_ca703e9520974035b8948224f95f3d5c",
+      "sandbox_validation:project_structure",
+      "sandbox_task:sandbox_task_8e58ded46eaa4850b2de05e95a70f249",
+      "artifact:agent_artifact_b41b397cab8d4cef8b66daab25dba567",
+      "tool:tool_invocation_60ec7bd719294a6b9abc8a482c3c33a2"
+    ]
+  }
+}

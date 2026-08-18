@@ -1,0 +1,73 @@
+{
+  "program": "AIpinho Engineering Evolution Program",
+  "block": "K",
+  "block_name": "Continuous Runtime",
+  "date": "2026-07-02",
+  "verdict": "BLOCK_K_CONTINUOUS_RUNTIME_READY",
+  "objective": "Represent governed runtime as Objective -> Plan -> Execution -> Observation -> Correction -> Continuation -> Conclusion.",
+  "contracts_created": [
+    "ContinuousRuntimeCheckpoint",
+    "ContinuousRuntimeCycle",
+    "ContinuousRuntimeResume"
+  ],
+  "services_created": [
+    "ContinuousRuntimeService"
+  ],
+  "files_changed": [
+    "src/aipinho/schemas/runtime/continuous_runtime.py",
+    "src/aipinho/services/runtime/continuous_runtime_service.py",
+    "src/aipinho/services/runtime/task_runtime_service.py",
+    "tests/unit/test_continuous_runtime_service.py",
+    "reports/engineering_evolution/block_k_continuous_runtime_report.md",
+    "reports/engineering_evolution/block_k_continuous_runtime_report.json"
+  ],
+  "tests": {
+    "py_compile": "passed",
+    "pytest_command": "python -m pytest tests/unit/test_continuous_runtime_service.py tests/unit/test_evidence_engine_service.py tests/unit/test_worker_registry_service.py tests/unit/test_task_runtime_service.py tests/unit/test_hotfix_policy_kernel_approval_gate.py tests/governance/test_g21_readonly_analysis_intent.py tests/governance/test_lifecycle_core.py tests/governance/test_g24_preview_quality_gate.py -q",
+    "pytest_result": "60 passed",
+    "app_factory_import": {
+      "command": "python -c \"from aipinho.app_factory import create_app; app=create_app(); print(app.title); print(len(app.routes))\"",
+      "result": "AIpinho / 942 routes"
+    },
+    "regression_assertions": [
+      "created run returns continue",
+      "completed run returns completed only with evidence-backed conclusion",
+      "waiting_input run returns needs_approval",
+      "blocked run returns blocked with reason code",
+      "cycles contain audit checkpoints"
+    ]
+  },
+  "live_backend_smoke": {
+    "backend_restarted": true,
+    "pid": 51296,
+    "health": {
+      "status": "ok",
+      "service": "AIpinho",
+      "version": "0.1.0",
+      "runtime": "local"
+    },
+    "run_id": "task_run_d5ea8f0ea35f43e8a535954d0fb7a588",
+    "cycle_status": "continue",
+    "stage": "continuation",
+    "next_action": "continue_runtime",
+    "checkpoints": 3,
+    "reason_code": "task_status:created"
+  },
+  "rollback": [
+    "Remove ContinuousRuntimeService from TaskRuntimeService.",
+    "Remove src/aipinho/services/runtime/continuous_runtime_service.py.",
+    "Remove src/aipinho/schemas/runtime/continuous_runtime.py.",
+    "Remove continuous runtime tests."
+  ],
+  "limitations": [
+    "No background continuous scheduler was added.",
+    "The cycle evaluates current state; Block L should add mission/autopilot orchestration.",
+    "No public endpoint was added for ContinuousRuntime in this block."
+  ],
+  "hardcode_check": {
+    "workload_specific_rules_added": false,
+    "path_specific_rules_added": false,
+    "filename_specific_rules_added": false,
+    "fire_test_specific_routes_added": false
+  }
+}

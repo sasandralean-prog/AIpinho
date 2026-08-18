@@ -1,0 +1,20 @@
+skill_pack_id: deprecated_pack_fixture
+display_name: Deprecated Pack Fixture
+slug: deprecated_pack_fixture
+version: 1.0.0
+status: deprecated
+category: docs
+description: Fixture deprecated pack.
+included_skills:
+  - internal.safe_markdown_report_generator
+required_capabilities: [report_generate, artifact_create]
+supported_agents: [aipinho]
+supported_project_stacks: [mixed]
+supported_execution_modes: [assisted_execution]
+risk_level: low
+policy_profile: fixture_policy
+validation_profile: fixture_validation
+artifact_policy: token_protected_artifacts
+memory_policy: none
+docs_ref: docs/skills/SKILL_PACKS.md
+tests_ref: tests/skill_packs

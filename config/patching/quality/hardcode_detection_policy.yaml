@@ -1,0 +1,14 @@
+schema_version: 1
+
+patterns:
+  critical:
+    - "allow_forbidden_root"
+    - "default_allow"
+  warning:
+    - "C:\\Users\\"
+    - "C:\\Windows\\"
+    - "/home/"
+    - "/tmp/"
+    - "hardcoded"
+    - "temporary fix"
+    - "quick fix"

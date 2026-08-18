@@ -1,0 +1,12 @@
+schema_version: 1
+
+sensitivity:
+  block_secret_patterns: true
+  block_raw_logs: true
+  redaction_enabled: true
+  patterns:
+    - "(?i)api[_-]?key\\s*[:=]"
+    - "(?i)password\\s*[:=]"
+    - "(?i)token\\s*[:=]"
+    - "-----BEGIN .*PRIVATE KEY-----"
+    - "(?i)raw[_ -]?log"

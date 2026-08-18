@@ -1,0 +1,12 @@
+schema_version: 1
+
+defaults:
+  language: pt-BR
+  tone: concise_grounded
+  mention_limitations: true
+  avoid_raw_debug: true
+
+sections:
+  include_detected_intent: true
+  include_policy_summary: true
+  include_next_safe_step: true

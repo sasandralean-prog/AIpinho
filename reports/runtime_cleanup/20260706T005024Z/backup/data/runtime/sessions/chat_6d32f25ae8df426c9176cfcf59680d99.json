@@ -1,0 +1,48 @@
+{
+  "session_id": "chat_6d32f25ae8df426c9176cfcf59680d99",
+  "status": "active",
+  "created_at": "2026-06-25T18:11:47.104372+00:00",
+  "updated_at": "2026-06-25T18:11:49.959636+00:00",
+  "expires_at": "2026-06-25T22:11:47.104372+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Continue a partir do preflight e implemente o MVP LogForge.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_a387b3b69b1e40a393454bb12b0e06ab",
+    "intent_type": "patch_request",
+    "task_type": "patch_request",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_clarification",
+    "contract_type": "patch_request",
+    "allowed_actions": [
+      "patch_preview"
+    ],
+    "denied_actions": [],
+    "approval_required_for": [
+      "apply_patch"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": "draft_046628be84894764af2b8017c6fbc5cc",
+  "last_operational_context": {},
+  "warnings": [
+    "requires_clarification"
+  ],
+  "trace_refs": []
+}

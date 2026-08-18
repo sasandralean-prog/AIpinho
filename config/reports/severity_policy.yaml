@@ -1,0 +1,30 @@
+schema_version: 1
+
+severity_order:
+  - info
+  - low
+  - medium
+  - high
+  - critical
+
+rules:
+  critical_requires:
+    - security_violation
+    - forbidden_root_access
+    - side_effect_detected
+
+  high_requires:
+    - strong_evidence
+    - user_impact
+
+  medium_requires:
+    - evidence_present
+    - maintainability_or_policy_risk
+
+  low_allows:
+    - weak_risk
+    - hygiene_issue
+
+defaults:
+  missing_evidence_max_severity: low
+  inference_only_max_severity: low

@@ -1,0 +1,41 @@
+schema_version: 1
+
+safe_actions:
+  enabled: true
+  source: backend_aggregator_only
+  require_endpoint_ref: true
+  require_risk_level: true
+  require_human_explanation: true
+
+allowed_actions:
+  - navigate
+  - copy
+  - refresh
+  - retry
+  - open_trace
+  - open_raw_viewer
+  - open_artifact
+  - create_support_bundle_preview
+  - restart_allowed_port
+  - restart_monitor_via_bootstrap
+  - request_approval_preview
+  - cancel_run
+
+blocked_actions:
+  - apply_patch
+  - run_shell
+  - run_git
+  - run_model_real_inference
+  - mutate_memory
+  - write_policy
+  - write_config
+  - unknown_external_connector
+  - restart_9099
+
+restart_ports:
+  allowed:
+    - 9088
+    - 9089
+    - 9098
+  blocked:
+    - 9099

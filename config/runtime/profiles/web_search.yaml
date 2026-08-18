@@ -1,0 +1,15 @@
+schema_version: 1
+profile:
+  id: web_search
+  operation_types: [public_fact_query, web_search_required]
+  allowed_step_types: [validate_runtime, execute_web_search, run_role_pipeline, compose_final_result]
+  steps: [validate_runtime, execute_web_search, run_role_pipeline, compose_final_result]
+  allowed_actions: [web_request]
+  allowed_side_effects: [network_read]
+  required_capabilities: [network]
+  approval_scope: network_request
+  workspace_requirements: {required: false, allowed_roles: []}
+  max_duration_seconds: 120
+  output_validation_required: true
+  artifact_registration_required: false
+  default_safe_to_execute_policy: policy_and_approval

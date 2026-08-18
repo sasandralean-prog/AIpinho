@@ -1,0 +1,8 @@
+schema_version: 1
+
+global_rag:
+  enabled: true
+  namespace_id: global_ecosystem
+  supporting_context_only: true
+  can_combine_with_role_context: true
+  cannot_replace_role_context: true

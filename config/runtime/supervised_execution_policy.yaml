@@ -1,0 +1,23 @@
+﻿schema_version: 1
+
+supervision:
+  require_explicit_user_start: true
+  require_run_guard_before_each_step: true
+  require_event_for_each_step: true
+  require_audit_for_blocked_step: true
+  stop_on_policy_denial: true
+  stop_on_forbidden_root: true
+  stop_on_write_action: true
+  allow_partial_on_budget_limit: true
+  allow_partial_on_omitted_files: true
+  allow_partial_on_optional_step_failure: true
+
+chat:
+  normal_chat_auto_execute_task: false
+  chat_preview_can_suggest_task_run: true
+  chat_can_show_task_result: true
+
+role_pipeline:
+  enabled_for_runtime: true
+  real_inference_auto_use: true
+  require_evaluation: true

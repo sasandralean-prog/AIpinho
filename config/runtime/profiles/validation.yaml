@@ -1,0 +1,15 @@
+schema_version: 1
+profile:
+  id: validation
+  operation_types: [validation, evidence_check]
+  allowed_step_types: [validate_runtime, validate_workspace, execute_validation, compose_final_result]
+  steps: [validate_runtime, validate_workspace, execute_validation, compose_final_result]
+  allowed_actions: [validate_runtime, run_tests]
+  allowed_side_effects: [shell]
+  required_capabilities: [validation]
+  approval_scope: validation
+  workspace_requirements: {required: true, allowed_roles: [source_readonly, target_mutable, system_mutable]}
+  max_duration_seconds: 240
+  output_validation_required: true
+  artifact_registration_required: false
+  default_safe_to_execute_policy: policy_allowed

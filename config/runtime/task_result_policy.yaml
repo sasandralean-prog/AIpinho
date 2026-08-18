@@ -1,0 +1,22 @@
+﻿schema_version: 1
+
+result:
+  sanitize_before_save: true
+  safe_to_display_default: true
+  max_result_chars: 30000
+  max_summary_chars: 4000
+  include_raw_file_content: false
+  include_secrets: false
+  include_full_model_output: false
+  partial_requires_limitations: true
+  include_step_summaries: true
+
+validation_summary:
+  enabled: true
+  attach_to_result: true
+  failed_or_rejected_not_trusted: true
+  safe_summary_required: true
+retrieval:
+  task_result_retrieval_read_only: true
+  return_summaries_only: true
+  raw_payload_retrieval_enabled: false

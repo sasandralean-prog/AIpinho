@@ -1,0 +1,72 @@
+[
+  {
+    "event_id": "session_event_f4b6f7310b3944c4aa685701b50bb610",
+    "session_id": "chat_ec2433a8fcce4cdb858e40ff4dabbd95",
+    "event_type": "session_created",
+    "created_at": "2026-06-11T21:48:58.837627+00:00",
+    "summary": "Sessao criada.",
+    "data": {},
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_967fbfc267494d7c874cae7e11f522b1",
+    "session_id": "chat_ec2433a8fcce4cdb858e40ff4dabbd95",
+    "event_type": "chat_message",
+    "created_at": "2026-06-11T21:48:58.907786+00:00",
+    "summary": "Mensagem processada com status preview.",
+    "data": {
+      "intent_type": "readonly_analysis",
+      "task_draft_id": "draft_7c28c698d971469899916e90cdff3e0f"
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_70c1a290507442138fffb0b72229a53c",
+    "session_id": "chat_ec2433a8fcce4cdb858e40ff4dabbd95",
+    "event_type": "task_draft_created",
+    "created_at": "2026-06-11T21:48:58.907786+00:00",
+    "summary": "Task draft registrado com status draft.",
+    "data": {
+      "draft_id": "draft_7c28c698d971469899916e90cdff3e0f",
+      "draft_status": "draft",
+      "preview_id": "preview_0766119f53c344ac9f43a9c550488657"
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_5e734a61c7f94959a240363420edd1da",
+    "session_id": "chat_ec2433a8fcce4cdb858e40ff4dabbd95",
+    "event_type": "chat_message",
+    "created_at": "2026-06-12T00:03:09.706683+00:00",
+    "summary": "Mensagem processada com status degraded.",
+    "data": {
+      "intent_type": "conversation",
+      "task_draft_id": null
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_f7e0fdd14c9444ee9d1344d4034a7c4e",
+    "session_id": "chat_ec2433a8fcce4cdb858e40ff4dabbd95",
+    "event_type": "chat_message",
+    "created_at": "2026-06-12T00:06:16.881223+00:00",
+    "summary": "Mensagem processada com status degraded.",
+    "data": {
+      "intent_type": "conversation",
+      "task_draft_id": null
+    },
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_a6ef1ff57d4643b59f380d1cc4cd2b90",
+    "session_id": "chat_ec2433a8fcce4cdb858e40ff4dabbd95",
+    "event_type": "chat_message",
+    "created_at": "2026-06-12T00:07:38.663880+00:00",
+    "summary": "Mensagem processada com status degraded.",
+    "data": {
+      "intent_type": "conversation",
+      "task_draft_id": null
+    },
+    "warnings": []
+  }
+]

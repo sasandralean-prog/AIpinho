@@ -1,0 +1,38 @@
+skill_pack_id: workspace_pack
+display_name: Workspace Pack v1
+slug: workspace_pack
+version: 1.0.0
+status: active
+category: workspace
+description: Governed workspace onboarding, readonly inventory and import-oriented assistance through existing safe skills.
+included_skills:
+  - internal.project_readonly_inventory
+  - internal.safe_markdown_report_generator
+  - internal.artifact_bundle_exporter
+required_capabilities:
+  - read_workspace
+  - report_generate
+  - artifact_create
+optional_capabilities:
+  - artifact_download
+supported_agents: [aipinho, lucio, codex, gemini, autopilot]
+supported_project_stacks: [android_gradle, python, node, mixed, unknown]
+supported_execution_modes: [project_readonly_analysis, assisted_execution, governed_autorun]
+risk_level: low
+policy_profile: workspace_onboarding_readonly
+validation_profile: workspace_bridge_manifest
+artifact_policy: token_protected_artifacts
+memory_policy: propose_candidate_with_evidence
+dashboard_visible: true
+debugger_trace_required: true
+docs_ref: docs/skills/WORKSPACE_PACK.md
+tests_ref: tests/skill_packs
+examples:
+  - label: Onboard external workspace
+    prompt: Inspect this external path and propose safe onboarding.
+    expected_pack_selection: [workspace_pack, docs_pack]
+limitations:
+  - Apply/import actions remain handled by the External Workspace service and policy router.
+evidence_refs: [skill_pack_manifest:workspace_pack]
+metadata_sanitized:
+  workspace_role: source_readonly

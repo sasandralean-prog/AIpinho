@@ -1,0 +1,15 @@
+schema_version: 1
+token_ui:
+  enabled: true
+  store_token_locally: true
+  token_storage: local_runtime_file_or_os_store
+  show_token_plaintext_only_after_create: true
+  hide_token_in_normal_status: true
+  allow_copy_token_once: true
+  redact_token_in_logs: true
+  show_token_preview_chars: 4
+blocked:
+  show_token_in_dashboard: true
+  show_token_in_debugger_raw: true
+  save_token_in_plain_logs: true
+  copy_token_from_status_screen: true

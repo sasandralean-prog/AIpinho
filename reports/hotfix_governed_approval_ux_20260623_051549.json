@@ -1,0 +1,90 @@
+{
+  "report_id": "hotfix_governed_approval_ux_20260623_051549",
+  "date": "2026-06-23T05:15:49-03:00",
+  "verdict": "HOTFIX_APPROVAL_UX_READY",
+  "scope": "Approval UX e continuacao de tasks governadas",
+  "fixed_errors": [
+    "approval_approved_did_not_resume_task",
+    "approval_request_missing_runtime_context",
+    "task_queue_ignored_approved_approval",
+    "approval_api_missing_resume_result",
+    "safe_batch_approval_missing",
+    "chat_textual_approval_missing",
+    "prompt_configurability_without_governed_preview",
+    "approval_event_contract_missing_runtime_context_event"
+  ],
+  "changed_files": [
+    "src/aipinho/schemas/approvals/approval_request.py",
+    "src/aipinho/schemas/approvals/approval_decision.py",
+    "src/aipinho/schemas/approvals/approval_state.py",
+    "src/aipinho/schemas/approvals/approval_event.py",
+    "src/aipinho/services/approvals/approval_policy.py",
+    "src/aipinho/services/approvals/approval_service.py",
+    "src/aipinho/services/approvals/approval_task_continuation_service.py",
+    "src/aipinho/api/routers/approval_router.py",
+    "src/aipinho/api/routers/task_runtime_router.py",
+    "src/aipinho/services/runtime/task_runtime_service.py",
+    "src/aipinho/services/runtime/task_queue_service.py",
+    "src/aipinho/services/chat/chat_approval_command_service.py",
+    "src/aipinho/services/chat/governed_configuration_change_chat_service.py",
+    "src/aipinho/services/chat/chat_operation_router_service.py",
+    "src/aipinho/api/routers/chat_router.py",
+    "config/policies/approval_lifecycle_policy.yaml",
+    "config/runtime/task_run_event_policy.yaml",
+    "config/chat/chat_operation_routing_policy.yaml",
+    "tests/unit/test_governed_approval_continuation.py",
+    "tests/unit/test_chat_operation_router_service.py",
+    "tests/integration/test_preview_approval_api.py"
+  ],
+  "new_or_strengthened_endpoints": [
+    "POST /api/v1/approvals/{approval_id}/approve",
+    "POST /api/v1/approvals/{approval_id}/reject",
+    "POST /api/v1/approvals/{approval_id}/deny",
+    "POST /api/v1/approvals/{approval_id}/cancel",
+    "POST /api/v1/approvals/batch/approve",
+    "POST /api/v1/approvals/batch/deny",
+    "POST /api/v1/approvals/batch/reject",
+    "GET /api/v1/tasks/{task_id}/approvals",
+    "POST /api/v1/tasks/{task_id}/approvals/approve-safe-batch"
+  ],
+  "policy_changes": {
+    "relaxed": [
+      "approval_lifecycle.never_execute_on_approval=false",
+      "approval_lifecycle.resume_task_after_approval=true",
+      "runtime_execution.approved_side_effect_execution_enabled=true",
+      "runtime_execution.resume_after_approval=true"
+    ],
+    "still_blocked": [
+      "git_commit",
+      "git_push",
+      "write_memory",
+      "safe_batch_destructive_actions"
+    ]
+  },
+  "prompt_configurability": {
+    "enabled_for": ["policies", "contracts", "configs", "workspaces"],
+    "mode": "governed_preview_only",
+    "direct_mutation_allowed": false,
+    "requires_preview": true,
+    "requires_approval": true,
+    "requires_validation": true
+  },
+  "tests": {
+    "py_compile": "passed",
+    "focused_final": {
+      "command": "python -m pytest tests\\unit\\test_governed_approval_continuation.py tests\\unit\\test_chat_operation_router_service.py tests\\unit\\test_approval_preview_lifecycle.py tests\\unit\\test_approval_policy_service.py tests\\unit\\test_task_queue_service.py tests\\unit\\test_task_runtime_service.py tests\\integration\\test_preview_approval_api.py tests\\contract\\test_preview_approval_contracts.py -q",
+      "result": "91 passed in 33.80s"
+    },
+    "full_pytest": "not_run"
+  },
+  "risks": [
+    "full_pytest_not_run",
+    "visual_qa_not_run",
+    "real_resume_still_depends_on_runtime_guards"
+  ],
+  "hardcode_review": {
+    "specific_prompt_rules_added": false,
+    "specific_path_rules_added": false,
+    "blanket_approval_allowed": false
+  }
+}

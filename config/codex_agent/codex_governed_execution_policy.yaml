@@ -1,0 +1,39 @@
+schema_version: 1
+
+codex_governed_execution:
+  enabled: true
+  require_preview: true
+  require_approval_for_every_action: true
+  require_post_validation: true
+  contract_ttl_minutes: 60
+  max_actions_per_contract: 40
+  max_file_actions_per_contract: 30
+  max_shell_actions_per_contract: 10
+  max_file_content_chars: 1000000
+  max_total_content_chars: 4000000
+  max_shell_timeout_seconds: 120
+  allowed_action_types:
+    - create_file
+    - modify_file
+    - run_shell
+  allowed_workspace_roles:
+    - target_mutable
+    - system_mutable
+  blocked_filename_patterns:
+    - ".env"
+    - ".env.*"
+    - "*.pem"
+    - "*.key"
+    - "*.pfx"
+    - "*.p12"
+    - "*.keystore"
+    - "*.jks"
+    - "auth.json"
+  blocked_extensions:
+    - ".exe"
+    - ".dll"
+    - ".sys"
+    - ".bin"
+  rollback_on_file_failure: true
+  stop_on_action_failure: true
+  expose_content_in_standard_responses: false

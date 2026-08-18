@@ -1,0 +1,36 @@
+{
+  "run_id": "agent_run_008924ed0c654c72a409e37905258a0e",
+  "session_id": "agent_session_2fe052b34edf40b8b0e7f47199a60df2",
+  "agent_id": "gemini",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "cancelled",
+  "operation_type": "workspace_operation",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [
+    "read_workspace",
+    "scan_workspace",
+    "create_file",
+    "workspace_write"
+  ],
+  "started_at": "2026-06-15T13:18:02+00:00",
+  "completed_at": "2026-06-22T15:21:17+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [
+    "agent_memory_candidate_65faf896edfa41f3852b432ab3425b32"
+  ],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": "stale_runtime_cleanup",
+  "metadata_sanitized": {
+    "hygiene_preview_id": "cleanup_preview_6bcff1cc4a6e40c988e350dd38f972b4",
+    "previous_status": "delegation_running"
+  }
+}

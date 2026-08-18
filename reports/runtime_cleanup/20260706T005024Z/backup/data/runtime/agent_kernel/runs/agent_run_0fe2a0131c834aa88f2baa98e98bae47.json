@@ -1,0 +1,40 @@
+{
+  "run_id": "agent_run_0fe2a0131c834aa88f2baa98e98bae47",
+  "session_id": "agent_session_3254f8901513472181ce7de6e50ef169",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "failed",
+  "operation_type": "workspace_readonly_audit_report",
+  "workspace_id": "aipinho_project",
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [
+    "read_workspace",
+    "workspace_write",
+    "create_file",
+    "validation"
+  ],
+  "started_at": "2026-06-21T21:59:42+00:00",
+  "completed_at": "2026-06-21T21:59:43+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": "approval_required",
+  "metadata_sanitized": {
+    "chat_session_id": "chat_ce677e1c69b14211b90520121ba254ff",
+    "operation_id": "chatop_2cea2fd495ff44418b578eb717762d5d",
+    "audit_terms": [
+      "Diagnostique",
+      "E2E",
+      "C:\\Dev\\AIpinho",
+      "reports/aipinho_firetest_stale_e2e_diagnosis.md"
+    ]
+  }
+}

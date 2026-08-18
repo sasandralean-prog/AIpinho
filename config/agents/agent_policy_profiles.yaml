@@ -1,0 +1,57 @@
+version: 1
+agent_policy_profiles:
+  - agent_id: aipinho
+    role: local_orchestrator
+    default_mode: governed_autorun
+    can_use_tool_gateway: true
+    can_execute_local: true
+    can_delegate_future: true
+    direct_local_write: true
+    autoapprove_read: true
+    autoapprove_artifacts: true
+    autoapprove_target_write: true
+    autoapprove_readonly_shell: true
+    autoapprove_test_shell: true
+    autoapprove_build_shell: true
+    block_destructive_shell: true
+    block_secret_access: true
+    block_source_readonly_write: true
+  - agent_id: lucio
+    role: multimodal_strategic_orchestrator
+    default_mode: governed_autorun
+    can_use_tool_gateway: true
+    can_execute_local: false
+    can_delegate_future: true
+    direct_local_write: false
+    prefer_delegate_to_codex_or_aipinho: true
+    autoapprove_read: true
+    autoapprove_artifacts: true
+    block_secret_access: true
+  - agent_id: codex
+    role: code_executor
+    default_mode: governed_autorun
+    can_use_tool_gateway: true
+    can_execute_local: true
+    can_delegate_future: true
+    direct_local_write: true
+    autoapprove_read: true
+    autoapprove_artifacts: true
+    autoapprove_target_write: true
+    autoapprove_readonly_shell: true
+    autoapprove_test_shell: true
+    autoapprove_build_shell: true
+    block_destructive_shell: true
+    block_git_write_by_default: true
+    block_network_shell_by_default: true
+  - agent_id: gemini
+    role: cloud_agent
+    default_mode: governed_autorun
+    can_use_tool_gateway: true
+    can_execute_local: false
+    can_delegate_future: true
+    direct_local_write: false
+    prefer_delegate_to_aipinho: true
+    autoapprove_read: true
+    autoapprove_artifacts: true
+    block_secret_access: true
+    block_external_upload_without_consent: true

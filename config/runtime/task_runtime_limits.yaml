@@ -1,0 +1,21 @@
+﻿schema_version: 1
+
+limits:
+  max_steps_per_run: 20
+  max_runtime_seconds: 180
+  max_events_per_run: 500
+  max_trace_items: 300
+  max_result_chars: 30000
+  max_error_chars: 4000
+  max_workspace_files_read: 40
+  max_workspace_total_bytes: 700000
+
+timeouts:
+  step_timeout_seconds: 60
+  total_timeout_seconds: 180
+
+result:
+  truncate_large_result: true
+  include_step_summaries: true
+  include_limitations: true
+  include_blocked_files: true

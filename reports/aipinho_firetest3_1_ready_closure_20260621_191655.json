@@ -1,0 +1,18 @@
+﻿{
+    "verdict":  "AIPINHO_FIRETEST_PINHOFORGE_READY",
+    "chat_session":  "chat_ce677e1c69b14211b90520121ba254ff",
+    "operation_type":  "workspace_readonly_audit_report",
+    "run_id":  "agent_run_4711f714f2944522a01be3c00035575d",
+    "tool_invocation_id":  "tool_invocation_55b113a1acce4622a94d4f765f71bac5",
+    "report_path":  "C:\\Dev\\AIpinho\\reports\\aipinho_firetest_stale_e2e_diagnosis.md",
+    "validation":  "passed",
+    "tests":  [
+                  "py_compile",
+                  "49 focused tests passed"
+              ],
+    "warnings_remaining":  [
+                               "visual_screenshot_unavailable non_blocking",
+                               "summary_reporter_model_used_manifest_fallback backlog",
+                               "test_profiles_need_parametrization_for_real_inference_and_forbidden_roots backlog"
+                           ]
+}

@@ -1,0 +1,42 @@
+{
+  "session_id": "session_940e24e6aee04993a16ad5af2af448f7",
+  "status": "active",
+  "created_at": "2026-06-25T07:11:51.499363+00:00",
+  "updated_at": "2026-06-25T07:11:56.571077+00:00",
+  "expires_at": "2026-06-25T11:11:51.499363+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "voce consegue ler arquivos?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_d50ff546feb244cba5e34dff1c6b8256",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

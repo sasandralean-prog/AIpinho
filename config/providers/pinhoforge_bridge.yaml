@@ -1,0 +1,20 @@
+version: 1
+runtime:
+  enabled: true
+  provider_id: pinhoforge_studio
+  transport: local_manifest_file
+  manifest_path: null
+  execution_enabled: false
+  require_local_auth: true
+  allowed_operations:
+    - handshake
+    - health
+    - manifest
+    - readiness
+  blocked_operations:
+    - execute
+policy:
+  raw_default_visible: false
+  expose_secrets: false
+  execution_requires_future_sprint: true
+  discovery_only_until_enabled_by_policy: true

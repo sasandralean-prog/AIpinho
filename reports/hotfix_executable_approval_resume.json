@@ -1,0 +1,49 @@
+{
+  "report_id": "hotfix_executable_approval_resume",
+  "date": "2026-06-25",
+  "verdict": "EXECUTABLE_APPROVAL_RESUME_READY",
+  "root_cause": "ApprovalRequest could be created for write/project_generation previews without an executable plan, causing approved TaskRuns to block later with project_generation_plan_missing and contradictory success messaging.",
+  "changed_files": [
+    "src/aipinho/schemas/tasks/task_contract_draft.py",
+    "src/aipinho/schemas/tasks/task_preview.py",
+    "src/aipinho/schemas/approvals/approval_request.py",
+    "src/aipinho/schemas/approvals/approval_event.py",
+    "src/aipinho/services/orchestration/executable_plan_service.py",
+    "src/aipinho/services/orchestration/task_preview_service.py",
+    "src/aipinho/services/approvals/approval_service.py",
+    "src/aipinho/services/approvals/approval_task_continuation_service.py",
+    "src/aipinho/services/chat/governed_write_chat_service.py",
+    "src/aipinho/services/chat/chat_approval_command_service.py",
+    "src/aipinho/services/chat/chat_service.py",
+    "src/aipinho/api/routers/chat_router.py",
+    "tests/unit/test_hotfix_executable_approval_resume.py",
+    "tests/unit/test_approval_preview_lifecycle.py",
+    "tests/unit/test_governed_approval_continuation.py",
+    "tests/unit/test_hotfix_approval_bootstrap_phase_resume.py"
+  ],
+  "tests": {
+    "new": [
+      "tests/unit/test_hotfix_executable_approval_resume.py"
+    ],
+    "commands": [
+      "python -m pytest tests\\unit\\test_hotfix_executable_approval_resume.py -q",
+      "python -m pytest tests\\unit\\test_approval_preview_lifecycle.py tests\\unit\\test_approval_service_expiry_listing.py tests\\unit\\test_governed_approval_continuation.py tests\\unit\\test_hotfix_approval_bootstrap_phase_resume.py tests\\unit\\test_hotfix_policy_kernel_approval_gate.py tests\\unit\\test_governed_write_chat_service.py tests\\unit\\test_hotfix_executable_approval_resume.py -q",
+      "python -m py_compile <altered files>"
+    ],
+    "result": "64 passed in 66.91s; py_compile passed"
+  },
+  "behaviors_changed": [
+    "ApprovalRequest creation now requires an executable plan for write/patch/project_generation actions.",
+    "Phase resume produces an implementation-plan preview instead of a false pending approval when no executable plan exists.",
+    "Approved approvals validate the linked draft and executable_plan_ref before creating TaskRun.",
+    "Chat approval commands report blocked resume outcomes as blocked, not success.",
+    "Natural approval phrases and APROVAR task_run_xxx are handled as approval commands when unambiguous.",
+    "Approval target_paths now contain only real paths."
+  ],
+  "risks": [
+    "Older callers that relied on generic write approvals must now generate patch_plan, project_generation_plan, or concrete_file_operations first.",
+    "Project generation plan is structurally executable but still depends on downstream runtime to derive concrete file operations during execution."
+  ],
+  "remaining_failures": [],
+  "final_status": "ready"
+}

@@ -1,0 +1,41 @@
+{
+  "session_id": "session_ea0366d77332437da3eda16044594336",
+  "status": "active",
+  "created_at": "2026-06-06T12:42:41.604968+00:00",
+  "updated_at": "2026-06-06T12:42:41.609570+00:00",
+  "expires_at": "2026-06-06T16:42:41.604968+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Como consertar arquitetura em teoria?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_fd9c94c106dd411f83da9203d3088a1a",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

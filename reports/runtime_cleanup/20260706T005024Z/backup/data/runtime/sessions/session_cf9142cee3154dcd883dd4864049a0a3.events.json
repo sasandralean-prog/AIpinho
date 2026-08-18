@@ -1,0 +1,23 @@
+[
+  {
+    "event_id": "session_event_d51e43e9362e4eb7b90f9026d65e7f89",
+    "session_id": "session_cf9142cee3154dcd883dd4864049a0a3",
+    "event_type": "session_created",
+    "created_at": "2026-06-25T04:41:58.680908+00:00",
+    "summary": "Sessao criada.",
+    "data": {},
+    "warnings": []
+  },
+  {
+    "event_id": "session_event_461748e362a54a0cb1aaadfd55581c58",
+    "session_id": "session_cf9142cee3154dcd883dd4864049a0a3",
+    "event_type": "chat_message",
+    "created_at": "2026-06-25T04:41:58.756179+00:00",
+    "summary": "Mensagem processada com status pending_approval.",
+    "data": {
+      "intent_type": "unknown",
+      "task_draft_id": null
+    },
+    "warnings": []
+  }
+]

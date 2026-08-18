@@ -1,0 +1,67 @@
+{
+  "wave": "H1B4.3.3",
+  "title": "Artifact Render Cooperative Budgets & Terminal Event Idempotency",
+  "generated_at": "2026-08-12",
+  "artifact_render_boundary": {
+    "entrypoint": "ReadonlyAnalysisArtifactRuntimeService.execute -> _create_artifact -> _artifact_content -> _contract_tabular_collection_content -> ArtifactRuntimeService.create -> UniversalArtifactRegistryService.create",
+    "long_running_steps": [
+      "contract perception compilation",
+      "entity iteration",
+      "attribute binding",
+      "CSV row rendering",
+      "CSV cell rendering and spill refs",
+      "artifact registry create"
+    ],
+    "has_budget": true,
+    "has_cancel_token": true,
+    "checks_terminal_state": true,
+    "atomic_write": true,
+    "partial_artifact_supported": true,
+    "late_artifact_policy": "reject",
+    "emits_artifact_created_after_terminal": false,
+    "checkpoints": [
+      "before_artifact_render",
+      "before_entity_iteration",
+      "after_entity_batch",
+      "before_csv_cell_render",
+      "after_csv_row_batch",
+      "before_artifact_write",
+      "before_registry_create",
+      "after_registry_create_before_event",
+      "before_validation"
+    ],
+    "reason_codes": [
+      "ARTIFACT_RENDER_BUDGET_EXCEEDED",
+      "ARTIFACT_RENDER_CANCELLED",
+      "ARTIFACT_RENDER_TIMEOUT",
+      "ARTIFACT_RENDER_INTERRUPTED",
+      "ARTIFACT_RENDER_TERMINAL_STATE_SEEN",
+      "ARTIFACT_RENDER_LATE_ARTIFACT_REJECTED",
+      "ARTIFACT_RENDER_OUTPUT_BUDGET_EXCEEDED"
+    ]
+  },
+  "terminal_event_idempotency": {
+    "policy": "first terminal event wins",
+    "terminal_event_count_expected": 1,
+    "duplicate_run_blocked_expected": false,
+    "subsequent_terminal_attempt_event": "terminalization_already_applied",
+    "post_terminal_completed_events_allowed": false
+  },
+  "metadata_summary_consistency": {
+    "scope": "limited summary coherence only",
+    "knowledge_graph_created": false,
+    "truth_promotion_created": false,
+    "behavior": "bound media attribute observations without inline capability provenance produce status=unknown_due_to_payload_ref instead of not_configured"
+  },
+  "public_chat_boundary": {
+    "status": "finding_preserved",
+    "reason": "accepted_running was not implemented in this wave because it requires a broader public chat execution boundary change"
+  },
+  "verification": {
+    "focused_tests": "103 passed, 1 skipped",
+    "compile": "passed",
+    "public_rerun": "attempted_but_not_authoritative",
+    "public_rerun_task_run_id": "task_run_c34f13ea90424209ae2742f7b30a9ee3",
+    "public_rerun_reason": "client timed out after creating a TaskRun; persisted state remained created with bootstrap/planning events only, no run_started, no result.json and no artifacts; server process was stopped"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "created_at": "2026-07-06T00:50:41+00:00",
+  "queue_snapshot": {
+    "status": "ok",
+    "enabled": true,
+    "max_pending_tasks": 25,
+    "max_wait_seconds": 86400,
+    "active_count": 0,
+    "pending_count": 0,
+    "requires_decision_count": 0,
+    "total_visible": 1,
+    "items": [
+      {
+        "run_id": "task_run_f377849a8821472ab32e93ca9237a6f0",
+        "session_id": null,
+        "status": "waiting_delegation",
+        "priority": 100,
+        "created_at": "2026-07-04T02:40:21.756199+00:00",
+        "age_seconds": 166220,
+        "approval_id": null,
+        "approval_status": null,
+        "auto_run_requested": false,
+        "requires_decision": false,
+        "expired_by_policy": false
+      }
+    ],
+    "last_reconciled_at": "2026-07-06T00:50:41.783262+00:00",
+    "warnings": []
+  },
+  "hygiene_health": {
+    "status": "ok",
+    "active_runs": 17,
+    "queued_runs": 0,
+    "stale_runs": 17,
+    "pending_approvals": 0,
+    "active_sessions": 24,
+    "dispatcher_status": "stale_runs_detected",
+    "worker_pool_capacity": 8,
+    "worker_pool_available_slots": 8,
+    "stale_run_ids": [
+      "agent_run_04cbc87110294d009623f41f8bdbe159",
+      "agent_run_18cb87a80366485b9d42f5fca987f0bd",
+      "agent_run_265faaac4d7140079ecaa54533202c96",
+      "agent_run_3dbee3fcb3cd4a54b604dfb0f28674e4",
+      "agent_run_508431bec333472ba7fde301259bb821",
+      "agent_run_5310a19fdfc74b409b9f41d73ce62703",
+      "agent_run_53113183ab4f4db79f07073eff5246fb",
+      "agent_run_65e883ec2a404c57a452dddbc3b5de73",
+      "agent_run_6ac1034dfd9c4aa9a525beab4dc9aa8c",
+      "agent_run_789dd6c9ace04b51895a5666f296e727",
+      "agent_run_79faab9f685d48f7a6ee753378c56a16",
+      "agent_run_7a885f38bc2c4dc3a417d941e846018e",
+      "agent_run_8181deb86dd7468391b927ef9f668c6f",
+      "agent_run_be4456ddfc9f4be8bdd1df6a1823d382",
+      "agent_run_e02a5b1143bf4f5f9cd1b27fd55b155b",
+      "agent_run_e9a90cbc51ca4033b5fd828f39ce43ee",
+      "agent_run_eec40282d90747a6871fe687e6374ff4"
+    ],
+    "backpressure_required": true,
+    "reason_code": "stale_runs_detected"
+  },
+  "task_run_status_counts": {
+    "blocked": 29,
+    "partial": 11,
+    "cancelled": 19,
+    "waiting_delegation": 1,
+    "completed": 29,
+    "failed": 6
+  },
+  "approval_status_counts": {
+    "expired": 307,
+    "rejected": 20,
+    "approved": 745,
+    "cancelled": 7
+  },
+  "draft_status_counts": {
+    "approval_pending": 234,
+    "approved_for_future_execution": 346,
+    "rejected": 20,
+    "approval_required": 761,
+    "blocked": 586,
+    "needs_clarification": 523,
+    "preview_ready": 578,
+    "draft": 72,
+    "cancelled": 6,
+    "ready_for_approval": 14,
+    "invalidated_by_policy_change": 8
+  },
+  "chat_session_count": 58,
+  "generic_session_file_count": 240,
+  "agent_session_count": 237
+}

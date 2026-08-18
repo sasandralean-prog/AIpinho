@@ -1,0 +1,106 @@
+# Python bytecode/cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+.hypothesis/
+
+# Coverage
+.coverage
+.coverage.*
+htmlcov/
+coverage/
+coverage.xml
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Packaging/build
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# IDE/editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.vs/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+.tmp_*/
+tmp_*/
+*.pid
+*.lock
+
+# Secrets / local environment
+.env
+.env.*
+!.env.example
+secrets/
+credentials/
+tokens/
+*.pem
+*.key
+*.p12
+*.pfx
+service-account*.json
+credentials*.json
+
+# Runtime-generated AIpinho state
+/data/
+!genome/data/
+/artifacts/
+/runtime/
+/sessions/
+/payload_refs/
+/task_runs/
+/workspace_indexes/
+/vectorstores/
+/uploads/
+*.sqlite
+*.db
+
+# Local binary runtimes and downloaded tools
+/tools/
+
+# Generated temporary workspaces
+/sandboxes/
+/tmp_android_unknown/
+/backups/
+/cleanup/
+
+# Android/Gradle generated state
+/apps/mobile/android/.gradle/
+/apps/mobile/android/**/build/
+/apps/mobile/android/local.properties
+
+# Runtime-heavy reports and raw dumps
+reports/firetest5/
+reports/runtime_supervision/
+reports/storage/
+reports/runtime_consolidation/firetest5_h1b4_1_public_runtime_extracted_summary.json
+reports/**/*.tmp

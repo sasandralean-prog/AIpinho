@@ -1,0 +1,47 @@
+{
+  "run_id": "agent_run_bed0903383da46f2b03f88f2969a64ec",
+  "session_id": "agent_session_bed6d951b6c24e53adcc7231e70a394b",
+  "agent_id": "aipinho",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "completed",
+  "operation_type": "sandbox_project_generation",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [],
+  "started_at": "2026-06-14T21:41:32+00:00",
+  "completed_at": "2026-06-14T21:41:38+00:00",
+  "validation_status": null,
+  "artifact_ids": [
+    "agent_artifact_b469c9c818564c9c8c227e513b25743f"
+  ],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "project_generation_id": "project_generation_b4277314074248e6b2603a888d2d84b5",
+    "project_type": "static_web",
+    "sandbox_task_id": "sandbox_task_a5282038ec9d4fd1a4bf4b1b0a720f39",
+    "sandbox_workspace_id": "sandbox_ws_default",
+    "latest_summary_sanitized": "Projeto NeonSite gerado no sandbox. Artifact pronto: NeonSite.zip. Artifact ID: agent_artifact_b469c9c818564c9c8c227e513b25743f.",
+    "evidence_refs": [
+      "sandbox_task:sandbox_task_a5282038ec9d4fd1a4bf4b1b0a720f39",
+      "run:agent_run_bed0903383da46f2b03f88f2969a64ec",
+      "tool:tool_invocation_8bc31c2122054d4e890f812108373161",
+      "tool:tool_invocation_2c899bbfac49498da7e12207a6c5298f",
+      "tool:tool_invocation_0fc853943340456b86d7f892b4e5ca4c",
+      "tool:tool_invocation_91418b5eafb8454cb0bbd9c3dc8fbb88",
+      "tool:tool_invocation_957c36952aa2426580b5887a8310063d",
+      "sandbox_validation:project_structure",
+      "sandbox_task:sandbox_task_a5282038ec9d4fd1a4bf4b1b0a720f39",
+      "artifact:agent_artifact_b469c9c818564c9c8c227e513b25743f",
+      "tool:tool_invocation_9451ee2b5d5042f280f9a30a4f5cdee3"
+    ]
+  }
+}

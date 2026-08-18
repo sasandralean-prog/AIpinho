@@ -1,0 +1,72 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "registries": [
+    {
+      "registry": "role_registry",
+      "path": "src/aipinho/registries/role_registry.py",
+      "type": "registry",
+      "data_source": "config/roles/",
+      "critical": true
+    },
+    {
+      "registry": "route_registry",
+      "path": "src/aipinho/registries/route_registry.py",
+      "type": "registry",
+      "data_source": "config/routes/",
+      "critical": true
+    },
+    {
+      "registry": "action_registry",
+      "path": "src/aipinho/registries/action_registry.py",
+      "type": "registry",
+      "data_source": "config/policies/",
+      "critical": true
+    },
+    {
+      "registry": "capability_registry",
+      "path": "src/aipinho/registries/capability_registry.py",
+      "type": "registry",
+      "data_source": "config/policies/",
+      "critical": true
+    },
+    {
+      "registry": "tool_registry",
+      "path": "src/aipinho/registries/tool_registry.py",
+      "type": "registry",
+      "data_source": "config/tools/",
+      "critical": true
+    },
+    {
+      "registry": "model_registry",
+      "path": "src/aipinho/registries/model_registry.py",
+      "type": "registry",
+      "data_source": "config/models/",
+      "critical": true
+    },
+    {
+      "registry": "skill_registry",
+      "path": "src/aipinho/registries/skill_registry.py",
+      "type": "registry",
+      "data_source": "config/skills/",
+      "critical": false
+    },
+    {
+      "registry": "template_registry",
+      "path": "src/aipinho/registries/template_registry.py",
+      "type": "registry",
+      "data_source": "config/templates/",
+      "critical": false
+    },
+    {
+      "registry": "policy_registry",
+      "path": "src/aipinho/registries/policy_registry.py",
+      "type": "registry",
+      "data_source": "config/policies/",
+      "critical": true
+    }
+  ],
+  "total_registries": 9,
+  "critical_registries": 7,
+  "non_critical_registries": 2
+}

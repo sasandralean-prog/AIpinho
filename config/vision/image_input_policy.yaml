@@ -1,0 +1,31 @@
+schema_version: 1
+
+image_input:
+  enabled: true
+  require_source_ref: true
+  require_declared_purpose: true
+  require_user_or_task_scope: true
+  require_sensitivity_scan: true
+  allow_uploaded_images: true
+  allow_workspace_images: true
+  allow_document_pages: true
+  allow_screenshots: true
+
+allowed_extensions: [.png, .jpg, .jpeg, .webp, .bmp, .tiff, .pdf]
+allowed_mime_types: [image/png, image/jpeg, image/webp, image/bmp, image/tiff, application/pdf]
+
+limits:
+  max_file_bytes: 20000000
+  max_image_pixels: 25000000
+  max_pages_per_document: 20
+  max_images_per_request: 10
+
+blocked:
+  unknown_source: true
+  missing_source_ref: true
+  executable_file: true
+  archive_file: true
+  hidden_file: true
+  forbidden_root: true
+  path_traversal: true
+  raw_secret_image: true

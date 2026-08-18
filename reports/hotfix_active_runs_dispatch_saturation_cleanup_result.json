@@ -1,0 +1,121 @@
+{
+  "preview_id": "cleanup_preview_f997172ab8fd4366bf2bd2f25ba15863",
+  "candidate_count": 204,
+  "applied_count": 204,
+  "applied_sample": [
+    {
+      "kind": "run",
+      "id": "agent_run_65aeb22b35d747018467c6b05581540b",
+      "action": "mark_cancelled_stale"
+    },
+    {
+      "kind": "run",
+      "id": "agent_run_f21a2eeb9ba54220a752488eec0d752d",
+      "action": "mark_cancelled_stale"
+    },
+    {
+      "kind": "run",
+      "id": "agent_run_d4a2ea6ee2194baeb56d90f930788f83",
+      "action": "mark_cancelled_stale"
+    },
+    {
+      "kind": "run",
+      "id": "agent_run_5f3a7a33a064432a8d83d930a033e0d1",
+      "action": "mark_cancelled_stale"
+    },
+    {
+      "kind": "run",
+      "id": "agent_run_4303e220544d43fea897b85c2d405cf8",
+      "action": "mark_cancelled_stale"
+    },
+    {
+      "kind": "run",
+      "id": "agent_run_7656f8a30d844f8d8a838a6e0fb9a9b4",
+      "action": "mark_cancelled_stale"
+    },
+    {
+      "kind": "run",
+      "id": "agent_run_14ef585ba9c944788a9d7fdcd9f986b3",
+      "action": "mark_cancelled_stale"
+    },
+    {
+      "kind": "run",
+      "id": "agent_run_a9aefa24147c4836b87b9dce8278ab5e",
+      "action": "mark_cancelled_stale"
+    },
+    {
+      "kind": "session",
+      "id": "agent_session_185cd36c97c444c7900247471a0ceb38",
+      "action": "archive_session"
+    },
+    {
+      "kind": "session",
+      "id": "agent_session_78f2b61680554edd86d1432b52c0d1eb",
+      "action": "archive_session"
+    },
+    {
+      "kind": "session",
+      "id": "agent_session_1d6b2581a03f46c7a61ad0c3e932ad0b",
+      "action": "archive_session"
+    },
+    {
+      "kind": "session",
+      "id": "agent_session_d24f43a5784f4a688e23ce6e9648e282",
+      "action": "archive_session"
+    },
+    {
+      "kind": "session",
+      "id": "agent_session_b279e2d4cc6c47c2a5a4b5eb41c848ac",
+      "action": "archive_session"
+    },
+    {
+      "kind": "session",
+      "id": "agent_session_2183a841ce4e43cb9288126acd11da7f",
+      "action": "archive_session"
+    },
+    {
+      "kind": "session",
+      "id": "agent_session_f40eb6faf6b84d48ba841b69805a69c2",
+      "action": "archive_session"
+    },
+    {
+      "kind": "session",
+      "id": "agent_session_a9967d73eefd4f019dff4bb90365ad40",
+      "action": "archive_session"
+    },
+    {
+      "kind": "session",
+      "id": "agent_session_13c1cf9e4a4c40b58fe2f455cdee9877",
+      "action": "archive_session"
+    },
+    {
+      "kind": "session",
+      "id": "agent_session_b8dd48ad70264bc79d077c72f951c4e2",
+      "action": "archive_session"
+    },
+    {
+      "kind": "session",
+      "id": "agent_session_33f3776980af4c5494f0484a9543c75e",
+      "action": "archive_session"
+    },
+    {
+      "kind": "session",
+      "id": "agent_session_bb54e7cb28a24e23aae790985b484748",
+      "action": "archive_session"
+    }
+  ],
+  "queue_health_after": {
+    "status": "ok",
+    "active_runs": 0,
+    "queued_runs": 0,
+    "stale_runs": 0,
+    "pending_approvals": 0,
+    "active_sessions": 0,
+    "dispatcher_status": "available",
+    "worker_pool_capacity": 8,
+    "worker_pool_available_slots": 8,
+    "stale_run_ids": [],
+    "backpressure_required": false,
+    "reason_code": null
+  }
+}

@@ -1,0 +1,1 @@
+from aipinho.services.ux.ux_progress_service import UXProgressService as UploadProgressService

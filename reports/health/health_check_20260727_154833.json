@@ -1,0 +1,93 @@
+{
+    "status":  "ready",
+    "generated_at":  "2026-07-27T15:48:33.0076665-03:00",
+    "base_url":  "http://127.0.0.1:9088",
+    "ports":  [
+                  {
+                      "label":  "Bootstrap Control",
+                      "port":  9080,
+                      "status":  "offline",
+                      "pid":  null
+                  },
+                  {
+                      "label":  "Core Backend",
+                      "port":  9088,
+                      "status":  "online",
+                      "pid":  11572
+                  },
+                  {
+                      "label":  "Realtime",
+                      "port":  9089,
+                      "status":  "optional",
+                      "pid":  null
+                  },
+                  {
+                      "label":  "Artifacts Port",
+                      "port":  9098,
+                      "status":  "offline",
+                      "pid":  null
+                  },
+                  {
+                      "label":  "Monitor Supervisor",
+                      "port":  9099,
+                      "status":  "reserved",
+                      "pid":  null
+                  }
+              ],
+    "endpoints":  [
+                      {
+                          "name":  "backend_health",
+                          "url":  "http://127.0.0.1:9088/api/v1/health",
+                          "reachable":  true,
+                          "status":  "ok",
+                          "ok":  true,
+                          "error":  null
+                      },
+                      {
+                          "name":  "health_semantics",
+                          "url":  "http://127.0.0.1:9088/api/v1/health/semantics",
+                          "reachable":  true,
+                          "status":  "ok",
+                          "ok":  true,
+                          "error":  null
+                      },
+                      {
+                          "name":  "mobile_dashboard",
+                          "url":  "http://127.0.0.1:9088/api/v1/mobile/view-model/dashboard",
+                          "reachable":  true,
+                          "status":  "ok",
+                          "ok":  true,
+                          "error":  null
+                      },
+                      {
+                          "name":  "mobile_debugger",
+                          "url":  "http://127.0.0.1:9088/api/v1/mobile/view-model/debugger",
+                          "reachable":  true,
+                          "status":  "ok",
+                          "ok":  true,
+                          "error":  null
+                      },
+                      {
+                          "name":  "agents_status",
+                          "url":  "http://127.0.0.1:9088/api/v1/agents/status",
+                          "reachable":  true,
+                          "status":  "ok",
+                          "ok":  true,
+                          "error":  null
+                      },
+                      {
+                          "name":  "runtime_hygiene_status",
+                          "url":  "http://127.0.0.1:9088/api/v1/runtime/hygiene/status",
+                          "reachable":  true,
+                          "status":  "ok",
+                          "ok":  true,
+                          "error":  null
+                      }
+                  ],
+    "notes":  [
+                  "Port 9099 is a monitor/supervisor control plane and must not restart itself.",
+                  "Port 9080 is the minimal bootstrap control plane for restarting 9099 only.",
+                  "Token values and provider secrets are not printed by this script.",
+                  "Artifacts should be downloaded by artifact_id with Authorization header."
+              ]
+}

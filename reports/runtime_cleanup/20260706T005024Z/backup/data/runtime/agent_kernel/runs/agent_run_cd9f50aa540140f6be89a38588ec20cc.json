@@ -1,0 +1,31 @@
+{
+  "run_id": "agent_run_cd9f50aa540140f6be89a38588ec20cc",
+  "session_id": "agent_session_b279e2d4cc6c47c2a5a4b5eb41c848ac",
+  "agent_id": "gemini",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "cancelled",
+  "operation_type": "gemini_chat",
+  "workspace_id": null,
+  "capabilities_requested": [
+    "read_workspace",
+    "create_artifact",
+    "delegate"
+  ],
+  "started_at": "2026-06-13T18:16:38+00:00",
+  "completed_at": "2026-06-13T21:42:52+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [
+    "agent_memory_candidate_9c91d2ece0e2451984dd4e2a33993f32"
+  ],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": "stale_runtime_cleanup",
+  "metadata_sanitized": {
+    "hygiene_preview_id": "cleanup_preview_700204db3c974dbfbd73bd08b3aac442",
+    "previous_status": "delegation_running"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "program": "AIpinho Engineering Evolution Program",
+  "block": "H",
+  "block_name": "Operational Memory",
+  "date": "2026-07-02",
+  "verdict": "BLOCK_H_OPERATIONAL_MEMORY_READY",
+  "objective": "Separate conversational/curated memory from runtime-scoped operational memory and automatically record decisions, executions, failures, recoveries, strategies and learnings from TaskRun lifecycle.",
+  "evidence_sources": [
+    "src/aipinho/schemas/memory",
+    "src/aipinho/services/memory",
+    "src/aipinho/services/runtime/task_runtime_service.py",
+    "src/aipinho/services/runtime/supervised_execution_loop.py",
+    "reports/engineering_evolution/block_g_execution_graph_report.md"
+  ],
+  "contracts_created": [
+    "OperationalMemoryRecord",
+    "OperationalMemoryEvidence",
+    "OperationalMemorySnapshot",
+    "DecisionMemory",
+    "ExecutionMemory",
+    "FailureMemory",
+    "RecoveryMemory",
+    "StrategyMemory",
+    "LearningMemory"
+  ],
+  "services_created": [
+    "OperationalMemoryService"
+  ],
+  "files_changed": [
+    "src/aipinho/schemas/memory/operational_memory.py",
+    "src/aipinho/services/memory/operational_memory_service.py",
+    "src/aipinho/services/runtime/task_runtime_service.py",
+    "tests/conftest.py",
+    "tests/unit/test_task_runtime_service.py",
+    "reports/engineering_evolution/block_h_operational_memory_report.md",
+    "reports/engineering_evolution/block_h_operational_memory_report.json"
+  ],
+  "tests": {
+    "py_compile": "passed",
+    "pytest_command": "python -m pytest tests/unit/test_task_runtime_service.py tests/unit/test_hotfix_policy_kernel_approval_gate.py tests/governance/test_g21_readonly_analysis_intent.py tests/governance/test_lifecycle_core.py tests/governance/test_g24_preview_quality_gate.py -q",
+    "pytest_result": "47 passed",
+    "app_factory_import": {
+      "command": "python -c \"from aipinho.app_factory import create_app; app=create_app(); print(app.title); print(len(app.routes))\"",
+      "result": "AIpinho / 942 routes"
+    },
+    "regression_assertions": [
+      "TaskRun creation records decision, strategy and execution memory",
+      "Completed TaskRun records learning memory",
+      "Blocked TaskRun records failure and recovery memory",
+      "Operational memory remains task_run scoped",
+      "Operational memory does not use curated/conversational memory ids"
+    ]
+  },
+  "live_backend_smoke": {
+    "backend_restarted": true,
+    "pid": 46604,
+    "health": {
+      "status": "ok",
+      "service": "AIpinho",
+      "version": "0.1.0",
+      "runtime": "local"
+    },
+    "run_id": "task_run_154e3de1d73f48a1b6e02a8d1a9d072a",
+    "memory_path": "C:\\Dev\\AIpinho\\data\\runtime\\operational_memory\\task_run_154e3de1d73f48a1b6e02a8d1a9d072a.json",
+    "records": 3,
+    "types": [
+      "decision",
+      "strategy",
+      "execution"
+    ]
+  },
+  "separation": {
+    "conversational_memory_modified": false,
+    "curated_memory_modified": false,
+    "rag_memory_modified": false,
+    "operational_memory_root": "data/runtime/operational_memory",
+    "auto_accept_global_memory": false
+  },
+  "rollback": [
+    "Remove OperationalMemoryService from TaskRuntimeService.",
+    "Remove src/aipinho/services/memory/operational_memory_service.py.",
+    "Remove src/aipinho/schemas/memory/operational_memory.py.",
+    "Remove operational-memory tests.",
+    "Optionally archive data/runtime/operational_memory."
+  ],
+  "limitations": [
+    "OperationalMemory is captured and searchable internally, but not yet used to plan future tasks.",
+    "No public endpoint was added for OperationalMemory in this block.",
+    "Block I should consume ExecutionGraph and may use OperationalMemory for worker routing without adding a competing memory store."
+  ],
+  "hardcode_check": {
+    "workload_specific_rules_added": false,
+    "path_specific_rules_added": false,
+    "filename_specific_rules_added": false,
+    "fire_test_specific_routes_added": false
+  }
+}

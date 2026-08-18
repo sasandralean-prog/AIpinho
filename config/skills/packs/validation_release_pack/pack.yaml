@@ -1,0 +1,39 @@
+skill_pack_id: validation_release_pack
+display_name: Validation and Release Pack v1
+slug: validation_release_pack
+version: 1.0.0
+status: active
+category: release
+description: Governed validation, release readiness reporting and RC verdict support.
+included_skills:
+  - internal.validation_runner
+  - internal.artifact_reliability_validator
+  - internal.safe_markdown_report_generator
+required_capabilities:
+  - validation
+  - sandbox_validate
+  - report_generate
+  - artifact_create
+optional_capabilities:
+  - artifact_download
+supported_agents: [aipinho, lucio, codex, autopilot]
+supported_project_stacks: [android_gradle, python, node, mixed, unknown]
+supported_execution_modes: [assisted_execution, governed_autorun, safe_chat]
+risk_level: medium
+policy_profile: release_readiness
+validation_profile: release_gate
+artifact_policy: token_protected_artifacts
+memory_policy: propose_candidate_with_evidence
+dashboard_visible: true
+debugger_trace_required: true
+docs_ref: docs/skills/VALIDATION_RELEASE_PACK.md
+tests_ref: tests/skill_packs
+examples:
+  - label: Release readiness
+    prompt: Validate the project and generate a release readiness report.
+    expected_pack_selection: [validation_release_pack, docs_pack]
+limitations:
+  - Release verdicts require available validation evidence and do not infer unseen test results.
+evidence_refs: [skill_pack_manifest:validation_release_pack]
+metadata_sanitized:
+  verdict_scope: readiness

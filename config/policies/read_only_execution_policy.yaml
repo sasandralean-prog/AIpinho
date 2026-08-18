@@ -1,0 +1,58 @@
+﻿schema_version: 1
+
+read_only_execution:
+  enabled: true
+  real_execution_enabled: true
+  allowed_actions:
+    - read_files
+    - list_directory
+    - inspect_path
+    - read_config
+  blocked_actions:
+    - write_files
+    - apply_patch
+    - run_command
+    - git_commit
+    - git_push
+    - write_memory
+    - delete_files
+    - move_files
+    - network_request
+  require_policy_decision: true
+  require_workspace_policy: true
+  require_capability_grant: true
+  require_tool_registry_entry: true
+  require_audit_event: true
+  default_unknown_action: deny
+
+limits:
+  max_file_bytes: 200000
+  max_directory_entries: 500
+  max_total_bytes_per_request: 500000
+  max_files_per_request: 20
+  allow_binary_read: false
+  allow_secret_files: false
+  allow_hidden_files: false
+
+safety:
+  block_path_traversal: true
+  block_symlink_escape: true
+  block_protected_roots: true
+  sanitize_output: true
+  redact_secrets: true
+  return_content_by_default: true
+  include_content_preview_limit: 20000
+
+this_sprint:
+  write_execution_enabled: false
+  shell_execution_enabled: false
+  patch_apply_enabled: false
+  git_write_enabled: false
+  memory_write_enabled: false
+  rag_query_enabled: false
+  llm_enabled: false
+
+task_runtime:
+  integration_enabled: true
+  metadata_store_only: data/runtime/task_runs
+  allow_workspace_write: false

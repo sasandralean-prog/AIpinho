@@ -1,0 +1,7 @@
+﻿schema_version: 1
+artifact_upload:
+  enabled: true
+  require_token: true
+  blocked_extensions: [.exe, .bat, .ps1, .cmd, .msi]
+  zip_auto_extract: false
+

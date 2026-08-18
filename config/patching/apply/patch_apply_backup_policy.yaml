@@ -1,0 +1,19 @@
+schema_version: 1
+
+backup:
+  enabled: true
+  required_before_write: true
+  location: data/runtime/patch_backups
+  store_original_content: true
+  store_metadata: true
+  max_backup_bytes_per_file: 300000
+  sanitize_before_store: true
+  reject_backup_secret_files: true
+  backup_id_prefix: patch_backup
+
+restore:
+  enabled: true
+  automatic_restore_on_apply_failure: true
+  manual_rollback_endpoint_enabled: true
+  restore_requires_apply_run: true
+  restore_only_files_from_run: true

@@ -1,0 +1,53 @@
+{
+  "http_status": 200,
+  "body": {
+    "response_id": "chatop_2fd078a2e71e46d1a34b7f9563af66ae",
+    "session_id": "chat_sprint21_negative_constraints",
+    "task_draft_id": null,
+    "preview_id": null,
+    "task_id": null,
+    "approval_id": null,
+    "task_preview_id": null,
+    "artifact_id": null,
+    "artifact_preview_id": null,
+    "artifact_links": [],
+    "result_ref_id": null,
+    "operation_id": "chatop_2fd078a2e71e46d1a34b7f9563af66ae",
+    "operation_type": "readonly_project_analysis",
+    "message_type": "clarification_request",
+    "status": "needs_clarification",
+    "message": "Preciso saber qual workspace ou projeto devo analisar em modo somente leitura. Escolha um workspace legivel ou informe um caminho registrado.",
+    "intent": {
+      "intent_type": "readonly_project_analysis",
+      "requires_task": true,
+      "requires_workspace": true
+    },
+    "policy": {
+      "approval_required_for": [],
+      "read_only": true
+    },
+    "contract_preview": {},
+    "actions": [],
+    "next_actions": [],
+    "warnings": [
+      "workspace_required_but_missing"
+    ],
+    "trace": [],
+    "raw_debug_ref": null,
+    "model_used": null,
+    "real_inference": null,
+    "model_warnings": [],
+    "evaluation_status": null,
+    "evaluation_warnings": [],
+    "fallback_used": false,
+    "context_plan_id": null,
+    "citation_map": {},
+    "evidence_refs": [],
+    "requires_user_action": true,
+    "is_final_answer": false,
+    "grounded": false,
+    "grounding_required": true,
+    "grounding_missing_reason": "workspace_missing",
+    "policy_block": null
+  }
+}

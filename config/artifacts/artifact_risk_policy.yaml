@@ -1,0 +1,34 @@
+schema_version: 1
+
+risk:
+  enabled: true
+  default_risk: low
+
+scores:
+  new_file_report: low
+  overwrite_existing: medium
+  target_outside_allowed_dirs: high
+  source_code_extension: critical
+  config_target: high
+  forbidden_root: critical
+  secret_content: critical
+  executable_content: critical
+  binary_content: critical
+  path_traversal: critical
+  large_content: medium
+
+decisions:
+  low:
+    approval_required: true
+    preview_allowed: true
+  medium:
+    approval_required: true
+    preview_allowed: true
+  high:
+    approval_required: true
+    preview_allowed: true
+    needs_review: true
+  critical:
+    approval_required: false
+    preview_allowed: false
+    blocked: true

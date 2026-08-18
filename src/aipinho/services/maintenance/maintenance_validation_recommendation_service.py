@@ -1,0 +1,3 @@
+from aipinho.services.maintenance.maintenance_core import MaintenanceValidationRecommendationService
+
+__all__ = ['MaintenanceValidationRecommendationService']

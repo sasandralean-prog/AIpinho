@@ -1,0 +1,75 @@
+{
+  "verdict": "pass",
+  "cases": [
+    {
+      "case": "missing provenance",
+      "expected_behavior": "not_ready",
+      "observed_behavior": "RelationshipValidationResult.status=not_ready",
+      "status": "pass",
+      "reason_code": "RELATIONSHIP_PROVENANCE_MISSING",
+      "test": "test_relationship_stack_missing_provenance_is_not_ready"
+    },
+    {
+      "case": "missing EvidenceRecord",
+      "expected_behavior": "not_ready",
+      "observed_behavior": "RelationshipValidationResult.status=not_ready after H1B5.4 repair",
+      "status": "pass",
+      "reason_code": "RELATIONSHIP_CANONICAL_EVIDENCE_RECORD_MISSING",
+      "test": "test_relationship_stack_missing_evidence_record_is_not_ready"
+    },
+    {
+      "case": "missing RelationshipGoal",
+      "expected_behavior": "blocked|not_available",
+      "observed_behavior": "ContractDrivenPerceptionService.relationship_observations returns status=not_available and does not call detector",
+      "status": "pass",
+      "reason_code": "NO_RELATIONSHIP_GOAL"
+    },
+    {
+      "case": "missing registry match",
+      "expected_behavior": "blocked",
+      "observed_behavior": "ContractDrivenPerceptionService returns status=blocked before detector call",
+      "status": "pass",
+      "reason_code": "NO_MATCHING_RELATIONSHIP_CAPABILITY",
+      "test": "test_relationship_stack_no_registry_match_blocks_before_detector"
+    },
+    {
+      "case": "missing conflict info",
+      "expected_behavior": "do_not_assume_final_truth",
+      "observed_behavior": "No conflict allows validation_ready only when evidence/provenance/EvidenceRecord/confidence pass; truth_eligible remains false",
+      "status": "pass",
+      "reason_code": "RELATIONSHIP_VALIDATION_READY"
+    },
+    {
+      "case": "blocking conflict present",
+      "expected_behavior": "conflicted",
+      "observed_behavior": "RelationshipValidationResult.status=conflicted",
+      "status": "pass",
+      "reason_code": "RELATIONSHIP_CONFLICT_BLOCKED",
+      "test": "test_relationship_stack_conflict_stays_conflicted_and_not_truth"
+    },
+    {
+      "case": "missing validation policy",
+      "expected_behavior": "default conservative policy",
+      "observed_behavior": "Default RelationshipValidationPolicy requires signal diversity, confidence, provenance and EvidenceRecord; it does not enable Truth",
+      "status": "pass",
+      "reason_code": "RELATIONSHIP_VALIDATION_READY_OR_NOT_READY_WITH_TRUTH_FALSE"
+    },
+    {
+      "case": "missing truth policy",
+      "expected_behavior": "speaker_claim_allowed=false",
+      "observed_behavior": "RelationshipValidationResult always sets truth_eligible=false and speaker_claim_allowed=false",
+      "status": "pass",
+      "reason_code": "RELATIONSHIP_TRUTH_NOT_ELIGIBLE",
+      "test": "test_relationship_stack_validated_policy_does_not_enable_speaker_truth"
+    },
+    {
+      "case": "renderer missing governed payload",
+      "expected_behavior": "not materialized",
+      "observed_behavior": "_relationship_render_field_value returns present=false for unknown/non-relationship fields and does not call detector",
+      "status": "pass",
+      "reason_code": "RENDERER_PAYLOAD_ONLY",
+      "test": "test_relationship_stack_renderer_materializes_payload_only_without_observing"
+    }
+  ],
+  "blocking_cases_remaining": []
+}

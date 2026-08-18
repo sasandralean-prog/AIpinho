@@ -1,0 +1,88 @@
+version: 1
+enabled: true
+private_agent_memory_enabled: true
+shared_enabled: true
+project_enabled: true
+regression_enabled: true
+user_preferences_enabled: true
+security_enabled: true
+auto_write_private: true
+auto_create_candidates: true
+auto_accept_shared_with_strong_evidence: false
+require_evidence_for_shared: true
+require_policy_for_delete: true
+block_raw_access_by_default: true
+block_secret_storage: true
+enable_contradiction_detection: true
+enable_freshness: true
+max_context_records_per_run: 20
+max_context_chars_per_run: 40000
+max_record_chars: 12000
+blocked_sensitive_markers:
+  - "authorization:"
+  - "api key"
+  - "api_key"
+  - "cookie:"
+  - ".env"
+  - "private key"
+chain_of_thought_markers:
+  - "chain-of-thought"
+  - "hidden reasoning"
+  - "internal reasoning"
+  - "raciocinio interno"
+  - "raciocínio interno"
+namespaces:
+  - namespace: memory:aipinho
+    scope: private
+    owner_agent_id: aipinho
+    private: true
+    shared_read: false
+    description: Private operational memory for AIpinho.
+  - namespace: memory:lucio
+    scope: private
+    owner_agent_id: lucio
+    private: true
+    shared_read: false
+    description: Private strategic memory for Lucio.
+  - namespace: memory:codex
+    scope: private
+    owner_agent_id: codex
+    private: true
+    shared_read: false
+    description: Private implementation memory for Codex.
+  - namespace: memory:gemini
+    scope: private
+    owner_agent_id: gemini
+    private: true
+    shared_read: false
+    description: Private cloud-analysis memory for Gemini.
+  - namespace: memory:shared
+    scope: shared
+    owner_agent_id:
+    private: false
+    shared_read: true
+    description: Governed shared memory for confirmed facts and accepted decisions.
+  - namespace: memory:project
+    scope: project
+    owner_agent_id:
+    private: false
+    shared_read: true
+    description: Workspace/project scoped operational memory.
+  - namespace: memory:regression
+    scope: regression
+    owner_agent_id:
+    private: false
+    shared_read: true
+    description: Regression candidates and validated recurring failure patterns.
+  - namespace: memory:user_preferences
+    scope: user_preference
+    owner_agent_id:
+    private: false
+    shared_read: true
+    description: Explicit user preferences, never secrets.
+  - namespace: memory:security
+    scope: security
+    owner_agent_id:
+    private: false
+    shared_read: false
+    description: Restricted security notes and incident metadata.

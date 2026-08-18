@@ -1,0 +1,36 @@
+{
+  "run_id": "agent_run_576388f2b29b48fd949b9a13076ae0fb",
+  "session_id": "agent_session_93c3309d1cf544998904033f07161705",
+  "agent_id": "lucio",
+  "parent_run_id": null,
+  "delegation_id": null,
+  "status": "failed",
+  "operation_type": "lucio_chat",
+  "workspace_id": null,
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [],
+  "started_at": "2026-06-22T13:00:37+00:00",
+  "completed_at": "2026-06-22T13:00:42+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": "agent_msg_4d2612fe759d468799361645ec94583d",
+  "error_code": "openai_auth_error",
+  "metadata_sanitized": {
+    "provider": "openai",
+    "model": "gpt-5.5",
+    "execution_mode": "governed_autorun",
+    "route": "direct_response",
+    "route_type": "answer_directly",
+    "artifact_count": 0,
+    "input_modalities": [
+      "text"
+    ]
+  }
+}

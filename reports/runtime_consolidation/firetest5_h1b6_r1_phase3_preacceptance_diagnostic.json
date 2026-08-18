@@ -1,0 +1,116 @@
+{
+  "created_at": "2026-08-13T00:00:00-03:00",
+  "wave": "H1B6.R1",
+  "name": "Phase 3 Public Pre-Acceptance Determinism + Harness Stop Condition",
+  "diagnostic_status": "completed",
+  "phase3_prompt_classification": {
+    "expected_contract": "phase_runtime_required",
+    "operation_type": "workspace_analysis_readonly",
+    "requires_task_run_before_heavy_work": true,
+    "safe_to_report_success_before_terminality": false
+  },
+  "pre_task_bootstrap_steps": [
+    "parse_prompt",
+    "resolve_intent",
+    "resolve_operation_contract",
+    "policy_gate",
+    "light_phase_dependency_preflight",
+    "create_task_run"
+  ],
+  "steps_before_task_run_creation": [
+    {
+      "step": "requested_artifact_paths",
+      "weight": "light",
+      "source": "ReadonlyAnalysisArtifactRuntimeService.requested_artifact_paths"
+    },
+    {
+      "step": "phase_id_extraction",
+      "weight": "light",
+      "source": "ReadonlyAnalysisArtifactRuntimeService._phase_id"
+    },
+    {
+      "step": "dependency_phase_id_extraction",
+      "weight": "light",
+      "source": "ReadonlyAnalysisArtifactRuntimeService._dependency_phase_ids"
+    },
+    {
+      "step": "dependency_phase_store_preflight",
+      "weight": "light",
+      "source": "ReadonlyAnalysisArtifactRuntimeService._validate_phase_dependencies(semantic=false)"
+    }
+  ],
+  "timings_before_task_run_creation": [
+    {
+      "step": "service_equivalent_preacceptance_boundary",
+      "elapsed_ms": "<500",
+      "evidence": "tests/unit/test_phase3_public_preacceptance_boundary.py"
+    }
+  ],
+  "timeout_blocked_source": {
+    "before": "PUBLIC_RUNTIME_BLOCKED_BEFORE_ACCEPTED_RUNNING",
+    "after": "PUBLIC_RUNTIME_CREATE_RUN_NOT_REACHED",
+    "normal_phase3_path": "TaskRun accepted before heavy dependency semantic validation"
+  },
+  "policy_decision": {
+    "policy": "PublicPreAcceptancePolicy",
+    "heavy_work_before_taskrun": "blocked_by_contract",
+    "allowed_preacceptance_steps": [
+      "parse_prompt",
+      "resolve_intent",
+      "resolve_operation_contract",
+      "policy_gate",
+      "light_phase_dependency_preflight",
+      "create_task_run"
+    ]
+  },
+  "operation_contract_decision": {
+    "phase_runtime_required": true,
+    "accepted_running_allowed": true,
+    "timeout_blocked_before_taskrun": "specific_only",
+    "success_claim_allowed": false
+  },
+  "phase_dependency_resolution": {
+    "before": "phase dependency validation ran before TaskRun creation and could revalidate artifacts semantically before acceptance",
+    "after": "pre-TaskRun dependency pass only checks declared prior phase records and artifact ids; semantic artifact revalidation runs inside the TaskRun",
+    "preflight_semantic_check_performed": false,
+    "inside_taskrun_semantic_check_performed": true
+  },
+  "artifact_dependency_reads": [
+    {
+      "path": "ReadonlyAnalysisArtifactRuntimeService._validate_phase_dependencies",
+      "before": "artifact_runtime.revalidate_public and semantic contract validation could run before TaskRun creation",
+      "after": "artifact_runtime.revalidate_public is skipped during preflight and runs only with semantic=true inside the TaskRun"
+    },
+    {
+      "path": "ReadonlyAnalysisArtifactRuntimeService._analysis_prompt_with_dependencies",
+      "boundary": "runs after TaskRun creation"
+    }
+  ],
+  "heavy_preacceptance_work": [
+    {
+      "case": "artifact semantic contract validation",
+      "status": "moved_inside_taskrun"
+    },
+    {
+      "case": "artifact content reads for dependency context",
+      "status": "already_inside_taskrun"
+    }
+  ],
+  "recommended_patch_points": [
+    "ReadonlyAnalysisArtifactRuntimeService.execute",
+    "ReadonlyAnalysisArtifactRuntimeService._validate_phase_dependencies",
+    "PublicPreAcceptancePolicy",
+    "PhaseProgressionGateService",
+    "CognitiveGapPredictor public boundary metadata frontiers"
+  ],
+  "source_refs": {
+    "public_preacceptance_policy": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py:185",
+    "public_boundary_entrypoint": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py:347",
+    "preflight_dependency_call": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py:642",
+    "inside_taskrun_dependency_call": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py:725",
+    "dependency_validator": "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py:3246",
+    "progression_state": "src/aipinho/schemas/runtime/phase_progression.py:26",
+    "progression_gate": "src/aipinho/services/runtime/phase_progression_gate_service.py:9",
+    "cvl_frontiers": "src/aipinho/services/cvl/cognitive_validation_laboratory_service.py:456"
+  }
+}

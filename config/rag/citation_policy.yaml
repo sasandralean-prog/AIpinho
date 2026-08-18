@@ -1,0 +1,20 @@
+schema_version: 1
+
+integration:
+  context_item_mapping_required: true
+  output_context_claims_require_citation: true
+  fabricated_citation_rejected: true
+
+citations:
+  required: true
+  require_source_ref: true
+  require_excerpt: true
+  reject_uncited_context: true
+  allowed_types:
+    - file_line_range
+    - report_section
+    - evidence_id
+    - task_result_field
+    - validation_finding
+    - patch_apply_field
+    - memory_id

@@ -1,0 +1,8 @@
+schema_version: 1
+
+trace:
+  enabled: true
+  store_dir: data/runtime/model_traces
+  sanitize_by_default: true
+  raw_in_chat: false
+  max_events_per_trace: 250

@@ -1,0 +1,3 @@
+package br.com.aipinho.mobile.utils
+data class SseEvent(val id:String?,val event:String?,val data:String)
+object SseParser { fun parse(lines:List<String>):List<SseEvent> { val out=mutableListOf<SseEvent>(); var id:String?=null; var event:String?=null; val data=mutableListOf<String>(); fun flush(){ if(data.isNotEmpty()){ out.add(SseEvent(id,event,data.joinToString("\n"))); id=null; event=null; data.clear() } }; lines.forEach { line -> when { line.isBlank()->flush(); line.startsWith("id:")->id=line.removePrefix("id:").trim(); line.startsWith("event:")->event=line.removePrefix("event:").trim(); line.startsWith("data:")->data.add(line.removePrefix("data:").trimStart()) } }; flush(); return out } }

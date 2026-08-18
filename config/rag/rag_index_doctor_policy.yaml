@@ -1,0 +1,11 @@
+schema_version: 1
+
+doctor:
+  enabled: true
+  require_manifest: true
+  require_chunks: true
+  require_embeddings: true
+  require_citations: true
+  block_secret_chunks: true
+  block_uncited_chunks: true
+  block_legacy_paths: true

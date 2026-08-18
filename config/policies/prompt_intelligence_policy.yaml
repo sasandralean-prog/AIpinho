@@ -1,0 +1,9 @@
+schema_version: 1
+
+prompt_intelligence:
+  default_language: pt-BR
+  unknown_intent_requires_clarification: true
+  low_confidence_threshold: 0.45
+  no_execution: true
+  policy_preview_enabled: true
+  trace_enabled: true

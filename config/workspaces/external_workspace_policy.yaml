@@ -1,0 +1,32 @@
+policy_id: external_workspace_onboarding_v1
+version: 1
+max_files: 5000
+max_bytes: 100000000
+secret_scan_max_bytes: 200000
+exclude_globs:
+  - ".git/**"
+  - "**/.git/**"
+  - ".gradle/**"
+  - "**/.gradle/**"
+  - "build/**"
+  - "**/build/**"
+  - "node_modules/**"
+  - "**/node_modules/**"
+  - ".venv/**"
+  - "**/.venv/**"
+  - "__pycache__/**"
+  - "**/__pycache__/**"
+  - "*.pyc"
+  - "dist/**"
+  - "**/dist/**"
+blocked_roots:
+  - "C:\\Windows"
+  - "C:\\Program Files"
+  - "C:\\Program Files (x86)"
+  - "C:\\ProgramData"
+secret_patterns:
+  - "(?i)\\bapi[_-]?key\\b\\s*[:=]\\s*['\\\"]?[^'\\\"\\s]{12,}"
+  - "(?i)\\bsecret\\b\\s*[:=]\\s*['\\\"]?[^'\\\"\\s]{12,}"
+  - "sk-[A-Za-z0-9_\\-]{16,}"
+  - "AIza[0-9A-Za-z_\\-]{20,}"
+  - "(?i)\\bpassword\\b\\s*[:=]\\s*['\\\"]?[^'\\\"\\s]{8,}"

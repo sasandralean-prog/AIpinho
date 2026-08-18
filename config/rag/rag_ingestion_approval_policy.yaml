@@ -1,0 +1,8 @@
+schema_version: 1
+
+approval:
+  enabled: true
+  approval_scope: vector_rag_ingestion
+  approve_does_not_execute: true
+  require_preview_hash_match: true
+  require_operator_confirmation_for_execute: false

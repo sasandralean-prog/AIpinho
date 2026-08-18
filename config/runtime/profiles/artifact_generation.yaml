@@ -1,0 +1,15 @@
+schema_version: 1
+profile:
+  id: artifact_generation
+  operation_types: [artifact_generation, artifact_zip_generate, artifact_validate]
+  allowed_step_types: [validate_runtime, generate_artifact, validate_artifact, compose_final_result]
+  steps: [validate_runtime, generate_artifact, validate_artifact, compose_final_result]
+  allowed_actions: [artifact_generate]
+  allowed_side_effects: [artifact_write]
+  required_capabilities: [artifact_write]
+  approval_scope: artifact_write
+  workspace_requirements: {required: false, allowed_roles: []}
+  max_duration_seconds: 180
+  output_validation_required: true
+  artifact_registration_required: true
+  default_safe_to_execute_policy: policy_and_approval

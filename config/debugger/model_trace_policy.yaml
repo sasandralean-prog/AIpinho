@@ -1,0 +1,12 @@
+schema_version: 1
+
+model_trace:
+  enabled: true
+  include_path_basename: true
+  include_full_paths: false
+  include_file_size: true
+  include_provider_decision: true
+  include_doctor_checks: true
+  include_role_model_gate: true
+  include_role_inference_evaluation: true
+  include_manual_escalation: true

@@ -1,0 +1,22 @@
+{
+  "wave": "H1B4.3.3",
+  "session_id": "firetest5_h1b4_3_3_public_artifact_terminality_20260812",
+  "status": "attempted_but_not_authoritative",
+  "client_status": "harness_timeout",
+  "server_final_status": null,
+  "task_run_id": "task_run_c34f13ea90424209ae2742f7b30a9ee3",
+  "runtime_status": "created",
+  "result_json_present": false,
+  "terminal_event_count": 0,
+  "post_terminal_events": [],
+  "artifact_creation_started_count": 0,
+  "artifact_created_count": 0,
+  "late_artifact_rejected_count": 0,
+  "partial_artifact_count": 0,
+  "artifact_index_status": null,
+  "music_inventory_status": null,
+  "evidence_phase1_status": null,
+  "summary": "A public rerun was attempted on 127.0.0.1:8095 with short H1B4.3.3 budgets. The client timed out after about 70s. A TaskRun was created, but persisted state shows only bootstrap/planning events and no run_started, no result.json, and no artifacts. The uvicorn process was stopped. This file is not a canonical FireTest result.",
+  "safe_to_use_as_firetest_evidence": false,
+  "required_follow_up": "Run a dedicated public FireTest 5 H1B4.3.3 diagnostic and collect summary/events/artifacts/truth after server completion."
+}

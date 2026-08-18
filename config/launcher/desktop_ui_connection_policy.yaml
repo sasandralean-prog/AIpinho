@@ -1,0 +1,6 @@
+schema_version: 1
+connection_ui:
+  profiles: [adb_reverse, wifi_lan, tailscale, manual]
+  selected_profile_persisted: true
+  manual_host_allowed: true
+  test_ports: [9088, 9089, 9098, 9099]

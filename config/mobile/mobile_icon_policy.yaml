@@ -1,0 +1,11 @@
+schema_version: 1
+policy_id: mobile_icon_policy
+preferred_asset: assets/branding/aipinho_neon_logo.png
+placeholder_allowed_when_missing: true
+android_targets:
+  - apps/mobile/android/app/src/main/res/drawable/aipinho_neon_logo.png
+  - apps/mobile/android/app/src/main/res/mipmap-mdpi/ic_launcher.png
+  - apps/mobile/android/app/src/main/res/mipmap-hdpi/ic_launcher.png
+  - apps/mobile/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
+  - apps/mobile/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+  - apps/mobile/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png

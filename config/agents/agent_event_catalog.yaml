@@ -1,0 +1,56 @@
+event_types:
+  lifecycle:
+    - agent_run_created
+    - agent_run_started
+    - agent_run_planning
+    - agent_run_waiting
+    - agent_run_running
+    - agent_run_completed
+    - agent_run_completed_with_warnings
+    - agent_run_failed
+    - agent_run_blocked
+    - agent_run_cancelled
+  public_message:
+    - agent_explanation
+    - agent_plan_summary
+    - agent_next_action
+    - agent_status_update
+    - agent_warning
+    - agent_error
+  policy_approval:
+    - policy_check_started
+    - policy_check_completed
+    - approval_required
+    - approval_granted
+    - approval_denied
+    - auto_approval_granted
+    - auto_approval_denied
+  preview_apply_validation:
+    - preview_created
+    - apply_started
+    - apply_finished
+    - validation_started
+    - validation_step
+    - validation_passed
+    - validation_failed
+  tool_like:
+    - file_read_started
+    - file_read_finished
+    - file_write_started
+    - file_write_finished
+    - shell_started
+    - shell_stdout
+    - shell_stderr
+    - shell_finished
+    - artifact_created
+    - artifact_upload_started
+    - artifact_uploaded
+    - artifact_download_ready
+    - report_created
+  delegation_placeholders:
+    - delegation_created
+    - delegation_child_run_started
+    - delegation_child_event
+    - delegation_completed
+    - delegation_failed
+    - delegation_blocked

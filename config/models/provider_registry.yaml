@@ -1,0 +1,123 @@
+schema_version: 1
+
+providers:
+  stub.local:
+    type: stub
+    enabled: true
+    local: true
+    real_inference: false
+    supports_streaming: false
+    supports_tools: false
+    supports_json_mode: true
+    executable_path: null
+    modalities: [text]
+    capabilities: [chat, summarization, structured_output]
+    notes: ["Compatibility deterministic provider. No real inference."]
+
+  llama_cpp.local:
+    type: llama_cpp
+    enabled: false
+    local: true
+    real_inference: false
+    supports_streaming: false
+    supports_tools: false
+    supports_json_mode: false
+    executable_path: null
+    modalities: [text]
+    capabilities: [chat, code_analysis]
+    notes: ["Legacy placeholder provider. Disabled."]
+
+  transformers.local:
+    type: transformers
+    enabled: false
+    local: true
+    real_inference: false
+    supports_streaming: false
+    supports_tools: false
+    supports_json_mode: false
+    executable_path: null
+    modalities: [text]
+    capabilities: []
+    notes: ["Placeholder provider. Disabled."]
+
+  llama_cpp_text:
+    type: llama_cpp_text
+    enabled: true
+    local: true
+    real_inference: true
+    supports_streaming: false
+    supports_tools: false
+    supports_json_mode: false
+    supports_first_token_probe: true
+    auto_load_enabled: true
+    executable_path: 'C:\Dev\AIpinho\tools\llama_cpp\b9558_vulkan\llama-cli.exe'
+    modalities: [text]
+    capabilities: [instruction, conversation, summarization, reporting, reasoning, code, patch_planning, code_review, test_suggestion, supervision, planning, lightweight_routing]
+    notes: ["Governed local text runtime. Automatic chat/role use is controlled by model, role, and real-inference policies."]
+
+  llama_cpp_vision:
+    type: llama_cpp_vision
+    enabled: true
+    local: true
+    real_inference: true
+    supports_mmproj: true
+    supports_streaming: false
+    supports_tools: false
+    supports_json_mode: false
+    supports_first_token_probe: false
+    auto_load_enabled: false
+    executable_path: 'C:\Dev\AIpinho\tools\llama_cpp\b9558_vulkan\llama-mtmd-cli.exe'
+    execution_mode: multimodal_cli
+    modalities: [text, vision]
+    capabilities: [vision, image_caption, visual_crosscheck, image_understanding, ui_inspection, diagram_reading]
+    notes: ["Registry/doctor only. Vision runtime not enabled."]
+
+  llama_cpp_ocr:
+    type: llama_cpp_ocr
+    enabled: true
+    local: true
+    real_inference: true
+    supports_streaming: false
+    supports_tools: false
+    supports_json_mode: false
+    supports_first_token_probe: false
+    auto_load_enabled: false
+    executable_path: 'C:\Dev\AIpinho\tools\llama_cpp\b9558_vulkan\llama-mtmd-cli.exe'
+    execution_mode: multimodal_cli
+    modalities: [vision, ocr]
+    capabilities: [ocr, document_text_extraction, image_text_extraction]
+    notes: ["Registry/doctor only. OCR runtime not enabled."]
+
+  llama_cpp_reranker:
+    type: llama_cpp_reranker
+    enabled: true
+    local: true
+    real_inference: true
+    supports_streaming: false
+    supports_tools: false
+    supports_json_mode: false
+    supports_first_token_probe: false
+    auto_load_enabled: true
+    executable_path: 'C:\Dev\AIpinho\tools\llama_cpp\b9558_vulkan\llama-server.exe'
+    server_executable_path: 'C:\Dev\AIpinho\tools\llama_cpp\b9558_vulkan\llama-server.exe'
+    execution_mode: server_rerank
+    modalities: [text]
+    capabilities: [rerank]
+    notes: ["Registry/doctor only. Reranker runtime not enabled."]
+
+  llama_cpp_embedding:
+    type: llama_cpp_embedding
+    enabled: true
+    local: true
+    real_inference: true
+    supports_streaming: false
+    supports_tools: false
+    supports_json_mode: false
+    supports_first_token_probe: false
+    auto_load_enabled: true
+    executable_path: 'C:\Dev\AIpinho\tools\llama_cpp\b9558_vulkan\llama-server.exe'
+    server_executable_path: 'C:\Dev\AIpinho\tools\llama_cpp\b9558_vulkan\llama-server.exe'
+    execution_mode: server_embedding
+    modalities: [embedding]
+    capabilities: [embedding]
+    notes: ["Registry/doctor only. Embedding runtime not enabled."]

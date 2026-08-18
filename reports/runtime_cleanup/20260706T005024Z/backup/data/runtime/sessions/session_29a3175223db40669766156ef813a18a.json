@@ -1,0 +1,46 @@
+{
+  "session_id": "session_29a3175223db40669766156ef813a18a",
+  "status": "active",
+  "created_at": "2026-06-09T02:00:59.064275+00:00",
+  "updated_at": "2026-06-09T02:00:59.081317+00:00",
+  "expires_at": "2026-06-09T06:00:59.064275+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Analise o projeto no diretorio \"C:\\Users\\[REDACTED]\\Documents\\TestesIALocal\\SapoAndando\" e retorne um .zip com uma explanation.txt com a explicação do que é esse projeto e o que tem de errado e como melhorar ele.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_bd8da33014364992b86f646018195801",
+    "intent_type": "readonly_analysis",
+    "task_type": "readonly_analysis",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\[REDACTED]\\Documents\\TestesIALocal\\SapoAndando",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "readonly_analysis",
+    "allowed_actions": [
+      "read_files"
+    ],
+    "denied_actions": [
+      "apply_patch",
+      "write_files"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": true,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\[REDACTED]\\Documents\\TestesIALocal\\SapoAndando",
+  "active_task_draft_id": "draft_2e7c2d7c096f45cc9419e1aa4d8d1050",
+  "warnings": [],
+  "trace_refs": []
+}

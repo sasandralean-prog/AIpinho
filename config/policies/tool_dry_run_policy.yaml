@@ -1,0 +1,35 @@
+﻿schema_version: 1
+
+dry_run:
+  enabled: true
+  never_execute_real_tools: true
+  safe_to_execute_default: false
+  allow_side_effect_simulation: true
+  require_policy_decision: true
+  require_tool_registry_entry: true
+  require_input_validation: true
+  include_trace: true
+  include_potential_side_effects: true
+
+blocked_in_dry_run:
+  - forbidden_root
+  - unknown_tool
+  - unknown_action
+  - unknown_capability
+  - disabled_tool
+  - invalid_input
+  - execute_mode_requested
+
+side_effect_simulation:
+  allowed: true
+  must_mark_not_executed: true
+  must_include_approval_requirements: true
+
+this_sprint:
+  real_execution_enabled: false
+  filesystem_write_enabled: false
+  shell_execution_enabled: false
+  git_write_enabled: false
+  patch_apply_enabled: false
+  memory_write_enabled: false
+  rag_query_enabled: false

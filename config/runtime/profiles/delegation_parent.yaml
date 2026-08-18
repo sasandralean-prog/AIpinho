@@ -1,0 +1,14 @@
+schema_version: 1
+profile:
+  id: delegation_parent
+  operation_types: [external_delegation, delegation_request]
+  allowed_step_types: [validate_runtime, compose_final_result]
+  steps: [validate_runtime, compose_final_result]
+  allowed_side_effects: []
+  required_capabilities: []
+  approval_scope: null
+  workspace_requirements: {required: false, allowed_roles: []}
+  max_duration_seconds: 90
+  output_validation_required: false
+  artifact_registration_required: false
+  default_safe_to_execute_policy: policy_allowed

@@ -1,0 +1,25 @@
+{
+  "contract": "external_gateway.v1",
+  "version": "1.0",
+  "required_request_fields": [
+    "client_id",
+    "client_type",
+    "version",
+    "target_module",
+    "contract"
+  ],
+  "required_contract_keys": [
+    "contract_type"
+  ],
+  "forbidden_direct_targets": [
+    "semantic_runtime",
+    "governed_runtime",
+    "runtime_doctor",
+    "patch_intelligence",
+    "semantic_learning",
+    "cognitive_governance",
+    "observability"
+  ],
+  "authority": "RuntimeKernel",
+  "mutates_runtime": false
+}

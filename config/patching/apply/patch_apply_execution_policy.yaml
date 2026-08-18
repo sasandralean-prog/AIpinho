@@ -1,0 +1,22 @@
+schema_version: 1
+
+execution:
+  enabled: true
+  require_explicit_execute_endpoint: true
+  execute_immediately_from_plan: false
+  allow_background_execution: false
+  allow_parallel_apply_runs: false
+  duplicate_execute_behavior: return_existing_result
+  max_files_per_apply: 5
+  max_total_hunks: 20
+  max_file_bytes: 300000
+  max_total_bytes_written: 1000000
+  timeout_seconds: 60
+
+engine:
+  internal_hunk_apply: true
+  use_shell_patch_command: false
+  use_git_apply: false
+  tolerate_fuzzy_apply: false
+  require_exact_context_match: true
+  require_removed_lines_match: true

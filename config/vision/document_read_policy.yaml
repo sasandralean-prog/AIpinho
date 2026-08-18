@@ -1,0 +1,7 @@
+schema_version: 1
+
+document_read:
+  enabled: true
+  max_pages_per_document: 20
+  partial_when_page_limit_exceeded: true
+  require_page_citations: true

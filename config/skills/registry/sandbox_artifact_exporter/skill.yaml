@@ -1,0 +1,33 @@
+skill_id: internal.sandbox_artifact_exporter
+display_name: Sandbox Artifact Exporter
+slug: sandbox_artifact_exporter
+description: Package sandbox content into a validated token-protected ZIP artifact.
+version: 1.0.0
+status: active
+category: artifact_generation
+owner: aipinho
+compatible_agents: [aipinho, codex, lucio, gemini]
+compatible_project_stacks: [android_gradle, python, node, mixed, unknown]
+required_capabilities: [sandbox_artifact_export]
+allowed_tools: [sandbox_zip_export]
+denied_tools: [create_artifact, patch_apply, run_shell]
+input_schema:
+  type: object
+  properties:
+    filename: {type: string}
+    include_paths: {type: array}
+output_schema: {type: object}
+side_effects: [sandbox_artifact_export]
+workspace_policy: {source_readonly_write: false, outside_sandbox_write: false}
+sandbox_required: true
+sandbox_allowed: true
+sandbox_side_effects: [artifact_export]
+command_policy: {shell: blocked}
+artifact_policy: {generate_zip: true, requires_token: true, token_in_url: false}
+memory_policy: {mode: none}
+validation_policy: {required: true, failure_policy: block_completion}
+speaker_truth_policy: {raw_hidden_by_default: true, must_cite_validation: true}
+risk_level: low
+approval_policy: {required: false}
+docs_ref: docs/sandbox/SANDBOX_ARTIFACT_EXPORT.md
+tests_ref: tests/sandbox

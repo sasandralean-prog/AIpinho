@@ -1,0 +1,48 @@
+﻿schema_version: 1
+profiles:
+  adb_reverse:
+    display_name: "ADB Reverse"
+    description: "Uses USB and adb reverse to map PC ports into Android."
+    host_for_mobile: "127.0.0.1"
+    ports:
+      bootstrap_control: 9080
+      core_backend: 9088
+      interaction_gateway: 9089
+      artifact_service: 9098
+      monitor_supervisor: 9099
+    commands_documentation:
+      - "adb reverse tcp:9080 tcp:9080"
+      - "adb reverse tcp:9088 tcp:9088"
+      - "adb reverse tcp:9089 tcp:9089"
+      - "adb reverse tcp:9098 tcp:9098"
+      - "adb reverse tcp:9099 tcp:9099"
+    auto_run_adb_allowed: false
+  wifi_lan:
+    display_name: "Wi-Fi Local"
+    description: "Uses the computer local LAN IP."
+    host_detection: local_lan_ip
+    ports:
+      bootstrap_control: 9080
+      core_backend: 9088
+      interaction_gateway: 9089
+      artifact_service: 9098
+      monitor_supervisor: 9099
+  tailscale:
+    display_name: "Tailscale"
+    description: "Uses Tailscale IP or MagicDNS."
+    host_detection: manual_or_tailscale_ip
+    ports:
+      bootstrap_control: 9080
+      core_backend: 9088
+      interaction_gateway: 9089
+      artifact_service: 9098
+      monitor_supervisor: 9099
+  manual:
+    display_name: "Manual"
+    description: "Operator provides host and ports."
+    host_detection: manual
+    ports_editable: true
+rules:
+  connection_test_required: true
+  selected_profile_persisted: true
+  token_required_for_all_profiles: true

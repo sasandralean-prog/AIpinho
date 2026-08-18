@@ -1,0 +1,32 @@
+schema_version: 1
+
+content:
+  max_chars: 80000
+  max_bytes: 200000
+  allow_empty: false
+  require_text: true
+  block_binary: true
+  block_secrets: true
+  redact_in_preview: true
+  reject_secret_content: true
+  reject_executable_payload: true
+  reject_patch_payload_by_default: true
+  allow_patch_text_in_report: true
+
+secret_patterns:
+  - "(?i)(api[_-]?key|secret|token|password)\\s*[:=]\\s*[^\\s]+"
+  - "-----BEGIN .*PRIVATE KEY-----"
+
+executable_patterns:
+  - "(?i)^#!"
+  - "(?i)subprocess\\."
+  - "(?i)os\\.system\\("
+  - "(?i)Invoke-Expression"
+  - "(?i)powershell"
+  - "(?i)cmd.exe"
+
+patch_patterns:
+  - "^diff --git "
+  - "^@@ "
+  - "^\\+\\+\\+ "
+  - "^--- "

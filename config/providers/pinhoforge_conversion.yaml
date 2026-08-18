@@ -1,0 +1,52 @@
+provider:
+  provider_id: pinhoforge_studio
+  bridge_module: conversion
+  execution_enabled: true
+  allow_semantic_conversion: false
+  allow_experimental_conversion: false
+  allowed_source_scopes:
+    - sandbox
+    - artifact_library
+    - registered_workspace
+    - pinhoforge_local_controlled
+  capabilities:
+    - capability_id: image-to-image
+      label: Image to image
+      input_formats: [image-png, image-jpeg, image-bmp]
+      output_formats: [image-png, image-jpeg, image-bmp]
+      risk: safe
+      supports_dry_run: true
+      supports_execute: true
+      requires_external_tool: false
+      semantic: false
+      experimental: false
+    - capability_id: image-to-text-ocr
+      label: Image OCR to text
+      input_formats: [image-png, image-jpeg, document-pdf]
+      output_formats: [text-txt]
+      risk: caution
+      supports_dry_run: true
+      supports_execute: false
+      requires_external_tool: true
+      semantic: true
+      experimental: false
+    - capability_id: audio-to-text
+      label: Audio speech to text
+      input_formats: [audio-mp3, audio-wav, audio-flac]
+      output_formats: [text-txt, subtitle-srt]
+      risk: caution
+      supports_dry_run: true
+      supports_execute: false
+      requires_external_tool: true
+      semantic: true
+      experimental: false
+    - capability_id: ebook-convert
+      label: Ebook conversion
+      input_formats: [ebook-epub, ebook-mobi]
+      output_formats: [ebook-epub, ebook-mobi, document-pdf]
+      risk: experimental
+      supports_dry_run: true
+      supports_execute: false
+      requires_external_tool: true
+      semantic: false
+      experimental: true

@@ -1,0 +1,41 @@
+{
+  "session_id": "session_c8464ac7381d4c6296ac3a5a5c99a5a6",
+  "status": "active",
+  "created_at": "2026-06-08T19:29:06.135981+00:00",
+  "updated_at": "2026-06-08T19:29:10.639137+00:00",
+  "expires_at": "2026-06-08T23:29:06.135981+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Quanto é seno de 30 graus?",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_d71d88185a0f47518ed23203a634c316",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

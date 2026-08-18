@@ -1,0 +1,41 @@
+{
+  "session_id": "session_1c8b6bcc92844fa0bfefcdbfd276fa76",
+  "status": "active",
+  "created_at": "2026-06-11T16:12:38.624957+00:00",
+  "updated_at": "2026-06-11T16:12:44.872236+00:00",
+  "expires_at": "2026-06-11T20:12:38.624957+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Segue a fonte operacional em \"C:\\Users\\rafae\\Documents\\TestesIALocal\\SapoAndando\" para consulta e leitura.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_17aaee1d18c74438b0796b18d7f12513",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\TestesIALocal\\SapoAndando",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\TestesIALocal\\SapoAndando",
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

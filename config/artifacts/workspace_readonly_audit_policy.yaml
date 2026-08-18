@@ -1,0 +1,60 @@
+schema_version: 1
+
+workspace_readonly_audit:
+  enabled: true
+  existing_report_strategy: read_existing
+  allowed_existing_report_strategies:
+    - read_existing
+    - create_timestamped_copy
+    - ask_before_overwrite
+  max_files: 240
+  max_matches: 80
+  max_excerpt_chars: 220
+  allowed_text_extensions:
+    - .py
+    - .kt
+    - .kts
+    - .java
+    - .js
+    - .jsx
+    - .ts
+    - .tsx
+    - .json
+    - .yaml
+    - .yml
+    - .toml
+    - .md
+    - .txt
+    - .ps1
+    - .bat
+    - .gradle
+  ignored_directories:
+    - .git
+    - .gradle
+    - .kotlin
+    - .pytest_cache
+    - __pycache__
+    - build
+    - dist
+    - node_modules
+    - .venv
+    - venv
+  generic_stop_words:
+    - investigue
+    - investigar
+    - audite
+    - auditar
+    - relatorio
+    - report
+    - arquivo
+    - arquivos
+    - codigo
+    - testes
+    - historicos
+    - ainda
+    - esperam
+    - gere
+    - gerar
+    - nao
+    - altere
+    - tarefa

@@ -1,0 +1,41 @@
+skill_pack_id: python_pack
+display_name: Python Pack v1
+slug: python_pack
+version: 1.0.0
+status: active
+category: python
+description: Governed Python project generation, validation and artifact export for sandbox-first work.
+included_skills:
+  - internal.sandbox_project_generator
+  - internal.sandbox_file_writer
+  - internal.sandbox_shell_runner
+  - internal.sandbox_artifact_exporter
+  - internal.sandbox_validation_runner
+required_capabilities:
+  - sandbox_write
+  - sandbox_shell
+  - sandbox_artifact_export
+  - sandbox_validate
+optional_capabilities:
+  - report_generate
+supported_agents: [aipinho, lucio, codex, gemini, autopilot]
+supported_project_stacks: [python, mixed, unknown]
+supported_execution_modes: [sandbox_project_generation, sandbox_autopilot, governed_autorun, assisted_execution]
+risk_level: medium
+policy_profile: sandbox_python_default
+validation_profile: sandbox_python_structural
+artifact_policy: token_protected_artifacts
+memory_policy: propose_candidate_with_evidence
+dashboard_visible: true
+debugger_trace_required: true
+docs_ref: docs/skills/PYTHON_PACK.md
+tests_ref: tests/skill_packs
+examples:
+  - label: Create Python CLI project
+    prompt: Create a Python CLI in the sandbox and validate it.
+    expected_pack_selection: [python_pack, sandbox_pack]
+limitations:
+  - Runtime executes only shell categories allowed by sandbox policy.
+evidence_refs: [skill_pack_manifest:python_pack]
+metadata_sanitized:
+  template_hint: python_cli

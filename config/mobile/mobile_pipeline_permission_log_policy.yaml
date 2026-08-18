@@ -1,0 +1,10 @@
+schema_version: 1
+policy_id: mobile_pipeline_permission_log_policy
+show_task_status: true
+show_current_stage: true
+show_required_permissions: true
+show_granted_permissions: true
+show_blocked_permissions: true
+show_pending_permission_requests: true
+show_auto_gate_status: true
+copy_sanitized_payload: true

@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "contracts": [
+    {"operation": "chat", "contract_type": "conversation", "target_module": "semantic_interpreter", "schema_ref": "public.chat.v1"},
+    {"operation": "execute", "contract_type": "execution_plan", "target_module": "planner", "schema_ref": "public.execute.v1"},
+    {"operation": "analyze", "contract_type": "analysis", "target_module": "planner", "schema_ref": "public.analyze.v1"},
+    {"operation": "doctor", "contract_type": "runtime_doctor_report", "target_module": "runtime_doctor", "schema_ref": "public.doctor.v1"},
+    {"operation": "validate", "contract_type": "validation_result", "target_module": "validator", "schema_ref": "public.validate.v1"},
+    {"operation": "artifacts", "contract_type": "artifact_report", "target_module": "reporter", "schema_ref": "public.artifacts.v1"}
+  ],
+  "gateway_required": true,
+  "kernel_required": true,
+  "mutates_runtime": false
+}

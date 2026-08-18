@@ -1,0 +1,16 @@
+schema_version: 1
+realtime:
+  enabled: true
+  prefer_sse: true
+  fallback_polling: true
+  preserve_cursor: true
+  reconnect_backoff_seconds: [1, 2, 5, 10, 30]
+events:
+  require_contract: true
+  hide_hidden: true
+  hide_internal_by_default: true
+  dedupe_by_event_id: true
+blocked:
+  render_unknown_event_as_normal: true
+  drop_cursor_on_reconnect: true
+  duplicate_events: true

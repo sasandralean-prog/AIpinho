@@ -1,0 +1,68 @@
+schema_version: 1
+
+project_rebuild:
+  enabled: true
+  mode: governed_patch_preview
+  require_source_read: true
+  require_target_patch: true
+  require_quality_gate: true
+  request_approval_when_quality_passes: true
+  max_files_per_preview: 10
+  max_total_bytes_per_preview: 250000
+  max_file_bytes: 100000
+  include_hidden_files: false
+
+selection:
+  priority_files:
+    - settings.gradle.kts
+    - build.gradle.kts
+    - gradle.properties
+    - README.md
+    - package.json
+    - pyproject.toml
+    - requirements.txt
+  allowed_extensions:
+    - .py
+    - .md
+    - .txt
+    - .json
+    - .yaml
+    - .yml
+    - .toml
+    - .kt
+    - .kts
+    - .properties
+    - .xml
+    - .html
+    - .css
+    - .js
+    - .ts
+    - .tsx
+  blocked_dirs:
+    - .git
+    - .gradle
+    - .kotlin
+    - build
+    - dist
+    - out
+    - target
+    - node_modules
+    - .venv
+    - venv
+    - __pycache__
+  blocked_extensions:
+    - .exe
+    - .dll
+    - .so
+    - .bin
+    - .sqlite
+    - .db
+    - .zip
+    - .7z
+    - .rar
+    - .pem
+    - .key
+    - .bat
+    - .cmd
+    - .ps1
+    - .sh

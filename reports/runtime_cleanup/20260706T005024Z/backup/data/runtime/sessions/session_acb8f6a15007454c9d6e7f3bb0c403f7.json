@@ -1,0 +1,46 @@
+{
+  "session_id": "session_acb8f6a15007454c9d6e7f3bb0c403f7",
+  "status": "active",
+  "created_at": "2026-06-22T00:35:00.220382+00:00",
+  "updated_at": "2026-06-22T00:35:00.285960+00:00",
+  "expires_at": "2026-06-22T04:35:00.220382+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Prepare um plano de correcao com arquivos candidatos, validation plan e rollback plan. Nao aplique patch nesta fase.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_4a5c14b20381463aa1e931e81d90fa34",
+    "intent_type": "filesystem_write_request",
+    "task_type": "filesystem_write",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_clarification",
+    "contract_type": "filesystem_write",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [
+      "write_files"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [
+    "requires_clarification"
+  ],
+  "trace_refs": []
+}

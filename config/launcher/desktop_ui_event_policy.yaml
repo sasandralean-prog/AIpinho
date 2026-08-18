@@ -1,0 +1,22 @@
+schema_version: 1
+event_ui:
+  enabled: true
+  require_event_contract: true
+  render_human_summary: true
+  render_severity: true
+  render_status: true
+  render_source_service: true
+  render_visibility: true
+  render_copy_policy: true
+  render_raw_ref_if_available: true
+  hide_internal_events_by_default: true
+  hide_hidden_events: true
+  allow_filter_by_event_type: true
+  allow_filter_by_severity: true
+  allow_filter_by_status: true
+  allow_filter_by_source_service: true
+blocked:
+  render_unknown_event_as_normal: true
+  show_hidden_event: true
+  copy_blocked_event: true
+  show_raw_ref_inline: true

@@ -1,0 +1,180 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_8_ARTIFACT_EXCEPTION_PAYLOAD_HYDRATION_BLOCKED_WITH_CORE_FIX_VALIDATED",
+  "observed_blocker": "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING resolved for legacy registry path; latest clean rerun blocked earlier at PROJECT_ANALYSIS_DEGRADED",
+  "before_state": {
+    "task_run_id": "task_run_4abdb0e40a0a41ffb57b8b7861195687",
+    "operation_id": "op_6d114217d6f349b89071ce08d984036c",
+    "client_response_status": "accepted_running",
+    "run_status": "blocked",
+    "result_exists": true,
+    "result_status": "blocked",
+    "result_source": "phase_semantic_completion_policy",
+    "result_reason_code": "ARTIFACT_CREATION_EXCEPTION_AFTER_ACCEPTED_RUNNING",
+    "finished_at": "present",
+    "terminal_event_count": 1,
+    "artifact_creation_started_count": 1,
+    "artifact_failed_count": 1,
+    "first_failed_artifact_logical_path": "reports/firetest5/phase1_discovery.md",
+    "music_inventory_reached": false,
+    "evidence_phase1_reached": false
+  },
+  "exception_capture": {
+    "exception_captured": true,
+    "exception_class": "JSONDecodeError",
+    "exception_message_sanitized": "Expecting ',' delimiter: line 35591441 column 6 (char 2111892207)",
+    "exception_stage": "artifact_registry_save_before_artifact_created",
+    "exception_component": "ArtifactRegistryRepository",
+    "exception_function": "list/save legacy artifact_registry.json",
+    "stack_trace_ref": "not_available_in_r2_7_inline_capture; added_in_r2_8",
+    "stack_trace_inline_truncated": true,
+    "sensitive_data_sanitized": true,
+    "source_event_id": "artifact_creation_started event for first Phase 1 artifact"
+  },
+  "artifact_state_machine": {
+    "artifact_logical_path": "reports/firetest5/phase1_discovery.md",
+    "producer_step": "readonly_analysis_artifact_runtime",
+    "states_seen": [
+      "creation_started",
+      "failed"
+    ],
+    "last_state_before_exception": "creation_started",
+    "expected_next_state": "artifact_created|artifact_partial|artifact_blocked|artifact_failed",
+    "terminal_artifact_state": "artifact_failed",
+    "artifact_terminal_event_emitted": true,
+    "artifact_result_written": true
+  },
+  "payload_ref_hydration": {
+    "payload_refs_present": true,
+    "payload_ref_count": 1,
+    "payload_ref_types": [
+      "TaskRunStore spilled observed_entity_graph payload"
+    ],
+    "payload_ref_locations": [
+      "data/runtime/task_runs/task_run_4abdb0e40a0a41ffb57b8b7861195687/payload_refs/9ecacd8f1f2b17cf5ed9c713ab75c0728099937dcf13bcc4152cbad9b8500c6d.json"
+    ],
+    "hydration_attempted": "not_primary_exception_source",
+    "hydration_component": "TaskRunStore",
+    "hydration_result_type": "large list payload ref",
+    "hydration_result_shape": "ObservedEntity[]",
+    "hydration_bytes": 55935533,
+    "hydration_limit_bytes": null,
+    "payload_ref_missing": false,
+    "payload_ref_unreadable": false,
+    "payload_ref_wrong_type": false,
+    "payload_ref_already_hydrated": false,
+    "double_json_parse_detected": false,
+    "json_decode_error_detected": true,
+    "schema_validation_error_detected": false,
+    "payload_too_large_for_inline": true,
+    "payload_ref_should_have_been_used": true
+  },
+  "json_boundary": {
+    "input_type_before_parse": "legacy artifact_registry.json file",
+    "input_preview_shape": "monolithic artifact registry projection",
+    "parse_attempted": true,
+    "parse_required": false,
+    "parse_error": "JSONDecodeError",
+    "already_parsed_object_treated_as_json_string": false,
+    "json_string_treated_as_object": false,
+    "encoding_issue": false,
+    "legacy_registry_path": "data/artifacts/manifests/artifact_registry.json",
+    "legacy_registry_size_bytes": 2147483647,
+    "legacy_registry_valid_json": false
+  },
+  "projection_source_coherence": {
+    "result_source": "phase_semantic_completion_policy",
+    "artifact_source": "artifact_worker_terminalization_guard",
+    "failure_source": "artifact_runtime_exception",
+    "semantic_policy_source": "phase_semantic_completion_policy",
+    "source_mismatch": "r2_7_result_source_did_not_expose_failure_source_separately",
+    "recommended_source_model": "result.source remains result builder authority; result.outputs.artifact_runtime_failure.failure_source records the artifact runtime exception boundary"
+  },
+  "runtime_terminality_regression_check": {
+    "result_json_exists": true,
+    "result_endpoint_status_code": 200,
+    "finished_at": "present",
+    "terminal_event_count": 1,
+    "phase2_skipped": true,
+    "queue_storage_clean": true
+  },
+  "explicit_answers": {
+    "real_exception_after_artifact_creation_started": "JSONDecodeError while reading the legacy monolithic artifact registry.",
+    "component_function": "ArtifactRegistryRepository.list invoked by ArtifactRegistryRepository.save during UniversalArtifactRegistryService.create.",
+    "before_during_after_payload_hydration": "After artifact content render and before artifact_created; not caused by media metadata policy.",
+    "payload_shape": "The artifact registry boundary received a corrupt legacy JSON file, while TaskRun payload refs were separate and valid enough to spill large ObservedEntity data.",
+    "double_json_parse": false,
+    "missing_payload_ref": false,
+    "inline_large_payload_attempt": "Legacy monolithic registry behaved as an unbounded inline projection and was 2GB.",
+    "schema_mismatch": "The registry storage contract treated a monolithic legacy projection as mandatory authority instead of a bounded projection.",
+    "non_serializable_object": "not_observed",
+    "source_mismatch_resolution": "R2.8 adds failure_source/result_builder_source separation in result outputs and exception context.",
+    "artifact_failure_authority": "artifact runtime exception boundary is failure_source; phase semantic completion policy may still build the terminal result.",
+    "r2_7_guard_preserved": true,
+    "continue_or_stop_after_first_artifact_failure": "Phase 1 stops after required first artifact creation failure; later artifacts are not evaluated until the first artifact terminalizes successfully.",
+    "music_inventory_public_evaluation_condition": "music_inventory is only evaluated if the artifact runtime reaches that logical artifact.",
+    "lightweight_storage": "new artifact records are written to sharded manifests and task_run artifact index; legacy registry is skipped when too large or invalid."
+  },
+  "patch_plan": [
+    "Make ArtifactRegistryRepository tolerate oversized/corrupt legacy artifact_registry.json.",
+    "Write new artifact manifests to data/artifacts/manifests/by_artifact and artifact_registry_index.json.",
+    "Do not overwrite or delete the 2GB legacy registry as part of normal artifact creation.",
+    "Keep UniversalArtifactRegistryService task_run artifact index as endpoint projection source.",
+    "Add exception_context with stack_trace_ref for future artifact runtime exceptions.",
+    "Preserve R2.7 terminality guard and conservative Speaker Truth."
+  ],
+  "updated_at": "2026-08-16T13:02:03.347706+00:00",
+  "root_cause_confirmed": {
+    "component": "ArtifactRegistryRepository",
+    "cause": "legacy monolithic artifact_registry.json was 2147483647 bytes and invalid JSON; create/save attempted to parse it before writing a new artifact",
+    "reason_codes": [
+      "ARTIFACT_REGISTRY_LEGACY_TOO_LARGE_FOR_INLINE_READ",
+      "ARTIFACT_REGISTRY_LEGACY_JSON_DECODE_ERROR"
+    ]
+  },
+  "patch_summary": {
+    "artifact_registry": "sharded by_artifact manifests plus lightweight artifact_registry_index; oversized/invalid legacy registry skipped with diagnostic instead of parsed on writes",
+    "exception_capture": "artifact creation exceptions get sanitized context and stack payload refs",
+    "artifact_worker_terminality": "finished_at populated by guard; queue/store reconciliation can terminalize artifact_creation_started stalls with artifact-specific reason",
+    "cvl": "frontiers added for unreadable legacy registry and payload hydration boundary"
+  },
+  "latest_public_rerun": {
+    "raw_capture_dir": "C:\\Dev\\AIpinho\\reports\\firetest5\\firetest5_h1c0_r2_8_clean_phase0_to_6_20260816_095958",
+    "phase1_result_status": "blocked",
+    "phase1_reason_code": "PROJECT_ANALYSIS_DEGRADED",
+    "finished_at": "2026-08-16T13:00:07.668971+00:00",
+    "terminal_event_count": 1,
+    "artifact_creation_started_count": 0,
+    "phase2_to_6": {
+      "phase2": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "prior_blocking_phase": "phase1",
+        "skip_reason": "PROJECT_ANALYSIS_DEGRADED"
+      },
+      "phase3": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "prior_blocking_phase": "phase1",
+        "skip_reason": "PROJECT_ANALYSIS_DEGRADED"
+      },
+      "phase4": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "prior_blocking_phase": "phase1",
+        "skip_reason": "PROJECT_ANALYSIS_DEGRADED"
+      },
+      "phase5": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "prior_blocking_phase": "phase1",
+        "skip_reason": "PROJECT_ANALYSIS_DEGRADED"
+      },
+      "phase6": {
+        "status": "skipped_due_to_prior_block",
+        "api_called": false,
+        "prior_blocking_phase": "phase1",
+        "skip_reason": "PROJECT_ANALYSIS_DEGRADED"
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+schema_version: 1
+
+audit:
+  enabled: true
+  record_approval: true
+  record_persistence: true
+  record_supersede: true
+  record_expire: true
+  record_reject: true
+  record_search: true
+  sanitized_only: true

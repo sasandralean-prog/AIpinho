@@ -1,0 +1,42 @@
+schema_version: 1
+snapshot:
+  enabled: true
+  require_snapshot_id: true
+  require_capture_reason: true
+  require_created_at: true
+  require_system_version: true
+  require_policy_hashes: true
+  require_config_hashes: true
+  require_event_timeline: true
+  require_input_bundle: true
+  require_decision_bundle: true
+  require_sanitization_result: true
+capture:
+  include:
+  - prompt
+  - intent_map
+  - task_contract
+  - policy_decision
+  - capability_decision
+  - approval_state
+  - context_bundle
+  - context_injection_plan
+  - role_pipeline_run
+  - model_run_metadata
+  - rag_query_result
+  - memory_usage
+  - skill_trace
+  - maintenance_run
+  - tool_invocation_preview
+  - patch_plan
+  - patch_quality_result
+  - artifact_result
+  - validation_result
+  - speaker_message
+  - event_timeline
+blocked:
+  raw_secret: true
+  raw_token: true
+  raw_private_key: true
+  full_file_content_without_policy: true
+  real_credentials: true

@@ -1,0 +1,790 @@
+schema_version: 1
+event_contract_registry:
+  enabled: true
+  require_registered_event_type: true
+  require_event_id: true
+  require_source_service: true
+  require_status: true
+  require_severity: true
+  require_human_summary: true
+  require_technical_summary: true
+  require_visibility: true
+  require_copy_policy: true
+  require_created_at: true
+  require_sanitized_raw_ref_for_raw: true
+blocked:
+  unknown_event_type: true
+  raw_secret_event: true
+  raw_prompt_event_public: true
+  raw_model_output_event_public: true
+  token_in_event: true
+  missing_human_summary: true
+  missing_source_service: true
+event_types:
+  message_received:
+    source_services:
+    - chat
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_allowed
+    speaker_allowed: true
+  chat_session_created:
+    source_services:
+    - chat
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_allowed
+    speaker_allowed: false
+  chat_session_renamed:
+    source_services:
+    - chat
+    severity: info
+    default_status: updated
+    visibility: public
+    copy_policy: copy_allowed
+    speaker_allowed: false
+  chat_session_deleted:
+    source_services:
+    - chat
+    severity: info
+    default_status: deleted
+    visibility: public
+    copy_policy: copy_allowed
+    speaker_allowed: false
+  chat_message_created:
+    source_services:
+    - chat
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_allowed
+    speaker_allowed: true
+  task_result_published_to_chat:
+    source_services:
+    - task_runtime
+    severity: info
+    default_status: completed
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  task_completion_evaluated:
+    source_services:
+    - task_runtime
+    severity: info
+    default_status: completed
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  gemini_executor_session_created:
+    source_services:
+    - gemini_executor
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  gemini_executor_session_renamed:
+    source_services:
+    - gemini_executor
+    severity: info
+    default_status: updated
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  gemini_executor_session_deleted:
+    source_services:
+    - gemini_executor
+    severity: info
+    default_status: deleted
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  gemini_executor_request_created:
+    source_services:
+    - gemini_executor
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  gemini_executor_response_received:
+    source_services:
+    - gemini_executor
+    severity: info
+    default_status: completed
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  gemini_executor_key_fallback_used:
+    source_services:
+    - gemini_executor
+    severity: warning
+    default_status: degraded
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  gemini_executor_patch_preview_created:
+    source_services:
+    - gemini_executor
+    severity: info
+    default_status: preview_created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  gemini_executor_approval_requested:
+    source_services:
+    - gemini_executor
+    severity: warning
+    default_status: pending_approval
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  gemini_executor_blocked:
+    source_services:
+    - gemini_executor
+    severity: warning
+    default_status: blocked
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  gemini_executor_failed:
+    source_services:
+    - gemini_executor
+    severity: error
+    default_status: failed
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  gemini_executor_completed:
+    source_services:
+    - gemini_executor
+    severity: info
+    default_status: completed
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  codex_agent_session_created:
+    source_services:
+    - codex_agent
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  codex_agent_session_renamed:
+    source_services:
+    - codex_agent
+    severity: info
+    default_status: updated
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  codex_agent_session_deleted:
+    source_services:
+    - codex_agent
+    severity: info
+    default_status: deleted
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  codex_agent_message_sent:
+    source_services:
+    - codex_agent
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  codex_agent_response_received:
+    source_services:
+    - codex_agent
+    severity: info
+    default_status: completed
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  codex_agent_blocked:
+    source_services:
+    - codex_agent
+    severity: warning
+    default_status: blocked
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  codex_agent_failed:
+    source_services:
+    - codex_agent
+    severity: error
+    default_status: failed
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  codex_agent_completed:
+    source_services:
+    - codex_agent
+    severity: info
+    default_status: completed
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  plan_created:
+    source_services:
+    - planner
+    - task_runtime
+    - chat
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_allowed
+    speaker_allowed: true
+  approval_required:
+    source_services:
+    - approval
+    - task_runtime
+    severity: warning
+    default_status: blocked
+    visibility: public
+    copy_policy: copy_allowed
+    speaker_allowed: true
+  task_blocked:
+    source_services:
+    - task_runtime
+    - policy
+    severity: warning
+    default_status: blocked
+    visibility: public
+    copy_policy: copy_allowed
+    speaker_allowed: true
+  task_card_created:
+    source_services:
+    - task_runtime
+    - interaction
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_allowed
+    speaker_allowed: true
+  pipeline_stage_changed:
+    source_services:
+    - pipeline
+    - interaction
+    severity: info
+    default_status: updated
+    visibility: public
+    copy_policy: copy_allowed
+    speaker_allowed: true
+  artifact_created:
+    source_services:
+    - artifact_service
+    - chat
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_allowed
+    speaker_allowed: true
+  artifact_zip_created:
+    source_services:
+    - artifact_service
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_allowed
+    speaker_allowed: true
+  feedback_created:
+    source_services:
+    - feedback
+    severity: info
+    default_status: created
+    visibility: internal
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  raw_payload_stored:
+    source_services:
+    - chat
+    - debugger
+    - artifact_service
+    severity: info
+    default_status: created
+    visibility: hidden
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  service_status_changed:
+    source_services:
+    - monitor
+    - realtime
+    severity: info
+    default_status: updated
+    visibility: public
+    copy_policy: copy_allowed
+    speaker_allowed: true
+  skill_registered:
+    source_services:
+    - skill_runtime
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  skill_contract_validated:
+    source_services:
+    - skill_runtime
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  skill_contract_rejected:
+    source_services:
+    - skill_runtime
+    severity: warning
+    default_status: blocked
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  skill_route_requested:
+    source_services:
+    - skill_router
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  skill_route_selected:
+    source_services:
+    - skill_router
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  skill_route_blocked:
+    source_services:
+    - skill_router
+    severity: warning
+    default_status: blocked
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  skill_preview_created:
+    source_services:
+    - skill_runtime
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  skill_dry_run_started:
+    source_services:
+    - skill_runtime
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  skill_dry_run_completed:
+    source_services:
+    - skill_runtime
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  skill_dry_run_blocked:
+    source_services:
+    - skill_runtime
+    severity: warning
+    default_status: blocked
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  skill_execution_blocked:
+    source_services:
+    - skill_runtime
+    severity: warning
+    default_status: blocked
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  skill_output_validated:
+    source_services:
+    - skill_runtime
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  skill_output_rejected:
+    source_services:
+    - skill_runtime
+    severity: warning
+    default_status: blocked
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  skill_install_preview_created:
+    source_services:
+    - skill_installer
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  skill_install_blocked:
+    source_services:
+    - skill_installer
+    severity: warning
+    default_status: blocked
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  tool_permission_granted:
+    source_services:
+    - skill_runtime
+    - tool_registry
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  tool_permission_denied:
+    source_services:
+    - skill_runtime
+    - tool_registry
+    severity: warning
+    default_status: blocked
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  tool_invocation_preview_created:
+    source_services:
+    - tool_registry
+    severity: info
+    default_status: created
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  tool_invocation_blocked:
+    source_services:
+    - tool_registry
+    severity: warning
+    default_status: blocked
+    visibility: public
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  maintenance_run_created:
+    source_services:
+    - maintenance_plane
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  maintenance_diagnosis_started:
+    source_services:
+    - maintenance_plane
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  maintenance_diagnosis_completed:
+    source_services:
+    - maintenance_plane
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  maintenance_diagnosis_failed:
+    source_services:
+    - maintenance_plane
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  invariant_check_started:
+    source_services:
+    - maintenance_plane
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  invariant_check_completed:
+    source_services:
+    - maintenance_plane
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  invariant_violation_detected:
+    source_services:
+    - maintenance_plane
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  repair_proposal_created:
+    source_services:
+    - maintenance_plane
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  repair_proposal_blocked:
+    source_services:
+    - maintenance_plane
+    severity: warning
+    default_status: blocked
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  repair_handoff_created:
+    source_services:
+    - maintenance_plane
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  maintenance_patch_preview_created:
+    source_services:
+    - maintenance_plane
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  maintenance_config_preview_created:
+    source_services:
+    - maintenance_plane
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  maintenance_validation_plan_created:
+    source_services:
+    - maintenance_plane
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  maintenance_rollback_plan_created:
+    source_services:
+    - maintenance_plane
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  maintenance_lesson_candidate_created:
+    source_services:
+    - maintenance_plane
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  autocure_action_blocked:
+    source_services:
+    - maintenance_plane
+    severity: warning
+    default_status: blocked
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  autocure_requires_approval:
+    source_services:
+    - maintenance_plane
+    severity: warning
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  replay_snapshot_created:
+    source_services:
+    - replay_harness
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  replay_snapshot_sanitized:
+    source_services:
+    - replay_harness
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  replay_case_created:
+    source_services:
+    - replay_harness
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  replay_run_started:
+    source_services:
+    - replay_harness
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  replay_run_completed:
+    source_services:
+    - replay_harness
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  replay_run_failed:
+    source_services:
+    - replay_harness
+    severity: error
+    default_status: failed
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  replay_diff_created:
+    source_services:
+    - replay_harness
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  regression_candidate_created:
+    source_services:
+    - regression_harness
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  regression_candidate_promoted:
+    source_services:
+    - regression_harness
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  regression_case_created:
+    source_services:
+    - regression_harness
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  regression_case_started:
+    source_services:
+    - regression_harness
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  regression_case_completed:
+    source_services:
+    - regression_harness
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  regression_case_failed:
+    source_services:
+    - regression_harness
+    severity: error
+    default_status: failed
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  regression_suite_started:
+    source_services:
+    - regression_harness
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  regression_suite_completed:
+    source_services:
+    - regression_harness
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  regression_suite_failed:
+    source_services:
+    - regression_harness
+    severity: error
+    default_status: failed
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  regression_failure_detected:
+    source_services:
+    - regression_harness
+    severity: error
+    default_status: failed
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+  golden_expectation_failed:
+    source_services:
+    - regression_harness
+    severity: error
+    default_status: failed
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: false
+  regression_report_created:
+    source_services:
+    - regression_harness
+    severity: info
+    default_status: created
+    visibility: debugger
+    copy_policy: copy_sanitized
+    speaker_allowed: true
+
+legacy_rag_inventory_completed:
+  payload: legacy_import_stage_result
+legacy_rag_sanitization_completed:
+  payload: legacy_import_stage_result
+legacy_rag_classification_completed:
+  payload: legacy_import_stage_result
+legacy_rag_conflict_detected:
+  payload: legacy_import_stage_result
+legacy_rag_review_decision_recorded:
+  payload: legacy_import_stage_result
+legacy_rag_import_preview_created:
+  payload: legacy_import_stage_result
+legacy_rag_import_committed:
+  payload: legacy_import_stage_result
+legacy_rag_import_blocked:
+  payload: legacy_import_stage_result
+legacy_rag_chunk_rejected:
+  payload: legacy_review_decision
+legacy_rag_regression_candidate_created:
+  payload: legacy_regression_candidate
+legacy_rag_lesson_candidate_created:
+  payload: legacy_lesson_candidate
+legacy_rag_legacy_conflict_flagged:
+  payload: legacy_conflict
+legacy_rag_deprecated_signal_flagged:
+  payload: legacy_conflict

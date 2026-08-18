@@ -1,0 +1,9 @@
+schema_version: 1
+
+audit:
+  enabled: true
+  store_path: "data/runtime/retrieval"
+  store_sanitized_only: true
+  store_raw_content: false
+  store_queries: true
+  store_hits: true

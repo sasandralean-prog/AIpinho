@@ -1,0 +1,107 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "coverage_map": [
+    {
+      "module": "services.chat.chat_service",
+      "tests": [
+        "tests/unit/test_chat_service.py",
+        "tests/integration/test_chat_api.py",
+        "tests/integration/test_chat_flow.py",
+        "tests/e2e/test_chat_prompt_to_preview.py",
+        "tests/e2e/test_controlled_model_chat_flow.py"
+      ],
+      "coverage": "UNKNOWN"
+    },
+    {
+      "module": "services.runtime.task_runtime_service",
+      "tests": [
+        "tests/unit/test_task_runtime_service.py",
+        "tests/integration/test_task_api.py",
+        "tests/integration/test_task_flow.py"
+      ],
+      "coverage": "UNKNOWN"
+    },
+    {
+      "module": "services.policy_kernel.policy_kernel_service",
+      "tests": [
+        "tests/unit/test_policy_kernel_service.py",
+        "tests/contract/test_policy_config_validity.py"
+      ],
+      "coverage": "UNKNOWN"
+    },
+    {
+      "module": "services.policy_kernel.capability_gate_service",
+      "tests": [
+        "tests/unit/test_capability_gate_service.py"
+      ],
+      "coverage": "UNKNOWN"
+    },
+    {
+      "module": "services.tools.governed_tool_execution_service",
+      "tests": [
+        "tests/unit/test_governed_tool_execution_service.py",
+        "tests/integration/test_tool_api.py",
+        "tests/integration/test_tool_flow.py"
+      ],
+      "coverage": "UNKNOWN"
+    },
+    {
+      "module": "services.validation.validation_gate_service",
+      "tests": [
+        "tests/unit/test_validation_gate_service.py"
+      ],
+      "coverage": "UNKNOWN"
+    },
+    {
+      "module": "api.routers.chat_router",
+      "tests": [
+        "tests/integration/test_chat_api.py"
+      ],
+      "coverage": "UNKNOWN"
+    },
+    {
+      "module": "api.routers.task_runtime_router",
+      "tests": [
+        "tests/integration/test_task_api.py"
+      ],
+      "coverage": "UNKNOWN"
+    },
+    {
+      "module": "api.routers.tool_router",
+      "tests": [
+        "tests/integration/test_tool_api.py"
+      ],
+      "coverage": "UNKNOWN"
+    },
+    {
+      "module": "schemas",
+      "tests": [
+        "tests/contract/test_contracts.py"
+      ],
+      "coverage": "UNKNOWN"
+    },
+    {
+      "module": "services.artifacts.artifact_generator_service",
+      "tests": [
+        "tests/e2e/test_artifact_write_flow.py"
+      ],
+      "coverage": "UNKNOWN"
+    },
+    {
+      "module": "services.patch.patch_service",
+      "tests": [
+        "tests/e2e/test_patch_apply_flow.py"
+      ],
+      "coverage": "UNKNOWN"
+    }
+  ],
+  "total_modules": 12,
+  "total_tests": 18,
+  "coverage_status": {
+    "high_coverage": 0,
+    "medium_coverage": 0,
+    "low_coverage": 12,
+    "no_coverage": 0
+  }
+}

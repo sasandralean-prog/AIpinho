@@ -1,0 +1,44 @@
+{
+  "session_id": "session_cef4a0b58c574915862bacce0948d20b",
+  "status": "active",
+  "created_at": "2026-06-22T01:31:07.274272+00:00",
+  "updated_at": "2026-06-22T01:31:07.355041+00:00",
+  "expires_at": "2026-06-22T05:31:07.274272+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Com base no plano em reports\\correction_plan.md, crie um patch preview governado. Ainda nao aplique.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_945dcd3d4690466b87f870cb53a72caa",
+    "intent_type": "patch_request",
+    "task_type": "patch_request",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "patch_request",
+    "allowed_actions": [
+      "patch_preview"
+    ],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": true,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main",
+  "active_task_draft_id": "draft_2119295a4e5140eeb394bbce4699b5f1",
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

@@ -1,0 +1,16 @@
+schema_version: 1
+
+fallback:
+  enabled: true
+  hide_rejected_model_content: true
+  deterministic_message: "Nao consegui usar o modelo local com seguranca nesta chamada. Mantive a resposta segura sem expor output bruto do modelo."
+  blocked_message: "Inferencia local manual bloqueada por policy/gate. Nenhum processo de modelo foi iniciado."
+  preview_blocked_message: "Preview de inferencia local bloqueado por policy/gate. Nenhum processo de modelo sera iniciado."
+  timeout_message: "Inferencia local excedeu o limite controlado. O output bruto nao sera exposto no chat."
+  unavailable_message: "Modelo local indisponivel para chat manual. O chat normal continua em modo seguro sem inferencia real."
+
+statuses_requiring_fallback:
+  - rejected
+  - needs_retry
+  - degraded
+  - error

@@ -1,0 +1,36 @@
+{
+  "run_id": "agent_run_683f10c3317643a4ad9c6c99a1b6727f",
+  "session_id": "agent_session_cf9836d5aa3446a5a3773b37919e74d3",
+  "agent_id": "aipinho",
+  "parent_run_id": "agent_run_f633831ae9334f4baf560af598555da2",
+  "delegation_id": "delegation_f5348e48e63b4ab18c5f27a24f4109de",
+  "status": "cancelled",
+  "operation_type": "delegated_governed_execution",
+  "workspace_id": "sapoandando_context",
+  "project_profile_id": null,
+  "workspace_profile_id": null,
+  "validation_profile_id": null,
+  "command_profile_ids": [],
+  "capabilities_requested": [
+    "scan_workspace",
+    "create_file",
+    "workspace_write",
+    "create_artifact",
+    "run_shell_build",
+    "run_tests",
+    "validation"
+  ],
+  "started_at": "2026-06-23T04:33:07+00:00",
+  "completed_at": "2026-06-23T06:53:19+00:00",
+  "validation_status": null,
+  "artifact_ids": [],
+  "memory_refs_used": [],
+  "memory_refs_written": [],
+  "memory_candidates_created": [],
+  "memory_warnings": [],
+  "final_message_id": null,
+  "error_code": null,
+  "metadata_sanitized": {
+    "delegation_id": "delegation_f5348e48e63b4ab18c5f27a24f4109de"
+  }
+}

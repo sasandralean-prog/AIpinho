@@ -1,0 +1,24 @@
+﻿schema_version: 1
+supervisor:
+  enabled: true
+  monitor_port: 9099
+  mode: local_service_supervisor
+  exclusive_monitoring_port: true
+  require_token_auth_for_remote: true
+  require_service_manifest: true
+  require_restart_policy: true
+  require_audit: true
+  require_trace: true
+allowed_restart_ports: [9088, 9089, 9098]
+blocked_restart_ports: [9099]
+blocked:
+  arbitrary_process_start: true
+  arbitrary_command_execution: true
+  shell_true: true
+  restart_unregistered_service: true
+  restart_monitor_from_monitor: true
+  expose_token_in_logs: true
+  network_download: true
+  git_write: true
+  patch_apply: true
+  workspace_write: true

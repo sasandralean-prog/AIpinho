@@ -1,0 +1,6 @@
+schema_version: 1
+smart_chunk:
+  enabled: true
+  max_chars: 1200
+  overlap_chars: 120
+  types: [doc_section, config_policy, error_trace, task_summary, artifact_summary]

@@ -1,0 +1,52 @@
+schema_version: 1
+
+patch_apply:
+  enabled: true
+  mode: approved_controlled_code_mutation
+  require_patch_plan: true
+  require_diff_proposal: true
+  require_quality_gate: true
+  require_quality_status: [passed]
+  allow_passed_with_warnings: false
+  require_explicit_approval: true
+  require_operator_confirmation: true
+  require_snapshot_revalidation: true
+  require_diff_hash_lock: true
+  require_target_lock: true
+  require_backup_before_write: true
+  require_atomic_write: true
+  require_post_apply_validation: true
+  require_audit: true
+  require_trace: true
+  allow_chat_auto_apply: false
+  allow_direct_diff_apply: false
+  allow_payload_patch_apply: false
+
+allowed_mutations:
+  modify_existing_text_file: true
+  create_file: true
+  delete_file: false
+  rename_file: false
+  chmod: false
+  binary_patch: false
+
+blocked:
+  shell_patch: true
+  git_apply: true
+  subprocess: true
+  direct_workspace_mutation_without_run: true
+  forbidden_root: true
+  outside_workspace: true
+  path_traversal: true
+  secret_file: true
+  binary_file: true
+  generated_lockfile: true
+  new_file: false
+  delete_file: true
+  rename_file: true
+  failed_quality_gate: true
+  missing_approval: true
+  expired_approval: true
+  rejected_approval: true
+  stale_snapshot: true
+  diff_hash_mismatch: true

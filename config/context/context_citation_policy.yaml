@@ -1,0 +1,4 @@
+schema_version: 1
+citations:
+  enabled: true
+  required_for: [curated_memory, rag_chunk, vector_rag_hit, artifact_record, artifact_manifest, visual_evidence, ocr_text_block, file_summary, project_analysis]

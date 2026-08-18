@@ -1,0 +1,33 @@
+schema_version: 1
+suite:
+  suite_id: legacy_bug_regression_suite
+  enabled: true
+  description: Legacy inspired regressions.
+cases:
+  patch_word_is_not_patch_request_when_negated:
+    prompt: nao aplique patch, so explique
+    expectations:
+    - type: intent
+      requires_patch: false
+    - type: policy
+      write_allowed: false
+  vision_word_not_visual_task_when_evidence_only:
+    prompt: o log menciona vision, mas quero analise de roteamento
+    expectations:
+    - type: intent
+      task_type_not: vision_analysis
+  rag_word_not_rag_task_when_discussing_policy:
+    prompt: explique por que o RAG nao deve ingerir tudo
+    expectations:
+    - type: intent
+      task_type_not: rag_query
+    - type: context
+      rag_auto_ingest: false
+  active_task_stale_not_reused:
+    expectations:
+    - type: policy
+      stale_active_task_reused: false
+  speaker_plan_not_execution:
+    expectations:
+    - type: speaker
+      plan_created_message: Plano criado. Ainda nao apliquei mudancas.

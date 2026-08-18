@@ -1,0 +1,107 @@
+{
+  "report": "hotfix_approval_bootstrap_phase_resume",
+  "date": "2026-06-25",
+  "project": "AIpinho / PinhoabacaxiAI",
+  "workspace": "C:\\Dev\\AIpinho",
+  "verdict": "APPROVAL_BOOTSTRAP_PHASE_RESUME_READY",
+  "fixed": [
+    {
+      "id": "approval_bootstrap_paradox",
+      "root_cause": "GovernedWriteChatService returned approval_required without creating an ApprovalRequest.",
+      "fix": "Policy ask now creates TaskContractDraft, TaskPreview and ApprovalRequest before any execution.",
+      "generic": true
+    },
+    {
+      "id": "session_grant_vs_config_change",
+      "root_cause": "Persistent chat send bypassed ChatPermissionGrantService before normal routing.",
+      "fix": "Persistent send now handles temporary permission grants before operation routing.",
+      "generic": true
+    },
+    {
+      "id": "phase_resume_failure",
+      "root_cause": "Canonical project_generation did not enter the governed rebuild handler and report-based resume reused a source-target rebuild service.",
+      "fix": "Router emits phase_resume metadata and persistent chat creates a generic implementation preview/approval from the existing report evidence.",
+      "generic": true
+    },
+    {
+      "id": "report_file_exists",
+      "root_cause": "Existing readonly audit reports had no explicit idempotent reuse path.",
+      "fix": "WorkspaceReadonlyAuditReportService uses a configurable existing-report strategy and currently returns existing_report_reused when the target report already exists.",
+      "generic": true
+    },
+    {
+      "id": "generic_project_preview_without_approval",
+      "root_cause": "ChatService project-generation previews returned a generic preview without creating TaskDraft, TaskPreview or ApprovalRequest.",
+      "fix": "Project create/generation operations now create OperationContract, TaskContractDraft, TaskPreview and ApprovalRequest when policy is ask.",
+      "generic": true
+    }
+  ],
+  "files_changed": [
+    "C:\\Dev\\AIpinho\\src\\aipinho\\schemas\\governed_write.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\chat\\governed_write_chat_service.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\chat\\chat_service.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\api\\routers\\chat_router.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\chat\\chat_operation_router_service.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\chat\\chat_approval_command_service.py",
+    "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\workspace_readonly_audit_report_service.py",
+    "C:\\Dev\\AIpinho\\config\\chat\\chat_operation_routing_policy.yaml",
+    "C:\\Dev\\AIpinho\\config\\artifacts\\workspace_readonly_audit_policy.yaml",
+    "C:\\Dev\\AIpinho\\tests\\unit\\test_hotfix_approval_bootstrap_phase_resume.py"
+  ],
+  "tests": {
+    "new": [
+      "test_ask_policy_creates_approval_not_blocked",
+      "test_permission_phrase_creates_session_grant_not_config_change",
+      "test_continue_from_preflight_starts_implementation_plan",
+      "test_phase_resume_persistent_chat_creates_pending_approval",
+      "test_continue_from_preflight_without_explicit_report_path_uses_existing_report",
+      "test_project_generation_policy_ask_creates_pending_approval",
+      "test_implementation_request_does_not_route_to_workspace_readonly_audit_report",
+      "test_preflight_existing_file_does_not_raise_file_exists",
+      "test_list_pending_approvals_command_returns_visible_list",
+      "test_list_approvals_no_pending_returns_none"
+    ],
+    "commands": [
+      "python -m py_compile changed python files",
+      "python -m pytest tests\\unit\\test_governed_write_chat_service.py -q",
+      "python -m pytest tests\\unit\\test_hotfix_approval_bootstrap_phase_resume.py -q",
+      "python -m pytest tests\\unit\\test_governed_write_chat_service.py tests\\unit\\test_hotfix_approval_bootstrap_phase_resume.py -q",
+      "python -m pytest tests\\unit\\test_chat_permission_grant_service.py tests\\unit\\test_approval_preview_lifecycle.py tests\\unit\\test_workspace_readonly_audit_report_service.py tests\\unit\\test_hotfix_approval_bootstrap_phase_resume.py -q",
+      "python -m pytest tests\\unit\\test_governed_write_chat_service.py tests\\unit\\test_chat_permission_grant_service.py tests\\unit\\test_approval_preview_lifecycle.py tests\\unit\\test_workspace_readonly_audit_report_service.py tests\\unit\\test_hotfix_approval_bootstrap_phase_resume.py -q"
+    ],
+    "results": [
+      "17 passed in governed write suite",
+      "10 passed in hotfix suite",
+      "24 passed in combined governed write + hotfix suite",
+      "23 passed in grant/approval/audit/hotfix suite",
+      "43 passed in final focused suite"
+    ]
+  },
+  "smoke": {
+    "phase_resume": {
+      "status": "pending_approval",
+      "operation_type": "governed_project_rebuild",
+      "approval_id": "approval_a82408568565463d8155c571402c7587",
+      "preview_id": "preview_d23f78f8fec4485ebc31881df9426904",
+      "message_status": "IMPLEMENTATION_PLAN_READY",
+      "evidence_report_discovered": true
+    },
+    "session_grant": {
+      "status": "pending_approval",
+      "operation_type": "session_permission_grant",
+      "grant_id_created": true
+    },
+    "cleanup": "Smoke approval and grant were closed after validation to avoid artificial pending runtime state."
+  },
+  "risks_remaining": [
+    "Final execution after approval still depends on the existing runtime/queue services.",
+    "Phase resume creates a generic implementation preview; detailed implementation quality depends on planner/executor services.",
+    "No real LogForge build was executed in this hotfix.",
+    "The live backend on port 9088 may require an elevated restart if an old Python PID is still holding the port."
+  ],
+  "hardcode_check": {
+    "project_specific_logic_added": false,
+    "path_specific_logic_added": false,
+    "prompt_exact_logic_added": false
+  }
+}

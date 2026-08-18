@@ -1,0 +1,44 @@
+{
+  "session_id": "chat_0843e143c09b4512a65f5a00e940422e",
+  "status": "active",
+  "created_at": "2026-06-20T02:19:52.407584+00:00",
+  "updated_at": "2026-06-20T02:19:52.452819+00:00",
+  "expires_at": "2026-06-20T06:19:52.407584+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Voce esta operando no workspace: C:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2. Crie um arquivo chamado reports\\aipinho_firetest_health.md. O arquivo deve conter: titulo AIpinho Firetest Health; timestamp atual; workspace alvo; lista curta do que voce consegue detectar no projeto; status FIRETEST_HEALTH_READY. Depois valide que o arquivo existe e tem tamanho maior que zero. Responda com task_id/run_id, operation_type, arquivos criados e evidencia.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_8c17ac78eb404d02b62745574cf12ffa",
+    "intent_type": "filesystem_write_request",
+    "task_type": "filesystem_write",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_approval",
+    "contract_type": "filesystem_write",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [
+      "write_files"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2",
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

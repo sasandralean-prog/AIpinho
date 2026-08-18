@@ -1,0 +1,73 @@
+{
+  "verdict": "FIRETEST5_H1C0_R2_6_MEDIA_METADATA_COMPLETE_INVENTORY_SUFFICIENCY_BLOCKED",
+  "created_at": "2026-08-15T07:32:21.402210+00:00",
+  "observed_blocker": "ARTIFACT_RUNTIME_STALLED_AFTER_ARTIFACT_CREATION_STARTED_WITHOUT_TERMINAL_RESULT",
+  "scope": "R2.6 metadata capability and complete inventory sufficiency; public run blocked before music inventory render.",
+  "pre_public_state": {
+    "r2_5_reason_code": "MUSIC_INVENTORY_PARTIAL_NOT_ACCEPTED_BY_PHASE_CONTRACT",
+    "r2_5_music_inventory": "100 evidence-bound partial rows; metadata incomplete; safe_to_use=false"
+  },
+  "implementation_summary": {
+    "media_metadata_capability": "registered/normalized as governed capability metadata path",
+    "schema_aliases": "canonical duration_ms/bitrate_bps/sample_rate_hz/artwork_present plus aliases for legacy labels",
+    "sufficiency_policy": "MediaInventorySufficiencyService evaluates coverage, evidence, schema, metadata status and use_safety",
+    "cvl_awareness": "media inventory sufficiency and metadata frontiers added",
+    "endpoint_projection": "metadata_coverage_summary and inventory_sufficiency_summary propagated lightly where present"
+  },
+  "public_rerun_trace": {
+    "task_run_id": "task_run_ac1b9a417c6f4da1a739143d28bf42d3",
+    "accepted_running": true,
+    "task_run_id_structured": "task_run_ac1b9a417c6f4da1a739143d28bf42d3",
+    "last_event": {
+      "sequence": 13,
+      "type": "artifact_creation_started",
+      "status": "running",
+      "message": "Artifact creation started for reports/firetest5/phase1_discovery.md.",
+      "metadata": {
+        "logical_path": "reports/firetest5/phase1_discovery.md",
+        "producer_step": "readonly_analysis_artifact_runtime"
+      }
+    },
+    "terminal_event_count": 1,
+    "result_json_exists": false,
+    "result_endpoint_status_code": 404,
+    "music_inventory_reached": false
+  },
+  "hypotheses_checked": {
+    "metadata_sufficiency_publicly_evaluated": false,
+    "music_inventory_publicly_rendered": false,
+    "phase1_discovery_artifact_completed": false,
+    "artifact_runtime_worker_exited_without_terminal_result": true,
+    "run_json_inflated": false,
+    "queue_projection_large_runs": 0
+  },
+  "recommended_patch_points": [
+    "Public artifact runtime worker must terminalize or persist a blocked result when it stalls/exits after artifact_creation_started.",
+    "Add artifact render watchdog/heartbeat around _create_artifact and artifact runtime create/validate path.",
+    "Ensure accepted_running background worker exceptions after public response are converted to terminal TaskRunResult.",
+    "Keep metadata capability changes; public path did not reach them, so do not relax sufficiency policy."
+  ],
+  "post_diagnostic_cleanup": {
+    "performed": true,
+    "method": "TaskRuntimeService.cancel",
+    "reason": "h1c0_r2_6_public_rerun_orphan_cleanup_after_report",
+    "deletes_evidence": false,
+    "final_status_after_cleanup": "cancelled",
+    "finished_at_after_cleanup": "2026-08-15T07:33:55.554884+00:00",
+    "events_added": [
+      "run_cancel_requested",
+      "run_cancelled"
+    ],
+    "queue_health_after_cleanup": {
+      "active_runs": 0,
+      "queued_runs": 0,
+      "stale_runs": 0,
+      "pending_approvals": 0
+    },
+    "projection_health_after_cleanup": {
+      "large_run_count": 0,
+      "missing_index_count": 0
+    },
+    "recorded_at": "2026-08-15T07:34:21.514591+00:00"
+  }
+}

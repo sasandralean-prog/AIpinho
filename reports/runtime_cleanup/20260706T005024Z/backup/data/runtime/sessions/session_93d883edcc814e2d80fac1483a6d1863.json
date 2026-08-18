@@ -1,0 +1,47 @@
+{
+  "session_id": "session_93d883edcc814e2d80fac1483a6d1863",
+  "status": "active",
+  "created_at": "2026-06-12T17:09:59.061775+00:00",
+  "updated_at": "2026-06-12T17:09:59.085332+00:00",
+  "expires_at": "2026-06-12T21:09:59.061775+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Corrija C:\\Windows",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_196827af47ce41be9b77454aa988d683",
+    "intent_type": "patch_request",
+    "task_type": "patch_request",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Windows",
+      "declared": true,
+      "protected": true
+    }
+  },
+  "last_policy_decision": {
+    "status": "denied",
+    "contract_type": "patch_request",
+    "allowed_actions": [],
+    "denied_actions": [
+      "apply_patch",
+      "patch_preview"
+    ],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [
+    "requires_clarification",
+    "protected_workspace_detected"
+  ],
+  "trace_refs": []
+}

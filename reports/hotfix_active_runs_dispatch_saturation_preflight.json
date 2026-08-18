@@ -1,0 +1,2247 @@
+{
+  "generated_at": "2026-06-25T02:07:34.772582+00:00",
+  "summary": {
+    "total_runs": 215,
+    "active_runs_effective": 19,
+    "stale_active_runs": 19,
+    "total_sessions": 213,
+    "active_sessions_not_archived": 196,
+    "stale_sessions_over_24h": 196
+  },
+  "active_runs": [
+    {
+      "run_id": "agent_run_08eba3644c43479dbd167ca08de95a16",
+      "task_id": null,
+      "session_id": "agent_session_3a705f2e964141b2970c2b59ccfbb3da",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-14T10:51:05+00:00",
+      "completed_at": "2026-06-14T10:51:18+00:00",
+      "updated_at": "2026-06-14T10:51:18+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-14T10:51:18+00:00",
+      "age_seconds": 918976,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_14ef585ba9c944788a9d7fdcd9f986b3",
+      "task_id": "task_run_ea7b93a75cc345e3b69a3116225c1bf3",
+      "session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+      "agent_id": "aipinho",
+      "operation_type": "patch_pipeline",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "agent_run_created",
+      "started_at": "2026-06-22T02:21:38+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-22T02:21:38+00:00",
+      "last_event": "agent_run_created",
+      "heartbeat": "2026-06-22T02:21:38+00:00",
+      "age_seconds": 258356,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 1,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_28566830743f4ce4b73a96d1bf0f4ccd",
+      "task_id": null,
+      "session_id": "agent_session_ccb545d58b774537b2161c35565f68f4",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-15T01:52:15+00:00",
+      "completed_at": "2026-06-15T01:52:24+00:00",
+      "updated_at": "2026-06-15T01:52:24+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-15T01:52:24+00:00",
+      "age_seconds": 864910,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_4303e220544d43fea897b85c2d405cf8",
+      "task_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "session_id": "agent_session_1b06e925235a4ea793263a4d61efbab4",
+      "agent_id": "aipinho",
+      "operation_type": "patch_pipeline",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "agent_run_created",
+      "started_at": "2026-06-22T02:43:39+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-22T02:43:39+00:00",
+      "last_event": "agent_run_created",
+      "heartbeat": "2026-06-22T02:43:39+00:00",
+      "age_seconds": 257035,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 1,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_47ed8cfb717240479c1dcac34e16dcaf",
+      "task_id": null,
+      "session_id": "agent_session_55bd69eca2f3445ca9cb93b2cbe290f9",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-15T14:52:44+00:00",
+      "completed_at": "2026-06-15T14:52:58+00:00",
+      "updated_at": "2026-06-15T14:52:58+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-15T14:52:58+00:00",
+      "age_seconds": 818076,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_5223bd7c701040a2950c3819ac05098b",
+      "task_id": null,
+      "session_id": "agent_session_ab1ae58dbbd54ab1b687f82dcb78b71c",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-15T03:38:40+00:00",
+      "completed_at": "2026-06-15T03:38:40+00:00",
+      "updated_at": "2026-06-15T03:38:40+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-15T03:38:40+00:00",
+      "age_seconds": 858534,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_5e6b25fcb72148d5bdae1dd07759c08e",
+      "task_id": null,
+      "session_id": "agent_session_a371298aeb8f404c81ed009156672d2f",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-23T03:14:41+00:00",
+      "completed_at": "2026-06-23T03:14:53+00:00",
+      "updated_at": "2026-06-23T03:14:53+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-23T03:14:53+00:00",
+      "age_seconds": 168761,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_5f3a7a33a064432a8d83d930a033e0d1",
+      "task_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "session_id": "agent_session_4e86f36300984aaebb43bb3d02a71ff0",
+      "agent_id": "aipinho",
+      "operation_type": "patch_pipeline",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "agent_run_created",
+      "started_at": "2026-06-22T02:53:13+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-22T02:53:13+00:00",
+      "last_event": "agent_run_created",
+      "heartbeat": "2026-06-22T02:53:13+00:00",
+      "age_seconds": 256461,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 1,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_65aeb22b35d747018467c6b05581540b",
+      "task_id": null,
+      "session_id": "agent_session_49423de13f4f4b4385aa517b70aa3362",
+      "agent_id": "codex",
+      "operation_type": "codex_chat",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "memory_candidate_created",
+      "started_at": "2026-06-23T03:41:29+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-23T03:42:59+00:00",
+      "last_event": "memory_candidate_created",
+      "heartbeat": "2026-06-23T03:42:59+00:00",
+      "age_seconds": 167075,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 3,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_694122b9c65349b586dc7b8be08bf056",
+      "task_id": null,
+      "session_id": "agent_session_ca537ad85afb4cb4bb502370425f0db6",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-15T03:25:37+00:00",
+      "completed_at": "2026-06-15T03:25:39+00:00",
+      "updated_at": "2026-06-15T03:25:40+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-15T03:25:40+00:00",
+      "age_seconds": 859314,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_6c5e6d506c094bf79587db8bf96bfffd",
+      "task_id": null,
+      "session_id": "agent_session_18d8767f2365446594a0ebafc2e3d8b9",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-18T18:44:55+00:00",
+      "completed_at": "2026-06-18T18:45:05+00:00",
+      "updated_at": "2026-06-18T18:45:06+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-18T18:45:06+00:00",
+      "age_seconds": 544948,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_7656f8a30d844f8d8a838a6e0fb9a9b4",
+      "task_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "session_id": "agent_session_977a150472e7440d8c61b289aa7a62b7",
+      "agent_id": "aipinho",
+      "operation_type": "patch_pipeline",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "agent_run_created",
+      "started_at": "2026-06-22T02:41:54+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-22T02:41:54+00:00",
+      "last_event": "agent_run_created",
+      "heartbeat": "2026-06-22T02:41:54+00:00",
+      "age_seconds": 257140,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 1,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_a9aefa24147c4836b87b9dce8278ab5e",
+      "task_id": "task_run_0759a23d5e2f493ea2d062ed6d353bb3",
+      "session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+      "agent_id": "aipinho",
+      "operation_type": "patch_pipeline",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "agent_run_created",
+      "started_at": "2026-06-22T01:46:12+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-22T01:46:12+00:00",
+      "last_event": "agent_run_created",
+      "heartbeat": "2026-06-22T01:46:12+00:00",
+      "age_seconds": 260482,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 1,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_d061c1c0ff61447ab000f8e3f944bbd1",
+      "task_id": null,
+      "session_id": "agent_session_0407ede2a55f449eac90fca2d07a93c9",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-15T02:55:01+00:00",
+      "completed_at": "2026-06-15T02:55:43+00:00",
+      "updated_at": "2026-06-15T02:55:44+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-15T02:55:44+00:00",
+      "age_seconds": 861110,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_d4a2ea6ee2194baeb56d90f930788f83",
+      "task_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "session_id": "agent_session_3910d8755c4041ec94e81d0fbb0af837",
+      "agent_id": "aipinho",
+      "operation_type": "patch_pipeline",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "agent_run_created",
+      "started_at": "2026-06-22T02:54:22+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-22T02:54:22+00:00",
+      "last_event": "agent_run_created",
+      "heartbeat": "2026-06-22T02:54:22+00:00",
+      "age_seconds": 256392,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 1,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_d84b1a82f89c4dbc8ad0558faef00780",
+      "task_id": null,
+      "session_id": "agent_session_d1cbe966ee8140c68474a70a662d30e5",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-14T10:50:19+00:00",
+      "completed_at": "2026-06-14T10:50:26+00:00",
+      "updated_at": "2026-06-14T10:50:26+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-14T10:50:26+00:00",
+      "age_seconds": 919028,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_e8facf73c9844703a35182e21e303201",
+      "task_id": null,
+      "session_id": "agent_session_7bcb66bd372744299cffeebcfd7e46d8",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-14T11:43:57+00:00",
+      "completed_at": "2026-06-14T11:44:03+00:00",
+      "updated_at": "2026-06-14T11:44:03+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-14T11:44:03+00:00",
+      "age_seconds": 915811,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_f21a2eeb9ba54220a752488eec0d752d",
+      "task_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "session_id": "agent_session_0930e136a21a4b32859947d190c798fd",
+      "agent_id": "aipinho",
+      "operation_type": "patch_pipeline",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "agent_run_created",
+      "started_at": "2026-06-22T03:06:40+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-22T03:06:40+00:00",
+      "last_event": "agent_run_created",
+      "heartbeat": "2026-06-22T03:06:40+00:00",
+      "age_seconds": 255654,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 1,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_fb5f7bcf3a8b4990b77a99604a73c849",
+      "task_id": null,
+      "session_id": "agent_session_cddc5398d394418587b2fc20da16e487",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-16T00:46:10+00:00",
+      "completed_at": "2026-06-16T00:46:16+00:00",
+      "updated_at": "2026-06-16T00:46:16+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-16T00:46:16+00:00",
+      "age_seconds": 782478,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    }
+  ],
+  "stale_runs": [
+    {
+      "run_id": "agent_run_08eba3644c43479dbd167ca08de95a16",
+      "task_id": null,
+      "session_id": "agent_session_3a705f2e964141b2970c2b59ccfbb3da",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-14T10:51:05+00:00",
+      "completed_at": "2026-06-14T10:51:18+00:00",
+      "updated_at": "2026-06-14T10:51:18+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-14T10:51:18+00:00",
+      "age_seconds": 918976,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_14ef585ba9c944788a9d7fdcd9f986b3",
+      "task_id": "task_run_ea7b93a75cc345e3b69a3116225c1bf3",
+      "session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+      "agent_id": "aipinho",
+      "operation_type": "patch_pipeline",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "agent_run_created",
+      "started_at": "2026-06-22T02:21:38+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-22T02:21:38+00:00",
+      "last_event": "agent_run_created",
+      "heartbeat": "2026-06-22T02:21:38+00:00",
+      "age_seconds": 258356,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 1,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_28566830743f4ce4b73a96d1bf0f4ccd",
+      "task_id": null,
+      "session_id": "agent_session_ccb545d58b774537b2161c35565f68f4",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-15T01:52:15+00:00",
+      "completed_at": "2026-06-15T01:52:24+00:00",
+      "updated_at": "2026-06-15T01:52:24+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-15T01:52:24+00:00",
+      "age_seconds": 864910,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_4303e220544d43fea897b85c2d405cf8",
+      "task_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "session_id": "agent_session_1b06e925235a4ea793263a4d61efbab4",
+      "agent_id": "aipinho",
+      "operation_type": "patch_pipeline",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "agent_run_created",
+      "started_at": "2026-06-22T02:43:39+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-22T02:43:39+00:00",
+      "last_event": "agent_run_created",
+      "heartbeat": "2026-06-22T02:43:39+00:00",
+      "age_seconds": 257035,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 1,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_47ed8cfb717240479c1dcac34e16dcaf",
+      "task_id": null,
+      "session_id": "agent_session_55bd69eca2f3445ca9cb93b2cbe290f9",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-15T14:52:44+00:00",
+      "completed_at": "2026-06-15T14:52:58+00:00",
+      "updated_at": "2026-06-15T14:52:58+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-15T14:52:58+00:00",
+      "age_seconds": 818076,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_5223bd7c701040a2950c3819ac05098b",
+      "task_id": null,
+      "session_id": "agent_session_ab1ae58dbbd54ab1b687f82dcb78b71c",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-15T03:38:40+00:00",
+      "completed_at": "2026-06-15T03:38:40+00:00",
+      "updated_at": "2026-06-15T03:38:40+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-15T03:38:40+00:00",
+      "age_seconds": 858534,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_5e6b25fcb72148d5bdae1dd07759c08e",
+      "task_id": null,
+      "session_id": "agent_session_a371298aeb8f404c81ed009156672d2f",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-23T03:14:41+00:00",
+      "completed_at": "2026-06-23T03:14:53+00:00",
+      "updated_at": "2026-06-23T03:14:53+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-23T03:14:53+00:00",
+      "age_seconds": 168761,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_5f3a7a33a064432a8d83d930a033e0d1",
+      "task_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "session_id": "agent_session_4e86f36300984aaebb43bb3d02a71ff0",
+      "agent_id": "aipinho",
+      "operation_type": "patch_pipeline",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "agent_run_created",
+      "started_at": "2026-06-22T02:53:13+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-22T02:53:13+00:00",
+      "last_event": "agent_run_created",
+      "heartbeat": "2026-06-22T02:53:13+00:00",
+      "age_seconds": 256461,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 1,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_65aeb22b35d747018467c6b05581540b",
+      "task_id": null,
+      "session_id": "agent_session_49423de13f4f4b4385aa517b70aa3362",
+      "agent_id": "codex",
+      "operation_type": "codex_chat",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "memory_candidate_created",
+      "started_at": "2026-06-23T03:41:29+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-23T03:42:59+00:00",
+      "last_event": "memory_candidate_created",
+      "heartbeat": "2026-06-23T03:42:59+00:00",
+      "age_seconds": 167075,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 3,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_694122b9c65349b586dc7b8be08bf056",
+      "task_id": null,
+      "session_id": "agent_session_ca537ad85afb4cb4bb502370425f0db6",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-15T03:25:37+00:00",
+      "completed_at": "2026-06-15T03:25:39+00:00",
+      "updated_at": "2026-06-15T03:25:40+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-15T03:25:40+00:00",
+      "age_seconds": 859314,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_6c5e6d506c094bf79587db8bf96bfffd",
+      "task_id": null,
+      "session_id": "agent_session_18d8767f2365446594a0ebafc2e3d8b9",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-18T18:44:55+00:00",
+      "completed_at": "2026-06-18T18:45:05+00:00",
+      "updated_at": "2026-06-18T18:45:06+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-18T18:45:06+00:00",
+      "age_seconds": 544948,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_7656f8a30d844f8d8a838a6e0fb9a9b4",
+      "task_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "session_id": "agent_session_977a150472e7440d8c61b289aa7a62b7",
+      "agent_id": "aipinho",
+      "operation_type": "patch_pipeline",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "agent_run_created",
+      "started_at": "2026-06-22T02:41:54+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-22T02:41:54+00:00",
+      "last_event": "agent_run_created",
+      "heartbeat": "2026-06-22T02:41:54+00:00",
+      "age_seconds": 257140,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 1,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_a9aefa24147c4836b87b9dce8278ab5e",
+      "task_id": "task_run_0759a23d5e2f493ea2d062ed6d353bb3",
+      "session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+      "agent_id": "aipinho",
+      "operation_type": "patch_pipeline",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "agent_run_created",
+      "started_at": "2026-06-22T01:46:12+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-22T01:46:12+00:00",
+      "last_event": "agent_run_created",
+      "heartbeat": "2026-06-22T01:46:12+00:00",
+      "age_seconds": 260482,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 1,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_d061c1c0ff61447ab000f8e3f944bbd1",
+      "task_id": null,
+      "session_id": "agent_session_0407ede2a55f449eac90fca2d07a93c9",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-15T02:55:01+00:00",
+      "completed_at": "2026-06-15T02:55:43+00:00",
+      "updated_at": "2026-06-15T02:55:44+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-15T02:55:44+00:00",
+      "age_seconds": 861110,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_d4a2ea6ee2194baeb56d90f930788f83",
+      "task_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "session_id": "agent_session_3910d8755c4041ec94e81d0fbb0af837",
+      "agent_id": "aipinho",
+      "operation_type": "patch_pipeline",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "agent_run_created",
+      "started_at": "2026-06-22T02:54:22+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-22T02:54:22+00:00",
+      "last_event": "agent_run_created",
+      "heartbeat": "2026-06-22T02:54:22+00:00",
+      "age_seconds": 256392,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 1,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_d84b1a82f89c4dbc8ad0558faef00780",
+      "task_id": null,
+      "session_id": "agent_session_d1cbe966ee8140c68474a70a662d30e5",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-14T10:50:19+00:00",
+      "completed_at": "2026-06-14T10:50:26+00:00",
+      "updated_at": "2026-06-14T10:50:26+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-14T10:50:26+00:00",
+      "age_seconds": 919028,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_e8facf73c9844703a35182e21e303201",
+      "task_id": null,
+      "session_id": "agent_session_7bcb66bd372744299cffeebcfd7e46d8",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-14T11:43:57+00:00",
+      "completed_at": "2026-06-14T11:44:03+00:00",
+      "updated_at": "2026-06-14T11:44:03+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-14T11:44:03+00:00",
+      "age_seconds": 915811,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    },
+    {
+      "run_id": "agent_run_f21a2eeb9ba54220a752488eec0d752d",
+      "task_id": "task_run_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "session_id": "agent_session_0930e136a21a4b32859947d190c798fd",
+      "agent_id": "aipinho",
+      "operation_type": "patch_pipeline",
+      "stored_status": "running",
+      "effective_status": "running",
+      "current_step": "agent_run_created",
+      "started_at": "2026-06-22T03:06:40+00:00",
+      "completed_at": null,
+      "updated_at": "2026-06-22T03:06:40+00:00",
+      "last_event": "agent_run_created",
+      "heartbeat": "2026-06-22T03:06:40+00:00",
+      "age_seconds": 255654,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 1,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h"
+      ]
+    },
+    {
+      "run_id": "agent_run_fb5f7bcf3a8b4990b77a99604a73c849",
+      "task_id": null,
+      "session_id": "agent_session_cddc5398d394418587b2fc20da16e487",
+      "agent_id": "gemini",
+      "operation_type": "gemini_chat",
+      "stored_status": "completed",
+      "effective_status": "created",
+      "current_step": "gemini_memory_candidate_created",
+      "started_at": "2026-06-16T00:46:10+00:00",
+      "completed_at": "2026-06-16T00:46:16+00:00",
+      "updated_at": "2026-06-16T00:46:16+00:00",
+      "last_event": "gemini_memory_candidate_created",
+      "heartbeat": "2026-06-16T00:46:16+00:00",
+      "age_seconds": 782478,
+      "pending_approval_associated": false,
+      "tool_or_subprocess": null,
+      "event_count": 8,
+      "stale_reasons": [
+        "active_run_without_recent_event_1h",
+        "active_effective_status_with_completed_at"
+      ]
+    }
+  ],
+  "stale_sessions_sample": [
+    {
+      "session_id": "agent_session_185cd36c97c444c7900247471a0ceb38",
+      "agent_id": "gemini",
+      "title": "Gemini bridge de785d6d",
+      "updated_at": "2026-06-13T17:59:57+00:00",
+      "age_seconds": 979657
+    },
+    {
+      "session_id": "agent_session_78f2b61680554edd86d1432b52c0d1eb",
+      "agent_id": "aipinho",
+      "title": "Delegated from lucio",
+      "updated_at": "2026-06-13T21:42:52+00:00",
+      "age_seconds": 966282
+    },
+    {
+      "session_id": "agent_session_1d6b2581a03f46c7a61ad0c3e932ad0b",
+      "agent_id": "gemini",
+      "title": "Gemini bridge fc999c14",
+      "updated_at": "2026-06-13T18:10:28+00:00",
+      "age_seconds": 979026
+    },
+    {
+      "session_id": "agent_session_d24f43a5784f4a688e23ce6e9648e282",
+      "agent_id": "aipinho",
+      "title": "Delegated from lucio",
+      "updated_at": "2026-06-13T21:42:52+00:00",
+      "age_seconds": 966282
+    },
+    {
+      "session_id": "agent_session_b279e2d4cc6c47c2a5a4b5eb41c848ac",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 1f77d59e",
+      "updated_at": "2026-06-13T21:42:52+00:00",
+      "age_seconds": 966282
+    },
+    {
+      "session_id": "agent_session_2183a841ce4e43cb9288126acd11da7f",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "updated_at": "2026-06-13T21:42:52+00:00",
+      "age_seconds": 966282
+    },
+    {
+      "session_id": "agent_session_f40eb6faf6b84d48ba841b69805a69c2",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-13T21:42:52+00:00",
+      "age_seconds": 966282
+    },
+    {
+      "session_id": "agent_session_a9967d73eefd4f019dff4bb90365ad40",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-13T19:41:16+00:00",
+      "age_seconds": 973578
+    },
+    {
+      "session_id": "agent_session_13c1cf9e4a4c40b58fe2f455cdee9877",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-13T20:25:19+00:00",
+      "age_seconds": 970935
+    },
+    {
+      "session_id": "agent_session_b8dd48ad70264bc79d077c72f951c4e2",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-13T20:26:58+00:00",
+      "age_seconds": 970836
+    },
+    {
+      "session_id": "agent_session_33f3776980af4c5494f0484a9543c75e",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-13T20:27:44+00:00",
+      "age_seconds": 970790
+    },
+    {
+      "session_id": "agent_session_bb54e7cb28a24e23aae790985b484748",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-13T20:40:07+00:00",
+      "age_seconds": 970047
+    },
+    {
+      "session_id": "agent_session_d531275af08249fa80344ac15cf58f2e",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-13T20:40:10+00:00",
+      "age_seconds": 970044
+    },
+    {
+      "session_id": "agent_session_68b47e26e11b40d191d202e0c7dd2b11",
+      "agent_id": "codex",
+      "title": "Codex bridge 98f4d083",
+      "updated_at": "2026-06-14T01:10:37+00:00",
+      "age_seconds": 953817
+    },
+    {
+      "session_id": "agent_session_1c34fc646df341098623d881245afb18",
+      "agent_id": "aipinho",
+      "title": "Sprint 20 Dogfood",
+      "updated_at": "2026-06-13T23:04:22+00:00",
+      "age_seconds": 961392
+    },
+    {
+      "session_id": "agent_session_d1cbe966ee8140c68474a70a662d30e5",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "updated_at": "2026-06-14T10:50:26+00:00",
+      "age_seconds": 919028
+    },
+    {
+      "session_id": "agent_session_3a705f2e964141b2970c2b59ccfbb3da",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "updated_at": "2026-06-14T10:51:18+00:00",
+      "age_seconds": 918976
+    },
+    {
+      "session_id": "agent_session_eee45f53ac094456814510926243f032",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "updated_at": "2026-06-22T15:21:23+00:00",
+      "age_seconds": 211571
+    },
+    {
+      "session_id": "agent_session_96358935b58f4e549b28774b13360266",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "updated_at": "2026-06-22T15:21:24+00:00",
+      "age_seconds": 211570
+    },
+    {
+      "session_id": "agent_session_7b84757d87074a328a40932c222d531d",
+      "agent_id": "codex",
+      "title": "Codex bridge 668a7759",
+      "updated_at": "2026-06-22T15:21:23+00:00",
+      "age_seconds": 211571
+    },
+    {
+      "session_id": "agent_session_7bcb66bd372744299cffeebcfd7e46d8",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "updated_at": "2026-06-14T11:44:03+00:00",
+      "age_seconds": 915811
+    },
+    {
+      "session_id": "agent_session_96b1813cfb174936a790357c46f18f57",
+      "agent_id": "aipinho",
+      "title": "skill smoke",
+      "updated_at": "2026-06-14T12:15:49+00:00",
+      "age_seconds": 913905
+    },
+    {
+      "session_id": "agent_session_7d7831d9cc3847a0bae683c65b5223bd",
+      "agent_id": "aipinho",
+      "title": "skill smoke",
+      "updated_at": "2026-06-22T15:21:23+00:00",
+      "age_seconds": 211571
+    },
+    {
+      "session_id": "agent_session_4af0a480896f41d8b24cbdd3211afc7a",
+      "agent_id": "aipinho",
+      "title": "skill smoke",
+      "updated_at": "2026-06-14T12:17:40+00:00",
+      "age_seconds": 913794
+    },
+    {
+      "session_id": "agent_session_715c65975db14fd7baa31363a0f9c8de",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-14T12:20:49+00:00",
+      "age_seconds": 913605
+    },
+    {
+      "session_id": "agent_session_35b6dbf0cfbd4add95afe854f011762e",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-14T12:20:49+00:00",
+      "age_seconds": 913605
+    },
+    {
+      "session_id": "agent_session_4e46b76fbb1646bd84ab61a24f7b45aa",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-14T12:20:49+00:00",
+      "age_seconds": 913605
+    },
+    {
+      "session_id": "agent_session_0d8faa3440f340a883de548b3dfa6a17",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-14T12:20:50+00:00",
+      "age_seconds": 913604
+    },
+    {
+      "session_id": "agent_session_eeedf13606684fad8e8881d4e6583296",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-14T12:24:39+00:00",
+      "age_seconds": 913375
+    },
+    {
+      "session_id": "agent_session_50b7eef2769f4398ad8f1a483461fac1",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-14T12:24:39+00:00",
+      "age_seconds": 913375
+    },
+    {
+      "session_id": "agent_session_f363c686f7bc44e9ae624d47da3eacdf",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-14T12:24:39+00:00",
+      "age_seconds": 913375
+    },
+    {
+      "session_id": "agent_session_783b2a76930049ab8c79496ba94ecf82",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-14T12:24:40+00:00",
+      "age_seconds": 913374
+    },
+    {
+      "session_id": "agent_session_5ea3a98d676d49aaa61e24cd647c7a70",
+      "agent_id": "aipinho",
+      "title": "skills regression",
+      "updated_at": "2026-06-14T12:24:42+00:00",
+      "age_seconds": 913372
+    },
+    {
+      "session_id": "agent_session_28929391c20b4b76a8b727e7e7582406",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-14T12:28:26+00:00",
+      "age_seconds": 913148
+    },
+    {
+      "session_id": "agent_session_9b1cf72459dd44d893ddc3d809c07892",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-22T15:21:23+00:00",
+      "age_seconds": 211571
+    },
+    {
+      "session_id": "agent_session_889c1c8856d841d5ad68247eba3b739e",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-14T12:28:27+00:00",
+      "age_seconds": 913147
+    },
+    {
+      "session_id": "agent_session_a5dec78f02f84b10957b5c27f7c5f346",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-14T12:28:27+00:00",
+      "age_seconds": 913147
+    },
+    {
+      "session_id": "agent_session_8a3cee6df1ea4d649ed108dc8f9c6c62",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-14T12:28:27+00:00",
+      "age_seconds": 913147
+    },
+    {
+      "session_id": "agent_session_0484fcfddc954339a28e24031d82df9a",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-14T12:28:28+00:00",
+      "age_seconds": 913146
+    },
+    {
+      "session_id": "agent_session_6ac5de3b616b428f85df5b509f45715d",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-14T12:28:27+00:00",
+      "age_seconds": 913147
+    },
+    {
+      "session_id": "agent_session_76e5c4985a06428fa62d15c873294007",
+      "agent_id": "aipinho",
+      "title": "skill test",
+      "updated_at": "2026-06-22T15:21:22+00:00",
+      "age_seconds": 211572
+    },
+    {
+      "session_id": "agent_session_6c2a49bc190e42fe87ff3e7221c9c4fb",
+      "agent_id": "aipinho",
+      "title": "skills regression",
+      "updated_at": "2026-06-14T12:28:28+00:00",
+      "age_seconds": 913146
+    },
+    {
+      "session_id": "agent_session_789fa7a10b6f490ea147f279b810b572",
+      "agent_id": "aipinho",
+      "title": "skills regression",
+      "updated_at": "2026-06-14T12:28:29+00:00",
+      "age_seconds": 913145
+    },
+    {
+      "session_id": "agent_session_548502a1ec824320a491234e0bd6942a",
+      "agent_id": "aipinho",
+      "title": "Sprint24 skill smoke",
+      "updated_at": "2026-06-14T12:35:33+00:00",
+      "age_seconds": 912721
+    },
+    {
+      "session_id": "agent_session_9b170ea860a44432b6b066ba93726139",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "updated_at": "2026-06-22T15:21:22+00:00",
+      "age_seconds": 211572
+    },
+    {
+      "session_id": "agent_session_abb0a73cd4034f4bb3f20500e0bacb95",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "updated_at": "2026-06-22T15:21:21+00:00",
+      "age_seconds": 211573
+    },
+    {
+      "session_id": "agent_session_e9c82f88c92f4c688460090e4acbd839",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "updated_at": "2026-06-22T15:21:20+00:00",
+      "age_seconds": 211574
+    },
+    {
+      "session_id": "agent_session_7b45aea8b9484653abecc0530960e568",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "updated_at": "2026-06-14T17:11:04+00:00",
+      "age_seconds": 896190
+    },
+    {
+      "session_id": "agent_session_91585c6dffa349d98bf2cb766a576c1a",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "updated_at": "2026-06-14T17:11:07+00:00",
+      "age_seconds": 896187
+    },
+    {
+      "session_id": "agent_session_64c1f79bd551437fba506e6651003004",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "updated_at": "2026-06-14T17:11:08+00:00",
+      "age_seconds": 896186
+    },
+    {
+      "session_id": "agent_session_6f57fb1d1b084dff99e3c14bc287c4f2",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "updated_at": "2026-06-14T17:11:11+00:00",
+      "age_seconds": 896183
+    },
+    {
+      "session_id": "agent_session_36d909b6c8614ab7b149fc261bfab32a",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "updated_at": "2026-06-14T17:12:50+00:00",
+      "age_seconds": 896084
+    },
+    {
+      "session_id": "agent_session_7f4000abb38c4d48bfd56df3903c5767",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "updated_at": "2026-06-14T17:12:53+00:00",
+      "age_seconds": 896081
+    },
+    {
+      "session_id": "agent_session_f67ecdb7d11247ad829ba781c17e6187",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "updated_at": "2026-06-14T17:12:55+00:00",
+      "age_seconds": 896079
+    },
+    {
+      "session_id": "agent_session_e67b4162336a4c6980213e7285230113",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "updated_at": "2026-06-14T17:12:58+00:00",
+      "age_seconds": 896076
+    },
+    {
+      "session_id": "agent_session_471c64f6a99c409f820b18e553da4d67",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - Android",
+      "updated_at": "2026-06-14T17:32:01+00:00",
+      "age_seconds": 894933
+    },
+    {
+      "session_id": "agent_session_065f11c80216433cbd1a654eb6bb0d64",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "updated_at": "2026-06-14T17:34:22+00:00",
+      "age_seconds": 894792
+    },
+    {
+      "session_id": "agent_session_99f6583ca54e4dc8ab6589f4fe9f2dc0",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "updated_at": "2026-06-14T17:34:25+00:00",
+      "age_seconds": 894789
+    },
+    {
+      "session_id": "agent_session_731786f26941470b8bc66561d98f1629",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "updated_at": "2026-06-14T17:34:28+00:00",
+      "age_seconds": 894786
+    },
+    {
+      "session_id": "agent_session_77d394fe4082449085921fe11c24b98d",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "updated_at": "2026-06-14T17:34:31+00:00",
+      "age_seconds": 894783
+    },
+    {
+      "session_id": "agent_session_da947a958ed749ac948434b95beb131d",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "updated_at": "2026-06-14T17:36:07+00:00",
+      "age_seconds": 894687
+    },
+    {
+      "session_id": "agent_session_ee0046a986064361a79d80bf49f56aa0",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "updated_at": "2026-06-14T17:40:04+00:00",
+      "age_seconds": 894450
+    },
+    {
+      "session_id": "agent_session_abdbed7378334eaa82532493406d35fe",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "updated_at": "2026-06-14T17:40:08+00:00",
+      "age_seconds": 894446
+    },
+    {
+      "session_id": "agent_session_472cb774b8934defb2b8699cccbc4a80",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "updated_at": "2026-06-14T17:40:11+00:00",
+      "age_seconds": 894443
+    },
+    {
+      "session_id": "agent_session_9b0121dcef714b52b7e2677d5b35c3b2",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "updated_at": "2026-06-14T17:40:14+00:00",
+      "age_seconds": 894440
+    },
+    {
+      "session_id": "agent_session_d4ddfcd007a143e691be624bcbe43467",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonSite",
+      "updated_at": "2026-06-14T17:48:39+00:00",
+      "age_seconds": 893935
+    },
+    {
+      "session_id": "agent_session_cc1bc003b8534abbafa8c2dd2165fc5c",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiRunner",
+      "updated_at": "2026-06-14T17:48:43+00:00",
+      "age_seconds": 893931
+    },
+    {
+      "session_id": "agent_session_83d300b452f542399fc27e25b3f33196",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonSite",
+      "updated_at": "2026-06-14T17:49:16+00:00",
+      "age_seconds": 893898
+    },
+    {
+      "session_id": "agent_session_3ad68ac77c264bcfb32669ab78997214",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiRunner",
+      "updated_at": "2026-06-14T17:49:20+00:00",
+      "age_seconds": 893894
+    },
+    {
+      "session_id": "agent_session_52dd9e3faede4b1eaf4763472572b00e",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FieldRunner",
+      "updated_at": "2026-06-14T17:51:20+00:00",
+      "age_seconds": 893774
+    },
+    {
+      "session_id": "agent_session_87e110d3a0d34425b11ba64a70d83e76",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonSite",
+      "updated_at": "2026-06-14T21:01:10+00:00",
+      "age_seconds": 882384
+    },
+    {
+      "session_id": "agent_session_613921de5d4040f689de95389bd32ae9",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiRunner",
+      "updated_at": "2026-06-14T21:01:14+00:00",
+      "age_seconds": 882380
+    },
+    {
+      "session_id": "agent_session_1b055e5cf3124aae9f20ff2a2104a961",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "updated_at": "2026-06-14T21:01:21+00:00",
+      "age_seconds": 882373
+    },
+    {
+      "session_id": "agent_session_7057987983144261a453b76c9253186f",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "updated_at": "2026-06-14T21:01:26+00:00",
+      "age_seconds": 882368
+    },
+    {
+      "session_id": "agent_session_292dc58465c94f478a1d90dc2a3f4ec6",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "updated_at": "2026-06-14T21:01:30+00:00",
+      "age_seconds": 882364
+    },
+    {
+      "session_id": "agent_session_ca85e79c65974c5cab0936f23d3e96f8",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "updated_at": "2026-06-14T21:01:34+00:00",
+      "age_seconds": 882360
+    },
+    {
+      "session_id": "agent_session_6ca20a46b32744a690b2f51fda77efd6",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonSite",
+      "updated_at": "2026-06-14T21:02:11+00:00",
+      "age_seconds": 882323
+    },
+    {
+      "session_id": "agent_session_b076bb147e814ed1a66c73f87ad3799d",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "updated_at": "2026-06-14T21:02:17+00:00",
+      "age_seconds": 882317
+    },
+    {
+      "session_id": "agent_session_a61c54eb2bfb4ff1a0873379f5639c80",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiRunner",
+      "updated_at": "2026-06-14T21:02:16+00:00",
+      "age_seconds": 882318
+    },
+    {
+      "session_id": "agent_session_fab3ae2775324488a5979da5f0730181",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "updated_at": "2026-06-14T21:02:22+00:00",
+      "age_seconds": 882312
+    },
+    {
+      "session_id": "agent_session_83e8305c1d7b40f0abecd14c9b0a92a5",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "updated_at": "2026-06-14T21:02:26+00:00",
+      "age_seconds": 882308
+    },
+    {
+      "session_id": "agent_session_a7418f401de947a08955a0b30f1dfc1f",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "updated_at": "2026-06-14T21:02:31+00:00",
+      "age_seconds": 882303
+    },
+    {
+      "session_id": "agent_session_32d03f6d9d3b466b8aa1afb14e5b9857",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - CleanRunner",
+      "updated_at": "2026-06-14T21:04:06+00:00",
+      "age_seconds": 882208
+    },
+    {
+      "session_id": "agent_session_9a65e2f9fc4f4fa3aa50bbb975c391fb",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "updated_at": "2026-06-14T21:38:10+00:00",
+      "age_seconds": 880164
+    },
+    {
+      "session_id": "agent_session_0d184fc79b7a42ee86d84014245d8339",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "updated_at": "2026-06-14T21:38:17+00:00",
+      "age_seconds": 880157
+    },
+    {
+      "session_id": "agent_session_1815840a80aa448dbaac01246d7f6d86",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "updated_at": "2026-06-14T21:38:22+00:00",
+      "age_seconds": 880152
+    },
+    {
+      "session_id": "agent_session_82073d7c3bb74aa095b34bf213fbd343",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "updated_at": "2026-06-14T21:38:29+00:00",
+      "age_seconds": 880145
+    },
+    {
+      "session_id": "agent_session_a5eca1e7cdc746f9bfc0ea407fc42c07",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonSite",
+      "updated_at": "2026-06-14T21:38:35+00:00",
+      "age_seconds": 880139
+    },
+    {
+      "session_id": "agent_session_7f66fb72670f4f4b986639f86fefa661",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiRunner",
+      "updated_at": "2026-06-14T21:38:42+00:00",
+      "age_seconds": 880132
+    },
+    {
+      "session_id": "agent_session_18c5352f9a1b444d9b1aec82d1cb94ed",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonSite",
+      "updated_at": "2026-06-14T21:39:44+00:00",
+      "age_seconds": 880070
+    },
+    {
+      "session_id": "agent_session_c993ec86a46f44edaf55f429b93cc651",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiRunner",
+      "updated_at": "2026-06-14T21:39:52+00:00",
+      "age_seconds": 880062
+    },
+    {
+      "session_id": "agent_session_b2a9e2c3b77447d6916d8e2307be74bf",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "updated_at": "2026-06-14T21:41:11+00:00",
+      "age_seconds": 879983
+    },
+    {
+      "session_id": "agent_session_ed146bab6d3b47498daf61ac885b89ba",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "updated_at": "2026-06-14T21:41:19+00:00",
+      "age_seconds": 879975
+    },
+    {
+      "session_id": "agent_session_199f4270fd254b51a03dcba406818668",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonLanding",
+      "updated_at": "2026-06-14T21:41:25+00:00",
+      "age_seconds": 879969
+    },
+    {
+      "session_id": "agent_session_42be7363ee1a44308f8b3660cc8210b7",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "updated_at": "2026-06-14T21:41:32+00:00",
+      "age_seconds": 879962
+    },
+    {
+      "session_id": "agent_session_bed6d951b6c24e53adcc7231e70a394b",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - NeonSite",
+      "updated_at": "2026-06-14T21:41:38+00:00",
+      "age_seconds": 879956
+    },
+    {
+      "session_id": "agent_session_623e75cbb4f74f909264ad2b349b6193",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiRunner",
+      "updated_at": "2026-06-14T21:41:46+00:00",
+      "age_seconds": 879948
+    },
+    {
+      "session_id": "agent_session_0551a033134341d9b4df8d1d33f550d9",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiDemo",
+      "updated_at": "2026-06-14T22:31:55+00:00",
+      "age_seconds": 876939
+    },
+    {
+      "session_id": "agent_session_f89451c7ca4d493287bf9b2029ac9fc5",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - DocsDemo",
+      "updated_at": "2026-06-14T22:32:05+00:00",
+      "age_seconds": 876929
+    },
+    {
+      "session_id": "agent_session_c2d1eb4ac9e945dc897b1358e4d60df4",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - SapoAndando",
+      "updated_at": "2026-06-14T22:33:02+00:00",
+      "age_seconds": 876872
+    },
+    {
+      "session_id": "agent_session_5f1d90c14ba84a6eb03a628b983c00d5",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiDemo",
+      "updated_at": "2026-06-14T22:33:01+00:00",
+      "age_seconds": 876873
+    },
+    {
+      "session_id": "agent_session_452b2be879884a3a8261eb86d52084b7",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - DocsDemo",
+      "updated_at": "2026-06-14T22:33:14+00:00",
+      "age_seconds": 876860
+    },
+    {
+      "session_id": "agent_session_78ec21da571042fe958ee8d1851d14a9",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - FileLister",
+      "updated_at": "2026-06-22T15:21:19+00:00",
+      "age_seconds": 211575
+    },
+    {
+      "session_id": "agent_session_3c3ceb6f9bbc4348b08a4091c9d826d0",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiWeb",
+      "updated_at": "2026-06-14T22:33:22+00:00",
+      "age_seconds": 876852
+    },
+    {
+      "session_id": "agent_session_0ab3ab8a04794919a9a653eced3d8988",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - ApiDemo",
+      "updated_at": "2026-06-14T22:33:35+00:00",
+      "age_seconds": 876839
+    },
+    {
+      "session_id": "agent_session_4075f36b88774632b628d2eff9508c3f",
+      "agent_id": "aipinho",
+      "title": "Sandbox Project Factory - DocsDemo",
+      "updated_at": "2026-06-14T22:33:43+00:00",
+      "age_seconds": 876831
+    },
+    {
+      "session_id": "agent_session_ccb545d58b774537b2161c35565f68f4",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "updated_at": "2026-06-15T01:52:24+00:00",
+      "age_seconds": 864910
+    },
+    {
+      "session_id": "agent_session_ef09ecdca0b64648b1a3cbf3bbb29eb7",
+      "agent_id": "codex",
+      "title": "Codex bridge da352f2d",
+      "updated_at": "2026-06-22T15:21:19+00:00",
+      "age_seconds": 211575
+    },
+    {
+      "session_id": "agent_session_0407ede2a55f449eac90fca2d07a93c9",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "updated_at": "2026-06-15T02:55:44+00:00",
+      "age_seconds": 861110
+    },
+    {
+      "session_id": "agent_session_7e12f2fc2b9a4335b0ebe4786df536ac",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "updated_at": "2026-06-22T15:21:19+00:00",
+      "age_seconds": 211575
+    },
+    {
+      "session_id": "agent_session_9a9724800c3c47819b64c87a1458d564",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "updated_at": "2026-06-22T15:21:19+00:00",
+      "age_seconds": 211575
+    },
+    {
+      "session_id": "agent_session_875ba68fbc6b48bca833f99c616348f0",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "updated_at": "2026-06-22T15:21:19+00:00",
+      "age_seconds": 211575
+    },
+    {
+      "session_id": "agent_session_628c8009e1514b1c86b03b25a84b2a08",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "updated_at": "2026-06-22T15:21:18+00:00",
+      "age_seconds": 211576
+    },
+    {
+      "session_id": "agent_session_ef97baeb9e5e40f794e3ad939be17fdc",
+      "agent_id": "aipinho",
+      "title": "diagnostic tool gateway smoke",
+      "updated_at": "2026-06-22T15:21:18+00:00",
+      "age_seconds": 211576
+    },
+    {
+      "session_id": "agent_session_ca537ad85afb4cb4bb502370425f0db6",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 7a1ad0d6",
+      "updated_at": "2026-06-15T03:25:40+00:00",
+      "age_seconds": 859314
+    },
+    {
+      "session_id": "agent_session_2ef47a9d46944155ace1ce6f994d47ae",
+      "agent_id": "codex",
+      "title": "Codex bridge 6a1152ce",
+      "updated_at": "2026-06-22T15:21:18+00:00",
+      "age_seconds": 211576
+    },
+    {
+      "session_id": "agent_session_ab1ae58dbbd54ab1b687f82dcb78b71c",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 5e41cc44",
+      "updated_at": "2026-06-15T03:38:40+00:00",
+      "age_seconds": 858534
+    },
+    {
+      "session_id": "agent_session_f17e87bada974654adaf6cebffe5f856",
+      "agent_id": "gemini",
+      "title": "Gemini bridge eaefb80c",
+      "updated_at": "2026-06-15T03:38:41+00:00",
+      "age_seconds": 858533
+    },
+    {
+      "session_id": "agent_session_68cb1c2a49cd44da931a06183aeef853",
+      "agent_id": "aipinho",
+      "title": "Delegated from lucio",
+      "updated_at": "2026-06-22T15:21:18+00:00",
+      "age_seconds": 211576
+    },
+    {
+      "session_id": "agent_session_465bb66bfaf74a3aae816e6bb73c4549",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 92ed0227",
+      "updated_at": "2026-06-15T03:39:15+00:00",
+      "age_seconds": 858499
+    },
+    {
+      "session_id": "agent_session_2fe052b34edf40b8b0e7f47199a60df2",
+      "agent_id": "gemini",
+      "title": "Gemini bridge bad5badc",
+      "updated_at": "2026-06-22T15:21:17+00:00",
+      "age_seconds": 211577
+    },
+    {
+      "session_id": "agent_session_fcf5e73cf717478d85e03e08ea5b19b5",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "updated_at": "2026-06-22T15:21:17+00:00",
+      "age_seconds": 211577
+    },
+    {
+      "session_id": "agent_session_55bd69eca2f3445ca9cb93b2cbe290f9",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "updated_at": "2026-06-15T14:52:58+00:00",
+      "age_seconds": 818076
+    },
+    {
+      "session_id": "agent_session_518ffc5e972342e2b73772dfb5c8fea7",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "updated_at": "2026-06-22T15:21:17+00:00",
+      "age_seconds": 211577
+    },
+    {
+      "session_id": "agent_session_4f44294e705c4ce0a7676094ef666e07",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "updated_at": "2026-06-22T15:21:17+00:00",
+      "age_seconds": 211577
+    },
+    {
+      "session_id": "agent_session_cddc5398d394418587b2fc20da16e487",
+      "agent_id": "gemini",
+      "title": "Gemini bridge d61f35f9",
+      "updated_at": "2026-06-16T00:46:17+00:00",
+      "age_seconds": 782477
+    },
+    {
+      "session_id": "agent_session_75a4e918618d4fea838b12d03cb916a8",
+      "agent_id": "codex",
+      "title": "Codex bridge 83c72023",
+      "updated_at": "2026-06-22T15:21:17+00:00",
+      "age_seconds": 211577
+    },
+    {
+      "session_id": "agent_session_7b09a5bcd77941719ec19d2e7f66906d",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "updated_at": "2026-06-17T00:03:32+00:00",
+      "age_seconds": 698642
+    },
+    {
+      "session_id": "agent_session_18d8767f2365446594a0ebafc2e3d8b9",
+      "agent_id": "gemini",
+      "title": "Gemini bridge c505b592",
+      "updated_at": "2026-06-18T18:45:06+00:00",
+      "age_seconds": 544948
+    },
+    {
+      "session_id": "agent_session_aac6584e88f84674a33dba35af8db007",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T02:45:12+00:00",
+      "age_seconds": 429742
+    },
+    {
+      "session_id": "agent_session_3049aaa559d340a59284fcb93f95cb26",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T02:48:15+00:00",
+      "age_seconds": 429559
+    },
+    {
+      "session_id": "agent_session_e1f415cb983f4243abfef9960d14053b",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T02:51:29+00:00",
+      "age_seconds": 429365
+    },
+    {
+      "session_id": "agent_session_a14a65f5b502490bb974141e630a3ebb",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T05:11:23+00:00",
+      "age_seconds": 420971
+    },
+    {
+      "session_id": "agent_session_f663b6df5659452fb6dea5c4ccee09ff",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T05:34:46+00:00",
+      "age_seconds": 419568
+    },
+    {
+      "session_id": "agent_session_b653d94510c04aeb942313900c4c6d85",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T05:39:23+00:00",
+      "age_seconds": 419291
+    },
+    {
+      "session_id": "agent_session_999f36b859fe4da08136e29d62b2381e",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T05:45:12+00:00",
+      "age_seconds": 418942
+    },
+    {
+      "session_id": "agent_session_602f5f791df64149ac74c5162923af15",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T05:59:36+00:00",
+      "age_seconds": 418078
+    },
+    {
+      "session_id": "agent_session_0c3a7ebc247747d19538c0829df95bbb",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T06:25:56+00:00",
+      "age_seconds": 416498
+    },
+    {
+      "session_id": "agent_session_bfffe505b9914429a497c06ebb815684",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T06:34:13+00:00",
+      "age_seconds": 416001
+    },
+    {
+      "session_id": "agent_session_063a53369305434ab724067fe1b695b4",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T21:26:04+00:00",
+      "age_seconds": 362490
+    },
+    {
+      "session_id": "agent_session_692308bd2fa042e9aafd5dc9de0430c3",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T21:35:56+00:00",
+      "age_seconds": 361898
+    },
+    {
+      "session_id": "agent_session_eabe272fc1ab41b08085149f8628ccf3",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T21:45:49+00:00",
+      "age_seconds": 361305
+    },
+    {
+      "session_id": "agent_session_cf0c229d99ef497bb24fc75d9f611278",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T21:52:51+00:00",
+      "age_seconds": 360883
+    },
+    {
+      "session_id": "agent_session_17b6c9079b9d47e6bd77a573f21d7997",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-20T21:54:38+00:00",
+      "age_seconds": 360776
+    },
+    {
+      "session_id": "agent_session_299870c7f9844ca79c3bae778a45c2d5",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "updated_at": "2026-06-22T15:21:17+00:00",
+      "age_seconds": 211577
+    },
+    {
+      "session_id": "agent_session_5ffd0cf85d394428afa8bf6ff7d61d0a",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "updated_at": "2026-06-22T15:21:16+00:00",
+      "age_seconds": 211578
+    },
+    {
+      "session_id": "agent_session_ff0195a40ca8431082d8194b72bc0ace",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "updated_at": "2026-06-22T15:21:16+00:00",
+      "age_seconds": 211578
+    },
+    {
+      "session_id": "agent_session_a52671da75154a7ba9078a77eb69c947",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "updated_at": "2026-06-22T15:21:16+00:00",
+      "age_seconds": 211578
+    },
+    {
+      "session_id": "agent_session_31e780f4b5844a9abb027eed0882f25d",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "updated_at": "2026-06-22T15:21:15+00:00",
+      "age_seconds": 211579
+    },
+    {
+      "session_id": "agent_session_4a1709787d5f412baf50669450b28a9d",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "updated_at": "2026-06-22T15:21:15+00:00",
+      "age_seconds": 211579
+    },
+    {
+      "session_id": "agent_session_d4734feb700647be927c1ffe81092cc5",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "updated_at": "2026-06-22T15:21:15+00:00",
+      "age_seconds": 211579
+    },
+    {
+      "session_id": "agent_session_ea60ac59918444258ab0d8cafd218a9e",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "updated_at": "2026-06-22T15:21:15+00:00",
+      "age_seconds": 211579
+    },
+    {
+      "session_id": "agent_session_6db77e3c24d2442ba25c73e71385a473",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "updated_at": "2026-06-22T15:21:14+00:00",
+      "age_seconds": 211580
+    },
+    {
+      "session_id": "agent_session_c23c3d5ebfe7418080067fcc3687aa92",
+      "agent_id": "aipinho",
+      "title": "AIpinho governed evidence bundle",
+      "updated_at": "2026-06-21T21:03:55+00:00",
+      "age_seconds": 277419
+    },
+    {
+      "session_id": "agent_session_4e8f8c59fb494529ae521df40e9ce53d",
+      "agent_id": "aipinho",
+      "title": "AIpinho governed evidence bundle",
+      "updated_at": "2026-06-21T21:06:57+00:00",
+      "age_seconds": 277237
+    },
+    {
+      "session_id": "agent_session_503562dc47344ec2acdef27676187dd5",
+      "agent_id": "aipinho",
+      "title": "AIpinho static reachability QA",
+      "updated_at": "2026-06-21T21:19:11+00:00",
+      "age_seconds": 276503
+    },
+    {
+      "session_id": "agent_session_3254f8901513472181ce7de6e50ef169",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "updated_at": "2026-06-21T21:59:43+00:00",
+      "age_seconds": 274071
+    },
+    {
+      "session_id": "agent_session_f60e8d1f95d54b2b931ba444a05c914c",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "updated_at": "2026-06-21T22:14:34+00:00",
+      "age_seconds": 273180
+    },
+    {
+      "session_id": "agent_session_5189c4e1086e49c5b97a0e82cdfaf174",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-21T22:20:09+00:00",
+      "age_seconds": 272845
+    },
+    {
+      "session_id": "agent_session_d8dd9363f1dc40998bf83b8ea4f639af",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-21T22:33:40+00:00",
+      "age_seconds": 272034
+    },
+    {
+      "session_id": "agent_session_ac8436b578cb4eca9e783562ae27ad8d",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-21T22:34:18+00:00",
+      "age_seconds": 271996
+    },
+    {
+      "session_id": "agent_session_b089a7978f3540479b928115fbfb89d3",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-21T22:41:20+00:00",
+      "age_seconds": 271574
+    },
+    {
+      "session_id": "agent_session_4adec095aad14e34b6e3ddff505a3e46",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-21T22:48:29+00:00",
+      "age_seconds": 271145
+    },
+    {
+      "session_id": "agent_session_ee355d41333f4b57b532a4585554f844",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-21T22:59:12+00:00",
+      "age_seconds": 270502
+    },
+    {
+      "session_id": "agent_session_3697297738c64cf29d0cf87ccf8c97f6",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-22T16:06:35+00:00",
+      "age_seconds": 208859
+    },
+    {
+      "session_id": "agent_session_192d79f3b11e465890f0a603c26a066f",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "updated_at": "2026-06-21T23:45:22+00:00",
+      "age_seconds": 267732
+    },
+    {
+      "session_id": "agent_session_fd854971fe3049fbad7e2f6a1c84e8aa",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "updated_at": "2026-06-21T23:57:36+00:00",
+      "age_seconds": 266998
+    },
+    {
+      "session_id": "agent_session_0c357ad2332d48a4b11c2bf2d5f20036",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "updated_at": "2026-06-22T00:19:29+00:00",
+      "age_seconds": 265685
+    },
+    {
+      "session_id": "agent_session_5e6da1ee5c724264868429f697a7b3ba",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "updated_at": "2026-06-22T00:37:41+00:00",
+      "age_seconds": 264593
+    },
+    {
+      "session_id": "agent_session_8c78423abea447efbe38d57428078c7b",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-22T00:40:32+00:00",
+      "age_seconds": 264422
+    },
+    {
+      "session_id": "agent_session_12fb7c39be6f46a3a6b8a05f0273ca58",
+      "agent_id": "aipinho",
+      "title": "AIpinho Chat governed write",
+      "updated_at": "2026-06-22T16:06:35+00:00",
+      "age_seconds": 208859
+    },
+    {
+      "session_id": "agent_session_977a150472e7440d8c61b289aa7a62b7",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "updated_at": "2026-06-22T02:41:54+00:00",
+      "age_seconds": 257140
+    },
+    {
+      "session_id": "agent_session_1b06e925235a4ea793263a4d61efbab4",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "updated_at": "2026-06-22T02:43:39+00:00",
+      "age_seconds": 257035
+    },
+    {
+      "session_id": "agent_session_4e86f36300984aaebb43bb3d02a71ff0",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "updated_at": "2026-06-22T02:53:14+00:00",
+      "age_seconds": 256460
+    },
+    {
+      "session_id": "agent_session_3910d8755c4041ec94e81d0fbb0af837",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "updated_at": "2026-06-22T02:54:22+00:00",
+      "age_seconds": 256392
+    },
+    {
+      "session_id": "agent_session_0930e136a21a4b32859947d190c798fd",
+      "agent_id": "aipinho",
+      "title": "Task runtime",
+      "updated_at": "2026-06-22T03:06:41+00:00",
+      "age_seconds": 255653
+    },
+    {
+      "session_id": "agent_session_4c3ef37dd5784368be1e8b485f7e2e4a",
+      "agent_id": "codex",
+      "title": "Codex hybrid delegation",
+      "updated_at": "2026-06-23T03:14:31+00:00",
+      "age_seconds": 168783
+    },
+    {
+      "session_id": "agent_session_3ffd9ae472c04afaa468f2502d1f2044",
+      "agent_id": "aipinho",
+      "title": "Delegated from lucio",
+      "updated_at": "2026-06-23T06:53:37+00:00",
+      "age_seconds": 155637
+    },
+    {
+      "session_id": "agent_session_81eaf3a09c6d41838f87518bb89136c2",
+      "agent_id": "gemini",
+      "title": "Gemini interpretation",
+      "updated_at": "2026-06-23T06:53:33+00:00",
+      "age_seconds": 155641
+    },
+    {
+      "session_id": "agent_session_811e8bc2f2a042d8977d6f241e0650ed",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "updated_at": "2026-06-23T06:53:33+00:00",
+      "age_seconds": 155641
+    },
+    {
+      "session_id": "agent_session_a371298aeb8f404c81ed009156672d2f",
+      "agent_id": "gemini",
+      "title": "Gemini bridge d9bda765",
+      "updated_at": "2026-06-23T03:14:54+00:00",
+      "age_seconds": 168760
+    },
+    {
+      "session_id": "agent_session_ec6db6f62b94466ba99aee83723845c6",
+      "agent_id": "codex",
+      "title": "Codex hybrid delegation",
+      "updated_at": "2026-06-23T06:53:30+00:00",
+      "age_seconds": 155644
+    },
+    {
+      "session_id": "agent_session_89891d7679b24c1ba7bb9e16adcc7976",
+      "agent_id": "aipinho",
+      "title": "Delegated from codex",
+      "updated_at": "2026-06-23T06:53:30+00:00",
+      "age_seconds": 155644
+    },
+    {
+      "session_id": "agent_session_733331c56ad84ca6b28467f4ab29112a",
+      "agent_id": "codex",
+      "title": "Codex hybrid delegation",
+      "updated_at": "2026-06-23T03:17:28+00:00",
+      "age_seconds": 168606
+    },
+    {
+      "session_id": "agent_session_bdc6805f286a43ac922f457741354b29",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 00177c2b",
+      "updated_at": "2026-06-23T03:37:09+00:00",
+      "age_seconds": 167425
+    },
+    {
+      "session_id": "agent_session_095f888567654bea995c420284c826cc",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 00177c2b",
+      "updated_at": "2026-06-23T06:53:24+00:00",
+      "age_seconds": 155650
+    },
+    {
+      "session_id": "agent_session_52b69fa78190432981fb4d83b2680242",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "updated_at": "2026-06-23T06:53:24+00:00",
+      "age_seconds": 155650
+    },
+    {
+      "session_id": "agent_session_49423de13f4f4b4385aa517b70aa3362",
+      "agent_id": "codex",
+      "title": "Codex bridge 6b074d83",
+      "updated_at": "2026-06-23T03:42:59+00:00",
+      "age_seconds": 167075
+    },
+    {
+      "session_id": "agent_session_3033c0f48978494aaaf173bb6e044d1d",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 35361efe",
+      "updated_at": "2026-06-23T03:52:34+00:00",
+      "age_seconds": 166500
+    },
+    {
+      "session_id": "agent_session_2d507e57445249e9b3e095280a2c9f9b",
+      "agent_id": "gemini",
+      "title": "hotfix repro gemini capability negotiation",
+      "updated_at": "2026-06-23T04:04:33+00:00",
+      "age_seconds": 165781
+    },
+    {
+      "session_id": "agent_session_3b7f28579ed94779820e9ce303c6f265",
+      "agent_id": "gemini",
+      "title": "Gemini bridge 2786fdc0",
+      "updated_at": "2026-06-23T04:32:30+00:00",
+      "age_seconds": 164104
+    },
+    {
+      "session_id": "agent_session_110cf383e13949e9a72c600939bfa8c3",
+      "agent_id": "gemini",
+      "title": "hotfix delegation smoke",
+      "updated_at": "2026-06-23T06:53:19+00:00",
+      "age_seconds": 155655
+    },
+    {
+      "session_id": "agent_session_cf9836d5aa3446a5a3773b37919e74d3",
+      "agent_id": "aipinho",
+      "title": "Delegated from gemini",
+      "updated_at": "2026-06-23T06:53:19+00:00",
+      "age_seconds": 155655
+    },
+    {
+      "session_id": "agent_session_ce974167cb74437ba5df86e41104d0df",
+      "agent_id": "lucio",
+      "title": "Lucio",
+      "updated_at": "2026-06-23T04:40:10+00:00",
+      "age_seconds": 163644
+    },
+    {
+      "session_id": "agent_session_dc130c0290d646739bb74c2aca74f341",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "updated_at": "2026-06-23T07:04:52+00:00",
+      "age_seconds": 154962
+    },
+    {
+      "session_id": "agent_session_e1e80a123c1f4e31a0f3a3a71b2677a9",
+      "agent_id": "aipinho",
+      "title": "AIpinho read-only workspace audit",
+      "updated_at": "2026-06-24T00:26:35+00:00",
+      "age_seconds": 92459
+    }
+  ]
+}

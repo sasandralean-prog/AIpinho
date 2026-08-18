@@ -1,0 +1,19 @@
+﻿schema_version: 1
+
+workspace_access:
+  enabled: true
+  reject_forbidden_root_access: true
+  reject_path_traversal: true
+  reject_outside_workspace_access: true
+  reject_blocked_secret_files: true
+  allow_omitted_files_with_limitations: true
+
+forbidden_roots:
+  - "C:\\Windows"
+  - "C:\\Program Files"
+  - "C:\\Program Files (x86)"
+
+validation:
+  require_workspace_snapshot: true
+  require_path_guard_decisions: true
+  require_blocked_items_recorded: true

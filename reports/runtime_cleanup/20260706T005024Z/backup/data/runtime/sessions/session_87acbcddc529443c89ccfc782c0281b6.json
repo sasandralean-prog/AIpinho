@@ -1,0 +1,29 @@
+{
+  "session_id": "session_87acbcddc529443c89ccfc782c0281b6",
+  "status": "active",
+  "created_at": "2026-06-18T19:23:18.598787+00:00",
+  "updated_at": "2026-06-18T19:23:18.646442+00:00",
+  "expires_at": "2026-06-18T23:23:18.598787+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Você consegue escrever arquivos na sandbox agora? Teste criando um arquivo pequeno.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {},
+  "last_policy_decision": {},
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {
+    "operation_type": "filesystem_write_file",
+    "path": "C:\\Dev\\AIpinho\\sandboxes\\capability_probe\\probe_f0e3b36e1ffd4abd8ead32ac2ed9e00b.txt",
+    "run_id": "sandbox_run_e340a77a0c6c4214b535829d393e107c"
+  },
+  "warnings": [
+    "active_task_draft_missing"
+  ],
+  "trace_refs": []
+}

@@ -1,0 +1,49 @@
+﻿schema_version: 1
+
+profiles:
+  llama_cpp_smoke:
+    enabled: false
+    provider_id: llama_cpp.local
+    model_id: llama.local.placeholder
+    real_inference: true
+    manual_only: true
+    allow_chat_auto_use: false
+    allow_report_auto_use: false
+    allow_analysis_auto_use: false
+    require_request_opt_in: true
+    require_operator_confirmation: true
+    timeout_seconds: 20
+    max_input_chars: 1000
+    max_output_tokens: 64
+    ctx_size: 1024
+    temperature: 0.0
+    top_p: 1.0
+    threads: null
+    prompt_id: smoke_minimal_pt
+    output_contract_type: plain_text
+    safety_envelope_id: local_smoke_test
+    notes:
+      - "Perfil manual para smoke test curto. Desabilitado por padrao."
+
+  llama_cpp_manual_small:
+    enabled: false
+    provider_id: llama_cpp.local
+    model_id: llama.local.placeholder
+    real_inference: true
+    manual_only: true
+    allow_chat_auto_use: false
+    allow_report_auto_use: false
+    allow_analysis_auto_use: false
+    require_request_opt_in: true
+    require_operator_confirmation: true
+    timeout_seconds: 45
+    max_input_chars: 4000
+    max_output_tokens: 256
+    ctx_size: 2048
+    temperature: 0.2
+    top_p: 0.9
+    threads: null
+    output_contract_type: plain_text
+    safety_envelope_id: local_manual_inference
+    notes:
+      - "Perfil manual futuro. Nao usar automaticamente."

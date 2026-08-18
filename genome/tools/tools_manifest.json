@@ -1,0 +1,99 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "tools": [
+    {
+      "tool": "filesystem_read",
+      "path": "config/tools/",
+      "service": "services.tools.filesystem_read_service",
+      "critical": true
+    },
+    {
+      "tool": "filesystem_write",
+      "path": "config/tools/",
+      "service": "services.tools.filesystem_tool_service",
+      "critical": true
+    },
+    {
+      "tool": "shell_command",
+      "path": "config/tools/",
+      "service": "services.tools.shell_tool_service",
+      "critical": true
+    },
+    {
+      "tool": "git_command",
+      "path": "config/tools/",
+      "service": "services.tools.git_tool_service",
+      "critical": true
+    },
+    {
+      "tool": "browser_tool",
+      "path": "config/tools/",
+      "service": "services.tools.browser_tool_service",
+      "critical": false
+    },
+    {
+      "tool": "android_tool",
+      "path": "config/tools/",
+      "service": "services.tools.android_tool_service",
+      "critical": false
+    },
+    {
+      "tool": "read_only_execution",
+      "path": "config/tools/",
+      "service": "services.tools.read_only_execution_service",
+      "critical": true
+    },
+    {
+      "tool": "tool_preview",
+      "path": "config/tools/",
+      "service": "services.tools.tool_preview_service",
+      "critical": false
+    },
+    {
+      "tool": "tool_invocation_preview",
+      "path": "config/tools/",
+      "service": "services.tools.tool_invocation_preview_service",
+      "critical": false
+    },
+    {
+      "tool": "tool_trace",
+      "path": "config/tools/",
+      "service": "services.tools.tool_trace_service",
+      "critical": false
+    },
+    {
+      "tool": "tool_safety",
+      "path": "config/tools/",
+      "service": "services.tools.tool_safety_service",
+      "critical": true
+    },
+    {
+      "tool": "tool_permission",
+      "path": "config/tools/",
+      "service": "services.tools.tool_permission_service",
+      "critical": true
+    },
+    {
+      "tool": "tool_availability",
+      "path": "config/tools/",
+      "service": "services.tools.tool_availability_service",
+      "critical": false
+    },
+    {
+      "tool": "tool_input_validator",
+      "path": "config/tools/",
+      "service": "services.tools.tool_input_validator",
+      "critical": true
+    },
+    {
+      "tool": "tool_result_sanitizer",
+      "path": "config/tools/",
+      "service": "services.tools.tool_result_sanitizer",
+      "critical": true
+    }
+  ],
+  "total_tools": 15,
+  "critical_tools": 9,
+  "non_critical_tools": 6
+}

@@ -1,0 +1,6 @@
+schema_version: 1
+
+target_snapshot_validation:
+  enabled: true
+  require_matching_original_hash: true
+  stale_snapshot_blocks: true

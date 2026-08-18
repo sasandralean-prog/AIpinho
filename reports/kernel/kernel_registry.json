@@ -1,0 +1,23 @@
+{
+  "status": "KR1_READY",
+  "source": "RuntimeKernel",
+  "required_modules": [
+    "semantic_interpreter",
+    "normalizer",
+    "contract_compiler",
+    "governance_controller",
+    "planner",
+    "approval",
+    "executor",
+    "validator",
+    "completion",
+    "speaker",
+    "runtime_doctor",
+    "patch_planner",
+    "reviewer",
+    "reporter",
+    "supervisor"
+  ],
+  "mutates_runtime": false,
+  "validated": true
+}

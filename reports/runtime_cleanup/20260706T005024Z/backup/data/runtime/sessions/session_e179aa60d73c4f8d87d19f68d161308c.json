@@ -1,0 +1,46 @@
+{
+  "session_id": "session_e179aa60d73c4f8d87d19f68d161308c",
+  "status": "active",
+  "created_at": "2026-06-22T00:24:18.735442+00:00",
+  "updated_at": "2026-06-22T00:24:18.784569+00:00",
+  "expires_at": "2026-06-22T04:24:18.735442+00:00",
+  "surface": "api",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Prepare um plano de correcao minimo com arquivos candidatos. Nao aplique patch nesta fase.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_88c0ae39839d4ba6a2b4028c4e433846",
+    "intent_type": "filesystem_write_request",
+    "task_type": "filesystem_write",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_clarification",
+    "contract_type": "filesystem_write",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [
+      "write_files"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": false
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "last_operational_context": {},
+  "warnings": [
+    "requires_clarification"
+  ],
+  "trace_refs": []
+}

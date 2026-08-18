@@ -1,0 +1,93 @@
+version: 1
+default_workspace_capabilities:
+  - read_workspace
+  - scan_workspace
+rules:
+  - id: create_file_request
+    operation_type: workspace_operation
+    capabilities:
+      - read_workspace
+      - create_file
+      - workspace_write
+    markers:
+      - crie arquivo
+      - criar arquivo
+      - gere arquivo
+      - gerar arquivo
+      - escreva arquivo
+      - salvar arquivo
+      - salve arquivo
+      - create file
+      - write file
+  - id: modify_file_request
+    operation_type: workspace_operation
+    capabilities:
+      - read_workspace
+      - modify_file
+      - workspace_write
+    markers:
+      - modifique arquivo
+      - alterar arquivo
+      - altere arquivo
+      - edite arquivo
+      - atualizar arquivo
+      - atualize arquivo
+      - modify file
+      - edit file
+  - id: shell_request
+    operation_type: shell
+    capabilities:
+      - shell
+    markers:
+      - rode comando
+      - execute comando
+      - rodar comando
+      - executar comando
+      - shell
+      - terminal
+      - run command
+  - id: build_or_test_request
+    operation_type: validation
+    capabilities:
+      - read_workspace
+      - shell
+      - build
+      - test
+      - validation
+    markers:
+      - rode os testes
+      - execute os testes
+      - valide o build
+      - compilar
+      - compile
+      - build
+      - test
+  - id: readonly_analysis_request
+    operation_type: readonly_analysis
+    capabilities:
+      - read_workspace
+      - scan_workspace
+    markers:
+      - analise o projeto
+      - analisar o projeto
+      - revise o projeto
+      - diagnostique o projeto
+      - leia o projeto
+      - inspect project
+      - analyze project
+  - id: report_or_artifact_request
+    operation_type: artifact_request
+    capabilities:
+      - read_workspace
+      - scan_workspace
+      - artifact_create
+      - report_generate
+    markers:
+      - gere relatorio
+      - gerar relatorio
+      - crie relatorio
+      - produza relatorio
+      - zip baixavel
+      - arquivo baixavel
+      - artifact
+      - artefato

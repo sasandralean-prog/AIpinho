@@ -1,0 +1,8 @@
+schema_version: 1
+mobile_degraded:
+  enabled: true
+  backend_source_of_truth: true
+blocked:
+  direct_launcher_sync: true
+  dangerous_action_button: true
+  raw_visible_by_default: true

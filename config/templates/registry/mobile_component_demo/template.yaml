@@ -1,0 +1,28 @@
+template_id: mobile_component_demo
+display_name: Mobile Component Demo
+slug: mobile-component-demo
+version: "1.0.0"
+status: experimental
+category: mobile_component
+description: Small Kotlin component demo scaffold for mobile UI experiments.
+supported_project_types: [mobile_component_demo]
+supported_languages: [kotlin]
+supported_platforms: [android, mobile]
+generator_key: mobile_component_demo
+required_files:
+  - README.md
+  - components/ArtifactPanelDemo.kt
+  - components/TerminalPanelDemo.kt
+  - PROJECT_MANIFEST.json
+validation_profile:
+  structural: true
+build_profile:
+  build_required: false
+artifact_policy:
+  zip_required: true
+risk_level: low
+required_capabilities: [create_sandbox_files, create_artifact]
+compatible_skills: [sandbox_project_generation, mobile_component_scaffold]
+compatible_autopilot_modes: [governed_autorun]
+examples:
+  - criar demo de componente mobile

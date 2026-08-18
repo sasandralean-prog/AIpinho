@@ -1,0 +1,16 @@
+{
+  "mode": "governed_dev",
+  "allow_conversation": true,
+  "allow_reasoning": true,
+  "allow_context_analysis": true,
+  "allow_context_read": true,
+  "allow_workspace_read": true,
+  "allow_patch_preview": true,
+  "allow_task_preview": true,
+  "allow_direct_write": false,
+  "allow_direct_shell": false,
+  "file_write_policy": "ask",
+  "shell_policy": "ask",
+  "delete_policy": "ask_strong",
+  "git_push_policy": "ask_strong"
+}

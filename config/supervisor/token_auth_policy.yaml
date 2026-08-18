@@ -1,0 +1,16 @@
+﻿schema_version: 1
+token_auth:
+  enabled: true
+  header: Authorization
+  scheme: Bearer
+  protect_remote_endpoints: true
+  protect_restart_endpoints: true
+  protect_artifact_endpoints: true
+  protect_realtime_endpoints: true
+local_exemptions:
+  allow_127_0_0_1_status_without_token: true
+  allow_health_probe_without_token: true
+redaction:
+  redact_token_in_logs: true
+  token_preview_chars: 4
+

@@ -1,0 +1,46 @@
+{
+  "session_id": "chat_2e175734726b49b3bc36af5c6da1db5e",
+  "status": "active",
+  "created_at": "2026-06-22T02:21:06.245685+00:00",
+  "updated_at": "2026-06-22T02:21:06.455546+00:00",
+  "expires_at": "2026-06-22T06:21:06.245685+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Prepare uma task governada independente para aplicar a correcao previamente revisada do erro de bundle do APK neste workspace. Aplique somente apos aprovacao explicita. Antes de executar, descreva escopo, riscos e validacoes.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_8d7da27495c148d8bc162bbf8055306b",
+    "intent_type": "patch_request",
+    "task_type": "patch_request",
+    "requires_task": true,
+    "requires_workspace": true,
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main",
+      "declared": true,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "needs_approval",
+    "contract_type": "patch_request",
+    "allowed_actions": [
+      "patch_preview"
+    ],
+    "denied_actions": [],
+    "approval_required_for": [
+      "apply_patch"
+    ],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main",
+  "active_task_draft_id": "draft_f9c74ccca9e64950bdf17a1cb7e8a185",
+  "last_operational_context": {},
+  "warnings": [],
+  "trace_refs": []
+}

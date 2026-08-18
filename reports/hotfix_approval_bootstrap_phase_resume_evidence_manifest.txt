@@ -1,0 +1,22 @@
+Hotfix evidence manifest
+Date: 2026-06-25
+Verdict: APPROVAL_BOOTSTRAP_PHASE_RESUME_READY
+
+Files included in evidence zip:
+- hotfix_approval_bootstrap_phase_resume.md
+- hotfix_approval_bootstrap_phase_resume.json
+- hotfix_approval_bootstrap_phase_resume_evidence_manifest.txt
+
+Focused validation executed:
+- py_compile changed Python files: passed
+- pytest tests\unit\test_governed_write_chat_service.py: 17 passed
+- pytest tests\unit\test_hotfix_approval_bootstrap_phase_resume.py: 10 passed
+- pytest combined governed write + hotfix: 24 passed
+- pytest grant/approval/audit/hotfix: 23 passed
+- pytest final focused suite: 43 passed
+
+Smoke evidence:
+- phase resume prompt returned pending_approval with approval_id approval_a82408568565463d8155c571402c7587 and preview_id preview_d23f78f8fec4485ebc31881df9426904.
+- temporary permission phrase returned session_permission_grant with grant_id.
+- existing audit report returned existing_report_reused instead of FileExistsError.
+- smoke-created approval/grant records were cancelled or denied after validation to avoid artificial pending state.

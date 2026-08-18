@@ -1,0 +1,84 @@
+{
+  "program": "AIpinho Engineering Evolution Program",
+  "block": "L",
+  "block_name": "Engineering Autopilot",
+  "date": "2026-07-02",
+  "verdict": "BLOCK_L_ENGINEERING_AUTOPILOT_READY",
+  "objective": "Turn the user into a supervisor through governed engineering missions with lifecycle, checkpoints, reviews, resume, report, dashboard, approval and decision log.",
+  "contracts_created": [
+    "EngineeringMission",
+    "MissionLifecycle",
+    "MissionCheckpoint",
+    "MissionReview",
+    "MissionResume",
+    "MissionReport",
+    "MissionDashboard",
+    "MissionApproval",
+    "DecisionLogEntry"
+  ],
+  "services_created": [
+    "EngineeringAutopilotService"
+  ],
+  "files_changed": [
+    "src/aipinho/schemas/runtime/engineering_autopilot.py",
+    "src/aipinho/services/runtime/engineering_autopilot_service.py",
+    "src/aipinho/services/runtime/task_runtime_service.py",
+    "tests/conftest.py",
+    "tests/unit/test_engineering_autopilot_service.py",
+    "reports/engineering_evolution/block_l_engineering_autopilot_report.md",
+    "reports/engineering_evolution/block_l_engineering_autopilot_report.json"
+  ],
+  "tests": {
+    "py_compile": "passed",
+    "pytest_command": "python -m pytest tests/unit/test_engineering_autopilot_service.py tests/unit/test_continuous_runtime_service.py tests/unit/test_evidence_engine_service.py tests/unit/test_worker_registry_service.py tests/unit/test_task_runtime_service.py tests/unit/test_hotfix_policy_kernel_approval_gate.py tests/governance/test_g21_readonly_analysis_intent.py tests/governance/test_lifecycle_core.py tests/governance/test_g24_preview_quality_gate.py -q",
+    "pytest_result": "64 passed",
+    "app_factory_import": {
+      "command": "python -c \"from aipinho.app_factory import create_app; app=create_app(); print(app.title); print(len(app.routes))\"",
+      "result": "AIpinho / 942 routes"
+    },
+    "regression_assertions": [
+      "Mission creation writes initial decision log",
+      "Attaching TaskRun updates lifecycle, dashboard, review and report",
+      "DecisionLogEntry contains all mandatory fields",
+      "Blocked mission resumes with surface_block_reason",
+      "Mission layer does not execute side effects outside governed runtime"
+    ]
+  },
+  "live_backend_smoke": {
+    "backend_restarted": true,
+    "pid": 53436,
+    "health": {
+      "status": "ok",
+      "service": "AIpinho",
+      "version": "0.1.0",
+      "runtime": "local"
+    },
+    "run_id": "task_run_780994238546439b9955b5742b46dae5",
+    "mission_id": "engineering_mission_caa4f28f1c2e4b58b9c9698c59be3447",
+    "mission_status": "running",
+    "stage": "continuation",
+    "run_count": 1,
+    "decision_log": 2,
+    "reports": 1,
+    "dashboard_run_count": 1,
+    "dashboard_evidence_count": 3
+  },
+  "rollback": [
+    "Remove EngineeringAutopilotService from TaskRuntimeService.",
+    "Remove src/aipinho/services/runtime/engineering_autopilot_service.py.",
+    "Remove src/aipinho/schemas/runtime/engineering_autopilot.py.",
+    "Remove engineering autopilot tests.",
+    "Optionally archive data/runtime/engineering_missions."
+  ],
+  "limitations": [
+    "No public endpoint was added for missions in this block.",
+    "Mission dashboard has no dedicated mobile/launcher UI yet.",
+    "Physical automation still relies on governed TaskRuntime execution."
+  ],
+  "hardcode_check": {
+    "workload_specific_rules_added": false,
+    "path_specific_rules_added": false,
+    "filename_specific_rules_added": false,
+    "fire_test_specific_routes_added": false
+  }
+}

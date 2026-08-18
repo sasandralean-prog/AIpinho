@@ -1,0 +1,37 @@
+schema_version: 1
+learning_enabled: true
+candidate_only_by_default: true
+evidence_required: true
+raw_logs_allowed: false
+stacktraces_allowed: false
+secret_storage_allowed: false
+global_scope_requires_review: true
+auto_accept_enabled: false
+max_summary_chars: 4000
+max_candidate_summary_chars: 2000
+allowed_candidate_types:
+  - bug_pattern
+  - fix_pattern
+  - validation_lesson
+  - ux_lesson
+  - policy_lesson
+  - prompt_routing_lesson
+  - quality_gate_lesson
+  - workflow_lesson
+  - command_learning
+  - failure_pattern
+  - template_learning
+  - artifact_learning
+  - skill_pack_learning
+  - project_learning
+blocked_payload_keys:
+  - raw
+  - raw_log
+  - raw_payload
+  - raw_debug
+  - stacktrace
+  - traceback
+review:
+  accepted_status: approved
+  blocked_without_evidence: true
+  duplicate_policy: mark_superseded

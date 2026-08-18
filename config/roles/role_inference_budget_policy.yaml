@@ -1,0 +1,32 @@
+schema_version: 1
+
+budgets:
+  small:
+    max_prompt_chars: 6000
+    max_context_chars: 4000
+    max_output_tokens: 512
+    timeout_seconds: 45
+    first_token_warning_seconds: 15
+  low:
+    max_prompt_chars: 6000
+    max_context_chars: 4000
+    max_output_tokens: 512
+    timeout_seconds: 45
+    first_token_warning_seconds: 15
+  medium:
+    max_prompt_chars: 12000
+    max_context_chars: 8000
+    max_output_tokens: 1024
+    timeout_seconds: 90
+    first_token_warning_seconds: 30
+  large_cpu_slow:
+    max_prompt_chars: 16000
+    max_context_chars: 10000
+    max_output_tokens: 1536
+    timeout_seconds: 240
+    first_token_warning_seconds: 90
+    manual_only: true
+
+defaults:
+  budget_class: medium
+  truncate_on_over_budget: false

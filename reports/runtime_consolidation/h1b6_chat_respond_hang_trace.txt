@@ -1,0 +1,15 @@
+Timeout (0:00:08)!
+Thread 0x000040b4 (most recent call first):
+  File "C:\Program Files\Python311\Lib\pathlib.py", line 1058 in stat
+  File "C:\Dev\AIpinho\src\aipinho\utils\yaml_loader.py", line 35 in load_yaml_file
+  File "C:\Dev\AIpinho\src\aipinho\services\prompts\context_packing_service.py", line 14 in __init__
+  File "C:\Dev\AIpinho\src\aipinho\services\prompts\prompt_assembly_service.py", line 37 in __init__
+  File "C:\Dev\AIpinho\src\aipinho\services\roles\role_prompt_service.py", line 22 in __init__
+  File "C:\Dev\AIpinho\src\aipinho\services\roles\role_pass_runner.py", line 28 in __init__
+  File "C:\Dev\AIpinho\src\aipinho\services\roles\role_pipeline_service.py", line 29 in __init__
+  File "C:\Dev\AIpinho\src\aipinho\services\runtime\readonly_task_step_runner.py", line 31 in __init__
+  File "C:\Dev\AIpinho\src\aipinho\services\runtime\governed_task_step_runner.py", line 34 in __init__
+  File "C:\Dev\AIpinho\src\aipinho\services\runtime\task_runtime_service.py", line 107 in __init__
+  File "C:\Dev\AIpinho\src\aipinho\services\chat\chat_artifact_fulfillment_service.py", line 28 in __init__
+  File "C:\Dev\AIpinho\src\aipinho\services\governance\lifecycle\canonical_public_chat_service.py", line 104 in __init__
+  File "<stdin>", line 11 in <module>

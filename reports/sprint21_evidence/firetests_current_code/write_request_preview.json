@@ -1,0 +1,286 @@
+{
+  "http_status": 200,
+  "body": {
+    "response_id": "chatop_dd75d69204fc4ed9b2f5138eb03e9d05",
+    "session_id": "chat_sprint21_write_request_preview",
+    "task_draft_id": null,
+    "preview_id": "preview_010e2b23d3d74ae884d1366806923eef",
+    "task_id": null,
+    "approval_id": "approval_054242937bb0422fb7189b4576ca8f0c",
+    "task_preview_id": null,
+    "artifact_id": null,
+    "artifact_preview_id": null,
+    "artifact_links": [],
+    "result_ref_id": null,
+    "operation_id": "chatop_dd75d69204fc4ed9b2f5138eb03e9d05",
+    "operation_type": "governed_file_write",
+    "message_type": "task_status_update",
+    "status": "pending_approval",
+    "message": "A escrita foi identificada, mas a policy exige aprovacao antes de qualquer gravacao. Nenhum arquivo foi escrito nesta etapa.",
+    "intent": {
+      "intent_type": "governed_file_write",
+      "requires_task": true,
+      "requires_workspace": true,
+      "output_target": "workspace_file",
+      "requested_operation": "create_file"
+    },
+    "policy": {
+      "workspace_write": true,
+      "tool_gateway": true,
+      "reason_code": "approval_required_before_workspace_write",
+      "workspace_id": "aipinho_test_area",
+      "workspace_role": "target_mutable",
+      "workspace_ref": "C:\\Users\\rafae\\Documents\\AIpinhoTestes",
+      "workspace_path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes",
+      "file_path": null,
+      "validation_status": null,
+      "approval_required_for": [
+        "write_files"
+      ],
+      "required_preconditions": [
+        "approval",
+        "validation"
+      ],
+      "status": "needs_approval",
+      "safe_to_preview": true,
+      "safe_to_execute": false
+    },
+    "contract_preview": {
+      "draft": {
+        "draft_id": "chat_write_166c30e3894d46c581d9e3fc4ca29370",
+        "session_id": "chat_sprint21_write_request_preview",
+        "status": "approval_required",
+        "intent_map": {
+          "prompt": "Crie um arquivo teste_governado.txt com o texto ola em C:\\Users\\rafae\\Documents\\AIpinhoTestes",
+          "source_channel": "chat",
+          "intent": "governed_file_write",
+          "risk": "medium",
+          "requested_operation": "create_file",
+          "target_path": "teste_governado.txt"
+        },
+        "policy_decision": {
+          "decision_id": "chat_write_policy_7304a9dae25a429f9daca415dd346781",
+          "status": "needs_approval",
+          "allowed_actions": [],
+          "denied_actions": [],
+          "approval_required_for": [
+            "write_files"
+          ],
+          "granted_capabilities": [],
+          "denied_capabilities": []
+        },
+        "contract_type": "patch_request",
+        "operation_type": "write_files",
+        "intent_type": "governed_file_write",
+        "runtime_profile": "governed",
+        "capabilities_required": [
+          "write_files",
+          "workspace_write"
+        ],
+        "source_scope": "chat",
+        "requires_workspace": true,
+        "workspace": {
+          "path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes",
+          "status": "confirmed"
+        },
+        "requested_actions": [
+          "write_files"
+        ],
+        "allowed_actions": [],
+        "denied_actions": [],
+        "approval_required_for": [
+          "write_files"
+        ],
+        "safe_to_execute": false,
+        "safe_to_preview": true,
+        "clarifying_questions": [],
+        "warnings": [],
+        "trace": [
+          {
+            "source": "services/chat/chat_service.py",
+            "stage": "governed_write_approval",
+            "decision": "approval_required",
+            "reason": "workspace_write_requires_preview_approval_validation",
+            "operation_id": "chatop_dd75d69204fc4ed9b2f5138eb03e9d05"
+          }
+        ],
+        "created_at": "2026-06-25T10:48:16.840513+00:00",
+        "updated_at": "2026-06-25T10:48:16.840513+00:00",
+        "expires_at": null
+      },
+      "preview": {
+        "preview_id": "preview_010e2b23d3d74ae884d1366806923eef",
+        "draft_id": "chat_write_166c30e3894d46c581d9e3fc4ca29370",
+        "session_id": "chat_sprint21_write_request_preview",
+        "status": "approval_required",
+        "contract_type": "patch_request",
+        "summary": "Preview approval_required para contrato patch_request. Nenhuma execucao sera realizada nesta sprint.",
+        "requested_actions": [
+          "write_files"
+        ],
+        "allowed_actions": [],
+        "denied_actions": [],
+        "approval_required_for": [
+          "write_files"
+        ],
+        "potential_side_effects": [
+          "write_files: Pode criar ou alterar arquivos se aprovado em runtime futuro."
+        ],
+        "safe_to_execute": false,
+        "safe_to_preview": true,
+        "policy_snapshot": {
+          "policy_decision_id": "chat_write_policy_7304a9dae25a429f9daca415dd346781",
+          "policy_status": "needs_approval",
+          "allowed_actions": [],
+          "denied_actions": [],
+          "approval_required_for": [
+            "write_files"
+          ],
+          "granted_capabilities": [],
+          "denied_capabilities": [],
+          "workspace_status": "confirmed",
+          "risk_level": "medium",
+          "trace_hash": "a55189c84fd4c39c970142be5d81a17c64ffc01b6c332bf87ee95308349999cc",
+          "config_versions": {
+            "preview_policy_schema_version": 1
+          }
+        },
+        "trace": [
+          {
+            "source": "services/chat/chat_service.py",
+            "stage": "governed_write_approval",
+            "decision": "approval_required",
+            "reason": "workspace_write_requires_preview_approval_validation",
+            "operation_id": "chatop_dd75d69204fc4ed9b2f5138eb03e9d05"
+          }
+        ],
+        "warnings": [],
+        "created_at": "2026-06-25T10:48:16.927239+00:00",
+        "updated_at": "2026-06-25T10:48:16.927239+00:00"
+      },
+      "approval": {
+        "approval_id": "approval_054242937bb0422fb7189b4576ca8f0c",
+        "preview_id": "preview_010e2b23d3d74ae884d1366806923eef",
+        "draft_id": "chat_write_166c30e3894d46c581d9e3fc4ca29370",
+        "run_id": null,
+        "task_id": null,
+        "session_id": "chat_sprint21_write_request_preview",
+        "agent_id": "aipinho",
+        "workspace_id": null,
+        "workspace_path": "C:\\Users\\rafae\\Documents\\AIpinhoTestes",
+        "operation_type": "write_files",
+        "target_paths": [
+          "teste_governado.txt",
+          "C:\\Users\\rafae\\Documents\\AIpinhoTestes",
+          "write_files: Pode criar ou alterar arquivos se aprovado em runtime futuro."
+        ],
+        "commands": [],
+        "preview": {
+          "available": true,
+          "summary": "Preview approval_required para contrato patch_request. Nenhuma execucao sera realizada nesta sprint.",
+          "diff_ref": null,
+          "content_preview_ref": "preview_010e2b23d3d74ae884d1366806923eef"
+        },
+        "policy_refs": [
+          "chat_write_policy_7304a9dae25a429f9daca415dd346781"
+        ],
+        "allowed_by_policy": true,
+        "forbidden_operations": [],
+        "status": "pending",
+        "actions_requested": [
+          "write_files"
+        ],
+        "approval_scope": "future_execution",
+        "reason": "Chat requested governed workspace write approval",
+        "risk_level": "medium",
+        "policy_snapshot": {
+          "policy_decision_id": "chat_write_policy_7304a9dae25a429f9daca415dd346781",
+          "policy_status": "needs_approval",
+          "allowed_actions": [],
+          "denied_actions": [],
+          "approval_required_for": [
+            "write_files"
+          ],
+          "granted_capabilities": [],
+          "denied_capabilities": [],
+          "workspace_status": "confirmed",
+          "risk_level": "medium",
+          "trace_hash": "a55189c84fd4c39c970142be5d81a17c64ffc01b6c332bf87ee95308349999cc",
+          "config_versions": {
+            "preview_policy_schema_version": 1
+          }
+        },
+        "expires_at": "2026-06-25T12:48:17.220462+00:00",
+        "created_at": "2026-06-25T10:48:17.220462+00:00",
+        "updated_at": "2026-06-25T10:48:17.220462+00:00",
+        "created_by": {
+          "type": "system",
+          "id": "approval_service"
+        },
+        "trace": [
+          {
+            "stage": "approval_create",
+            "decision": "pending",
+            "reason": "approval_created_without_execution",
+            "source": "services/approvals/approval_service.py"
+          }
+        ],
+        "execution_status": "not_executed"
+      }
+    },
+    "actions": [],
+    "next_actions": [
+      {
+        "type": "review_approval",
+        "label": "Revisar aprovacao",
+        "target_id": "approval_054242937bb0422fb7189b4576ca8f0c"
+      },
+      {
+        "type": "reject",
+        "label": "Negar acao governada",
+        "target_id": "approval_054242937bb0422fb7189b4576ca8f0c"
+      }
+    ],
+    "warnings": [
+      "approval_required_before_workspace_write"
+    ],
+    "trace": [],
+    "raw_debug_ref": null,
+    "model_used": null,
+    "real_inference": null,
+    "model_warnings": [],
+    "evaluation_status": null,
+    "evaluation_warnings": [],
+    "fallback_used": false,
+    "context_plan_id": null,
+    "citation_map": {},
+    "evidence_refs": [
+      {
+        "type": "workspace_policy",
+        "ref_id": "aipinho_test_area",
+        "human_label": "Workspace Tool Gateway"
+      },
+      {
+        "type": "approval_policy",
+        "ref_id": "require_human_approval_for_chat_workspace_write",
+        "human_label": "Chat workspace write approval guard"
+      },
+      {
+        "type": "task_preview",
+        "ref_id": "preview_010e2b23d3d74ae884d1366806923eef",
+        "human_label": "Preview de escrita governada"
+      },
+      {
+        "type": "approval_request",
+        "ref_id": "approval_054242937bb0422fb7189b4576ca8f0c",
+        "human_label": "Approval de escrita governada"
+      }
+    ],
+    "requires_user_action": true,
+    "is_final_answer": false,
+    "grounded": true,
+    "grounding_required": false,
+    "grounding_missing_reason": null,
+    "policy_block": null
+  }
+}

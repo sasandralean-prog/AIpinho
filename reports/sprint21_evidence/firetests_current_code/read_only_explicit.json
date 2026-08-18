@@ -1,0 +1,104 @@
+{
+  "http_status": 200,
+  "body": {
+    "response_id": "chat_8ae1b5acb2d1417d8bbb65b2ca5c189c",
+    "session_id": "chat_sprint21_read_only_explicit",
+    "task_draft_id": null,
+    "preview_id": null,
+    "task_id": null,
+    "approval_id": null,
+    "task_preview_id": null,
+    "artifact_id": null,
+    "artifact_preview_id": null,
+    "artifact_links": [],
+    "result_ref_id": null,
+    "operation_id": "chatop_571e068c9ab94f699db31e170cabd0cc",
+    "operation_type": "workspace_metadata_query",
+    "message_type": "assistant_final_answer",
+    "status": "ok",
+    "message": "Consulta read-only concluida. Nao criei arquivo e nao gerei relatorio.\n\nWorkspace: C:\\Users\\[REDACTED]\\Documents\\AIpinhoTestes\\Sprint-File-Sync-main\n\nArquivos perguntados:\n- build.gradle: nao\n- package.json: sim\n\nArquivos de entrada aparentes:\n- package.json (file)\n\nTopo do workspace: 11 arquivos e 8 pastas.\nAmostra: .agents, .github, .gitignore, .npmrc, .replit, .replitignore, 1. existe build.gradle, artifacts, attached_assets, lib, node_modules, package.json, pnpm-lock.yaml, pnpm-workspace.yaml, replit.md, reports, scripts, tsconfig.base.json, tsconfig.json",
+    "intent": {
+      "intent_type": "workspace_metadata_query",
+      "requires_task": false,
+      "requires_workspace": true,
+      "requires_patch": false
+    },
+    "policy": {
+      "read_only": true,
+      "workspace_write": false,
+      "approval_required_for": [],
+      "workspace_id": "sprint_file_sync",
+      "workspace_role": "target_mutable",
+      "requested_files": [
+        {
+          "name": "build.gradle",
+          "exists": false,
+          "kind": "missing"
+        },
+        {
+          "name": "package.json",
+          "exists": true,
+          "kind": "file"
+        }
+      ],
+      "entrypoints": [
+        {
+          "path": "package.json",
+          "kind": "file"
+        }
+      ],
+      "top_level_summary": {
+        "files": 11,
+        "directories": 8,
+        "sample": [
+          ".agents",
+          ".github",
+          ".gitignore",
+          ".npmrc",
+          ".replit",
+          ".replitignore",
+          "1. existe build.gradle",
+          "artifacts",
+          "attached_assets",
+          "lib",
+          "node_modules",
+          "package.json",
+          "pnpm-lock.yaml",
+          "pnpm-workspace.yaml",
+          "replit.md",
+          "reports",
+          "scripts",
+          "tsconfig.base.json",
+          "tsconfig.json"
+        ]
+      }
+    },
+    "contract_preview": {},
+    "actions": [],
+    "next_actions": [],
+    "warnings": [],
+    "trace": [],
+    "raw_debug_ref": null,
+    "model_used": "workspace_metadata_query",
+    "real_inference": false,
+    "model_warnings": [],
+    "evaluation_status": null,
+    "evaluation_warnings": [],
+    "fallback_used": false,
+    "context_plan_id": null,
+    "citation_map": {},
+    "evidence_refs": [
+      {
+        "type": "workspace_metadata",
+        "ref_id": "sprint_file_sync",
+        "human_label": "Metadados do workspace"
+      }
+    ],
+    "requires_user_action": false,
+    "is_final_answer": true,
+    "grounded": true,
+    "grounding_required": false,
+    "grounding_missing_reason": null,
+    "policy_block": null
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "event_consumers": {
+    "task_created": ["services.events.event_publisher_service"],
+    "task_started": ["services.events.event_publisher_service"],
+    "task_completed": ["services.events.event_publisher_service"],
+    "task_failed": ["services.events.event_publisher_service"],
+    "execution_step_started": ["services.events.event_publisher_service"],
+    "execution_step_completed": ["services.events.event_publisher_service"],
+    "policy_check": ["services.events.event_publisher_service"],
+    "capability_check": ["services.events.event_publisher_service"],
+    "tool_invocation": ["services.events.event_publisher_service"],
+    "model_invocation": ["services.events.event_publisher_service"],
+    "validation_check": ["services.events.event_publisher_service"],
+    "artifact_created": ["services.events.event_publisher_service"],
+    "memory_candidate_created": ["services.events.event_publisher_service"],
+    "retrieval_performed": ["services.events.event_publisher_service"],
+    "agent_action": ["services.events.event_publisher_service"]
+  },
+  "total_events": 14,
+  "total_consumers": 14,
+  "consumer_services": {
+    "services.events.event_publisher_service": 14
+  }
+}

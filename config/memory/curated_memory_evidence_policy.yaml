@@ -1,0 +1,7 @@
+schema_version: 1
+evidence:
+  require_evidence_for_technical_memory: true
+  summaries_only: true
+  reject_raw_logs: true
+  reject_secrets: true
+  reject_full_file_content: true

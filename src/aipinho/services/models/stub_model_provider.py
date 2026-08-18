@@ -1,0 +1,1 @@
+from aipinho.adapters.llm_providers.stub_provider import StubProvider as StubModelProvider

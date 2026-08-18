@@ -1,0 +1,9 @@
+schema_version: 1
+
+evaluation:
+  enabled: true
+  reject_uncited_visual_output: true
+  reject_tool_calling: true
+  reject_raw_blob: true
+  degraded_without_confidence: true
+  reject_secret_ocr: true

@@ -1,0 +1,26 @@
+schema_version: 1
+regression_harness:
+  enabled: true
+  mode: safe_deterministic_regression
+  require_replay_case: true
+  require_golden_expectations: true
+  require_expectation_results: true
+  require_report: true
+  require_trace: true
+  require_no_side_effects: true
+result_status:
+- passed
+- passed_with_warnings
+- failed
+- blocked
+- skipped
+- degraded
+blocked:
+  regression_runs_real_tool: true
+  regression_applies_patch: true
+  regression_mutates_workspace: true
+  regression_calls_external_api: true
+  regression_uses_unsanitized_data: true
+
+legacy_pinhoabacaxi_curated:
+  current_truth_allowed: false

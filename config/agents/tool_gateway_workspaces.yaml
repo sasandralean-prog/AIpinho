@@ -1,0 +1,74 @@
+version: 1
+workspaces:
+  - workspace_id: aipinho_project
+    root: C:\Dev\AIpinho
+    role: system_mutable
+    enabled: true
+  - workspace_id: dev_ai
+    root: C:\Dev\AI
+    role: target_mutable
+    enabled: true
+  - workspace_id: dev_dependencias
+    root: C:\Dev\Dependencias
+    role: target_mutable
+    enabled: true
+  - workspace_id: aipinho_temp_target
+    root: C:\tmp
+    role: target_mutable
+    enabled: true
+  - workspace_id: fashion_helper
+    root: C:\Users\rafae\Documents\FashionHelper
+    role: target_mutable
+    enabled: true
+  - workspace_id: fashion_helper_legacy
+    root: C:\Users\rafae\Documents\Fashion Helper legado
+    role: target_mutable
+    enabled: true
+  - workspace_id: pinhoabacaxi_musicas
+    root: C:\Users\rafae\Documents\Pinhoabacaxi-musicas-main
+    role: target_mutable
+    enabled: true
+  - workspace_id: pinhoabacaxi_musicas_desktop
+    root: C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop
+    role: target_mutable
+    enabled: true
+  - workspace_id: testes_ia_local
+    root: C:\Users\rafae\Documents\TestesIALocal
+    role: target_mutable
+    enabled: true
+  - workspace_id: aipinho_test_area
+    root: C:\Users\rafae\Documents\AIpinhoTestes
+    role: target_mutable
+    enabled: true
+  - workspace_id: rc2_source_readonly
+    root: C:\Dev\AIpinho\field_trials\rc2\source_readonly_project
+    role: source_readonly
+    enabled: true
+  - workspace_id: rc2_target_mutable
+    root: C:\Dev\AIpinho\field_trials\rc2\target_mutable_project
+    role: target_mutable
+    enabled: true
+  - workspace_id: rc2_protected
+    root: C:\Dev\AIpinho\field_trials\rc2\protected_project
+    role: protected
+    enabled: true
+  - workspace_id: rc2_forbidden
+    root: C:\Dev\AIpinho\field_trials\rc2\forbidden_project
+    role: forbidden
+    enabled: true
+  - workspace_id: dogfood20_source_readonly
+    root: C:\Dev\AIpinho\field_trials\dogfood_sprint20\source_readonly_project
+    role: source_readonly
+    enabled: true
+  - workspace_id: dogfood20_target_mutable
+    root: C:\Dev\AIpinho\field_trials\dogfood_sprint20\target_mutable_project
+    role: target_mutable
+    enabled: true
+  - workspace_id: dogfood20_protected
+    root: C:\Dev\AIpinho\field_trials\dogfood_sprint20\protected_project
+    role: protected
+    enabled: true
+  - workspace_id: dogfood20_forbidden
+    root: C:\Dev\AIpinho\field_trials\dogfood_sprint20\forbidden_project
+    role: forbidden
+    enabled: true

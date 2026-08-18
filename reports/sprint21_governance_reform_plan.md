@@ -1,0 +1,27 @@
+# Sprint 21 - Governance Reform Plan
+
+Gerado em: 2026-06-25 07:50:40
+
+## Plano
+{
+  "generated_at": "2026-06-25 07:50:40",
+  "principles": [
+    "no hardcode",
+    "no bypass",
+    "config-driven routing",
+    "approval before side effects",
+    "speaker truth"
+  ],
+  "minimal_changes_done": [
+    "Route shell-like requests through governed_shell_request using config terms.",
+    "Create ApprovalRequest for governed file write pending approvals.",
+    "Create ApprovalRequest for governed shell requests and do not execute shell during chat response.",
+    "Return structured 409 for invalid session_id."
+  ],
+  "backlog": [
+    "Canonical queue health endpoint or map.",
+    "Approval/session stale cleanup for historical Continue/test approvals.",
+    "Provider/model runtime stabilization for simple conversation degraded state.",
+    "Clarify canonical session status route without duplicating legacy routes blindly."
+  ]
+}

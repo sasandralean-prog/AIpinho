@@ -1,0 +1,28 @@
+{
+  "readiness_id": "cognitive_readiness_a31b5763e9b64b478174dcfa4d6b0d3f",
+  "prediction_id": "cognitive_prediction_b75c882215c141a7a96de74a87d4cbe1",
+  "decision": "NO_GO_EXPECTED_BLOCK",
+  "confidence": 0.84,
+  "predicted_frontier": "PROJECT_ANALYSIS_FILE_READ",
+  "predicted_component": "ProjectAnalysisService",
+  "predicted_reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+  "simulated_blocking_point": "ProjectAnalysis",
+  "simulated_reason_code": "PROJECT_ANALYSIS_FILE_READ_TIMEOUT",
+  "profile_selection_reason_codes": [
+    "PROFILE_SELECTED_BY_READONLY_ARTIFACT_DISCOVERY",
+    "FRONTIER_CONTEXT_ATTACHED"
+  ],
+  "safe_to_start_phase1": false,
+  "task_runs_before": 30,
+  "task_runs_after": 30,
+  "task_run_created_by_phase0": false,
+  "result_path": "reports/runtime_consolidation/firetest5_phase0_cognitive_readiness_result.json",
+  "report_paths": {
+    "firetest_lab": "C:\\Dev\\AIpinho\\reports\\firetest5\\phase0_cognitive_readiness.md",
+    "prediction_report": "C:\\Dev\\AIpinho\\reports\\firetest5\\phase0_prediction.md",
+    "dependency_graph": "C:\\Dev\\AIpinho\\reports\\firetest5\\phase0_dependency_graph.md",
+    "coverage_report": "C:\\Dev\\AIpinho\\reports\\firetest5\\phase0_coverage.md",
+    "simulation_report": "C:\\Dev\\AIpinho\\reports\\firetest5\\phase0_simulation.md",
+    "laboratory_summary": "C:\\Dev\\AIpinho\\reports\\firetest5\\phase0_frontier.md"
+  }
+}

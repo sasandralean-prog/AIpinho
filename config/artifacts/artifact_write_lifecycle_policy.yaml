@@ -1,0 +1,28 @@
+schema_version: 1
+
+states:
+  - created
+  - validated
+  - blocked
+  - ready_to_execute
+  - running
+  - completed
+  - failed
+  - cancelled
+  - invalidated
+
+transitions:
+  created: [validated, blocked, cancelled, invalidated]
+  validated: [ready_to_execute, blocked, cancelled, invalidated]
+  ready_to_execute: [running, cancelled, invalidated]
+  running: [completed, failed]
+  completed: []
+  failed: []
+  blocked: []
+  cancelled: []
+  invalidated: []
+
+rules:
+  terminal_states: [completed, failed, blocked, cancelled, invalidated]
+  execute_requires_state: [ready_to_execute]
+  duplicate_execute_behavior: return_existing_result

@@ -1,0 +1,41 @@
+{
+  "session_id": "session_c06b47bd9cb24be0a4927ba5e64c19fc",
+  "status": "active",
+  "created_at": "2026-06-09T00:44:42.899360+00:00",
+  "updated_at": "2026-06-09T00:44:47.394869+00:00",
+  "expires_at": "2026-06-09T04:44:42.899360+00:00",
+  "surface": "mobile",
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Quanto ? 2+2? Gere um .zip baix?vel com a resposta.",
+      "message_id": null,
+      "created_at": null
+    }
+  ],
+  "last_intent_map": {
+    "intent_id": "intent_a24dac0f05954439b7bbd7ae4d211454",
+    "intent_type": "conversation",
+    "task_type": "none",
+    "requires_task": false,
+    "requires_workspace": false,
+    "workspace": {
+      "path": null,
+      "declared": false,
+      "protected": false
+    }
+  },
+  "last_policy_decision": {
+    "status": "allowed",
+    "contract_type": "conversation",
+    "allowed_actions": [],
+    "denied_actions": [],
+    "approval_required_for": [],
+    "safe_to_execute": false,
+    "safe_to_preview": true
+  },
+  "active_workspace_candidate": null,
+  "active_task_draft_id": null,
+  "warnings": [],
+  "trace_refs": []
+}

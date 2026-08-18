@@ -1,0 +1,30 @@
+{
+  "generated_at": "2026-06-21T23:45:20-03:00",
+  "verdict": "approved_preview_integration",
+  "objective": "Connect patch_planner role inference to PatchPlanningService without model side effects.",
+  "files_created": [
+    "config/patching/model_patch_planner_policy.yaml",
+    "src/aipinho/schemas/patching/model_patch_proposal.py",
+    "src/aipinho/services/patching/model_assisted_patch_planner_service.py",
+    "tests/unit/test_model_assisted_patch_planner_service.py"
+  ],
+  "files_modified": [
+    "src/aipinho/schemas/patching/__init__.py",
+    "src/aipinho/services/runtime/governed_task_step_runner.py",
+    "src/aipinho/api/routers/patch_planning_router.py",
+    "tests/unit/test_task_run_executor.py"
+  ],
+  "endpoint": "POST /api/v1/patch-plans/model-assisted",
+  "safety": {
+    "model_write_enabled": false,
+    "model_apply_enabled": false,
+    "model_tool_execution_enabled": false,
+    "model_network_enabled": false,
+    "approval_remains_required_for_apply": true
+  },
+  "validation": {
+    "py_compile": "passed",
+    "focused_pytest": "7 passed"
+  },
+  "known_limit": "The adapter limits one minimal edit per patch plan through configuration; multi-file planning remains a future deliberate extension."
+}

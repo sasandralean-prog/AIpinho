@@ -1,0 +1,100 @@
+{
+  "genome_version": "1.0",
+  "project_name": "AIpinho",
+  "project_description": "Local modular policy-driven AI runtime foundation",
+  "project_version": "0.1.0",
+  "generated_at": "2026-07-30T20:01:00Z",
+  "generator": "AIpinho Genome Generator v1",
+  "mode": "READ_ONLY",
+  "source_root": "c:\\Dev\\AIpinho",
+  "genome_root": "c:\\Dev\\AIpinho\\genome",
+  "structure": {
+    "architecture": [
+      "architecture_manifest.json",
+      "dependency_graph.json",
+      "execution_graph.json",
+      "pipeline_graph.json",
+      "module_graph.json"
+    ],
+    "runtime": [
+      "runtime_manifest.json",
+      "runtime_services.json",
+      "runtime_events.json",
+      "runtime_endpoints.json",
+      "runtime_state.json"
+    ],
+    "contracts": [
+      "contracts_manifest.json",
+      "contracts_index.json",
+      "contract_producers.json",
+      "contract_consumers.json"
+    ],
+    "symbols": [
+      "symbol_index.json",
+      "class_index.json",
+      "function_index.json",
+      "public_api.json"
+    ],
+    "roles": [
+      "roles_manifest.json",
+      "role_capabilities.json",
+      "role_dependencies.json"
+    ],
+    "models": [
+      "models_manifest.json",
+      "model_usage.json",
+      "inference_routes.json"
+    ],
+    "services": [
+      "services_manifest.json",
+      "service_dependencies.json",
+      "service_categories.json"
+    ],
+    "api": [
+      "api_manifest.json",
+      "routers.json",
+      "endpoints.json"
+    ],
+    "data": [
+      "repositories.json",
+      "registries.json",
+      "stores.json"
+    ],
+    "tools": [
+      "tools_manifest.json",
+      "tool_calls.json",
+      "skills_manifest.json"
+    ],
+    "events": [
+      "events.json",
+      "event_producers.json",
+      "event_consumers.json"
+    ],
+    "tests": [
+      "tests_manifest.json",
+      "coverage_map.json"
+    ],
+    "reports": [
+      "genome_summary.md",
+      "genome_statistics.md"
+    ]
+  },
+  "metadata": {
+    "total_modules": 2340,
+    "total_services": 1182,
+    "total_schemas": 910,
+    "total_repositories": 58,
+    "total_registries": 9,
+    "total_routers": 139,
+    "total_tests": 952,
+    "python_version": ">=3.11",
+    "main_dependencies": [
+      "fastapi>=0.100",
+      "uvicorn>=0.23",
+      "pydantic>=1.10",
+      "PyYAML>=6.0",
+      "google-genai>=0.3.0",
+      "openai>=2.0.0"
+    ]
+  }
+}

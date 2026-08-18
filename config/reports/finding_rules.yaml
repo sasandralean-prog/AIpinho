@@ -1,0 +1,80 @@
+schema_version: 1
+
+rules:
+  config_first_detected:
+    category: architecture
+    severity: info
+    when:
+      any_paths_exist:
+        - "config/**/*.yaml"
+        - "config/**/*.json"
+    title: "Configuracao externa detectada"
+    inference: "O projeto usa arquivos externos como fonte de contrato operacional."
+    recommendation: "Manter regras operacionais fora do codigo sempre que possivel."
+
+  api_routes_detected:
+    category: routing
+    severity: info
+    when:
+      any_paths_exist:
+        - "src/**/api/routers/**/*.py"
+    title: "Camada de API/rotas detectada"
+    inference: "Ha separacao de endpoints em routers dedicados."
+    recommendation: "Manter endpoints versionados e documentados."
+
+  schemas_detected:
+    category: schema
+    severity: info
+    when:
+      any_paths_exist:
+        - "src/**/schemas/**/*.py"
+    title: "Schemas dedicados detectados"
+    inference: "Ha contratos de dados separados da logica de servico."
+    recommendation: "Continuar validando fronteiras com Pydantic."
+
+  tests_missing_or_low:
+    category: test
+    severity: medium
+    when:
+      profile_test_count_less_than:
+        count: 5
+    title: "Cobertura de testes parece baixa"
+    inference: "O numero de testes no recorte e inferior ao minimo configurado."
+    recommendation: "Adicionar testes unitarios, contratos, integracao e e2e para os fluxos principais."
+
+  policy_files_without_tests:
+    category: policy
+    severity: medium
+    when:
+      all:
+        - any_paths_exist:
+            - "config/policies/*.yaml"
+        - not_any_paths_exist:
+            - "tests/**/*policy*.py"
+    title: "Policies existem sem testes aparentes"
+    inference: "Policies configuradas precisam de regressao automatizada para precedencia e validade."
+    recommendation: "Criar testes de validade e precedencia para policies criticas."
+
+  data_folder_should_be_ignored:
+    category: security
+    severity: low
+    when:
+      any_paths_exist:
+        - "data/**"
+    title: "Pasta data detectada"
+    inference: "Dados locais podem conter artefatos, cache ou informacao sensivel."
+    recommendation: "Garantir que data/ esteja no .gitignore e nao contenha secrets versionados."
+
+  pycache_detected:
+    category: maintainability
+    severity: low
+    when:
+      any_paths_exist:
+        - "**/__pycache__/**"
+    title: "__pycache__ detectado"
+    inference: "Caches Python aparecem na arvore analisada."
+    recommendation: "Excluir caches dos pacotes de revisao e do versionamento."
+
+validation_gate:
+  finding_without_evidence_rejected: true
+  critical_requires_strong_evidence: true

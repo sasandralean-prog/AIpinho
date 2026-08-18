@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["objective", "actions"],
+  "properties": {
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["action_type"],
+        "properties": {
+          "action_type": {
+            "enum": ["create_file", "modify_file", "run_shell"]
+          },
+          "target_path": {
+            "type": ["string", "null"]
+          },
+          "content": {
+            "type": ["string", "null"]
+          },
+          "argv": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "timeout_seconds": {
+            "type": ["integer", "null"],
+            "minimum": 1
+          },
+          "expected_side_effects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "validation_required": {
+            "type": "boolean"
+          },
+          "metadata": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "calibration_id": "cognitive_calibration_4d69eabdbfe640419073d993d2be6c9a",
+  "readiness_id": "cognitive_readiness_8a891c1cbf854651b6705dd6f42fadf9",
+  "task_run_id": "task_run_a78064df1cc24ea883e38132bfb9bdd4",
+  "actual_outcome": "cancelled",
+  "actual_frontier": null,
+  "actual_component": null,
+  "actual_reason_code": null,
+  "actual_contract": "analysis_readonly",
+  "actual_capability": null,
+  "actual_causal_chain": [
+    "Intent",
+    "Lifecycle",
+    "Workspace",
+    "Contracts"
+  ],
+  "prediction_matched_outcome": false,
+  "prediction_matched_frontier": false,
+  "prediction_matched_component": false,
+  "prediction_matched_reason_code": false,
+  "prediction_matched_contract": true,
+  "prediction_matched_capability": false,
+  "prediction_matched_causal_chain": false,
+  "confidence_was_calibrated": false,
+  "confidence_error": 0.5077,
+  "specificity_score": 1.0,
+  "causal_accuracy_score": 0.3077,
+  "overall_accuracy_score": 0.2323,
+  "false_positive": true,
+  "false_negative": false,
+  "overconfidence": true,
+  "underconfidence": false,
+  "divergence_explanation": "Prediction diverged from actual runtime boundary. Predicted PROJECT_ANALYSIS/ProjectAnalysisService/PROJECT_ANALYSIS_PARTIAL_CONTEXT_AVAILABLE; actual None/None/None.",
+  "lessons": [
+    "Update CVL model with actual boundary None and reason None."
+  ],
+  "status": "mismatch"
+}

@@ -1,0 +1,71 @@
+{
+  "verdict": "AIPINHO_FIRETEST_PINHOFORGE_BLOCKED",
+  "environment": {
+    "aipinho_workspace": "C:\\Dev\\AIpinho",
+    "target_workspace": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2",
+    "backend": "http://127.0.0.1:9088",
+    "health": "ok",
+    "session_id": "session_7d63e77b39f24c12a18fef8639d91c9c"
+  },
+  "tasks": [
+    {
+      "task": "Tarefa 1 - Health file controlado",
+      "classification": ["FAIL_EXECUTION", "FAIL_ROUTING"],
+      "expected_file": "C:\\Users\\rafae\\Documents\\AIpinhoTestes\\PinhoForgeStudio2\\reports\\aipinho_firetest_health.md",
+      "file_exists": false,
+      "responses": [
+        {
+          "attempt": 1,
+          "operation_type": "filesystem_write_file",
+          "message_type": "task_preview",
+          "status": "preview",
+          "task_id": null,
+          "approval_id": null,
+          "result": "preview_only"
+        },
+        {
+          "attempt": 2,
+          "operation_type": "project_generation",
+          "message_type": "assistant_final_answer",
+          "status": "preview",
+          "policy_status": "needs_approval",
+          "approval_required_for": ["write_files"],
+          "task_id": null,
+          "approval_id": null,
+          "result": "approval_not_materialized"
+        },
+        {
+          "attempt": 3,
+          "operation_type": null,
+          "status": "blocked",
+          "warnings": ["context_citations_required", "citation_bypass_blocked"],
+          "result": "unrelated_context_rag_block"
+        }
+      ]
+    }
+  ],
+  "observations": {
+    "task_runtime_status": "ok",
+    "write_enabled": true,
+    "patch_enabled": true,
+    "shell_enabled": true,
+    "queue_active_count": 0,
+    "queue_pending_count": 0,
+    "queue_requires_decision_count": 0,
+    "write_files_requires_approval": true
+  },
+  "bugs": [
+    "chat_canonical_stops_at_preview",
+    "needs_approval_without_approval_id",
+    "operation_drift_filesystem_write_to_project_generation",
+    "context_rag_contamination_on_approval_recovery",
+    "mobile_view_model_session_mismatch"
+  ],
+  "codex_boundary": {
+    "implemented_target_feature": false,
+    "edited_target_project": false,
+    "created_target_file_manually": false,
+    "supervision_only": true
+  },
+  "recommendation": "Hotfix canonical chat approval materialization and task/run execution path before continuing firetest tasks."
+}

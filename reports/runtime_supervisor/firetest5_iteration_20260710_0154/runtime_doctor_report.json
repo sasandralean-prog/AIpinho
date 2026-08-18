@@ -1,0 +1,56 @@
+{
+  "iteration": "firetest5_iteration_20260710_0154",
+  "mode": "codex_supervisor_external",
+  "read_only_to_target_workspace": true,
+  "backend_restarted": true,
+  "pre_patch": {
+    "public_response_id": "public_response_d081c4e5f8c746fbbc13dcc363fba51c",
+    "status": "accepted",
+    "gateway_status": "accepted",
+    "kernel_status": "ready",
+    "task_id": null,
+    "task_run_id": null,
+    "artifacts": [],
+    "validation": "missing",
+    "completion": "missing",
+    "speaker_truth": "missing",
+    "root_cause": "Public Runtime API stopped at Gateway + Kernel readiness and did not dispatch executable public contracts into a canonical TaskRun/runtime execution path."
+  },
+  "post_patch": {
+    "task_id": "task_699741b1f7c245a5adc90602e445f0eb",
+    "task_run_id": "task_run_a4ae356eedcb488096571a29614a6bfa",
+    "status": "ok",
+    "validation": "passed",
+    "completion": "completed",
+    "artifacts": 1,
+    "runtime_doctor_status": "passed",
+    "runtime_doctor_summary": "PASS",
+    "runtime_doctor_fail_count": 0,
+    "runtime_doctor_pass_count": 10
+  },
+  "doctor_matrix": [
+    {"category": "Intent", "status": "PASS"},
+    {"category": "Lifecycle", "status": "PASS"},
+    {"category": "Workspace", "status": "PASS"},
+    {"category": "Artifacts", "status": "PASS"},
+    {"category": "Approval", "status": "NOT_APPLICABLE"},
+    {"category": "Validation", "status": "PASS"},
+    {"category": "Completion", "status": "PASS"},
+    {"category": "SpeakerTruth", "status": "PASS"},
+    {"category": "Dispatcher", "status": "NOT_APPLICABLE"},
+    {"category": "SemanticIR", "status": "NOT_APPLICABLE"},
+    {"category": "ExecutionPlan", "status": "NOT_APPLICABLE"},
+    {"category": "Contracts", "status": "PASS"},
+    {"category": "RoleSelection", "status": "NOT_APPLICABLE"},
+    {"category": "Timeline", "status": "PASS"},
+    {"category": "Executor", "status": "PASS"},
+    {"category": "Models", "status": "NOT_APPLICABLE"},
+    {"category": "Tools", "status": "NOT_APPLICABLE"},
+    {"category": "Skills", "status": "NOT_APPLICABLE"}
+  ],
+  "tests": {
+    "command": "python -m pytest -q tests/unit/test_public_runtime_api_ex3.py tests/governance/test_runtime_vertical_slice.py tests/unit/test_runtime_operator_ro.py",
+    "result": "23 passed in 60.86s"
+  },
+  "verdict": "FIRETEST5_RUNTIME_PUBLIC_ANALYSIS_SLICE_READY"
+}

@@ -1,0 +1,150 @@
+schema_version: 1
+invariants:
+  patch_never_with_read_only:
+    severity: critical
+    description: Patch cannot coexist with read-only or denied write capability.
+    signals:
+    - task_contract
+    - policy_decision
+    - capability_gate
+    - patch_plan
+    violation_if:
+      requires_patch: true
+      any:
+      - read_only: true
+      - write_forbidden: true
+      - write_workspace_denied: true
+    recommended_action: reject_patch_and_review_contract
+  write_forbidden_blocks_apply:
+    severity: critical
+    description: write_forbidden blocks every apply or write.
+    signals:
+    - capability_gate
+    - approval_policy
+    - patch_apply
+    - artifact_write
+    violation_if:
+      write_forbidden: true
+      apply_requested: true
+    recommended_action: block_apply
+  unknown_event_not_speaker_source:
+    severity: high
+    description: Unknown events cannot feed Speaker.
+    signals:
+    - event_contract_registry
+    - speaker_message
+    violation_if:
+      unknown_event_used_by_speaker: true
+    recommended_action: reject_speaker_source
+  speaker_no_false_progress:
+    severity: critical
+    description: Speaker cannot claim an operation without a corresponding event.
+    signals:
+    - speaker_message
+    - event_timeline
+    violation_if:
+      speaker_claims_operation_completed: true
+      completion_event_present: false
+    recommended_action: block_speaker_message
+  context_requires_source_ref:
+    severity: high
+    description: ContextItem without source_ref is invalid.
+    signals:
+    - context_bundle
+    violation_if:
+      context_item_missing_source_ref: true
+    recommended_action: reject_context_item
+  rag_requires_citation:
+    severity: high
+    description: RAG context without citation must be blocked.
+    signals:
+    - context_bundle
+    - rag_result
+    violation_if:
+      rag_context_missing_citation: true
+    recommended_action: reject_rag_context
+  expired_memory_not_active:
+    severity: high
+    description: Expired or superseded memory cannot be active.
+    signals:
+    - memory
+    - context_bundle
+    violation_if:
+      expired_or_superseded_memory_active: true
+    recommended_action: remove_memory_from_context
+  skill_cannot_expand_contract:
+    severity: critical
+    description: Skill cannot request capability or action outside its envelope.
+    signals:
+    - skill_trace
+    - policy_decision
+    - capability_gate
+    violation_if:
+      skill_expands_contract: true
+    recommended_action: block_skill
+  tool_not_allowed_by_skill_blocked:
+    severity: critical
+    description: Tool outside allowed_tools must be blocked.
+    signals:
+    - skill_trace
+    - tool_permission
+    violation_if:
+      tool_outside_skill_allowlist: true
+    recommended_action: block_tool
+  fourteen_b_manual_only:
+    severity: critical
+    description: 14B model cannot be auto-selected.
+    signals:
+    - model_run
+    - role_model_gate
+    violation_if:
+      model_14b_auto_selected: true
+    recommended_action: block_model_selection
+  raw_log_not_memory:
+    severity: high
+    description: Raw log cannot become memory automatically.
+    signals:
+    - memory_candidate
+    - event_log
+    violation_if:
+      raw_log_promoted_to_memory: true
+    recommended_action: reject_memory_candidate
+  debugger_read_only:
+    severity: critical
+    description: Debugger cannot apply fixes directly.
+    signals:
+    - debugger_action
+    - patch_apply
+    - config_write
+    violation_if:
+      debugger_mutation_requested: true
+    recommended_action: block_debugger_action
+  monitor_9099_not_self_restart:
+    severity: critical
+    description: Supervisor monitor cannot restart itself.
+    signals:
+    - supervisor_event
+    - restart_request
+    violation_if:
+      supervisor_self_restart_requested: true
+    recommended_action: handoff_external_restart
+  mobile_not_direct_launcher_sync:
+    severity: medium
+    description: Mobile and Launcher synchronize through backend only.
+    signals:
+    - mobile_event
+    - launcher_event
+    - sync_event
+    violation_if:
+      mobile_launcher_direct_sync: true
+    recommended_action: route_sync_through_backend
+  external_connector_disabled_by_default:
+    severity: high
+    description: External connectors cannot run by default.
+    signals:
+    - skill_trace
+    - tool_permission
+    - external_connector
+    violation_if:
+      external_connector_default_enabled: true
+    recommended_action: disable_connector

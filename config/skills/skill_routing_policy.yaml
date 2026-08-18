@@ -1,0 +1,6 @@
+schema_version: 1
+routing:
+  selection_owner: skill_router
+  execution_authorization_owner: policy_kernel
+  require_category_or_purpose_evidence: true
+  execute_after_route: false
