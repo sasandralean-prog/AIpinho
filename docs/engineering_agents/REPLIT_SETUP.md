@@ -39,6 +39,6 @@ Pinhoabacaxi Desktop, local corpus, Windows hardware, or factual local FireTest.
 
 ## Runtime Configuration
 
-This repository intentionally does not add .replit in this mission. Replit
+This repository intentionally does not add `.replit` in this mission. Replit
 support here is instruction support for engineering work, not a claim that
 AIpinho runtime is supported as a Replit execution target.
