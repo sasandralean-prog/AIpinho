@@ -22,6 +22,21 @@ Replit cannot claim:
 - Windows/local hardware behavior;
 - FireTest local public proof.
 
+## Remote and Workspace Modes
+
+When operating without a Replit Git worktree, Replit may inspect repository truth
+through the active GitHub connection and may perform remote mutations only when
+that connection actually exposes and successfully performs the operation. This
+connector-only mode does not provide a local branch, local HEAD, local status, or
+local test execution automatically.
+
+When a Replit Project has its own Git worktree, Replit may use the repository's
+Git workflow and claim local branch, HEAD, status, and tests only when those facts
+are actually observed in that worktree.
+
+In both modes, Replit has no automatic access to Rafa's PC, local GGUFs,
+Pinhoabacaxi Desktop, local corpus, Windows hardware, or factual local FireTest.
+
 ## Runtime Configuration
 
 This repository intentionally does not add `.replit` in this mission. Replit
