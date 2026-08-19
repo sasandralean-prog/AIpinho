@@ -14,29 +14,30 @@
 ### B. REPOSITORY STATE
 
 - **Repositório remoto**: `https://github.com/sasandralean-prog/AIpinho`
-- **Branch atual**: `main` (rastreando `origin/main`)
-- **Commit HEAD observado**: `e95569528f8bb15e197cbe9bdfdbba87df8b1ecf` (*merge(engineering): clarify Replit remote and workspace modes*)
+- **Branch base observada**: `main` (rastreando `origin/main`)
+- **Commit HEAD / origin/main observado**: `e95569521d1ffb8e6fa551d9e3eec3e7c4f2da6c` (*merge(engineering): clarify Replit remote and workspace modes*)
+- **Lição de Identidade Git**: `PARTIAL OBSERVATION != COMPLETE IDENTITY`. Um prefixo observado (`e9556952`) nunca autoriza completar por inferência o restante de um SHA. A identidade Git deve ser reproduzida exatamente a partir de evidência factual observada (`git rev-parse`).
 - **Pontos de controle históricos na linhagem**:
   - Commit fonte de R2.18: `cefa5069a44556b72908940fab0f8195dd9e2209`
   - Commit de merge e reconciliação de R2.18 na `main`: `bed449fa8d3e78670df2bdddf413da181add61ce`
   - Baseline do índice de autoridade documental: `d993da01eb6022772969b6f7168bb3b9aa06c9e1`
-- **Estado do Working Tree**: Observados 2 arquivos com modificações pré-existentes não commitadas (`reports/runtime_consolidation/firetest5_h1c0_r2_2_public_corpus_root_binding_summary.md` e `reports/sprint12_approval_human_loop_foundation_20260623_054852.md`), preservados intactos em estrito respeito à disciplina read-only desta missão.
+- **Estado do Working Tree**: Observados 2 arquivos com modificações pré-existentes não commitadas (`reports/runtime_consolidation/firetest5_h1c0_r2_2_public_corpus_root_binding_summary.md` e `reports/sprint12_approval_human_loop_foundation_20260623_054852.md`), preservados intactos em estrito respeito à disciplina de escopo.
 
 ---
 
 ### C. DOCUMENT AUTHORITY
 
-Conforme consolidado em [DOCUMENT_AUTHORITY.md](file:///home/fab_pina01/AIpinho/DOCUMENT_AUTHORITY.md) e [AGENTS.md](file:///home/fab_pina01/AIpinho/AGENTS.md), o princípio fundamental é:
+Conforme consolidado em `DOCUMENT_AUTHORITY.md` e `AGENTS.md`, o princípio fundamental é:
 > **Nome de arquivo não confere autoridade** (*Filename does not grant authority*).
 
 A hierarquia de autoridade estrita em caso de divergência é:
-1. **Código de produção corrente e contratos/configurações canônicas** ([`src/aipinho/`](file:///home/fab_pina01/AIpinho/src/aipinho), [`config/`](file:///home/fab_pina01/AIpinho/config), [`src/aipinho/schemas/`](file:///home/fab_pina01/AIpinho/src/aipinho/schemas)) — *Classe A*.
-2. **Evidência pública de runtime validada** ([`reports/runtime_consolidation/`](file:///home/fab_pina01/AIpinho/reports/runtime_consolidation), testes de regressão no escopo) — *Classe B*.
+1. **Código de produção corrente e contratos/configurações canônicas** (`src/aipinho/`, `config/`, `src/aipinho/schemas/`) — *Classe A*.
+2. **Evidência pública de runtime validada** (`reports/runtime_consolidation/`, testes de regressão no escopo) — *Classe B*.
 3. **Registros de issues correntes e relatórios de waves** — *Classes B/C*.
-4. **Documentos de arquitetura explicitamente marcados como canônicos/correntes e corroborados por código** ([`AIpinho_Canonical_Flow.md`](file:///home/fab_pina01/AIpinho/AIpinho_Canonical_Flow.md)) — *Classe A/C*.
-5. **Documentos correntes de orientação de repositório e contexto** ([`DOCUMENT_AUTHORITY.md`](file:///home/fab_pina01/AIpinho/DOCUMENT_AUTHORITY.md), [`README.md`](file:///home/fab_pina01/AIpinho/README.md), [`00_START_HERE.md`](file:///home/fab_pina01/AIpinho/AIpinho_context_pack/docs/context/00_START_HERE.md), [`current_state.json`](file:///home/fab_pina01/AIpinho/AIpinho_context_pack/docs/context/current_state.json)) — *Classe C*.
-6. **Snapshots gerados** ([`genome/`](file:///home/fab_pina01/AIpinho/genome)).
-7. **Documentação histórica de arquitetura, auditorias passadas e arqueologia** ([`archaeology/`](file:///home/fab_pina01/AIpinho/archaeology), notas de release RC1–RC3) — *Classe F*.
+4. **Documentos de arquitetura explicitamente marcados como canônicos/correntes e corroborados por código** (`AIpinho_Canonical_Flow.md`) — *Classe A/C*.
+5. **Documentos correntes de orientação de repositório e contexto** (`DOCUMENT_AUTHORITY.md`, `README.md`, `AIpinho_context_pack/docs/context/00_START_HERE.md`, `AIpinho_context_pack/docs/context/current_state.json`) — *Classe C*.
+6. **Snapshots gerados** (`genome/`).
+7. **Documentação histórica de arquitetura, auditorias passadas e arqueologia** (`archaeology/`, notas de release RC1–RC3) — *Classe F*.
 8. **Planejamento derivado de conversações**.
 9. **Ideias especulativas** (*Idea Lab*).
 
@@ -67,7 +68,7 @@ O AIpinho é um runtime cognitivo governado projetado para transformar linguagem
 
 ### E. CANONICAL RUNTIME
 
-Conforme definido em [AIpinho_Canonical_Flow.md](file:///home/fab_pina01/AIpinho/AIpinho_Canonical_Flow.md) e [05_RUNTIME_ARCHITECTURE_MAP.md](file:///home/fab_pina01/AIpinho/AIpinho_context_pack/docs/context/05_RUNTIME_ARCHITECTURE_MAP.md), o fluxo implementado e governado de runtime é:
+Conforme definido em `AIpinho_Canonical_Flow.md` e `AIpinho_context_pack/docs/context/05_RUNTIME_ARCHITECTURE_MAP.md`, o fluxo implementado e governado de runtime é:
 
 ```text
 Prompt
@@ -96,7 +97,9 @@ EffectivePolicyDecision ──────┬─► [allowed] ────► Ex
                                                                               │          Completion
                                                                               │               │
                                                                               ▼               ▼
-                                                                          SpeakerTruth / RuntimeTruth
+                                                                                SpeakerTruth
+                                                                         (RuntimeTruthEngine como autoridade
+                                                                           operacional TaskRun-facing)
                                                                                       │
                                                                                       ▼
                                                                         Chat / Mobile / API / Launcher
@@ -118,7 +121,7 @@ As fronteiras e autoridades são estritamente delimitadas:
 7. **`RuntimeTimeline`** é a única autoridade sobre o estado operacional da execução.
 8. **`ArtifactRuntime`** é a única autoridade do ciclo de vida e governança de artefatos.
 9. **`Validation` e `Completion`** definem a fronteira de cumprimento semântico.
-10. **`SpeakerTruth` / `RuntimeTruth`** é a autoridade final sobre o que pode ser declarado como sucesso ou bloqueio para o usuário.
+10. **`SpeakerTruth`** é a **única autoridade canônica de resposta final** sobre o que pode ser declarado como sucesso ou bloqueio para o usuário ($\text{Completion} \rightarrow \text{SpeakerTruth} \rightarrow \text{user-facing operational truth}$). O **`RuntimeTruthEngine`** atua como a autoridade operacional canônica de `SpeakerTruth` para consumidores TaskRun-facing (governando e implementando a decisão operacional nessa fronteira), e **não** uma segunda autoridade final paralela.
 
 ---
 
@@ -134,7 +137,7 @@ As fronteiras e autoridades são estritamente delimitadas:
   6. `diagnostic_public`: Alcance da rota pública/runtime para diagnóstico.
   7. `final_public`: Validação ponta a ponta pública no escopo reivindicado.
 - **Terminalidade Governada**: Todo `TaskRun` aceito deve terminalizar explicitamente em exatamente um estado terminal (`completed`, `blocked`, `failed`, `cancelled`), gerando exatamente **um** evento terminal.
-- **Fronteira SpeakerTruth / RuntimeTruth**: Garante que o sistema declare com exatidão estados como bloqueado, parcial ou evidência insuficiente, sem inflar artificialmente o resultado.
+- **Fronteira canônica de resposta final (`SpeakerTruth`)**: Garante que o sistema declare com exatidão estados como bloqueado, parcial ou evidência insuficiente, sem inflar artificialmente o resultado. `SpeakerTruth` é a autoridade canônica única de resposta final, e `RuntimeTruthEngine` governa a autoridade operacional TaskRun-facing nessa fronteira.
 
 ---
 
@@ -163,19 +166,19 @@ A topologia de agentes divide-se em 3 categorias mutuamente exclusivas que nunca
 
 ### I. ENGINEERING SKILLS DISCOVERED
 
-Identificadas 6 skills reutilizáveis sob [`.agents/skills/`](file:///home/fab_pina01/AIpinho/.agents/skills):
+Identificadas 6 skills reutilizáveis sob `.agents/skills/`:
 
-1. **`aipinho-context-update`** ([`SKILL.md`](file:///home/fab_pina01/AIpinho/.agents/skills/aipinho-context-update/SKILL.md)):
+1. **`aipinho-context-update`** (`.agents/skills/aipinho-context-update/SKILL.md`):
    *Propósito*: Procedimento seguro para atualizar documentação de continuidade, `README.md`, `current_state.json` ou wave ledgers a partir de evidências validadas, evitando reescritas gratuitas e sem promover documentos históricos.
-2. **`aipinho-firetest5`** ([`SKILL.md`](file:///home/fab_pina01/AIpinho/.agents/skills/aipinho-firetest5/SKILL.md)):
+2. **`aipinho-firetest5`** (`.agents/skills/aipinho-firetest5/SKILL.md`):
    *Propósito*: Disciplina para planejar, executar e interpretar validações adversariais do FireTest 5, garantindo que o fixture aponte fraquezas arquiteturais sem que a arquitetura se torne refém ou codificada para o fixture.
-3. **`aipinho-git-wave`** ([`SKILL.md`](file:///home/fab_pina01/AIpinho/.agents/skills/aipinho-git-wave/SKILL.md)):
+3. **`aipinho-git-wave`** (`.agents/skills/aipinho-git-wave/SKILL.md`):
    *Propósito*: Ciclo de vida canônico de Git para engenharia (`agent/<agent>/<task>`), cobrindo sincronização estrita, merge seguro, push e validação das invariantes de rastreamento e overlay local.
-4. **`aipinho-handoff`** ([`SKILL.md`](file:///home/fab_pina01/AIpinho/.agents/skills/aipinho-handoff/SKILL.md)):
+4. **`aipinho-handoff`** (`.agents/skills/aipinho-handoff/SKILL.md`):
    *Propósito*: Protocolo de onboarding e transferência de tarefas entre diferentes agentes de engenharia ou superfícies, documentando escopo, SHAs de commit, testes executados, claims validadas e blockers pendentes.
-5. **`aipinho-truth-audit`** ([`SKILL.md`](file:///home/fab_pina01/AIpinho/.agents/skills/aipinho-truth-audit/SKILL.md)):
+5. **`aipinho-truth-audit`** (`.agents/skills/aipinho-truth-audit/SKILL.md`):
    *Propósito*: Auditoria independente de diffs, relatórios e vereditos quanto a riscos de falso sucesso, colapso de candidato em verdade, perda de proveniência e quebra de terminalidade.
-6. **`aipinho-wave`** ([`SKILL.md`](file:///home/fab_pina01/AIpinho/.agents/skills/aipinho-wave/SKILL.md)):
+6. **`aipinho-wave`** (`.agents/skills/aipinho-wave/SKILL.md`):
    *Propósito*: Execução padronizada de ondas de engenharia delimitadas (baseline $\rightarrow$ hipóteses $\rightarrow$ diagnóstico mandatório $\rightarrow$ evidência $\rightarrow$ patch $\rightarrow$ testes $\rightarrow$ relatório $\rightarrow$ veredito $\rightarrow$ próxima fronteira).
 
 ---
@@ -229,8 +232,8 @@ $$\text{AIpinho (Local)} = \text{Repository Truth} + \text{Local Execution Overl
   - Reconciliação do `README.md` com a baseline R2.18;
   - Normalização dos caminhos do Context Pack para minúsculas (`AIpinho_context_pack/docs/context/`);
   - Instalação e canonização do Context Pack v0.2;
-  - Instalação da infraestrutura de Engineering Agents v1 ([`AGENTS.md`](file:///home/fab_pina01/AIpinho/AGENTS.md), [`.agents/skills/`](file:///home/fab_pina01/AIpinho/.agents/skills), [`docs/engineering_agents/`](file:///home/fab_pina01/AIpinho/docs/engineering_agents));
-  - Revisão de higiene e autoridade documental ([`DOCUMENT_AUTHORITY.md`](file:///home/fab_pina01/AIpinho/DOCUMENT_AUTHORITY.md));
+  - Instalação da infraestrutura de Engineering Agents v1 (`AGENTS.md`, `.agents/skills/`, `docs/engineering_agents/`);
+  - Revisão de higiene e autoridade documental (`DOCUMENT_AUTHORITY.md`);
   - Auditoria final de consistência de repositório.
 - **R3.01**: Não foi iniciado antes do fechamento formal do gate de consistência.
 
@@ -241,6 +244,7 @@ $$\text{AIpinho (Local)} = \text{Repository Truth} + \text{Local Execution Overl
 - **Identificação da Próxima Fronteira**: `H1C0.R3.01 — Governed Media Metadata Capability Configuration, Observation Execution & Semantic Identity Evidence Acquisition`
 - **Problema central a ser resolvido em R3.01**: Não é preencher campos cegamente com heurísticas textuais, mas sim:
   > *Como o AIpinho pode adquirir observações governadas através de uma capacidade configurada de metadados de mídia, vincular evidência às reivindicações de identidade semântica, preservar proveniência e distinguir evidência faltante/não suportada/falha sem transformar nome de arquivo ou extensão em Verdade?*
+- **Escopo e Horizonte**: R3.01 é o próximo passo dentro do Horizonte 1 (H1C0), não Horizonte H3.
 
 ---
 
@@ -262,39 +266,49 @@ A distinção fundamental que deve ser respeitada em R3.01:
 
 ---
 
-### P. MODEL/CAPABILITY CAUTION
+### P. MODEL REGISTRY VS CAPABILITY ROUTING & AGENT CAUTION
 
-Preservação exata das identidades e configurações em [`config/agents/agent_registry.yaml`](file:///home/fab_pina01/AIpinho/config/agents/agent_registry.yaml):
+#### 1. Model Registry (`config/models/model_registry.yaml`)
+Inspeção direta e factual do registro canônico de modelos:
+- **`runtime_defaults.default_model`**: `qwen3_1_7b_q6_k`
+- **`runtime_defaults.default_coding_candidate`**: `qwen2_5_coder_7b_q4_k_m`
+- **Default model specifications**:
+  - `model_id`: `qwen3_1_7b_q6_k`
+  - `display_name`: `Qwen3 1.7B Q6_K`
+  - `parameter_class`: `1_7b`
+  - `provider_id`: `llama_cpp_text`
+  - `quantization`: `Q6_K`
+  - `modality`: `[text]`
+  - `capabilities`: `[instruction, lightweight_routing, summarization, conversation]`
+  - `roles`: `[intent_classifier, speaker, interpreter]`
+  - `hardware_class`: `small_cpu`
 
-1. **`agent_id: aipinho`**
-   - `display_name`: AIpinho
-   - `provider`: `local`
-   - `role`: `local_orchestrator`
-   - `enabled`: `true`
-   - `implementation_status`: `active`
-2. **`agent_id: codex`**
-   - `display_name`: Codex
-   - `provider`: `local_cli`
-   - `role`: `code_executor`
-   - `enabled`: `true`
-   - `implementation_status`: `active_executor`
-3. **`agent_id: gemini`**
-   - `display_name`: Gemini
-   - `provider`: `cloud`
-   - `role`: `cloud_agent`
-   - `enabled`: `true`
-   - `implementation_status`: `active_cloud_agent`
-4. **`agent_id: lucio`**
-   - `display_name`: Lucio
-   - `provider`: `disabled`
-   - `role`: `multimodal_strategic_orchestrator`
-   - `enabled`: `false`
-   - `implementation_status`: `disabled_by_config`
+#### 2. Capability Router (`config/models/capability_router.yaml`)
+Inspeção direta do roteamento operacional de capabilities em runtime:
+- **`embeddings.enabled`**: `true` (provider: `local_embedding_runtime`, model: `qwen3_embedding_4b_q5_k_m`)
+- **`reranker.enabled`**: `true` (provider: `local_reranker_runtime`, model: `qwen3_reranker_4b_q5_k_m`)
+- **`ocr.enabled`**: `false` (provider: `tesseract`, model: `null`)
+- **`vision.enabled`**: `false` (provider: `disabled`, model: `null`)
+- **Demais capabilities**: `text_chat` (`true`), `code_assist` (`true`), `planning` (`true`), `intent_classification` (`true`), `policy_reasoning` (`true`), `workspace_search` (`true`), `file_summarization` (`true`), `patch_planning` (`true`), `shell_planning` (`true`), `artifact_summary` (`true`).
 
-**Disciplinas de inferência de capacidades**:
-- `configured != enabled` (Estar configurado em YAML não significa que esteja ativo ou habilitado).
-- `enabled != executed` (Estar habilitado não prova que houve disparo de execução).
-- `execution != validated` (Ter executado não prova que o resultado atende aos contratos e critérios de validação).
+#### 3. Agent Registry (`config/agents/agent_registry.yaml`)
+Preservação exata das identidades e papéis dos agentes configurados:
+- **`agent_id: aipinho`**: `display_name: AIpinho`, `provider: local`, `role: local_orchestrator`, `enabled: true`, `implementation_status: active`.
+- **`agent_id: codex`**: `display_name: Codex`, `provider: local_cli`, `role: code_executor`, `enabled: true`, `implementation_status: active_executor`.
+- **`agent_id: gemini`**: `display_name: Gemini`, `provider: cloud`, `role: cloud_agent`, `enabled: true`, `implementation_status: active_cloud_agent`.
+- **`agent_id: lucio`**: `display_name: Lucio`, `provider: disabled`, `role: multimodal_strategic_orchestrator`, `enabled: false`, `implementation_status: disabled_by_config`.
+
+#### 4. Distinção Epistêmica Fundamental: Model Registry vs Capability Router
+- **Model Registry** (`config/models/model_registry.yaml`): Cataloga os modelos conhecidos pelo sistema, seus caminhos de arquivo locais esperados, perfis de hardware, parâmetros e modalidades declaradas.
+- **Capability Router** (`config/models/capability_router.yaml`): Define as capacidades funcionais expostas ao runtime, quais adaptadores/provedores as atendem, quais modelos estão efetivamente roteados para cada capacidade e se a capability está habilitada ou desabilitada para consumo.
+- **Regra de Não-Equivalência**: Um modelo estar registrado, possuir determinada modalidade ou até aparecer como `enabled: true` no model registry **NÃO** prova que a capability correspondente esteja habilitada e roteada no runtime.
+- **Cadeia Conceitual Obrigatória**:
+  $$\text{registered model} \neq \text{routed capability} \neq \text{executed capability} \neq \text{validated capability}$$
+- **Disciplinas Operacionais**:
+  - `configured != enabled` (Estar configurado em YAML não significa que esteja ativo ou habilitado).
+  - `enabled != executed` (Estar habilitado não prova que houve disparo de execução).
+  - `execution != validated` (Ter executado não prova que o resultado atende aos contratos e critérios de validação).
+  - **Isenção física**: Não promover disponibilidade de modelo em configuração a prova de execução real. Não reivindicar presença física de arquivos GGUF no PC de Rafa (configuração de caminho no repositório $\neq$ arquivo local observado).
 
 ---
 
@@ -302,9 +316,10 @@ Preservação exata das identidades e configurações em [`config/agents/agent_r
 
 - **OBSERVED (Observado diretamente neste ambiente)**:
   - Sistema operacional Linux x86_64 sob Cloud Shell.
-  - Repositório Git em `/home/fab_pina01/AIpinho`, branch `main`, commit `e9556952`.
+  - Repositório Git em `/home/fab_pina01/AIpinho`, branch `agent/antigravity/onboarding-handoff`, commit base da main: `e95569521d1ffb8e6fa551d9e3eec3e7c4f2da6c`.
   - Estrutura completa de `.agents/skills/` com 6 skills e seus respectivos `SKILL.md`.
   - Conteúdo integral de `AGENTS.md`, `DOCUMENT_AUTHORITY.md`, `docs/engineering_agents/README.md` e `AIpinho_context_pack/docs/context/`.
+  - Configurações exatas em `config/models/model_registry.yaml` e `config/models/capability_router.yaml`.
   - 2 arquivos com modificações pré-existentes no working tree não tocados.
 - **DOCUMENTED (Documentado na linhagem canônica)**:
   - Veredito de saída de R2 (`H1C0_R2_READY_FOR_R3`).
@@ -312,6 +327,8 @@ Preservação exata das identidades e configurações em [`config/agents/agent_r
   - Veredito do gate de consistência pré-R3 (`H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY`).
   - Histórico de resoluções de R2.10 a R2.18 registrado em `08_WAVE_LEDGER.md` e relatórios.
 - **CONFIGURED (Configurado no repositório)**:
+  - Configuração de modelos em `config/models/model_registry.yaml` (`runtime_defaults.default_model: qwen3_1_7b_q6_k`).
+  - Roteamento de capacidades em `config/models/capability_router.yaml` (`embeddings: true`, `reranker: true`, `ocr: false`, `vision: false`).
   - Configuração dos agentes em `config/agents/agent_registry.yaml` (AIpinho, Codex, Gemini habilitados; Lúcio desabilitado).
   - Políticas de delegação em `config/agents/delegation_policy.yaml` (profundidade máxima 3, detecção de ciclo, rotas permitidas e proibidas).
   - Políticas de execução híbrida em `config/agents/hybrid_execution_policy.yaml`.
@@ -325,9 +342,9 @@ Preservação exata das identidades e configurações em [`config/agents/agent_r
 
 ---
 
-### R. ZERO-MUTATION CONFIRMATION
+### R. ZERO-MUTATION CONFIRMATION & MISSION BOUNDARY
 
-Declara-se formalmente que, durante toda a execução desta missão de onboarding:
+Declara-se formalmente que, durante toda a execução da **missão de onboarding read-only original**:
 - Nenhum arquivo foi alterado, criado ou deletado;
 - Nenhuma branch foi criada;
 - Nenhum commit foi gerado;
@@ -335,17 +352,33 @@ Declara-se formalmente que, durante toda a execução desta missão de onboardin
 - Nenhum Pull Request foi aberto;
 - Nenhum código de R3.01 ou de qualquer outra wave foi implementado.
 
+**Distinção Estrita de Fronteiras de Missão**:
+$$\text{ONBOARDING MISSION (read-only)} \longrightarrow \text{mission completed} \longrightarrow \text{HANDOFF MISSION (branch + commit + push)}$$
+
+A criação posterior da branch de trabalho (`agent/antigravity/onboarding-handoff`), do commit de handoff e do push correspondente pertenceu exclusivamente à missão separada de handoff técnico, não alterando retroativamente a natureza estritamente read-only da investigação de onboarding.
+
 ---
 
 ### S. FINAL MENTAL MODEL
 
-O agente de engenharia externo Antigravity atua **sobre** a infraestrutura do AIpinho como um mantenedor rigoroso e consciente de seus limites epistêmicos. Toda alegação técnica deve ser sustentada por observação empírica ou documentos canônicos rastreados, repudiando atalhos, heurísticas que promovam caminhos e nomes a Verdade Semântica, e relatórios de falso sucesso. 
+O agente de engenharia externo Antigravity atua **sobre** a infraestrutura do AIpinho como um mantenedor rigoroso e consciente de seus limites epistêmicos:
 
-A transição para a próxima fronteira (`H1C0.R3.01`) respeita integralmente a autoridade do código, o gate pré-R3 consolidado e a separação estrita entre governança de engenharia e governança de runtime.
+$$\text{OBSERVATION} \longrightarrow \text{EVIDENCE} \longrightarrow \text{INTERPRETATION} \longrightarrow \text{BOUNDED MEMORY}$$
+
+Rejeita-se categoricamente o padrão:
+$$\text{ASSUMPTION} \longrightarrow \text{MEMORY} \longrightarrow \text{FALSE FACT}$$
+
+Princípios operacionais inegociáveis:
+1. Toda alegação técnica deve ser sustentada por observação empírica ou documentos canônicos rastreados.
+2. `PARTIAL OBSERVATION != COMPLETE IDENTITY` — nunca inventar sufixos de identificadores ou hashes.
+3. `registered model != routed capability != executed capability != validated capability`.
+4. `ONE CANONICAL FINAL-ANSWER AUTHORITY` — `SpeakerTruth` é a autoridade canônica final; `RuntimeTruthEngine` é sua autoridade operacional para TaskRun-facing consumers.
+5. A transição para a próxima fronteira (`H1C0.R3.01`) respeita integralmente a autoridade do código, o gate pré-R3 consolidado e a separação estrita entre governança de engenharia e governança de runtime.
 
 ---
 
 ```text
+[Read-only Onboarding Mission Phase]
 files modified: 0
 commits created: 0
 branches created: 0
