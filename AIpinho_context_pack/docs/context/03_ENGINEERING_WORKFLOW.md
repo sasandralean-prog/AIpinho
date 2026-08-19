@@ -81,19 +81,55 @@ When determinism matters, compare input identity, projected identity, row model 
 ## Git protocol
 
 ```text
-sync baseline
-→ create bounded branch
+sync main
+→ create agent/<agent>/<task> branch
 → implement
 → tests
-→ public validation
-→ reports
-→ README/current-state update
+→ required validation for the execution class
+→ reports/docs update
 → commit
-→ push
-→ verify remote commit
+→ push task branch
+→ merge validated branch into main
+→ push main
+→ synchronize local main
+→ prove tracked(local main) == tracked(origin/main)
 ```
 
 Never use force push or destructive reset as a convenience for reconciling validated history.
+
+## Engineering-agent infrastructure
+
+Repository engineering assistants should use:
+
+- `AGENTS.md` as the concise shared engineering entrypoint;
+- `.agents/skills/` for reusable procedures;
+- `docs/engineering_agents/` for detailed operating policy;
+- `replit.md` as a thin Replit adapter;
+- `.github/agents/` for VS Code/GitHub Copilot role profiles.
+
+These files guide agents working ON AIpinho. They do not define AIpinho runtime
+agents and must not be confused with `config/agents/` or
+`src/aipinho/services/agents/`.
+
+Task branches should be named:
+
+```text
+agent/<agent>/<task>
+```
+
+The intended workflow is one active engineering agent and one active task
+branch at a time.
+
+## Local overlay
+
+Tracked synchronization means:
+
+```text
+tracked(local main) == tracked(origin/main)
+```
+
+It does not mean ignored/untracked local resources such as `.env*`, GGUF
+models, runtime state, corpora, or raw evidence are deleted or committed.
 
 ## Mobile/manual protocol
 
@@ -125,4 +161,3 @@ A proven bug is not automatically a resolved bug.
 ## End-of-wave
 
 State exact verdict, FireTest status, root cause, changes, proof level, open P0/P1/P2, terminality, SpeakerTruth, next frontier, and Git branch/commit/push state.
-

@@ -2,9 +2,9 @@
 
 Status: `CURRENT_AUTHORITY_INDEX`
 
-Baseline inspected: `main` at `d11d01c2b6443eb0a4e422a0611fee0a392b0d3a`
+Baseline inspected: `main` at `d993da01eb6022772969b6f7168bb3b9aa06c9e1`
 
-Generated: 2026-08-18
+Generated: 2026-08-19
 
 ## Purpose
 
@@ -78,6 +78,20 @@ These documents summarize current state. They are deliberately subordinate to Cl
 | `AIpinho_context_pack/docs/context/05_RUNTIME_ARCHITECTURE_MAP.md` | Two-layer architectural orientation and agent taxonomy | Orientation only; code/config and canonical flow win. |
 | `AIpinho_context_pack/docs/context/09_CURRENT_FRONTIER.md` | Current project/runtime frontier | Must be updated when the validated frontier changes. |
 | `AIpinho_context_pack/docs/context/current_state.json` | Machine-readable continuity state | Current state pointer, not runtime state storage. |
+
+## Class C2 — Engineering-agent infrastructure
+
+These documents guide external engineering assistants working ON AIpinho. They
+do not define runtime behavior and do not modify AIpinho internal runtime-agent
+semantics.
+
+| Source | Role | Authority note |
+|---|---|---|
+| `AGENTS.md` | Canonical engineering instruction entrypoint | Shared constitution/map for repository engineering agents. Subordinate to runtime code/config/evidence for runtime truth. |
+| `.agents/skills/` | Reusable engineering workflow procedures | Portable skill layer for engineering tasks; not runtime skills or runtime agents. |
+| `docs/engineering_agents/` | Detailed engineering operating policy | Git, platform, validation-authority, local-overlay, and handoff policy for repository work. |
+| `replit.md` | Thin Replit adapter | Points Replit Agent back to `AGENTS.md`; not a second constitution. |
+| `.github/agents/` | VS Code/GitHub Copilot role profiles | Specialized repository engineering roles; not AIpinho runtime agents. |
 
 ## Class D — Active ledgers and partially current working documents
 
@@ -163,8 +177,17 @@ external agent islands
     Codex, Gemini, and other distinct governed participants/executors
 
 engineering agents working on the repository
-    future AGENTS.md, .agents/skills/, Replit, VS Code/Copilot, Devin, etc.
+    AGENTS.md, .agents/skills/, docs/engineering_agents/,
+    replit.md, .github/agents/, Codex, Devin, Replit, VS Code/Copilot, etc.
 ```
+
+`AGENTS.md` is now the canonical repository-local engineering instruction
+entrypoint. `.agents/skills/` contains reusable engineering procedures.
+`docs/engineering_agents/` contains detailed operating policy.
+
+These files guide engineering assistants working ON AIpinho. They do not become
+runtime authority and must never be interpreted as mutating `config/agents/` or
+`src/aipinho/services/agents/`.
 
 Documents under `docs/architecture/` describing Codex, Gemini, Lúcio, delegation, memory gateway, event bus, policy kernel, or tool gateway may describe implemented subsystems or historical design phases. Verify them against the current registry, policy configuration, services, tests, and runtime evidence before treating them as present behavior.
 
@@ -189,4 +212,3 @@ Update this index when:
 - repository-local engineering-agent infrastructure is introduced.
 
 Do not update it merely because a new document was added.
-

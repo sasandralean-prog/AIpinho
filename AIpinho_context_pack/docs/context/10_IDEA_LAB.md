@@ -119,7 +119,7 @@ engineering-agent infrastructure works ON AIpinho
 runtime-agent infrastructure participates IN AIpinho
 ```
 
-This design must not be implemented inside the pre-R3 consistency P0. It may begin only after the repository/knowledge consistency gate is closed.
+This design is now implemented as repository engineering infrastructure. It
+remains outside AIpinho runtime-agent architecture.
 
-Status: PROMOTED DESIGN — DEFERRED UNTIL AFTER PRE-R3 GATE.
-
+Status: PROMOTED DESIGN — IMPLEMENTED AS ENGINEERING INFRASTRUCTURE.

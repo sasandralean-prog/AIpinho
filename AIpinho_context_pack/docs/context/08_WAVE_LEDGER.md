@@ -142,10 +142,19 @@ Purpose:
 Git lineage reconciliation completed at:
 `bed449fa8d3e78670df2bdddf413da181add61ce`
 
-Required final gate verdict:
+Final gate verdict:
 `H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY`
+
+Engineering-agent infrastructure installed:
+
+- `AGENTS.md`
+- `.agents/skills/`
+- `docs/engineering_agents/`
+- `replit.md`
+- `.github/agents/`
+
+This closes the repository/knowledge consistency gate without starting R3.01.
 
 ## Next runtime frontier
 
 `H1C0.R3.01 — Governed Media Metadata Capability Configuration, Observation Execution & Semantic Identity Evidence Acquisition`
-

@@ -141,13 +141,14 @@ Codex and Gemini are distinct agent/execution islands governed through the platf
 
 Engineering assistants work **on the AIpinho repository**. Examples include Codex, Replit, VS Code/Copilot, Devin, and future repository-local agent instructions or skills.
 
-Planned repository surfaces may include:
+Implemented repository engineering surfaces include:
 
 ```text
 AGENTS.md
 .agents/skills/
 replit.md
 .github/agents/
+docs/engineering_agents/
 ```
 
 These are not automatically part of the AIpinho runtime.
@@ -213,4 +214,3 @@ R2.18 is now reconciled into `main`.
 Before R3 begins, the repository/knowledge consistency gate must align paths, current-state documents, authority markers, and handoff material.
 
 R3.01 then begins with a different problem: the representation exists, but the public runtime lacks a configured governed capability to acquire semantic media identity evidence.
-

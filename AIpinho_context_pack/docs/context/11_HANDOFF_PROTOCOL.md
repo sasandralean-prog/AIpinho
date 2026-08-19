@@ -62,6 +62,13 @@ FireTest 5 = NOT_READY
 active gate = pre-R3 repository/knowledge consistency
 ```
 
+After the engineering-agent infrastructure mission:
+
+```text
+pre-R3 repository/knowledge consistency = H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY
+engineering-agent entrypoint = AGENTS.md
+```
+
 ## Step 5 — Classify the agent context
 
 Do not confuse:
@@ -77,7 +84,7 @@ engineering agents
     work ON the repository
 ```
 
-Repository instructions such as future `AGENTS.md` or `.agents/skills/` do not automatically describe runtime-agent behavior.
+Repository instructions such as `AGENTS.md` or `.agents/skills/` do not automatically describe runtime-agent behavior.
 
 ## Step 6 — Work from evidence
 
@@ -134,4 +141,3 @@ If a connector is read-only or mutations fail, do not keep pretending the same w
 The goal is not to clone a personality perfectly.
 
 The goal is to make continuity cheap enough that losing one chat session no longer means losing the project's cognitive history.
-
