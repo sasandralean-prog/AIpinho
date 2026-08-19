@@ -91,6 +91,9 @@ flowchart TD
   auditing local runtime components.
 - `docs/` - architecture, operations, testing, mobile, sandbox, skills, and
   integration documentation.
+- `AGENTS.md`, `.agents/skills/`, `docs/engineering_agents/`, `replit.md`, and
+  `.github/agents/` - repository engineering-agent infrastructure for external
+  assistants working ON AIpinho. These are not runtime-agent configuration.
 - `archaeology/` - historical storage/report archaeology. This is conceptual
   context, not automatic live authority.
 - `genome/` - generated architecture/design DNA maps and summaries. These are
@@ -101,6 +104,30 @@ flowchart TD
 
 Local runtime state, payload refs, generated artifacts, caches, binary model
 runtimes, and raw heavy FireTest dumps are intentionally ignored by Git.
+
+## Engineering Agents
+
+External engineering assistants should start at `AGENTS.md`.
+
+AIpinho distinguishes:
+
+- internal runtime agents under `config/agents/` and
+  `src/aipinho/services/agents/`;
+- external governed agent islands participating through AIpinho runtime
+  topology;
+- engineering agents such as Codex, Devin, Replit, and VS Code/Copilot working
+  ON the repository.
+
+The shared engineering layer is:
+
+- `AGENTS.md` - concise engineering constitution and map;
+- `.agents/skills/` - portable workflow procedures;
+- `docs/engineering_agents/` - detailed Git, local-overlay, validation, and
+  platform policy;
+- `replit.md` - thin Replit adapter;
+- `.github/agents/` - VS Code/GitHub Copilot role profiles.
+
+This layer does not implement R3.01 and does not change FireTest runtime truth.
 
 ## Archaeology
 
@@ -302,6 +329,16 @@ H1C0.R2 is consolidated and ready for the next architectural frontier. That
 does not mean FireTest 5 is ready; it means the remaining blocker is now a
 capability/evidence acquisition frontier rather than an R2 runtime governance
 defect.
+
+The pre-R3 repository/knowledge consistency gate is closed:
+
+```text
+H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY
+```
+
+Repository engineering-agent infrastructure now exists so future engineering
+assistants can share Git discipline, authority hierarchy, validation proof
+classes, and local-overlay boundaries before R3.01 begins.
 
 ## Roadmap
 

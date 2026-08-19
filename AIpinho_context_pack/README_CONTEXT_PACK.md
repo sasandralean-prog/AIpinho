@@ -26,7 +26,10 @@ Generated after:
 
 FireTest 5 remains `NOT_READY`.
 
-R3.01 must not begin until the pre-R3 repository/knowledge consistency gate is closed.
+The pre-R3 repository/knowledge consistency gate is closed:
+`H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY`.
+
+R3.01 has not been implemented by this context/infrastructure work.
 
 ## Canonical path
 
@@ -35,4 +38,3 @@ The canonical directory is lowercase:
 `AIpinho_context_pack/docs/context/`
 
 Do not recreate the previous uppercase `docs/CONTEXT/` path.
-

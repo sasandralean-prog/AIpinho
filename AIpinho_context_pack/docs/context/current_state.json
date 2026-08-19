@@ -1,6 +1,6 @@
 {
   "context_pack_version": "0.2",
-  "generated_on": "2026-08-18",
+  "generated_on": "2026-08-19",
   "project": "AIpinho",
   "repository": "https://github.com/sasandralean-prog/AIpinho",
   "default_branch": "main",
@@ -15,18 +15,28 @@
   "r2_18_source_branch": "h1c0-r2.18-media-identity-coverage",
   "r2_18_source_commit": "cefa5069a44556b72908940fab0f8195dd9e2209",
   "r2_18_main_merge_commit": "bed449fa8d3e78670df2bdddf413da181add61ce",
-  "pre_r3_consistency_status": "IN_PROGRESS",
+  "pre_r3_consistency_status": "H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY",
   "pre_r3_consistency_completed": [
     "git_lineage_reconciled",
     "readme_r2_18_baseline_reconciled",
     "context_path_normalized",
-    "context_pack_v0_2_installed"
-  ],
-  "pre_r3_consistency_pending": [
+    "context_pack_v0_2_installed",
+    "engineering_agent_infrastructure_v1_installed",
     "authority_hygiene_review",
     "final_repository_knowledge_consistency_audit"
   ],
+  "pre_r3_consistency_pending": [],
   "required_pre_r3_verdict": "H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY",
+  "pre_r3_consistency_verdict": "H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY",
+  "engineering_agent_infrastructure": {
+    "status": "implemented",
+    "entrypoint": "AGENTS.md",
+    "skills_root": ".agents/skills",
+    "docs_root": "docs/engineering_agents",
+    "replit_adapter": "replit.md",
+    "vscode_copilot_agents": ".github/agents",
+    "runtime_authority": false
+  },
   "next_frontier": "H1C0.R3.01 — Governed Media Metadata Capability Configuration, Observation Execution & Semantic Identity Evidence Acquisition",
   "agent_taxonomy": {
     "internal_runtime_agents": "participate IN AIpinho under governed runtime namespaces",
@@ -37,7 +47,8 @@
     "R2 structural debt is considered closed based on the validated R2.18 exit assessment.",
     "FireTest 5 remains NOT_READY because governed semantic media identity evidence is unavailable.",
     "R3.01 must explicitly validate claim-level evidence binding.",
-    "R3.01 must not begin until the pre-R3 repository/knowledge consistency verdict is issued.",
+    "Pre-R3 repository/knowledge consistency is closed by H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY.",
+    "Engineering-agent infrastructure guides repository work only and has runtime_authority=false.",
     "Filename does not grant document authority; code, canonical contracts/config, and validated evidence win."
   ]
 }

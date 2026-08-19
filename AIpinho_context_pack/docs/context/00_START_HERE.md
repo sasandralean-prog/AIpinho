@@ -8,6 +8,9 @@ It is not a chat dump and it is not runtime authority. It is a structured memory
 
 ## Read order
 
+For engineering assistants working on the repository, read `AGENTS.md` and
+`DOCUMENT_AUTHORITY.md` before the Context Pack.
+
 1. `00_START_HERE.md`
 2. `01_AIPINHO_PHILOSOPHY.md`
 3. `02_LUCIO_RAFA_WORKING_RELATIONSHIP.md`
@@ -64,7 +67,8 @@ Never collapse these categories:
 - FireTest 5: `NOT_READY`
 - R2.18 reconciled into `main`: `bed449fa8d3e78670df2bdddf413da181add61ce`
 - Current gate: pre-R3 repository/knowledge consistency
+- Pre-R3 gate verdict: `H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY`
+- Engineering-agent entrypoint: `AGENTS.md`
 - Next runtime frontier after the gate: `H1C0.R3.01 — Governed Media Metadata Capability Configuration, Observation Execution & Semantic Identity Evidence Acquisition`
 
 Read `09_CURRENT_FRONTIER.md` before proposing implementation work.
-

@@ -55,18 +55,20 @@ Current blocked reason:
 
 This is considered a legitimate limitation, not unresolved R2 structural debt.
 
-## Active work: pre-R3 consistency gate
+## Pre-R3 consistency gate
 
 R3.01 has not started.
 
-Current P0 is repository/knowledge consistency, not a runtime defect:
+Repository/knowledge consistency is closed:
 - Git lineage reconciled;
 - Context Pack path normalization to lowercase `docs/context/`;
 - Context Pack v0.2 installation;
 - authority-hygiene review;
 - final consistency audit.
+- engineering-agent infrastructure installed and classified outside runtime
+  agent namespaces.
 
-Required gate verdict:
+Gate verdict:
 `H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY`
 
 ## Next runtime frontier after the gate
@@ -117,4 +119,3 @@ Possibilities:
 - domain-specific validation service.
 
 Do not refactor merely for purity. Establish semantic ownership first.
-
