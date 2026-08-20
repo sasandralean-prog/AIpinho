@@ -754,6 +754,129 @@ def test_demand_aware_policy_stops_after_identity_any_of_is_satisfied(tmp_path: 
     assert {record["canonical_key"] for record in payload["observations"]} == {"metadata", "track_title", "artist", "codec"}
 
 
+def _media_demand(
+    *,
+    required_keys: list[str] | None = None,
+    identity_keys: list[str] | None = None,
+    optional_keys: list[str] | None = None,
+) -> dict:
+    groups = []
+    if identity_keys:
+        groups.append(
+            {
+                "semantic_type": "media_identity",
+                "satisfaction": "ANY_OF",
+                "candidate_keys": identity_keys,
+                "minimum_evidenced_claims": 1,
+            }
+        )
+    return {
+        "blocking_required_claims": [
+            {"canonical_key": key, "satisfaction": "REQUIRED", "evidence_required": True}
+            for key in required_keys or []
+        ],
+        "semantic_requirement_groups": groups,
+        "optional_enrichment_claims": optional_keys or [],
+    }
+
+
+def test_required_technical_claim_still_drives_fallback_after_identity_is_satisfied(tmp_path: Path) -> None:
+    sample = tmp_path / "sample.media"
+    sample.write_bytes(b"semantic fixture")
+    mutagen = _FakeMediaBackend(
+        "mutagen",
+        [RawMediaMetadataField(canonical_key="metadata", normalized_value={"ARTIST": "Artist"}, confidence=0.95, source_backend_id="mutagen", raw_ref=str(sample))],
+        supported_attributes=["artist", "track_title", "metadata"],
+    )
+    ffprobe = _FakeMediaBackend(
+        "ffprobe",
+        [RawMediaMetadataField(canonical_key="codec", normalized_value="aac", confidence=0.95, source_backend_id="ffprobe", raw_ref=str(sample))],
+        supported_attributes=["codec"],
+    )
+    native = _FakeMediaBackend("native_minimal", supported_attributes=["codec", "container"])
+    capability = MediaMetadataCapability(
+        backend_policy=MediaMetadataBackendPolicy(primary="mutagen", fallbacks=["ffprobe", "native_minimal"]),
+        backends={"mutagen": mutagen, "ffprobe": ffprobe, "native_minimal": native},
+    )
+
+    payload = capability.payload_for_boundary(
+        file_path=str(sample),
+        entity_ref={"entity_id": "entity_1"},
+        requested_keys=["artist", "track_title", "codec"],
+        media_observation_demand=_media_demand(required_keys=["codec"], identity_keys=["artist", "track_title"]),
+    )
+
+    assert mutagen.calls == [str(sample)]
+    assert ffprobe.calls == [str(sample)]
+    assert native.calls == []
+    assert payload["media_metadata_capability"]["attempted_backends"] == ["mutagen", "ffprobe"]
+    assert {record["canonical_key"] for record in payload["observations"]} == {"metadata", "artist", "codec"}
+
+
+def test_optional_technical_enrichment_does_not_force_fallback_after_identity_is_satisfied(tmp_path: Path) -> None:
+    sample = tmp_path / "sample.media"
+    sample.write_bytes(b"semantic fixture")
+    mutagen = _FakeMediaBackend(
+        "mutagen",
+        [RawMediaMetadataField(canonical_key="metadata", normalized_value={"ARTIST": "Artist"}, confidence=0.95, source_backend_id="mutagen", raw_ref=str(sample))],
+        supported_attributes=["artist", "track_title", "metadata"],
+    )
+    ffprobe = _FakeMediaBackend(
+        "ffprobe",
+        [RawMediaMetadataField(canonical_key="codec", normalized_value="aac", confidence=0.95, source_backend_id="ffprobe", raw_ref=str(sample))],
+        supported_attributes=["codec"],
+    )
+    capability = MediaMetadataCapability(
+        backend_policy=MediaMetadataBackendPolicy(primary="mutagen", fallbacks=["ffprobe"]),
+        backends={"mutagen": mutagen, "ffprobe": ffprobe},
+    )
+
+    payload = capability.payload_for_boundary(
+        file_path=str(sample),
+        entity_ref={"entity_id": "entity_1"},
+        requested_keys=["artist", "track_title", "codec"],
+        media_observation_demand=_media_demand(identity_keys=["artist", "track_title"], optional_keys=["codec"]),
+    )
+
+    assert mutagen.calls == [str(sample)]
+    assert ffprobe.calls == []
+    assert payload["media_metadata_capability"]["attempted_backends"] == ["mutagen"]
+    assert {record["canonical_key"] for record in payload["observations"]} == {"metadata", "artist"}
+
+
+def test_identity_missing_can_fall_back_to_available_identity_capable_backend(tmp_path: Path) -> None:
+    sample = tmp_path / "sample.media"
+    sample.write_bytes(b"semantic fixture")
+    mutagen = _FakeMediaBackend(
+        "mutagen",
+        [RawMediaMetadataField(canonical_key="codec", normalized_value="aac", confidence=0.95, source_backend_id="mutagen", raw_ref=str(sample))],
+        supported_attributes=["codec", "metadata", "track_title", "artist"],
+    )
+    ffprobe = _FakeMediaBackend(
+        "ffprobe",
+        [RawMediaMetadataField(canonical_key="metadata", normalized_value={"TITLE": "Song"}, confidence=0.95, source_backend_id="ffprobe", raw_ref=str(sample))],
+        supported_attributes=["track_title", "metadata"],
+    )
+    native = _FakeMediaBackend("native_minimal", supported_attributes=["codec", "container"])
+    capability = MediaMetadataCapability(
+        backend_policy=MediaMetadataBackendPolicy(primary="mutagen", fallbacks=["ffprobe", "native_minimal"]),
+        backends={"mutagen": mutagen, "ffprobe": ffprobe, "native_minimal": native},
+    )
+
+    payload = capability.payload_for_boundary(
+        file_path=str(sample),
+        entity_ref={"entity_id": "entity_1"},
+        requested_keys=["track_title", "artist"],
+        media_observation_demand=_media_demand(identity_keys=["track_title", "artist"]),
+    )
+
+    assert mutagen.calls == [str(sample)]
+    assert ffprobe.calls == [str(sample)]
+    assert native.calls == []
+    assert payload["media_metadata_capability"]["attempted_backends"] == ["mutagen", "ffprobe"]
+    assert payload["media_metadata_capability"]["semantic_identity_evidence_counts"]["track_title"] == 1
+
+
 def test_native_minimal_is_not_false_fallback_for_missing_identity(tmp_path: Path) -> None:
     sample = tmp_path / "sample.media"
     sample.write_bytes(b"semantic fixture")

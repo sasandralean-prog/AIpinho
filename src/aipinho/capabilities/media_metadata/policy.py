@@ -39,13 +39,16 @@ class MediaMetadataCapability:
         entity_ref: dict[str, Any],
         requested_keys: list[str] | None = None,
         backend_availability_snapshot: dict[str, Any] | None = None,
+        media_observation_demand: dict[str, Any] | None = None,
     ) -> MediaMetadataObservationResult:
         attempted: list[str] = []
         raw_results: list[RawMediaMetadataResult] = []
         observed_keys: set[str] = set()
         selected_backend: str | None = None
         requested = self._normalized_requested_keys(requested_keys)
-        identity_demand = [key for key in MEDIA_IDENTITY_CANONICAL_KEYS if key in requested]
+        demand = self._coerce_media_observation_demand(media_observation_demand=media_observation_demand, requested=requested)
+        identity_demand = demand["identity_keys"]
+        required_demand = demand["required_keys"]
         availability_snapshot = self._coerce_availability_snapshot(backend_availability_snapshot)
         for backend_id in self._backend_order():
             backend = self.backends.get(backend_id)
@@ -81,6 +84,8 @@ class MediaMetadataCapability:
                 descriptor=descriptor,
                 requested_keys=requested,
                 identity_demand=identity_demand,
+                required_demand=required_demand,
+                typed_demand=bool(media_observation_demand),
                 observed_keys=observed_keys,
             ):
                 continue
@@ -99,6 +104,8 @@ class MediaMetadataCapability:
             if self._blocking_demand_satisfied(
                 requested_keys=requested,
                 identity_demand=identity_demand,
+                required_demand=required_demand,
+                typed_demand=bool(media_observation_demand),
                 observed_keys=observed_keys,
             ):
                 break
@@ -146,12 +153,14 @@ class MediaMetadataCapability:
         entity_ref: dict[str, Any],
         requested_keys: list[str] | None = None,
         backend_availability_snapshot: dict[str, Any] | None = None,
+        media_observation_demand: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         observation = self.observe(
             file_path=file_path,
             entity_ref=entity_ref,
             requested_keys=requested_keys,
             backend_availability_snapshot=backend_availability_snapshot,
+            media_observation_demand=media_observation_demand,
         )
         successful_backends = sorted({
             record.get("backend_id")
@@ -275,6 +284,36 @@ class MediaMetadataCapability:
             if str(key or "").strip() in evidence_keys
         }
 
+    def _coerce_media_observation_demand(
+        self,
+        *,
+        media_observation_demand: dict[str, Any] | None,
+        requested: set[str],
+    ) -> dict[str, set[str]]:
+        evidence_keys = set(MEDIA_METADATA_EVIDENCE_KEYS)
+        required_keys = {
+            str(item.get("canonical_key") or "").strip()
+            for item in list((media_observation_demand or {}).get("blocking_required_claims") or [])
+            if isinstance(item, dict) and str(item.get("canonical_key") or "").strip() in evidence_keys
+        }
+        identity_keys: set[str] = set()
+        for group in list((media_observation_demand or {}).get("semantic_requirement_groups") or []):
+            if not isinstance(group, dict):
+                continue
+            if str(group.get("semantic_type") or "") != "media_identity":
+                continue
+            identity_keys.update(
+                str(key or "").strip()
+                for key in list(group.get("candidate_keys") or [])
+                if str(key or "").strip() in set(MEDIA_IDENTITY_CANONICAL_KEYS)
+            )
+        if not media_observation_demand:
+            identity_keys = {key for key in MEDIA_IDENTITY_CANONICAL_KEYS if key in requested}
+        return {
+            "identity_keys": identity_keys,
+            "required_keys": required_keys,
+        }
+
     def _normalized_evidence_keys_for_result(self, *, result: RawMediaMetadataResult, entity_ref: dict[str, Any]) -> set[str]:
         evidence = self.normalizer.normalize(
             raw_results=[result],
@@ -289,14 +328,23 @@ class MediaMetadataCapability:
         *,
         descriptor: MediaMetadataBackendDescriptor,
         requested_keys: set[str],
-        identity_demand: list[str],
+        identity_demand: set[str],
+        required_demand: set[str],
+        typed_demand: bool,
         observed_keys: set[str],
     ) -> bool:
         supported = set(descriptor.supported_attributes or [])
+        missing_required = required_demand.difference(observed_keys)
+        if missing_required.intersection(supported):
+            return True
         if identity_demand:
             if set(identity_demand).intersection(observed_keys):
-                return False
+                return False if not missing_required else bool(missing_required.intersection(supported))
             return bool(set(identity_demand).intersection(supported))
+        if typed_demand and required_demand:
+            return bool(missing_required.intersection(supported))
+        if typed_demand:
+            return bool(not observed_keys and requested_keys.intersection(supported))
         if requested_keys and requested_keys.issubset(observed_keys):
             return False
         return bool(not requested_keys or requested_keys.intersection(supported))
@@ -305,9 +353,15 @@ class MediaMetadataCapability:
         self,
         *,
         requested_keys: set[str],
-        identity_demand: list[str],
+        identity_demand: set[str],
+        required_demand: set[str],
+        typed_demand: bool,
         observed_keys: set[str],
     ) -> bool:
+        if typed_demand:
+            required_satisfied = required_demand.issubset(observed_keys)
+            identity_satisfied = True if not identity_demand else bool(identity_demand.intersection(observed_keys))
+            return bool(required_satisfied and identity_satisfied)
         if identity_demand:
             return bool(set(identity_demand).intersection(observed_keys))
         return bool(requested_keys and requested_keys.issubset(observed_keys))

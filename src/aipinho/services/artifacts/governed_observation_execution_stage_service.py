@@ -46,6 +46,7 @@ class PhysicalObservationGroup:
     raw_execution_source_ref: str
     entity: dict[str, Any]
     tasks: list[ObservationTask] = field(default_factory=list)
+    requirements_by_canonical_key: dict[str, dict[str, Any]] = field(default_factory=dict)
 
     @property
     def requested_canonical_keys(self) -> list[str]:
@@ -94,7 +95,10 @@ class GovernedObservationExecutionStageService:
         self._checkpoint(checkpoint, "before_post_compile_observation_execution", {})
         quarantine_block = self._quarantine_block_reason()
         if quarantine_block:
-            telemetry = self._blocked_telemetry(reason_code=quarantine_block)
+            telemetry = self._blocked_telemetry(
+                reason_code=quarantine_block,
+                media_configuration=self._media_capability_configuration_telemetry(),
+            )
             self._checkpoint(checkpoint, "after_post_compile_observation_execution", telemetry)
             return GovernedObservationExecutionStageResult(
                 observation_execution_results=[],
@@ -256,6 +260,11 @@ class GovernedObservationExecutionStageService:
     ) -> list[PhysicalObservationGroup]:
         entities_by_id = {str(entity.get("entity_id") or ""): entity for entity in selected_entities}
         strategies_by_id = {item.strategy_id: item for item in observation_plan.observation_strategies}
+        requirements_by_key = {
+            str(item.canonical_key or item.attribute_name or ""): item.model_dump(mode="json")
+            for item in observation_plan.requirements
+            if str(item.canonical_key or item.attribute_name or "").strip()
+        }
         groups: dict[tuple[str, str, str], PhysicalObservationGroup] = {}
         for task in observation_plan.observation_tasks:
             if not self._is_deferred_executable_task(task):
@@ -286,8 +295,11 @@ class GovernedObservationExecutionStageService:
                         raw_execution_source_ref=raw_source_ref,
                         entity=entity,
                         tasks=[],
+                        requirements_by_canonical_key={},
                     )
                     groups[key] = group
+                if canonical_key in requirements_by_key:
+                    group.requirements_by_canonical_key[canonical_key] = requirements_by_key[canonical_key]
                 group.tasks.append(task)
         return list(groups.values())
 
@@ -368,6 +380,7 @@ class GovernedObservationExecutionStageService:
             key for key in group.requested_canonical_keys
             if group.capability_id != "media_metadata_reader" or key in set(MEDIA_METADATA_EVIDENCE_KEYS)
         ]
+        media_demand = self._media_observation_demand_for_group(group)
         return first.model_copy(
             update={
                 "status": "READY_FOR_OBSERVER",
@@ -382,6 +395,7 @@ class GovernedObservationExecutionStageService:
                     "source_root_role": entity_ref.get("source_root_role"),
                     "required_confidence": first.inputs.get("required_confidence", 0.0),
                     "requested_canonical_keys": expected_outputs,
+                    "media_observation_demand": media_demand,
                     "media_metadata_backend_availability_snapshot": backend_availability_snapshot or {},
                 },
                 "expected_outputs": expected_outputs,
@@ -393,7 +407,7 @@ class GovernedObservationExecutionStageService:
                     "grouped_observation_task_ids": [task.observation_task_id for task in group.tasks],
                     "grouped_goal_ids": [task.goal_id for task in group.tasks],
                     "requested_canonical_keys": expected_outputs,
-                    "media_observation_demand": self._media_observation_demand(expected_outputs),
+                    "media_observation_demand": media_demand,
                 },
             }
         )
@@ -408,7 +422,7 @@ class GovernedObservationExecutionStageService:
                 "grouped_observation_task_ids": [task.observation_task_id for task in group.tasks],
                 "grouped_goal_ids": [task.goal_id for task in group.tasks],
                 "requested_canonical_keys": group.requested_canonical_keys,
-                "media_observation_demand": self._media_observation_demand(group.requested_canonical_keys),
+                "media_observation_demand": self._media_observation_demand_for_group(group),
             }
         )
         for record in result.evidence_set.records:
@@ -682,33 +696,119 @@ class GovernedObservationExecutionStageService:
             snapshots["media_metadata_reader"] = snapshot_factory()
         return snapshots
 
-    def _media_observation_demand(self, requested_keys: list[str]) -> dict[str, Any]:
+    def _media_capability_configuration_telemetry(self) -> dict[str, Any]:
+        capability = self.observer_registry.get("media_metadata_reader")
+        configured = capability is not None
+        adapter = self.observation_boundary.adapters.get("media_metadata_reader")
+        adapter_capability = getattr(adapter, "capability", None)
+        snapshot_factory = getattr(adapter_capability, "backend_availability_snapshot", None)
+        snapshot = snapshot_factory() if callable(snapshot_factory) else {}
+        available = False
+        for descriptor in dict(snapshot or {}).values():
+            if isinstance(descriptor, dict) and str(descriptor.get("status") or "") in {"available", "partial", "test_only"}:
+                available = True
+                break
+        if configured and not snapshot:
+            available = bool(capability.available and str(capability.status or "available") not in {"disabled", "unavailable", "blocked"})
+        return {
+            "configured": configured,
+            "available": available,
+            "primary_backend": "mutagen",
+            "backend_availability_snapshot": snapshot,
+        }
+
+    def _media_observation_demand_for_group(self, group: PhysicalObservationGroup) -> dict[str, Any]:
+        return self._media_observation_demand(
+            requested_keys=group.requested_canonical_keys,
+            tasks=group.tasks,
+            requirements_by_key=group.requirements_by_canonical_key,
+        )
+
+    def _media_observation_demand(
+        self,
+        requested_keys: list[str],
+        *,
+        tasks: list[ObservationTask] | None = None,
+        requirements_by_key: dict[str, dict[str, Any]] | None = None,
+    ) -> dict[str, Any]:
+        requested_set = set(requested_keys)
         identity_keys = [
             key for key in MEDIA_IDENTITY_CANONICAL_KEYS
-            if key in set(requested_keys)
+            if key in requested_set
         ]
+        tasks_by_key = {
+            str(task.canonical_key or task.attribute_name or ""): task
+            for task in tasks or []
+        }
+        required_claims: list[dict[str, Any]] = []
+        for key in requested_keys:
+            if key in set(identity_keys):
+                continue
+            task = tasks_by_key.get(key)
+            requirement = (requirements_by_key or {}).get(key)
+            if self._contract_claim_blocks_execution(canonical_key=key, task=task, requirement=requirement):
+                required_claims.append(
+                    {
+                        "canonical_key": key,
+                        "satisfaction": "REQUIRED",
+                        "evidence_required": True,
+                    }
+                )
+        blocking_keys = {str(item.get("canonical_key") or "") for item in required_claims}
         optional_keys = [
             key for key in requested_keys
-            if key not in set(identity_keys)
+            if key not in set(identity_keys) and key not in blocking_keys
         ]
-        if not identity_keys:
-            return {
-                "blocking_required_claims": [],
-                "semantic_requirement_groups": [],
-                "optional_enrichment_claims": optional_keys,
-            }
-        return {
-            "blocking_required_claims": [
+        semantic_groups: list[dict[str, Any]] = []
+        if identity_keys:
+            semantic_groups.append(
                 {
                     "semantic_type": "media_identity",
                     "satisfaction": "ANY_OF",
                     "candidate_keys": identity_keys,
                     "minimum_evidenced_claims": 1,
                 }
-            ],
-            "semantic_requirement_groups": ["media_identity"],
+            )
+        return {
+            "blocking_required_claims": required_claims,
+            "semantic_requirement_groups": semantic_groups,
             "optional_enrichment_claims": optional_keys,
         }
+
+    def _contract_claim_blocks_execution(
+        self,
+        *,
+        canonical_key: str,
+        task: ObservationTask | None,
+        requirement: dict[str, Any] | None,
+    ) -> bool:
+        if canonical_key in set(MEDIA_IDENTITY_CANONICAL_KEYS):
+            return False
+        metadata: dict[str, Any] = {}
+        if isinstance(requirement, dict):
+            metadata.update(requirement)
+        if task is not None:
+            for container in (task.created_from, task.inputs):
+                if not isinstance(container, dict):
+                    continue
+                contract = container.get("attribute_contract")
+                if isinstance(contract, dict):
+                    metadata.update(contract)
+                for key in ("requiredness", "required", "nullable", "evidence_required"):
+                    if key in container:
+                        metadata[key] = container[key]
+        if not metadata:
+            return False
+        requiredness = str(metadata.get("requiredness") or "").casefold()
+        required = bool(metadata.get("required", requiredness == "required"))
+        nullable = bool(metadata.get("nullable", False))
+        evidence_required = bool(metadata.get("evidence_required", requiredness == "required" or required))
+        return bool(
+            required
+            and evidence_required
+            and not nullable
+            and requiredness not in {"optional", "nullable", "best_effort", "computed", "derived"}
+        )
 
     def _backend_telemetry(
         self,
@@ -907,7 +1007,11 @@ class GovernedObservationExecutionStageService:
             payload = {"records": []}
         return len(json.dumps(payload, sort_keys=True, default=str, ensure_ascii=False).encode("utf-8"))
 
-    def _blocked_telemetry(self, *, reason_code: str) -> dict[str, Any]:
+    def _blocked_telemetry(self, *, reason_code: str, media_configuration: dict[str, Any] | None = None) -> dict[str, Any]:
+        media_configuration = media_configuration or {}
+        configured = bool(media_configuration.get("configured", False))
+        available = bool(media_configuration.get("available", False))
+        primary_backend = str(media_configuration.get("primary_backend") or "mutagen")
         return {
             "dedup_group_count": 0,
             "files_planned": 0,
@@ -931,10 +1035,10 @@ class GovernedObservationExecutionStageService:
             },
             "media_metadata_capability": {
                 "status": "blocked",
-                "configured": False,
-                "available": False,
+                "configured": configured,
+                "available": available,
                 "execution_status": "blocked",
-                "primary_backend": "mutagen",
+                "primary_backend": primary_backend,
                 "attempted_backends": {},
                 "successful_backends": {},
                 "fallback_backends_used": {},

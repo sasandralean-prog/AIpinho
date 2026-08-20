@@ -5,6 +5,7 @@ import threading
 from typing import Any
 
 from aipinho.schemas.artifacts.contract_perception import (
+    AttributeObservationRequirement,
     ObservationCapability,
     ObservationPlan,
     ObservationStrategy,
@@ -74,6 +75,23 @@ class _Adapter:
                 self.active_calls -= 1
 
 
+class _SnapshotCapability:
+    def __init__(self, *, status: str = "available") -> None:
+        self.status = status
+        self.calls = 0
+
+    def backend_availability_snapshot(self) -> dict[str, dict[str, Any]]:
+        self.calls += 1
+        return {
+            "mutagen": {
+                "backend_id": "mutagen",
+                "backend_type": "fake",
+                "supported_attributes": ["artist", "track_title", "codec"],
+                "status": self.status,
+            }
+        }
+
+
 def _capability(*, available: bool = True, status: str = "available") -> ObservationCapability:
     return ObservationCapability(
         capability_id="media_metadata_reader",
@@ -129,6 +147,25 @@ def _plan(tasks: list[ObservationTask]) -> ObservationPlan:
     )
 
 
+def _plan_with_requirements(
+    tasks: list[ObservationTask],
+    requirements: list[AttributeObservationRequirement],
+) -> ObservationPlan:
+    plan = _plan(tasks)
+    return plan.model_copy(update={"requirements": requirements})
+
+
+def _requirement(attribute: str, *, required: bool = True, evidence_required: bool = True) -> AttributeObservationRequirement:
+    return AttributeObservationRequirement(
+        attribute_name=attribute,
+        canonical_key=attribute,
+        requiredness="required" if required else "optional",
+        required=required,
+        nullable=False,
+        evidence_required=evidence_required,
+    )
+
+
 def _stage(adapter: _Adapter, *, budget: PostCompileObservationBudget | None = None) -> GovernedObservationExecutionStageService:
     return GovernedObservationExecutionStageService(
         observation_boundary=ObservationExecutionBoundaryService(adapters={"media_metadata_reader": adapter}),
@@ -146,6 +183,18 @@ def _stage_with_capability(
     return GovernedObservationExecutionStageService(
         observation_boundary=ObservationExecutionBoundaryService(adapters={"media_metadata_reader": adapter}),
         observer_registry=CapabilityRegistry(capabilities=[capability]),
+        budget=budget or PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=25),
+    )
+
+
+def _stage_without_registered_capability(
+    adapter: _Adapter,
+    *,
+    budget: PostCompileObservationBudget | None = None,
+) -> GovernedObservationExecutionStageService:
+    return GovernedObservationExecutionStageService(
+        observation_boundary=ObservationExecutionBoundaryService(adapters={"media_metadata_reader": adapter}),
+        observer_registry=CapabilityRegistry(capabilities=[]),
         budget=budget or PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=25),
     )
 
@@ -169,7 +218,47 @@ def test_one_entity_many_tasks_create_one_physical_probe_and_logical_fanout() ->
     assert result.telemetry["evidence_records_created"] == 2
     assert adapter.calls[0].expected_outputs == ["album_artist", "artist", "track_title"]
     assert adapter.calls[0].inputs["requested_canonical_keys"] == ["album_artist", "artist", "track_title"]
-    assert adapter.calls[0].created_from["media_observation_demand"]["blocking_required_claims"][0]["satisfaction"] == "ANY_OF"
+    identity_group = adapter.calls[0].created_from["media_observation_demand"]["semantic_requirement_groups"][0]
+    assert identity_group["satisfaction"] == "ANY_OF"
+    assert set(identity_group["candidate_keys"]) == {"album_artist", "artist", "track_title"}
+
+
+def test_media_execution_demand_preserves_required_non_identity_claims() -> None:
+    adapter = _Adapter(keys=["artist", "codec"])
+    stage = _stage(adapter)
+
+    result = stage.execute(
+        observation_plan=_plan_with_requirements(
+            [_task("artist"), _task("codec")],
+            [_requirement("codec", required=True, evidence_required=True), _requirement("artist", required=False)],
+        ),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+    )
+
+    demand = adapter.calls[0].inputs["media_observation_demand"]
+    assert result.telemetry["physical_probe_count"] == 1
+    assert demand["blocking_required_claims"] == [
+        {"canonical_key": "codec", "satisfaction": "REQUIRED", "evidence_required": True}
+    ]
+    assert demand["semantic_requirement_groups"][0]["satisfaction"] == "ANY_OF"
+    assert demand["optional_enrichment_claims"] == []
+
+
+def test_optional_non_identity_claim_remains_enrichment() -> None:
+    adapter = _Adapter(keys=["artist", "codec"])
+    stage = _stage(adapter)
+
+    stage.execute(
+        observation_plan=_plan_with_requirements(
+            [_task("artist"), _task("codec")],
+            [_requirement("codec", required=False), _requirement("artist", required=False)],
+        ),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+    )
+
+    demand = adapter.calls[0].inputs["media_observation_demand"]
+    assert demand["blocking_required_claims"] == []
+    assert demand["optional_enrichment_claims"] == ["codec"]
 
 
 def test_computed_metadata_status_task_does_not_create_physical_media_demand() -> None:
@@ -300,6 +389,62 @@ def test_cross_run_quarantine_bound_blocks_second_run_without_new_probe() -> Non
     stage_b.execute(observation_plan=_plan([]), selected_entities=[])
 
 
+def test_early_quarantine_block_preserves_configured_available_capability_telemetry() -> None:
+    slow_adapter = _Adapter(delay_s=0.2, keys=["artist"])
+    budget = PostCompileObservationBudget(max_probe_elapsed_ms=20, heartbeat_interval_ms=5, max_quarantined_workers=1)
+    first_stage = _stage(slow_adapter, budget=budget)
+
+    first = first_stage.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_1", source_ref="media://one")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+    )
+    snapshot_capability = _SnapshotCapability(status="available")
+    blocked_adapter = _Adapter(keys=["artist"])
+    blocked_adapter.capability = snapshot_capability
+    second_stage = _stage(blocked_adapter, budget=budget)
+
+    second = second_stage.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_2", source_ref="media://two")]),
+        selected_entities=[{"entity_id": "entity_2", "path": "media://two", "entity_role": "media_asset_candidate"}],
+    )
+
+    media = second.telemetry["media_metadata_capability"]
+    assert first.blocked_reason_code == "POST_COMPILE_PHYSICAL_PROBE_TIMEOUT"
+    assert second.blocked_reason_code == "POST_COMPILE_OBSERVATION_QUARANTINE_BOUND_OCCUPIED"
+    assert media["configured"] is True
+    assert media["available"] is True
+    assert media["execution_status"] == "blocked"
+    assert second.telemetry["physical_probe_count"] == 0
+    assert second.telemetry["files_attempted"] == 0
+    time.sleep(0.25)
+    second_stage.execute(observation_plan=_plan([]), selected_entities=[])
+
+
+def test_absent_media_capability_does_not_project_configured_on_early_block() -> None:
+    slow_adapter = _Adapter(delay_s=0.2, keys=["artist"])
+    budget = PostCompileObservationBudget(max_probe_elapsed_ms=20, heartbeat_interval_ms=5, max_quarantined_workers=1)
+    first_stage = _stage(slow_adapter, budget=budget)
+
+    first_stage.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_1", source_ref="media://one")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+    )
+    blocked_adapter = _Adapter(keys=["artist"])
+    blocked_adapter.capability = _SnapshotCapability(status="available")
+    absent_stage = _stage_without_registered_capability(blocked_adapter, budget=budget)
+
+    result = absent_stage.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_2", source_ref="media://two")]),
+        selected_entities=[{"entity_id": "entity_2", "path": "media://two", "entity_role": "media_asset_candidate"}],
+    )
+
+    assert result.blocked_reason_code == "POST_COMPILE_OBSERVATION_QUARANTINE_BOUND_OCCUPIED"
+    assert result.telemetry["media_metadata_capability"]["configured"] is False
+    assert result.telemetry["physical_probe_count"] == 0
+    time.sleep(0.25)
+    absent_stage.execute(observation_plan=_plan([]), selected_entities=[])
+
+
 def test_concurrent_runs_cannot_exceed_atomic_worker_bound() -> None:
     adapter = _Adapter(delay_s=0.15, keys=["artist"])
     budget = PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=5, max_quarantined_workers=1)
@@ -335,6 +480,32 @@ def test_concurrent_runs_cannot_exceed_atomic_worker_bound() -> None:
     blocked = next(result for result in results if result.blocked_reason_code)
     assert blocked.telemetry["physical_probe_count"] == 0
     assert blocked.telemetry["files_attempted"] == 0
+
+
+def test_backend_availability_snapshot_is_stage_scoped() -> None:
+    adapter = _Adapter(keys=["artist"])
+    snapshot_capability = _SnapshotCapability(status="available")
+    adapter.capability = snapshot_capability
+    stage = _stage(adapter)
+
+    stage.execute(
+        observation_plan=_plan([
+            _task("artist", entity_id="entity_1", source_ref="media://one"),
+            _task("artist", entity_id="entity_2", source_ref="media://two"),
+        ]),
+        selected_entities=[
+            {"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"},
+            {"entity_id": "entity_2", "path": "media://two", "entity_role": "media_asset_candidate"},
+        ],
+    )
+    assert snapshot_capability.calls == 1
+
+    snapshot_capability.status = "unavailable"
+    stage.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_3", source_ref="media://three")]),
+        selected_entities=[{"entity_id": "entity_3", "path": "media://three", "entity_role": "media_asset_candidate"}],
+    )
+    assert snapshot_capability.calls == 2
 
 
 def test_total_observation_deadline_blocks_active_probe_before_probe_deadline() -> None:
