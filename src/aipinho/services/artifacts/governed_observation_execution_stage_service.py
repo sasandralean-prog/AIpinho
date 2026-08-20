@@ -8,7 +8,10 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Callable
 
-from aipinho.capabilities.media_metadata.descriptor import MEDIA_METADATA_EVIDENCE_KEYS
+from aipinho.capabilities.media_metadata.descriptor import (
+    MEDIA_IDENTITY_CANONICAL_KEYS,
+    MEDIA_METADATA_EVIDENCE_KEYS,
+)
 from aipinho.schemas.artifacts.contract_perception import (
     EvidenceSet,
     ObservationCapability,
@@ -100,6 +103,7 @@ class GovernedObservationExecutionStageService:
                 blocked_reason_code=quarantine_block,
             )
         groups = self._physical_groups(observation_plan=observation_plan, selected_entities=selected_entities)
+        backend_snapshots = self._backend_availability_snapshots(groups=groups)
         self._checkpoint(
             checkpoint,
             "after_observation_task_grouping",
@@ -126,7 +130,12 @@ class GovernedObservationExecutionStageService:
                 "before_physical_probe",
                 {**self._group_metrics(group), "physical_probe_index": index},
             )
-            result, probe_blocked_reason = self._execute_group(group=group, checkpoint=checkpoint, stage_started=started)
+            result, probe_blocked_reason = self._execute_group(
+                group=group,
+                checkpoint=checkpoint,
+                stage_started=started,
+                backend_availability_snapshot=backend_snapshots.get(group.capability_id),
+            )
             if result is None:
                 blocked_reason = probe_blocked_reason
                 self._checkpoint(
@@ -216,6 +225,7 @@ class GovernedObservationExecutionStageService:
         telemetry = {
             **self._grouping_metrics(groups=groups),
             **fanout,
+            **self._backend_telemetry(results=results, backend_snapshots=backend_snapshots),
             "physical_probe_count": len(results),
             "files_attempted": len(results),
             "files_succeeded": len([
@@ -254,6 +264,9 @@ class GovernedObservationExecutionStageService:
             if strategy is None or strategy.strategy_kind != "execute_observer":
                 continue
             capability_id = str(task.capability_id or "")
+            canonical_key = str(task.canonical_key or task.attribute_name or "")
+            if capability_id == "media_metadata_reader" and canonical_key not in set(MEDIA_METADATA_EVIDENCE_KEYS):
+                continue
             if not capability_id or not self._capability_available(capability_id):
                 continue
             for entity_id in self._target_entity_ids(task):
@@ -284,8 +297,9 @@ class GovernedObservationExecutionStageService:
         group: PhysicalObservationGroup,
         checkpoint: Callable[[str, dict[str, Any]], None] | None,
         stage_started: float,
+        backend_availability_snapshot: dict[str, Any] | None = None,
     ) -> tuple[ObservationExecutionResult | None, str | None]:
-        task = self._execution_task_for_group(group)
+        task = self._execution_task_for_group(group, backend_availability_snapshot=backend_availability_snapshot)
         capability = self.observer_registry.get(group.capability_id)
         if not self._capability_available(group.capability_id):
             return self._capability_unavailable_result(task=task, capability=capability, group=group), "POST_COMPILE_OBSERVATION_CAPABILITY_UNAVAILABLE"
@@ -342,10 +356,18 @@ class GovernedObservationExecutionStageService:
             self._release_probe_slot()
             return self._runtime_error_result(task=task, capability=capability, group=group, exc=exc), None
 
-    def _execution_task_for_group(self, group: PhysicalObservationGroup) -> ObservationTask:
+    def _execution_task_for_group(
+        self,
+        group: PhysicalObservationGroup,
+        *,
+        backend_availability_snapshot: dict[str, Any] | None = None,
+    ) -> ObservationTask:
         first = group.tasks[0]
         entity_ref = self._execution_entity_ref(entity=group.entity, capability_id=group.capability_id)
-        expected_outputs = sorted(MEDIA_METADATA_EVIDENCE_KEYS) if group.capability_id == "media_metadata_reader" else group.requested_canonical_keys
+        expected_outputs = [
+            key for key in group.requested_canonical_keys
+            if group.capability_id != "media_metadata_reader" or key in set(MEDIA_METADATA_EVIDENCE_KEYS)
+        ]
         return first.model_copy(
             update={
                 "status": "READY_FOR_OBSERVER",
@@ -359,6 +381,8 @@ class GovernedObservationExecutionStageService:
                     "entity_role": entity_ref.get("entity_role"),
                     "source_root_role": entity_ref.get("source_root_role"),
                     "required_confidence": first.inputs.get("required_confidence", 0.0),
+                    "requested_canonical_keys": expected_outputs,
+                    "media_metadata_backend_availability_snapshot": backend_availability_snapshot or {},
                 },
                 "expected_outputs": expected_outputs,
                 "created_from": {
@@ -368,7 +392,8 @@ class GovernedObservationExecutionStageService:
                     "normalized_source_ref": group.normalized_source_ref,
                     "grouped_observation_task_ids": [task.observation_task_id for task in group.tasks],
                     "grouped_goal_ids": [task.goal_id for task in group.tasks],
-                    "requested_canonical_keys": group.requested_canonical_keys,
+                    "requested_canonical_keys": expected_outputs,
+                    "media_observation_demand": self._media_observation_demand(expected_outputs),
                 },
             }
         )
@@ -383,6 +408,7 @@ class GovernedObservationExecutionStageService:
                 "grouped_observation_task_ids": [task.observation_task_id for task in group.tasks],
                 "grouped_goal_ids": [task.goal_id for task in group.tasks],
                 "requested_canonical_keys": group.requested_canonical_keys,
+                "media_observation_demand": self._media_observation_demand(group.requested_canonical_keys),
             }
         )
         for record in result.evidence_set.records:
@@ -644,6 +670,125 @@ class GovernedObservationExecutionStageService:
             "fanout_claim_count": satisfied,
         }
 
+    def _backend_availability_snapshots(self, *, groups: list[PhysicalObservationGroup]) -> dict[str, dict[str, Any]]:
+        snapshots: dict[str, dict[str, Any]] = {}
+        capability_ids = {group.capability_id for group in groups if group.capability_id == "media_metadata_reader"}
+        if "media_metadata_reader" not in capability_ids:
+            return snapshots
+        adapter = self.observation_boundary.adapters.get("media_metadata_reader")
+        capability = getattr(adapter, "capability", None)
+        snapshot_factory = getattr(capability, "backend_availability_snapshot", None)
+        if callable(snapshot_factory):
+            snapshots["media_metadata_reader"] = snapshot_factory()
+        return snapshots
+
+    def _media_observation_demand(self, requested_keys: list[str]) -> dict[str, Any]:
+        identity_keys = [
+            key for key in MEDIA_IDENTITY_CANONICAL_KEYS
+            if key in set(requested_keys)
+        ]
+        optional_keys = [
+            key for key in requested_keys
+            if key not in set(identity_keys)
+        ]
+        if not identity_keys:
+            return {
+                "blocking_required_claims": [],
+                "semantic_requirement_groups": [],
+                "optional_enrichment_claims": optional_keys,
+            }
+        return {
+            "blocking_required_claims": [
+                {
+                    "semantic_type": "media_identity",
+                    "satisfaction": "ANY_OF",
+                    "candidate_keys": identity_keys,
+                    "minimum_evidenced_claims": 1,
+                }
+            ],
+            "semantic_requirement_groups": ["media_identity"],
+            "optional_enrichment_claims": optional_keys,
+        }
+
+    def _backend_telemetry(
+        self,
+        *,
+        results: list[ObservationExecutionResult],
+        backend_snapshots: dict[str, dict[str, Any]],
+    ) -> dict[str, Any]:
+        attempted_backends: dict[str, int] = {}
+        successful_backends: dict[str, int] = {}
+        fallback_backends_used: dict[str, int] = {}
+        backend_error_counts: dict[str, int] = {}
+        evidence_counts_by_canonical_key: dict[str, int] = {}
+        evidence_counts_by_backend: dict[str, int] = {}
+        primary_backend = "mutagen"
+        configured = bool(backend_snapshots.get("media_metadata_reader"))
+        available = False
+        execution_status = "not_started"
+        for descriptor in (backend_snapshots.get("media_metadata_reader") or {}).values():
+            if isinstance(descriptor, dict) and str(descriptor.get("status") or "") in {"available", "partial", "test_only"}:
+                available = True
+        for result in results:
+            if result.capability_id != "media_metadata_reader":
+                continue
+            payload = (result.provenance or {}).get("observer_payload")
+            media = payload.get("media_metadata_capability") if isinstance(payload, dict) else None
+            if not isinstance(media, dict):
+                continue
+            configured = bool(media.get("configured", configured))
+            available = bool(media.get("available", available))
+            execution_status = str(media.get("execution_status") or execution_status)
+            primary_backend = str(media.get("primary_backend") or primary_backend)
+            for backend in media.get("attempted_backends", []) or []:
+                key = str(backend)
+                attempted_backends[key] = attempted_backends.get(key, 0) + 1
+            for backend in media.get("successful_backends", []) or []:
+                key = str(backend)
+                successful_backends[key] = successful_backends.get(key, 0) + 1
+                if key != primary_backend:
+                    fallback_backends_used[key] = fallback_backends_used.get(key, 0) + 1
+            for code, count in dict(media.get("backend_error_counts") or {}).items():
+                key = str(code)
+                backend_error_counts[key] = backend_error_counts.get(key, 0) + int(count or 0)
+            for canonical_key, count in dict(media.get("evidence_counts_by_canonical_key") or {}).items():
+                key = str(canonical_key)
+                evidence_counts_by_canonical_key[key] = evidence_counts_by_canonical_key.get(key, 0) + int(count or 0)
+            for backend, count in dict(media.get("evidence_counts_by_backend") or {}).items():
+                key = str(backend)
+                evidence_counts_by_backend[key] = evidence_counts_by_backend.get(key, 0) + int(count or 0)
+        if results and execution_status == "not_started":
+            execution_status = "executed"
+        return {
+            "media_metadata_capability": {
+                "status": execution_status,
+                "configured": configured,
+                "available": available,
+                "execution_status": execution_status,
+                "primary_backend": primary_backend,
+                "attempted_backends": attempted_backends,
+                "successful_backends": successful_backends,
+                "fallback_backends_used": fallback_backends_used,
+                "backend_error_counts": backend_error_counts,
+                "evidence_counts_by_canonical_key": evidence_counts_by_canonical_key,
+                "evidence_counts_by_backend": evidence_counts_by_backend,
+                "semantic_identity_evidence_counts": {
+                    key: evidence_counts_by_canonical_key.get(key, 0)
+                    for key in MEDIA_IDENTITY_CANONICAL_KEYS
+                },
+            },
+            "attempted_backends": attempted_backends,
+            "successful_backends": successful_backends,
+            "fallback_backends_used": fallback_backends_used,
+            "backend_error_counts": backend_error_counts,
+            "evidence_counts_by_canonical_key": evidence_counts_by_canonical_key,
+            "evidence_counts_by_backend": evidence_counts_by_backend,
+            "semantic_identity_evidence_counts": {
+                key: evidence_counts_by_canonical_key.get(key, 0)
+                for key in MEDIA_IDENTITY_CANONICAL_KEYS
+            },
+        }
+
     def _grouping_metrics(self, *, groups: list[PhysicalObservationGroup]) -> dict[str, Any]:
         media_groups = [group for group in groups if group.capability_id == "media_metadata_reader"]
         return {
@@ -775,6 +920,31 @@ class GovernedObservationExecutionStageService:
             "files_attempted": 0,
             "files_succeeded": 0,
             "files_failed": 0,
+            "attempted_backends": {},
+            "successful_backends": {},
+            "fallback_backends_used": {},
+            "backend_error_counts": {},
+            "evidence_counts_by_canonical_key": {},
+            "evidence_counts_by_backend": {},
+            "semantic_identity_evidence_counts": {
+                key: 0 for key in MEDIA_IDENTITY_CANONICAL_KEYS
+            },
+            "media_metadata_capability": {
+                "status": "blocked",
+                "configured": False,
+                "available": False,
+                "execution_status": "blocked",
+                "primary_backend": "mutagen",
+                "attempted_backends": {},
+                "successful_backends": {},
+                "fallback_backends_used": {},
+                "backend_error_counts": {},
+                "evidence_counts_by_canonical_key": {},
+                "evidence_counts_by_backend": {},
+                "semantic_identity_evidence_counts": {
+                    key: 0 for key in MEDIA_IDENTITY_CANONICAL_KEYS
+                },
+            },
             "evidence_records_created": 0,
             "materialized_observation_bytes": 0,
             "execution_status": "blocked",

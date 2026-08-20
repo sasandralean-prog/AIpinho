@@ -16,7 +16,18 @@ class MediaMetadataObserverAdapter:
     def execute(self, task: ObservationTask, binding: ObserverBinding) -> dict[str, Any]:
         self._ensure_eligible(task)
         file_path = str(task.inputs.get("file_path") or "")
-        return self.capability.payload_for_boundary(file_path=file_path, entity_ref=task.entity_ref)
+        requested_keys = task.inputs.get("requested_canonical_keys")
+        if not isinstance(requested_keys, list):
+            requested_keys = (task.created_from or {}).get("requested_canonical_keys")
+        if not isinstance(requested_keys, list):
+            requested_keys = list(task.expected_outputs or [])
+        availability_snapshot = task.inputs.get("media_metadata_backend_availability_snapshot")
+        return self.capability.payload_for_boundary(
+            file_path=file_path,
+            entity_ref=task.entity_ref,
+            requested_keys=[str(item) for item in requested_keys or []],
+            backend_availability_snapshot=availability_snapshot if isinstance(availability_snapshot, dict) else None,
+        )
 
     def _ensure_eligible(self, task: ObservationTask) -> None:
         entity_role = str(task.inputs.get("entity_role") or task.entity_ref.get("entity_role") or "")

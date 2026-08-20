@@ -16,6 +16,7 @@ from aipinho.capabilities.media_metadata.descriptor import (
     MEDIA_METADATA_CANONICAL_KEYS,
     MEDIA_METADATA_EVIDENCE_KEYS,
     MediaMetadataBackendError,
+    MediaMetadataBackendDescriptor,
     MediaMetadataBackendPolicy,
     RawMediaMetadataField,
     RawMediaMetadataResult,
@@ -23,8 +24,8 @@ from aipinho.capabilities.media_metadata.descriptor import (
 )
 from aipinho.capabilities.media_metadata.normalizer import MediaMetadataNormalizer
 from aipinho.capabilities.media_metadata.policy import MediaMetadataCapability
-from aipinho.schemas.artifacts.contract_perception import ObservationExecutionPolicy, ObservationTask
-from aipinho.services.artifacts.contract_driven_perception_service import CapabilityRegistry
+from aipinho.schemas.artifacts.contract_perception import ObservationExecutionPolicy, ObservationGoal, ObservationStrategy, ObservationTask
+from aipinho.services.artifacts.contract_driven_perception_service import CapabilityRegistry, ContractDrivenPerceptionService
 from aipinho.services.artifacts.observation_execution_boundary_service import ObservationExecutionBoundaryService
 from aipinho.services.runtime.universal_task_session_service import UniversalTaskSessionService
 
@@ -73,12 +74,35 @@ def _minimal_mp3_bytes() -> bytes:
 
 
 class _FakeMediaBackend:
-    def __init__(self, backend_id: str, fields: list[RawMediaMetadataField] | None = None, error_code: str | None = None) -> None:
+    def __init__(
+        self,
+        backend_id: str,
+        fields: list[RawMediaMetadataField] | None = None,
+        error_code: str | None = None,
+        *,
+        supported_attributes: list[str] | None = None,
+        status: str = "available",
+    ) -> None:
         self.backend_id = backend_id
         self.fields = fields or []
         self.error_code = error_code
+        self.supported_attributes = supported_attributes or list(MEDIA_METADATA_EVIDENCE_KEYS)
+        self.status = status
+        self.calls: list[str] = []
+        self.descriptor_calls = 0
+
+    def descriptor(self) -> MediaMetadataBackendDescriptor:
+        self.descriptor_calls += 1
+        return MediaMetadataBackendDescriptor(
+            backend_id=self.backend_id,
+            backend_type="fake",
+            supported_attributes=self.supported_attributes,
+            status=self.status,
+            dependency_name=self.backend_id,
+        )
 
     def probe(self, *, file_path: str, entity_ref: dict | None = None) -> RawMediaMetadataResult:
+        self.calls.append(file_path)
         return RawMediaMetadataResult(
             backend_id=self.backend_id,
             backend_version="test",
@@ -153,6 +177,48 @@ def test_media_metadata_reader_is_known_by_default_capability_registry() -> None
     assert capability.domain == "media_metadata"
     assert "codec" in capability.observable_attributes
     assert capability.observer_binding["adapter_id"] == "media_metadata_reader"
+
+
+def _media_match_for(attribute: str):
+    service = ContractDrivenPerceptionService()
+    capability = media_metadata_capability_descriptor()
+    goal = ObservationGoal(
+        attribute_name=attribute,
+        canonical_key=attribute,
+        expected_semantic_type="media_identity" if attribute in MEDIA_IDENTITY_CANONICAL_KEYS else "technical_metadata",
+        entity_ref={"source_root_roles": ["library_root"], "file_path_available": True},
+        target_entity_kinds=["file"],
+    )
+    strategy = ObservationStrategy(
+        goal_id=goal.goal_id,
+        strategy_kind="execute_observer",
+        attribute_name=attribute,
+        canonical_key=attribute,
+        required_capability_kind="media_metadata",
+        rationale="unit test",
+    )
+    return service._score_capability_match(goal=goal, strategy=strategy, capability=capability)
+
+
+def test_identity_goal_eligibility_selects_media_metadata_reader() -> None:
+    for key in MEDIA_IDENTITY_CANONICAL_KEYS:
+        match = _media_match_for(key)
+
+        assert match.match_status == "MATCHED"
+        assert match.capability_id == "media_metadata_reader"
+        assert match.attributes_covered == [key]
+        assert "media_asset_candidate_hypothesis" in match.satisfied_preconditions
+        assert "precondition_missing" not in match.conflicts
+
+
+def test_computed_metadata_status_fields_do_not_become_physical_media_claims() -> None:
+    for key in ["metadata_status", "metadata_source", "probe_status"]:
+        match = _media_match_for(key)
+
+        assert match.match_status == "PRECONDITION_FAILED"
+        assert match.capability_id == "media_metadata_reader"
+        assert key in match.attributes_covered
+        assert "media_asset_candidate_hypothesis" not in match.satisfied_preconditions
 
 
 def test_backend_descriptors_are_declarative_and_do_not_select_entities() -> None:
@@ -659,6 +725,112 @@ def test_media_metadata_policy_selects_primary_and_records_fallback_semantics(tm
     evidence = payload["observations"]
     assert {record["backend_id"] for record in evidence} == {"mutagen", "native_minimal"}
     assert {record["canonical_key"] for record in evidence} == {"codec", "container"}
+
+
+def test_demand_aware_policy_stops_after_identity_any_of_is_satisfied(tmp_path: Path) -> None:
+    sample = tmp_path / "sample.media"
+    sample.write_bytes(b"semantic fixture")
+    mutagen = _FakeMediaBackend(
+        "mutagen",
+        [
+            RawMediaMetadataField(canonical_key="metadata", normalized_value={"TITLE": "Song", "ARTIST": "Artist"}, confidence=0.95, source_backend_id="mutagen", raw_ref=str(sample)),
+            RawMediaMetadataField(canonical_key="codec", normalized_value="aac", confidence=0.95, source_backend_id="mutagen", raw_ref=str(sample)),
+        ],
+    )
+    ffprobe = _FakeMediaBackend("ffprobe", [RawMediaMetadataField(canonical_key="duration", normalized_value=12.0, confidence=0.9, source_backend_id="ffprobe", raw_ref=str(sample))])
+    native = _FakeMediaBackend("native_minimal", [RawMediaMetadataField(canonical_key="container", normalized_value="m4a", confidence=0.8, source_backend_id="native_minimal", raw_ref=str(sample))])
+    capability = MediaMetadataCapability(backends={"mutagen": mutagen, "ffprobe": ffprobe, "native_minimal": native})
+
+    payload = capability.payload_for_boundary(
+        file_path=str(sample),
+        entity_ref={"entity_id": "entity_1"},
+        requested_keys=["track_title", "artist", "codec", "duration"],
+    )
+
+    assert mutagen.calls == [str(sample)]
+    assert ffprobe.calls == []
+    assert native.calls == []
+    assert payload["media_metadata_capability"]["attempted_backends"] == ["mutagen"]
+    assert {record["canonical_key"] for record in payload["observations"]} == {"metadata", "track_title", "artist", "codec"}
+
+
+def test_native_minimal_is_not_false_fallback_for_missing_identity(tmp_path: Path) -> None:
+    sample = tmp_path / "sample.media"
+    sample.write_bytes(b"semantic fixture")
+    mutagen = _FakeMediaBackend(
+        "mutagen",
+        [RawMediaMetadataField(canonical_key="codec", normalized_value="aac", confidence=0.95, source_backend_id="mutagen", raw_ref=str(sample))],
+    )
+    ffprobe = _FakeMediaBackend("ffprobe", error_code="FFPROBE_NOT_AVAILABLE", status="unavailable")
+    native = _FakeMediaBackend(
+        "native_minimal",
+        [RawMediaMetadataField(canonical_key="container", normalized_value="m4a", confidence=0.8, source_backend_id="native_minimal", raw_ref=str(sample))],
+        supported_attributes=["container", "codec", "bitrate", "sample_rate", "channels", "duration"],
+    )
+    capability = MediaMetadataCapability(backends={"mutagen": mutagen, "ffprobe": ffprobe, "native_minimal": native})
+
+    payload = capability.payload_for_boundary(
+        file_path=str(sample),
+        entity_ref={"entity_id": "entity_1"},
+        requested_keys=["track_title", "artist"],
+    )
+
+    assert mutagen.calls == [str(sample)]
+    assert ffprobe.calls == []
+    assert native.calls == []
+    assert payload["media_metadata_capability"]["attempted_backends"] == ["mutagen"]
+    assert payload["media_metadata_capability"]["semantic_identity_evidence_counts"] == {
+        "track_title": 0,
+        "artist": 0,
+        "album": 0,
+        "album_artist": 0,
+    }
+
+
+def test_ffprobe_may_execute_when_it_can_change_missing_identity_demand(tmp_path: Path) -> None:
+    sample = tmp_path / "sample.media"
+    sample.write_bytes(b"semantic fixture")
+    mutagen = _FakeMediaBackend(
+        "mutagen",
+        [RawMediaMetadataField(canonical_key="codec", normalized_value="aac", confidence=0.95, source_backend_id="mutagen", raw_ref=str(sample))],
+    )
+    ffprobe = _FakeMediaBackend(
+        "ffprobe",
+        [RawMediaMetadataField(canonical_key="metadata", normalized_value={"ARTIST": "Artist"}, confidence=0.9, source_backend_id="ffprobe", raw_ref=str(sample))],
+        supported_attributes=list(MEDIA_METADATA_EVIDENCE_KEYS),
+    )
+    native = _FakeMediaBackend("native_minimal", supported_attributes=["container", "codec", "bitrate", "sample_rate", "channels", "duration"])
+    capability = MediaMetadataCapability(backends={"mutagen": mutagen, "ffprobe": ffprobe, "native_minimal": native})
+
+    payload = capability.payload_for_boundary(
+        file_path=str(sample),
+        entity_ref={"entity_id": "entity_1"},
+        requested_keys=["track_title", "artist"],
+    )
+
+    assert mutagen.calls == [str(sample)]
+    assert ffprobe.calls == [str(sample)]
+    assert native.calls == []
+    assert payload["media_metadata_capability"]["attempted_backends"] == ["mutagen", "ffprobe"]
+    assert payload["media_metadata_capability"]["semantic_identity_evidence_counts"]["artist"] == 1
+
+
+def test_stage_local_backend_availability_snapshot_is_not_recomputed_per_entity(tmp_path: Path) -> None:
+    sample = tmp_path / "sample.media"
+    sample.write_bytes(b"semantic fixture")
+    mutagen = _FakeMediaBackend(
+        "mutagen",
+        [RawMediaMetadataField(canonical_key="metadata", normalized_value={"ARTIST": "Artist"}, confidence=0.95, source_backend_id="mutagen", raw_ref=str(sample))],
+    )
+    ffprobe = _FakeMediaBackend("ffprobe", error_code="FFPROBE_NOT_AVAILABLE", status="unavailable")
+    capability = MediaMetadataCapability(backends={"mutagen": mutagen, "ffprobe": ffprobe})
+    snapshot = capability.backend_availability_snapshot()
+
+    capability.payload_for_boundary(file_path=str(sample), entity_ref={"entity_id": "entity_1"}, requested_keys=["artist"], backend_availability_snapshot=snapshot)
+    capability.payload_for_boundary(file_path=str(sample), entity_ref={"entity_id": "entity_2"}, requested_keys=["artist"], backend_availability_snapshot=snapshot)
+
+    assert mutagen.descriptor_calls == 1
+    assert ffprobe.descriptor_calls == 1
 
 
 def test_mutagen_backend_reports_available_when_dependency_is_synced() -> None:

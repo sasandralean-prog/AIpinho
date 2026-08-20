@@ -47,14 +47,19 @@ def test_metadata_probe_coverage_does_not_satisfy_identity_without_claim_evidenc
     sufficiency = render.schema_coverage["inventory_sufficiency_summary"]
     assert render.safe_to_use is False
     assert metadata["files_attempted"] == 1
-    assert metadata["files_succeeded"] == 1
-    assert metadata["status"] == "satisfied"
+    assert metadata["files_succeeded"] == 0
+    assert metadata["status"] == "partial"
+    assert metadata["semantic_identity_evidence_counts"] == {
+        "track_title": 0,
+        "artist": 0,
+        "album": 0,
+        "album_artist": 0,
+    }
     assert sufficiency["status"] == "blocked"
     assert sufficiency["reason_code"] == "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
     assert sufficiency["use_safety"]["phase1_discovery"] is False
     assert sufficiency["use_safety"]["full_truth_claim"] is False
-    assert "partially_observed" in render.content
-    assert "native_minimal" in render.content
+    assert "media_metadata_capability_blocked" in render.content
     assert "executed" in render.content
 
 

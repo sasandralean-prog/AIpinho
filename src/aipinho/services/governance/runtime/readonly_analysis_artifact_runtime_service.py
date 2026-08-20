@@ -4160,6 +4160,9 @@ class ReadonlyAnalysisArtifactRuntimeService:
         media = perception_payload.get("media_metadata_capability") if isinstance(perception_payload.get("media_metadata_capability"), dict) else {}
         execution_telemetry = perception_payload.get("post_compile_observation_execution") if isinstance(perception_payload.get("post_compile_observation_execution"), dict) else {}
         has_physical_telemetry = bool(execution_telemetry)
+        physical_media = execution_telemetry.get("media_metadata_capability") if isinstance(execution_telemetry.get("media_metadata_capability"), dict) else {}
+        if physical_media:
+            media = {**media, **physical_media}
 
         def physical_int(key: str, fallback: int) -> int:
             if has_physical_telemetry and key in execution_telemetry:
@@ -4219,6 +4222,9 @@ class ReadonlyAnalysisArtifactRuntimeService:
             if str(media.get("status") or "") in {"configured_but_deferred", "deferred"}
             else "not_configured"
         )
+        if has_physical_telemetry and files_attempted > 0 and status == "not_configured":
+            status = "partial"
+        capability_status = str(media.get("status") or status or "not_configured")
         return {
             "status": status,
             "capability_id": "media_metadata_reader",
@@ -4243,13 +4249,19 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "physical_probe_count": physical_int("physical_probe_count", files_attempted),
             "goals_satisfied": physical_int("goals_satisfied", 0),
             "goals_unsatisfied": physical_int("goals_unsatisfied", 0),
+            "attempted_backends": media.get("attempted_backends") or execution_telemetry.get("attempted_backends") or {},
+            "successful_backends": media.get("successful_backends") or execution_telemetry.get("successful_backends") or {},
+            "fallback_backends_used": media.get("fallback_backends_used") or execution_telemetry.get("fallback_backends_used") or {},
+            "evidence_counts_by_canonical_key": media.get("evidence_counts_by_canonical_key") or execution_telemetry.get("evidence_counts_by_canonical_key") or {},
+            "evidence_counts_by_backend": media.get("evidence_counts_by_backend") or execution_telemetry.get("evidence_counts_by_backend") or {},
+            "semantic_identity_evidence_counts": media.get("semantic_identity_evidence_counts") or execution_telemetry.get("semantic_identity_evidence_counts") or {},
             "backend_error_counts": dict(errors),
             "reason_codes": self._metadata_coverage_reason_codes(
                 status=status,
                 selected_count=selected_count,
                 files_attempted=files_attempted,
                 files_succeeded=files_succeeded,
-                capability_status=str(media.get("status") or "not_configured"),
+                capability_status=capability_status,
             ),
         }
 

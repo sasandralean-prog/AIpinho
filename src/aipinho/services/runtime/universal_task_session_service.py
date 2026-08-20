@@ -24,6 +24,7 @@ from aipinho.services.runtime.runtime_truth_engine import RuntimeTruthEngine
 from aipinho.services.runtime.canonical_operation_state_service import CanonicalOperationStateService
 from aipinho.schemas.runtime.canonical_operation_state import CanonicalOperationState
 from aipinho.services.cvl.cognitive_readiness_service import CognitiveReadinessService
+from aipinho.capabilities.media_metadata.descriptor import MEDIA_IDENTITY_CANONICAL_KEYS, MEDIA_METADATA_EVIDENCE_KEYS
 
 
 _TERMINAL_STATUSES = {"completed", "partial", "failed", "blocked", "cancelled", "expired"}
@@ -1365,19 +1366,11 @@ class UniversalTaskSessionService:
         *,
         evidence_by_attribute: dict[str, int] | None = None,
     ) -> dict[str, Any]:
-        media_attributes = {
-            "codec",
-            "container",
-            "bitrate",
+        media_attributes = set(MEDIA_METADATA_EVIDENCE_KEYS) | {
             "bitrate_bps",
-            "sample_rate",
             "sample_rate_hz",
-            "channels",
-            "duration",
             "duration_ms",
-            "artwork",
             "artwork_present",
-            "metadata",
         }
         observed_media_attributes = sorted(
             key
@@ -1401,6 +1394,16 @@ class UniversalTaskSessionService:
                     "fallback_backends_used": [],
                     "backend_error_counts": {},
                     "evidence_records_created": 0,
+                    "evidence_counts_by_canonical_key": {
+                        key: int(count or 0)
+                        for key, count in dict(evidence_by_attribute or {}).items()
+                        if key in media_attributes and int(count or 0) > 0
+                    },
+                    "evidence_counts_by_backend": {},
+                    "semantic_identity_evidence_counts": {
+                        key: int(dict(evidence_by_attribute or {}).get(key) or 0)
+                        for key in MEDIA_IDENTITY_CANONICAL_KEYS
+                    },
                     "attributes_observed": observed_media_attributes,
                     "attributes_missing": [],
                     "limitations": ["capability_provenance_not_inline_in_summary"],
@@ -1430,6 +1433,8 @@ class UniversalTaskSessionService:
         backend_success_counts: dict[str, int] = {}
         backend_block_counts: dict[str, int] = {}
         backend_error_counts: dict[str, int] = {}
+        evidence_counts_by_canonical_key: dict[str, int] = {}
+        evidence_counts_by_backend: dict[str, int] = {}
         for summary in summaries:
             for backend in summary.get("attempted_backends", []) or []:
                 key = str(backend)
@@ -1443,6 +1448,12 @@ class UniversalTaskSessionService:
             for code, count in dict(summary.get("backend_error_counts") or {}).items():
                 key = str(code)
                 backend_error_counts[key] = backend_error_counts.get(key, 0) + int(count or 0)
+            for canonical_key, count in dict(summary.get("evidence_counts_by_canonical_key") or {}).items():
+                key = str(canonical_key)
+                evidence_counts_by_canonical_key[key] = evidence_counts_by_canonical_key.get(key, 0) + int(count or 0)
+            for backend, count in dict(summary.get("evidence_counts_by_backend") or {}).items():
+                key = str(backend)
+                evidence_counts_by_backend[key] = evidence_counts_by_backend.get(key, 0) + int(count or 0)
         return {
             "status": latest.get("status") or "partial",
             "capability_id": latest.get("capability_id") or "media_metadata_reader",
@@ -1496,6 +1507,12 @@ class UniversalTaskSessionService:
             }),
             "backend_error_counts": backend_error_counts,
             "evidence_records_created": sum(int(summary.get("evidence_records_created") or 0) for summary in summaries),
+            "evidence_counts_by_canonical_key": evidence_counts_by_canonical_key,
+            "evidence_counts_by_backend": evidence_counts_by_backend,
+            "semantic_identity_evidence_counts": {
+                key: evidence_counts_by_canonical_key.get(key, 0)
+                for key in MEDIA_IDENTITY_CANONICAL_KEYS
+            },
             "attributes_observed": sorted({
                 str(item)
                 for summary in summaries

@@ -51,6 +51,23 @@ class _Adapter:
                     }
                     for key in self.keys
                 ],
+                "media_metadata_capability": {
+                    "status": "partial",
+                    "configured": True,
+                    "available": True,
+                    "execution_status": "partial",
+                    "primary_backend": "mutagen",
+                    "attempted_backends": ["mutagen"],
+                    "successful_backends": ["mutagen"],
+                    "fallback_backends_used": [],
+                    "backend_error_counts": {},
+                    "evidence_counts_by_canonical_key": {key: 1 for key in self.keys},
+                    "evidence_counts_by_backend": {"mutagen": len(self.keys)},
+                    "semantic_identity_evidence_counts": {
+                        key: (1 if key in self.keys else 0)
+                        for key in ["track_title", "artist", "album", "album_artist"]
+                    },
+                },
             }
         finally:
             with self._lock:
@@ -150,6 +167,46 @@ def test_one_entity_many_tasks_create_one_physical_probe_and_logical_fanout() ->
     assert result.telemetry["goals_satisfied"] == 2
     assert result.telemetry["goals_unsatisfied"] == 1
     assert result.telemetry["evidence_records_created"] == 2
+    assert adapter.calls[0].expected_outputs == ["album_artist", "artist", "track_title"]
+    assert adapter.calls[0].inputs["requested_canonical_keys"] == ["album_artist", "artist", "track_title"]
+    assert adapter.calls[0].created_from["media_observation_demand"]["blocking_required_claims"][0]["satisfaction"] == "ANY_OF"
+
+
+def test_computed_metadata_status_task_does_not_create_physical_media_demand() -> None:
+    adapter = _Adapter(keys=["artist"])
+    stage = _stage(adapter)
+
+    result = stage.execute(
+        observation_plan=_plan([_task("metadata_status")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+    )
+
+    assert adapter.calls == []
+    assert result.telemetry["dedup_group_count"] == 0
+    assert result.telemetry["physical_probe_count"] == 0
+
+
+def test_physical_backend_and_key_telemetry_is_authoritative_and_bounded() -> None:
+    adapter = _Adapter(keys=["track_title", "artist"])
+    stage = _stage(adapter)
+
+    result = stage.execute(
+        observation_plan=_plan([_task("track_title"), _task("artist")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+    )
+
+    assert result.telemetry["attempted_backends"] == {"mutagen": 1}
+    assert result.telemetry["successful_backends"] == {"mutagen": 1}
+    assert result.telemetry["fallback_backends_used"] == {}
+    assert result.telemetry["evidence_counts_by_canonical_key"] == {"track_title": 1, "artist": 1}
+    assert result.telemetry["evidence_counts_by_backend"] == {"mutagen": 2}
+    assert result.telemetry["semantic_identity_evidence_counts"] == {
+        "track_title": 1,
+        "artist": 1,
+        "album": 0,
+        "album_artist": 0,
+    }
+    assert result.telemetry["media_metadata_capability"]["status"] == "partial"
 
 
 def test_source_ref_and_entity_id_are_part_of_physical_dedup_key() -> None:

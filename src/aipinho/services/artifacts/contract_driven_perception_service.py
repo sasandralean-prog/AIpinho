@@ -3722,7 +3722,7 @@ class ContractDrivenPerceptionService:
         if capability.capability_id == "media_metadata_reader":
             selected_root_roles = set(goal.entity_ref.get("source_root_roles") or [])
             canonical_attribute = self.observed_entities.canonical_attribute_name(goal.attribute_name)
-            if canonical_attribute in MEDIA_METADATA_CANONICAL_KEYS:
+            if canonical_attribute in MEDIA_METADATA_EVIDENCE_KEYS:
                 satisfied_preconditions.append("media_asset_candidate_hypothesis")
             if selected_root_roles.intersection({"library_root", "corpus_root"}):
                 satisfied_preconditions.append("source_root_role_library_or_corpus")

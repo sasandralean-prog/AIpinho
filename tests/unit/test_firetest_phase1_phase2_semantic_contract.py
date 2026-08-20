@@ -64,6 +64,7 @@ def test_phase1_media_inventory_materialization_uses_contract_schema_not_finding
         "not_configured",
         "missing_dependency",
         "not_observed_in_this_run",
+        "configured_but_deferred",
         "unknown_due_to_payload_ref",
     }
     assert render.entity_summary["perception"]["relationship_rendering"]["truth_eligible"] is False
