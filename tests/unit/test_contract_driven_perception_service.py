@@ -386,7 +386,9 @@ def test_renderer_uses_only_contract_eligible_entities_for_corpus_inventory(tmp_
     assert any(item["status"] == "rejected" for item in candidates)
     assert render.schema_coverage["semantic_coverage_report"]["missing_attributes"] == ["codec"]
     assert render.schema_coverage["semantic_coverage_report"]["missing_capabilities"] == []
-    assert render.entity_summary["perception"]["media_metadata_capability"]["status"] == "not_configured"
+    assert render.entity_summary["perception"]["media_metadata_capability"]["status"] == "configured_but_deferred"
+    assert render.entity_summary["perception"]["media_metadata_capability"]["execution_status"] == "deferred"
+    assert render.entity_summary["perception"]["media_metadata_capability"]["files_attempted"] == 0
     assert render.entity_summary["perception"]["compile_policy"]["mode"] == "compile_only"
     assert render.entity_summary["perception"]["payload_metrics"]["bound_status"] == "within_bounds"
 

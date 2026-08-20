@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+import yaml
 
 from aipinho.capabilities.media_metadata.adapter import MediaMetadataObserverAdapter
 from aipinho.capabilities.media_metadata.backends import (
@@ -11,6 +12,9 @@ from aipinho.capabilities.media_metadata.backends import (
     NativeMinimalMediaProbeBackend,
 )
 from aipinho.capabilities.media_metadata.descriptor import (
+    MEDIA_IDENTITY_CANONICAL_KEYS,
+    MEDIA_METADATA_CANONICAL_KEYS,
+    MEDIA_METADATA_EVIDENCE_KEYS,
     MediaMetadataBackendError,
     MediaMetadataBackendPolicy,
     RawMediaMetadataField,
@@ -104,6 +108,35 @@ def test_media_metadata_descriptor_declares_canonical_contract() -> None:
     assert capability.evidence_types == ["media_metadata_evidence"]
     assert "media_asset_candidate_hypothesis" in capability.preconditions
     assert capability.observer_binding["adapter_id"] == "media_metadata_reader"
+
+
+def test_media_metadata_key_domains_separate_technical_metadata_from_identity() -> None:
+    assert {"codec", "container", "duration", "metadata"}.issubset(set(MEDIA_METADATA_CANONICAL_KEYS))
+    assert set(MEDIA_IDENTITY_CANONICAL_KEYS) == {"track_title", "artist", "album", "album_artist"}
+    assert set(MEDIA_IDENTITY_CANONICAL_KEYS).isdisjoint(set(MEDIA_METADATA_CANONICAL_KEYS))
+    assert set(MEDIA_IDENTITY_CANONICAL_KEYS).issubset(set(MEDIA_METADATA_EVIDENCE_KEYS))
+    assert set(MEDIA_METADATA_CANONICAL_KEYS).issubset(set(MEDIA_METADATA_EVIDENCE_KEYS))
+
+
+def test_media_metadata_reader_observes_identity_keys_but_native_minimal_does_not_claim_them() -> None:
+    capability = media_metadata_capability_descriptor()
+    native_descriptor = NativeMinimalMediaProbeBackend().descriptor()
+
+    assert set(MEDIA_IDENTITY_CANONICAL_KEYS).issubset(set(capability.observable_attributes))
+    assert set(MEDIA_IDENTITY_CANONICAL_KEYS).isdisjoint(set(native_descriptor.supported_attributes))
+
+
+def test_media_inventory_contract_marks_identity_fields_semantically() -> None:
+    payload = yaml.safe_load(Path("config/artifacts/artifact_semantic_contract_policy.yaml").read_text(encoding="utf-8"))
+    contract = next(item for item in payload["contracts"] if item["contract_id"] == "media_corpus_inventory_artifact")
+    attributes = {
+        item["canonical_key"]: item
+        for item in contract["attribute_contracts"]
+        if item.get("canonical_key") in MEDIA_IDENTITY_CANONICAL_KEYS
+    }
+
+    assert set(attributes) == set(MEDIA_IDENTITY_CANONICAL_KEYS)
+    assert all(item.get("semantic_type") == "media_identity" for item in attributes.values())
 
 
 def test_media_metadata_reader_is_known_by_default_capability_registry() -> None:
@@ -235,6 +268,77 @@ def test_normalizer_generates_evidence_only_for_supported_confident_fields() -> 
     assert record.backend_id == "fake_backend"
     assert record.capability_id == "media_metadata_reader"
     assert record.raw_ref == "fake://media"
+
+
+def test_normalizer_expands_backend_tags_into_claim_level_identity_evidence() -> None:
+    raw = RawMediaMetadataResult(
+        backend_id="fake_backend",
+        backend_version="1",
+        file_ref="fake://media",
+        entity_ref={"entity_id": "entity_1"},
+        raw_fields=[
+            RawMediaMetadataField(
+                canonical_key="metadata",
+                normalized_value={
+                    "TIT2": ["Song Title"],
+                    "ARTIST": "Artist Name",
+                    "ALBUM": "Album Name",
+                    "aART": "Album Artist",
+                    "COMMENT": "not an identity claim",
+                },
+                confidence=0.9,
+                source_backend_id="fake_backend",
+                raw_ref="fake://media",
+                semantic_type="descriptive_metadata",
+            )
+        ],
+        confidence_by_field={"metadata": 0.9},
+        raw_ref="fake://media",
+    )
+
+    evidence = MediaMetadataNormalizer(policy=MediaMetadataBackendPolicy(min_confidence=0.7)).normalize(
+        raw_results=[raw],
+        entity_ref={"entity_id": "entity_1"},
+    )
+
+    records = {record.canonical_key: record for record in evidence.records}
+    assert records["metadata"].semantic_type == "descriptive_metadata"
+    assert records["track_title"].normalized_value == "Song Title"
+    assert records["track_title"].semantic_type == "media_identity"
+    assert records["track_title"].provenance["raw_tag_key"] == "TIT2"
+    assert records["track_title"].provenance["semantic_mapper"] == "media_metadata_identity_tag_mapper_v1"
+    assert records["artist"].normalized_value == "Artist Name"
+    assert records["album"].normalized_value == "Album Name"
+    assert records["album_artist"].normalized_value == "Album Artist"
+    assert "comment" not in {str(key).casefold() for key in records}
+
+
+def test_generic_metadata_record_does_not_become_identity_without_mapped_tag() -> None:
+    raw = RawMediaMetadataResult(
+        backend_id="fake_backend",
+        backend_version="1",
+        file_ref="fake://media",
+        entity_ref={"entity_id": "entity_1"},
+        raw_fields=[
+            RawMediaMetadataField(
+                canonical_key="metadata",
+                normalized_value={"performer_name": "Artist Name"},
+                confidence=0.9,
+                source_backend_id="fake_backend",
+                raw_ref="fake://media",
+                semantic_type="descriptive_metadata",
+            )
+        ],
+        confidence_by_field={"metadata": 0.9},
+        raw_ref="fake://media",
+    )
+
+    evidence = MediaMetadataNormalizer(policy=MediaMetadataBackendPolicy(min_confidence=0.7)).normalize(
+        raw_results=[raw],
+        entity_ref={"entity_id": "entity_1"},
+    )
+
+    assert evidence.canonical_keys == ["metadata"]
 
 
 def test_media_metadata_normalizer_does_not_produce_artifact_observations_notes() -> None:

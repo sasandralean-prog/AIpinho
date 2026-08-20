@@ -1,6 +1,9 @@
 from aipinho.capabilities.media_metadata.adapter import MediaMetadataObserverAdapter
 from aipinho.capabilities.media_metadata.descriptor import (
     MEDIA_METADATA_CANONICAL_KEYS,
+    MEDIA_METADATA_EVIDENCE_KEYS,
+    MEDIA_METADATA_TECHNICAL_KEYS,
+    MEDIA_IDENTITY_CANONICAL_KEYS,
     MediaMetadataBackendDescriptor,
     MediaMetadataBackendError,
     MediaMetadataBackendLimitations,
@@ -17,6 +20,9 @@ from aipinho.capabilities.media_metadata.policy import MediaMetadataCapability
 
 __all__ = [
     "MEDIA_METADATA_CANONICAL_KEYS",
+    "MEDIA_METADATA_EVIDENCE_KEYS",
+    "MEDIA_METADATA_TECHNICAL_KEYS",
+    "MEDIA_IDENTITY_CANONICAL_KEYS",
     "MediaMetadataBackendDescriptor",
     "MediaMetadataBackendError",
     "MediaMetadataBackendLimitations",

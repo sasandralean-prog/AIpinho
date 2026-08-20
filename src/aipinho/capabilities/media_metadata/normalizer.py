@@ -5,6 +5,8 @@ from typing import Any
 
 from aipinho.capabilities.media_metadata.descriptor import (
     MEDIA_METADATA_CANONICAL_KEYS,
+    MEDIA_METADATA_EVIDENCE_KEYS,
+    MEDIA_IDENTITY_CANONICAL_KEYS,
     MediaMetadataBackendPolicy,
     RawMediaMetadataField,
     RawMediaMetadataResult,
@@ -33,15 +35,18 @@ class MediaMetadataNormalizer:
         records: list[EvidenceRecord] = []
         for result in raw_results:
             for field in result.raw_fields:
-                record = self._record_for_field(
-                    result=result,
-                    field=field,
-                    entity_ref=entity_ref or result.entity_ref,
-                    observer_id=observer_id,
-                    capability_id=capability_id,
-                )
-                if record is not None:
-                    records.append(record)
+                emitted_fields = [field, *self._identity_fields_from_metadata(field=field, result=result)]
+                for emitted_field in emitted_fields:
+                    record = self._record_for_field(
+                        result=result,
+                        field=emitted_field,
+                        entity_ref=entity_ref or result.entity_ref,
+                        observer_id=observer_id,
+                        capability_id=capability_id,
+                    )
+                    if record is not None:
+                        records.append(record)
+        records = self._dedupe_records(records)
         confidence_values = [item.confidence for item in records]
         return EvidenceSet(
             records=records,
@@ -60,6 +65,102 @@ class MediaMetadataNormalizer:
                 "maximum_confidence": max(confidence_values) if confidence_values else 0.0,
             },
         )
+
+    def _dedupe_records(self, records: list[EvidenceRecord]) -> list[EvidenceRecord]:
+        rows: dict[tuple[str, str, str], EvidenceRecord] = {}
+        for record in records:
+            entity_id = str((record.entity_ref or {}).get("entity_id") or "")
+            key = str(record.canonical_key or record.attribute_name or "")
+            value = str(record.normalized_value or "")
+            dedupe_key = (entity_id, key, value)
+            existing = rows.get(dedupe_key)
+            if existing is None or record.confidence > existing.confidence:
+                rows[dedupe_key] = record
+        return list(rows.values())
+
+    def _identity_fields_from_metadata(
+        self,
+        *,
+        field: RawMediaMetadataField,
+        result: RawMediaMetadataResult,
+    ) -> list[RawMediaMetadataField]:
+        canonical = self._canonical_key(field.canonical_key)
+        if canonical != "metadata":
+            return []
+        source = field.normalized_value if field.normalized_value is not None else field.raw_value
+        if not isinstance(source, dict):
+            return []
+        rows: list[RawMediaMetadataField] = []
+        for raw_tag_key, raw_tag_value in source.items():
+            identity_key = self._identity_key_for_raw_tag(raw_tag_key)
+            if not identity_key:
+                continue
+            normalized_value = self._normalize_identity_value(raw_tag_value)
+            if normalized_value in (None, ""):
+                continue
+            rows.append(
+                RawMediaMetadataField(
+                    canonical_key=identity_key,
+                    raw_value=raw_tag_value,
+                    normalized_value=normalized_value,
+                    confidence=max(field.confidence, result.confidence_by_field.get("metadata", 0.0) or 0.0, 0.75),
+                    semantic_type="media_identity",
+                    source_backend_id=field.source_backend_id or result.backend_id,
+                    limitations=list(field.limitations),
+                    raw_ref=field.raw_ref or result.raw_ref or result.file_ref,
+                    provenance={
+                        "raw_tag_key": str(raw_tag_key),
+                        "raw_tag_value_repr": repr(raw_tag_value)[:500],
+                        "semantic_mapper": "media_metadata_identity_tag_mapper_v1",
+                        "canonical_key": identity_key,
+                    },
+                )
+            )
+        return rows
+
+    def _identity_key_for_raw_tag(self, raw_key: Any) -> str | None:
+        key = str(raw_key or "").strip()
+        normalized = self._normalize_tag_key(key)
+        aliases = {
+            "title": "track_title",
+            "tit2": "track_title",
+            "nam": "track_title",
+            "artist": "artist",
+            "artists": "artist",
+            "tpe1": "artist",
+            "art": "artist",
+            "album": "album",
+            "talb": "album",
+            "alb": "album",
+            "albumartist": "album_artist",
+            "album_artist": "album_artist",
+            "albumartists": "album_artist",
+            "album_artists": "album_artist",
+            "tpe2": "album_artist",
+            "tpe2_tp2": "album_artist",
+            "aart": "album_artist",
+        }
+        return aliases.get(normalized)
+
+    def _normalize_tag_key(self, raw_key: Any) -> str:
+        text = str(raw_key or "").strip().casefold()
+        text = text.replace("\xa9", "")
+        text = text.replace("©", "")
+        chars = [char if char.isalnum() else "_" for char in text]
+        return "_".join(part for part in "".join(chars).split("_") if part)
+
+    def _normalize_identity_value(self, value: Any) -> str | None:
+        if value is None:
+            return None
+        if isinstance(value, (list, tuple, set)):
+            parts = [self._normalize_identity_value(item) for item in value]
+            text = "; ".join(part for part in parts if part)
+        elif hasattr(value, "text"):
+            text = self._normalize_identity_value(getattr(value, "text"))
+        else:
+            text = str(value)
+        text = " ".join(str(text or "").strip().split())
+        return text or None
 
     def observations_payload(
         self,
@@ -96,7 +197,7 @@ class MediaMetadataNormalizer:
                 "evidence_records_created": len(evidence_set.records),
                 "attributes_observed": evidence_set.canonical_keys,
                 "attributes_missing": [
-                    key for key in MEDIA_METADATA_CANONICAL_KEYS if key not in set(evidence_set.canonical_keys)
+                    key for key in MEDIA_METADATA_EVIDENCE_KEYS if key not in set(evidence_set.canonical_keys)
                 ],
                 "limitations": [
                     limitation
@@ -117,7 +218,7 @@ class MediaMetadataNormalizer:
         capability_id: str,
     ) -> EvidenceRecord | None:
         canonical_key = self._canonical_key(field.canonical_key)
-        if canonical_key not in MEDIA_METADATA_CANONICAL_KEYS:
+        if canonical_key not in MEDIA_METADATA_EVIDENCE_KEYS:
             return None
         normalized = self._normalize_value(canonical_key, field.normalized_value if field.normalized_value is not None else field.raw_value)
         if normalized in (None, ""):
@@ -145,6 +246,7 @@ class MediaMetadataNormalizer:
                 "file_ref": result.file_ref,
                 "raw_result_id": result.result_id,
                 "normalizer": "MediaMetadataNormalizer",
+                **self._identity_provenance(canonical_key=canonical_key, field=field),
             },
             timestamp=datetime.now(timezone.utc).isoformat(),
             ambiguity=0.0,
@@ -193,6 +295,8 @@ class MediaMetadataNormalizer:
                 return None
         if key == "metadata":
             return value if isinstance(value, dict) else {"value": str(value)}
+        if key in MEDIA_IDENTITY_CANONICAL_KEYS:
+            return self._normalize_identity_value(value)
         if key == "artwork":
             text = str(value).strip()
             return text if text else None
@@ -204,4 +308,16 @@ class MediaMetadataNormalizer:
             return "technical_metadata"
         if key == "artwork":
             return "embedded_assets"
+        if key in MEDIA_IDENTITY_CANONICAL_KEYS:
+            return "media_identity"
         return "descriptive_metadata"
+
+    def _identity_provenance(self, *, canonical_key: str, field: RawMediaMetadataField) -> dict[str, Any]:
+        if canonical_key not in MEDIA_IDENTITY_CANONICAL_KEYS:
+            return {}
+        return {
+            "raw_tag_key": str(field.provenance.get("raw_tag_key") or field.canonical_key),
+            "raw_tag_value_repr": str(field.provenance.get("raw_tag_value_repr") or repr(field.raw_value)[:500]),
+            "semantic_mapper": "media_metadata_identity_tag_mapper_v1",
+            "canonical_key": canonical_key,
+        }

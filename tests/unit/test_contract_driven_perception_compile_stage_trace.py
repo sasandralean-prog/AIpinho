@@ -129,6 +129,8 @@ def test_compile_handles_generic_entities_without_media_specific_authority(tmp_p
     )
 
     assert result.candidate_entity_set.selected_entity_ids
-    assert result.media_metadata_capability["status"] == "not_configured"
+    assert result.media_metadata_capability["status"] == "configured_but_deferred"
+    assert result.media_metadata_capability["execution_status"] == "deferred"
+    assert result.media_metadata_capability["files_attempted"] == 0
     assert result.relationship_summary["truth_eligible"] is False
     assert result.internal_reason_code is None

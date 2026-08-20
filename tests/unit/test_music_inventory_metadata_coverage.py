@@ -40,17 +40,18 @@ def _render_for_library(tmp_path: Path, payload: bytes):
     )
 
 
-def test_metadata_probe_coverage_makes_inventory_safe_for_phase1_discovery(tmp_path: Path) -> None:
+def test_metadata_probe_coverage_does_not_satisfy_identity_without_claim_evidence(tmp_path: Path) -> None:
     render = _render_for_library(tmp_path, _minimal_frame())
 
     metadata = render.schema_coverage["metadata_coverage_summary"]
     sufficiency = render.schema_coverage["inventory_sufficiency_summary"]
-    assert render.safe_to_use is True
+    assert render.safe_to_use is False
     assert metadata["files_attempted"] == 1
     assert metadata["files_succeeded"] == 1
     assert metadata["status"] == "satisfied"
-    assert sufficiency["status"] == "satisfied"
-    assert sufficiency["use_safety"]["phase1_discovery"] is True
+    assert sufficiency["status"] == "blocked"
+    assert sufficiency["reason_code"] == "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+    assert sufficiency["use_safety"]["phase1_discovery"] is False
     assert sufficiency["use_safety"]["full_truth_claim"] is False
     assert "partially_observed" in render.content
     assert "native_minimal" in render.content
@@ -63,7 +64,8 @@ def test_metadata_probe_incomplete_blocks_with_specific_reason(tmp_path: Path) -
     metadata = render.schema_coverage["metadata_coverage_summary"]
     sufficiency = render.schema_coverage["inventory_sufficiency_summary"]
     assert render.safe_to_use is False
-    assert render.reason_code == "MEDIA_METADATA_OBSERVATION_INCOMPLETE"
+    assert render.reason_code == "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
     assert metadata["files_attempted"] == 1
     assert metadata["files_succeeded"] == 0
-    assert sufficiency["reason_code"] == "MEDIA_METADATA_OBSERVATION_INCOMPLETE"
+    assert sufficiency["reason_code"] == "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+    assert "MEDIA_METADATA_OBSERVATION_INCOMPLETE" in sufficiency["reason_codes"]

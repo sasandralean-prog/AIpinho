@@ -82,9 +82,11 @@ class RowLevelSemanticValidationService:
         routing_hint_keys = self.ROUTING_HINT_FIELDS.intersection(set(rendered))
         semantic_identity_keys = self.SEMANTIC_IDENTITY_FIELDS.intersection(set(rendered))
         observed_semantic_identity_fields: set[str] = set()
+        claim_bindings_by_entity = self._claim_bindings_by_entity(row_bindings or [])
         for row in rows:
             canonical_row = {self._canonical(key): "" if value is None else str(value) for key, value in row.items()}
             row_refs = self._split_refs(canonical_row.get(evidence_key, ""))
+            entity_id = canonical_row.get("entity_id", "")
             if any(self._has_material_value(canonical_row.get(key, "")) for key in stable_identity_keys):
                 rows_with_stable_identity += 1
             else:
@@ -95,8 +97,14 @@ class RowLevelSemanticValidationService:
                 key
                 for key in semantic_identity_keys
                 if self._has_material_value(canonical_row.get(key, ""))
+                and self._has_claim_evidence(
+                    entity_id=entity_id,
+                    canonical_key=key,
+                    rendered_value=canonical_row.get(key, ""),
+                    claim_bindings=claim_bindings_by_entity,
+                )
             ]
-            if row_semantic_fields and row_refs:
+            if row_semantic_fields:
                 rows_with_semantic_identity += 1
                 observed_semantic_identity_fields.update(row_semantic_fields)
             for column in rendered:
@@ -207,6 +215,7 @@ class RowLevelSemanticValidationService:
                     "routing_hint_not_truth": sorted(routing_hint_keys),
                     "filename_path_extension_truth_authority": False,
                     "semantic_identity_requires_governed_observation": True,
+                    "semantic_identity_requires_claim_level_evidence": True,
                 },
             ),
             rows_with_required_identity=rows_with_stable_identity,
@@ -270,3 +279,49 @@ class RowLevelSemanticValidationService:
 
     def _split_refs(self, value: Any) -> list[str]:
         return [part.strip() for part in str(value or "").split(";") if part.strip()]
+
+    def _claim_bindings_by_entity(self, row_bindings: list[dict[str, Any]]) -> dict[str, dict[str, list[dict[str, Any]]]]:
+        rows: dict[str, dict[str, list[dict[str, Any]]]] = {}
+        for binding in row_bindings:
+            if not isinstance(binding, dict):
+                continue
+            entity_id = str(binding.get("entity_id") or "")
+            claims = binding.get("identity_claim_evidence")
+            if not entity_id or not isinstance(claims, dict):
+                continue
+            entity_claims = rows.setdefault(entity_id, {})
+            for raw_key, raw_items in claims.items():
+                key = self._canonical(raw_key)
+                items = raw_items if isinstance(raw_items, list) else [raw_items]
+                for item in items:
+                    if isinstance(item, dict):
+                        entity_claims.setdefault(key, []).append(item)
+        return rows
+
+    def _has_claim_evidence(
+        self,
+        *,
+        entity_id: str,
+        canonical_key: str,
+        rendered_value: Any,
+        claim_bindings: dict[str, dict[str, list[dict[str, Any]]]],
+    ) -> bool:
+        if not entity_id:
+            return False
+        expected = self._claim_value(rendered_value)
+        if expected in (None, ""):
+            return False
+        for item in claim_bindings.get(entity_id, {}).get(canonical_key, []):
+            if not isinstance(item, dict):
+                continue
+            evidence_refs = [str(ref) for ref in item.get("evidence_refs") or [] if ref]
+            if not evidence_refs:
+                continue
+            value = self._claim_value(item.get("value"))
+            if value == expected:
+                return True
+        return False
+
+    def _claim_value(self, value: Any) -> str | None:
+        text = " ".join(str(value or "").strip().split())
+        return text if text and self._absence_key(text) is None else None

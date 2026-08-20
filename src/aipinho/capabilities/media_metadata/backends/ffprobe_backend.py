@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from aipinho.capabilities.media_metadata.descriptor import (
-    MEDIA_METADATA_CANONICAL_KEYS,
+    MEDIA_METADATA_EVIDENCE_KEYS,
     MediaMetadataBackendDescriptor,
     MediaMetadataBackendError,
     RawMediaMetadataField,
@@ -31,7 +31,7 @@ class FFprobeMediaMetadataBackend:
             version=self.version,
             supported_extensions=["mp3", "mp4", "m4a", "flac", "ogg", "opus", "wav"],
             supported_containers=["mp3", "mp4", "m4a", "flac", "ogg", "opus", "wav"],
-            supported_attributes=list(MEDIA_METADATA_CANONICAL_KEYS),
+            supported_attributes=list(MEDIA_METADATA_EVIDENCE_KEYS),
             requires_external_binary=True,
             dependency_name=self.executable,
             confidence_profile={"technical_metadata": 0.9, "descriptive_metadata": 0.75},
@@ -123,7 +123,7 @@ class FFprobeMediaMetadataBackend:
             file_ref=file_path,
             entity_ref=entity_ref or {},
             errors=[MediaMetadataBackendError(code=code, message=message, backend_id=self.backend_id)],
-            limitations_by_field={key: [message] for key in MEDIA_METADATA_CANONICAL_KEYS},
+            limitations_by_field={key: [message] for key in MEDIA_METADATA_EVIDENCE_KEYS},
             provenance={"backend": self.backend_id, "file_path": file_path},
             raw_ref=file_path,
         )

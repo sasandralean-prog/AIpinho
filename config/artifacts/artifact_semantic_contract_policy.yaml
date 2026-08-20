@@ -123,22 +123,26 @@ contracts:
       - canonical_key: track_title
         display_label: track_title
         raw_label: track_title
+        semantic_type: media_identity
         aliases: ["title", "titulo"]
         requiredness: optional
         nullable: true
       - canonical_key: artist
         display_label: artist
         raw_label: artist
+        semantic_type: media_identity
         requiredness: optional
         nullable: true
       - canonical_key: album
         display_label: album
         raw_label: album
+        semantic_type: media_identity
         requiredness: optional
         nullable: true
       - canonical_key: album_artist
         display_label: album_artist
         raw_label: album_artist
+        semantic_type: media_identity
         requiredness: optional
         nullable: true
       - canonical_key: duration

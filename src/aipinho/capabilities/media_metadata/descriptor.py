@@ -13,7 +13,7 @@ MediaMetadataBackendStatus = Literal["available", "unavailable", "partial", "tes
 MediaMetadataBackendType = Literal["python_library", "external_cli", "native_minimal", "fake"]
 
 
-MEDIA_METADATA_CANONICAL_KEYS = [
+MEDIA_METADATA_TECHNICAL_KEYS = [
     "codec",
     "container",
     "bitrate",
@@ -24,8 +24,22 @@ MEDIA_METADATA_CANONICAL_KEYS = [
     "metadata",
 ]
 
+MEDIA_METADATA_CANONICAL_KEYS = list(MEDIA_METADATA_TECHNICAL_KEYS)
+
+MEDIA_IDENTITY_CANONICAL_KEYS = [
+    "track_title",
+    "artist",
+    "album",
+    "album_artist",
+]
+
+MEDIA_METADATA_EVIDENCE_KEYS = [
+    *MEDIA_METADATA_TECHNICAL_KEYS,
+    *MEDIA_IDENTITY_CANONICAL_KEYS,
+]
+
 MEDIA_METADATA_OBSERVABLE_KEYS = [
-    *MEDIA_METADATA_CANONICAL_KEYS,
+    *MEDIA_METADATA_EVIDENCE_KEYS,
     "bitrate_bps",
     "sample_rate_hz",
     "duration_ms",
@@ -88,6 +102,7 @@ class RawMediaMetadataField(AIpinhoModel):
     source_backend_id: str | None = None
     limitations: list[str] = Field(default_factory=list)
     raw_ref: str | None = None
+    provenance: dict[str, Any] = Field(default_factory=dict)
 
 
 class RawMediaMetadataResult(AIpinhoModel):

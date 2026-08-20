@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from typing import Any, Callable
 
 from aipinho.capabilities.media_metadata import MediaMetadataObserverAdapter, media_metadata_capability_descriptor
-from aipinho.capabilities.media_metadata.descriptor import MEDIA_METADATA_CANONICAL_KEYS
+from aipinho.capabilities.media_metadata.descriptor import MEDIA_METADATA_CANONICAL_KEYS, MEDIA_METADATA_EVIDENCE_KEYS
 from aipinho.schemas.artifacts.contract_perception import (
     AttributeObservation,
     AttributeObservationRequirement,
@@ -2574,7 +2574,7 @@ class ContractDrivenPerceptionService:
                             "source_root_role": entity_ref.get("source_root_role"),
                             "required_confidence": task.inputs.get("required_confidence", 0.0),
                         },
-                        "expected_outputs": sorted(MEDIA_METADATA_CANONICAL_KEYS)
+                        "expected_outputs": sorted(MEDIA_METADATA_EVIDENCE_KEYS)
                         if task.capability_id == "media_metadata_reader"
                         else list(task.expected_outputs),
                     }
@@ -2925,7 +2925,7 @@ class ContractDrivenPerceptionService:
                 task_outputs = getattr(result, "provenance", {}).get("expected_outputs") if isinstance(getattr(result, "provenance", {}), dict) else None
                 keys = [self.observed_entities.canonical_attribute_name(item) for item in task_outputs or []]
             if not keys:
-                keys = list(MEDIA_METADATA_CANONICAL_KEYS) if getattr(result, "capability_id", None) == "media_metadata_reader" else []
+                keys = list(MEDIA_METADATA_EVIDENCE_KEYS) if getattr(result, "capability_id", None) == "media_metadata_reader" else []
             errors = self._execution_error_codes(result)
             reason = self._prioritized_execution_reason(errors)
             for key in keys:
@@ -2986,8 +2986,15 @@ class ContractDrivenPerceptionService:
         media_results = [item for item in execution_results if getattr(item, "capability_id", None) == "media_metadata_reader"]
         if not media_results:
             return {
-                "status": "not_configured",
+                "status": "configured_but_deferred",
                 "capability_id": "media_metadata_reader",
+                "configured": True,
+                "available": True,
+                "execution_status": "deferred",
+                "files_planned": 0,
+                "files_attempted": 0,
+                "files_succeeded": 0,
+                "files_failed": 0,
                 "primary_backend": "mutagen",
                 "selected_backend": None,
                 "available_backends": [],
@@ -3001,8 +3008,8 @@ class ContractDrivenPerceptionService:
                 "backend_error_counts": {},
                 "evidence_records_created": 0,
                 "attributes_observed": [],
-                "attributes_missing": list(MEDIA_METADATA_CANONICAL_KEYS),
-                "limitations": ["media_metadata_capability_not_configured"],
+                "attributes_missing": list(MEDIA_METADATA_EVIDENCE_KEYS),
+                "limitations": ["media_metadata_observer_execution_deferred"],
                 "errors": [],
             }
         summaries: list[dict[str, Any]] = []
@@ -3104,6 +3111,15 @@ class ContractDrivenPerceptionService:
             if isinstance(item, dict)
             and not any(token in str(item.get("code") or "") for token in dependency_error_tokens)
         ]
+        files_attempted = len({
+            str((getattr(result, "provenance", {}) or {}).get("entity_id") or (getattr(result, "provenance", {}) or {}).get("file_path") or getattr(result, "raw_ref", "") or getattr(result, "observation_task_id", ""))
+            for result in media_results
+        })
+        files_succeeded = len({
+            str((record.entity_ref or {}).get("entity_id") or record.raw_ref or "")
+            for record in records
+            if (record.entity_ref or {}).get("entity_id") or record.raw_ref
+        })
         if records:
             status = "available" if set(MEDIA_METADATA_CANONICAL_KEYS).issubset(set(observed)) else "partial"
         elif non_dependency_errors:
@@ -3117,6 +3133,13 @@ class ContractDrivenPerceptionService:
         return {
             "status": status,
             "capability_id": "media_metadata_reader",
+            "configured": True,
+            "available": status not in {"missing_dependency", "blocked", "not_configured"},
+            "execution_status": "executed" if status in {"available", "partial"} else status,
+            "files_planned": files_attempted,
+            "files_attempted": files_attempted,
+            "files_succeeded": files_succeeded,
+            "files_failed": max(0, files_attempted - files_succeeded),
             "primary_backend": primary_backend,
             "selected_backend": selected_backend,
             "available_backends": available_backends,
@@ -3130,7 +3153,7 @@ class ContractDrivenPerceptionService:
             "backend_error_counts": backend_error_counts,
             "evidence_records_created": len(records),
             "attributes_observed": observed,
-            "attributes_missing": [key for key in MEDIA_METADATA_CANONICAL_KEYS if key not in set(observed)],
+            "attributes_missing": [key for key in MEDIA_METADATA_EVIDENCE_KEYS if key not in set(observed)],
             "limitations": sorted(set(limitations)),
             "errors": errors,
         }

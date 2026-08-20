@@ -2917,6 +2917,10 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "row_order_elapsed_ms": 0,
             "cardinality_domain": "row_model",
         }
+        claim_evidence_bindings = self._claim_evidence_bindings(
+            perception_payload=perception_payload,
+            selected_entities=selected_entities,
+        )
         if len(selected_entities) > self.budget.max_artifact_rows:
             raise GovernedPhase1Block(
                 "ARTIFACT_RENDER_BUDGET_EXCEEDED",
@@ -3352,15 +3356,11 @@ class ReadonlyAnalysisArtifactRuntimeService:
             content=csv_content,
             declared_columns=canonical_schema,
             required_columns=[item["canonical_key"] for item in render_columns if item.get("required")],
-            row_bindings=selection_result.rows if semantic_selection_applies else [
-                {
-                    "entity_id": entity.get("entity_id"),
-                    "source_root_role": entity.get("source_root_role"),
-                    "evidence_refs": entity.get("evidence_refs") or [],
-                    "safe_to_use": bool(entity.get("entity_id") and entity.get("evidence_refs")),
-                }
-                for entity in selected_entities
-            ],
+            row_bindings=self._row_validation_bindings(
+                base_rows=selection_result.rows if semantic_selection_applies else [],
+                selected_entities=selected_entities,
+                claim_evidence_bindings=claim_evidence_bindings,
+            ),
         ).model_dump(mode="json")
         self._check_artifact_render_checkpoint(
             render_run_id,
@@ -3687,6 +3687,8 @@ class ReadonlyAnalysisArtifactRuntimeService:
             media_status = str((media or {}).get("status") or "") if isinstance(media, dict) else ""
             if media_status in {"not_configured", "missing_dependency", "blocked", "unsupported"}:
                 limitation_codes.append(f"media_metadata_capability_{media_status}")
+            elif media_status in {"configured_but_deferred", "deferred"}:
+                limitation_codes.append("media_metadata_observer_execution_deferred")
             elif not media_status:
                 limitation_codes.append("media_metadata_capability_not_configured")
             if not limitation_codes:
@@ -3722,6 +3724,72 @@ class ReadonlyAnalysisArtifactRuntimeService:
                     return domains[0], True
             return "not_observed", True
         return None, False
+
+    def _claim_evidence_bindings(
+        self,
+        *,
+        perception_payload: dict[str, Any],
+        selected_entities: list[dict[str, Any]],
+    ) -> dict[str, dict[str, list[dict[str, Any]]]]:
+        selected_ids = {str(entity.get("entity_id") or "") for entity in selected_entities if isinstance(entity, dict)}
+        evidence_records = perception_payload.get("evidence_set", {}).get("records") if isinstance(perception_payload.get("evidence_set"), dict) else []
+        if not isinstance(evidence_records, list):
+            evidence_records = []
+        rows: dict[str, dict[str, list[dict[str, Any]]]] = {}
+        for record in evidence_records:
+            if not isinstance(record, dict):
+                continue
+            entity_id = str((record.get("entity_ref") or {}).get("entity_id") or "")
+            canonical_key = str(record.get("canonical_key") or record.get("attribute_name") or "")
+            if not entity_id or entity_id not in selected_ids or not canonical_key:
+                continue
+            normalized_value = record.get("normalized_value")
+            if normalized_value in (None, ""):
+                continue
+            refs = [str(record.get("evidence_id") or "")] if record.get("evidence_id") else []
+            provenance_refs = [
+                str(record.get("provenance_trace_id") or ""),
+                str((record.get("provenance") or {}).get("raw_result_id") or "") if isinstance(record.get("provenance"), dict) else "",
+            ]
+            item = {
+                "value": normalized_value,
+                "evidence_refs": [ref for ref in refs if ref],
+                "provenance_refs": [ref for ref in provenance_refs if ref],
+                "observer_id": record.get("observer_id"),
+                "capability_id": record.get("capability_id"),
+                "backend_id": record.get("backend_id"),
+                "semantic_type": record.get("semantic_type"),
+            }
+            rows.setdefault(entity_id, {}).setdefault(canonical_key, []).append(item)
+        return rows
+
+    def _row_validation_bindings(
+        self,
+        *,
+        base_rows: list[dict[str, Any]],
+        selected_entities: list[dict[str, Any]],
+        claim_evidence_bindings: dict[str, dict[str, list[dict[str, Any]]]],
+    ) -> list[dict[str, Any]]:
+        by_entity: dict[str, dict[str, Any]] = {
+            str(row.get("entity_id") or ""): dict(row)
+            for row in base_rows
+            if isinstance(row, dict) and row.get("entity_id")
+        }
+        rows: list[dict[str, Any]] = []
+        for entity in selected_entities:
+            if not isinstance(entity, dict):
+                continue
+            entity_id = str(entity.get("entity_id") or "")
+            if not entity_id:
+                continue
+            row = dict(by_entity.get(entity_id) or {})
+            row.setdefault("entity_id", entity_id)
+            row.setdefault("source_root_role", entity.get("source_root_role"))
+            row.setdefault("evidence_refs", entity.get("evidence_refs") or [])
+            row.setdefault("safe_to_use", bool(entity.get("entity_id") and entity.get("evidence_refs")))
+            row["identity_claim_evidence"] = claim_evidence_bindings.get(entity_id, {})
+            rows.append(row)
+        return rows
 
     def _build_csv_cell_lookup_context(
         self,
@@ -3911,6 +3979,8 @@ class ReadonlyAnalysisArtifactRuntimeService:
             return "not_observed"
         media = perception_payload.get("media_metadata_capability")
         status = str((media or {}).get("status") or "") if isinstance(media, dict) else ""
+        if status in {"configured_but_deferred", "deferred"}:
+            return "deferred"
         if status in {"not_configured", "missing_dependency", "blocked", "unavailable", "failed"}:
             return "not_configured" if status in {"not_configured", "missing_dependency", "unavailable"} else status
         return "not_observed"
@@ -3934,6 +4004,9 @@ class ReadonlyAnalysisArtifactRuntimeService:
             return ";".join(backends[:5])
         media = perception_payload.get("media_metadata_capability")
         selected = str((media or {}).get("selected_backend") or "") if isinstance(media, dict) else ""
+        status = str((media or {}).get("status") or "") if isinstance(media, dict) else ""
+        if status in {"configured_but_deferred", "deferred"}:
+            return "deferred"
         return selected or "not_configured"
 
     def _metadata_probe_status_for_entity(
@@ -3951,6 +4024,8 @@ class ReadonlyAnalysisArtifactRuntimeService:
             return "executed_no_evidence"
         media = perception_payload.get("media_metadata_capability")
         status = str((media or {}).get("status") or "") if isinstance(media, dict) else ""
+        if status in {"configured_but_deferred", "deferred"}:
+            return "deferred"
         return "not_configured" if status in {"", "not_configured", "missing_dependency", "unavailable"} else "not_observed"
 
     def _media_metadata_observations_for_entity(
@@ -3986,10 +4061,15 @@ class ReadonlyAnalysisArtifactRuntimeService:
             and str(item.get("entity_id") or "") in selected_id_set
             and str(item.get("capability_id") or "") == "media_metadata_reader"
         ]
+        execution_results = [
+            item
+            for item in (perception_payload.get("observation_execution_results") if isinstance(perception_payload.get("observation_execution_results"), list) else [])
+            if isinstance(item, dict) and str(item.get("capability_id") or "") == "media_metadata_reader"
+        ]
         attempted_ids = {
-            str(item.get("entity_id") or "")
-            for item in observations
-            if item.get("entity_id")
+            str(((item.get("provenance") or {}).get("entity_id") if isinstance(item.get("provenance"), dict) else "") or item.get("raw_ref") or item.get("observation_task_id") or "")
+            for item in execution_results
+            if item.get("raw_ref") or item.get("observation_task_id") or isinstance(item.get("provenance"), dict)
         }
         observed_ids = {
             str(item.get("entity_id") or "")
@@ -4020,11 +4100,17 @@ class ReadonlyAnalysisArtifactRuntimeService:
             if selected_count > 0 and files_succeeded == selected_count
             else "partial"
             if files_attempted > 0
+            else "deferred"
+            if str(media.get("status") or "") in {"configured_but_deferred", "deferred"}
             else "not_configured"
         )
         return {
             "status": status,
             "capability_id": "media_metadata_reader",
+            "configured": bool(media.get("configured", False)),
+            "available": bool(media.get("available", False)),
+            "execution_status": media.get("execution_status") or ("deferred" if status == "deferred" else status),
+            "files_planned": selected_count,
             "files_expected": selected_count,
             "files_attempted": files_attempted,
             "files_succeeded": files_succeeded,

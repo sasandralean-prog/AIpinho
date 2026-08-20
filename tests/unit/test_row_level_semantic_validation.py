@@ -69,7 +69,34 @@ def test_row_level_validation_separates_stable_identity_from_locator_display_and
     assert "extension" in identity.routing_hint_fields
 
 
-def test_row_level_validation_full_semantic_identity_requires_evidence_ref() -> None:
+def test_row_level_validation_full_semantic_identity_requires_claim_level_evidence() -> None:
+    content = "entity_id,track_title,artist,evidence_ref\nentity_1,Track,Artist,file:one\n"
+
+    summary = RowLevelSemanticValidationService().summarize_csv(
+        content=content,
+        declared_columns=["entity_id", "track_title", "artist", "evidence_ref"],
+        required_columns=["entity_id", "track_title", "artist", "evidence_ref"],
+        row_bindings=[
+            {
+                "entity_id": "entity_1",
+                "evidence_refs": ["file:one"],
+                "identity_claim_evidence": {
+                    "track_title": [{"value": "Track", "evidence_refs": ["evidence:title"]}],
+                    "artist": [{"value": "Artist", "evidence_refs": ["evidence:artist"]}],
+                },
+            }
+        ],
+    )
+
+    identity = summary.row_identity_coverage
+    assert identity.status == "satisfied"
+    assert identity.reason_code is None
+    assert identity.rows_with_semantic_identity_evidence == 1
+    assert identity.observed_semantic_identity_fields == ["artist", "track_title"]
+    assert identity.truth_eligible_rows == 0
+
+
+def test_row_level_validation_generic_row_evidence_does_not_satisfy_semantic_identity() -> None:
     content = "entity_id,track_title,artist,evidence_ref\nentity_1,Track,Artist,file:one\n"
 
     summary = RowLevelSemanticValidationService().summarize_csv(
@@ -79,11 +106,9 @@ def test_row_level_validation_full_semantic_identity_requires_evidence_ref() -> 
     )
 
     identity = summary.row_identity_coverage
-    assert identity.status == "satisfied"
-    assert identity.reason_code is None
-    assert identity.rows_with_semantic_identity_evidence == 1
-    assert identity.observed_semantic_identity_fields == ["artist", "track_title"]
-    assert identity.truth_eligible_rows == 0
+    assert identity.status == "insufficient_evidence"
+    assert identity.reason_code == "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+    assert identity.rows_with_semantic_identity_evidence == 0
 
 
 def test_row_level_validation_semantic_identity_without_evidence_is_not_identity_truth() -> None:

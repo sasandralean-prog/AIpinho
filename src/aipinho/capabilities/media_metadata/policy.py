@@ -9,6 +9,7 @@ from aipinho.capabilities.media_metadata.backends import (
 )
 from aipinho.capabilities.media_metadata.descriptor import (
     MEDIA_METADATA_CANONICAL_KEYS,
+    MEDIA_METADATA_EVIDENCE_KEYS,
     MediaMetadataBackendError,
     MediaMetadataBackendPolicy,
     MediaMetadataObservationResult,
@@ -139,7 +140,7 @@ class MediaMetadataCapability:
                 "evidence_records_created": len(observation.evidence_records),
                 "attributes_observed": sorted({record["canonical_key"] for record in observation.evidence_records if record.get("canonical_key")}),
                 "attributes_missing": [
-                    key for key in MEDIA_METADATA_CANONICAL_KEYS
+                    key for key in MEDIA_METADATA_EVIDENCE_KEYS
                     if key not in {record.get("canonical_key") for record in observation.evidence_records}
                 ],
                 "backend_error_counts": error_counts,
