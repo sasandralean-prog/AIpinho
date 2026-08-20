@@ -15,6 +15,7 @@ from aipinho.schemas.runtime.task_run_result import TaskRunResult
 from aipinho.schemas.runtime.task_run_trace import TaskRunTraceItem
 from aipinho.schemas.runtime.task_completion import TaskCompletionEvaluation
 from aipinho.services.runtime.phase_semantic_result_finalizer import PhaseSemanticResultFinalizer
+from aipinho.services.runtime.runtime_payload_ref_store import RuntimePayloadRefStore
 from aipinho.utils.safe_paths import resolve_within_root
 from aipinho.utils.yaml_loader import load_yaml_file
 
@@ -172,6 +173,7 @@ class TaskRunStore:
         self.policy = load_yaml_file(PATHS.config_root / "runtime" / "task_run_store_policy.yaml", critical=True, root=PATHS.config_root / "runtime")
         configured = str(self.policy.get("store", {}).get("path", "data/runtime/task_runs"))
         self.root = root or resolve_within_root(PATHS.project_root / configured, PATHS.project_root)
+        self.payload_refs = RuntimePayloadRefStore(root=self.root)
 
     def create_run(self, run: TaskRun) -> TaskRun:
         if self.get_run(run.run_id) is not None:
@@ -1277,28 +1279,10 @@ class TaskRunStore:
         )
 
     def _read_payload_ref(self, content_ref: Any, *, run_dir: Path) -> Any:
-        if not isinstance(content_ref, str) or not content_ref.strip():
+        try:
+            return self.payload_refs.read_payload_ref(content_ref, run_id=run_dir.name)
+        except Exception:
             return None
-        ref = content_ref.strip().replace("\\", "/")
-        if ref.startswith("task_run_payload_ref:"):
-            ref = ref.split(":", 1)[1].lstrip("/")
-        candidates = [
-            self.root / ref,
-            run_dir / ref,
-            run_dir / "payload_refs" / Path(ref).name,
-        ]
-        for candidate in candidates:
-            try:
-                resolved = resolve_within_root(candidate, self.root)
-            except Exception:
-                continue
-            if not resolved.exists() or not resolved.is_file():
-                continue
-            try:
-                return json.loads(resolved.read_text(encoding="utf-8-sig"))
-            except Exception:
-                return None
-        return None
 
     def _cohere_terminal_result(self, run_id: str, result: TaskRunResult) -> None:
         terminal = {"completed", "partial", "failed", "cancelled", "blocked"}
@@ -1359,25 +1343,17 @@ class TaskRunStore:
         return size > 250_000
 
     def _spill_or_summary(self, value: Any, *, run_dir: Path | None, path: str, key: str) -> dict[str, Any]:
-        encoded = json.dumps(value, ensure_ascii=False, default=str).encode("utf-8")
-        digest = hashlib.sha256(encoded).hexdigest()
-        ref: str | None = None
         if run_dir is not None:
-            ref_dir = run_dir / "payload_refs"
-            ref_dir.mkdir(parents=True, exist_ok=True)
-            ref_path = ref_dir / f"{digest}.json"
-            if not ref_path.exists():
-                ref_path.write_bytes(encoded)
-            try:
-                ref = str(ref_path.relative_to(self.root))
-            except Exception:
-                ref = str(ref_path)
+            return self.payload_refs.write_payload_ref(run_id=run_dir.name, key=key, path=path, value=value)
+        encoded = json.dumps(value, ensure_ascii=False, default=str, sort_keys=True).encode("utf-8")
+        digest = hashlib.sha256(encoded).hexdigest()
         return {
-            "content_ref": ref,
+            "content_ref": None,
             "hash": digest,
+            "sha256": digest,
             "size_bytes": len(encoded),
             "record_count": len(value) if isinstance(value, list) else len(value) if isinstance(value, dict) else None,
-            "reason_code": "RUNTIME_PAYLOAD_SPILLED_TO_REF" if ref else "RUNTIME_PAYLOAD_SUMMARIZED_FOR_INLINE_VIEW",
+            "reason_code": "RUNTIME_PAYLOAD_SUMMARIZED_FOR_INLINE_VIEW",
             "path": path,
             "key": key,
             "summary": self._payload_summary(value),
@@ -1431,4 +1407,3 @@ class TaskRunStore:
             return {"status": "ok", "service": "task_run_store", "path": str(self.root), "sanitize_before_save": True, "raw_content_saved": False}
         except Exception as exc:
             return {"status": "degraded", "service": "task_run_store", "error": str(exc)}
-

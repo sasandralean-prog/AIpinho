@@ -391,11 +391,16 @@ class ObservationExecutionBoundaryService:
             record.provenance.setdefault("observer_version", observer_version)
             record.provenance.setdefault("boundary", "ObservationExecutionBoundaryService")
         confidence_values = [item.confidence for item in records]
+        entity_refs_by_id: dict[str, dict[str, Any]] = {}
+        for record in records:
+            if record.entity_ref:
+                entity_refs_by_id.setdefault(str(record.entity_ref.get("entity_id") or record.entity_ref), record.entity_ref)
         return EvidenceSet(
             records=records,
-            entity_refs=[item.entity_ref for item in records if item.entity_ref],
+            entity_refs=[entity_refs_by_id[key] for key in sorted(entity_refs_by_id)],
             attribute_names=sorted({str(item.attribute_name) for item in records if item.attribute_name}),
             canonical_keys=sorted({str(item.canonical_key) for item in records if item.canonical_key}),
+            record_count=len(records),
             coverage_summary={
                 "observed_record_count": len(records),
                 "observed_attribute_count": len({item.attribute_name for item in records if item.attribute_name}),

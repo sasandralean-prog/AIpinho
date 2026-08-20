@@ -468,6 +468,74 @@ def test_universal_task_summary_does_not_report_media_metadata_not_configured_wh
     assert payload["observational_cognition"]["evidence"]["total_bound_observations"] == 25
 
 
+def test_universal_task_summary_uses_post_compile_physical_telemetry_before_artifact_materialization(task_runtime_store):
+    run = _run(status="blocked")
+    run.policy_snapshot = {"approval_required_for": []}
+    task_runtime_store.create_run(run)
+    task_runtime_store.save_result(
+        run.run_id,
+        TaskRunResult(
+            run_id=run.run_id,
+            status="blocked",
+            summary="blocked",
+            outputs={},
+            validation={"status": "blocked"},
+            completion=TaskCompletionEvaluation(status="blocked", safe_to_report_success=False),
+        ),
+    )
+    task_runtime_store.append_event(
+        run.run_id,
+        TaskRunEvent(
+            event_id="event_post_compile",
+            run_id=run.run_id,
+            sequence=1,
+            type="artifact_render_checkpoint",
+            status="running",
+            message="checkpoint",
+            metadata={
+                "checkpoint_stage": "after_post_compile_observation_execution",
+                "media_metadata_capability": {
+                    "status": "partial",
+                    "configured": True,
+                    "available": True,
+                    "execution_status": "partial",
+                    "primary_backend": "mutagen",
+                    "attempted_backends": {"mutagen": 1},
+                    "successful_backends": {"mutagen": 1},
+                    "fallback_backends_used": {},
+                    "backend_error_counts": {},
+                    "evidence_counts_by_canonical_key": {"artist": 1},
+                    "evidence_counts_by_backend": {"mutagen": 1},
+                    "semantic_identity_evidence_counts": {
+                        "track_title": 0,
+                        "artist": 1,
+                        "album": 0,
+                        "album_artist": 0,
+                    },
+                },
+                "evidence_counts_by_canonical_key": {"artist": 1},
+            },
+        ),
+    )
+    service = UniversalTaskSessionService(
+        store=task_runtime_store,
+        approvals=FakeApprovals(),
+        artifacts=FakeArtifacts(),
+    )
+
+    payload = service.summary(run.run_id)
+
+    assert payload is not None
+    media = payload["observational_cognition"]["media_metadata_capability"]
+    assert media["status"] == "partial"
+    assert media["configured"] is True
+    assert media["available"] is True
+    assert media["execution_status"] == "partial"
+    assert media["attempted_backends"] == ["mutagen"]
+    assert media["successful_backends"] == ["mutagen"]
+    assert media["semantic_identity_evidence_counts"]["artist"] == 1
+
+
 def test_universal_task_events_support_polling_cursor(task_runtime_store):
     run = _run()
     task_runtime_store.create_run(run)

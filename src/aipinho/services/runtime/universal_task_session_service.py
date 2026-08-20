@@ -213,6 +213,7 @@ class UniversalTaskSessionService:
         observational = self._observational_cognition_summary_from_artifacts(
             artifacts=artifacts,
             blocked=status == "BLOCKED" or validation.status == "blocked" or result_state.status == "blocked",
+            runtime_media_metadata_summaries=self._runtime_media_metadata_summaries_from_events(events),
         )
         return {
             "task_run_id": run_id,
@@ -838,11 +839,40 @@ class UniversalTaskSessionService:
                 "status": "unavailable",
             }
 
+    def _runtime_media_metadata_summaries_from_events(self, events: list[TaskRunEvent]) -> list[dict[str, Any]]:
+        summaries: list[dict[str, Any]] = []
+        for event in events:
+            metadata = event.metadata if isinstance(event.metadata, dict) else {}
+            stage = str(metadata.get("checkpoint_stage") or metadata.get("stage") or "")
+            if stage not in {
+                "after_physical_probe",
+                "after_evidence_fanout",
+                "after_post_compile_observation_execution",
+            }:
+                continue
+            media = metadata.get("media_metadata_capability") if isinstance(metadata.get("media_metadata_capability"), dict) else {}
+            if not media:
+                continue
+            summaries.append(
+                {
+                    "media_metadata_capability": media,
+                    "evidence_counts_by_canonical_key": metadata.get("evidence_counts_by_canonical_key")
+                    if isinstance(metadata.get("evidence_counts_by_canonical_key"), dict)
+                    else media.get("evidence_counts_by_canonical_key") if isinstance(media.get("evidence_counts_by_canonical_key"), dict) else {},
+                    "evidence_counts_by_backend": metadata.get("evidence_counts_by_backend")
+                    if isinstance(metadata.get("evidence_counts_by_backend"), dict)
+                    else media.get("evidence_counts_by_backend") if isinstance(media.get("evidence_counts_by_backend"), dict) else {},
+                    "source": "post_compile_observation_execution_event",
+                }
+            )
+        return summaries
+
     def _observational_cognition_summary_from_artifacts(
         self,
         *,
         artifacts: list[dict[str, Any]],
         blocked: bool,
+        runtime_media_metadata_summaries: list[dict[str, Any]] | None = None,
     ) -> dict[str, Any]:
         reports: list[dict[str, Any]] = []
         coverage2_reports: list[dict[str, Any]] = []
@@ -855,6 +885,12 @@ class UniversalTaskSessionService:
         media_metadata_summaries: list[dict[str, Any]] = []
         evidence_total = 0
         evidence_by_attribute: dict[str, int] = {}
+        for summary in runtime_media_metadata_summaries or []:
+            media = summary.get("media_metadata_capability") if isinstance(summary.get("media_metadata_capability"), dict) else {}
+            if media:
+                media_metadata_summaries.append(media)
+            for key, count in dict(summary.get("evidence_counts_by_canonical_key") or {}).items():
+                evidence_by_attribute[str(key)] = max(evidence_by_attribute.get(str(key), 0), int(count or 0))
         goals_total = goals_blocked = goals_ready = 0
         knowledge_record_count = 0
         assertion_count = 0
@@ -1436,15 +1472,9 @@ class UniversalTaskSessionService:
         evidence_counts_by_canonical_key: dict[str, int] = {}
         evidence_counts_by_backend: dict[str, int] = {}
         for summary in summaries:
-            for backend in summary.get("attempted_backends", []) or []:
-                key = str(backend)
-                backend_attempt_counts[key] = backend_attempt_counts.get(key, 0) + 1
-            for backend in summary.get("successful_backends", []) or []:
-                key = str(backend)
-                backend_success_counts[key] = backend_success_counts.get(key, 0) + 1
-            for backend in summary.get("blocked_backends", []) or []:
-                key = str(backend)
-                backend_block_counts[key] = backend_block_counts.get(key, 0) + 1
+            self._merge_backend_summary_counts(backend_attempt_counts, summary.get("attempted_backends"))
+            self._merge_backend_summary_counts(backend_success_counts, summary.get("successful_backends"))
+            self._merge_backend_summary_counts(backend_block_counts, summary.get("blocked_backends"))
             for code, count in dict(summary.get("backend_error_counts") or {}).items():
                 key = str(code)
                 backend_error_counts[key] = backend_error_counts.get(key, 0) + int(count or 0)
@@ -1457,6 +1487,9 @@ class UniversalTaskSessionService:
         return {
             "status": latest.get("status") or "partial",
             "capability_id": latest.get("capability_id") or "media_metadata_reader",
+            "configured": bool(latest.get("configured", True)),
+            "available": bool(latest.get("available", False)),
+            "execution_status": latest.get("execution_status") or latest.get("status") or "partial",
             "primary_backend": latest.get("primary_backend") or "mutagen",
             "selected_backend": latest.get("selected_backend"),
             "available_backends": sorted({
@@ -1490,19 +1523,19 @@ class UniversalTaskSessionService:
             "attempted_backends": sorted({
                 str(item)
                 for summary in summaries
-                for item in summary.get("attempted_backends", [])
+                for item in self._backend_summary_keys(summary.get("attempted_backends"))
                 if item
             }),
             "successful_backends": sorted({
                 str(item)
                 for summary in summaries
-                for item in summary.get("successful_backends", [])
+                for item in self._backend_summary_keys(summary.get("successful_backends"))
                 if item
             }),
             "fallback_backends_used": sorted({
                 str(item)
                 for summary in summaries
-                for item in summary.get("fallback_backends_used", [])
+                for item in self._backend_summary_keys(summary.get("fallback_backends_used"))
                 if item
             }),
             "backend_error_counts": backend_error_counts,
@@ -1532,6 +1565,20 @@ class UniversalTaskSessionService:
                 if item
             }),
         }
+
+    def _merge_backend_summary_counts(self, target: dict[str, int], value: Any) -> None:
+        if isinstance(value, dict):
+            for key, count in value.items():
+                target[str(key)] = target.get(str(key), 0) + int(count or 0)
+            return
+        for item in value or []:
+            key = str(item)
+            target[key] = target.get(key, 0) + 1
+
+    def _backend_summary_keys(self, value: Any) -> list[str]:
+        if isinstance(value, dict):
+            return [str(key) for key, count in value.items() if int(count or 0) > 0]
+        return [str(item) for item in value or [] if item]
 
     def _canonical_runtime_context(
         self,

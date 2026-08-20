@@ -38,6 +38,10 @@ from aipinho.schemas.artifacts.contract_perception import (
 )
 from aipinho.schemas.artifacts.relationship import RelationshipGoal
 from aipinho.services.artifacts.observation_execution_boundary_service import ObservationExecutionBoundaryService
+from aipinho.services.artifacts.observation_evidence_checkpoint_service import (
+    EvidenceCheckpointResolutionError,
+    ObservationEvidenceCheckpointSink,
+)
 from aipinho.services.artifacts.observed_entity_compilation_service import ObservedEntityCompilationService
 from aipinho.services.artifacts.media_relationship_candidate_service import (
     MEDIA_RELATIONSHIP_CAPABILITY_ID,
@@ -804,6 +808,7 @@ class ContractDrivenPerceptionService:
         selected_entities: list[dict[str, Any]],
         execution_results: list[ObservationExecutionResult],
         declared_contract: dict[str, Any] | None = None,
+        evidence_checkpoint_resolver: ObservationEvidenceCheckpointSink | None = None,
         stage_observer: Callable[[dict[str, Any]], None] | None = None,
     ) -> ContractPerceptionResult:
         """Purely folds governed observer results back into perception state."""
@@ -828,6 +833,7 @@ class ContractDrivenPerceptionService:
         observation_plan = self._apply_execution_evidence_to_plan(
             observation_plan=perception_result.observation_plan,
             execution_results=execution_results,
+            evidence_checkpoint_resolver=evidence_checkpoint_resolver,
         )
         observation_plan = self._mark_post_compile_physical_execution_outcomes(
             observation_plan=observation_plan,
@@ -837,6 +843,7 @@ class ContractDrivenPerceptionService:
         source_indexes = self._fact_source_indexes(
             observation_plan=observation_plan,
             execution_results=execution_results,
+            evidence_checkpoint_resolver=evidence_checkpoint_resolver,
         )
         observations = self.attribute_observations(
             plan=perception_result.contract_observation_plan,
@@ -850,6 +857,7 @@ class ContractDrivenPerceptionService:
             observations=observations,
             execution_results=execution_results,
             relationship_evidence_records=perception_result.relationship_evidence,
+            evidence_checkpoint_resolver=evidence_checkpoint_resolver,
         )
         checkpoint("after_post_execution_evidence_set_materialization", **self._evidence_set_metrics(evidence_set))
         coverage = self.semantic_coverage(
@@ -899,7 +907,10 @@ class ContractDrivenPerceptionService:
             update={
                 "observation_plan": observation_plan,
                 "observation_execution_results": execution_results,
-                "media_metadata_capability": self._media_metadata_capability_summary(execution_results),
+                "media_metadata_capability": self._media_metadata_capability_summary(
+                    execution_results,
+                    evidence_checkpoint_resolver=evidence_checkpoint_resolver,
+                ),
                 "attribute_observations": observations,
                 "evidence_set": evidence_set,
                 "knowledge_records": knowledge_records,
@@ -913,7 +924,9 @@ class ContractDrivenPerceptionService:
                     **dict(perception_result.payload_metrics or {}),
                     "post_compile_observation_materialized": True,
                     "post_compile_execution_result_count": len(execution_results),
-                    "post_compile_evidence_record_count": len(evidence_set.records),
+                    "post_compile_evidence_record_count": int(getattr(evidence_set, "record_count", 0) or len(evidence_set.records)),
+                    "post_compile_inline_evidence_record_count": len(evidence_set.records),
+                    "post_compile_evidence_checkpoint_ref_count": len(getattr(evidence_set, "checkpoint_refs", []) or []),
                 },
                 "internal_reason_code": perception_result.internal_reason_code,
             }
@@ -1963,11 +1976,18 @@ class ContractDrivenPerceptionService:
         observations: list[AttributeObservation],
         execution_results: list[Any] | None = None,
         relationship_evidence_records: list[EvidenceRecord] | None = None,
+        evidence_checkpoint_resolver: ObservationEvidenceCheckpointSink | None = None,
         progress_observer: Callable[[str, dict[str, Any]], None] | None = None,
     ) -> EvidenceSet:
         records: list[EvidenceRecord] = []
         seen_execution_ids: set[str] = set()
+        checkpoint_refs: list[dict[str, Any]] = []
+        checkpointed_record_count = 0
         for result in execution_results or []:
+            if getattr(result, "evidence_checkpoint_ref", None):
+                checkpoint_refs.append(dict(getattr(result, "evidence_checkpoint_ref") or {}))
+                checkpointed_record_count += int(getattr(result, "evidence_record_count", 0) or 0)
+                seen_execution_ids.update(str(ref) for ref in getattr(result, "evidence_record_refs", []) or [] if ref)
             evidence_set = getattr(result, "evidence_set", None)
             for record in getattr(evidence_set, "records", []) or []:
                 if record.evidence_id in seen_execution_ids:
@@ -1981,25 +2001,26 @@ class ContractDrivenPerceptionService:
                 continue
             if observation.evidence_refs and any(ref in seen_execution_ids for ref in observation.evidence_refs):
                 continue
-            records.append(
-                EvidenceRecord(
-                    source=(observation.provenance or {}).get("source") or "contract_driven_perception",
-                    acquisition_method=observation.acquisition_method,
-                    observer_id=observation.observer_id,
-                    capability_id=observation.capability_id,
-                    entity_ref={"entity_id": observation.entity_id},
-                    attribute_name=observation.attribute_name,
-                    canonical_key=observation.canonical_key or observation.attribute_name,
-                    raw_ref=(observation.evidence_refs or [None])[0],
-                    normalized_value=observation.observed_value,
-                    semantic_type=None,
-                    confidence=observation.confidence,
-                    provenance=observation.provenance,
-                    timestamp=observation.timestamp,
-                    ambiguity=observation.ambiguity,
-                    limitations=[],
-                )
-            )
+            synthetic_payload: dict[str, Any] = {
+                "source": (observation.provenance or {}).get("source") or "contract_driven_perception",
+                "acquisition_method": observation.acquisition_method,
+                "observer_id": observation.observer_id,
+                "capability_id": observation.capability_id,
+                "entity_ref": {"entity_id": observation.entity_id},
+                "attribute_name": observation.attribute_name,
+                "canonical_key": observation.canonical_key or observation.attribute_name,
+                "raw_ref": (observation.evidence_refs or [None])[0],
+                "normalized_value": observation.observed_value,
+                "semantic_type": None,
+                "confidence": observation.confidence,
+                "provenance": observation.provenance,
+                "timestamp": observation.timestamp,
+                "ambiguity": observation.ambiguity,
+                "limitations": [],
+            }
+            if observation.evidence_refs:
+                synthetic_payload["evidence_id"] = observation.evidence_refs[0]
+            records.append(EvidenceRecord(**synthetic_payload))
             materialized += 1
             if progress_observer is not None and (materialized % checkpoint_interval == 0 or index == len(observations)):
                 progress_observer(
@@ -2014,7 +2035,13 @@ class ContractDrivenPerceptionService:
         records.extend(relationship_evidence_records or [])
         attribute_names = sorted({item.attribute_name for item in records if item.attribute_name})
         canonical_keys = sorted({item.canonical_key for item in records if item.canonical_key})
-        entity_refs = [{"entity_id": item.entity_ref.get("entity_id")} for item in records if item.entity_ref.get("entity_id")]
+        canonical_keys = sorted(set(canonical_keys).union({
+            str(key)
+            for result in execution_results or []
+            for key in getattr(result, "evidence_canonical_keys", []) or []
+            if str(key)
+        }))
+        entity_refs = self._unique_entity_refs([item.entity_ref for item in records if item.entity_ref])
         confidence_values = [item.confidence for item in records]
         relationship_records = [item for item in records if item.evidence_type == "relationship_observation"]
         average_confidence = sum(confidence_values) / len(confidence_values) if confidence_values else 0.0
@@ -2024,7 +2051,10 @@ class ContractDrivenPerceptionService:
             attribute_names=attribute_names,
             canonical_keys=canonical_keys,
             coverage_summary={
-                "observed_record_count": len(records),
+                "observed_record_count": len(records) + checkpointed_record_count,
+                "inline_record_count": len(records),
+                "checkpointed_record_count": checkpointed_record_count,
+                "checkpoint_ref_count": len(checkpoint_refs),
                 "observed_attribute_count": len(attribute_names),
                 "observed_canonical_key_count": len(canonical_keys),
                 "relationship_observation_count": len(relationship_records),
@@ -2035,6 +2065,8 @@ class ContractDrivenPerceptionService:
                 "minimum_confidence": min(confidence_values) if confidence_values else 0.0,
                 "maximum_confidence": max(confidence_values) if confidence_values else 0.0,
             },
+            checkpoint_refs=checkpoint_refs,
+            record_count=len(records) + checkpointed_record_count,
         )
 
     def semantic_coverage(
@@ -2528,6 +2560,7 @@ class ContractDrivenPerceptionService:
         *,
         observation_plan: ObservationPlan,
         execution_results: list[Any] | None = None,
+        evidence_checkpoint_resolver: ObservationEvidenceCheckpointSink | None = None,
     ) -> dict[str, Any]:
         requirement_by_attribute = {item.attribute_name: item for item in observation_plan.requirements}
         decision_by_id = {item.decision_id: item for item in observation_plan.capability_decisions}
@@ -2537,7 +2570,10 @@ class ContractDrivenPerceptionService:
             if decision.selected_capability_id
         }
         capability_by_id = {capability_id: self.observer_registry.get(capability_id) for capability_id in capability_ids}
-        execution_evidence = self._execution_evidence_by_entity_attribute(execution_results or [])
+        execution_evidence = self._execution_evidence_by_entity_attribute(
+            execution_results or [],
+            evidence_checkpoint_resolver=evidence_checkpoint_resolver,
+        )
         return {
             "requirement_by_attribute": requirement_by_attribute,
             "decision_by_id": decision_by_id,
@@ -2581,10 +2617,26 @@ class ContractDrivenPerceptionService:
         return {
             "evidence_set_count": 1,
             "evidence_record_count": len(evidence_set.records),
+            "evidence_record_checkpointed_count": max(
+                0,
+                int(getattr(evidence_set, "record_count", 0) or len(evidence_set.records)) - len(evidence_set.records),
+            ),
+            "evidence_checkpoint_ref_count": len(getattr(evidence_set, "checkpoint_refs", []) or []),
             "evidence_record_referenced_count": len({item.raw_ref for item in evidence_set.records if item.raw_ref}),
             "evidence_record_copied_count": len(evidence_set.records),
             "materialized_bytes_estimate": len(evidence_set.records) * 260,
         }
+
+    def _unique_entity_refs(self, entity_refs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        rows: dict[str, dict[str, Any]] = {}
+        for ref in entity_refs:
+            if not isinstance(ref, dict):
+                continue
+            entity_id = str(ref.get("entity_id") or "")
+            key = entity_id or repr(sorted((str(k), str(v)) for k, v in ref.items()))
+            if key and key not in rows:
+                rows[key] = dict(ref)
+        return [rows[key] for key in sorted(rows)]
 
     def _provenance_ref_count(self, evidence_set: EvidenceSet) -> int:
         refs = set()
@@ -2972,13 +3024,13 @@ class ContractDrivenPerceptionService:
         *,
         observation_plan: ObservationPlan,
         execution_results: list[Any],
+        evidence_checkpoint_resolver: ObservationEvidenceCheckpointSink | None = None,
     ) -> ObservationPlan:
         confidence_by_key: dict[str, float] = {}
         capability_ids_by_key: dict[str, list[str]] = {}
         failure_by_key = self._execution_failure_reason_by_key(execution_results)
         for result in execution_results:
-            evidence_set = getattr(result, "evidence_set", None)
-            for record in getattr(evidence_set, "records", []) or []:
+            for record in self._execution_records(result, evidence_checkpoint_resolver=evidence_checkpoint_resolver):
                 key = str(record.canonical_key or record.attribute_name or "")
                 if not key:
                     continue
@@ -3049,11 +3101,31 @@ class ContractDrivenPerceptionService:
             semantic_gaps.append(gap)
         return observation_plan.model_copy(update={"requirements": requirements, "semantic_gaps": semantic_gaps})
 
+    def _execution_records(
+        self,
+        result: Any,
+        *,
+        evidence_checkpoint_resolver: ObservationEvidenceCheckpointSink | None = None,
+    ) -> list[EvidenceRecord]:
+        evidence_set = getattr(result, "evidence_set", None)
+        inline_records = list(getattr(evidence_set, "records", []) or [])
+        if inline_records:
+            return inline_records
+        checkpoint_ref = getattr(result, "evidence_checkpoint_ref", None)
+        if not checkpoint_ref:
+            return []
+        if evidence_checkpoint_resolver is None:
+            raise EvidenceCheckpointResolutionError(
+                "POST_COMPILE_EVIDENCE_CHECKPOINT_UNRESOLVABLE"
+            )
+        resolved = evidence_checkpoint_resolver.resolve_checkpoint(dict(checkpoint_ref))
+        return list(resolved.records or [])
+
     def _execution_failure_reason_by_key(self, execution_results: list[Any]) -> dict[str, dict[str, Any]]:
         rows: dict[str, dict[str, Any]] = {}
         for result in execution_results:
             evidence_set = getattr(result, "evidence_set", None)
-            if getattr(evidence_set, "records", []) or []:
+            if getattr(evidence_set, "records", []) or [] or int(getattr(result, "evidence_record_count", 0) or 0) > 0:
                 continue
             keys = [self.observed_entities.canonical_attribute_name(item) for item in getattr(result, "evidence_set", EvidenceSet()).canonical_keys or []]
             if not keys:
@@ -3103,11 +3175,15 @@ class ContractDrivenPerceptionService:
                 return code
         return codes[0] if codes else "OBSERVER_PRODUCED_NO_EVIDENCE"
 
-    def _execution_evidence_by_entity_attribute(self, execution_results: list[Any]) -> dict[tuple[str, str], EvidenceRecord]:
+    def _execution_evidence_by_entity_attribute(
+        self,
+        execution_results: list[Any],
+        *,
+        evidence_checkpoint_resolver: ObservationEvidenceCheckpointSink | None = None,
+    ) -> dict[tuple[str, str], EvidenceRecord]:
         rows: dict[tuple[str, str], EvidenceRecord] = {}
         for result in execution_results:
-            evidence_set = getattr(result, "evidence_set", None)
-            for record in getattr(evidence_set, "records", []) or []:
+            for record in self._execution_records(result, evidence_checkpoint_resolver=evidence_checkpoint_resolver):
                 entity_id = str((record.entity_ref or {}).get("entity_id") or "")
                 key = str(record.canonical_key or record.attribute_name or "")
                 if not entity_id or not key:
@@ -3117,7 +3193,12 @@ class ContractDrivenPerceptionService:
                     rows[(entity_id, key)] = record
         return rows
 
-    def _media_metadata_capability_summary(self, execution_results: list[Any]) -> dict[str, Any]:
+    def _media_metadata_capability_summary(
+        self,
+        execution_results: list[Any],
+        *,
+        evidence_checkpoint_resolver: ObservationEvidenceCheckpointSink | None = None,
+    ) -> dict[str, Any]:
         capability = self.observer_registry.get("media_metadata_reader")
         configured = capability is not None
         structurally_available = bool(getattr(capability, "available", False)) if capability is not None else False
@@ -3172,8 +3253,7 @@ class ContractDrivenPerceptionService:
             summary = observer_payload.get("media_metadata_capability") if isinstance(observer_payload.get("media_metadata_capability"), dict) else {}
             if summary:
                 summaries.append(summary)
-            evidence_set = getattr(result, "evidence_set", None)
-            records.extend(getattr(evidence_set, "records", []) or [])
+            records.extend(self._execution_records(result, evidence_checkpoint_resolver=evidence_checkpoint_resolver))
             for error in getattr(result, "errors", []) or []:
                 errors.append(error.model_dump(mode="json") if hasattr(error, "model_dump") else dict(error))
             limitations.extend(str(item) for item in getattr(result, "limitations", []) or [] if item)

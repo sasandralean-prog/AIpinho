@@ -13,6 +13,7 @@ from aipinho.capabilities.media_metadata.descriptor import (
     MEDIA_METADATA_EVIDENCE_KEYS,
 )
 from aipinho.schemas.artifacts.contract_perception import (
+    EvidenceRecord,
     EvidenceSet,
     ObservationCapability,
     ObservationExecutionError,
@@ -22,6 +23,7 @@ from aipinho.schemas.artifacts.contract_perception import (
     ObservationPlan,
     ObservationTask,
 )
+from aipinho.services.artifacts.observation_evidence_checkpoint_service import ObservationEvidenceCheckpointSink
 from aipinho.services.artifacts.observation_execution_boundary_service import ObservationExecutionBoundaryService
 
 
@@ -33,6 +35,8 @@ class PostCompileObservationBudget:
     max_evidence_records: int = 250000
     max_consecutive_execution_failures: int = 10
     max_materialized_observation_bytes: int = 8_000_000
+    max_checkpointed_observation_bytes: int = 64_000_000
+    max_single_checkpoint_bytes: int = 512_000
     heartbeat_interval_ms: int = 1000
     max_quarantined_workers: int = 1
 
@@ -89,6 +93,7 @@ class GovernedObservationExecutionStageService:
         *,
         observation_plan: ObservationPlan,
         selected_entities: list[dict[str, Any]],
+        evidence_checkpoint_sink: ObservationEvidenceCheckpointSink | None = None,
         checkpoint: Callable[[str, dict[str, Any]], None] | None = None,
     ) -> GovernedObservationExecutionStageResult:
         started = time.monotonic()
@@ -118,6 +123,22 @@ class GovernedObservationExecutionStageService:
         blocked_reason: str | None = None
         evidence_records_created = 0
         materialized_observation_bytes = 0
+        checkpointed_observation_bytes = 0
+        counters = {
+            "evidence_records_produced": 0,
+            "evidence_records_rejected": 0,
+            "evidence_bytes_produced": 0,
+            "evidence_bytes_checkpointed": 0,
+            "checkpoint_count": 0,
+            "checkpoint_write_failures": 0,
+            "results_physically_succeeded": 0,
+            "results_physically_failed": 0,
+            "results_accepted": 0,
+            "results_rejected_by_policy": 0,
+        }
+        physical_backend_attempts: dict[str, int] = {}
+        physical_backend_successes: dict[str, int] = {}
+        physical_backend_failures: dict[str, int] = {}
         for index, group in enumerate(groups, start=1):
             if index > self.budget.max_physical_probes:
                 blocked_reason = "POST_COMPILE_OBSERVATION_PHYSICAL_PROBE_BUDGET_EXCEEDED"
@@ -142,6 +163,7 @@ class GovernedObservationExecutionStageService:
             )
             if result is None:
                 blocked_reason = probe_blocked_reason
+                counters["results_rejected_by_policy"] += 1
                 self._checkpoint(
                     checkpoint,
                     "after_physical_probe",
@@ -154,9 +176,83 @@ class GovernedObservationExecutionStageService:
                     },
                 )
                 break
-            result_bytes = self._materialized_result_bytes(result)
+            physical_backend = self._physical_telemetry_for_result(result)
+            self._merge_counts(physical_backend_attempts, physical_backend["attempted_backends"])
+            self._merge_counts(physical_backend_successes, physical_backend["successful_backends"])
+            self._merge_counts(physical_backend_failures, physical_backend["failed_backends"])
+            produced_record_count = len(getattr(result.evidence_set, "records", []) or [])
+            produced_result_bytes = self._materialized_result_bytes(result)
+            counters["evidence_records_produced"] += produced_record_count
+            counters["evidence_bytes_produced"] += produced_result_bytes
+            if result.status == "EXECUTED" and produced_record_count > 0:
+                counters["results_physically_succeeded"] += 1
+            else:
+                counters["results_physically_failed"] += 1
+            result = self._filter_result_evidence_for_contract(result, group=group)
+            record_count = len(getattr(result.evidence_set, "records", []) or [])
+            counters["evidence_records_rejected"] += max(0, produced_record_count - record_count)
+            if evidence_records_created + record_count > self.budget.max_evidence_records:
+                blocked_reason = "POST_COMPILE_OBSERVATION_EVIDENCE_RECORD_BUDGET_EXCEEDED"
+                counters["results_rejected_by_policy"] += 1
+                counters["evidence_records_rejected"] += record_count
+                result = self._evidence_record_budget_block_result(
+                    group=group,
+                    original_result=result,
+                    record_count=record_count,
+                    accepted_evidence_records=evidence_records_created,
+                )
+                results.append(result)
+                self._checkpoint(
+                    checkpoint,
+                    "after_physical_probe",
+                    {
+                        **self._group_metrics(group),
+                        "physical_probe_index": index,
+                        "physical_probe_status": result.status,
+                        "evidence_record_count": 0,
+                        "accepted_evidence_records": evidence_records_created,
+                        "blocked_reason_code": blocked_reason,
+                    },
+                )
+                break
+            if evidence_checkpoint_sink is not None and record_count > 0:
+                checkpoint_ref: dict[str, Any] | None = None
+                try:
+                    checkpoint_ref = evidence_checkpoint_sink.write_checkpoint(
+                        physical_probe_key=group.physical_probe_key,
+                        entity_ref=result.evidence_set.records[0].entity_ref,
+                        evidence_set=result.evidence_set,
+                    )
+                except Exception:
+                    blocked_reason = "POST_COMPILE_EVIDENCE_CHECKPOINT_WRITE_FAILED"
+                    counters["checkpoint_write_failures"] += 1
+                if checkpoint_ref is not None:
+                    checkpoint_bytes = int(checkpoint_ref.get("size_bytes") or 0)
+                    if checkpoint_bytes > self.budget.max_single_checkpoint_bytes:
+                        blocked_reason = "POST_COMPILE_EVIDENCE_CHECKPOINT_WRITE_FAILED"
+                    elif checkpointed_observation_bytes + checkpoint_bytes > self.budget.max_checkpointed_observation_bytes:
+                        blocked_reason = "POST_COMPILE_OBSERVATION_CHECKPOINT_BYTES_BUDGET_EXCEEDED"
+                    if blocked_reason:
+                        counters["results_rejected_by_policy"] += 1
+                        counters["evidence_records_rejected"] += record_count
+                        result = self._checkpoint_block_result(
+                            group=group,
+                            original_result=result,
+                            reason_code=blocked_reason,
+                            checkpoint_bytes=checkpoint_bytes,
+                            checkpointed_observation_bytes=checkpointed_observation_bytes,
+                        )
+                        results.append(result)
+                        break
+                    checkpointed_observation_bytes += checkpoint_bytes
+                    counters["checkpoint_count"] += 1
+                    counters["evidence_bytes_checkpointed"] += checkpoint_bytes
+                    result = self._checkpoint_receipt_result(result, checkpoint_ref=checkpoint_ref)
+            result_bytes = self._inline_result_bytes(result)
             if materialized_observation_bytes + result_bytes > self.budget.max_materialized_observation_bytes:
                 blocked_reason = "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED"
+                counters["results_rejected_by_policy"] += 1
+                counters["evidence_records_rejected"] += record_count
                 result = self._budget_block_result(
                     group=group,
                     original_result=result,
@@ -178,33 +274,10 @@ class GovernedObservationExecutionStageService:
                     },
                 )
                 break
-            record_count = len(getattr(result.evidence_set, "records", []) or [])
-            if evidence_records_created + record_count > self.budget.max_evidence_records:
-                blocked_reason = "POST_COMPILE_OBSERVATION_EVIDENCE_RECORD_BUDGET_EXCEEDED"
-                result = self._evidence_record_budget_block_result(
-                    group=group,
-                    original_result=result,
-                    record_count=record_count,
-                    accepted_evidence_records=evidence_records_created,
-                )
-                record_count = 0
-                results.append(result)
-                self._checkpoint(
-                    checkpoint,
-                    "after_physical_probe",
-                    {
-                        **self._group_metrics(group),
-                        "physical_probe_index": index,
-                        "physical_probe_status": result.status,
-                        "evidence_record_count": 0,
-                        "accepted_evidence_records": evidence_records_created,
-                        "blocked_reason_code": blocked_reason,
-                    },
-                )
-                break
             materialized_observation_bytes += result_bytes
             results.append(result)
             evidence_records_created += record_count
+            counters["results_accepted"] += 1
             if result.status == "EXECUTED" and record_count > 0:
                 consecutive_failures = 0
             else:
@@ -232,13 +305,25 @@ class GovernedObservationExecutionStageService:
             **self._backend_telemetry(results=results, backend_snapshots=backend_snapshots),
             "physical_probe_count": len(results),
             "files_attempted": len(results),
-            "files_succeeded": len([
-                item for item in results if item.status == "EXECUTED" and len(item.evidence_set.records) > 0
-            ]),
-            "files_failed": len([
-                item for item in results if not (item.status == "EXECUTED" and len(item.evidence_set.records) > 0)
-            ]),
+            "files_succeeded": counters["results_physically_succeeded"],
+            "files_failed": counters["results_physically_failed"],
             "evidence_records_created": evidence_records_created,
+            "evidence_records_produced": counters["evidence_records_produced"],
+            "evidence_records_accepted": evidence_records_created,
+            "evidence_records_rejected": counters["evidence_records_rejected"],
+            "evidence_bytes_produced": counters["evidence_bytes_produced"],
+            "evidence_bytes_checkpointed": counters["evidence_bytes_checkpointed"],
+            "inline_materialized_bytes": materialized_observation_bytes,
+            "checkpoint_count": counters["checkpoint_count"],
+            "checkpoint_bytes": checkpointed_observation_bytes,
+            "checkpoint_write_failures": counters["checkpoint_write_failures"],
+            "physical_backend_attempts": physical_backend_attempts,
+            "physical_backend_successes": physical_backend_successes,
+            "physical_backend_failures": physical_backend_failures,
+            "results_physically_succeeded": counters["results_physically_succeeded"],
+            "results_physically_failed": counters["results_physically_failed"],
+            "results_accepted": counters["results_accepted"],
+            "results_rejected_by_policy": counters["results_rejected_by_policy"],
             "materialized_observation_bytes": materialized_observation_bytes,
             "execution_status": "blocked" if blocked_reason else "executed" if results else "not_started",
             "blocked_reason_code": blocked_reason,
@@ -428,6 +513,190 @@ class GovernedObservationExecutionStageService:
         for record in result.evidence_set.records:
             record.provenance.setdefault("physical_probe_key", list(group.physical_probe_key))
         return result.model_copy(update={"provenance": provenance})
+
+    def _filter_result_evidence_for_contract(
+        self,
+        result: ObservationExecutionResult,
+        *,
+        group: PhysicalObservationGroup,
+    ) -> ObservationExecutionResult:
+        requested = set(group.requested_canonical_keys)
+        if not requested:
+            return result
+        records = [
+            record
+            for record in result.evidence_set.records
+            if str(record.canonical_key or record.attribute_name or "") in requested
+        ]
+        if len(records) == len(result.evidence_set.records):
+            return result
+        provenance = dict(result.provenance or {})
+        provenance["contract_aware_evidence_filter"] = {
+            "requested_canonical_keys": sorted(requested),
+            "produced_record_count": len(result.evidence_set.records),
+            "retained_record_count": len(records),
+            "discarded_record_count": max(0, len(result.evidence_set.records) - len(records)),
+            "discarded_as_unrequested_intermediate_evidence": True,
+        }
+        return result.model_copy(
+            update={
+                "evidence_set": self._evidence_set_from_records(records),
+                "provenance": provenance,
+                "limitations": list(dict.fromkeys([
+                    *list(result.limitations or []),
+                    "unrequested_intermediate_evidence_not_retained_inline",
+                ])),
+            }
+        )
+
+    def _checkpoint_receipt_result(
+        self,
+        result: ObservationExecutionResult,
+        *,
+        checkpoint_ref: dict[str, Any],
+    ) -> ObservationExecutionResult:
+        records = list(result.evidence_set.records or [])
+        evidence_ids = [record.evidence_id for record in records if record.evidence_id]
+        canonical_keys = sorted({str(record.canonical_key or record.attribute_name or "") for record in records if record.canonical_key or record.attribute_name})
+        receipt_set = EvidenceSet(
+            records=[],
+            entity_refs=self._unique_entity_refs([record.entity_ref for record in records]),
+            attribute_names=sorted({str(record.attribute_name or "") for record in records if record.attribute_name}),
+            canonical_keys=canonical_keys,
+            coverage_summary={
+                "checkpointed_record_count": len(records),
+                "checkpoint_ref_count": 1,
+                "inline_record_count": 0,
+            },
+            confidence_summary=dict(result.evidence_set.confidence_summary or {}),
+            checkpoint_refs=[dict(checkpoint_ref)],
+            record_count=len(records),
+        )
+        provenance = dict(result.provenance or {})
+        provenance["evidence_checkpoint_ref"] = dict(checkpoint_ref)
+        return result.model_copy(
+            update={
+                "evidence_set": receipt_set,
+                "evidence_checkpoint_ref": dict(checkpoint_ref),
+                "evidence_checkpoint_digest": str(checkpoint_ref.get("sha256") or checkpoint_ref.get("hash") or ""),
+                "evidence_record_count": len(records),
+                "evidence_record_refs": evidence_ids,
+                "evidence_canonical_keys": canonical_keys,
+                "evidence_checkpoint_bytes": int(checkpoint_ref.get("size_bytes") or 0),
+                "evidence_inline": False,
+                "provenance": provenance,
+            }
+        )
+
+    def _checkpoint_block_result(
+        self,
+        *,
+        group: PhysicalObservationGroup,
+        original_result: ObservationExecutionResult,
+        reason_code: str,
+        checkpoint_bytes: int,
+        checkpointed_observation_bytes: int,
+    ) -> ObservationExecutionResult:
+        now = self._now()
+        capability = self.observer_registry.get(group.capability_id)
+        error = ObservationExecutionError(
+            code="OBSERVER_POLICY_BLOCKED",
+            message="Post-compile observation evidence checkpoint exceeded governed storage limits or failed integrity.",
+            capability_id=group.capability_id,
+            observer_id=(capability.observer_binding or {}).get("observer_id") if capability else None,
+            retryable=False,
+            details={
+                "blocked_reason_code": reason_code,
+                "checkpoint_bytes": checkpoint_bytes,
+                "checkpointed_observation_bytes": checkpointed_observation_bytes,
+                "max_checkpointed_observation_bytes": self.budget.max_checkpointed_observation_bytes,
+                "max_single_checkpoint_bytes": self.budget.max_single_checkpoint_bytes,
+                "physical_probe_key": list(group.physical_probe_key),
+            },
+        )
+        return ObservationExecutionResult(
+            observation_task_id=original_result.observation_task_id,
+            goal_id=original_result.goal_id,
+            strategy_id=original_result.strategy_id,
+            capability_id=group.capability_id,
+            observer_id=(capability.observer_binding or {}).get("observer_id") if capability else None,
+            status="BLOCKED_POLICY",
+            started_at=original_result.started_at,
+            finished_at=now,
+            duration_ms=original_result.duration_ms,
+            evidence_set=EvidenceSet(),
+            errors=[error],
+            confidence=0.0,
+            limitations=["evidence_checkpoint_policy_blocked"],
+            provenance={
+                "boundary": "GovernedObservationExecutionStageService",
+                "physical_probe_key": list(group.physical_probe_key),
+                "raw_execution_source_ref": group.raw_execution_source_ref,
+                "grouped_observation_task_ids": [item.observation_task_id for item in group.tasks],
+                "grouped_goal_ids": [item.goal_id for item in group.tasks],
+                "requested_canonical_keys": group.requested_canonical_keys,
+                "blocked_reason_code": reason_code,
+            },
+        )
+
+    def _physical_telemetry_for_result(self, result: ObservationExecutionResult) -> dict[str, dict[str, int]]:
+        attempted: dict[str, int] = {}
+        successful: dict[str, int] = {}
+        failed: dict[str, int] = {}
+        payload = (result.provenance or {}).get("observer_payload")
+        media = payload.get("media_metadata_capability") if isinstance(payload, dict) else None
+        if isinstance(media, dict):
+            for backend in media.get("attempted_backends", []) or []:
+                key = str(backend)
+                attempted[key] = attempted.get(key, 0) + 1
+            for backend in media.get("successful_backends", []) or []:
+                key = str(backend)
+                successful[key] = successful.get(key, 0) + 1
+            for backend in media.get("failed_backends", []) or []:
+                key = str(backend)
+                failed[key] = failed.get(key, 0) + 1
+        return {
+            "attempted_backends": attempted,
+            "successful_backends": successful,
+            "failed_backends": failed,
+        }
+
+    def _merge_counts(self, target: dict[str, int], source: dict[str, int]) -> None:
+        for key, count in source.items():
+            target[str(key)] = target.get(str(key), 0) + int(count or 0)
+
+    def _inline_result_bytes(self, result: ObservationExecutionResult) -> int:
+        try:
+            payload = result.model_dump(mode="json")
+        except Exception:
+            payload = {"execution_id": getattr(result, "execution_id", None)}
+        return len(json.dumps(payload, sort_keys=True, default=str, ensure_ascii=False).encode("utf-8"))
+
+    def _evidence_set_from_records(self, records: list[EvidenceRecord]) -> EvidenceSet:
+        confidence_values = [float(record.confidence or 0.0) for record in records]
+        return EvidenceSet(
+            records=records,
+            entity_refs=self._unique_entity_refs([record.entity_ref for record in records]),
+            attribute_names=sorted({str(record.attribute_name or "") for record in records if record.attribute_name}),
+            canonical_keys=sorted({str(record.canonical_key or record.attribute_name or "") for record in records if record.canonical_key or record.attribute_name}),
+            coverage_summary={"observed_record_count": len(records)},
+            confidence_summary={
+                "average_confidence": round(sum(confidence_values) / len(confidence_values), 4) if confidence_values else 0.0,
+                "minimum_confidence": min(confidence_values) if confidence_values else 0.0,
+                "maximum_confidence": max(confidence_values) if confidence_values else 0.0,
+            },
+            record_count=len(records),
+        )
+
+    def _unique_entity_refs(self, entity_refs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        rows: dict[str, dict[str, Any]] = {}
+        for ref in entity_refs:
+            if not isinstance(ref, dict):
+                continue
+            key = str(ref.get("entity_id") or json.dumps(ref, sort_keys=True, default=str))
+            if key and key not in rows:
+                rows[key] = dict(ref)
+        return [rows[key] for key in sorted(rows)]
 
     def _timeout_result(
         self,
@@ -668,6 +937,11 @@ class GovernedObservationExecutionStageService:
                 canonical = str(record.canonical_key or record.attribute_name or "")
                 if entity_id and canonical:
                     rows.add((entity_id, canonical))
+            if not result.evidence_set.records and result.evidence_record_count:
+                entity_id = str(key[0])
+                for canonical in result.evidence_canonical_keys:
+                    if entity_id and canonical:
+                        rows.add((entity_id, str(canonical)))
         satisfied = 0
         unsatisfied = 0
         for group in groups:

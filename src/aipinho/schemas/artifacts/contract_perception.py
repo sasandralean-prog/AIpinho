@@ -500,6 +500,13 @@ class ObservationExecutionResult(AIpinhoModel):
     confidence: float = 0.0
     limitations: list[str] = Field(default_factory=list)
     provenance: dict[str, Any] = Field(default_factory=dict)
+    evidence_checkpoint_ref: dict[str, Any] = Field(default_factory=dict)
+    evidence_checkpoint_digest: str | None = None
+    evidence_record_count: int = 0
+    evidence_record_refs: list[str] = Field(default_factory=list)
+    evidence_canonical_keys: list[str] = Field(default_factory=list)
+    evidence_checkpoint_bytes: int = 0
+    evidence_inline: bool = True
 
 
 class EvidenceRecord(AIpinhoModel):
@@ -544,6 +551,8 @@ class EvidenceSet(AIpinhoModel):
     canonical_keys: list[str] = Field(default_factory=list)
     coverage_summary: dict[str, Any] = Field(default_factory=dict)
     confidence_summary: dict[str, Any] = Field(default_factory=dict)
+    checkpoint_refs: list[dict[str, Any]] = Field(default_factory=list)
+    record_count: int = 0
 
 
 class ObservationPlan(AIpinhoModel):

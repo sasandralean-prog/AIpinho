@@ -6,6 +6,8 @@ from typing import Any
 
 from aipinho.schemas.artifacts.contract_perception import (
     AttributeObservationRequirement,
+    EvidenceRecord,
+    EvidenceSet,
     ObservationCapability,
     ObservationPlan,
     ObservationStrategy,
@@ -16,7 +18,12 @@ from aipinho.services.artifacts.governed_observation_execution_stage_service imp
     GovernedObservationExecutionStageService,
     PostCompileObservationBudget,
 )
+from aipinho.services.artifacts.observation_evidence_checkpoint_service import (
+    EvidenceCheckpointResolutionError,
+    RuntimeObservationEvidenceCheckpointStore,
+)
 from aipinho.services.artifacts.observation_execution_boundary_service import ObservationExecutionBoundaryService
+from aipinho.services.runtime.runtime_payload_ref_store import RuntimePayloadRefStore
 
 
 class _Adapter:
@@ -543,7 +550,9 @@ def test_materialized_observation_bytes_budget_blocks_before_materialization() -
     assert result.observation_execution_results[0].status == "BLOCKED_POLICY"
     assert result.observation_execution_results[0].evidence_set.records == []
     assert result.telemetry["physical_probe_count"] == 1
-    assert result.telemetry["files_failed"] == 1
+    assert result.telemetry["files_succeeded"] == 1
+    assert result.telemetry["files_failed"] == 0
+    assert result.telemetry["results_rejected_by_policy"] == 1
 
 
 def test_evidence_record_budget_replaces_over_budget_result_before_materialization() -> None:
@@ -647,3 +656,244 @@ def test_post_execution_materialization_updates_evidence_and_attribute_observati
     }
     assert physical_tasks["artist"].status == "EXECUTED"
     assert physical_tasks["artist"].created_from["logical_claim_satisfaction_not_inferred"] is True
+
+
+def test_contract_aware_filter_drops_unrequested_generic_metadata_but_preserves_identity() -> None:
+    adapter = _Adapter(keys=["metadata", "track_title", "artist"])
+    stage = _stage(adapter)
+
+    result = stage.execute(
+        observation_plan=_plan([_task("track_title"), _task("artist")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+    )
+
+    execution = result.observation_execution_results[0]
+    assert [record.canonical_key for record in execution.evidence_set.records] == ["track_title", "artist"]
+    assert result.telemetry["evidence_records_produced"] == 3
+    assert result.telemetry["evidence_records_accepted"] == 2
+    assert result.telemetry["evidence_records_rejected"] == 1
+    assert execution.provenance["contract_aware_evidence_filter"]["discarded_record_count"] == 1
+
+
+def test_contract_aware_filter_retains_generic_metadata_when_contract_requests_it() -> None:
+    adapter = _Adapter(keys=["metadata", "artist"])
+    stage = _stage(adapter)
+
+    result = stage.execute(
+        observation_plan=_plan([_task("metadata"), _task("artist")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+    )
+
+    keys = [record.canonical_key for record in result.observation_execution_results[0].evidence_set.records]
+    assert keys == ["metadata", "artist"]
+    assert result.telemetry["evidence_records_rejected"] == 0
+
+
+def test_checkpoint_receipt_retains_lightweight_result_and_resolves_records(tmp_path) -> None:
+    adapter = _Adapter(keys=["artist", "track_title"])
+    stage = _stage(adapter)
+    checkpoint_store = RuntimeObservationEvidenceCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_checkpoint",
+    )
+
+    result = stage.execute(
+        observation_plan=_plan([_task("artist"), _task("track_title")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+        evidence_checkpoint_sink=checkpoint_store,
+    )
+
+    execution = result.observation_execution_results[0]
+    assert execution.evidence_inline is False
+    assert execution.evidence_set.records == []
+    assert execution.evidence_record_count == 2
+    assert execution.evidence_canonical_keys == ["artist", "track_title"]
+    assert result.telemetry["checkpoint_count"] == 1
+    assert result.telemetry["checkpoint_bytes"] > 0
+    resolved = checkpoint_store.resolve_checkpoint(execution.evidence_checkpoint_ref)
+    assert [record.canonical_key for record in resolved.records] == ["artist", "track_title"]
+    assert len(resolved.entity_refs) == 1
+    assert all(record.entity_ref["entity_id"] == "entity_1" for record in resolved.records)
+
+
+def test_checkpoint_digest_mismatch_blocks_resolution(tmp_path) -> None:
+    evidence = EvidenceSet(
+        records=[
+            EvidenceRecord(
+                evidence_id="evidence_artist",
+                entity_ref={"entity_id": "entity_1"},
+                canonical_key="artist",
+                attribute_name="artist",
+                normalized_value="Artist",
+                backend_id="mutagen",
+                raw_ref="raw:artist",
+                provenance={"raw_tag_key": "ARTIST"},
+            )
+        ]
+    )
+    checkpoint_store = RuntimeObservationEvidenceCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_checkpoint",
+    )
+    ref = checkpoint_store.write_checkpoint(
+        physical_probe_key=("entity_1", "media_metadata_reader", "media://one"),
+        entity_ref={"entity_id": "entity_1"},
+        evidence_set=evidence,
+    )
+    bad_ref = {**ref, "sha256": "0" * 64}
+
+    try:
+        checkpoint_store.resolve_checkpoint(bad_ref)
+    except EvidenceCheckpointResolutionError as exc:
+        assert exc.reason_code == "POST_COMPILE_EVIDENCE_CHECKPOINT_INTEGRITY_FAILED"
+    else:
+        raise AssertionError("checkpoint digest mismatch did not block")
+
+
+def test_missing_checkpoint_ref_blocks_resolution(tmp_path) -> None:
+    checkpoint_store = RuntimeObservationEvidenceCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_checkpoint",
+    )
+
+    try:
+        checkpoint_store.resolve_checkpoint({"content_ref": "task_run_checkpoint/payload_refs/missing.json"})
+    except EvidenceCheckpointResolutionError as exc:
+        assert exc.reason_code == "POST_COMPILE_EVIDENCE_CHECKPOINT_UNRESOLVABLE"
+    else:
+        raise AssertionError("missing checkpoint ref did not block")
+
+
+def test_malformed_checkpoint_payload_blocks_resolution(tmp_path) -> None:
+    payload_refs = RuntimePayloadRefStore(root=tmp_path)
+    ref = payload_refs.write_payload_ref(
+        run_id="task_run_checkpoint",
+        key="evidence_checkpoint",
+        path="post_compile_observation/malformed",
+        value={"schema_version": "wrong", "records": []},
+    )
+    checkpoint_store = RuntimeObservationEvidenceCheckpointStore(
+        payload_refs=payload_refs,
+        run_id="task_run_checkpoint",
+    )
+
+    try:
+        checkpoint_store.resolve_checkpoint(ref)
+    except EvidenceCheckpointResolutionError as exc:
+        assert exc.reason_code == "POST_COMPILE_EVIDENCE_CHECKPOINT_INTEGRITY_FAILED"
+    else:
+        raise AssertionError("malformed checkpoint payload did not block")
+
+
+def test_checkpointed_execution_materializes_attribute_observations_without_hydrating_final_evidence_set(tmp_path) -> None:
+    service = ContractDrivenPerceptionService(observer_registry=CapabilityRegistry(capabilities=[_capability()]))
+    adapter = _Adapter(keys=["artist"])
+    stage = _stage(adapter)
+    checkpoint_store = RuntimeObservationEvidenceCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_checkpoint",
+    )
+    selected_entities = [{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}]
+    perception = service.compile(
+        graph={"entities": selected_entities},
+        declared_contract={
+            "expected_kind": "tabular_collection",
+            "expected_schema": ["artist"],
+            "perception_compile_policy": {"mode": "compile_only"},
+        },
+    )
+
+    execution = stage.execute(
+        observation_plan=perception.observation_plan,
+        selected_entities=selected_entities,
+        evidence_checkpoint_sink=checkpoint_store,
+    )
+    materialized = service.materialize_execution_results(
+        perception_result=perception,
+        selected_entities=selected_entities,
+        execution_results=execution.observation_execution_results,
+        declared_contract={"expected_kind": "tabular_collection", "expected_schema": ["artist"]},
+        evidence_checkpoint_resolver=checkpoint_store,
+    )
+
+    observed = [item for item in materialized.attribute_observations if item.canonical_key == "artist"]
+    assert len(observed) == 1
+    assert observed[0].observation_state == "observed"
+    assert observed[0].evidence_refs
+    assert materialized.evidence_set.records == []
+    assert materialized.evidence_set.checkpoint_refs
+    assert materialized.evidence_set.record_count == 1
+
+
+def test_retention_policy_rejection_preserves_physical_backend_telemetry(tmp_path) -> None:
+    adapter = _Adapter(keys=["artist"])
+    stage = _stage(
+        adapter,
+        budget=PostCompileObservationBudget(
+            max_probe_elapsed_ms=500,
+            heartbeat_interval_ms=10,
+            max_checkpointed_observation_bytes=1,
+            max_single_checkpoint_bytes=1,
+        ),
+    )
+    checkpoint_store = RuntimeObservationEvidenceCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_checkpoint",
+    )
+
+    result = stage.execute(
+        observation_plan=_plan([_task("artist")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+        evidence_checkpoint_sink=checkpoint_store,
+    )
+
+    assert result.blocked_reason_code == "POST_COMPILE_EVIDENCE_CHECKPOINT_WRITE_FAILED"
+    assert result.telemetry["physical_probe_count"] == 1
+    assert result.telemetry["physical_backend_attempts"] == {"mutagen": 1}
+    assert result.telemetry["physical_backend_successes"] == {"mutagen": 1}
+    assert result.telemetry["evidence_records_produced"] == 1
+    assert result.telemetry["evidence_records_accepted"] == 0
+    assert result.telemetry["evidence_records_rejected"] == 1
+    assert result.telemetry["results_physically_succeeded"] == 1
+    assert result.telemetry["results_accepted"] == 0
+    assert result.telemetry["results_rejected_by_policy"] == 1
+
+
+def test_checkpointed_stage_scales_without_accumulating_hydrated_evidence_sets(tmp_path) -> None:
+    adapter = _Adapter(keys=["artist"])
+    stage = _stage(
+        adapter,
+        budget=PostCompileObservationBudget(
+            max_probe_elapsed_ms=500,
+            heartbeat_interval_ms=10,
+            max_total_observation_elapsed_ms=120000,
+            max_materialized_observation_bytes=8_000_000,
+            max_checkpointed_observation_bytes=64_000_000,
+        ),
+    )
+    checkpoint_store = RuntimeObservationEvidenceCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_scale",
+    )
+    entity_count = 1000
+    tasks = [
+        _task("artist", entity_id=f"entity_{index}", source_ref=f"media://{index}")
+        for index in range(entity_count)
+    ]
+    entities = [
+        {"entity_id": f"entity_{index}", "path": f"media://{index}", "entity_role": "media_asset_candidate"}
+        for index in range(entity_count)
+    ]
+
+    result = stage.execute(
+        observation_plan=_plan(tasks),
+        selected_entities=entities,
+        evidence_checkpoint_sink=checkpoint_store,
+    )
+
+    assert result.blocked_reason_code is None
+    assert result.telemetry["physical_probe_count"] == entity_count
+    assert result.telemetry["checkpoint_count"] == entity_count
+    assert result.telemetry["inline_materialized_bytes"] < 8_000_000
+    assert all(execution.evidence_set.records == [] for execution in result.observation_execution_results)
+    assert all(execution.evidence_checkpoint_ref for execution in result.observation_execution_results)

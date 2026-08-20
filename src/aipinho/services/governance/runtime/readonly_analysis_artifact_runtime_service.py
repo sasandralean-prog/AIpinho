@@ -37,6 +37,10 @@ from aipinho.services.artifacts.governed_observation_execution_stage_service imp
     GovernedObservationExecutionStageService,
 )
 from aipinho.services.artifacts.media_inventory_sufficiency_service import MediaInventorySufficiencyService
+from aipinho.services.artifacts.observation_evidence_checkpoint_service import (
+    EvidenceCheckpointResolutionError,
+    RuntimeObservationEvidenceCheckpointStore,
+)
 from aipinho.services.artifacts.observed_entity_compilation_service import ObservedEntityCompilationService
 from aipinho.services.artifacts.row_level_semantic_validation_service import RowLevelSemanticValidationService
 from aipinho.services.artifacts.semantic_artifact_intent_resolver import SemanticArtifactIntentResolver
@@ -2871,9 +2875,14 @@ class ReadonlyAnalysisArtifactRuntimeService:
             for item in graph_payload.get("entities") or []
             if isinstance(item, dict) and str(item.get("entity_id") or "") in execution_selected_ids
         ]
+        evidence_checkpoint_store = RuntimeObservationEvidenceCheckpointStore(
+            payload_refs=self.runtime.store.payload_refs,
+            run_id=render_run_id,
+        )
         execution_stage = self.post_compile_observation_execution.execute(
             observation_plan=perception_result.observation_plan,
             selected_entities=execution_selected_entities,
+            evidence_checkpoint_sink=evidence_checkpoint_store,
             checkpoint=lambda stage, metrics: self._check_artifact_render_checkpoint(
                 render_run_id,
                 phase_started,
@@ -2888,23 +2897,38 @@ class ReadonlyAnalysisArtifactRuntimeService:
             ),
         )
         if execution_stage.observation_execution_results:
-            perception_result = self.perception.materialize_execution_results(
-                perception_result=perception_result,
-                selected_entities=execution_selected_entities,
-                execution_results=execution_stage.observation_execution_results,
-                declared_contract=perception_contract,
-                stage_observer=lambda item: self._check_artifact_render_checkpoint(
-                    render_run_id,
-                    phase_started,
-                    artifact_started,
-                    stage=str(item.get("stage") or "post_execution_perception_materialization"),
-                    logical_path=logical_path,
-                    rows_rendered=self._int_or_none(item.get("projected_entity_count")),
-                    rows_expected=selection_result.selected_rows,
-                    cells_rendered=self._int_or_none(item.get("evidence_record_count") or item.get("attribute_observation_count")),
-                    extra_metadata=dict(item or {}),
-                ),
-            )
+            try:
+                perception_result = self.perception.materialize_execution_results(
+                    perception_result=perception_result,
+                    selected_entities=execution_selected_entities,
+                    execution_results=execution_stage.observation_execution_results,
+                    declared_contract=perception_contract,
+                    evidence_checkpoint_resolver=evidence_checkpoint_store,
+                    stage_observer=lambda item: self._check_artifact_render_checkpoint(
+                        render_run_id,
+                        phase_started,
+                        artifact_started,
+                        stage=str(item.get("stage") or "post_execution_perception_materialization"),
+                        logical_path=logical_path,
+                        rows_rendered=self._int_or_none(item.get("projected_entity_count")),
+                        rows_expected=selection_result.selected_rows,
+                        cells_rendered=self._int_or_none(item.get("evidence_record_count") or item.get("attribute_observation_count")),
+                        extra_metadata=dict(item or {}),
+                    ),
+                )
+            except EvidenceCheckpointResolutionError as exc:
+                raise GovernedPhase1Block(
+                    exc.reason_code,
+                    "Post-compile evidence checkpoint could not be resolved for perception materialization.",
+                    details={
+                        "phase": "artifact_render",
+                        "component": "post_execution_perception_materialization",
+                        "frontier": "POST_COMPILE_EVIDENCE_CHECKPOINT_RESOLUTION",
+                        "stage": "post_execution_perception_materialization",
+                        "logical_path": logical_path,
+                        "post_compile_observation_execution": execution_stage.telemetry,
+                    },
+                ) from exc
         perception_payload = perception_result.model_dump(mode="json")
         perception_payload["post_compile_observation_execution"] = dict(execution_stage.telemetry)
         if execution_stage.blocked_reason_code:
@@ -3842,6 +3866,43 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 "semantic_type": record.get("semantic_type"),
             }
             rows.setdefault(entity_id, {}).setdefault(canonical_key, []).append(item)
+        attribute_observations = perception_payload.get("attribute_observations")
+        if not isinstance(attribute_observations, list):
+            attribute_observations = []
+        for observation in attribute_observations:
+            if not isinstance(observation, dict):
+                continue
+            if observation.get("observation_state") != "observed":
+                continue
+            entity_id = str(observation.get("entity_id") or "")
+            canonical_key = str(observation.get("canonical_key") or observation.get("attribute_name") or "")
+            if not entity_id or entity_id not in selected_ids or not canonical_key:
+                continue
+            normalized_value = observation.get("observed_value")
+            if normalized_value in (None, ""):
+                continue
+            evidence_refs = [str(ref) for ref in observation.get("evidence_refs") or [] if ref]
+            if not evidence_refs:
+                continue
+            existing_refs = {
+                ref
+                for item in rows.get(entity_id, {}).get(canonical_key, [])
+                for ref in item.get("evidence_refs", [])
+            }
+            if existing_refs.intersection(evidence_refs):
+                continue
+            provenance = observation.get("provenance") if isinstance(observation.get("provenance"), dict) else {}
+            rows.setdefault(entity_id, {}).setdefault(canonical_key, []).append(
+                {
+                    "value": normalized_value,
+                    "evidence_refs": evidence_refs,
+                    "provenance_refs": [str(ref) for ref in [provenance.get("raw_result_id"), provenance.get("raw_ref")] if ref],
+                    "observer_id": observation.get("observer_id"),
+                    "capability_id": observation.get("capability_id"),
+                    "backend_id": provenance.get("backend_id"),
+                    "semantic_type": provenance.get("semantic_type"),
+                }
+            )
         return rows
 
     def _row_validation_bindings(
@@ -6319,6 +6380,26 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "render_order_digest",
             "cardinality_domain",
             "progress_semantics",
+            "evidence_records_produced",
+            "evidence_records_accepted",
+            "evidence_records_rejected",
+            "evidence_bytes_produced",
+            "evidence_bytes_checkpointed",
+            "inline_materialized_bytes",
+            "checkpoint_count",
+            "checkpoint_bytes",
+            "checkpoint_write_failures",
+            "physical_probe_count",
+            "files_planned",
+            "files_attempted",
+            "files_succeeded",
+            "files_failed",
+            "results_physically_succeeded",
+            "results_physically_failed",
+            "results_accepted",
+            "results_rejected_by_policy",
+            "blocked_reason_code",
+            "execution_status",
         }
         bounded: dict[str, Any] = {}
         for key in allowed:
@@ -6331,6 +6412,31 @@ class ReadonlyAnalysisArtifactRuntimeService:
         payload_metrics = metadata.get("payload_metrics")
         if isinstance(payload_metrics, dict):
             bounded["payload_metrics"] = self._bounded_perception_payload_metrics(payload_metrics)
+        for key in (
+            "media_metadata_capability",
+            "attempted_backends",
+            "successful_backends",
+            "fallback_backends_used",
+            "backend_error_counts",
+            "evidence_counts_by_canonical_key",
+            "evidence_counts_by_backend",
+            "semantic_identity_evidence_counts",
+            "physical_backend_attempts",
+            "physical_backend_successes",
+            "physical_backend_failures",
+        ):
+            value = metadata.get(key)
+            if isinstance(value, dict):
+                bounded[key] = self._bounded_runtime_counts(value)
+        return bounded
+
+    def _bounded_runtime_counts(self, value: dict[str, Any]) -> dict[str, Any]:
+        bounded: dict[str, Any] = {}
+        for key, item in value.items():
+            if isinstance(item, (str, int, float, bool)) or item is None:
+                bounded[str(key)] = item
+            elif isinstance(item, dict):
+                bounded[str(key)] = self._bounded_runtime_counts(item)
         return bounded
 
     def _bounded_perception_payload_metrics(self, metrics: Any) -> dict[str, Any]:
