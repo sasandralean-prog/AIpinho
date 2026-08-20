@@ -1,0 +1,1238 @@
+{
+  "mission": "H1C0.R3.01.B — Mutagen-Present / ffprobe-Absent Public Observation",
+  "captured_at": "2026-08-20T09:48:36.207316+00:00",
+  "verdict": "FIRETEST5_R3_01_B_BLOCKED_WITH_FRONTIER_PROVEN",
+  "public_firetest_executed": true,
+  "root_cause_status": "PROVEN",
+  "root_cause": "POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED",
+  "first_causal_boundary": "governed_post_compile_observation_execution_total_budget",
+  "repository": {
+    "branch": "agent/codex/r3-01-firetest-b-mutagen",
+    "head": "84d091dfbcead6d101c0b0aedf1c68fc0ea49092",
+    "origin_main": "84d091dfbcead6d101c0b0aedf1c68fc0ea49092",
+    "status_short_branch": "## agent/codex/r3-01-firetest-b-mutagen\n M config/skills/registry/skills_index.json\n?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b_issue_register.json\n?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b_mutagen_diagnostic.json\n?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b_mutagen_summary.md"
+  },
+  "preflight": {
+    "captured_at": "2026-08-20T09:36:06.726138+00:00",
+    "repository": {
+      "branch": [
+        "agent/codex/r3-01-firetest-b-mutagen"
+      ],
+      "head": "84d091dfbcead6d101c0b0aedf1c68fc0ea49092",
+      "origin_main": "84d091dfbcead6d101c0b0aedf1c68fc0ea49092",
+      "status_short": [
+        "## agent/codex/r3-01-firetest-b-mutagen",
+        " M config/skills/registry/skills_index.json"
+      ]
+    },
+    "python": {
+      "returncode": 0,
+      "stdout": [
+        "C:\\Program Files\\Python311\\python.exe",
+        "3.11.6",
+        "True",
+        "C:\\Users\\rafae\\AppData\\Roaming\\Python\\Python311\\site-packages"
+      ],
+      "stderr": []
+    },
+    "mutagen": {
+      "returncode": 0,
+      "stdout": [
+        "True",
+        "1.48.1",
+        "C:\\Users\\rafae\\AppData\\Roaming\\Python\\Python311\\site-packages\\mutagen\\__init__.py"
+      ],
+      "stderr": []
+    },
+    "ffprobe_where": {
+      "returncode": 1,
+      "stdout": [],
+      "stderr": [
+        "INFORMAÃ‡Ã•ES: nÃ£o foi possÃ­vel localizar arquivos para o(s) padrÃ£o(Ãµes) especificado(s)."
+      ]
+    },
+    "native_descriptor": {
+      "returncode": 0,
+      "stdout": [
+        "{\"backend_id\": \"native_minimal\", \"backend_type\": \"native_minimal\", \"confidence_profile\": {\"bitrate\": 0.6, \"codec\": 0.7, \"container\": 0.8, \"duration\": 0.65}, \"dependency_name\": null, \"dependency_version\": null, \"limitations\": [\"Minimal header/box probe only.\", \"Does not decode audio.\", \"Does not implement full MP4 atom, ID3, artwork, or editorial metadata parsing.\"], \"requires_external_binary\": false, \"requires_python_dependency\": false, \"status\": \"available\", \"supported_attributes\": [\"container\", \"codec\", \"bitrate\", \"sample_rate\", \"channels\", \"duration\"], \"supported_containers\": [\"mp3\", \"mp4\", \"m4a\"], \"supported_extensions\": [\"mp3\", \"mp4\", \"m4a\"], \"version\": \"1\"}"
+      ],
+      "stderr": []
+    },
+    "backend_status_before": {
+      "ok": true,
+      "status_code": 200,
+      "elapsed_ms": 8,
+      "body": {
+        "status": "ok",
+        "service": "AIpinho",
+        "version": "0.1.0",
+        "runtime": "local"
+      }
+    },
+    "queue_hygiene_before": {
+      "ok": true,
+      "status_code": 200,
+      "elapsed_ms": 4,
+      "body": {
+        "status": "ok",
+        "active_runs": 0,
+        "queued_runs": 0,
+        "stale_runs": 0,
+        "pending_approvals": 0,
+        "active_sessions": 0,
+        "dispatcher_status": "available",
+        "worker_pool_capacity": 8,
+        "worker_pool_available_slots": 8,
+        "stale_run_ids": [],
+        "backpressure_required": false,
+        "reason_code": null
+      }
+    },
+    "queue_runtime_before": {
+      "ok": true,
+      "status_code": 200,
+      "elapsed_ms": 13,
+      "body": {
+        "status": "ok",
+        "cancelled_run_ids": [],
+        "cancelled_approval_ids": [],
+        "warnings": [],
+        "snapshot": {
+          "status": "ok",
+          "enabled": true,
+          "max_pending_tasks": 25,
+          "max_wait_seconds": 86400,
+          "active_count": 0,
+          "pending_count": 0,
+          "requires_decision_count": 0,
+          "total_visible": 0,
+          "items": [],
+          "last_reconciled_at": "2026-08-20T09:36:07.568621+00:00",
+          "warnings": []
+        }
+      }
+    },
+    "workspace": {
+      "path": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+      "exists": true
+    },
+    "corpus": {
+      "path": "D:\\rafa\\pinho music",
+      "exists": true
+    }
+  },
+  "canonical_entrypoint": {
+    "base_url": "http://127.0.0.1:9088",
+    "method": "POST",
+    "path": "/api/v1/chat",
+    "active_workspace": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+    "corpus_root_in_prompt": "D:\\rafa\\pinho music"
+  },
+  "phase1_client": {
+    "client_response_status_code": 200,
+    "client_response_time_ms": 6294,
+    "client_response_status": "accepted_running",
+    "task_run_id": "task_run_a592f87c275440cc89027a70d04dd1e4",
+    "operation_id": "op_28b14a8fcaa249cd849c40f80ebaadd1",
+    "response_body_bounded": {
+      "response_id": "chat_accepted_running_13835d94db2c45928eadbfe840bf02db",
+      "session_id": null,
+      "task_draft_id": null,
+      "preview_id": null,
+      "task_id": "task_e66ddf6abad549f8b679dc8b974e8cde",
+      "task_run_id": "task_run_a592f87c275440cc89027a70d04dd1e4",
+      "approval_id": null,
+      "task_preview_id": null,
+      "artifact_id": null,
+      "artifact_preview_id": null,
+      "artifact_links": [],
+      "result_ref_id": "task_run_a592f87c275440cc89027a70d04dd1e4",
+      "operation_id": "op_28b14a8fcaa249cd849c40f80ebaadd1",
+      "operation_type": "workspace_analysis_readonly",
+      "message_type": "task_status_update",
+      "status": "accepted_running",
+      "message": "PUBLIC_RUNTIME_ACCEPTED_RUNNING\ntask_run_id=task_run_a592f87c275440cc89027a70d04dd1e4\nworkspace=C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop\nsafe_to_report_success=false\nRun accepted and still executing under governed runtime.",
+      "intent": {
+        "intent_type": "workspace_analysis_readonly",
+        "requires_task": true,
+        "readonly": true,
+        "artifact_generation": true
+      },
+      "policy": {
+        "read_only": true,
+        "workspace_mutation": false,
+        "artifact_generation": true,
+        "public_response_boundary": {
+          "status": "accepted_running",
+          "client_response_budget_ms": 2500,
+          "continuation_available": true,
+          "polling_available": true,
+          "result_finalized": false,
+          "reason_codes": [
+            "RUN_ACCEPTED_ASYNC"
+          ],
+          "safe_to_report_success": false
+        },
+        "canonical_lifecycle": {
+          "lifecycle_id": "life_356e8a50e4be417184edefe212164571",
+          "state": "plan_only_preview",
+          "reason_code": "readonly_or_planning",
+          "permission": "allowed",
+          "approval_gate_status": "not_required",
+          "completion_status": "completed",
+          "safe_to_report_success": true,
+          "speaker_can_claim_success": false
+        }
+      },
+      "contract_preview": {
+        "task_run_id": "task_run_a592f87c275440cc89027a70d04dd1e4",
+        "run_status": "created",
+        "safe_to_report_success": false,
+        "accepted_at": "2026-08-20T09:36:13.855550+00:00",
+        "polling": {
+          "summary_url": "/api/v1/task_runs/task_run_a592f87c275440cc89027a70d04dd1e4/summary",
+          "truth_url": "/api/v1/task_runs/task_run_a592f87c275440cc89027a70d04dd1e4/truth",
+          "events_url": "/api/v1/task_runs/task_run_a592f87c275440cc89027a70d04dd1e4/events",
+          "artifacts_url": "/api/v1/task_runs/task_run_a592f87c275440cc89027a70d04dd1e4/artifacts",
+          "result_url": "/api/v1/task-runs/task_run_a592f87c275440cc89027a70d04dd1e4/result"
+        },
+        "current_phase": "phase_1",
+        "known_frontier": null
+      },
+      "actions": [],
+      "next_actions": [],
+      "warnings": [
+        "accepted_running_is_not_success",
+        "canonical_lifecycle:readonly_or_planning"
+      ],
+      "trace": [],
+      "raw_debug_ref": null,
+      "model_used": "readonly_analysis_artifact_runtime",
+      "real_inference": false,
+      "model_warnings": [],
+      "evaluation_status": null,
+      "evaluation_warnings": [],
+      "fallback_used": false,
+      "context_plan_id": null,
+      "citation_map": {},
+      "evidence_refs": [],
+      "requires_user_action": false,
+      "is_final_answer": false,
+      "grounded": true,
+      "grounding_required": false,
+      "grounding_missing_reason": null,
+      "policy_block": null,
+      "governance_lifecycle": {
+        "lifecycle_id": "life_356e8a50e4be417184edefe212164571",
+        "state": "plan_only_preview",
+        "reason_code": "readonly_or_planning",
+        "intent": {
+          "intent_type": "workspace_analysis_readonly",
+          "operation_type": "workspace_analysis_readonly",
+          "requires_task": true,
+          "side_effect_requested": false,
+          "readonly": true,
+          "source_channel": "api_chat",
+          "negative_constraints": {
+            "write_forbidden": true,
+            "approval_forbidden": true
+          },
+          "confidence": 1.0,
+          "evidence": [
+            "readonly_analysis_with_artifact_output",
+            "positive:knowledge_only",
+            "negative:workspace_mutation",
+            "negative:knowledge_only",
+            "readonly_contract",
+            "artifact_output",
+            "observational_intent"
+          ],
+          "semantic_intent_graph": {
+            "observational_intent": true,
+            "planning_intent": false,
+            "mutation_intent": false,
+            "execution_intent": false,
+            "approval_intent": false,
+            "knowledge_output": true,
+            "artifact_output": true,
+            "readonly_contract": true,
+            "state_effect": "knowledge_only",
+            "workspace_effect": "immutable",
+            "filesystem_effect": "prohibited",
+            "runtime_effect": "none",
+            "prohibited_effects": [
+              "knowledge_only",
+              "workspace_mutation"
+            ],
+            "requested_effects": [
+              "knowledge_only"
+            ],
+            "evidence": [
+              "positive:knowledge_only",
+              "negative:workspace_mutation",
+              "negative:knowledge_only",
+              "readonly_contract",
+              "artifact_output",
+              "observational_intent"
+            ]
+          }
+        },
+        "operation_contract": {
+          "operation_id": "op_8b3e802e807b458aaea990bfc8efacaa",
+          "session_id": null,
+          "source_channel": "api_chat",
+          "intent_type": "workspace_analysis_readonly",
+          "operation_type": "workspace_analysis_readonly",
+          "contract_type": "workspace_analysis_readonly",
+          "runtime_profile": "workspace_analysis_readonly",
+          "requested_actions": [],
+          "target_paths": [],
+          "workspace_path": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+          "risk_level": "low",
+          "trace": [
+            {
+              "stage": "canonical_contract",
+              "source": "GovernanceLifecycleService"
+            }
+          ]
+        },
+        "policy": {
+          "permission": "allowed",
+          "allowed_actions": [],
+          "ask_actions": [],
+          "denied_actions": [],
+          "reason_code": "readonly_or_planning",
+          "reason": "Read-only or non-executing operation.",
+          "source": "effective_policy_decision",
+          "requires_approval": false,
+          "trace": []
+        },
+        "context_gate": {
+          "status": "not_required",
+          "can_create_write_approval": true,
+          "reason_code": "none",
+          "source_message_id": null,
+          "context_ref": null,
+          "workspace_snapshot_ref": null,
+          "discovery_ref": null,
+          "analysis_ref": null,
+          "missing_requirements": [],
+          "trace": []
+        },
+        "execution_plan": {
+          "preview_kind": "plan_only_preview",
+          "executable": false,
+          "executable_plan_ref": null,
+          "plan_kind": null,
+          "expected_outputs": [],
+          "target_paths": [],
+          "blocked_reason": "readonly_or_planning",
+          "trace": [
+            {
+              "stage": "canonical_runtime",
+              "mode": "plan_only"
+            }
+          ]
+        },
+        "preview_quality": {
+          "status": "not_required",
+          "can_create_approval": true,
+          "reason_code": "none",
+          "missing_requirements": [],
+          "trace": []
+        },
+        "approval_gate": {
+          "required": false,
+          "can_create_approval": false,
+          "approval_id": null,
+          "preview_id": null,
+          "draft_id": null,
+          "status": "not_required",
+          "reason_code": "none",
+          "trace": []
+        },
+        "validation": {
+          "status": "not_run",
+          "safe_to_continue": false,
+          "missing_outputs": [],
+          "evidence_refs": [],
+          "reason_code": "none"
+        },
+        "completion": {
+          "status": "completed",
+          "safe_to_report_success": true,
+          "expected_outputs": [],
+          "fulfilled_outputs": [],
+          "missing_outputs": [],
+          "reason_code": "none"
+        },
+        "speaker_truth": {
+          "can_claim_success": false,
+          "message_status": "blocked",
+          "required_disclosures": [
+            "readonly_or_planning"
+          ],
+          "forbidden_claims": [
+            "executed",
+            "implemented",
+            "created",
+            "modified",
+            "applied",
+            "validated",
+            "completed"
+          ],
+          "reason_code": "speaker_truth_blocked"
+        },
+        "artifacts": [],
+        "task_run_id": null,
+        "warnings": [],
+        "trace": [
+          {
+            "stage": "intent",
+            "intent_type": "workspace_analysis_readonly",
+            "operation_type": "workspace_analysis_readonly"
+          },
+          {
+            "stage": "policy",
+            "permission": "allowed",
+            "reason_code": "readonly_or_planning"
+          },
+          {
+            "stage": "context_gate",
+            "status": "not_required",
+            "reason_code": "none"
+          },
+          {
+            "stage": "plan",
+            "preview_kind": "plan_only_preview",
+            "executable": false
+          },
+          {
+            "stage": "preview_quality",
+            "status": "not_required",
+            "reason_code": "none"
+          },
+          {
+            "stage": "approval",
+            "status": "not_required"
+          },
+          {
+            "stage": "completion",
+            "status": "completed"
+          }
+        ],
+        "semantic_ingress_doctor": {
+          "report_id": "semantic_ingress_9a491e63b58b475c98fcf09ca80c6c00",
+          "status": "complete",
+          "prompt_normalization": {
+            "normalization_id": "prompt_norm_83af221380b34f30acaf481d29373d4b",
+            "original_text": "FireTest 5 Phase 1 — Discovery Governado.\nTrabalhe em modo read-only. Nao modifique o workspace nem a biblioteca.\nWorkspace do app: C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop.\nCorpus/biblioteca de musicas: D:\\rafa\\pinho music.\nGere artifacts governados:\n- reports/firetest5/phase1_discovery.md\n- reports/firetest5/project_inventory.md\n- reports/firetest5/music_inventory.csv\n- reports/firetest5/evidence_phase1.zip\nO inventario musical deve respeitar o contrato semantico de media corpus inventory; se a evidencia for insuficiente, bloqueie ou marque partial com reason_code explicito. Nao transforme findings CSV em inventario musical.",
+            "normalized_text": "firetest 5 phase 1 — discovery governado. trabalhe em modo read-only. nao modifique o workspace nem a biblioteca. workspace do app: c:\\users\\rafae\\documents\\pinhoabacaximusicasdesktop. corpus/biblioteca de musicas: d:\\rafa\\pinho music. gere artifacts governados: - reports/firetest5/phase1_discovery.md - reports/firetest5/project_inventory.md - reports/firetest5/music_inventory.csv - reports/firetest5/evidence_phase1.zip o inventario musical deve respeitar o contrato semantico de media corpus inventory; se a evidencia for insuficiente, bloqueie ou marque partial com reason_code explicito. nao transforme findings csv em inventario musical.",
+            "encoding_detected": "unicode_text",
+            "encoding_issues": [],
+            "transformations": [
+              "unicode_nfkd",
+              "casefold",
+              "whitespace_collapsed"
+            ],
+            "text_variants": {},
+            "confidence": 1.0
+          },
+          "semantic_propositions": [
+            {
+              "proposition_id": "semantic_prop_8385c97b4d014295b916d3244dd696bf",
+              "proposition_type": "objective",
+              "subject": "operator",
+              "predicate": "submitted_prompt",
+              "object_value": {
+                "prompt_chars": 645
+              },
+              "polarity": "neutral",
+              "confidence": 1.0,
+              "evidence_refs": [
+                "prompt:original_text"
+              ]
+            },
+            {
+              "proposition_id": "semantic_prop_15e9c051534f491b9269ebcf386e5199",
+              "proposition_type": "effect_expected",
+              "subject": "state",
+              "predicate": "requests",
+              "object_value": "knowledge_only",
+              "polarity": "positive",
+              "confidence": 1.0,
+              "evidence_refs": [
+                "semantic_graph:requested_effect:knowledge_only"
+              ]
+            },
+            {
+              "proposition_id": "semantic_prop_a7551dc330f248808c6460384415bad3",
+              "proposition_type": "restriction",
+              "subject": "state",
+              "predicate": "prohibits",
+              "object_value": "knowledge_only",
+              "polarity": "negative",
+              "confidence": 1.0,
+              "evidence_refs": [
+                "semantic_graph:prohibited_effect:knowledge_only"
+              ]
+            },
+            {
+              "proposition_id": "semantic_prop_72dc8b8870a24c32ae59fd1843ecae39",
+              "proposition_type": "restriction",
+              "subject": "state",
+              "predicate": "prohibits",
+              "object_value": "workspace_mutation",
+              "polarity": "negative",
+              "confidence": 1.0,
+              "evidence_refs": [
+                "semantic_graph:prohibited_effect:workspace_mutation"
+              ]
+            },
+            {
+              "proposition_id": "semantic_prop_b281f293d50e4c66bb6bd0780a50f3a4",
+              "proposition_type": "intent_signal",
+              "subject": "semantic_graph",
+              "predicate": "observational_intent",
+              "object_value": true,
+              "polarity": "neutral",
+              "confidence": 1.0,
+              "evidence_refs": [
+                "semantic_graph:observational_intent"
+              ]
+            },
+            {
+              "proposition_id": "semantic_prop_bd0e987365a24ed8a7afb308cd0388d8",
+              "proposition_type": "intent_signal",
+              "subject": "semantic_graph",
+              "predicate": "knowledge_output",
+              "object_value": true,
+              "polarity": "neutral",
+              "confidence": 1.0,
+              "evidence_refs": [
+                "semantic_graph:knowledge_output"
+              ]
+            },
+            {
+              "proposition_id": "semantic_prop_b684b91ed0644e8193ae78ddf830907a",
+              "proposition_type": "intent_signal",
+              "subject": "semantic_graph",
+              "predicate": "artifact_output",
+              "object_value": true,
+              "polarity": "neutral",
+              "confidence": 1.0,
+              "evidence_refs": [
+                "semantic_graph:artifact_output"
+              ]
+            },
+            {
+              "proposition_id": "semantic_prop_c66b560674734036875f3328bb84cd82",
+              "proposition_type": "intent_signal",
+              "subject": "semantic_graph",
+              "predicate": "readonly_contract",
+              "object_value": true,
+              "polarity": "neutral",
+              "confidence": 1.0,
+              "evidence_refs": [
+                "semantic_graph:readonly_contract"
+              ]
+            }
+          ],
+          "state_effects": [
+            {
+              "effect_id": "state_effect_acb7c48aeecc49e5b4403ac5ea7e71b9",
+              "target": "workspace",
+              "effect": "immutable",
+              "confidence": 1.0,
+              "evidence_refs": [
+                "semantic_graph:workspace_effect",
+                "semantic_graph:evidence:positive:knowledge_only",
+                "semantic_graph:evidence:negative:workspace_mutation",
+                "semantic_graph:evidence:negative:knowledge_only",
+                "semantic_graph:evidence:readonly_contract",
+                "semantic_graph:evidence:artifact_output",
+                "semantic_graph:evidence:observational_intent"
+              ],
+              "reason_codes": []
+            },
+            {
+              "effect_id": "state_effect_990adcdf306c47f9922dbffc21eb8f43",
+              "target": "filesystem",
+              "effect": "prohibited",
+              "confidence": 1.0,
+              "evidence_refs": [
+                "semantic_graph:filesystem_effect",
+                "semantic_graph:evidence:positive:knowledge_only",
+                "semantic_graph:evidence:negative:workspace_mutation",
+                "semantic_graph:evidence:negative:knowledge_only",
+                "semantic_graph:evidence:readonly_contract",
+                "semantic_graph:evidence:artifact_output",
+                "semantic_graph:evidence:observational_intent"
+              ],
+              "reason_codes": []
+            },
+            {
+              "effect_id": "state_effect_ec3c38ea268b44ed8374a0ac1f9edbdc",
+              "target": "runtime",
+              "effect": "none",
+              "confidence": 1.0,
+              "evidence_refs": [
+                "semantic_graph:runtime_effect",
+                "semantic_graph:evidence:positive:knowledge_only",
+                "semantic_graph:evidence:negative:workspace_mutation",
+                "semantic_graph:evidence:negative:knowledge_only",
+                "semantic_graph:evidence:readonly_contract",
+                "semantic_graph:evidence:artifact_output",
+                "semantic_graph:evidence:observational_intent"
+              ],
+              "reason_codes": []
+            },
+            {
+              "effect_id": "state_effect_3322f97b3e9548e6b7ee0fb1c55e1856",
+              "target": "knowledge",
+              "effect": "read_only",
+              "confidence": 1.0,
+              "evidence_refs": [
+                "semantic_graph:knowledge_output",
+                "semantic_graph:observational_intent"
+              ],
+              "reason_codes": []
+            }
+          ],
+          "intent_decision": {
+            "decision_id": "intent_decision_6fd8e27ffdb6444fab0bb56b6cb60bdb",
+            "selected_intent_id": "workspace_analysis_readonly",
+            "selected_operation_type": "workspace_analysis_readonly",
+            "candidates": [
+              {
+                "intent_id": "workspace_analysis_readonly",
+                "operation_type": "workspace_analysis_readonly",
+                "confidence": 1.0,
+                "supporting_propositions": [
+                  "semantic_prop_8385c97b4d014295b916d3244dd696bf",
+                  "semantic_prop_15e9c051534f491b9269ebcf386e5199",
+                  "semantic_prop_72dc8b8870a24c32ae59fd1843ecae39",
+                  "semantic_prop_c66b560674734036875f3328bb84cd82"
+                ],
+                "rejected_reason": null,
+                "arbitration_score": 1.0
+              },
+              {
+                "intent_id": "product_planning_readonly",
+                "operation_type": "product_planning_readonly",
+                "confidence": 0.3,
+                "supporting_propositions": [],
+                "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                "arbitration_score": 0.3
+              },
+              {
+                "intent_id": "proposal_only",
+                "operation_type": "patch_preview",
+                "confidence": 0.0,
+                "supporting_propositions": [],
+                "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                "arbitration_score": 0.0
+              },
+              {
+                "intent_id": "patch_or_write_request",
+                "operation_type": "patch_request",
+                "confidence": 0.0,
+                "supporting_propositions": [],
+                "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                "arbitration_score": 0.0
+              },
+              {
+                "intent_id": "governed_shell_request",
+                "operation_type": "run_command",
+                "confidence": 0.0,
+                "supporting_propositions": [],
+                "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                "arbitration_score": 0.0
+              },
+              {
+                "intent_id": "approval_command",
+                "operation_type": "approval_command",
+                "confidence": 0.3,
+                "supporting_propositions": [],
+                "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                "arbitration_score": 0.3
+              },
+              {
+                "intent_id": "conversation",
+                "operation_type": "conversation",
+                "confidence": 0.3,
+                "supporting_propositions": [],
+                "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                "arbitration_score": 0.3
+              }
+            ],
+            "criteria": [
+              "selected_by_existing_canonical_intent_router",
+              "state_effect_observed_not_overridden",
+              "readonly_constraints_preserved_when_selected"
+            ],
+            "evidence_refs": [
+              "readonly_analysis_with_artifact_output",
+              "positive:knowledge_only",
+              "negative:workspace_mutation",
+              "negative:knowledge_only",
+              "readonly_contract",
+              "artifact_output",
+              "observational_intent"
+            ],
+            "confidence": 1.0,
+            "reason_codes": [],
+            "decision_source": "canonical_intent_router"
+          },
+          "operation_contract_decision": {
+            "decision_id": "operation_contract_decision_9fdbdb34f0194923bdc00ea167aa83fc",
+            "selected_contract_type": "workspace_analysis_readonly",
+            "selected_operation_type": "workspace_analysis_readonly",
+            "candidates": [
+              {
+                "contract_type": "analysis_readonly",
+                "operation_type": "workspace_analysis_readonly",
+                "confidence": 1.0,
+                "state_effect_alignment": "aligned",
+                "supporting_intent": "workspace_analysis_readonly",
+                "rejected_reason": null,
+                "evidence_refs": [
+                  "intent_candidate:workspace_analysis_readonly"
+                ]
+              },
+              {
+                "contract_type": "analysis_readonly",
+                "operation_type": "product_planning_readonly",
+                "confidence": 0.3,
+                "state_effect_alignment": "aligned",
+                "supporting_intent": "product_planning_readonly",
+                "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                "evidence_refs": [
+                  "intent_candidate:product_planning_readonly"
+                ]
+              },
+              {
+                "contract_type": "patch_request",
+                "operation_type": "patch_preview",
+                "confidence": 0.0,
+                "state_effect_alignment": "partial",
+                "supporting_intent": "proposal_only",
+                "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                "evidence_refs": [
+                  "intent_candidate:proposal_only"
+                ]
+              },
+              {
+                "contract_type": "patch_request",
+                "operation_type": "patch_request",
+                "confidence": 0.0,
+                "state_effect_alignment": "conflict",
+                "supporting_intent": "patch_or_write_request",
+                "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                "evidence_refs": [
+                  "intent_candidate:patch_or_write_request"
+                ]
+              },
+              {
+                "contract_type": "shell_build_test",
+                "operation_type": "run_command",
+                "confidence": 0.0,
+                "state_effect_alignment": "conflict",
+                "supporting_intent": "governed_shell_request",
+                "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                "evidence_refs": [
+                  "intent_candidate:governed_shell_request"
+                ]
+              },
+              {
+                "contract_type": "approval_command",
+                "operation_type": "approval_command",
+                "confidence": 0.3,
+                "state_effect_alignment": "partial",
+                "supporting_intent": "approval_command",
+                "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                "evidence_refs": [
+                  "intent_candidate:approval_command"
+                ]
+              },
+              {
+                "contract_type": "conversation",
+                "operation_type": "conversation",
+                "confidence": 0.3,
+                "state_effect_alignment": "aligned",
+                "supporting_intent": "conversation",
+                "rejected_reason": "semantic_evidence_or_state_effect_insufficient",
+                "evidence_refs": [
+                  "intent_candidate:conversation"
+                ]
+              }
+            ],
+            "relation_to_intent": "selected_contract_derived_from_existing_intent_decision",
+            "relation_to_state_effects": "aligned",
+            "evidence_refs": [
+              "actual_operation_contract"
+            ],
+            "confidence": 1.0,
+            "reason_codes": [],
+            "decision_source": "governance_lifecycle"
+          },
+          "reason_codes": [],
+          "warnings": [],
+          "trace": [
+            {
+              "stage": "PromptNormalization",
+              "status": "ok"
+            },
+            {
+              "stage": "SemanticPropositionExtraction",
+              "count": 8
+            },
+            {
+              "stage": "StateEffectResolution",
+              "state_effect": "knowledge_only"
+            },
+            {
+              "stage": "IntentArbitration",
+              "selected": "workspace_analysis_readonly"
+            },
+            {
+              "stage": "OperationContractSelection",
+              "selected": "workspace_analysis_readonly"
+            }
+          ]
+        },
+        "pre_task_bootstrap": {
+          "status": "complete",
+          "requires_task": true,
+          "task_id": "task_e66ddf6abad549f8b679dc8b974e8cde",
+          "task_run_id": "task_run_a592f87c275440cc89027a70d04dd1e4",
+          "stages": [
+            {
+              "stage": "ChatIngressReceived",
+              "status": "complete",
+              "reason": "prompt_received",
+              "data": {
+                "source_channel": "api_chat"
+              }
+            },
+            {
+              "stage": "PromptNormalized",
+              "status": "complete",
+              "reason": "prompt_normalized",
+              "data": {}
+            },
+            {
+              "stage": "PreviewStarted",
+              "status": "complete",
+              "reason": "canonical_lifecycle_preview_started",
+              "data": {
+                "mode": "accepted_running"
+              }
+            },
+            {
+              "stage": "IntentResolutionStarted",
+              "status": "complete",
+              "reason": "canonical_intent_resolution_started",
+              "data": {}
+            },
+            {
+              "stage": "IntentResolutionFinished",
+              "status": "complete",
+              "reason": "canonical_intent_resolved",
+              "data": {}
+            },
+            {
+              "stage": "OperationContractSelected",
+              "status": "complete",
+              "reason": "operation_contract_selected",
+              "data": {
+                "operation_type": "workspace_analysis_readonly"
+              }
+            },
+            {
+              "stage": "TaskBootstrapStarted",
+              "status": "complete",
+              "reason": "task_bootstrap_required",
+              "data": {}
+            },
+            {
+              "stage": "TaskBootstrapFinished",
+              "status": "complete",
+              "reason": "task_bootstrap_finished",
+              "data": {
+                "task_id": "task_e66ddf6abad549f8b679dc8b974e8cde"
+              }
+            },
+            {
+              "stage": "TaskCreated",
+              "status": "complete",
+              "reason": "task_created",
+              "data": {
+                "task_id": "task_e66ddf6abad549f8b679dc8b974e8cde"
+              }
+            },
+            {
+              "stage": "TaskRunCreated",
+              "status": "complete",
+              "reason": "task_run_created",
+              "data": {
+                "task_run_id": "task_run_a592f87c275440cc89027a70d04dd1e4"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "corpus_selection": {
+    "candidate_entity_count": 2286,
+    "selected_entity_count": 2272,
+    "selected_root_roles": {
+      "library_root": 2272
+    },
+    "all_root_roles": {
+      "library_root": 2272,
+      "null": 14
+    },
+    "selected_entity_roles": {
+      "corpus_file": 2272
+    },
+    "project_like_selected_count": 0,
+    "payload_ref_used_for_aggregate_counts_only": "data\\runtime\\task_runs\\task_run_a592f87c275440cc89027a70d04dd1e4\\payload_refs\\08731fb036db8d428881fc6acb06fc2400d8814404e4aecbb198f56b8df04c6b.json",
+    "payload_ref_entity_count": 2286
+  },
+  "phase1": {
+    "task_run_id": "task_run_a592f87c275440cc89027a70d04dd1e4",
+    "operation_id": "op_28b14a8fcaa249cd849c40f80ebaadd1",
+    "result_endpoint_status_code": 200,
+    "result_json_exists": true,
+    "result_status": "blocked",
+    "result_reason_code": "POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED",
+    "finished_at": "2026-08-20T09:41:41.103911+00:00",
+    "truth_safe_to_report_success": false,
+    "terminal_event_count": 1,
+    "terminal_events": [
+      {
+        "event_id": "task_run_event_d9a00d1cd6154a0fa4ba9a705e15c8a4",
+        "sequence": 202,
+        "type": "run_blocked",
+        "status": "blocked",
+        "reason_code": "POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED"
+      }
+    ],
+    "terminal_duplicate_rejection_events": [
+      {
+        "event_id": "task_run_event_98759aa6cd544d02a672313ff890673f",
+        "sequence": 209,
+        "metadata": {
+          "terminal_event_id": "task_run_event_d9a00d1cd6154a0fa4ba9a705e15c8a4",
+          "terminal_status": "blocked",
+          "terminal_reason_code": "POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED",
+          "attempted_event_type": "run_blocked",
+          "attempted_status": "blocked",
+          "attempted_reason_code": null,
+          "ignored": true,
+          "reason": "terminal_state_already_set"
+        }
+      }
+    ],
+    "phase_reached": "artifact_render",
+    "component": "governed_observation_execution_stage",
+    "frontier": "POST_COMPILE_OBSERVATION_EXECUTION",
+    "stage": "after_post_compile_observation_execution",
+    "metadata_coverage_reached": false,
+    "inventory_sufficiency_reached": false,
+    "evidence_phase1_reached": false,
+    "artifact_creation_started_count": 3,
+    "artifact_created_count": 2,
+    "artifact_interrupted_count": 1
+  },
+  "post_compile_execution": {
+    "dedup_group_count": 2230,
+    "files_planned": 2230,
+    "grouped_observation_task_count": 15610,
+    "requested_canonical_key_count": 7,
+    "goals_satisfied": 2339,
+    "goals_unsatisfied": 13271,
+    "fanout_claim_count": 2339,
+    "physical_probe_count": 336,
+    "files_attempted": 336,
+    "files_succeeded": 335,
+    "files_failed": 1,
+    "evidence_records_created": 3083,
+    "materialized_observation_bytes": 7335302,
+    "execution_status": "blocked",
+    "blocked_reason_code": "POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED"
+  },
+  "post_compile_execution_derived": {
+    "logical_tasks_per_physical_probe": 46.458,
+    "physical_probe_completion_fraction": 0.150673,
+    "files_remaining_unattempted": 1894,
+    "last_probe_checkpoint_elapsed_ms": 101641.0
+  },
+  "compile_boundary": {
+    "compile_only_preserved_observation_execution_result_count": 0,
+    "after_perception_payload_compile_reached": true,
+    "payload_metrics": {
+      "input_entity_count": 2272,
+      "projected_entity_count": 2230,
+      "relationship_candidate_count": 0,
+      "observation_execution_result_count": 0,
+      "observation_requirement_count": 25,
+      "capability_decision_count": 25,
+      "capability_index_entry_count": 2,
+      "source_index_entry_count": 50,
+      "observation_record_count": 0,
+      "attribute_observation_count": 55750,
+      "missing_observation_count": 15610,
+      "unsupported_observation_count": 28990,
+      "failed_observation_count": 0,
+      "observed_null_count": 0,
+      "materialized_bytes_estimate": 2899000,
+      "evidence_ref_count": 55750,
+      "unique_evidence_ref_count": 2230,
+      "duplicate_evidence_ref_avoided_count": 53520,
+      "evidence_set_count": 1,
+      "evidence_record_referenced_count": 2230,
+      "evidence_record_copied_count": 11150,
+      "provenance_ref_count": 13391,
+      "observations_in": 55750,
+      "relationships_in": 0,
+      "facts_with_evidence_count": 11155,
+      "facts_with_provenance_count": 11175,
+      "observed_fact_count": 11155,
+      "derived_fact_count": 0,
+      "candidate_fact_count": 20,
+      "projected_fact_count": 11175,
+      "truth_eligible_count": 5,
+      "fact_provenance_issue_count": 4,
+      "deduplicated_fact_count": 11175,
+      "fact_projection_elapsed_ms": 63375.0,
+      "payload_item_count": 321484,
+      "estimated_payload_bytes": 17194840,
+      "materialized_payload_bytes": 17194840,
+      "payload_ref_count": 0,
+      "bound_status": "blocked",
+      "reason_code": "PERCEPTION_PAYLOAD_BOUND_EXCEEDED"
+    }
+  },
+  "post_execution_materialization": {
+    "after_post_execution_attribute_observation_materialization": {
+      "elapsed_ms": 44250.0,
+      "attribute_observation_count": 55750,
+      "missing_observation_count": 13271,
+      "unsupported_observation_count": 28836,
+      "failed_observation_count": 0,
+      "observed_null_count": 0,
+      "observation_execution_result_count": 336,
+      "materialized_bytes_estimate": 10035000,
+      "rows_rendered": 2230,
+      "rows_expected": 2272,
+      "cells_rendered": 55750,
+      "projected_entity_count": 2230
+    },
+    "after_post_execution_evidence_set_materialization": {
+      "elapsed_ms": 45937.0,
+      "evidence_set_count": 1,
+      "evidence_record_referenced_count": 2565,
+      "evidence_record_copied_count": 14233,
+      "materialized_bytes_estimate": 3700580,
+      "observation_execution_result_count": 336,
+      "rows_rendered": 2230,
+      "rows_expected": 2272,
+      "cells_rendered": 14233,
+      "projected_entity_count": 2230
+    },
+    "after_post_execution_perception_materialization": {
+      "elapsed_ms": 46359.0,
+      "attribute_observation_count": 55750,
+      "observation_execution_result_count": 336,
+      "rows_rendered": 2230,
+      "rows_expected": 2272,
+      "cells_rendered": 14233,
+      "projected_entity_count": 2230
+    }
+  },
+  "backends": {
+    "preflight": {
+      "python_executable": "C:\\Program Files\\Python311\\python.exe",
+      "python_version": "3.11.6",
+      "python_user_site_enabled": "True",
+      "python_user_site": "C:\\Users\\rafae\\AppData\\Roaming\\Python\\Python311\\site-packages",
+      "mutagen_importable": true,
+      "mutagen_version": "1.48.1",
+      "mutagen_origin": "C:\\Users\\rafae\\AppData\\Roaming\\Python\\Python311\\site-packages\\mutagen\\__init__.py",
+      "ffprobe_available": false,
+      "native_minimal_available": true
+    },
+    "runtime_projection": {
+      "status": "not_configured",
+      "capability_id": "media_metadata_reader",
+      "primary_backend": "mutagen",
+      "selected_backend": null,
+      "available_backends": [],
+      "blocked_backends": [],
+      "globally_blocked_backends": [],
+      "partially_blocked_backends": [],
+      "missing_dependency": [],
+      "attempted_backends": [],
+      "successful_backends": [],
+      "fallback_backends_used": [],
+      "backend_error_counts": {},
+      "evidence_records_created": 0,
+      "attributes_observed": [],
+      "attributes_missing": [],
+      "limitations": []
+    },
+    "runtime_projection_conflicts": [
+      {
+        "field": "summary.media_metadata_capability.status",
+        "summary_value": "not_configured",
+        "authoritative_runtime_evidence": {
+          "physical_probe_count": 336,
+          "evidence_records_created": 3083
+        },
+        "classification": "P2_projection_inconsistency"
+      }
+    ],
+    "attempted_backends": null,
+    "successful_backends": null,
+    "fallback_backends_used": null,
+    "backend_error_counts": null,
+    "backend_specific_projection_available": false
+  },
+  "evidence": {
+    "total_media_evidence_records": 3083,
+    "total_media_metadata_reader_evidence_records": null,
+    "by_key": {
+      "codec": null,
+      "container": null,
+      "bitrate": null,
+      "sample_rate": null,
+      "channels": null,
+      "duration": null,
+      "artwork": null,
+      "metadata": null,
+      "track_title": null,
+      "artist": null,
+      "album": null,
+      "album_artist": null
+    },
+    "by_key_projection_available": false,
+    "projection_limitation": "Run B public endpoints/events projected total evidence_records_created but did not expose bounded per-backend or per-canonical-key EvidenceRecord counts before the total budget block."
+  },
+  "identity": {
+    "stable_entity_identity_ratio": null,
+    "semantic_identity_evidence_ratio": null,
+    "rows_with_semantic_identity_evidence": null,
+    "rows_without_semantic_identity_evidence": null,
+    "rows_with_stable_entity_identity": null,
+    "rows_without_stable_entity_identity": null,
+    "observed_semantic_identity_fields": [],
+    "identity_validation_reached": false,
+    "reason": "Run blocked at POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED before metadata coverage, inventory sufficiency, and final row semantic identity validation could complete."
+  },
+  "claim_level_sample": {
+    "available": false,
+    "reason": "Run blocked before final row rendering/row semantic validation; public projection does not expose bounded identity EvidenceRecord samples for accepted partial execution."
+  },
+  "opaque_missing_metadata_sample": {
+    "available": false,
+    "reason": "Run blocked at post-compile observation total budget before completed corpus-level identity/missingness assessment. No filename/path-derived identity was observed in public result."
+  },
+  "endpoint_health": {
+    "summary": 200,
+    "events": 200,
+    "result": 200,
+    "truth": 200,
+    "artifacts": 200,
+    "session": 200,
+    "queue_runtime_status": "ok",
+    "queue_hygiene_status": "ok",
+    "queue_active_count": 0,
+    "queue_pending_count": 0
+  },
+  "phase2_to_6": {
+    "phase_2": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false
+    },
+    "phase_3": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false
+    },
+    "phase_4": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false
+    },
+    "phase_5": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false
+    },
+    "phase_6": {
+      "status": "skipped_due_to_prior_block",
+      "api_called": false
+    }
+  },
+  "issues": [
+    {
+      "issue_id": "R3_01_B_P1_POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED",
+      "priority": "P1",
+      "status": "PROVEN",
+      "title": "Post-compile governed observation execution exceeds total budget on real corpus with Mutagen present",
+      "supporting_evidence": {
+        "reason_code": "POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED",
+        "component": "governed_observation_execution_stage",
+        "frontier": "POST_COMPILE_OBSERVATION_EXECUTION",
+        "stage": "after_post_compile_observation_execution",
+        "post_compile_observation_execution": {
+          "dedup_group_count": 2230,
+          "files_planned": 2230,
+          "grouped_observation_task_count": 15610,
+          "requested_canonical_key_count": 7,
+          "goals_satisfied": 2339,
+          "goals_unsatisfied": 13271,
+          "fanout_claim_count": 2339,
+          "physical_probe_count": 336,
+          "files_attempted": 336,
+          "files_succeeded": 335,
+          "files_failed": 1,
+          "evidence_records_created": 3083,
+          "materialized_observation_bytes": 7335302,
+          "execution_status": "blocked",
+          "blocked_reason_code": "POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED"
+        }
+      },
+      "disconfirming_evidence": "None observed; terminal result and run_blocked event agree.",
+      "relationship_to_frontier": "first causal boundary"
+    },
+    {
+      "issue_id": "R3_01_B_P2_BACKEND_AND_KEY_TELEMETRY_PROJECTION_GAP",
+      "priority": "P2",
+      "status": "PROVEN",
+      "title": "Public projection lacks backend-specific and canonical-key evidence counts for partial post-compile execution",
+      "supporting_evidence": {
+        "evidence_records_created": 3083,
+        "backend_specific_projection_available": false,
+        "by_key_projection_available": false,
+        "summary_projection_conflicts": [
+          {
+            "field": "summary.media_metadata_capability.status",
+            "summary_value": "not_configured",
+            "authoritative_runtime_evidence": {
+              "physical_probe_count": 336,
+              "evidence_records_created": 3083
+            },
+            "classification": "P2_projection_inconsistency"
+          }
+        ]
+      },
+      "relationship_to_frontier": "observability gap; does not supersede P1 budget frontier"
+    }
+  ],
+  "deviations_from_mission_order": [
+    "Initial event collection used an invalid/overlarge events query and was corrected by re-querying the same task_run_id; no second FireTest run was executed.",
+    "Backend-specific and per-key EvidenceRecord counts were not available from public bounded projections for the budget-blocked run.",
+    "config/skills/registry/skills_index.json acquired a local timestamp-only modification during runtime use; it is excluded from this diagnostic commit."
+  ]
+}

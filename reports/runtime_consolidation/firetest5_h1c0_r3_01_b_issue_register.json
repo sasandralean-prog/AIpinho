@@ -1,0 +1,61 @@
+{
+  "mission": "H1C0.R3.01.B — Mutagen-Present / ffprobe-Absent Public Observation",
+  "task_run_id": "task_run_a592f87c275440cc89027a70d04dd1e4",
+  "verdict": "FIRETEST5_R3_01_B_BLOCKED_WITH_FRONTIER_PROVEN",
+  "issues": [
+    {
+      "issue_id": "R3_01_B_P1_POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED",
+      "priority": "P1",
+      "status": "PROVEN",
+      "title": "Post-compile governed observation execution exceeds total budget on real corpus with Mutagen present",
+      "supporting_evidence": {
+        "reason_code": "POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED",
+        "component": "governed_observation_execution_stage",
+        "frontier": "POST_COMPILE_OBSERVATION_EXECUTION",
+        "stage": "after_post_compile_observation_execution",
+        "post_compile_observation_execution": {
+          "dedup_group_count": 2230,
+          "files_planned": 2230,
+          "grouped_observation_task_count": 15610,
+          "requested_canonical_key_count": 7,
+          "goals_satisfied": 2339,
+          "goals_unsatisfied": 13271,
+          "fanout_claim_count": 2339,
+          "physical_probe_count": 336,
+          "files_attempted": 336,
+          "files_succeeded": 335,
+          "files_failed": 1,
+          "evidence_records_created": 3083,
+          "materialized_observation_bytes": 7335302,
+          "execution_status": "blocked",
+          "blocked_reason_code": "POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED"
+        }
+      },
+      "disconfirming_evidence": "None observed; terminal result and run_blocked event agree.",
+      "relationship_to_frontier": "first causal boundary"
+    },
+    {
+      "issue_id": "R3_01_B_P2_BACKEND_AND_KEY_TELEMETRY_PROJECTION_GAP",
+      "priority": "P2",
+      "status": "PROVEN",
+      "title": "Public projection lacks backend-specific and canonical-key evidence counts for partial post-compile execution",
+      "supporting_evidence": {
+        "evidence_records_created": 3083,
+        "backend_specific_projection_available": false,
+        "by_key_projection_available": false,
+        "summary_projection_conflicts": [
+          {
+            "field": "summary.media_metadata_capability.status",
+            "summary_value": "not_configured",
+            "authoritative_runtime_evidence": {
+              "physical_probe_count": 336,
+              "evidence_records_created": 3083
+            },
+            "classification": "P2_projection_inconsistency"
+          }
+        ]
+      },
+      "relationship_to_frontier": "observability gap; does not supersede P1 budget frontier"
+    }
+  ]
+}
