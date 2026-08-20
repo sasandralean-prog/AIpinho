@@ -1,0 +1,1764 @@
+{
+  "report_id": "firetest5_h1c0_r3_01_b2_1_materialization_diagnostic",
+  "generated_at": "2026-08-20T12:20:44.850716+00:00",
+  "mission_mode": "forensic_diagnostic",
+  "execution_class": "diagnostic_only",
+  "repository": {
+    "base_branch": "main",
+    "required_base_sha": "f3fec1c74a83a5b0bae08152756c98ae55d64f67",
+    "diagnostic_branch": "agent/codex/r3-01-b2-1-materialization-diagnostic"
+  },
+  "evidence_source": {
+    "task_run_id": "task_run_a757d3160e6d4b3d92c3410936abc0d1",
+    "operation_id": "op_8e751117b72d40529b050dc3e0f5e2fb",
+    "report_commit": "993189f9d991cdba5f38fd13d3ea5ecd3305ec28",
+    "status": "blocked",
+    "reason_code": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED",
+    "terminal_event_count": 1,
+    "speaker_truth_safe_to_report_success": false,
+    "physical_groups_planned": 2230,
+    "physical_probe_count": 455,
+    "accepted_successful_results": 451,
+    "files_failed": 4,
+    "evidence_records_accepted": 3371,
+    "materialized_observation_bytes": 7994062,
+    "max_materialized_observation_bytes": 8000000,
+    "evidence_counts_by_canonical_key": {
+      "codec": 449,
+      "duration": 451,
+      "bitrate": 451,
+      "sample_rate": 451,
+      "channels": 451,
+      "container": 0,
+      "metadata": 451,
+      "artwork": 451,
+      "track_title": 108,
+      "artist": 108,
+      "album": 0,
+      "album_artist": 0
+    },
+    "attempted_backends": {
+      "mutagen": 454
+    },
+    "successful_backends": {
+      "mutagen": 451
+    },
+    "fallback_backends_used": {},
+    "backend_error_counts": {
+      "FFPROBE_NOT_AVAILABLE": 346,
+      "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 3
+    }
+  },
+  "sample_measurement": {
+    "sample": {
+      "media_entities_total_in_payload": 926,
+      "files_attempted": 120,
+      "files_sampled_successful": 120,
+      "records_sampled": 902,
+      "errors": {},
+      "attempted_backends": {
+        "mutagen": 120
+      },
+      "successful_backends": {
+        "mutagen": 120
+      },
+      "backend_error_counts": {
+        "FFPROBE_NOT_AVAILABLE": 89
+      },
+      "entity_ref_shape": "runtime _execution_entity_ref compact projection",
+      "sample_scope": "first 120 corpus media entities from B2 entity payload, service-equivalent MediaMetadataCapability with real Mutagen and B2 demand"
+    },
+    "byte_stats_by_key": {
+      "artist": {
+        "record_count": 31,
+        "total_serialized_bytes": 56338,
+        "average_bytes_per_record": 1817.35,
+        "median_bytes_per_record": 1804,
+        "p95_bytes_per_record": 1882,
+        "maximum_bytes_per_record": 1936
+      },
+      "artwork": {
+        "record_count": 120,
+        "total_serialized_bytes": 192375,
+        "average_bytes_per_record": 1603.12,
+        "median_bytes_per_record": 1596.0,
+        "p95_bytes_per_record": 1689,
+        "maximum_bytes_per_record": 1821
+      },
+      "bitrate": {
+        "record_count": 120,
+        "total_serialized_bytes": 191651,
+        "average_bytes_per_record": 1597.09,
+        "median_bytes_per_record": 1588.5,
+        "p95_bytes_per_record": 1684,
+        "maximum_bytes_per_record": 1816
+      },
+      "channels": {
+        "record_count": 120,
+        "total_serialized_bytes": 191616,
+        "average_bytes_per_record": 1596.8,
+        "median_bytes_per_record": 1585.0,
+        "p95_bytes_per_record": 1685,
+        "maximum_bytes_per_record": 1817
+      },
+      "codec": {
+        "record_count": 120,
+        "total_serialized_bytes": 192096,
+        "average_bytes_per_record": 1600.8,
+        "median_bytes_per_record": 1589.0,
+        "p95_bytes_per_record": 1689,
+        "maximum_bytes_per_record": 1821
+      },
+      "duration": {
+        "record_count": 120,
+        "total_serialized_bytes": 192685,
+        "average_bytes_per_record": 1605.71,
+        "median_bytes_per_record": 1594.0,
+        "p95_bytes_per_record": 1694,
+        "maximum_bytes_per_record": 1825
+      },
+      "metadata": {
+        "record_count": 120,
+        "total_serialized_bytes": 199663,
+        "average_bytes_per_record": 1663.86,
+        "median_bytes_per_record": 1656.0,
+        "p95_bytes_per_record": 1778,
+        "maximum_bytes_per_record": 1875
+      },
+      "sample_rate": {
+        "record_count": 120,
+        "total_serialized_bytes": 192936,
+        "average_bytes_per_record": 1607.8,
+        "median_bytes_per_record": 1596.0,
+        "p95_bytes_per_record": 1696,
+        "maximum_bytes_per_record": 1828
+      },
+      "track_title": {
+        "record_count": 31,
+        "total_serialized_bytes": 57193,
+        "average_bytes_per_record": 1844.94,
+        "median_bytes_per_record": 1839,
+        "p95_bytes_per_record": 1959,
+        "maximum_bytes_per_record": 2047
+      }
+    },
+    "component_stats_by_key": {
+      "codec": {
+        "normalized_value": {
+          "record_count": 120,
+          "total_serialized_bytes": 1320,
+          "average_bytes_per_record": 11.0,
+          "median_bytes_per_record": 11.0,
+          "p95_bytes_per_record": 11,
+          "maximum_bytes_per_record": 11
+        },
+        "entity_ref": {
+          "record_count": 120,
+          "total_serialized_bytes": 56268,
+          "average_bytes_per_record": 468.9,
+          "median_bytes_per_record": 463.0,
+          "p95_bytes_per_record": 513,
+          "maximum_bytes_per_record": 579
+        },
+        "raw_ref": {
+          "record_count": 120,
+          "total_serialized_bytes": 6234,
+          "average_bytes_per_record": 51.95,
+          "median_bytes_per_record": 49.0,
+          "p95_bytes_per_record": 74,
+          "maximum_bytes_per_record": 107
+        },
+        "provenance": {
+          "record_count": 120,
+          "total_serialized_bytes": 27354,
+          "average_bytes_per_record": 227.95,
+          "median_bytes_per_record": 225.0,
+          "p95_bytes_per_record": 250,
+          "maximum_bytes_per_record": 283
+        },
+        "limitations": {
+          "record_count": 120,
+          "total_serialized_bytes": 240,
+          "average_bytes_per_record": 2.0,
+          "median_bytes_per_record": 2.0,
+          "p95_bytes_per_record": 2,
+          "maximum_bytes_per_record": 2
+        },
+        "ids_and_timestamp": {
+          "record_count": 120,
+          "total_serialized_bytes": 47640,
+          "average_bytes_per_record": 397.0,
+          "median_bytes_per_record": 397.0,
+          "p95_bytes_per_record": 397,
+          "maximum_bytes_per_record": 397
+        },
+        "other_schema": {
+          "record_count": 120,
+          "total_serialized_bytes": 42960,
+          "average_bytes_per_record": 358.0,
+          "median_bytes_per_record": 358.0,
+          "p95_bytes_per_record": 358,
+          "maximum_bytes_per_record": 358
+        }
+      },
+      "duration": {
+        "normalized_value": {
+          "record_count": 120,
+          "total_serialized_bytes": 1189,
+          "average_bytes_per_record": 9.91,
+          "median_bytes_per_record": 10.0,
+          "p95_bytes_per_record": 10,
+          "maximum_bytes_per_record": 10
+        },
+        "entity_ref": {
+          "record_count": 120,
+          "total_serialized_bytes": 56268,
+          "average_bytes_per_record": 468.9,
+          "median_bytes_per_record": 463.0,
+          "p95_bytes_per_record": 513,
+          "maximum_bytes_per_record": 579
+        },
+        "raw_ref": {
+          "record_count": 120,
+          "total_serialized_bytes": 6234,
+          "average_bytes_per_record": 51.95,
+          "median_bytes_per_record": 49.0,
+          "p95_bytes_per_record": 74,
+          "maximum_bytes_per_record": 107
+        },
+        "provenance": {
+          "record_count": 120,
+          "total_serialized_bytes": 27354,
+          "average_bytes_per_record": 227.95,
+          "median_bytes_per_record": 225.0,
+          "p95_bytes_per_record": 250,
+          "maximum_bytes_per_record": 283
+        },
+        "limitations": {
+          "record_count": 120,
+          "total_serialized_bytes": 240,
+          "average_bytes_per_record": 2.0,
+          "median_bytes_per_record": 2.0,
+          "p95_bytes_per_record": 2,
+          "maximum_bytes_per_record": 2
+        },
+        "ids_and_timestamp": {
+          "record_count": 120,
+          "total_serialized_bytes": 48360,
+          "average_bytes_per_record": 403.0,
+          "median_bytes_per_record": 403.0,
+          "p95_bytes_per_record": 403,
+          "maximum_bytes_per_record": 403
+        },
+        "other_schema": {
+          "record_count": 120,
+          "total_serialized_bytes": 42960,
+          "average_bytes_per_record": 358.0,
+          "median_bytes_per_record": 358.0,
+          "p95_bytes_per_record": 358,
+          "maximum_bytes_per_record": 358
+        }
+      },
+      "bitrate": {
+        "normalized_value": {
+          "record_count": 120,
+          "total_serialized_bytes": 275,
+          "average_bytes_per_record": 2.29,
+          "median_bytes_per_record": 1.0,
+          "p95_bytes_per_record": 6,
+          "maximum_bytes_per_record": 6
+        },
+        "entity_ref": {
+          "record_count": 120,
+          "total_serialized_bytes": 56268,
+          "average_bytes_per_record": 468.9,
+          "median_bytes_per_record": 463.0,
+          "p95_bytes_per_record": 513,
+          "maximum_bytes_per_record": 579
+        },
+        "raw_ref": {
+          "record_count": 120,
+          "total_serialized_bytes": 6234,
+          "average_bytes_per_record": 51.95,
+          "median_bytes_per_record": 49.0,
+          "p95_bytes_per_record": 74,
+          "maximum_bytes_per_record": 107
+        },
+        "provenance": {
+          "record_count": 120,
+          "total_serialized_bytes": 27354,
+          "average_bytes_per_record": 227.95,
+          "median_bytes_per_record": 225.0,
+          "p95_bytes_per_record": 250,
+          "maximum_bytes_per_record": 283
+        },
+        "limitations": {
+          "record_count": 120,
+          "total_serialized_bytes": 240,
+          "average_bytes_per_record": 2.0,
+          "median_bytes_per_record": 2.0,
+          "p95_bytes_per_record": 2,
+          "maximum_bytes_per_record": 2
+        },
+        "ids_and_timestamp": {
+          "record_count": 120,
+          "total_serialized_bytes": 48240,
+          "average_bytes_per_record": 402.0,
+          "median_bytes_per_record": 402.0,
+          "p95_bytes_per_record": 402,
+          "maximum_bytes_per_record": 402
+        },
+        "other_schema": {
+          "record_count": 120,
+          "total_serialized_bytes": 42960,
+          "average_bytes_per_record": 358.0,
+          "median_bytes_per_record": 358.0,
+          "p95_bytes_per_record": 358,
+          "maximum_bytes_per_record": 358
+        }
+      },
+      "sample_rate": {
+        "normalized_value": {
+          "record_count": 120,
+          "total_serialized_bytes": 600,
+          "average_bytes_per_record": 5.0,
+          "median_bytes_per_record": 5.0,
+          "p95_bytes_per_record": 5,
+          "maximum_bytes_per_record": 5
+        },
+        "entity_ref": {
+          "record_count": 120,
+          "total_serialized_bytes": 56268,
+          "average_bytes_per_record": 468.9,
+          "median_bytes_per_record": 463.0,
+          "p95_bytes_per_record": 513,
+          "maximum_bytes_per_record": 579
+        },
+        "raw_ref": {
+          "record_count": 120,
+          "total_serialized_bytes": 6234,
+          "average_bytes_per_record": 51.95,
+          "median_bytes_per_record": 49.0,
+          "p95_bytes_per_record": 74,
+          "maximum_bytes_per_record": 107
+        },
+        "provenance": {
+          "record_count": 120,
+          "total_serialized_bytes": 27354,
+          "average_bytes_per_record": 227.95,
+          "median_bytes_per_record": 225.0,
+          "p95_bytes_per_record": 250,
+          "maximum_bytes_per_record": 283
+        },
+        "limitations": {
+          "record_count": 120,
+          "total_serialized_bytes": 240,
+          "average_bytes_per_record": 2.0,
+          "median_bytes_per_record": 2.0,
+          "p95_bytes_per_record": 2,
+          "maximum_bytes_per_record": 2
+        },
+        "ids_and_timestamp": {
+          "record_count": 120,
+          "total_serialized_bytes": 49200,
+          "average_bytes_per_record": 410.0,
+          "median_bytes_per_record": 410.0,
+          "p95_bytes_per_record": 410,
+          "maximum_bytes_per_record": 410
+        },
+        "other_schema": {
+          "record_count": 120,
+          "total_serialized_bytes": 42960,
+          "average_bytes_per_record": 358.0,
+          "median_bytes_per_record": 358.0,
+          "p95_bytes_per_record": 358,
+          "maximum_bytes_per_record": 358
+        }
+      },
+      "channels": {
+        "normalized_value": {
+          "record_count": 120,
+          "total_serialized_bytes": 120,
+          "average_bytes_per_record": 1.0,
+          "median_bytes_per_record": 1.0,
+          "p95_bytes_per_record": 1,
+          "maximum_bytes_per_record": 1
+        },
+        "entity_ref": {
+          "record_count": 120,
+          "total_serialized_bytes": 56268,
+          "average_bytes_per_record": 468.9,
+          "median_bytes_per_record": 463.0,
+          "p95_bytes_per_record": 513,
+          "maximum_bytes_per_record": 579
+        },
+        "raw_ref": {
+          "record_count": 120,
+          "total_serialized_bytes": 6234,
+          "average_bytes_per_record": 51.95,
+          "median_bytes_per_record": 49.0,
+          "p95_bytes_per_record": 74,
+          "maximum_bytes_per_record": 107
+        },
+        "provenance": {
+          "record_count": 120,
+          "total_serialized_bytes": 27354,
+          "average_bytes_per_record": 227.95,
+          "median_bytes_per_record": 225.0,
+          "p95_bytes_per_record": 250,
+          "maximum_bytes_per_record": 283
+        },
+        "limitations": {
+          "record_count": 120,
+          "total_serialized_bytes": 240,
+          "average_bytes_per_record": 2.0,
+          "median_bytes_per_record": 2.0,
+          "p95_bytes_per_record": 2,
+          "maximum_bytes_per_record": 2
+        },
+        "ids_and_timestamp": {
+          "record_count": 120,
+          "total_serialized_bytes": 48360,
+          "average_bytes_per_record": 403.0,
+          "median_bytes_per_record": 403.0,
+          "p95_bytes_per_record": 403,
+          "maximum_bytes_per_record": 403
+        },
+        "other_schema": {
+          "record_count": 120,
+          "total_serialized_bytes": 42960,
+          "average_bytes_per_record": 358.0,
+          "median_bytes_per_record": 358.0,
+          "p95_bytes_per_record": 358,
+          "maximum_bytes_per_record": 358
+        }
+      },
+      "metadata": {
+        "normalized_value": {
+          "record_count": 120,
+          "total_serialized_bytes": 7807,
+          "average_bytes_per_record": 65.06,
+          "median_bytes_per_record": 56.0,
+          "p95_bytes_per_record": 123,
+          "maximum_bytes_per_record": 144
+        },
+        "entity_ref": {
+          "record_count": 120,
+          "total_serialized_bytes": 56268,
+          "average_bytes_per_record": 468.9,
+          "median_bytes_per_record": 463.0,
+          "p95_bytes_per_record": 513,
+          "maximum_bytes_per_record": 579
+        },
+        "raw_ref": {
+          "record_count": 120,
+          "total_serialized_bytes": 6234,
+          "average_bytes_per_record": 51.95,
+          "median_bytes_per_record": 49.0,
+          "p95_bytes_per_record": 74,
+          "maximum_bytes_per_record": 107
+        },
+        "provenance": {
+          "record_count": 120,
+          "total_serialized_bytes": 27354,
+          "average_bytes_per_record": 227.95,
+          "median_bytes_per_record": 225.0,
+          "p95_bytes_per_record": 250,
+          "maximum_bytes_per_record": 283
+        },
+        "limitations": {
+          "record_count": 120,
+          "total_serialized_bytes": 240,
+          "average_bytes_per_record": 2.0,
+          "median_bytes_per_record": 2.0,
+          "p95_bytes_per_record": 2,
+          "maximum_bytes_per_record": 2
+        },
+        "ids_and_timestamp": {
+          "record_count": 120,
+          "total_serialized_bytes": 48720,
+          "average_bytes_per_record": 406.0,
+          "median_bytes_per_record": 406.0,
+          "p95_bytes_per_record": 406,
+          "maximum_bytes_per_record": 406
+        },
+        "other_schema": {
+          "record_count": 120,
+          "total_serialized_bytes": 42960,
+          "average_bytes_per_record": 358.0,
+          "median_bytes_per_record": 358.0,
+          "p95_bytes_per_record": 358,
+          "maximum_bytes_per_record": 358
+        }
+      },
+      "artwork": {
+        "normalized_value": {
+          "record_count": 120,
+          "total_serialized_bytes": 1359,
+          "average_bytes_per_record": 11.32,
+          "median_bytes_per_record": 9.0,
+          "p95_bytes_per_record": 18,
+          "maximum_bytes_per_record": 18
+        },
+        "entity_ref": {
+          "record_count": 120,
+          "total_serialized_bytes": 56268,
+          "average_bytes_per_record": 468.9,
+          "median_bytes_per_record": 463.0,
+          "p95_bytes_per_record": 513,
+          "maximum_bytes_per_record": 579
+        },
+        "raw_ref": {
+          "record_count": 120,
+          "total_serialized_bytes": 6234,
+          "average_bytes_per_record": 51.95,
+          "median_bytes_per_record": 49.0,
+          "p95_bytes_per_record": 74,
+          "maximum_bytes_per_record": 107
+        },
+        "provenance": {
+          "record_count": 120,
+          "total_serialized_bytes": 27354,
+          "average_bytes_per_record": 227.95,
+          "median_bytes_per_record": 225.0,
+          "p95_bytes_per_record": 250,
+          "maximum_bytes_per_record": 283
+        },
+        "limitations": {
+          "record_count": 120,
+          "total_serialized_bytes": 240,
+          "average_bytes_per_record": 2.0,
+          "median_bytes_per_record": 2.0,
+          "p95_bytes_per_record": 2,
+          "maximum_bytes_per_record": 2
+        },
+        "ids_and_timestamp": {
+          "record_count": 120,
+          "total_serialized_bytes": 47880,
+          "average_bytes_per_record": 399.0,
+          "median_bytes_per_record": 399.0,
+          "p95_bytes_per_record": 399,
+          "maximum_bytes_per_record": 399
+        },
+        "other_schema": {
+          "record_count": 120,
+          "total_serialized_bytes": 42960,
+          "average_bytes_per_record": 358.0,
+          "median_bytes_per_record": 358.0,
+          "p95_bytes_per_record": 358,
+          "maximum_bytes_per_record": 358
+        }
+      },
+      "track_title": {
+        "normalized_value": {
+          "record_count": 31,
+          "total_serialized_bytes": 673,
+          "average_bytes_per_record": 21.71,
+          "median_bytes_per_record": 20,
+          "p95_bytes_per_record": 41,
+          "maximum_bytes_per_record": 56
+        },
+        "entity_ref": {
+          "record_count": 31,
+          "total_serialized_bytes": 14359,
+          "average_bytes_per_record": 463.19,
+          "median_bytes_per_record": 461,
+          "p95_bytes_per_record": 501,
+          "maximum_bytes_per_record": 529
+        },
+        "raw_ref": {
+          "record_count": 31,
+          "total_serialized_bytes": 1522,
+          "average_bytes_per_record": 49.1,
+          "median_bytes_per_record": 48,
+          "p95_bytes_per_record": 68,
+          "maximum_bytes_per_record": 82
+        },
+        "provenance": {
+          "record_count": 31,
+          "total_serialized_bytes": 14289,
+          "average_bytes_per_record": 460.94,
+          "median_bytes_per_record": 459,
+          "p95_bytes_per_record": 499,
+          "maximum_bytes_per_record": 530
+        },
+        "limitations": {
+          "record_count": 31,
+          "total_serialized_bytes": 62,
+          "average_bytes_per_record": 2.0,
+          "median_bytes_per_record": 2,
+          "p95_bytes_per_record": 2,
+          "maximum_bytes_per_record": 2
+        },
+        "ids_and_timestamp": {
+          "record_count": 31,
+          "total_serialized_bytes": 12586,
+          "average_bytes_per_record": 406.0,
+          "median_bytes_per_record": 406,
+          "p95_bytes_per_record": 406,
+          "maximum_bytes_per_record": 406
+        },
+        "other_schema": {
+          "record_count": 31,
+          "total_serialized_bytes": 11098,
+          "average_bytes_per_record": 358.0,
+          "median_bytes_per_record": 358,
+          "p95_bytes_per_record": 358,
+          "maximum_bytes_per_record": 358
+        }
+      },
+      "artist": {
+        "normalized_value": {
+          "record_count": 31,
+          "total_serialized_bytes": 480,
+          "average_bytes_per_record": 15.48,
+          "median_bytes_per_record": 16,
+          "p95_bytes_per_record": 27,
+          "maximum_bytes_per_record": 27
+        },
+        "entity_ref": {
+          "record_count": 31,
+          "total_serialized_bytes": 14359,
+          "average_bytes_per_record": 463.19,
+          "median_bytes_per_record": 461,
+          "p95_bytes_per_record": 501,
+          "maximum_bytes_per_record": 529
+        },
+        "raw_ref": {
+          "record_count": 31,
+          "total_serialized_bytes": 1522,
+          "average_bytes_per_record": 49.1,
+          "median_bytes_per_record": 48,
+          "p95_bytes_per_record": 68,
+          "maximum_bytes_per_record": 82
+        },
+        "provenance": {
+          "record_count": 31,
+          "total_serialized_bytes": 13937,
+          "average_bytes_per_record": 449.58,
+          "median_bytes_per_record": 447,
+          "p95_bytes_per_record": 467,
+          "maximum_bytes_per_record": 476
+        },
+        "limitations": {
+          "record_count": 31,
+          "total_serialized_bytes": 62,
+          "average_bytes_per_record": 2.0,
+          "median_bytes_per_record": 2,
+          "p95_bytes_per_record": 2,
+          "maximum_bytes_per_record": 2
+        },
+        "ids_and_timestamp": {
+          "record_count": 31,
+          "total_serialized_bytes": 12276,
+          "average_bytes_per_record": 396.0,
+          "median_bytes_per_record": 396,
+          "p95_bytes_per_record": 396,
+          "maximum_bytes_per_record": 396
+        },
+        "other_schema": {
+          "record_count": 31,
+          "total_serialized_bytes": 11098,
+          "average_bytes_per_record": 358.0,
+          "median_bytes_per_record": 358,
+          "p95_bytes_per_record": 358,
+          "maximum_bytes_per_record": 358
+        }
+      }
+    },
+    "evidence_set_structural_duplication": {
+      "sample_evidence_sets": 120,
+      "avg_evidence_set_bytes": 16313.1,
+      "avg_records_bytes_sum": 12221.27,
+      "avg_set_overhead_minus_records": 4091.82,
+      "avg_entity_refs_bytes": 3536.65,
+      "avg_attribute_names_bytes": 88.46,
+      "avg_canonical_keys_bytes": 88.46,
+      "avg_coverage_summary_bytes": 94.0,
+      "avg_confidence_summary_bytes": 84.22
+    },
+    "identity_bearing_examples": [
+      {
+        "file": "505.m4a",
+        "keys": [
+          "artist",
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate",
+          "track_title"
+        ],
+        "records": [
+          {
+            "evidence_id": "evidence_f271b08abd55487d81742816898a4ebb",
+            "source": "media_file",
+            "acquisition_method": "media_metadata_parse",
+            "observer_id": "media_metadata_reader",
+            "capability_id": "media_metadata_reader",
+            "backend_id": "mutagen",
+            "entity_ref": {
+              "entity_id": "observed_entity_d86f5ff0eec98280600583b8",
+              "entity_role": "media_asset_candidate",
+              "original_entity_role": "corpus_file",
+              "entity_kind": "file",
+              "source_root_role": "library_root",
+              "source_root": "D:\\rafa\\pinho music",
+              "relative_path": "505.m4a",
+              "path": "D:\\rafa\\pinho music\\505.m4a",
+              "capability_id": "media_metadata_reader",
+              "observation_hypothesis": "media_asset_candidate_for_contract_required_metadata"
+            },
+            "attribute_name": "metadata",
+            "canonical_key": "metadata",
+            "raw_ref": "D:\\rafa\\pinho music\\505.m4a",
+            "normalized_value": {
+              "©nam": [
+                "505"
+              ],
+              "©ART": [
+                "Arctic Monkeys - Topic"
+              ],
+              "©wrt": [
+                "qU9mHegkTc4"
+              ],
+              "©too": [
+                "Lavf59.3.100"
+              ]
+            },
+            "semantic_type": "descriptive_metadata",
+            "confidence": 0.75,
+            "provenance": {
+              "backend_id": "mutagen",
+              "backend_version": "1",
+              "file_ref": "D:\\rafa\\pinho music\\505.m4a",
+              "raw_result_id": "raw_media_metadata_b2674b37e13642f6a016b5cdfa1d60e8",
+              "normalizer": "MediaMetadataNormalizer"
+            },
+            "timestamp": "2026-08-20T12:18:17.042117+00:00",
+            "ambiguity": 0.0,
+            "contradictions": [],
+            "limitations": [],
+            "evidence_type": null,
+            "candidate_id": null,
+            "observation_id": null,
+            "provenance_trace_id": null,
+            "source_entity_ref": {},
+            "target_entity_ref": {},
+            "relation_family": null,
+            "relation_kind_candidate": null,
+            "signals": [],
+            "negative_evidence": [],
+            "conflicts": [],
+            "truth_eligible": false,
+            "validation_required": false
+          },
+          {
+            "evidence_id": "evidence_ab6ab2426a2c4a73af748ffb54b78c0d",
+            "source": "media_file",
+            "acquisition_method": "media_metadata_parse",
+            "observer_id": "media_metadata_reader",
+            "capability_id": "media_metadata_reader",
+            "backend_id": "mutagen",
+            "entity_ref": {
+              "entity_id": "observed_entity_d86f5ff0eec98280600583b8",
+              "entity_role": "media_asset_candidate",
+              "original_entity_role": "corpus_file",
+              "entity_kind": "file",
+              "source_root_role": "library_root",
+              "source_root": "D:\\rafa\\pinho music",
+              "relative_path": "505.m4a",
+              "path": "D:\\rafa\\pinho music\\505.m4a",
+              "capability_id": "media_metadata_reader",
+              "observation_hypothesis": "media_asset_candidate_for_contract_required_metadata"
+            },
+            "attribute_name": "track_title",
+            "canonical_key": "track_title",
+            "raw_ref": "D:\\rafa\\pinho music\\505.m4a",
+            "normalized_value": "505",
+            "semantic_type": "media_identity",
+            "confidence": 0.75,
+            "provenance": {
+              "backend_id": "mutagen",
+              "backend_version": "1",
+              "file_ref": "D:\\rafa\\pinho music\\505.m4a",
+              "raw_result_id": "raw_media_metadata_b2674b37e13642f6a016b5cdfa1d60e8",
+              "normalizer": "MediaMetadataNormalizer",
+              "raw_tag_key": "©nam",
+              "raw_tag_value_repr": "['505']",
+              "raw_tag_value_source_type": "list",
+              "raw_tag_value_set_like": false,
+              "semantic_mapper": "media_metadata_identity_tag_mapper_v1",
+              "canonical_key": "track_title"
+            },
+            "timestamp": "2026-08-20T12:18:17.042117+00:00",
+            "ambiguity": 0.0,
+            "contradictions": [],
+            "limitations": [],
+            "evidence_type": null,
+            "candidate_id": null,
+            "observation_id": null,
+            "provenance_trace_id": null,
+            "source_entity_ref": {},
+            "target_entity_ref": {},
+            "relation_family": null,
+            "relation_kind_candidate": null,
+            "signals": [],
+            "negative_evidence": [],
+            "conflicts": [],
+            "truth_eligible": false,
+            "validation_required": false
+          },
+          {
+            "evidence_id": "evidence_158d84016af2442c8f9932793bce094e",
+            "source": "media_file",
+            "acquisition_method": "media_metadata_parse",
+            "observer_id": "media_metadata_reader",
+            "capability_id": "media_metadata_reader",
+            "backend_id": "mutagen",
+            "entity_ref": {
+              "entity_id": "observed_entity_d86f5ff0eec98280600583b8",
+              "entity_role": "media_asset_candidate",
+              "original_entity_role": "corpus_file",
+              "entity_kind": "file",
+              "source_root_role": "library_root",
+              "source_root": "D:\\rafa\\pinho music",
+              "relative_path": "505.m4a",
+              "path": "D:\\rafa\\pinho music\\505.m4a",
+              "capability_id": "media_metadata_reader",
+              "observation_hypothesis": "media_asset_candidate_for_contract_required_metadata"
+            },
+            "attribute_name": "artist",
+            "canonical_key": "artist",
+            "raw_ref": "D:\\rafa\\pinho music\\505.m4a",
+            "normalized_value": "Arctic Monkeys - Topic",
+            "semantic_type": "media_identity",
+            "confidence": 0.75,
+            "provenance": {
+              "backend_id": "mutagen",
+              "backend_version": "1",
+              "file_ref": "D:\\rafa\\pinho music\\505.m4a",
+              "raw_result_id": "raw_media_metadata_b2674b37e13642f6a016b5cdfa1d60e8",
+              "normalizer": "MediaMetadataNormalizer",
+              "raw_tag_key": "©ART",
+              "raw_tag_value_repr": "['Arctic Monkeys - Topic']",
+              "raw_tag_value_source_type": "list",
+              "raw_tag_value_set_like": false,
+              "semantic_mapper": "media_metadata_identity_tag_mapper_v1",
+              "canonical_key": "artist"
+            },
+            "timestamp": "2026-08-20T12:18:17.042117+00:00",
+            "ambiguity": 0.0,
+            "contradictions": [],
+            "limitations": [],
+            "evidence_type": null,
+            "candidate_id": null,
+            "observation_id": null,
+            "provenance_trace_id": null,
+            "source_entity_ref": {},
+            "target_entity_ref": {},
+            "relation_family": null,
+            "relation_kind_candidate": null,
+            "signals": [],
+            "negative_evidence": [],
+            "conflicts": [],
+            "truth_eligible": false,
+            "validation_required": false
+          }
+        ]
+      },
+      {
+        "file": "A Pearl.m4a",
+        "keys": [
+          "artist",
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate",
+          "track_title"
+        ],
+        "records": [
+          {
+            "evidence_id": "evidence_37a3065afc9a41659c595da008bee468",
+            "source": "media_file",
+            "acquisition_method": "media_metadata_parse",
+            "observer_id": "media_metadata_reader",
+            "capability_id": "media_metadata_reader",
+            "backend_id": "mutagen",
+            "entity_ref": {
+              "entity_id": "observed_entity_bcf9ae49e653769df4b2251c",
+              "entity_role": "media_asset_candidate",
+              "original_entity_role": "corpus_file",
+              "entity_kind": "file",
+              "source_root_role": "library_root",
+              "source_root": "D:\\rafa\\pinho music",
+              "relative_path": "A Pearl.m4a",
+              "path": "D:\\rafa\\pinho music\\A Pearl.m4a",
+              "capability_id": "media_metadata_reader",
+              "observation_hypothesis": "media_asset_candidate_for_contract_required_metadata"
+            },
+            "attribute_name": "metadata",
+            "canonical_key": "metadata",
+            "raw_ref": "D:\\rafa\\pinho music\\A Pearl.m4a",
+            "normalized_value": {
+              "©nam": [
+                "A Pearl"
+              ],
+              "©ART": [
+                "Mitski - Topic"
+              ],
+              "©wrt": [
+                "_lYA3i3QkWM"
+              ],
+              "©too": [
+                "Lavf59.3.100"
+              ]
+            },
+            "semantic_type": "descriptive_metadata",
+            "confidence": 0.75,
+            "provenance": {
+              "backend_id": "mutagen",
+              "backend_version": "1",
+              "file_ref": "D:\\rafa\\pinho music\\A Pearl.m4a",
+              "raw_result_id": "raw_media_metadata_ec102637eb50466f9229012651d94a4f",
+              "normalizer": "MediaMetadataNormalizer"
+            },
+            "timestamp": "2026-08-20T12:18:17.058076+00:00",
+            "ambiguity": 0.0,
+            "contradictions": [],
+            "limitations": [],
+            "evidence_type": null,
+            "candidate_id": null,
+            "observation_id": null,
+            "provenance_trace_id": null,
+            "source_entity_ref": {},
+            "target_entity_ref": {},
+            "relation_family": null,
+            "relation_kind_candidate": null,
+            "signals": [],
+            "negative_evidence": [],
+            "conflicts": [],
+            "truth_eligible": false,
+            "validation_required": false
+          },
+          {
+            "evidence_id": "evidence_a93279a052a746bda062c3295cf6651d",
+            "source": "media_file",
+            "acquisition_method": "media_metadata_parse",
+            "observer_id": "media_metadata_reader",
+            "capability_id": "media_metadata_reader",
+            "backend_id": "mutagen",
+            "entity_ref": {
+              "entity_id": "observed_entity_bcf9ae49e653769df4b2251c",
+              "entity_role": "media_asset_candidate",
+              "original_entity_role": "corpus_file",
+              "entity_kind": "file",
+              "source_root_role": "library_root",
+              "source_root": "D:\\rafa\\pinho music",
+              "relative_path": "A Pearl.m4a",
+              "path": "D:\\rafa\\pinho music\\A Pearl.m4a",
+              "capability_id": "media_metadata_reader",
+              "observation_hypothesis": "media_asset_candidate_for_contract_required_metadata"
+            },
+            "attribute_name": "track_title",
+            "canonical_key": "track_title",
+            "raw_ref": "D:\\rafa\\pinho music\\A Pearl.m4a",
+            "normalized_value": "A Pearl",
+            "semantic_type": "media_identity",
+            "confidence": 0.75,
+            "provenance": {
+              "backend_id": "mutagen",
+              "backend_version": "1",
+              "file_ref": "D:\\rafa\\pinho music\\A Pearl.m4a",
+              "raw_result_id": "raw_media_metadata_ec102637eb50466f9229012651d94a4f",
+              "normalizer": "MediaMetadataNormalizer",
+              "raw_tag_key": "©nam",
+              "raw_tag_value_repr": "['A Pearl']",
+              "raw_tag_value_source_type": "list",
+              "raw_tag_value_set_like": false,
+              "semantic_mapper": "media_metadata_identity_tag_mapper_v1",
+              "canonical_key": "track_title"
+            },
+            "timestamp": "2026-08-20T12:18:17.058076+00:00",
+            "ambiguity": 0.0,
+            "contradictions": [],
+            "limitations": [],
+            "evidence_type": null,
+            "candidate_id": null,
+            "observation_id": null,
+            "provenance_trace_id": null,
+            "source_entity_ref": {},
+            "target_entity_ref": {},
+            "relation_family": null,
+            "relation_kind_candidate": null,
+            "signals": [],
+            "negative_evidence": [],
+            "conflicts": [],
+            "truth_eligible": false,
+            "validation_required": false
+          },
+          {
+            "evidence_id": "evidence_99578ecf33d042d985c8f715e2a0772f",
+            "source": "media_file",
+            "acquisition_method": "media_metadata_parse",
+            "observer_id": "media_metadata_reader",
+            "capability_id": "media_metadata_reader",
+            "backend_id": "mutagen",
+            "entity_ref": {
+              "entity_id": "observed_entity_bcf9ae49e653769df4b2251c",
+              "entity_role": "media_asset_candidate",
+              "original_entity_role": "corpus_file",
+              "entity_kind": "file",
+              "source_root_role": "library_root",
+              "source_root": "D:\\rafa\\pinho music",
+              "relative_path": "A Pearl.m4a",
+              "path": "D:\\rafa\\pinho music\\A Pearl.m4a",
+              "capability_id": "media_metadata_reader",
+              "observation_hypothesis": "media_asset_candidate_for_contract_required_metadata"
+            },
+            "attribute_name": "artist",
+            "canonical_key": "artist",
+            "raw_ref": "D:\\rafa\\pinho music\\A Pearl.m4a",
+            "normalized_value": "Mitski - Topic",
+            "semantic_type": "media_identity",
+            "confidence": 0.75,
+            "provenance": {
+              "backend_id": "mutagen",
+              "backend_version": "1",
+              "file_ref": "D:\\rafa\\pinho music\\A Pearl.m4a",
+              "raw_result_id": "raw_media_metadata_ec102637eb50466f9229012651d94a4f",
+              "normalizer": "MediaMetadataNormalizer",
+              "raw_tag_key": "©ART",
+              "raw_tag_value_repr": "['Mitski - Topic']",
+              "raw_tag_value_source_type": "list",
+              "raw_tag_value_set_like": false,
+              "semantic_mapper": "media_metadata_identity_tag_mapper_v1",
+              "canonical_key": "artist"
+            },
+            "timestamp": "2026-08-20T12:18:17.058076+00:00",
+            "ambiguity": 0.0,
+            "contradictions": [],
+            "limitations": [],
+            "evidence_type": null,
+            "candidate_id": null,
+            "observation_id": null,
+            "provenance_trace_id": null,
+            "source_entity_ref": {},
+            "target_entity_ref": {},
+            "relation_family": null,
+            "relation_kind_candidate": null,
+            "signals": [],
+            "negative_evidence": [],
+            "conflicts": [],
+            "truth_eligible": false,
+            "validation_required": false
+          }
+        ]
+      },
+      {
+        "file": "Afraid.m4a",
+        "keys": [
+          "artist",
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate",
+          "track_title"
+        ],
+        "records": [
+          {
+            "evidence_id": "evidence_0f52c43f830f48d3b8bad446779d4e08",
+            "source": "media_file",
+            "acquisition_method": "media_metadata_parse",
+            "observer_id": "media_metadata_reader",
+            "capability_id": "media_metadata_reader",
+            "backend_id": "mutagen",
+            "entity_ref": {
+              "entity_id": "observed_entity_7bbae23d782ffce6a17ed05f",
+              "entity_role": "media_asset_candidate",
+              "original_entity_role": "corpus_file",
+              "entity_kind": "file",
+              "source_root_role": "library_root",
+              "source_root": "D:\\rafa\\pinho music",
+              "relative_path": "Afraid.m4a",
+              "path": "D:\\rafa\\pinho music\\Afraid.m4a",
+              "capability_id": "media_metadata_reader",
+              "observation_hypothesis": "media_asset_candidate_for_contract_required_metadata"
+            },
+            "attribute_name": "metadata",
+            "canonical_key": "metadata",
+            "raw_ref": "D:\\rafa\\pinho music\\Afraid.m4a",
+            "normalized_value": {
+              "©nam": [
+                "Afraid"
+              ],
+              "©ART": [
+                "The Neighbourhood - Topic"
+              ],
+              "©wrt": [
+                "6o9Cy7Zv7aY"
+              ],
+              "©too": [
+                "Lavf59.3.100"
+              ]
+            },
+            "semantic_type": "descriptive_metadata",
+            "confidence": 0.75,
+            "provenance": {
+              "backend_id": "mutagen",
+              "backend_version": "1",
+              "file_ref": "D:\\rafa\\pinho music\\Afraid.m4a",
+              "raw_result_id": "raw_media_metadata_3f61024d201344eda0348924fe6d8fab",
+              "normalizer": "MediaMetadataNormalizer"
+            },
+            "timestamp": "2026-08-20T12:18:17.074105+00:00",
+            "ambiguity": 0.0,
+            "contradictions": [],
+            "limitations": [],
+            "evidence_type": null,
+            "candidate_id": null,
+            "observation_id": null,
+            "provenance_trace_id": null,
+            "source_entity_ref": {},
+            "target_entity_ref": {},
+            "relation_family": null,
+            "relation_kind_candidate": null,
+            "signals": [],
+            "negative_evidence": [],
+            "conflicts": [],
+            "truth_eligible": false,
+            "validation_required": false
+          },
+          {
+            "evidence_id": "evidence_9776b58ccf6d45278f3856634477207c",
+            "source": "media_file",
+            "acquisition_method": "media_metadata_parse",
+            "observer_id": "media_metadata_reader",
+            "capability_id": "media_metadata_reader",
+            "backend_id": "mutagen",
+            "entity_ref": {
+              "entity_id": "observed_entity_7bbae23d782ffce6a17ed05f",
+              "entity_role": "media_asset_candidate",
+              "original_entity_role": "corpus_file",
+              "entity_kind": "file",
+              "source_root_role": "library_root",
+              "source_root": "D:\\rafa\\pinho music",
+              "relative_path": "Afraid.m4a",
+              "path": "D:\\rafa\\pinho music\\Afraid.m4a",
+              "capability_id": "media_metadata_reader",
+              "observation_hypothesis": "media_asset_candidate_for_contract_required_metadata"
+            },
+            "attribute_name": "track_title",
+            "canonical_key": "track_title",
+            "raw_ref": "D:\\rafa\\pinho music\\Afraid.m4a",
+            "normalized_value": "Afraid",
+            "semantic_type": "media_identity",
+            "confidence": 0.75,
+            "provenance": {
+              "backend_id": "mutagen",
+              "backend_version": "1",
+              "file_ref": "D:\\rafa\\pinho music\\Afraid.m4a",
+              "raw_result_id": "raw_media_metadata_3f61024d201344eda0348924fe6d8fab",
+              "normalizer": "MediaMetadataNormalizer",
+              "raw_tag_key": "©nam",
+              "raw_tag_value_repr": "['Afraid']",
+              "raw_tag_value_source_type": "list",
+              "raw_tag_value_set_like": false,
+              "semantic_mapper": "media_metadata_identity_tag_mapper_v1",
+              "canonical_key": "track_title"
+            },
+            "timestamp": "2026-08-20T12:18:17.074105+00:00",
+            "ambiguity": 0.0,
+            "contradictions": [],
+            "limitations": [],
+            "evidence_type": null,
+            "candidate_id": null,
+            "observation_id": null,
+            "provenance_trace_id": null,
+            "source_entity_ref": {},
+            "target_entity_ref": {},
+            "relation_family": null,
+            "relation_kind_candidate": null,
+            "signals": [],
+            "negative_evidence": [],
+            "conflicts": [],
+            "truth_eligible": false,
+            "validation_required": false
+          },
+          {
+            "evidence_id": "evidence_a17f713836e44f1db471d00d49655e5e",
+            "source": "media_file",
+            "acquisition_method": "media_metadata_parse",
+            "observer_id": "media_metadata_reader",
+            "capability_id": "media_metadata_reader",
+            "backend_id": "mutagen",
+            "entity_ref": {
+              "entity_id": "observed_entity_7bbae23d782ffce6a17ed05f",
+              "entity_role": "media_asset_candidate",
+              "original_entity_role": "corpus_file",
+              "entity_kind": "file",
+              "source_root_role": "library_root",
+              "source_root": "D:\\rafa\\pinho music",
+              "relative_path": "Afraid.m4a",
+              "path": "D:\\rafa\\pinho music\\Afraid.m4a",
+              "capability_id": "media_metadata_reader",
+              "observation_hypothesis": "media_asset_candidate_for_contract_required_metadata"
+            },
+            "attribute_name": "artist",
+            "canonical_key": "artist",
+            "raw_ref": "D:\\rafa\\pinho music\\Afraid.m4a",
+            "normalized_value": "The Neighbourhood - Topic",
+            "semantic_type": "media_identity",
+            "confidence": 0.75,
+            "provenance": {
+              "backend_id": "mutagen",
+              "backend_version": "1",
+              "file_ref": "D:\\rafa\\pinho music\\Afraid.m4a",
+              "raw_result_id": "raw_media_metadata_3f61024d201344eda0348924fe6d8fab",
+              "normalizer": "MediaMetadataNormalizer",
+              "raw_tag_key": "©ART",
+              "raw_tag_value_repr": "['The Neighbourhood - Topic']",
+              "raw_tag_value_source_type": "list",
+              "raw_tag_value_set_like": false,
+              "semantic_mapper": "media_metadata_identity_tag_mapper_v1",
+              "canonical_key": "artist"
+            },
+            "timestamp": "2026-08-20T12:18:17.074105+00:00",
+            "ambiguity": 0.0,
+            "contradictions": [],
+            "limitations": [],
+            "evidence_type": null,
+            "candidate_id": null,
+            "observation_id": null,
+            "provenance_trace_id": null,
+            "source_entity_ref": {},
+            "target_entity_ref": {},
+            "relation_family": null,
+            "relation_kind_candidate": null,
+            "signals": [],
+            "negative_evidence": [],
+            "conflicts": [],
+            "truth_eligible": false,
+            "validation_required": false
+          }
+        ]
+      }
+    ],
+    "models": {
+      "b2_aggregate_record_counts": {
+        "codec": 449,
+        "duration": 451,
+        "bitrate": 451,
+        "sample_rate": 451,
+        "channels": 451,
+        "metadata": 451,
+        "artwork": 451,
+        "track_title": 108,
+        "artist": 108,
+        "album": 0,
+        "album_artist": 0
+      },
+      "sample_record_weighted_bytes_current": 5477431.9,
+      "sample_record_weighted_bytes_without_metadata": 4727031.04,
+      "sample_record_weighted_bytes_refbacked_metadata": 5502209.84,
+      "observed_b2_bytes_per_attempted_group": 17569.37,
+      "full_corpus_current_estimate_bytes_from_b2_observed": 39179688.48,
+      "full_corpus_without_inline_metadata_estimate_bytes_ratio_model": 33812123.45,
+      "full_corpus_refbacked_metadata_estimate_bytes_ratio_model": 39356923.36,
+      "metadata_record_avg_bytes": 1663.86,
+      "metadata_normalized_value_avg_bytes": 65.06,
+      "metadata_ref_shell_avg_bytes_model": 1718.8
+    },
+    "generic_metadata_claim_truth": {
+      "identity_claim_records_preserve_raw_tag_provenance": true,
+      "examples_checked": 5,
+      "verdict": "DISPROVEN"
+    },
+    "per_result_sample_summary": [
+      {
+        "file": "505 - 2.m4a",
+        "records": 7,
+        "bytes": 14410,
+        "keys": [
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate"
+        ],
+        "attempted_backends": [
+          "mutagen"
+        ],
+        "successful_backends": [
+          "mutagen"
+        ],
+        "backend_error_counts": {
+          "FFPROBE_NOT_AVAILABLE": 1
+        }
+      },
+      {
+        "file": "505.m4a",
+        "records": 9,
+        "bytes": 18751,
+        "keys": [
+          "artist",
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate",
+          "track_title"
+        ],
+        "attempted_backends": [
+          "mutagen"
+        ],
+        "successful_backends": [
+          "mutagen"
+        ],
+        "backend_error_counts": {}
+      },
+      {
+        "file": "A Certain Romance.m4a",
+        "records": 7,
+        "bytes": 14830,
+        "keys": [
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate"
+        ],
+        "attempted_backends": [
+          "mutagen"
+        ],
+        "successful_backends": [
+          "mutagen"
+        ],
+        "backend_error_counts": {
+          "FFPROBE_NOT_AVAILABLE": 1
+        }
+      },
+      {
+        "file": "A Day To Remember - All I Want.m4a",
+        "records": 7,
+        "bytes": 15362,
+        "keys": [
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate"
+        ],
+        "attempted_backends": [
+          "mutagen"
+        ],
+        "successful_backends": [
+          "mutagen"
+        ],
+        "backend_error_counts": {
+          "FFPROBE_NOT_AVAILABLE": 1
+        }
+      },
+      {
+        "file": "A Day To Remember - I'm Made of Wax, Larry, What Are You Made Of Official Vide.m4a",
+        "records": 7,
+        "bytes": 17412,
+        "keys": [
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate"
+        ],
+        "attempted_backends": [
+          "mutagen"
+        ],
+        "successful_backends": [
+          "mutagen"
+        ],
+        "backend_error_counts": {
+          "FFPROBE_NOT_AVAILABLE": 1
+        }
+      },
+      {
+        "file": "A Day To Remember - If it means a lot to you.m4a",
+        "records": 7,
+        "bytes": 15985,
+        "keys": [
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate"
+        ],
+        "attempted_backends": [
+          "mutagen"
+        ],
+        "successful_backends": [
+          "mutagen"
+        ],
+        "backend_error_counts": {
+          "FFPROBE_NOT_AVAILABLE": 1
+        }
+      },
+      {
+        "file": "A Dozen Roses.m4a",
+        "records": 7,
+        "bytes": 14683,
+        "keys": [
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate"
+        ],
+        "attempted_backends": [
+          "mutagen"
+        ],
+        "successful_backends": [
+          "mutagen"
+        ],
+        "backend_error_counts": {
+          "FFPROBE_NOT_AVAILABLE": 1
+        }
+      },
+      {
+        "file": "A Fantastica Vida De Romantica.m4a",
+        "records": 7,
+        "bytes": 15375,
+        "keys": [
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate"
+        ],
+        "attempted_backends": [
+          "mutagen"
+        ],
+        "successful_backends": [
+          "mutagen"
+        ],
+        "backend_error_counts": {
+          "FFPROBE_NOT_AVAILABLE": 1
+        }
+      },
+      {
+        "file": "A Little Death.m4a",
+        "records": 7,
+        "bytes": 14724,
+        "keys": [
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate"
+        ],
+        "attempted_backends": [
+          "mutagen"
+        ],
+        "successful_backends": [
+          "mutagen"
+        ],
+        "backend_error_counts": {
+          "FFPROBE_NOT_AVAILABLE": 1
+        }
+      },
+      {
+        "file": "A Pearl - 2.m4a",
+        "records": 7,
+        "bytes": 14599,
+        "keys": [
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate"
+        ],
+        "attempted_backends": [
+          "mutagen"
+        ],
+        "successful_backends": [
+          "mutagen"
+        ],
+        "backend_error_counts": {
+          "FFPROBE_NOT_AVAILABLE": 1
+        }
+      },
+      {
+        "file": "A Pearl.m4a",
+        "records": 9,
+        "bytes": 18955,
+        "keys": [
+          "artist",
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate",
+          "track_title"
+        ],
+        "attempted_backends": [
+          "mutagen"
+        ],
+        "successful_backends": [
+          "mutagen"
+        ],
+        "backend_error_counts": {}
+      },
+      {
+        "file": "A Skylit Drive - Love The Way You Lie Punk Goes Pop 4.m4a",
+        "records": 7,
+        "bytes": 16363,
+        "keys": [
+          "artwork",
+          "bitrate",
+          "channels",
+          "codec",
+          "duration",
+          "metadata",
+          "sample_rate"
+        ],
+        "attempted_backends": [
+          "mutagen"
+        ],
+        "successful_backends": [
+          "mutagen"
+        ],
+        "backend_error_counts": {
+          "FFPROBE_NOT_AVAILABLE": 1
+        }
+      }
+    ]
+  },
+  "contract_relevance": {
+    "track_title": "blocking semantic evidence within media_identity ANY_OF group",
+    "artist": "blocking semantic evidence within media_identity ANY_OF group",
+    "album": "blocking semantic evidence within media_identity ANY_OF group",
+    "album_artist": "blocking semantic evidence within media_identity ANY_OF group",
+    "codec": "requested optional enrichment",
+    "duration": "requested optional enrichment",
+    "bitrate": "requested optional enrichment",
+    "sample_rate": "requested optional enrichment",
+    "channels": "requested optional enrichment",
+    "container": "requested optional enrichment, not observed in B2 accepted evidence",
+    "artwork": "requested optional enrichment",
+    "metadata": "unrequested intermediate/descriptive capability evidence; not an artifact output column or claim"
+  },
+  "root_cause_gates": {
+    "MATERIALIZATION_BYTE_DOMINANT_COMPONENT": "PROVEN",
+    "dominant_component": "EvidenceSet structural duplication and fixed per-record schema overhead, especially repeated entity_ref structures; not metadata normalized_value blobs.",
+    "GENERIC_METADATA_INLINE_OVERRETENTION": "PROVEN",
+    "GENERIC_METADATA_REQUIRED_FOR_CLAIM_TRUTH": "DISPROVEN",
+    "EVIDENCESET_STRUCTURAL_DUPLICATION_IMPACT": "MATERIAL",
+    "FULL_CORPUS_INLINE_8MB_FEASIBILITY": "UNLIKELY",
+    "PREACCEPTANCE_TELEMETRY_LOSS": "PROVEN",
+    "PUBLIC_SUMMARY_AUTHORITY_BREAK": "PROVEN",
+    "ROOT_CAUSE_STATUS": "PROVEN"
+  },
+  "architecture_options": {
+    "OPTION_A_contract_demand_aware_inline_filtering": {
+      "truth_preservation": "Safe if claim EvidenceRecords retain entity/key/value/evidence/provenance and generic metadata is not used as claim truth.",
+      "provenance_preservation": "Preserves direct claim provenance; generic metadata should be audit-only/ref-backed if retained.",
+      "memory_byte_effect": "Useful but insufficient alone. Ratio model without metadata estimates about 33.81 MB full-corpus, still above 8 MB.",
+      "complexity": "Low to moderate.",
+      "generality": "High if based on contract demand rather than media-specific filenames.",
+      "risk": "Medium if filter removes audit evidence before a durable raw support ref exists.",
+      "migration_impact": "Low if retention policy is stage-local.",
+      "testability": "High with contract-required/requested/unrequested fixtures.",
+      "preserves_8mb_guardrail": true
+    },
+    "OPTION_B_raw_support_object_ref": {
+      "truth_preservation": "Strong if raw support object is immutable, checksum-bound, and referenced from claim records.",
+      "provenance_preservation": "Strong; raw metadata blob can be persisted once and linked by raw_result_id/raw_evidence_ref.",
+      "memory_byte_effect": "Limited for current sample because metadata normalized_value averages only 65 bytes, but valuable for future large raw metadata and audit separation.",
+      "complexity": "Moderate.",
+      "generality": "High for any capability that emits raw support plus claim projections.",
+      "risk": "Requires lifecycle, integrity, resolver and cleanup semantics.",
+      "migration_impact": "Moderate.",
+      "testability": "High with missing-ref, checksum and replay tests.",
+      "preserves_8mb_guardrail": true
+    },
+    "OPTION_C_checkpointed_ref_backed_post_compile_results": {
+      "truth_preservation": "Strong if accepted EvidenceRecords remain deterministic and resolvable before validation.",
+      "provenance_preservation": "Strong; avoids forcing all complete ObservationExecutionResults inline.",
+      "memory_byte_effect": "High; directly addresses the all-results-inline accumulation that blocks at 455/2230 groups.",
+      "complexity": "Moderate to high.",
+      "generality": "High across observation capabilities.",
+      "risk": "Needs atomic commit/ref lifecycle and no late or partial evidence admission.",
+      "migration_impact": "Moderate.",
+      "testability": "High with replay, missing ref, orphan cleanup and no endpoint hydration tests.",
+      "preserves_8mb_guardrail": true
+    },
+    "OPTION_D_generic_evidence_set_compaction": {
+      "truth_preservation": "Safe if entity_ref is replaced by stable entity_ref_id plus a single entity_ref table in the same governed payload.",
+      "provenance_preservation": "Safe if claim records still resolve to the exact entity and source refs deterministically.",
+      "memory_byte_effect": "Material. Sample average EvidenceSet overhead minus records is 4,091.82 bytes; entity_refs alone average 3,536.65 bytes per result.",
+      "complexity": "Moderate.",
+      "generality": "High for EvidenceSet beyond media.",
+      "risk": "Requires compatibility with consumers expecting inline entity_ref on each record.",
+      "migration_impact": "Moderate.",
+      "testability": "High with semantic equivalence and resolver tests.",
+      "preserves_8mb_guardrail": true
+    },
+    "OPTION_E_budget_increase_only": {
+      "truth_preservation": "Neutral, but it hides representation inefficiency.",
+      "provenance_preservation": "Neutral.",
+      "memory_byte_effect": "Only moves the limit; observed model suggests about 39 MB current full-corpus inline retention.",
+      "complexity": "Low.",
+      "generality": "Low as a correction because it does not address boundary semantics.",
+      "risk": "High for future corpora and endpoint hydration.",
+      "migration_impact": "Low.",
+      "testability": "Low diagnostic value.",
+      "preserves_8mb_guardrail": false
+    }
+  },
+  "recommended_architecture": {
+    "recommended_path": "Combine OPTION_C and OPTION_D, with OPTION_A as a contract-aware retention layer and OPTION_B for raw/audit support where raw metadata is large or semantically required.",
+    "not_recommended": "Do not increase the 8 MB budget as the primary fix.",
+    "minimal_truthful_retention": [
+      "Retain claim-relevant EvidenceRecords needed for blocking semantic validation and requested optional artifact fields.",
+      "Represent generic metadata as unrequested intermediate/audit evidence unless explicitly demanded by contract.",
+      "Deduplicate entity_ref structures within EvidenceSet or replace repeated inline entity_ref with stable entity_ref_id plus a bounded entity_ref table.",
+      "Checkpoint or ref-back post-compile result/evidence batches so validation can consume governed evidence without holding every complete ObservationExecutionResult inline.",
+      "Expose separate physical telemetry for produced, accepted and policy-rejected evidence."
+    ]
+  },
+  "issues": [
+    {
+      "issue_id": "R3_01_B2_1_P1_EVIDENCESET_ENTITY_REF_STRUCTURAL_DUPLICATION",
+      "priority": "P1",
+      "status": "proven",
+      "title": "EvidenceSet materialization repeats entity_ref structures materially across records and aggregate entity_refs",
+      "relationship_to_frontier": "primary materialization byte root cause",
+      "architectural_owner": "EvidenceSet / post-compile observation materialization boundary",
+      "supporting_evidence": [
+        "Sample uses runtime _execution_entity_ref compact projection and current EvidenceSet schema.",
+        "Average EvidenceSet bytes in sample: 16313.1.",
+        "Average EvidenceSet entity_refs bytes in sample: 3536.65.",
+        "Per-record entity_ref averages about 463-469 bytes across representative keys.",
+        "EvidenceSet.entity_refs stores one entity_ref per EvidenceRecord, not unique entity refs."
+      ],
+      "disconfirming_evidence": [
+        "No evidence that normalized media values themselves dominate the byte budget."
+      ],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "This is diagnostic-only; production patching forbidden.",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    },
+    {
+      "issue_id": "R3_01_B2_1_P1_INLINE_AGGREGATE_RETENTION_UNLIKELY_TO_FIT_8MB",
+      "priority": "P1",
+      "status": "proven",
+      "title": "Full-corpus inline post-compile evidence retention is unlikely to fit the current 8 MB guardrail",
+      "relationship_to_frontier": "capacity model for current frontier",
+      "architectural_owner": "Governed post-compile observation retention / payload boundary",
+      "supporting_evidence": [
+        "B2 observed 7,994,062 bytes after only 455 of 2,230 physical groups.",
+        "Observed current representation estimates about 39.18 MB for all 2,230 groups if density remains similar.",
+        "Removing unrequested metadata inline alone models about 33.81 MB, still above 8 MB."
+      ],
+      "disconfirming_evidence": [
+        "Full-corpus byte model is an estimate, not a public full run."
+      ],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "This is diagnostic-only; production patching forbidden.",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    },
+    {
+      "issue_id": "R3_01_B2_1_P2_GENERIC_METADATA_INLINE_OVERRETENTION",
+      "priority": "P2",
+      "status": "proven",
+      "title": "Generic metadata EvidenceRecords are retained inline despite not being requested by artifact contract",
+      "relationship_to_frontier": "secondary byte contributor and contract relevance defect",
+      "architectural_owner": "Media metadata normalizer / retention policy",
+      "supporting_evidence": [
+        "B2 retained 451 metadata EvidenceRecords.",
+        "The media inventory artifact contract does not request a generic metadata column or claim.",
+        "Identity-specific records preserve raw_tag_key, raw_tag_value_repr, raw_result_id, backend_id and semantic_mapper provenance."
+      ],
+      "disconfirming_evidence": [
+        "Sample metadata normalized_value averages only 65.06 bytes, so generic metadata is not the dominant byte component in this corpus.",
+        "Dropping metadata alone is modeled as insufficient to fit 2,230 groups into 8 MB."
+      ],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "This is diagnostic-only; production patching forbidden.",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    },
+    {
+      "issue_id": "R3_01_B2_1_P2_PREACCEPTANCE_PHYSICAL_TELEMETRY_LOST_ON_BUDGET_REJECTION",
+      "priority": "P2",
+      "status": "proven",
+      "title": "Budget-rejected result loses observer_payload backend telemetry before aggregate backend counts are computed",
+      "relationship_to_frontier": "telemetry defect at budget rejection boundary",
+      "architectural_owner": "GovernedObservationExecutionStageService telemetry",
+      "supporting_evidence": [
+        "B2 physical_probe_count/files_attempted is 455 but attempted_backends.mutagen is 454.",
+        "Code computes result_bytes after execution, then replaces over-budget result with _budget_block_result containing empty EvidenceSet and no observer_payload.",
+        "_backend_telemetry only counts media summaries from result.provenance.observer_payload."
+      ],
+      "disconfirming_evidence": [],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "This is diagnostic-only; production patching forbidden.",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    },
+    {
+      "issue_id": "R3_01_B2_1_P2_PUBLIC_SUMMARY_AUTHORITY_BREAK",
+      "priority": "P2",
+      "status": "proven",
+      "title": "Public task summary reads artifact/perception materialization state and misses physical execution authority when B2 blocks before downstream artifact materialization",
+      "relationship_to_frontier": "observability defect; not the first blocking frontier",
+      "architectural_owner": "UniversalTaskSessionService / public summary projection",
+      "supporting_evidence": [
+        "B2 physical authority reports configured=true, available=true, execution_status=partial.",
+        "B2 public summary top-level reports media_metadata_capability status=not_configured/configured=false.",
+        "UniversalTaskSessionService collects media summaries from artifact declared_contract/perception sources; the B2 physical telemetry remains in result/event metadata after interruption."
+      ],
+      "disconfirming_evidence": [],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "This is diagnostic-only; production patching forbidden.",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    }
+  ],
+  "verdict": "R3_01_B2_1_MATERIALIZATION_ROOT_CAUSE_PROVEN",
+  "limitations": [
+    "Byte attribution by key/component is based on a bounded service-equivalent sample from the same corpus, not recovered full B2 raw EvidenceRecords.",
+    "Full-corpus capacity models are estimates and are labeled as such.",
+    "B2 did not retain the over-budget result evidence payload, so exact rejected result evidence count/bytes are inferred from code path and count deltas, not directly recovered."
+  ]
+}

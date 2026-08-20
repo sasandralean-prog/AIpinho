@@ -1,0 +1,113 @@
+{
+  "report_id": "firetest5_h1c0_r3_01_b2_1_issue_register",
+  "generated_at": "2026-08-20T12:20:44.850716+00:00",
+  "task_run_id": "task_run_a757d3160e6d4b3d92c3410936abc0d1",
+  "issues": [
+    {
+      "issue_id": "R3_01_B2_1_P1_EVIDENCESET_ENTITY_REF_STRUCTURAL_DUPLICATION",
+      "priority": "P1",
+      "status": "proven",
+      "title": "EvidenceSet materialization repeats entity_ref structures materially across records and aggregate entity_refs",
+      "relationship_to_frontier": "primary materialization byte root cause",
+      "architectural_owner": "EvidenceSet / post-compile observation materialization boundary",
+      "supporting_evidence": [
+        "Sample uses runtime _execution_entity_ref compact projection and current EvidenceSet schema.",
+        "Average EvidenceSet bytes in sample: 16313.1.",
+        "Average EvidenceSet entity_refs bytes in sample: 3536.65.",
+        "Per-record entity_ref averages about 463-469 bytes across representative keys.",
+        "EvidenceSet.entity_refs stores one entity_ref per EvidenceRecord, not unique entity refs."
+      ],
+      "disconfirming_evidence": [
+        "No evidence that normalized media values themselves dominate the byte budget."
+      ],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "This is diagnostic-only; production patching forbidden.",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    },
+    {
+      "issue_id": "R3_01_B2_1_P1_INLINE_AGGREGATE_RETENTION_UNLIKELY_TO_FIT_8MB",
+      "priority": "P1",
+      "status": "proven",
+      "title": "Full-corpus inline post-compile evidence retention is unlikely to fit the current 8 MB guardrail",
+      "relationship_to_frontier": "capacity model for current frontier",
+      "architectural_owner": "Governed post-compile observation retention / payload boundary",
+      "supporting_evidence": [
+        "B2 observed 7,994,062 bytes after only 455 of 2,230 physical groups.",
+        "Observed current representation estimates about 39.18 MB for all 2,230 groups if density remains similar.",
+        "Removing unrequested metadata inline alone models about 33.81 MB, still above 8 MB."
+      ],
+      "disconfirming_evidence": [
+        "Full-corpus byte model is an estimate, not a public full run."
+      ],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "This is diagnostic-only; production patching forbidden.",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    },
+    {
+      "issue_id": "R3_01_B2_1_P2_GENERIC_METADATA_INLINE_OVERRETENTION",
+      "priority": "P2",
+      "status": "proven",
+      "title": "Generic metadata EvidenceRecords are retained inline despite not being requested by artifact contract",
+      "relationship_to_frontier": "secondary byte contributor and contract relevance defect",
+      "architectural_owner": "Media metadata normalizer / retention policy",
+      "supporting_evidence": [
+        "B2 retained 451 metadata EvidenceRecords.",
+        "The media inventory artifact contract does not request a generic metadata column or claim.",
+        "Identity-specific records preserve raw_tag_key, raw_tag_value_repr, raw_result_id, backend_id and semantic_mapper provenance."
+      ],
+      "disconfirming_evidence": [
+        "Sample metadata normalized_value averages only 65.06 bytes, so generic metadata is not the dominant byte component in this corpus.",
+        "Dropping metadata alone is modeled as insufficient to fit 2,230 groups into 8 MB."
+      ],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "This is diagnostic-only; production patching forbidden.",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    },
+    {
+      "issue_id": "R3_01_B2_1_P2_PREACCEPTANCE_PHYSICAL_TELEMETRY_LOST_ON_BUDGET_REJECTION",
+      "priority": "P2",
+      "status": "proven",
+      "title": "Budget-rejected result loses observer_payload backend telemetry before aggregate backend counts are computed",
+      "relationship_to_frontier": "telemetry defect at budget rejection boundary",
+      "architectural_owner": "GovernedObservationExecutionStageService telemetry",
+      "supporting_evidence": [
+        "B2 physical_probe_count/files_attempted is 455 but attempted_backends.mutagen is 454.",
+        "Code computes result_bytes after execution, then replaces over-budget result with _budget_block_result containing empty EvidenceSet and no observer_payload.",
+        "_backend_telemetry only counts media summaries from result.provenance.observer_payload."
+      ],
+      "disconfirming_evidence": [],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "This is diagnostic-only; production patching forbidden.",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    },
+    {
+      "issue_id": "R3_01_B2_1_P2_PUBLIC_SUMMARY_AUTHORITY_BREAK",
+      "priority": "P2",
+      "status": "proven",
+      "title": "Public task summary reads artifact/perception materialization state and misses physical execution authority when B2 blocks before downstream artifact materialization",
+      "relationship_to_frontier": "observability defect; not the first blocking frontier",
+      "architectural_owner": "UniversalTaskSessionService / public summary projection",
+      "supporting_evidence": [
+        "B2 physical authority reports configured=true, available=true, execution_status=partial.",
+        "B2 public summary top-level reports media_metadata_capability status=not_configured/configured=false.",
+        "UniversalTaskSessionService collects media summaries from artifact declared_contract/perception sources; the B2 physical telemetry remains in result/event metadata after interruption."
+      ],
+      "disconfirming_evidence": [],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "This is diagnostic-only; production patching forbidden.",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    }
+  ],
+  "priority_summary": {
+    "P0_open": 0,
+    "P1_open": 2,
+    "P2_open": 3,
+    "P3_open": 0
+  },
+  "ready_impact": "R3.01 remains OPEN; FireTest 5 NOT_READY"
+}
