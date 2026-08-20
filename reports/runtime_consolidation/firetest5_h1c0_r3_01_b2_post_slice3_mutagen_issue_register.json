@@ -1,0 +1,71 @@
+{
+  "report_id": "firetest5_h1c0_r3_01_b2_post_slice3_mutagen_issue_register",
+  "generated_at": "2026-08-20T11:55:48.880783+00:00",
+  "task_run_id": "task_run_a757d3160e6d4b3d92c3410936abc0d1",
+  "issues": [
+    {
+      "issue_id": "R3_01_B2_P1_POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_FRONTIER",
+      "priority": "P1",
+      "status": "proven",
+      "title": "Post-compile observation materialized evidence exceeds bounded byte budget before row semantic validation",
+      "relationship_to_frontier": "first_current_frontier",
+      "architectural_owner": "Governed post-compile observation materialization / evidence retention boundary",
+      "supporting_evidence": [
+        "Run B2 blocked with POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED",
+        "materialized_observation_bytes reached 7,994,062 against an 8,000,000 byte budget",
+        "3371 EvidenceRecords accepted after 455 attempted probes / 451 successful probes",
+        "Row claim binding and semantic validation were not reached"
+      ],
+      "disconfirming_evidence": [],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "B2 is diagnostic-only; production patching forbidden by mission order",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    },
+    {
+      "issue_id": "R3_01_B2_P2_MEDIA_CAPABILITY_SUMMARY_PROJECTION_NOT_CONFIGURED_CONTRADICTION",
+      "priority": "P2",
+      "status": "proven",
+      "title": "Public summary projection reports media_metadata_capability as not_configured despite physical execution telemetry",
+      "relationship_to_frontier": "observability defect; not the first blocking frontier",
+      "architectural_owner": "Endpoint/public summary projection",
+      "supporting_evidence": [
+        "Physical authority telemetry reports configured=true, available=true, execution_status=partial",
+        "Physical telemetry reports 455 probes, 451 successes, 3371 EvidenceRecords",
+        "Public summary top-level media_metadata_capability still reports status=not_configured/configured=false"
+      ],
+      "disconfirming_evidence": [],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "B2 is diagnostic-only; production patching forbidden by mission order",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    },
+    {
+      "issue_id": "R3_01_B2_P2_CLAIM_LEVEL_SAMPLE_NOT_PROJECTED_BEFORE_MATERIALIZATION_BLOCK",
+      "priority": "P2",
+      "status": "probable_with_evidence",
+      "title": "Public endpoints do not expose bounded claim-level identity trace when observation materialization blocks before row validation",
+      "relationship_to_frontier": "diagnostic observability gap after P1 frontier",
+      "architectural_owner": "Runtime diagnostic projection / bounded evidence sampling",
+      "supporting_evidence": [
+        "Aggregate identity EvidenceRecord counts are exposed",
+        "The run blocks before row claim binding and row semantic validation",
+        "No bounded entity/key/value/evidence_ref/rendered row sample was available from the public result endpoints used in B2"
+      ],
+      "disconfirming_evidence": [
+        "Downstream claim binding was not reached, so absence of sample is not evidence of binding failure"
+      ],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "B2 is diagnostic-only; address after materialization frontier is designed",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    }
+  ],
+  "priority_summary": {
+    "P0_open": 0,
+    "P1_open": 1,
+    "P2_open": 2,
+    "P3_open": 0
+  },
+  "ready_impact": "R3.01 remains OPEN; FireTest 5 NOT_READY"
+}

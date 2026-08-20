@@ -1,0 +1,355 @@
+{
+  "report_id": "firetest5_h1c0_r3_01_b2_post_slice3_mutagen_diagnostic",
+  "generated_at": "2026-08-20T11:55:48.880783+00:00",
+  "mission_mode": "diagnostic_public_validation",
+  "execution_class": "hybrid",
+  "repository": {
+    "branch": "agent/codex/r3-01-b2-post-slice3-mutagen",
+    "base_sha": "f3fec1c74a83a5b0bae08152756c98ae55d64f67",
+    "required_base_sha_matched": true
+  },
+  "b2": {
+    "base_sha": "f3fec1c74a83a5b0bae08152756c98ae55d64f67",
+    "task_run_id": "task_run_a757d3160e6d4b3d92c3410936abc0d1",
+    "operation_id": "op_8e751117b72d40529b050dc3e0f5e2fb",
+    "public_result": {
+      "status": "blocked",
+      "reason_code": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED",
+      "result_http_status": 200,
+      "finished_at": "2026-08-20T11:50:42.291350+00:00",
+      "phase_reached": "artifact_render",
+      "frontier": "POST_COMPILE_OBSERVATION_EXECUTION",
+      "terminal_stage": "after_post_compile_observation_execution"
+    },
+    "terminality": {
+      "terminal_event_count": 1,
+      "terminal_status": "blocked",
+      "terminal_reason": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED"
+    },
+    "speaker_truth": {
+      "safe_to_report_success": false,
+      "status": "blocked",
+      "speaker_truth_status": "evidence_required"
+    },
+    "environment": {
+      "python_executable": "C:\\Program Files\\Python311\\python.exe",
+      "python_version": "3.11.6",
+      "mutagen_importable": true,
+      "mutagen_version": "1.48.1",
+      "mutagen_origin": "C:\\Users\\rafae\\AppData\\Roaming\\Python\\Python311\\site-packages\\mutagen\\__init__.py",
+      "ffprobe_available": false,
+      "ffprobe_resolution": "where ffprobe failed; ffprobe not found",
+      "native_minimal_available": true,
+      "native_minimal_supported_attributes": [
+        "container",
+        "codec",
+        "bitrate",
+        "sample_rate",
+        "channels",
+        "duration"
+      ]
+    },
+    "budgets": {
+      "max_physical_probes": 2500,
+      "max_probe_elapsed_ms": 15000,
+      "max_total_observation_elapsed_ms": 120000,
+      "max_evidence_records": 250000,
+      "max_consecutive_execution_failures": 10,
+      "max_materialized_observation_bytes": 8000000,
+      "heartbeat_interval_ms": 1000,
+      "max_quarantined_workers": 1
+    },
+    "corpus": {
+      "candidate_entity_count": 2286,
+      "selected_entity_count": 2272,
+      "row_entities_or_rendered_rows_planned": 2230,
+      "selected_root_roles": "not projected in B2 endpoint; corpus payload authority available as bounded entity graph",
+      "project_like_contamination": "not projected in B2 endpoint",
+      "workspace_root": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+      "library_root": "D:\\rafa\\pinho music"
+    },
+    "typed_demand": {
+      "logical_task_count": 24530,
+      "physical_group_count": 2230,
+      "distinct_requested_key_count": 11,
+      "requested_canonical_keys": [
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title",
+        "artist",
+        "album",
+        "album_artist"
+      ],
+      "required_non_identity_claims": [],
+      "media_identity_any_of_candidates": [
+        "track_title",
+        "artist",
+        "album",
+        "album_artist"
+      ],
+      "minimum_evidenced_media_identity_claims": 1,
+      "optional_enrichment_claims": [
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate"
+      ],
+      "logical_tasks_per_physical_group": 11.0
+    },
+    "post_compile_execution": {
+      "files_planned": 2230,
+      "physical_probe_count": 455,
+      "files_attempted": 455,
+      "files_succeeded": 451,
+      "files_failed": 4,
+      "progress_ratio": 0.2040358744394619,
+      "successful_progress_ratio": 0.2022421524663677,
+      "goals_satisfied": 2920,
+      "goals_unsatisfied": 21610,
+      "fanout_claim_count": 2920,
+      "evidence_records_created": 3371,
+      "materialized_observation_bytes": 7994062,
+      "execution_status": "blocked",
+      "budget_reason": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED",
+      "elapsed_ms": "not projected as a single authoritative stage total; terminal wall interval approximately 156s including surrounding runtime phases",
+      "probe_timeout_count": 0,
+      "total_budget_events": 0,
+      "worker_quarantine_events": 0
+    },
+    "backends": {
+      "availability_snapshot": {
+        "mutagen": "available/importable",
+        "ffprobe": "unavailable",
+        "native_minimal": "available; technical metadata only"
+      },
+      "configured": true,
+      "available": true,
+      "execution_status": "partial",
+      "primary_backend": "mutagen",
+      "attempted_backends": {
+        "mutagen": 454
+      },
+      "successful_backends": {
+        "mutagen": 451
+      },
+      "fallback_backends_used": {},
+      "backend_error_counts": {
+        "FFPROBE_NOT_AVAILABLE": 346,
+        "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 3
+      },
+      "mutagen_attempts": 454,
+      "mutagen_successes": 451,
+      "ffprobe_physical_attempts": 0,
+      "ffprobe_successes": 0,
+      "native_minimal_attempts": 0,
+      "native_minimal_successes": 0,
+      "instrumentation_note": "attempted_backends has no ffprobe/native_minimal entries; FFPROBE_NOT_AVAILABLE appears as backend error telemetry from unavailable backend handling, not as successful fallback use."
+    },
+    "evidence": {
+      "total_media_evidence_records": 3371,
+      "materialized_observation_bytes": 7994062,
+      "evidence_counts_by_backend": {
+        "mutagen": 3371
+      },
+      "evidence_counts_by_canonical_key": {
+        "codec": 449,
+        "duration": 451,
+        "bitrate": 451,
+        "sample_rate": 451,
+        "channels": 451,
+        "metadata": 451,
+        "artwork": 451,
+        "track_title": 108,
+        "artist": 108,
+        "album": 0,
+        "album_artist": 0
+      },
+      "technical_evidence_total": 3155,
+      "semantic_identity_evidence_total": 216,
+      "track_title": 108,
+      "artist": 108,
+      "album": 0,
+      "album_artist": 0,
+      "bytes_per_attempted_group": 17569.36703296703,
+      "bytes_per_successful_group": 17725.19290465632,
+      "bytes_per_evidence_record": 2371.421536636013
+    },
+    "identity": {
+      "entities_with_semantic_identity_evidence_records": "not projected; evidence record counts prove identity acquisition but unique entity count is not exposed before materialization block",
+      "entities_without_semantic_identity_evidence_records": "not projected",
+      "stable_entity_identity_ratio": "not reached; row semantic validation did not execute after materialization budget block",
+      "semantic_identity_evidence_ratio": "not reached; row semantic validation did not execute after materialization budget block",
+      "rows_with_semantic_identity": "not reached",
+      "rows_without_semantic_identity": "not reached"
+    },
+    "claim_level_sample": {
+      "status": "not_reached",
+      "reason": "The run blocked during post-compile observation materialization before row claim binding and row semantic validation; endpoints expose aggregate identity EvidenceRecord counts but not bounded per-claim row-validation traces."
+    },
+    "opaque_untagged_negative_sample": {
+      "status": "not_projected_from_public_run",
+      "reason": "The run did not reach row semantic validation and did not expose per-entity tag absence samples. No filename/path-derived semantic identity was observed in aggregate telemetry."
+    },
+    "telemetry_truth_check": {
+      "physical_authority_status": "partial/executed",
+      "physical_authority_configured": true,
+      "physical_authority_available": true,
+      "public_summary_top_level_status": "not_configured",
+      "public_summary_top_level_configured": false,
+      "verdict": "FAIL",
+      "issue": "Public summary projection still collapses media_metadata_capability to not_configured despite physical execution telemetry proving configured execution."
+    }
+  },
+  "comparison": {
+    "run_b": {
+      "base_sha": "84d091dfbcead6d101c0b0aedf1c68fc0ea49092",
+      "task_run_id": "task_run_a592f87c275440cc89027a70d04dd1e4",
+      "environment": "Mutagen 1.48.1 available; ffprobe unavailable; native_minimal available",
+      "candidate_entities": 2286,
+      "selected_entities": 2272,
+      "row_entities": 2230,
+      "logical_tasks": 15610,
+      "physical_groups": 2230,
+      "physical_probes_attempted": 336,
+      "physical_probes_succeeded": 335,
+      "physical_probes_failed": 1,
+      "mutagen_attempts": "not projected in Run B public aggregate; B1 sample showed Mutagen on 40/40 sampled files",
+      "ffprobe_attempts": "not projected in Run B public aggregate; B1 sample showed ffprobe unavailable path on 40/40 sampled files",
+      "native_minimal_attempts": "not projected in Run B public aggregate; B1 sample showed native_minimal path on 40/40 sampled files",
+      "evidence_records": 3083,
+      "materialized_bytes": 7335302,
+      "elapsed_to_block_or_finish": "blocked at total observation budget; last probe checkpoint around 101641 ms",
+      "terminal_reason": "POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED",
+      "terminal_event_count": 1,
+      "speaker_truth_safe": false,
+      "track_title_evidence": "not projected in public Run B aggregate; B1 sample found 7/40",
+      "artist_evidence": "not projected in public Run B aggregate; B1 sample found 7/40",
+      "album_evidence": "not projected in public Run B aggregate; B1 sample found 0/40",
+      "album_artist_evidence": "not projected in public Run B aggregate; B1 sample found 0/40",
+      "semantic_identity_ratio": "not reached/projected",
+      "phase_reached": "post-compile observation execution"
+    },
+    "run_b2": {
+      "base_sha": "f3fec1c74a83a5b0bae08152756c98ae55d64f67",
+      "task_run_id": "task_run_a757d3160e6d4b3d92c3410936abc0d1",
+      "environment": "Mutagen 1.48.1 available; ffprobe unavailable; native_minimal available",
+      "candidate_entities": 2286,
+      "selected_entities": 2272,
+      "row_entities": 2230,
+      "logical_tasks": 24530,
+      "physical_groups": 2230,
+      "physical_probes_attempted": 455,
+      "physical_probes_succeeded": 451,
+      "physical_probes_failed": 4,
+      "mutagen_attempts": 454,
+      "ffprobe_attempts": 0,
+      "native_minimal_attempts": 0,
+      "evidence_records": 3371,
+      "materialized_bytes": 7994062,
+      "elapsed_to_block_or_finish": "blocked at materialized observation byte budget before row validation",
+      "terminal_reason": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED",
+      "terminal_event_count": 1,
+      "speaker_truth_safe": false,
+      "track_title_evidence": 108,
+      "artist_evidence": 108,
+      "album_evidence": 0,
+      "album_artist_evidence": 0,
+      "semantic_identity_ratio": "not reached/projected",
+      "phase_reached": "artifact_render/post-compile observation execution"
+    },
+    "derived": {
+      "run_b_probe_progress_ratio": 0.15067264573991032,
+      "run_b2_probe_progress_ratio": 0.2040358744394619,
+      "run_b2_relative_probe_attempt_improvement": 0.35416666666666674,
+      "run_b2_absolute_probe_progress_point_gain": 0.05336322869955157,
+      "run_b_bytes_per_attempted_probe": 21831.255952380954,
+      "run_b2_bytes_per_attempted_probe": 17569.36703296703,
+      "run_b2_bytes_per_attempted_probe_reduction_ratio": 0.19521959381128107
+    }
+  },
+  "root_cause_gates": {
+    "SLICE3_PHYSICAL_ACQUISITION_IMPROVEMENT": "PROVEN",
+    "MUTAGEN_IDENTITY_PATH": "PROVEN_FOR_EVIDENCE_ACQUISITION; downstream row claim binding NOT_REACHED",
+    "BACKEND_OVER_ACQUISITION_REGRESSION": "PASS",
+    "TELEMETRY_PROJECTION": "FAIL",
+    "MATERIALIZATION_FRONTIER": "PROVEN",
+    "TIME_BUDGET_FRONTIER": "CLEARED_AS_FIRST_FRONTIER",
+    "DOWNSTREAM_IDENTITY_BINDING": "NOT_REACHED",
+    "ROOT_CAUSE_STATUS": "PROVEN",
+    "first_current_frontier": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED"
+  },
+  "issues": [
+    {
+      "issue_id": "R3_01_B2_P1_POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_FRONTIER",
+      "priority": "P1",
+      "status": "proven",
+      "title": "Post-compile observation materialized evidence exceeds bounded byte budget before row semantic validation",
+      "relationship_to_frontier": "first_current_frontier",
+      "architectural_owner": "Governed post-compile observation materialization / evidence retention boundary",
+      "supporting_evidence": [
+        "Run B2 blocked with POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED",
+        "materialized_observation_bytes reached 7,994,062 against an 8,000,000 byte budget",
+        "3371 EvidenceRecords accepted after 455 attempted probes / 451 successful probes",
+        "Row claim binding and semantic validation were not reached"
+      ],
+      "disconfirming_evidence": [],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "B2 is diagnostic-only; production patching forbidden by mission order",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    },
+    {
+      "issue_id": "R3_01_B2_P2_MEDIA_CAPABILITY_SUMMARY_PROJECTION_NOT_CONFIGURED_CONTRADICTION",
+      "priority": "P2",
+      "status": "proven",
+      "title": "Public summary projection reports media_metadata_capability as not_configured despite physical execution telemetry",
+      "relationship_to_frontier": "observability defect; not the first blocking frontier",
+      "architectural_owner": "Endpoint/public summary projection",
+      "supporting_evidence": [
+        "Physical authority telemetry reports configured=true, available=true, execution_status=partial",
+        "Physical telemetry reports 455 probes, 451 successes, 3371 EvidenceRecords",
+        "Public summary top-level media_metadata_capability still reports status=not_configured/configured=false"
+      ],
+      "disconfirming_evidence": [],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "B2 is diagnostic-only; production patching forbidden by mission order",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    },
+    {
+      "issue_id": "R3_01_B2_P2_CLAIM_LEVEL_SAMPLE_NOT_PROJECTED_BEFORE_MATERIALIZATION_BLOCK",
+      "priority": "P2",
+      "status": "probable_with_evidence",
+      "title": "Public endpoints do not expose bounded claim-level identity trace when observation materialization blocks before row validation",
+      "relationship_to_frontier": "diagnostic observability gap after P1 frontier",
+      "architectural_owner": "Runtime diagnostic projection / bounded evidence sampling",
+      "supporting_evidence": [
+        "Aggregate identity EvidenceRecord counts are exposed",
+        "The run blocks before row claim binding and row semantic validation",
+        "No bounded entity/key/value/evidence_ref/rendered row sample was available from the public result endpoints used in B2"
+      ],
+      "disconfirming_evidence": [
+        "Downstream claim binding was not reached, so absence of sample is not evidence of binding failure"
+      ],
+      "fix_in_this_wave": false,
+      "reason_if_deferred": "B2 is diagnostic-only; address after materialization frontier is designed",
+      "tests": "not applicable in diagnostic branch",
+      "public_validation": "task_run_a757d3160e6d4b3d92c3410936abc0d1"
+    }
+  ],
+  "verdict": "FIRETEST5_R3_01_B2_BLOCKED_WITH_NEW_FRONTIER_PROVEN",
+  "recommended_next_experiment": "Do not run C yet. Diagnose/correct post-compile observation materialization/retention before adding ffprobe as a new variable.",
+  "deviations_from_mission_order": [
+    "Claim-level row-validation sample and opaque/untagged negative sample were not available because the run blocked before row claim binding/semantic validation; no second public run was executed.",
+    "A backend restart was performed before public execution to establish a clean healthy runtime on the required main SHA.",
+    "Runtime startup updated config/skills/registry/skills_index.json updated_at only; the tracked config file was restored to HEAD before report commit."
+  ]
+}
