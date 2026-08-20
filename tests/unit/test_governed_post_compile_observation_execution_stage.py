@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import time
+import threading
 from typing import Any
 
 from aipinho.schemas.artifacts.contract_perception import (
@@ -25,25 +26,35 @@ class _Adapter:
         self.delay_s = delay_s
         self.keys = keys or ["track_title", "artist"]
         self.calls: list[ObservationTask] = []
+        self._lock = threading.Lock()
+        self.active_calls = 0
+        self.max_active_calls = 0
 
     def execute(self, task: ObservationTask, binding: Any) -> dict[str, Any]:
-        self.calls.append(task)
-        if self.delay_s:
-            time.sleep(self.delay_s)
-        return {
-            "raw_ref": task.inputs.get("file_path"),
-            "observations": [
-                {
-                    "entity_ref": task.entity_ref,
-                    "attribute_name": key,
-                    "canonical_key": key,
-                    "normalized_value": f"{key}_value",
-                    "confidence": 0.9,
-                    "raw_ref": task.inputs.get("file_path"),
-                }
-                for key in self.keys
-            ],
-        }
+        with self._lock:
+            self.calls.append(task)
+            self.active_calls += 1
+            self.max_active_calls = max(self.max_active_calls, self.active_calls)
+        try:
+            if self.delay_s:
+                time.sleep(self.delay_s)
+            return {
+                "raw_ref": task.inputs.get("file_path"),
+                "observations": [
+                    {
+                        "entity_ref": task.entity_ref,
+                        "attribute_name": key,
+                        "canonical_key": key,
+                        "normalized_value": f"{key}_value",
+                        "confidence": 0.9,
+                        "raw_ref": task.inputs.get("file_path"),
+                    }
+                    for key in self.keys
+                ],
+            }
+        finally:
+            with self._lock:
+                self.active_calls -= 1
 
 
 def _capability(*, available: bool = True, status: str = "available") -> ObservationCapability:
@@ -232,6 +243,43 @@ def test_cross_run_quarantine_bound_blocks_second_run_without_new_probe() -> Non
     stage_b.execute(observation_plan=_plan([]), selected_entities=[])
 
 
+def test_concurrent_runs_cannot_exceed_atomic_worker_bound() -> None:
+    adapter = _Adapter(delay_s=0.15, keys=["artist"])
+    budget = PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=5, max_quarantined_workers=1)
+    stages = [_stage(adapter, budget=budget), _stage(adapter, budget=budget)]
+    barrier = threading.Barrier(3)
+    results: list[Any] = []
+
+    def run(stage: GovernedObservationExecutionStageService, entity_id: str, source_ref: str) -> None:
+        barrier.wait()
+        results.append(
+            stage.execute(
+                observation_plan=_plan([_task("artist", entity_id=entity_id, source_ref=source_ref)]),
+                selected_entities=[{"entity_id": entity_id, "path": source_ref, "entity_role": "media_asset_candidate"}],
+            )
+        )
+
+    threads = [
+        threading.Thread(target=run, args=(stages[0], "entity_1", "media://one")),
+        threading.Thread(target=run, args=(stages[1], "entity_2", "media://two")),
+    ]
+    for thread in threads:
+        thread.start()
+    barrier.wait()
+    for thread in threads:
+        thread.join()
+
+    assert len(adapter.calls) == 1
+    assert adapter.max_active_calls == 1
+    assert sorted(result.blocked_reason_code or "" for result in results) == [
+        "",
+        "POST_COMPILE_OBSERVATION_WORKER_BOUND_OCCUPIED",
+    ]
+    blocked = next(result for result in results if result.blocked_reason_code)
+    assert blocked.telemetry["physical_probe_count"] == 0
+    assert blocked.telemetry["files_attempted"] == 0
+
+
 def test_total_observation_deadline_blocks_active_probe_before_probe_deadline() -> None:
     adapter = _Adapter(delay_s=0.1, keys=["artist"])
     stage = _stage(
@@ -268,6 +316,60 @@ def test_materialized_observation_bytes_budget_blocks_before_materialization() -
     assert result.observation_execution_results[0].evidence_set.records == []
     assert result.telemetry["physical_probe_count"] == 1
     assert result.telemetry["files_failed"] == 1
+
+
+def test_evidence_record_budget_replaces_over_budget_result_before_materialization() -> None:
+    service = ContractDrivenPerceptionService(observer_registry=CapabilityRegistry(capabilities=[_capability()]))
+    adapter = _Adapter(keys=["artist"])
+    stage = _stage(
+        adapter,
+        budget=PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=10, max_evidence_records=1),
+    )
+    selected_entities = [
+        {"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"},
+        {"entity_id": "entity_2", "path": "media://two", "entity_role": "media_asset_candidate"},
+    ]
+    perception = service.compile(
+        graph={"entities": selected_entities},
+        declared_contract={
+            "expected_kind": "tabular_collection",
+            "expected_schema": ["artist"],
+            "perception_compile_policy": {"mode": "compile_only"},
+        },
+    )
+
+    execution = stage.execute(observation_plan=perception.observation_plan, selected_entities=selected_entities)
+    materialized = service.materialize_execution_results(
+        perception_result=perception,
+        selected_entities=selected_entities,
+        execution_results=execution.observation_execution_results,
+        declared_contract={"expected_kind": "tabular_collection", "expected_schema": ["artist"]},
+    )
+
+    assert execution.blocked_reason_code == "POST_COMPILE_OBSERVATION_EVIDENCE_RECORD_BUDGET_EXCEEDED"
+    assert [len(result.evidence_set.records) for result in execution.observation_execution_results] == [1, 0]
+    observed_entity_ids = {
+        item.entity_id
+        for item in materialized.attribute_observations
+        if item.canonical_key == "artist" and item.observation_state == "observed"
+    }
+    assert observed_entity_ids == {"entity_1"}
+
+
+def test_zero_consecutive_failure_limit_does_not_block_success() -> None:
+    adapter = _Adapter(keys=["artist"])
+    stage = _stage(
+        adapter,
+        budget=PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=10, max_consecutive_execution_failures=0),
+    )
+
+    result = stage.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_1", source_ref="media://one")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+    )
+
+    assert result.blocked_reason_code is None
+    assert result.telemetry["files_succeeded"] == 1
 
 
 def test_unavailable_capability_is_revalidated_before_physical_execution() -> None:

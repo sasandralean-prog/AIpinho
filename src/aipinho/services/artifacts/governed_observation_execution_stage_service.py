@@ -63,6 +63,7 @@ class GovernedObservationExecutionStageResult:
 
 _QUARANTINED_PROBES: list[tuple[Future[ObservationExecutionResult], ThreadPoolExecutor, dict[str, Any]]] = []
 _QUARANTINE_LOCK = threading.Lock()
+_ACTIVE_PROBE_SLOTS = 0
 
 
 class GovernedObservationExecutionStageService:
@@ -126,6 +127,20 @@ class GovernedObservationExecutionStageService:
                 {**self._group_metrics(group), "physical_probe_index": index},
             )
             result, probe_blocked_reason = self._execute_group(group=group, checkpoint=checkpoint, stage_started=started)
+            if result is None:
+                blocked_reason = probe_blocked_reason
+                self._checkpoint(
+                    checkpoint,
+                    "after_physical_probe",
+                    {
+                        **self._group_metrics(group),
+                        "physical_probe_index": index,
+                        "physical_probe_status": "BLOCKED_POLICY",
+                        "evidence_record_count": 0,
+                        "blocked_reason_code": blocked_reason,
+                    },
+                )
+                break
             result_bytes = self._materialized_result_bytes(result)
             if materialized_observation_bytes + result_bytes > self.budget.max_materialized_observation_bytes:
                 blocked_reason = "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED"
@@ -150,13 +165,33 @@ class GovernedObservationExecutionStageService:
                     },
                 )
                 break
+            record_count = len(getattr(result.evidence_set, "records", []) or [])
+            if evidence_records_created + record_count > self.budget.max_evidence_records:
+                blocked_reason = "POST_COMPILE_OBSERVATION_EVIDENCE_RECORD_BUDGET_EXCEEDED"
+                result = self._evidence_record_budget_block_result(
+                    group=group,
+                    original_result=result,
+                    record_count=record_count,
+                    accepted_evidence_records=evidence_records_created,
+                )
+                record_count = 0
+                results.append(result)
+                self._checkpoint(
+                    checkpoint,
+                    "after_physical_probe",
+                    {
+                        **self._group_metrics(group),
+                        "physical_probe_index": index,
+                        "physical_probe_status": result.status,
+                        "evidence_record_count": 0,
+                        "accepted_evidence_records": evidence_records_created,
+                        "blocked_reason_code": blocked_reason,
+                    },
+                )
+                break
             materialized_observation_bytes += result_bytes
             results.append(result)
-            record_count = len(getattr(result.evidence_set, "records", []) or [])
             evidence_records_created += record_count
-            if evidence_records_created > self.budget.max_evidence_records:
-                blocked_reason = "POST_COMPILE_OBSERVATION_EVIDENCE_RECORD_BUDGET_EXCEEDED"
-                break
             if result.status == "EXECUTED" and record_count > 0:
                 consecutive_failures = 0
             else:
@@ -174,7 +209,7 @@ class GovernedObservationExecutionStageService:
             if probe_blocked_reason:
                 blocked_reason = probe_blocked_reason
                 break
-            if consecutive_failures >= self.budget.max_consecutive_execution_failures:
+            if consecutive_failures > 0 and consecutive_failures >= self.budget.max_consecutive_execution_failures:
                 blocked_reason = "POST_COMPILE_OBSERVATION_CONSECUTIVE_EXECUTION_FAILURES_EXCEEDED"
                 break
         fanout = self._fanout_metrics(groups=groups, results=results)
@@ -249,11 +284,13 @@ class GovernedObservationExecutionStageService:
         group: PhysicalObservationGroup,
         checkpoint: Callable[[str, dict[str, Any]], None] | None,
         stage_started: float,
-    ) -> tuple[ObservationExecutionResult, str | None]:
+    ) -> tuple[ObservationExecutionResult | None, str | None]:
         task = self._execution_task_for_group(group)
         capability = self.observer_registry.get(group.capability_id)
         if not self._capability_available(group.capability_id):
             return self._capability_unavailable_result(task=task, capability=capability, group=group), "POST_COMPILE_OBSERVATION_CAPABILITY_UNAVAILABLE"
+        if not self._try_acquire_probe_slot():
+            return None, "POST_COMPILE_OBSERVATION_WORKER_BOUND_OCCUPIED"
         policy = ObservationExecutionPolicy(timeout_ms=self.budget.max_probe_elapsed_ms)
         executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="aipinho_observer_probe")
         future: Future[ObservationExecutionResult] = executor.submit(
@@ -279,6 +316,7 @@ class GovernedObservationExecutionStageService:
                 try:
                     result = future.result(timeout=wait_seconds)
                     executor.shutdown(wait=False, cancel_futures=True)
+                    self._release_probe_slot()
                     return self._with_physical_provenance(result, group=group), None
                 except TimeoutError:
                     self._checkpoint(
@@ -301,6 +339,7 @@ class GovernedObservationExecutionStageService:
             return timeout_result, reason_code
         except Exception as exc:
             executor.shutdown(wait=False, cancel_futures=True)
+            self._release_probe_slot()
             return self._runtime_error_result(task=task, capability=capability, group=group, exc=exc), None
 
     def _execution_task_for_group(self, group: PhysicalObservationGroup) -> ObservationTask:
@@ -450,6 +489,56 @@ class GovernedObservationExecutionStageService:
             errors=[error],
             confidence=0.0,
             limitations=["materialized_observation_bytes_budget_exceeded"],
+            provenance={
+                "boundary": "GovernedObservationExecutionStageService",
+                "physical_probe_key": list(group.physical_probe_key),
+                "raw_execution_source_ref": group.raw_execution_source_ref,
+                "grouped_observation_task_ids": [item.observation_task_id for item in group.tasks],
+                "grouped_goal_ids": [item.goal_id for item in group.tasks],
+                "requested_canonical_keys": group.requested_canonical_keys,
+                "blocked_reason_code": reason_code,
+            },
+        )
+
+    def _evidence_record_budget_block_result(
+        self,
+        *,
+        group: PhysicalObservationGroup,
+        original_result: ObservationExecutionResult,
+        record_count: int,
+        accepted_evidence_records: int,
+    ) -> ObservationExecutionResult:
+        now = self._now()
+        capability = self.observer_registry.get(group.capability_id)
+        reason_code = "POST_COMPILE_OBSERVATION_EVIDENCE_RECORD_BUDGET_EXCEEDED"
+        error = ObservationExecutionError(
+            code="OBSERVER_POLICY_BLOCKED",
+            message="Post-compile observation evidence exceeded the evidence-record budget.",
+            capability_id=group.capability_id,
+            observer_id=(capability.observer_binding or {}).get("observer_id") if capability else None,
+            retryable=False,
+            details={
+                "blocked_reason_code": reason_code,
+                "result_evidence_record_count": record_count,
+                "accepted_evidence_records": accepted_evidence_records,
+                "max_evidence_records": self.budget.max_evidence_records,
+                "physical_probe_key": list(group.physical_probe_key),
+            },
+        )
+        return ObservationExecutionResult(
+            observation_task_id=original_result.observation_task_id,
+            goal_id=original_result.goal_id,
+            strategy_id=original_result.strategy_id,
+            capability_id=group.capability_id,
+            observer_id=(capability.observer_binding or {}).get("observer_id") if capability else None,
+            status="BLOCKED_POLICY",
+            started_at=original_result.started_at,
+            finished_at=now,
+            duration_ms=original_result.duration_ms,
+            evidence_set=EvidenceSet(),
+            errors=[error],
+            confidence=0.0,
+            limitations=["evidence_record_budget_exceeded"],
             provenance={
                 "boundary": "GovernedObservationExecutionStageService",
                 "physical_probe_key": list(group.physical_probe_key),
@@ -700,9 +789,11 @@ class GovernedObservationExecutionStageService:
         group: PhysicalObservationGroup,
         reason_code: str,
     ) -> None:
+        global _ACTIVE_PROBE_SLOTS
         future.cancel()
         executor.shutdown(wait=False, cancel_futures=True)
         with _QUARANTINE_LOCK:
+            _ACTIVE_PROBE_SLOTS = max(0, _ACTIVE_PROBE_SLOTS - 1)
             _QUARANTINED_PROBES.append(
                 (
                     future,
@@ -718,8 +809,8 @@ class GovernedObservationExecutionStageService:
     def _quarantine_block_reason(self) -> str | None:
         self._reap_quarantined_workers()
         with _QUARANTINE_LOCK:
-            occupied = len(_QUARANTINED_PROBES)
-        if occupied >= self.budget.max_quarantined_workers:
+            occupied = _ACTIVE_PROBE_SLOTS + len(_QUARANTINED_PROBES)
+        if occupied >= self.budget.max_quarantined_workers and len(_QUARANTINED_PROBES) > 0:
             return "POST_COMPILE_OBSERVATION_QUARANTINE_BOUND_OCCUPIED"
         return None
 
@@ -732,3 +823,18 @@ class GovernedObservationExecutionStageService:
                     continue
                 pending.append((future, executor, metadata))
             _QUARANTINED_PROBES[:] = pending
+
+    def _try_acquire_probe_slot(self) -> bool:
+        global _ACTIVE_PROBE_SLOTS
+        self._reap_quarantined_workers()
+        with _QUARANTINE_LOCK:
+            occupied = _ACTIVE_PROBE_SLOTS + len(_QUARANTINED_PROBES)
+            if occupied >= self.budget.max_quarantined_workers:
+                return False
+            _ACTIVE_PROBE_SLOTS += 1
+            return True
+
+    def _release_probe_slot(self) -> None:
+        global _ACTIVE_PROBE_SLOTS
+        with _QUARANTINE_LOCK:
+            _ACTIVE_PROBE_SLOTS = max(0, _ACTIVE_PROBE_SLOTS - 1)
