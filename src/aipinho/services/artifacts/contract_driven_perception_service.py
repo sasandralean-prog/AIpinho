@@ -2983,15 +2983,29 @@ class ContractDrivenPerceptionService:
         return rows
 
     def _media_metadata_capability_summary(self, execution_results: list[Any]) -> dict[str, Any]:
+        capability = self.observer_registry.get("media_metadata_reader")
+        configured = capability is not None
+        structurally_available = bool(getattr(capability, "available", False)) if capability is not None else False
         media_results = [item for item in execution_results if getattr(item, "capability_id", None) == "media_metadata_reader"]
         if not media_results:
+            if configured and structurally_available:
+                status = "configured_but_deferred"
+                execution_status = "deferred"
+                limitations = ["media_metadata_observer_execution_deferred"]
+            elif configured:
+                status = "unavailable"
+                execution_status = "not_started"
+                limitations = ["media_metadata_capability_unavailable"]
+            else:
+                status = "not_configured"
+                execution_status = "not_started"
+                limitations = ["media_metadata_capability_not_configured"]
             return {
-                "status": "configured_but_deferred",
+                "status": status,
                 "capability_id": "media_metadata_reader",
-                "configured": True,
-                "available": True,
-                "execution_status": "deferred",
-                "files_planned": 0,
+                "configured": configured,
+                "available": structurally_available,
+                "execution_status": execution_status,
                 "files_attempted": 0,
                 "files_succeeded": 0,
                 "files_failed": 0,
@@ -3009,7 +3023,7 @@ class ContractDrivenPerceptionService:
                 "evidence_records_created": 0,
                 "attributes_observed": [],
                 "attributes_missing": list(MEDIA_METADATA_EVIDENCE_KEYS),
-                "limitations": ["media_metadata_observer_execution_deferred"],
+                "limitations": limitations,
                 "errors": [],
             }
         summaries: list[dict[str, Any]] = []
@@ -3133,10 +3147,9 @@ class ContractDrivenPerceptionService:
         return {
             "status": status,
             "capability_id": "media_metadata_reader",
-            "configured": True,
-            "available": status not in {"missing_dependency", "blocked", "not_configured"},
+            "configured": configured,
+            "available": structurally_available,
             "execution_status": "executed" if status in {"available", "partial"} else status,
-            "files_planned": files_attempted,
             "files_attempted": files_attempted,
             "files_succeeded": files_succeeded,
             "files_failed": max(0, files_attempted - files_succeeded),

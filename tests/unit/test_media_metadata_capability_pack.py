@@ -97,6 +97,11 @@ class _FakeMediaBackend:
         )
 
 
+class _FakeMutagenTextFrame:
+    def __init__(self, text: object) -> None:
+        self.text = text
+
+
 def test_media_metadata_descriptor_declares_canonical_contract() -> None:
     capability = media_metadata_capability_descriptor()
 
@@ -311,6 +316,120 @@ def test_normalizer_expands_backend_tags_into_claim_level_identity_evidence() ->
     assert records["album"].normalized_value == "Album Name"
     assert records["album_artist"].normalized_value == "Album Artist"
     assert "comment" not in {str(key).casefold() for key in records}
+
+
+def test_low_confidence_metadata_does_not_get_promoted_to_identity_evidence() -> None:
+    raw = RawMediaMetadataResult(
+        backend_id="fake_backend",
+        backend_version="1",
+        file_ref="fake://media",
+        entity_ref={"entity_id": "entity_1"},
+        raw_fields=[
+            RawMediaMetadataField(
+                canonical_key="metadata",
+                normalized_value={"ARTIST": "Low Confidence Artist"},
+                confidence=0.2,
+                source_backend_id="fake_backend",
+                raw_ref="fake://media",
+                semantic_type="descriptive_metadata",
+            )
+        ],
+        confidence_by_field={"metadata": 0.2},
+        raw_ref="fake://media",
+    )
+
+    evidence = MediaMetadataNormalizer(policy=MediaMetadataBackendPolicy(min_confidence=0.7)).normalize(
+        raw_results=[raw],
+        entity_ref={"entity_id": "entity_1"},
+    )
+
+    assert evidence.records == []
+    assert evidence.canonical_keys == []
+
+
+def test_identity_evidence_from_independent_backends_is_preserved() -> None:
+    raw_results = [
+        RawMediaMetadataResult(
+            backend_id=backend_id,
+            backend_version="1",
+            file_ref="fake://media",
+            entity_ref={"entity_id": "entity_1"},
+            raw_fields=[
+                RawMediaMetadataField(
+                    canonical_key="metadata",
+                    normalized_value={"ARTIST": "Corroborated Artist"},
+                    confidence=0.9,
+                    source_backend_id=backend_id,
+                    raw_ref=f"fake://media#{backend_id}",
+                    semantic_type="descriptive_metadata",
+                )
+            ],
+            confidence_by_field={"metadata": 0.9},
+            raw_ref=f"fake://media#{backend_id}",
+        )
+        for backend_id in ["mutagen", "ffprobe"]
+    ]
+
+    evidence = MediaMetadataNormalizer(policy=MediaMetadataBackendPolicy(min_confidence=0.7)).normalize(
+        raw_results=raw_results,
+        entity_ref={"entity_id": "entity_1"},
+    )
+
+    artist_records = [record for record in evidence.records if record.canonical_key == "artist"]
+    assert len(artist_records) == 2
+    assert {record.backend_id for record in artist_records} == {"mutagen", "ffprobe"}
+    assert {record.raw_ref for record in artist_records} == {"fake://media#mutagen", "fake://media#ffprobe"}
+
+
+def test_mutagen_tag_extraction_preserves_safe_text_frame_structure() -> None:
+    backend = MutagenMediaMetadataBackend()
+    tags = {
+        "TPE1": _FakeMutagenTextFrame(["Artist One", "Artist Two"]),
+        "TIT2": ["Song Title"],
+        "APIC:cover": _FakeMutagenTextFrame(["binary artwork"]),
+    }
+
+    rows = backend._tags_to_dict(tags)
+
+    assert rows["TPE1"] == ["Artist One", "Artist Two"]
+    assert rows["TIT2"] == ["Song Title"]
+    assert "APIC:cover" not in rows
+
+
+def test_mp4_copyright_aliases_do_not_accept_plain_art_nam_alb_tags() -> None:
+    raw = RawMediaMetadataResult(
+        backend_id="fake_backend",
+        backend_version="1",
+        file_ref="fake://media",
+        entity_ref={"entity_id": "entity_1"},
+        raw_fields=[
+            RawMediaMetadataField(
+                canonical_key="metadata",
+                normalized_value={
+                    "\xa9ART": "Copyright Artist",
+                    "ART": "Plain Art",
+                    "NAM": "Plain Name",
+                    "ALB": "Plain Album",
+                },
+                confidence=0.9,
+                source_backend_id="fake_backend",
+                raw_ref="fake://media",
+                semantic_type="descriptive_metadata",
+            )
+        ],
+        confidence_by_field={"metadata": 0.9},
+        raw_ref="fake://media",
+    )
+
+    evidence = MediaMetadataNormalizer(policy=MediaMetadataBackendPolicy(min_confidence=0.7)).normalize(
+        raw_results=[raw],
+        entity_ref={"entity_id": "entity_1"},
+    )
+
+    identity_records = [record for record in evidence.records if record.semantic_type == "media_identity"]
+    assert [(record.canonical_key, record.normalized_value) for record in identity_records] == [
+        ("artist", "Copyright Artist")
+    ]
 
 
 def test_generic_metadata_record_does_not_become_identity_without_mapped_tag() -> None:

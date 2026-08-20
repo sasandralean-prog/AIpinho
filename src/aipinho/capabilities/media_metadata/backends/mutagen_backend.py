@@ -160,13 +160,29 @@ class MutagenMediaMetadataBackend:
         rows: dict[str, Any] = {}
         for key in list(tags.keys())[:200]:
             value = tags.get(key)
-            if key in {"APIC:", "covr"}:
+            normalized_key = str(key).casefold()
+            if normalized_key.startswith("apic") or normalized_key == "covr":
                 continue
-            try:
-                rows[str(key)] = str(value)
-            except Exception:
-                rows[str(key)] = repr(value)
+            rows[str(key)] = self._tag_value_to_primitive(value)
         return rows
+
+    def _tag_value_to_primitive(self, value: Any) -> Any:
+        if value is None:
+            return None
+        if isinstance(value, (str, int, float, bool)):
+            return value
+        if isinstance(value, bytes):
+            return repr(value[:128])
+        if isinstance(value, (list, tuple, set)):
+            return [self._tag_value_to_primitive(item) for item in value]
+        if isinstance(value, dict):
+            return {str(key): self._tag_value_to_primitive(item) for key, item in value.items()}
+        if hasattr(value, "text"):
+            return self._tag_value_to_primitive(getattr(value, "text"))
+        try:
+            return str(value)
+        except Exception:
+            return repr(value)
 
     def _artwork_present(self, tags: Any) -> str | None:
         if not tags:

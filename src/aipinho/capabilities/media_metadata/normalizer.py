@@ -46,7 +46,6 @@ class MediaMetadataNormalizer:
                     )
                     if record is not None:
                         records.append(record)
-        records = self._dedupe_records(records)
         confidence_values = [item.confidence for item in records]
         return EvidenceSet(
             records=records,
@@ -65,18 +64,6 @@ class MediaMetadataNormalizer:
                 "maximum_confidence": max(confidence_values) if confidence_values else 0.0,
             },
         )
-
-    def _dedupe_records(self, records: list[EvidenceRecord]) -> list[EvidenceRecord]:
-        rows: dict[tuple[str, str, str], EvidenceRecord] = {}
-        for record in records:
-            entity_id = str((record.entity_ref or {}).get("entity_id") or "")
-            key = str(record.canonical_key or record.attribute_name or "")
-            value = str(record.normalized_value or "")
-            dedupe_key = (entity_id, key, value)
-            existing = rows.get(dedupe_key)
-            if existing is None or record.confidence > existing.confidence:
-                rows[dedupe_key] = record
-        return list(rows.values())
 
     def _identity_fields_from_metadata(
         self,
@@ -103,7 +90,7 @@ class MediaMetadataNormalizer:
                     canonical_key=identity_key,
                     raw_value=raw_tag_value,
                     normalized_value=normalized_value,
-                    confidence=max(field.confidence, result.confidence_by_field.get("metadata", 0.0) or 0.0, 0.75),
+                    confidence=self._identity_confidence(field=field, result=result),
                     semantic_type="media_identity",
                     source_backend_id=field.source_backend_id or result.backend_id,
                     limitations=list(field.limitations),
@@ -124,14 +111,14 @@ class MediaMetadataNormalizer:
         aliases = {
             "title": "track_title",
             "tit2": "track_title",
-            "nam": "track_title",
+            "copyright_nam": "track_title",
             "artist": "artist",
             "artists": "artist",
             "tpe1": "artist",
-            "art": "artist",
+            "copyright_art": "artist",
             "album": "album",
             "talb": "album",
-            "alb": "album",
+            "copyright_alb": "album",
             "albumartist": "album_artist",
             "album_artist": "album_artist",
             "albumartists": "album_artist",
@@ -144,10 +131,17 @@ class MediaMetadataNormalizer:
 
     def _normalize_tag_key(self, raw_key: Any) -> str:
         text = str(raw_key or "").strip().casefold()
-        text = text.replace("\xa9", "")
-        text = text.replace("©", "")
+        text = text.replace("\xa9", "copyright_")
+        text = text.replace("©", "copyright_")
         chars = [char if char.isalnum() else "_" for char in text]
         return "_".join(part for part in "".join(chars).split("_") if part)
+
+    def _identity_confidence(self, *, field: RawMediaMetadataField, result: RawMediaMetadataResult) -> float:
+        field_confidence = float(field.confidence or 0.0)
+        metadata_confidence = result.confidence_by_field.get("metadata")
+        if metadata_confidence is None:
+            return field_confidence
+        return min(field_confidence, float(metadata_confidence or 0.0))
 
     def _normalize_identity_value(self, value: Any) -> str | None:
         if value is None:

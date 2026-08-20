@@ -389,8 +389,22 @@ def test_renderer_uses_only_contract_eligible_entities_for_corpus_inventory(tmp_
     assert render.entity_summary["perception"]["media_metadata_capability"]["status"] == "configured_but_deferred"
     assert render.entity_summary["perception"]["media_metadata_capability"]["execution_status"] == "deferred"
     assert render.entity_summary["perception"]["media_metadata_capability"]["files_attempted"] == 0
+    assert "files_planned" not in render.entity_summary["perception"]["media_metadata_capability"]
     assert render.entity_summary["perception"]["compile_policy"]["mode"] == "compile_only"
     assert render.entity_summary["perception"]["payload_metrics"]["bound_status"] == "within_bounds"
+
+
+def test_media_metadata_summary_uses_registry_configuration_not_absent_results() -> None:
+    service = ContractDrivenPerceptionService(observer_registry=CapabilityRegistry(capabilities=[]))
+
+    summary = service._media_metadata_capability_summary([])
+
+    assert summary["status"] == "not_configured"
+    assert summary["configured"] is False
+    assert summary["available"] is False
+    assert summary["execution_status"] == "not_started"
+    assert summary["files_attempted"] == 0
+    assert "files_planned" not in summary
 
 
 def test_tabular_collection_with_corpus_roots_blocks_when_selection_policy_is_not_bound(tmp_path: Path) -> None:
