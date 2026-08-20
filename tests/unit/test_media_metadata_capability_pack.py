@@ -460,6 +460,38 @@ def test_generic_metadata_record_does_not_become_identity_without_mapped_tag() -
     assert evidence.canonical_keys == ["metadata"]
 
 
+def test_set_like_identity_tag_provenance_is_deterministic_and_typed() -> None:
+    raw = RawMediaMetadataResult(
+        backend_id="fake_backend",
+        backend_version="1",
+        file_ref="fake://media",
+        entity_ref={"entity_id": "entity_1"},
+        raw_fields=[
+            RawMediaMetadataField(
+                canonical_key="metadata",
+                normalized_value={"ARTIST": {"Beta Artist", "Alpha Artist"}},
+                confidence=0.9,
+                source_backend_id="fake_backend",
+                raw_ref="fake://media",
+                semantic_type="descriptive_metadata",
+            )
+        ],
+        confidence_by_field={"metadata": 0.9},
+        raw_ref="fake://media",
+    )
+
+    evidence = MediaMetadataNormalizer(policy=MediaMetadataBackendPolicy(min_confidence=0.7)).normalize(
+        raw_results=[raw],
+        entity_ref={"entity_id": "entity_1"},
+    )
+
+    artist = next(record for record in evidence.records if record.canonical_key == "artist")
+    assert artist.normalized_value == "Alpha Artist; Beta Artist"
+    assert artist.provenance["raw_tag_value_source_type"] == "set"
+    assert artist.provenance["raw_tag_value_set_like"] is True
+    assert artist.provenance["raw_tag_value_repr"] == "['Alpha Artist', 'Beta Artist']"
+
+
 def test_media_metadata_normalizer_does_not_produce_artifact_observations_notes() -> None:
     raw = RawMediaMetadataResult(
         backend_id="fake_backend",

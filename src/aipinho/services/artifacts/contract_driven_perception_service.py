@@ -829,6 +829,10 @@ class ContractDrivenPerceptionService:
             observation_plan=perception_result.observation_plan,
             execution_results=execution_results,
         )
+        observation_plan = self._mark_post_compile_physical_execution_outcomes(
+            observation_plan=observation_plan,
+            execution_results=execution_results,
+        )
         checkpoint("after_post_execution_evidence_application")
         source_indexes = self._fact_source_indexes(
             observation_plan=observation_plan,
@@ -3303,6 +3307,60 @@ class ContractDrivenPerceptionService:
             "limitations": sorted(set(limitations)),
             "errors": errors,
         }
+
+    def _mark_post_compile_physical_execution_outcomes(
+        self,
+        *,
+        observation_plan: ObservationPlan,
+        execution_results: list[ObservationExecutionResult],
+    ) -> ObservationPlan:
+        physical_status_by_task_id: dict[str, dict[str, Any]] = {}
+        for result in execution_results:
+            provenance = getattr(result, "provenance", {}) or {}
+            task_ids = [
+                str(item)
+                for item in provenance.get("grouped_observation_task_ids", []) or []
+                if str(item)
+            ]
+            if not task_ids and getattr(result, "observation_task_id", None):
+                task_ids = [str(result.observation_task_id)]
+            physical_outcome = {
+                "status": result.status,
+                "physical_probe_key": list(provenance.get("physical_probe_key") or []),
+                "blocked_reason_code": provenance.get("blocked_reason_code"),
+            }
+            for task_id in task_ids:
+                physical_status_by_task_id[task_id] = physical_outcome
+        if not physical_status_by_task_id:
+            return observation_plan
+        updated_tasks: list[ObservationTask] = []
+        for task in observation_plan.observation_tasks:
+            outcome = physical_status_by_task_id.get(str(task.observation_task_id))
+            if (
+                outcome
+                and task.execution_disposition == "deferred_by_compile_policy"
+                and task.pre_defer_status == "READY_FOR_OBSERVER"
+            ):
+                updated_tasks.append(
+                    task.model_copy(
+                        update={
+                            "status": outcome["status"],
+                            "execution_disposition": "executed_by_post_compile_stage"
+                            if outcome["status"] == "EXECUTED"
+                            else "blocked_by_post_compile_stage",
+                            "created_from": {
+                                **dict(task.created_from or {}),
+                                "post_compile_physical_execution_status": outcome["status"],
+                                "physical_probe_key": outcome["physical_probe_key"],
+                                "blocked_reason_code": outcome.get("blocked_reason_code"),
+                                "logical_claim_satisfaction_not_inferred": True,
+                            },
+                        }
+                    )
+                )
+                continue
+            updated_tasks.append(task)
+        return observation_plan.model_copy(update={"observation_tasks": updated_tasks})
 
     def _relationship_summary(self, detection: dict[str, Any]) -> dict[str, Any]:
         candidates = detection.get("candidates") if isinstance(detection.get("candidates"), list) else []

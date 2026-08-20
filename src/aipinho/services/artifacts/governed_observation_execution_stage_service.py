@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+import threading
 import time
 from concurrent.futures import Future, ThreadPoolExecutor, TimeoutError
 from dataclasses import dataclass, field
@@ -29,6 +31,7 @@ class PostCompileObservationBudget:
     max_consecutive_execution_failures: int = 10
     max_materialized_observation_bytes: int = 8_000_000
     heartbeat_interval_ms: int = 1000
+    max_quarantined_workers: int = 1
 
 
 @dataclass(frozen=True)
@@ -37,6 +40,7 @@ class PhysicalObservationGroup:
     entity_id: str
     capability_id: str
     normalized_source_ref: str
+    raw_execution_source_ref: str
     entity: dict[str, Any]
     tasks: list[ObservationTask] = field(default_factory=list)
 
@@ -55,6 +59,10 @@ class GovernedObservationExecutionStageResult:
     telemetry: dict[str, Any]
     physical_groups: list[PhysicalObservationGroup]
     blocked_reason_code: str | None = None
+
+
+_QUARANTINED_PROBES: list[tuple[Future[ObservationExecutionResult], ThreadPoolExecutor, dict[str, Any]]] = []
+_QUARANTINE_LOCK = threading.Lock()
 
 
 class GovernedObservationExecutionStageService:
@@ -80,6 +88,16 @@ class GovernedObservationExecutionStageService:
     ) -> GovernedObservationExecutionStageResult:
         started = time.monotonic()
         self._checkpoint(checkpoint, "before_post_compile_observation_execution", {})
+        quarantine_block = self._quarantine_block_reason()
+        if quarantine_block:
+            telemetry = self._blocked_telemetry(reason_code=quarantine_block)
+            self._checkpoint(checkpoint, "after_post_compile_observation_execution", telemetry)
+            return GovernedObservationExecutionStageResult(
+                observation_execution_results=[],
+                telemetry=telemetry,
+                physical_groups=[],
+                blocked_reason_code=quarantine_block,
+            )
         groups = self._physical_groups(observation_plan=observation_plan, selected_entities=selected_entities)
         self._checkpoint(
             checkpoint,
@@ -90,6 +108,7 @@ class GovernedObservationExecutionStageService:
         consecutive_failures = 0
         blocked_reason: str | None = None
         evidence_records_created = 0
+        materialized_observation_bytes = 0
         for index, group in enumerate(groups, start=1):
             if index > self.budget.max_physical_probes:
                 blocked_reason = "POST_COMPILE_OBSERVATION_PHYSICAL_PROBE_BUDGET_EXCEEDED"
@@ -97,12 +116,41 @@ class GovernedObservationExecutionStageService:
             if (time.monotonic() - started) * 1000 > self.budget.max_total_observation_elapsed_ms:
                 blocked_reason = "POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED"
                 break
+            quarantine_block = self._quarantine_block_reason()
+            if quarantine_block:
+                blocked_reason = quarantine_block
+                break
             self._checkpoint(
                 checkpoint,
                 "before_physical_probe",
                 {**self._group_metrics(group), "physical_probe_index": index},
             )
-            result, timed_out = self._execute_group(group=group, checkpoint=checkpoint, stage_started=started)
+            result, probe_blocked_reason = self._execute_group(group=group, checkpoint=checkpoint, stage_started=started)
+            result_bytes = self._materialized_result_bytes(result)
+            if materialized_observation_bytes + result_bytes > self.budget.max_materialized_observation_bytes:
+                blocked_reason = "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED"
+                result = self._budget_block_result(
+                    group=group,
+                    original_result=result,
+                    reason_code=blocked_reason,
+                    result_bytes=result_bytes,
+                    materialized_observation_bytes=materialized_observation_bytes,
+                )
+                results.append(result)
+                self._checkpoint(
+                    checkpoint,
+                    "after_physical_probe",
+                    {
+                        **self._group_metrics(group),
+                        "physical_probe_index": index,
+                        "physical_probe_status": result.status,
+                        "evidence_record_count": 0,
+                        "materialized_observation_bytes": materialized_observation_bytes,
+                        "blocked_reason_code": blocked_reason,
+                    },
+                )
+                break
+            materialized_observation_bytes += result_bytes
             results.append(result)
             record_count = len(getattr(result.evidence_set, "records", []) or [])
             evidence_records_created += record_count
@@ -123,10 +171,10 @@ class GovernedObservationExecutionStageService:
                     "evidence_record_count": record_count,
                 },
             )
-            if timed_out:
-                blocked_reason = "POST_COMPILE_PHYSICAL_PROBE_TIMEOUT"
+            if probe_blocked_reason:
+                blocked_reason = probe_blocked_reason
                 break
-            if consecutive_failures > self.budget.max_consecutive_execution_failures:
+            if consecutive_failures >= self.budget.max_consecutive_execution_failures:
                 blocked_reason = "POST_COMPILE_OBSERVATION_CONSECUTIVE_EXECUTION_FAILURES_EXCEEDED"
                 break
         fanout = self._fanout_metrics(groups=groups, results=results)
@@ -142,6 +190,7 @@ class GovernedObservationExecutionStageService:
                 item for item in results if not (item.status == "EXECUTED" and len(item.evidence_set.records) > 0)
             ]),
             "evidence_records_created": evidence_records_created,
+            "materialized_observation_bytes": materialized_observation_bytes,
             "execution_status": "blocked" if blocked_reason else "executed" if results else "not_started",
             "blocked_reason_code": blocked_reason,
         }
@@ -170,13 +219,14 @@ class GovernedObservationExecutionStageService:
             if strategy is None or strategy.strategy_kind != "execute_observer":
                 continue
             capability_id = str(task.capability_id or "")
-            if not capability_id or self.observer_registry.get(capability_id) is None:
+            if not capability_id or not self._capability_available(capability_id):
                 continue
             for entity_id in self._target_entity_ids(task):
                 entity = entities_by_id.get(entity_id)
                 if entity is None:
                     continue
-                source_ref = self._normalized_source_ref(task=task, entity=entity)
+                raw_source_ref = self._raw_source_ref(task=task, entity=entity)
+                source_ref = self._normalized_source_ref(raw_source_ref=raw_source_ref, entity=entity)
                 key = (entity_id, capability_id, source_ref)
                 group = groups.get(key)
                 if group is None:
@@ -185,6 +235,7 @@ class GovernedObservationExecutionStageService:
                         entity_id=entity_id,
                         capability_id=capability_id,
                         normalized_source_ref=source_ref,
+                        raw_execution_source_ref=raw_source_ref,
                         entity=entity,
                         tasks=[],
                     )
@@ -198,9 +249,11 @@ class GovernedObservationExecutionStageService:
         group: PhysicalObservationGroup,
         checkpoint: Callable[[str, dict[str, Any]], None] | None,
         stage_started: float,
-    ) -> tuple[ObservationExecutionResult, bool]:
+    ) -> tuple[ObservationExecutionResult, str | None]:
         task = self._execution_task_for_group(group)
         capability = self.observer_registry.get(group.capability_id)
+        if not self._capability_available(group.capability_id):
+            return self._capability_unavailable_result(task=task, capability=capability, group=group), "POST_COMPILE_OBSERVATION_CAPABILITY_UNAVAILABLE"
         policy = ObservationExecutionPolicy(timeout_ms=self.budget.max_probe_elapsed_ms)
         executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="aipinho_observer_probe")
         future: Future[ObservationExecutionResult] = executor.submit(
@@ -209,17 +262,24 @@ class GovernedObservationExecutionStageService:
             capability=capability,
             policy=policy,
         )
-        deadline = time.monotonic() + (self.budget.max_probe_elapsed_ms / 1000)
+        probe_deadline = time.monotonic() + (self.budget.max_probe_elapsed_ms / 1000)
+        stage_deadline = stage_started + (self.budget.max_total_observation_elapsed_ms / 1000)
         try:
             while True:
-                remaining = deadline - time.monotonic()
-                if remaining <= 0:
+                now = time.monotonic()
+                remaining_probe = probe_deadline - now
+                remaining_stage = stage_deadline - now
+                if remaining_probe <= 0 or remaining_stage <= 0:
                     break
-                wait_seconds = min(max(0.001, remaining), max(0.001, self.budget.heartbeat_interval_ms / 1000))
+                wait_seconds = min(
+                    max(0.001, remaining_probe),
+                    max(0.001, remaining_stage),
+                    max(0.001, self.budget.heartbeat_interval_ms / 1000),
+                )
                 try:
                     result = future.result(timeout=wait_seconds)
                     executor.shutdown(wait=False, cancel_futures=True)
-                    return self._with_physical_provenance(result, group=group), False
+                    return self._with_physical_provenance(result, group=group), None
                 except TimeoutError:
                     self._checkpoint(
                         checkpoint,
@@ -227,21 +287,25 @@ class GovernedObservationExecutionStageService:
                         {
                             **self._group_metrics(group),
                             "elapsed_ms": round((time.monotonic() - stage_started) * 1000, 3),
-                            "probe_elapsed_ms": round((self.budget.max_probe_elapsed_ms / 1000 - max(0.0, remaining)) * 1000, 3),
+                            "probe_elapsed_ms": round((self.budget.max_probe_elapsed_ms / 1000 - max(0.0, remaining_probe)) * 1000, 3),
                         },
                     )
-            future.cancel()
-            timeout_result = self._timeout_result(task=task, capability=capability, group=group)
-            executor.shutdown(wait=False, cancel_futures=True)
-            return timeout_result, True
+            remaining_stage = stage_deadline - time.monotonic()
+            reason_code = (
+                "POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED"
+                if remaining_stage <= 0
+                else "POST_COMPILE_PHYSICAL_PROBE_TIMEOUT"
+            )
+            self._register_quarantined_probe(future=future, executor=executor, group=group, reason_code=reason_code)
+            timeout_result = self._timeout_result(task=task, capability=capability, group=group, reason_code=reason_code)
+            return timeout_result, reason_code
         except Exception as exc:
             executor.shutdown(wait=False, cancel_futures=True)
-            return self._runtime_error_result(task=task, capability=capability, group=group, exc=exc), False
+            return self._runtime_error_result(task=task, capability=capability, group=group, exc=exc), None
 
     def _execution_task_for_group(self, group: PhysicalObservationGroup) -> ObservationTask:
         first = group.tasks[0]
         entity_ref = self._execution_entity_ref(entity=group.entity, capability_id=group.capability_id)
-        source_ref = self._source_ref_for_entity(group.entity)
         expected_outputs = sorted(MEDIA_METADATA_EVIDENCE_KEYS) if group.capability_id == "media_metadata_reader" else group.requested_canonical_keys
         return first.model_copy(
             update={
@@ -250,8 +314,9 @@ class GovernedObservationExecutionStageService:
                 "inputs": {
                     **dict(first.inputs or {}),
                     "entity_id": group.entity_id,
-                    "file_path": source_ref,
-                    "source_ref": group.normalized_source_ref,
+                    "file_path": group.raw_execution_source_ref,
+                    "source_ref": group.raw_execution_source_ref,
+                    "normalized_source_ref": group.normalized_source_ref,
                     "entity_role": entity_ref.get("entity_role"),
                     "source_root_role": entity_ref.get("source_root_role"),
                     "required_confidence": first.inputs.get("required_confidence", 0.0),
@@ -260,6 +325,8 @@ class GovernedObservationExecutionStageService:
                 "created_from": {
                     **dict(first.created_from or {}),
                     "physical_probe_key": list(group.physical_probe_key),
+                    "raw_execution_source_ref": group.raw_execution_source_ref,
+                    "normalized_source_ref": group.normalized_source_ref,
                     "grouped_observation_task_ids": [task.observation_task_id for task in group.tasks],
                     "grouped_goal_ids": [task.goal_id for task in group.tasks],
                     "requested_canonical_keys": group.requested_canonical_keys,
@@ -272,6 +339,8 @@ class GovernedObservationExecutionStageService:
         provenance.update(
             {
                 "physical_probe_key": list(group.physical_probe_key),
+                "raw_execution_source_ref": group.raw_execution_source_ref,
+                "normalized_source_ref": group.normalized_source_ref,
                 "grouped_observation_task_ids": [task.observation_task_id for task in group.tasks],
                 "grouped_goal_ids": [task.goal_id for task in group.tasks],
                 "requested_canonical_keys": group.requested_canonical_keys,
@@ -287,18 +356,21 @@ class GovernedObservationExecutionStageService:
         task: ObservationTask,
         capability: ObservationCapability | None,
         group: PhysicalObservationGroup,
+        reason_code: str,
     ) -> ObservationExecutionResult:
         now = self._now()
         error = ObservationExecutionError(
             code="OBSERVER_TIMEOUT",
-            message="Post-compile observation probe exceeded the configured timeout.",
+            message="Post-compile observation probe exceeded a governed execution deadline.",
             capability_id=group.capability_id,
             observer_id=(capability.observer_binding or {}).get("observer_id") if capability else None,
             retryable=True,
             details={
                 "timeout_ms": self.budget.max_probe_elapsed_ms,
+                "total_budget_ms": self.budget.max_total_observation_elapsed_ms,
                 "physical_probe_key": list(group.physical_probe_key),
                 "late_result_quarantined": True,
+                "blocked_reason_code": reason_code,
             },
         )
         return ObservationExecutionResult(
@@ -319,7 +391,7 @@ class GovernedObservationExecutionStageService:
                     observation_task_id=task.observation_task_id,
                     capability_id=group.capability_id,
                     status="BLOCKED_TIMEOUT",
-                    reason_code="OBSERVER_TIMEOUT",
+                    reason_code=reason_code,
                     message="Late observer result was quarantined after timeout.",
                     timestamp=now,
                     details={"physical_probe_key": list(group.physical_probe_key)},
@@ -330,11 +402,93 @@ class GovernedObservationExecutionStageService:
             provenance={
                 "boundary": "GovernedObservationExecutionStageService",
                 "physical_probe_key": list(group.physical_probe_key),
+                "raw_execution_source_ref": group.raw_execution_source_ref,
                 "grouped_observation_task_ids": [item.observation_task_id for item in group.tasks],
                 "grouped_goal_ids": [item.goal_id for item in group.tasks],
                 "requested_canonical_keys": group.requested_canonical_keys,
                 "late_result_quarantined": True,
+                "blocked_reason_code": reason_code,
             },
+        )
+
+    def _budget_block_result(
+        self,
+        *,
+        group: PhysicalObservationGroup,
+        original_result: ObservationExecutionResult,
+        reason_code: str,
+        result_bytes: int,
+        materialized_observation_bytes: int,
+    ) -> ObservationExecutionResult:
+        now = self._now()
+        capability = self.observer_registry.get(group.capability_id)
+        error = ObservationExecutionError(
+            code="OBSERVER_POLICY_BLOCKED",
+            message="Post-compile observation evidence exceeded the materialized observation budget.",
+            capability_id=group.capability_id,
+            observer_id=(capability.observer_binding or {}).get("observer_id") if capability else None,
+            retryable=False,
+            details={
+                "blocked_reason_code": reason_code,
+                "result_bytes": result_bytes,
+                "materialized_observation_bytes": materialized_observation_bytes,
+                "max_materialized_observation_bytes": self.budget.max_materialized_observation_bytes,
+                "physical_probe_key": list(group.physical_probe_key),
+            },
+        )
+        return ObservationExecutionResult(
+            observation_task_id=original_result.observation_task_id,
+            goal_id=original_result.goal_id,
+            strategy_id=original_result.strategy_id,
+            capability_id=group.capability_id,
+            observer_id=(capability.observer_binding or {}).get("observer_id") if capability else None,
+            status="BLOCKED_POLICY",
+            started_at=original_result.started_at,
+            finished_at=now,
+            duration_ms=original_result.duration_ms,
+            evidence_set=EvidenceSet(),
+            errors=[error],
+            confidence=0.0,
+            limitations=["materialized_observation_bytes_budget_exceeded"],
+            provenance={
+                "boundary": "GovernedObservationExecutionStageService",
+                "physical_probe_key": list(group.physical_probe_key),
+                "raw_execution_source_ref": group.raw_execution_source_ref,
+                "grouped_observation_task_ids": [item.observation_task_id for item in group.tasks],
+                "grouped_goal_ids": [item.goal_id for item in group.tasks],
+                "requested_canonical_keys": group.requested_canonical_keys,
+                "blocked_reason_code": reason_code,
+            },
+        )
+
+    def _capability_unavailable_result(
+        self,
+        *,
+        task: ObservationTask,
+        capability: ObservationCapability | None,
+        group: PhysicalObservationGroup,
+    ) -> ObservationExecutionResult:
+        now = self._now()
+        error = ObservationExecutionError(
+            code="OBSERVER_POLICY_BLOCKED",
+            message="Post-compile observation capability was unavailable before physical execution.",
+            capability_id=group.capability_id,
+            observer_id=(capability.observer_binding or {}).get("observer_id") if capability else None,
+            retryable=False,
+            details={"physical_probe_key": list(group.physical_probe_key), "blocked_reason_code": "POST_COMPILE_OBSERVATION_CAPABILITY_UNAVAILABLE"},
+        )
+        return ObservationExecutionResult(
+            observation_task_id=task.observation_task_id,
+            goal_id=task.goal_id,
+            strategy_id=task.strategy_id,
+            capability_id=group.capability_id,
+            observer_id=(capability.observer_binding or {}).get("observer_id") if capability else None,
+            status="BLOCKED_POLICY",
+            started_at=now,
+            finished_at=now,
+            evidence_set=EvidenceSet(),
+            errors=[error],
+            provenance={"boundary": "GovernedObservationExecutionStageService", "physical_probe_key": list(group.physical_probe_key)},
         )
 
     def _runtime_error_result(
@@ -415,6 +569,7 @@ class GovernedObservationExecutionStageService:
             "physical_probe_key": list(group.physical_probe_key),
             "entity_id": group.entity_id,
             "capability_id": group.capability_id,
+            "raw_execution_source_ref_present": bool(group.raw_execution_source_ref),
             "grouped_observation_task_count": len(group.tasks),
             "requested_canonical_key_count": len(group.requested_canonical_keys),
         }
@@ -436,14 +591,17 @@ class GovernedObservationExecutionStageService:
             rows.append(str(task.entity_ref.get("entity_id")))
         return list(dict.fromkeys(rows))
 
-    def _normalized_source_ref(self, *, task: ObservationTask, entity: dict[str, Any]) -> str:
+    def _raw_source_ref(self, *, task: ObservationTask, entity: dict[str, Any]) -> str:
         source = (
-            task.inputs.get("source_ref")
-            or task.inputs.get("file_path")
+            task.inputs.get("file_path")
+            or task.inputs.get("source_ref")
             or task.inputs.get("raw_ref")
             or self._source_ref_for_entity(entity)
         )
-        text = str(source or "").strip().replace("\\", "/")
+        return str(source or "").strip() or f"entity:{entity.get('entity_id')}"
+
+    def _normalized_source_ref(self, *, raw_source_ref: str, entity: dict[str, Any]) -> str:
+        text = str(raw_source_ref or "").strip().replace("\\", "/")
         return text or f"entity:{entity.get('entity_id')}"
 
     def _source_ref_for_entity(self, entity: dict[str, Any]) -> str:
@@ -458,17 +616,43 @@ class GovernedObservationExecutionStageService:
                 value = value.get("value")
             if value not in (None, ""):
                 return str(value)
+        source_root = str(entity.get("source_root") or self._attribute_value(entity, "source_root") or "").strip()
+        relative_path = str(entity.get("relative_path") or self._attribute_value(entity, "relative_path") or "").strip()
+        if source_root and relative_path:
+            root = source_root.rstrip("/\\")
+            relative = relative_path.lstrip("/\\")
+            return f"{root}\\{relative}"
         return ""
 
     def _execution_entity_ref(self, *, entity: dict[str, Any], capability_id: str) -> dict[str, Any]:
+        source_root_role = str(entity.get("source_root_role") or entity.get("root_role") or self._attribute_value(entity, "source_root_role") or "")
+        entity_role = str(entity.get("entity_role") or entity.get("role") or self._attribute_value(entity, "entity_role") or "")
+        if capability_id == "media_metadata_reader" and source_root_role in {"library_root", "corpus_root"} and entity_role != "media_asset_candidate":
+            execution_role = "media_asset_candidate"
+        else:
+            execution_role = entity_role
         return {
             "entity_id": str(entity.get("entity_id") or ""),
-            "entity_role": str(entity.get("entity_role") or entity.get("role") or ""),
+            "entity_role": execution_role,
+            "original_entity_role": entity_role,
             "entity_kind": str(entity.get("entity_kind") or entity.get("kind") or ""),
-            "source_root_role": str(entity.get("source_root_role") or entity.get("root_role") or ""),
+            "source_root_role": source_root_role,
+            "source_root": str(entity.get("source_root") or self._attribute_value(entity, "source_root") or ""),
+            "relative_path": str(entity.get("relative_path") or self._attribute_value(entity, "relative_path") or ""),
             "path": self._source_ref_for_entity(entity),
             "capability_id": capability_id,
+            "observation_hypothesis": "media_asset_candidate_for_contract_required_metadata" if execution_role != entity_role else None,
         }
+
+    def _attribute_value(self, entity: dict[str, Any], key: str) -> Any:
+        attributes = entity.get("attributes") if isinstance(entity.get("attributes"), dict) else {}
+        value = attributes.get(key)
+        if value is None:
+            observed_attributes = entity.get("observed_attributes") if isinstance(entity.get("observed_attributes"), dict) else {}
+            value = observed_attributes.get(key)
+        if isinstance(value, dict):
+            return value.get("value")
+        return value
 
     def _checkpoint(self, checkpoint: Callable[[str, dict[str, Any]], None] | None, stage: str, metrics: dict[str, Any]) -> None:
         if checkpoint is None:
@@ -477,3 +661,74 @@ class GovernedObservationExecutionStageService:
 
     def _now(self) -> str:
         return datetime.now(timezone.utc).isoformat()
+
+    def _capability_available(self, capability_id: str) -> bool:
+        capability = self.observer_registry.get(capability_id)
+        return bool(capability is not None and capability.available and str(capability.status or "available") not in {"disabled", "unavailable", "blocked"})
+
+    def _materialized_result_bytes(self, result: ObservationExecutionResult) -> int:
+        try:
+            payload = result.evidence_set.model_dump(mode="json")
+        except Exception:
+            payload = {"records": []}
+        return len(json.dumps(payload, sort_keys=True, default=str, ensure_ascii=False).encode("utf-8"))
+
+    def _blocked_telemetry(self, *, reason_code: str) -> dict[str, Any]:
+        return {
+            "dedup_group_count": 0,
+            "files_planned": 0,
+            "grouped_observation_task_count": 0,
+            "requested_canonical_key_count": 0,
+            "goals_satisfied": 0,
+            "goals_unsatisfied": 0,
+            "fanout_claim_count": 0,
+            "physical_probe_count": 0,
+            "files_attempted": 0,
+            "files_succeeded": 0,
+            "files_failed": 0,
+            "evidence_records_created": 0,
+            "materialized_observation_bytes": 0,
+            "execution_status": "blocked",
+            "blocked_reason_code": reason_code,
+        }
+
+    def _register_quarantined_probe(
+        self,
+        *,
+        future: Future[ObservationExecutionResult],
+        executor: ThreadPoolExecutor,
+        group: PhysicalObservationGroup,
+        reason_code: str,
+    ) -> None:
+        future.cancel()
+        executor.shutdown(wait=False, cancel_futures=True)
+        with _QUARANTINE_LOCK:
+            _QUARANTINED_PROBES.append(
+                (
+                    future,
+                    executor,
+                    {
+                        "physical_probe_key": list(group.physical_probe_key),
+                        "reason_code": reason_code,
+                        "registered_at_monotonic": time.monotonic(),
+                    },
+                )
+            )
+
+    def _quarantine_block_reason(self) -> str | None:
+        self._reap_quarantined_workers()
+        with _QUARANTINE_LOCK:
+            occupied = len(_QUARANTINED_PROBES)
+        if occupied >= self.budget.max_quarantined_workers:
+            return "POST_COMPILE_OBSERVATION_QUARANTINE_BOUND_OCCUPIED"
+        return None
+
+    def _reap_quarantined_workers(self) -> None:
+        with _QUARANTINE_LOCK:
+            pending: list[tuple[Future[ObservationExecutionResult], ThreadPoolExecutor, dict[str, Any]]] = []
+            for future, executor, metadata in _QUARANTINED_PROBES:
+                if future.done() or future.cancelled():
+                    executor.shutdown(wait=False, cancel_futures=True)
+                    continue
+                pending.append((future, executor, metadata))
+            _QUARANTINED_PROBES[:] = pending

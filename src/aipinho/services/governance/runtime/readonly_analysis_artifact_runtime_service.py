@@ -2817,15 +2817,16 @@ class ReadonlyAnalysisArtifactRuntimeService:
         perception_contract["expected_schema"] = expected_schema
         perception_contract["artifact_intent_plan"] = intent_plan.model_dump(mode="json")
         perception_contract["semantic_entity_selection"] = selection_result.model_dump(mode="json")
+        contract_compile_policy = dict((declared_contract or {}).get("perception_compile_policy") or {})
         perception_contract["perception_compile_policy"] = {
+            **contract_compile_policy,
+            "max_materialized_payload_bytes": int(contract_compile_policy.get("max_materialized_payload_bytes") or 2_000_000),
+            "max_payload_items": int(contract_compile_policy.get("max_payload_items") or 250_000),
+            "caller_component": "readonly_analysis_artifact_runtime",
             "mode": "compile_only",
             "execute_observers": False,
             "execute_relationship_detection": False,
             "max_observer_executions": 0,
-            "max_materialized_payload_bytes": 2_000_000,
-            "max_payload_items": 250_000,
-            **dict((declared_contract or {}).get("perception_compile_policy") or {}),
-            "caller_component": "readonly_analysis_artifact_runtime",
         }
         perception_result = self.perception.compile(
             graph=graph_payload,
@@ -4158,6 +4159,13 @@ class ReadonlyAnalysisArtifactRuntimeService:
         }
         media = perception_payload.get("media_metadata_capability") if isinstance(perception_payload.get("media_metadata_capability"), dict) else {}
         execution_telemetry = perception_payload.get("post_compile_observation_execution") if isinstance(perception_payload.get("post_compile_observation_execution"), dict) else {}
+        has_physical_telemetry = bool(execution_telemetry)
+
+        def physical_int(key: str, fallback: int) -> int:
+            if has_physical_telemetry and key in execution_telemetry:
+                return int(execution_telemetry.get(key) or 0)
+            return fallback
+
         errors = media.get("backend_error_counts") if isinstance(media.get("backend_error_counts"), dict) else {}
         raw_unsupported_count = sum(
             int(count or 0)
@@ -4169,9 +4177,12 @@ class ReadonlyAnalysisArtifactRuntimeService:
             for code, count in errors.items()
             if any(token in str(code) for token in ("RUNTIME_ERROR", "READ_ERROR", "TIMEOUT", "INVALID_JSON"))
         )
-        files_attempted = len(attempted_ids)
-        files_succeeded = len(observed_ids)
-        files_failed = max(0, files_attempted - files_succeeded)
+        entity_files_attempted = len(attempted_ids)
+        entity_files_succeeded = len(observed_ids)
+        entity_files_failed = max(0, entity_files_attempted - entity_files_succeeded)
+        files_attempted = physical_int("files_attempted", entity_files_attempted)
+        files_succeeded = physical_int("files_succeeded", entity_files_succeeded)
+        files_failed = physical_int("files_failed", entity_files_failed)
         unsupported_count = min(files_failed, raw_unsupported_count)
         read_error_count = min(files_failed, raw_read_error_count)
         selected_count = len(selected_ids)
@@ -4214,11 +4225,14 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "configured": bool(media.get("configured", False)),
             "available": bool(media.get("available", False)),
             "execution_status": media.get("execution_status") or ("deferred" if status == "deferred" else status),
-            "files_planned": int(execution_telemetry.get("files_planned") or selected_count),
+            "files_planned": physical_int("files_planned", selected_count),
             "files_expected": selected_count,
             "files_attempted": files_attempted,
             "files_succeeded": files_succeeded,
             "files_failed": files_failed,
+            "entity_observation_files_attempted": entity_files_attempted,
+            "entity_observation_files_succeeded": entity_files_succeeded,
+            "entity_observation_files_failed": entity_files_failed,
             "unsupported_count": unsupported_count,
             "read_error_count": read_error_count,
             "coverage_ratio": round(coverage_ratio, 4),
@@ -4226,9 +4240,9 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "attributes_missing": contract_required_attributes_missing,
             "contract_required_attributes_missing": contract_required_attributes_missing,
             "capability_attributes_unobserved": capability_attributes_unobserved,
-            "physical_probe_count": int(execution_telemetry.get("physical_probe_count") or files_attempted),
-            "goals_satisfied": int(execution_telemetry.get("goals_satisfied") or 0),
-            "goals_unsatisfied": int(execution_telemetry.get("goals_unsatisfied") or 0),
+            "physical_probe_count": physical_int("physical_probe_count", files_attempted),
+            "goals_satisfied": physical_int("goals_satisfied", 0),
+            "goals_unsatisfied": physical_int("goals_unsatisfied", 0),
             "backend_error_counts": dict(errors),
             "reason_codes": self._metadata_coverage_reason_codes(
                 status=status,

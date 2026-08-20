@@ -46,7 +46,7 @@ class _Adapter:
         }
 
 
-def _capability() -> ObservationCapability:
+def _capability(*, available: bool = True, status: str = "available") -> ObservationCapability:
     return ObservationCapability(
         capability_id="media_metadata_reader",
         name="Media metadata reader",
@@ -63,7 +63,8 @@ def _capability() -> ObservationCapability:
             "adapter_id": "media_metadata_reader",
             "input_schema": {"required": ["file_path"]},
         },
-        available=True,
+        available=available,
+        status=status,
     )
 
 
@@ -108,6 +109,19 @@ def _stage(adapter: _Adapter, *, budget: PostCompileObservationBudget | None = N
     )
 
 
+def _stage_with_capability(
+    adapter: _Adapter,
+    *,
+    capability: ObservationCapability,
+    budget: PostCompileObservationBudget | None = None,
+) -> GovernedObservationExecutionStageService:
+    return GovernedObservationExecutionStageService(
+        observation_boundary=ObservationExecutionBoundaryService(adapters={"media_metadata_reader": adapter}),
+        observer_registry=CapabilityRegistry(capabilities=[capability]),
+        budget=budget or PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=25),
+    )
+
+
 def test_one_entity_many_tasks_create_one_physical_probe_and_logical_fanout() -> None:
     adapter = _Adapter(keys=["track_title", "artist"])
     stage = _stage(adapter)
@@ -144,6 +158,7 @@ def test_source_ref_and_entity_id_are_part_of_physical_dedup_key() -> None:
     )
 
     assert len(adapter.calls) == 3
+    assert [call.inputs["file_path"] for call in adapter.calls] == ["media://one", "media://two", "media://one"]
     assert result.telemetry["dedup_group_count"] == 3
     assert result.telemetry["physical_probe_count"] == 3
 
@@ -189,6 +204,84 @@ def test_timeout_quarantines_late_result_and_fail_stops_before_next_probe() -> N
     assert result.observation_execution_results[0].status == "BLOCKED_TIMEOUT"
     assert result.observation_execution_results[0].evidence_set.records == []
     assert "physical_probe_checkpoint" in checkpoints
+    time.sleep(0.25)
+    stage.execute(observation_plan=_plan([]), selected_entities=[])
+
+
+def test_cross_run_quarantine_bound_blocks_second_run_without_new_probe() -> None:
+    adapter = _Adapter(delay_s=0.2, keys=["artist"])
+    budget = PostCompileObservationBudget(max_probe_elapsed_ms=20, heartbeat_interval_ms=5, max_quarantined_workers=1)
+    stage_a = _stage(adapter, budget=budget)
+    stage_b = _stage(adapter, budget=budget)
+
+    first = stage_a.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_1", source_ref="media://one")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+    )
+    second = stage_b.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_2", source_ref="media://two")]),
+        selected_entities=[{"entity_id": "entity_2", "path": "media://two", "entity_role": "media_asset_candidate"}],
+    )
+
+    assert first.blocked_reason_code == "POST_COMPILE_PHYSICAL_PROBE_TIMEOUT"
+    assert second.blocked_reason_code == "POST_COMPILE_OBSERVATION_QUARANTINE_BOUND_OCCUPIED"
+    assert len(adapter.calls) == 1
+    assert second.telemetry["physical_probe_count"] == 0
+    assert second.telemetry["files_attempted"] == 0
+    time.sleep(0.25)
+    stage_b.execute(observation_plan=_plan([]), selected_entities=[])
+
+
+def test_total_observation_deadline_blocks_active_probe_before_probe_deadline() -> None:
+    adapter = _Adapter(delay_s=0.1, keys=["artist"])
+    stage = _stage(
+        adapter,
+        budget=PostCompileObservationBudget(max_probe_elapsed_ms=500, max_total_observation_elapsed_ms=20, heartbeat_interval_ms=5),
+    )
+
+    result = stage.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_1", source_ref="media://one")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+    )
+
+    assert result.blocked_reason_code == "POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED"
+    assert len(adapter.calls) == 1
+    assert result.observation_execution_results[0].evidence_set.records == []
+    time.sleep(0.12)
+    stage.execute(observation_plan=_plan([]), selected_entities=[])
+
+
+def test_materialized_observation_bytes_budget_blocks_before_materialization() -> None:
+    adapter = _Adapter(keys=["artist"])
+    stage = _stage(
+        adapter,
+        budget=PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=10, max_materialized_observation_bytes=10),
+    )
+
+    result = stage.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_1", source_ref="media://one")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+    )
+
+    assert result.blocked_reason_code == "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED"
+    assert result.observation_execution_results[0].status == "BLOCKED_POLICY"
+    assert result.observation_execution_results[0].evidence_set.records == []
+    assert result.telemetry["physical_probe_count"] == 1
+    assert result.telemetry["files_failed"] == 1
+
+
+def test_unavailable_capability_is_revalidated_before_physical_execution() -> None:
+    adapter = _Adapter(keys=["artist"])
+    stage = _stage_with_capability(adapter, capability=_capability(available=False, status="unavailable"))
+
+    result = stage.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_1", source_ref="media://one")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+    )
+
+    assert adapter.calls == []
+    assert result.telemetry["dedup_group_count"] == 0
+    assert result.telemetry["physical_probe_count"] == 0
 
 
 def test_post_execution_materialization_updates_evidence_and_attribute_observations() -> None:
@@ -217,3 +310,10 @@ def test_post_execution_materialization_updates_evidence_and_attribute_observati
     assert materialized.observation_execution_results
     assert any(record.canonical_key == "artist" for record in materialized.evidence_set.records)
     assert any(item.canonical_key == "artist" and item.observation_state == "observed" for item in materialized.attribute_observations)
+    physical_tasks = {
+        item.canonical_key: item
+        for item in materialized.observation_plan.observation_tasks
+        if item.execution_disposition == "executed_by_post_compile_stage"
+    }
+    assert physical_tasks["artist"].status == "EXECUTED"
+    assert physical_tasks["artist"].created_from["logical_claim_satisfaction_not_inferred"] is True

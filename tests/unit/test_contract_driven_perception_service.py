@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any
 
 from aipinho.schemas.artifacts.contract_perception import ObservationCapability
 from aipinho.services.artifacts.contract_driven_perception_service import CapabilityRegistry, ContractDrivenPerceptionService
@@ -37,6 +38,16 @@ def _observed_entity_service() -> ObservedEntityCompilationService:
             "display_labels": {"extension": "extensão"},
         }
     )
+
+
+class _RecordingPerceptionService(ContractDrivenPerceptionService):
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        self.seen_compile_policy: dict[str, Any] | None = None
+
+    def compile(self, *, graph: dict[str, Any], declared_contract: dict[str, Any] | None = None, stage_observer=None):
+        self.seen_compile_policy = dict((declared_contract or {}).get("perception_compile_policy") or {})
+        return super().compile(graph=graph, declared_contract=declared_contract, stage_observer=stage_observer)
 
 
 def test_contract_observation_selects_candidates_without_domain_rules(tmp_path: Path) -> None:
@@ -250,6 +261,37 @@ def test_contract_aware_renderer_publishes_perception_summary(tmp_path: Path) ->
     assert render.entity_summary["perception"]["evidence_set"]["records"]
     assert render.entity_summary["perception"]["semantic_coverage_report"]["is_semantically_complete"] is False
     assert any(item["reason_code"] == "CAPABILITY_REJECTED" for item in render.semantic_gaps)
+
+
+def test_readonly_runtime_compile_only_invariants_override_hostile_contract_policy(tmp_path: Path) -> None:
+    (tmp_path / "alpha.dat").write_text("content", encoding="utf-8")
+    observed = _observed_entity_service()
+    perception = _RecordingPerceptionService(observed_entities=observed)
+    runtime = ReadonlyAnalysisArtifactRuntimeService(observed_entities=observed, perception=perception)
+    graph = observed.compile(workspace=str(tmp_path)).model_dump(mode="json")
+
+    runtime._contract_tabular_collection_content(
+        expected_schema=["nome"],
+        analysis_payload={"observed_entity_graph": graph},
+        declared_contract={
+            "expected_kind": "tabular_collection",
+            "expected_schema": ["nome"],
+            "perception_compile_policy": {
+                "mode": "execute",
+                "execute_observers": True,
+                "execute_relationship_detection": True,
+                "max_observer_executions": 99,
+                "max_materialized_payload_bytes": 123,
+            },
+        },
+    )
+
+    assert perception.seen_compile_policy is not None
+    assert perception.seen_compile_policy["mode"] == "compile_only"
+    assert perception.seen_compile_policy["execute_observers"] is False
+    assert perception.seen_compile_policy["execute_relationship_detection"] is False
+    assert perception.seen_compile_policy["max_observer_executions"] == 0
+    assert perception.seen_compile_policy["max_materialized_payload_bytes"] == 123
 
 
 def test_workspace_root_roles_are_preserved_and_corpus_selection_excludes_project_files(tmp_path: Path) -> None:

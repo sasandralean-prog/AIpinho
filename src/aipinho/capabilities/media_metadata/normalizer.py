@@ -96,8 +96,8 @@ class MediaMetadataNormalizer:
                     limitations=list(field.limitations),
                     raw_ref=field.raw_ref or result.raw_ref or result.file_ref,
                     provenance={
+                        **self._raw_value_provenance(raw_tag_value),
                         "raw_tag_key": str(raw_tag_key),
-                        "raw_tag_value_repr": repr(raw_tag_value)[:500],
                         "semantic_mapper": "media_metadata_identity_tag_mapper_v1",
                         "canonical_key": identity_key,
                     },
@@ -158,6 +158,42 @@ class MediaMetadataNormalizer:
             text = str(value)
         text = " ".join(str(text or "").strip().split())
         return text or None
+
+    def _raw_value_provenance(self, value: Any) -> dict[str, Any]:
+        source_type = type(value).__name__
+        if isinstance(value, set):
+            rows = sorted(
+                str(item)
+                for item in (self._normalize_identity_value(item) for item in value)
+                if item
+            )
+            return {
+                "raw_tag_value_repr": repr(rows)[:500],
+                "raw_tag_value_source_type": "set",
+                "raw_tag_value_set_like": True,
+            }
+        if isinstance(value, (list, tuple)):
+            rows = [
+                str(item)
+                for item in (self._normalize_identity_value(item) for item in value)
+                if item
+            ]
+            return {
+                "raw_tag_value_repr": repr(rows)[:500],
+                "raw_tag_value_source_type": source_type,
+                "raw_tag_value_set_like": False,
+            }
+        if hasattr(value, "text"):
+            return {
+                "raw_tag_value_repr": repr(self._normalize_identity_value(getattr(value, "text")))[:500],
+                "raw_tag_value_source_type": source_type,
+                "raw_tag_value_set_like": False,
+            }
+        return {
+            "raw_tag_value_repr": repr(value)[:500],
+            "raw_tag_value_source_type": source_type,
+            "raw_tag_value_set_like": False,
+        }
 
     def observations_payload(
         self,
@@ -315,6 +351,8 @@ class MediaMetadataNormalizer:
         return {
             "raw_tag_key": str(field.provenance.get("raw_tag_key") or field.canonical_key),
             "raw_tag_value_repr": str(field.provenance.get("raw_tag_value_repr") or repr(field.raw_value)[:500]),
+            "raw_tag_value_source_type": str(field.provenance.get("raw_tag_value_source_type") or type(field.raw_value).__name__),
+            "raw_tag_value_set_like": bool(field.provenance.get("raw_tag_value_set_like", False)),
             "semantic_mapper": "media_metadata_identity_tag_mapper_v1",
             "canonical_key": canonical_key,
         }

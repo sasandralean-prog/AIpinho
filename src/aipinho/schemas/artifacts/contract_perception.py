@@ -74,6 +74,11 @@ ObservationExecutionStatus = Literal[
     "BLOCKED_TIMEOUT",
     "BLOCKED_OBSERVER_ERROR",
 ]
+ObservationExecutionDisposition = Literal[
+    "deferred_by_compile_policy",
+    "executed_by_post_compile_stage",
+    "blocked_by_post_compile_stage",
+]
 ObservationExecutionErrorCode = Literal[
     "OBSERVER_NOT_BOUND",
     "OBSERVER_INPUT_SCHEMA_INVALID",
@@ -423,7 +428,7 @@ class ObservationTask(AIpinhoModel):
     expected_outputs: list[str] = Field(default_factory=list)
     expected_evidence: list[str] = Field(default_factory=list)
     status: ObservationTaskStatus = "PLANNED"
-    execution_disposition: str | None = None
+    execution_disposition: ObservationExecutionDisposition | None = None
     pre_defer_status: ObservationTaskStatus | None = None
     created_from: dict[str, Any] = Field(default_factory=dict)
 
