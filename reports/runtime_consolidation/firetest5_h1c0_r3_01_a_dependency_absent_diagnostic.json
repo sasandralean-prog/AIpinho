@@ -1,0 +1,125 @@
+{
+  "mission": "H1C0.R3.01.A",
+  "execution_class": "hybrid",
+  "mode": "diagnostic_public_validation",
+  "verdict": "FIRETEST_A_ENVIRONMENT_CONTRADICTION",
+  "public_firetest_executed": false,
+  "stop_reason": "Run A requires mutagen importable=false, ffprobe available=false, native_minimal available=true. The current runtime naturally has mutagen importable=true.",
+  "repository": {
+    "remote": "https://github.com/sasandralean-prog/AIpinho",
+    "branch": "agent/codex/r3-01-firetest-a-native-baseline",
+    "base_branch": "main",
+    "required_base_sha": "84d091dfbcead6d101c0b0aedf1c68fc0ea49092",
+    "head_before_reports": "84d091dfbcead6d101c0b0aedf1c68fc0ea49092",
+    "origin_main_before_reports": "84d091dfbcead6d101c0b0aedf1c68fc0ea49092",
+    "base_gate_passed": true,
+    "working_tree_clean_before_reports": true
+  },
+  "environment": {
+    "python": {
+      "where_python": [
+        "C:\\Program Files\\Python311\\python.exe",
+        "C:\\Users\\rafae\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe"
+      ],
+      "version": "Python 3.11.6",
+      "sys_executable": "C:\\Program Files\\Python311\\python.exe"
+    },
+    "mutagen": {
+      "required_for_run_a": "not_importable",
+      "observed_importable": true,
+      "observed_version": "1.48.1",
+      "spec_origin": "C:\\Users\\rafae\\AppData\\Roaming\\Python\\Python311\\site-packages\\mutagen\\__init__.py",
+      "classification": "environment_contradiction"
+    },
+    "ffprobe": {
+      "required_for_run_a": "unavailable",
+      "observed_available": false,
+      "where_ffprobe": [],
+      "version_command_status": "not_recognized"
+    },
+    "native_minimal": {
+      "required_for_run_a": "available",
+      "observed_available": true,
+      "descriptor_status": "available",
+      "supported_attributes": [
+        "container",
+        "codec",
+        "bitrate",
+        "sample_rate",
+        "channels",
+        "duration"
+      ],
+      "limitations": [
+        "Minimal header/box probe only.",
+        "Does not decode audio.",
+        "Does not implement full MP4 atom, ID3, artwork, or editorial metadata parsing."
+      ]
+    },
+    "path_ffprobe_resolution": {
+      "ffprobe_in_path": false,
+      "path_contains_ffmpeg_hint": false
+    }
+  },
+  "capability_backend_descriptors": {
+    "mutagen": {
+      "backend_id": "mutagen",
+      "backend_type": "python_library",
+      "status": "available",
+      "dependency_name": "mutagen",
+      "dependency_version": "1.48.1",
+      "requires_python_dependency": true,
+      "requires_external_binary": false,
+      "supports_editorial_identity_keys": true
+    },
+    "ffprobe": {
+      "backend_id": "ffprobe",
+      "backend_type": "external_cli",
+      "status": "unavailable",
+      "dependency_name": "ffprobe",
+      "dependency_version": null,
+      "requires_python_dependency": false,
+      "requires_external_binary": true,
+      "supports_editorial_identity_keys": true
+    },
+    "native_minimal": {
+      "backend_id": "native_minimal",
+      "backend_type": "native_minimal",
+      "status": "available",
+      "dependency_name": null,
+      "dependency_version": null,
+      "requires_python_dependency": false,
+      "requires_external_binary": false,
+      "supports_editorial_identity_keys": false
+    }
+  },
+  "run_a_admissibility": {
+    "mutagen_importable_false": false,
+    "ffprobe_available_false": true,
+    "native_minimal_available_true": true,
+    "admissible": false,
+    "action_taken": "stopped_before_public_firetest"
+  },
+  "public_result": {
+    "task_run_id": null,
+    "operation_id": null,
+    "result_status": null,
+    "reason_code": null,
+    "terminal_event_count": null,
+    "speaker_truth_safe_to_report_success": null,
+    "phase_2_to_6": "not_executed_due_to_environment_contradiction"
+  },
+  "post_compile_execution": {
+    "logical_tasks": null,
+    "physical_groups": null,
+    "physical_probes": null,
+    "files_planned": null,
+    "files_attempted": null,
+    "files_succeeded": null,
+    "files_failed": null,
+    "elapsed_ms": null,
+    "budget_reason": null
+  },
+  "root_cause_status": "PROVEN",
+  "root_cause": "Run A dependency-absent baseline does not naturally exist on this machine because mutagen is importable in the runtime interpreter.",
+  "next_experiment": "Run B or a re-scoped Run A under a naturally dependency-present condition. Do not call this dependency-absent baseline valid unless mutagen is naturally absent."
+}

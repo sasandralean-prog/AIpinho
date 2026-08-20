@@ -1,0 +1,36 @@
+{
+  "mission": "H1C0.R3.01.A",
+  "verdict": "FIRETEST_A_ENVIRONMENT_CONTRADICTION",
+  "issues": [
+    {
+      "issue_id": "R3_01_A_P2_ENVIRONMENT_BASELINE_CONTRADICTION",
+      "priority": "P2",
+      "status": "PROVEN",
+      "title": "Run A dependency-absent baseline contradicted by current runtime environment",
+      "relationship_to_frontier": "blocks_dependency_absent_public_validation",
+      "architectural_owner": "diagnostic_environment",
+      "supporting_evidence": [
+        "python executable is C:\\Program Files\\Python311\\python.exe",
+        "importlib.util.find_spec('mutagen') returned a ModuleSpec",
+        "mutagen version observed as 1.48.1",
+        "ffprobe is unavailable",
+        "native_minimal descriptor is available"
+      ],
+      "disconfirming_evidence": [],
+      "action_taken": "Stopped before public FireTest execution as required by mission order.",
+      "fix_in_this_mission": false,
+      "reason_if_deferred": "The mission forbids altering dependencies or production code to manufacture the dependency-absent state.",
+      "tests": [],
+      "public_validation": {
+        "firetest_executed": false,
+        "reason": "environment_contradiction_before_public_run"
+      }
+    }
+  ],
+  "open_counts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 1,
+    "P3": 0
+  }
+}
