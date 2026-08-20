@@ -80,9 +80,11 @@ class MediaInventorySufficiencyService:
         reason_codes: list[str] = []
         limitations: list[str] = []
         capability_status = str(media_metadata_capability.get("status") or "not_configured")
+        contract_required_missing = media_metadata_capability.get("contract_required_attributes_missing")
+        missing_source = contract_required_missing if contract_required_missing is not None else media_metadata_capability.get("attributes_missing", [])
         metadata_attributes_missing = [
             str(item)
-            for item in media_metadata_capability.get("attributes_missing", []) or []
+            for item in missing_source or []
             if str(item).strip()
         ]
         if expected <= 0:

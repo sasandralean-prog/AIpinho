@@ -423,6 +423,8 @@ class ObservationTask(AIpinhoModel):
     expected_outputs: list[str] = Field(default_factory=list)
     expected_evidence: list[str] = Field(default_factory=list)
     status: ObservationTaskStatus = "PLANNED"
+    execution_disposition: str | None = None
+    pre_defer_status: ObservationTaskStatus | None = None
     created_from: dict[str, Any] = Field(default_factory=dict)
 
 

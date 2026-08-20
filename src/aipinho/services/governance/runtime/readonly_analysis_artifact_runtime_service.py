@@ -33,6 +33,9 @@ from aipinho.services.analysis.project_analysis_service import ProjectAnalysisSe
 from aipinho.services.artifacts.artifact_semantic_contract_service import ArtifactSemanticContractService
 from aipinho.services.artifacts.artifact_runtime_service import ArtifactRuntimeService
 from aipinho.services.artifacts.contract_driven_perception_service import ContractDrivenPerceptionService
+from aipinho.services.artifacts.governed_observation_execution_stage_service import (
+    GovernedObservationExecutionStageService,
+)
 from aipinho.services.artifacts.media_inventory_sufficiency_service import MediaInventorySufficiencyService
 from aipinho.services.artifacts.observed_entity_compilation_service import ObservedEntityCompilationService
 from aipinho.services.artifacts.row_level_semantic_validation_service import RowLevelSemanticValidationService
@@ -126,6 +129,18 @@ _MEDIA_INVENTORY_STAGE_STALL_REASONS: dict[str, str] = {
     "after_payload_bound_check": "PERCEPTION_PAYLOAD_COMPILE_BUDGET_EXCEEDED",
     "perception_compile_completed": "MUSIC_INVENTORY_CONTRACT_PERCEPTION_STALLED",
     "after_perception_payload_compile": "MUSIC_INVENTORY_CONTRACT_PERCEPTION_STALLED",
+    "before_post_compile_observation_execution": "POST_COMPILE_OBSERVATION_EXECUTION_STALLED",
+    "after_observation_task_grouping": "POST_COMPILE_OBSERVATION_EXECUTION_STALLED",
+    "before_physical_probe": "POST_COMPILE_PHYSICAL_PROBE_STALLED",
+    "physical_probe_checkpoint": "POST_COMPILE_PHYSICAL_PROBE_STALLED",
+    "after_physical_probe": "POST_COMPILE_EVIDENCE_FANOUT_STALLED",
+    "after_evidence_fanout": "POST_COMPILE_EVIDENCE_FANOUT_STALLED",
+    "after_post_compile_observation_execution": "POST_COMPILE_OBSERVATION_EXECUTION_STALLED",
+    "before_post_execution_perception_materialization": "POST_EXECUTION_PERCEPTION_MATERIALIZATION_STALLED",
+    "after_post_execution_evidence_application": "POST_EXECUTION_PERCEPTION_MATERIALIZATION_STALLED",
+    "after_post_execution_attribute_observation_materialization": "POST_EXECUTION_PERCEPTION_MATERIALIZATION_STALLED",
+    "after_post_execution_evidence_set_materialization": "POST_EXECUTION_PERCEPTION_MATERIALIZATION_STALLED",
+    "after_post_execution_perception_materialization": "MUSIC_INVENTORY_CONTRACT_PERCEPTION_STALLED",
     "before_contract_perception": "MUSIC_INVENTORY_CONTRACT_PERCEPTION_STALLED",
     "after_contract_perception": "MUSIC_INVENTORY_ROW_BINDING_STALLED",
     "before_row_binding": "MUSIC_INVENTORY_ROW_BINDING_STALLED",
@@ -434,6 +449,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
         artifact_semantic_contracts: ArtifactSemanticContractService | None = None,
         observed_entities: ObservedEntityCompilationService | None = None,
         perception: ContractDrivenPerceptionService | None = None,
+        post_compile_observation_execution: GovernedObservationExecutionStageService | None = None,
         semantic_intents: SemanticArtifactIntentResolver | None = None,
         semantic_entity_selection: SemanticEntitySelectionService | None = None,
         row_level_validation: RowLevelSemanticValidationService | None = None,
@@ -455,6 +471,10 @@ class ReadonlyAnalysisArtifactRuntimeService:
         self.artifact_semantic_contracts = artifact_semantic_contracts or ArtifactSemanticContractService()
         self.observed_entities = observed_entities or ObservedEntityCompilationService()
         self.perception = perception or ContractDrivenPerceptionService(observed_entities=self.observed_entities)
+        self.post_compile_observation_execution = post_compile_observation_execution or GovernedObservationExecutionStageService(
+            observation_boundary=self.perception.observation_boundary,
+            observer_registry=self.perception.observer_registry,
+        )
         self.semantic_intents = semantic_intents or SemanticArtifactIntentResolver()
         self.semantic_entity_selection = semantic_entity_selection or SemanticEntitySelectionService()
         self.row_level_validation = row_level_validation or RowLevelSemanticValidationService()
@@ -2844,6 +2864,61 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 "payload_metrics": self._bounded_perception_payload_metrics(perception_payload.get("payload_metrics")),
             },
         )
+        execution_selected_ids = set(perception_result.candidate_entity_set.selected_entity_ids)
+        execution_selected_entities = [
+            item
+            for item in graph_payload.get("entities") or []
+            if isinstance(item, dict) and str(item.get("entity_id") or "") in execution_selected_ids
+        ]
+        execution_stage = self.post_compile_observation_execution.execute(
+            observation_plan=perception_result.observation_plan,
+            selected_entities=execution_selected_entities,
+            checkpoint=lambda stage, metrics: self._check_artifact_render_checkpoint(
+                render_run_id,
+                phase_started,
+                artifact_started,
+                stage=stage,
+                logical_path=logical_path,
+                rows_rendered=self._int_or_none(metrics.get("files_attempted") or metrics.get("physical_probe_count")),
+                rows_expected=self._int_or_none(metrics.get("files_planned") or metrics.get("dedup_group_count"))
+                or selection_result.selected_rows,
+                cells_rendered=self._int_or_none(metrics.get("goals_satisfied") or metrics.get("grouped_observation_task_count")),
+                extra_metadata=dict(metrics or {}),
+            ),
+        )
+        if execution_stage.observation_execution_results:
+            perception_result = self.perception.materialize_execution_results(
+                perception_result=perception_result,
+                selected_entities=execution_selected_entities,
+                execution_results=execution_stage.observation_execution_results,
+                declared_contract=perception_contract,
+                stage_observer=lambda item: self._check_artifact_render_checkpoint(
+                    render_run_id,
+                    phase_started,
+                    artifact_started,
+                    stage=str(item.get("stage") or "post_execution_perception_materialization"),
+                    logical_path=logical_path,
+                    rows_rendered=self._int_or_none(item.get("projected_entity_count")),
+                    rows_expected=selection_result.selected_rows,
+                    cells_rendered=self._int_or_none(item.get("evidence_record_count") or item.get("attribute_observation_count")),
+                    extra_metadata=dict(item or {}),
+                ),
+            )
+        perception_payload = perception_result.model_dump(mode="json")
+        perception_payload["post_compile_observation_execution"] = dict(execution_stage.telemetry)
+        if execution_stage.blocked_reason_code:
+            raise GovernedPhase1Block(
+                execution_stage.blocked_reason_code,
+                "Post-compile governed observation execution blocked before artifact rendering could safely continue.",
+                details={
+                    "phase": "artifact_render",
+                    "component": "governed_observation_execution_stage",
+                    "frontier": "POST_COMPILE_OBSERVATION_EXECUTION",
+                    "stage": "after_post_compile_observation_execution",
+                    "logical_path": logical_path,
+                    "post_compile_observation_execution": execution_stage.telemetry,
+                },
+            )
         self._check_artifact_render_checkpoint(
             render_run_id,
             phase_started,
@@ -3437,13 +3512,18 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 rows_expected=selection_result.expected_rows,
                 cells_rendered=cells_rendered,
             )
+            media_metadata_capability_for_sufficiency = {
+                **dict(perception_payload.get("media_metadata_capability", {})),
+                "contract_required_attributes_missing": list(metadata_coverage.get("contract_required_attributes_missing") or []),
+                "capability_attributes_unobserved": list(metadata_coverage.get("capability_attributes_unobserved") or []),
+            }
             inventory_sufficiency = self.media_inventory_sufficiency.evaluate(
                 expected_rows=selection_result.expected_rows,
                 selected_rows=selection_result.selected_rows,
                 bound_rows=selection_result.bound_rows,
                 evidence_ref_count=selection_result.evidence_ref_count,
                 row_validation=row_validation,
-                media_metadata_capability=perception_payload.get("media_metadata_capability", {}),
+                media_metadata_capability=media_metadata_capability_for_sufficiency,
                 metadata_coverage=metadata_coverage,
                 schema_status=schema_status,
             )
@@ -4077,6 +4157,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
             if item.get("entity_id") and item.get("observation_state") == "observed"
         }
         media = perception_payload.get("media_metadata_capability") if isinstance(perception_payload.get("media_metadata_capability"), dict) else {}
+        execution_telemetry = perception_payload.get("post_compile_observation_execution") if isinstance(perception_payload.get("post_compile_observation_execution"), dict) else {}
         errors = media.get("backend_error_counts") if isinstance(media.get("backend_error_counts"), dict) else {}
         raw_unsupported_count = sum(
             int(count or 0)
@@ -4094,6 +4175,29 @@ class ReadonlyAnalysisArtifactRuntimeService:
         unsupported_count = min(files_failed, raw_unsupported_count)
         read_error_count = min(files_failed, raw_read_error_count)
         selected_count = len(selected_ids)
+        observed_attributes = sorted({
+            str(item.get("canonical_key") or item.get("attribute_name") or "")
+            for item in observations
+            if item.get("observation_state") == "observed" and (item.get("canonical_key") or item.get("attribute_name"))
+        })
+        attribute_contracts = (
+            (perception_payload.get("contract_observation_plan") or {}).get("attribute_contracts")
+            if isinstance(perception_payload.get("contract_observation_plan"), dict)
+            else []
+        )
+        contract_required_keys = sorted({
+            str(item.get("canonical_key") or item.get("attribute_name") or "")
+            for item in attribute_contracts or []
+            if isinstance(item, dict)
+            and bool(item.get("evidence_required", True))
+            and str(item.get("requiredness") or "required") == "required"
+            and not bool(item.get("nullable"))
+            and str(item.get("semantic_type") or "") == "media_identity"
+        })
+        contract_required_attributes_missing = [
+            key for key in contract_required_keys if key and key not in set(observed_attributes)
+        ]
+        capability_attributes_unobserved = list(media.get("attributes_missing") or media.get("capability_attributes_unobserved") or [])
         coverage_ratio = files_succeeded / max(1, selected_count)
         status = (
             "satisfied"
@@ -4110,7 +4214,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "configured": bool(media.get("configured", False)),
             "available": bool(media.get("available", False)),
             "execution_status": media.get("execution_status") or ("deferred" if status == "deferred" else status),
-            "files_planned": selected_count,
+            "files_planned": int(execution_telemetry.get("files_planned") or selected_count),
             "files_expected": selected_count,
             "files_attempted": files_attempted,
             "files_succeeded": files_succeeded,
@@ -4118,8 +4222,13 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "unsupported_count": unsupported_count,
             "read_error_count": read_error_count,
             "coverage_ratio": round(coverage_ratio, 4),
-            "attributes_observed": list(media.get("attributes_observed") or []),
-            "attributes_missing": list(media.get("attributes_missing") or []),
+            "attributes_observed": observed_attributes or list(media.get("attributes_observed") or []),
+            "attributes_missing": contract_required_attributes_missing,
+            "contract_required_attributes_missing": contract_required_attributes_missing,
+            "capability_attributes_unobserved": capability_attributes_unobserved,
+            "physical_probe_count": int(execution_telemetry.get("physical_probe_count") or files_attempted),
+            "goals_satisfied": int(execution_telemetry.get("goals_satisfied") or 0),
+            "goals_unsatisfied": int(execution_telemetry.get("goals_unsatisfied") or 0),
             "backend_error_counts": dict(errors),
             "reason_codes": self._metadata_coverage_reason_codes(
                 status=status,

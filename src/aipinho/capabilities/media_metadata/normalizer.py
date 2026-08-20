@@ -148,7 +148,10 @@ class MediaMetadataNormalizer:
             return None
         if isinstance(value, (list, tuple, set)):
             parts = [self._normalize_identity_value(item) for item in value]
-            text = "; ".join(part for part in parts if part)
+            values = [part for part in parts if part]
+            if isinstance(value, set):
+                values = sorted(values)
+            text = "; ".join(values)
         elif hasattr(value, "text"):
             text = self._normalize_identity_value(getattr(value, "text"))
         else:

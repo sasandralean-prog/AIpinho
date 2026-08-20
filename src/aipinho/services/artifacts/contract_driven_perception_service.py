@@ -797,6 +797,124 @@ class ContractDrivenPerceptionService:
             internal_reason_code=internal_reason_code,
         )
 
+    def materialize_execution_results(
+        self,
+        *,
+        perception_result: ContractPerceptionResult,
+        selected_entities: list[dict[str, Any]],
+        execution_results: list[ObservationExecutionResult],
+        declared_contract: dict[str, Any] | None = None,
+        stage_observer: Callable[[dict[str, Any]], None] | None = None,
+    ) -> ContractPerceptionResult:
+        """Purely folds governed observer results back into perception state."""
+        materialize_started = time.monotonic()
+        trace = list(perception_result.compile_stage_trace)
+        base_metrics = {
+            "projected_entity_count": len(selected_entities),
+            "observation_execution_result_count": len(execution_results),
+            "post_compile_materialization": True,
+        }
+
+        def checkpoint(stage: str, **metrics: Any) -> None:
+            self._append_compile_stage(
+                trace,
+                stage,
+                compile_started=materialize_started,
+                stage_observer=stage_observer,
+                **{**base_metrics, **metrics},
+            )
+
+        checkpoint("before_post_execution_perception_materialization")
+        observation_plan = self._apply_execution_evidence_to_plan(
+            observation_plan=perception_result.observation_plan,
+            execution_results=execution_results,
+        )
+        checkpoint("after_post_execution_evidence_application")
+        source_indexes = self._fact_source_indexes(
+            observation_plan=observation_plan,
+            execution_results=execution_results,
+        )
+        observations = self.attribute_observations(
+            plan=perception_result.contract_observation_plan,
+            observation_plan=observation_plan,
+            selected_entities=selected_entities,
+            execution_results=execution_results,
+            source_indexes=source_indexes,
+        )
+        checkpoint("after_post_execution_attribute_observation_materialization", **self._attribute_observation_metrics(observations))
+        evidence_set = self.evidence_set(
+            observations=observations,
+            execution_results=execution_results,
+            relationship_evidence_records=perception_result.relationship_evidence,
+        )
+        checkpoint("after_post_execution_evidence_set_materialization", **self._evidence_set_metrics(evidence_set))
+        coverage = self.semantic_coverage(
+            plan=perception_result.contract_observation_plan,
+            candidate_set=perception_result.candidate_entity_set,
+            observation_plan=observation_plan,
+            observations=observations,
+        )
+        coverage_report = self.semantic_coverage_report(
+            plan=perception_result.contract_observation_plan,
+            candidate_set=perception_result.candidate_entity_set,
+            observation_plan=observation_plan,
+            observations=observations,
+            coverage=coverage,
+            evidence_set=evidence_set,
+            declared_contract=declared_contract or {},
+        )
+        knowledge_records = self.knowledge_records(evidence_set=evidence_set)
+        semantic_assertions = self.semantic_assertions(
+            plan=perception_result.contract_observation_plan,
+            observation_plan=observation_plan,
+            knowledge_records=knowledge_records,
+            evidence_set=evidence_set,
+        )
+        semantic_self_review = self.semantic_self_review(
+            plan=perception_result.contract_observation_plan,
+            observation_plan=observation_plan,
+            evidence_set=evidence_set,
+            knowledge_records=knowledge_records,
+            assertions=semantic_assertions,
+            coverage_report=coverage_report,
+        )
+        semantic_coverage_2 = self.semantic_coverage_2(
+            coverage_report=coverage_report,
+            knowledge_records=knowledge_records,
+            assertions=semantic_assertions,
+            self_review=semantic_self_review,
+        )
+        checkpoint(
+            "after_post_execution_perception_materialization",
+            attribute_observation_count=len(observations),
+            evidence_record_count=len(evidence_set.records),
+            knowledge_record_count=len(knowledge_records),
+            semantic_assertion_count=len(semantic_assertions),
+        )
+        return perception_result.model_copy(
+            update={
+                "observation_plan": observation_plan,
+                "observation_execution_results": execution_results,
+                "media_metadata_capability": self._media_metadata_capability_summary(execution_results),
+                "attribute_observations": observations,
+                "evidence_set": evidence_set,
+                "knowledge_records": knowledge_records,
+                "semantic_assertions": semantic_assertions,
+                "semantic_self_review": semantic_self_review,
+                "semantic_coverage": coverage,
+                "semantic_coverage_report": coverage_report,
+                "semantic_coverage_2": semantic_coverage_2,
+                "compile_stage_trace": trace,
+                "payload_metrics": {
+                    **dict(perception_result.payload_metrics or {}),
+                    "post_compile_observation_materialized": True,
+                    "post_compile_execution_result_count": len(execution_results),
+                    "post_compile_evidence_record_count": len(evidence_set.records),
+                },
+                "internal_reason_code": perception_result.internal_reason_code,
+            }
+        )
+
     def contract_observation_plan(self, declared_contract: dict[str, Any]) -> ContractObservationPlan:
         descriptors = self._attribute_descriptors(declared_contract)
         expected_attributes = [item.canonical_key for item in descriptors]
@@ -2800,7 +2918,20 @@ class ContractDrivenPerceptionService:
             if task.status != "READY_FOR_OBSERVER":
                 tasks.append(task)
                 continue
-            tasks.append(task.model_copy(update={"status": "PLANNED"}))
+            tasks.append(
+                task.model_copy(
+                    update={
+                        "status": "PLANNED",
+                        "execution_disposition": "deferred_by_compile_policy",
+                        "pre_defer_status": "READY_FOR_OBSERVER",
+                        "created_from": {
+                            **dict(task.created_from or {}),
+                            "execution_disposition": "deferred_by_compile_policy",
+                            "pre_defer_status": "READY_FOR_OBSERVER",
+                        },
+                    }
+                )
+            )
         requirements: list[AttributeObservationRequirement] = []
         for requirement in observation_plan.requirements:
             if requirement.gap_reason != "ATTRIBUTE_VALUE_NOT_OBSERVED":
@@ -2850,7 +2981,7 @@ class ContractDrivenPerceptionService:
                 confidence_by_key[key] = max(confidence_by_key.get(key, 0.0), float(record.confidence or 0.0))
                 if record.capability_id:
                     capability_ids_by_key.setdefault(key, []).append(str(record.capability_id))
-        if not confidence_by_key:
+        if not confidence_by_key and not failure_by_key:
             return observation_plan
         observed_keys = set(confidence_by_key)
         requirements: list[AttributeObservationRequirement] = []
@@ -3023,6 +3154,7 @@ class ContractDrivenPerceptionService:
                 "evidence_records_created": 0,
                 "attributes_observed": [],
                 "attributes_missing": list(MEDIA_METADATA_EVIDENCE_KEYS),
+                "capability_attributes_unobserved": list(MEDIA_METADATA_EVIDENCE_KEYS),
                 "limitations": limitations,
                 "errors": [],
             }
@@ -3167,6 +3299,7 @@ class ContractDrivenPerceptionService:
             "evidence_records_created": len(records),
             "attributes_observed": observed,
             "attributes_missing": [key for key in MEDIA_METADATA_EVIDENCE_KEYS if key not in set(observed)],
+            "capability_attributes_unobserved": [key for key in MEDIA_METADATA_EVIDENCE_KEYS if key not in set(observed)],
             "limitations": sorted(set(limitations)),
             "errors": errors,
         }
