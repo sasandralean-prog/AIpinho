@@ -1,0 +1,76 @@
+{
+  "mission": "H1C0.R3.01.B1 — Post-Compile Capacity, Acquisition Cost & Telemetry Root-Cause Diagnostic",
+  "verdict": "R3_01_B1_ROOT_CAUSE_PROVEN",
+  "issues": [
+    {
+      "issue_id": "R3_01_B1_P1_TOTAL_OBSERVATION_BUDGET_CAPACITY_MISMATCH",
+      "priority": "P1",
+      "status": "PROVEN",
+      "title": "120s sequential total budget is incompatible with 2230 planned media groups under current advertised and observed cost envelope",
+      "supporting_evidence": {
+        "logical_tasks_per_planned_physical_group": 7.0,
+        "attempted_groups_per_planned_groups": 0.15067264573991032,
+        "attempted_logical_claims_estimate": 2352,
+        "satisfied_claims_on_attempted_groups": 2339,
+        "unsatisfied_claims_on_attempted_groups_estimate": 13,
+        "attempted_subset_satisfaction_ratio": 0.9944727891156463,
+        "required_average_ms_per_probe_for_120s": 53.81165919282511,
+        "observed_budget_average_ms_per_attempted_probe": 357.14285714285717,
+        "descriptor_estimated_latency_ms": 100,
+        "descriptor_estimated_total_ms_for_planned_groups": 223000,
+        "materialized_bytes_per_attempted_group": 21831.255952380954,
+        "materialized_bytes_per_evidence_record": 2379.274083684723,
+        "linear_full_corpus_materialized_bytes_estimate": 48683701,
+        "linear_full_corpus_evidence_records_estimate": 20462,
+        "materialized_budget_used_fraction_at_block": 0.91691275,
+        "work_completed_fraction_at_block": 0.15067264573991032
+      }
+    },
+    {
+      "issue_id": "R3_01_B1_P1_BACKEND_OVER_ACQUISITION_GLOBAL_COMPLETENESS_STOP",
+      "priority": "P1",
+      "status": "PROVEN",
+      "title": "Backend policy continues fallbacks based on global MEDIA_METADATA_CANONICAL_KEYS technical completeness rather than requested claims",
+      "supporting_evidence": {
+        "code_stop_condition": "set(MEDIA_METADATA_CANONICAL_KEYS).issubset(observed_keys)",
+        "sample_attempted_backend_sequences": {
+          "('mutagen', 'ffprobe', 'native_minimal')": 40
+        }
+      }
+    },
+    {
+      "issue_id": "R3_01_B1_P1_MATERIALIZED_OBSERVATION_BYTES_CAPACITY_PRESSURE",
+      "priority": "P1",
+      "status": "PARTIAL",
+      "title": "Materialized observation bytes reached 91.7% of budget after 15.1% of groups; exact duplication contributors not yet projected",
+      "supporting_evidence": {
+        "observed_bytes": 7335302,
+        "budget": 8000000,
+        "work_fraction": 0.15067264573991032,
+        "linear_estimate": 48683701
+      }
+    },
+    {
+      "issue_id": "R3_01_B1_P2_PUBLIC_BACKEND_KEY_TELEMETRY_GAP",
+      "priority": "P2",
+      "status": "PROVEN",
+      "title": "Public projections hide backend-specific and canonical-key evidence counts for partial post-compile execution",
+      "supporting_evidence": {
+        "run_b_public_per_key_counts_available": false,
+        "sample_identity_counts": {
+          "track_title": 7,
+          "artist": 7
+        }
+      }
+    },
+    {
+      "issue_id": "R3_01_B1_P3_SKILLS_INDEX_VOLATILE_TIMESTAMP",
+      "priority": "P3",
+      "status": "RESOLVED_LOCAL",
+      "title": "Pre-B local skills_index diff was timestamp-only generated metadata and was restored before B1 branch creation",
+      "supporting_evidence": {
+        "diff": "updated_at 2026-08-18T03:11:53+00:00 -> 2026-08-20T09:33:41+00:00 only"
+      }
+    }
+  ]
+}

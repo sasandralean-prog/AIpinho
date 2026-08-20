@@ -1,0 +1,538 @@
+{
+  "mission": "H1C0.R3.01.B1 — Post-Compile Capacity, Acquisition Cost & Telemetry Root-Cause Diagnostic",
+  "captured_at": "2026-08-20T10:25:23.560778+00:00",
+  "base_sha": "84d091dfbcead6d101c0b0aedf1c68fc0ea49092",
+  "evidence_source": {
+    "run_b_task_run_id": "task_run_a592f87c275440cc89027a70d04dd1e4",
+    "run_b_report_commit": "4f061ef15f857fac0a8f39c32a79476c37769dca",
+    "public_firetest_rerun_executed": false
+  },
+  "worktree_hygiene": {
+    "skills_index_diff_classification": "volatile_timestamp_only",
+    "action": "restored_tracked_file_to_HEAD_before_branch_creation",
+    "final_branch": "agent/codex/r3-01-b1-capacity-diagnostic",
+    "final_head": "84d091dfbcead6d101c0b0aedf1c68fc0ea49092",
+    "status": "## agent/codex/r3-01-b1-capacity-diagnostic\n?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b1_service_equivalent_sample.tmp.json"
+  },
+  "run_b_baseline": {
+    "dedup_group_count": 2230,
+    "files_planned": 2230,
+    "grouped_observation_task_count": 15610,
+    "requested_canonical_key_count": 7,
+    "goals_satisfied": 2339,
+    "goals_unsatisfied": 13271,
+    "fanout_claim_count": 2339,
+    "physical_probe_count": 336,
+    "files_attempted": 336,
+    "files_succeeded": 335,
+    "files_failed": 1,
+    "evidence_records_created": 3083,
+    "materialized_observation_bytes": 7335302,
+    "execution_status": "blocked",
+    "blocked_reason_code": "POST_COMPILE_OBSERVATION_TOTAL_BUDGET_EXCEEDED"
+  },
+  "correct_dedup_accounting": {
+    "logical_tasks_per_planned_physical_group": 7.0,
+    "attempted_groups_per_planned_groups": 0.15067264573991032,
+    "attempted_logical_claims_estimate": 2352,
+    "satisfied_claims_on_attempted_groups": 2339,
+    "unsatisfied_claims_on_attempted_groups_estimate": 13,
+    "attempted_subset_satisfaction_ratio": 0.9944727891156463,
+    "required_average_ms_per_probe_for_120s": 53.81165919282511,
+    "observed_budget_average_ms_per_attempted_probe": 357.14285714285717,
+    "descriptor_estimated_latency_ms": 100,
+    "descriptor_estimated_total_ms_for_planned_groups": 223000,
+    "materialized_bytes_per_attempted_group": 21831.255952380954,
+    "materialized_bytes_per_evidence_record": 2379.274083684723,
+    "linear_full_corpus_materialized_bytes_estimate": 48683701,
+    "linear_full_corpus_evidence_records_estimate": 20462,
+    "materialized_budget_used_fraction_at_block": 0.91691275,
+    "work_completed_fraction_at_block": 0.15067264573991032
+  },
+  "requested_keys": {
+    "status": "derived_from_current_code_and_contract_not_projected_by_run_b_event",
+    "keys": [
+      "artwork",
+      "bitrate",
+      "channels",
+      "codec",
+      "container",
+      "duration",
+      "sample_rate"
+    ],
+    "evidence": [
+      "config/artifacts/artifact_semantic_contract_policy.yaml declares media technical columns duration, codec, container, bitrate, sample_rate, channels, artwork as optional contract attributes.",
+      "src/aipinho/services/artifacts/contract_driven_perception_service.py _score_capability_match adds media_asset_candidate_hypothesis only when canonical_attribute in MEDIA_METADATA_CANONICAL_KEYS.",
+      "src/aipinho/capabilities/media_metadata/descriptor.py MEDIA_METADATA_CANONICAL_KEYS is the technical key set: codec, container, bitrate, sample_rate, channels, duration, artwork, metadata.",
+      "metadata is not a schema column in media_corpus_inventory_artifact, leaving seven executable media metadata contract keys.",
+      "Run B telemetry grouped_observation_task_count=15610 and dedup_group_count=2230, exactly seven tasks per physical group."
+    ]
+  },
+  "backend_path_diagnostic": {
+    "code_path": "MediaMetadataCapability.observe -> Mutagen -> ffprobe -> native_minimal; break only when set(MEDIA_METADATA_CANONICAL_KEYS).issubset(observed_keys) or allow_partial_evidence is false after evidence.",
+    "sample_aggregate": {
+      "sample_count": 40,
+      "media_metadata_canonical_keys": [
+        "codec",
+        "container",
+        "bitrate",
+        "sample_rate",
+        "channels",
+        "duration",
+        "artwork",
+        "metadata"
+      ],
+      "media_metadata_evidence_keys": [
+        "codec",
+        "container",
+        "bitrate",
+        "sample_rate",
+        "channels",
+        "duration",
+        "artwork",
+        "metadata",
+        "track_title",
+        "artist",
+        "album",
+        "album_artist"
+      ],
+      "media_identity_keys": [
+        "track_title",
+        "artist",
+        "album",
+        "album_artist"
+      ],
+      "per_backend": {
+        "mutagen": {
+          "count": 40,
+          "avg_ms": 34.2410174996985,
+          "median_ms": 18.66370000061579,
+          "max_ms": 668.2083000014245,
+          "success_key_rows": 39,
+          "error_code_counts": {
+            "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 1
+          },
+          "key_presence_counts": {
+            "artwork": 39,
+            "bitrate": 39,
+            "channels": 39,
+            "codec": 39,
+            "duration": 39,
+            "metadata": 39,
+            "sample_rate": 39
+          }
+        },
+        "ffprobe": {
+          "count": 40,
+          "avg_ms": 12.735137500203564,
+          "median_ms": 10.768850001113606,
+          "max_ms": 16.330700000253273,
+          "success_key_rows": 0,
+          "error_code_counts": {
+            "FFPROBE_NOT_AVAILABLE": 40
+          },
+          "key_presence_counts": {}
+        },
+        "native_minimal": {
+          "count": 40,
+          "avg_ms": 40.00970250017417,
+          "median_ms": 31.166400000074646,
+          "max_ms": 117.79459999888786,
+          "success_key_rows": 40,
+          "error_code_counts": {},
+          "key_presence_counts": {
+            "codec": 32,
+            "container": 40,
+            "duration": 32
+          }
+        }
+      },
+      "capability": {
+        "avg_ms": 17.053000000032625,
+        "median_ms": 16.28724999864062,
+        "max_ms": 26.37749999848893,
+        "attempted_backend_sequences": {
+          "('mutagen', 'ffprobe', 'native_minimal')": 40
+        },
+        "evidence_count_avg": 8.975,
+        "evidence_count_total": 359,
+        "evidence_bytes_total": 504181,
+        "evidence_bytes_avg": 12604.525,
+        "evidence_bytes_per_record_avg": 1404.4038997214484,
+        "by_key": {
+          "codec": 71,
+          "duration": 39,
+          "bitrate": 39,
+          "sample_rate": 39,
+          "channels": 39,
+          "metadata": 39,
+          "artwork": 39,
+          "container": 40,
+          "track_title": 7,
+          "artist": 7
+        },
+        "by_backend": {
+          "mutagen": 287,
+          "native_minimal": 72
+        }
+      }
+    }
+  },
+  "cost_decomposition": {
+    "bounded_sample": {
+      "sample_count": 40,
+      "media_metadata_canonical_keys": [
+        "codec",
+        "container",
+        "bitrate",
+        "sample_rate",
+        "channels",
+        "duration",
+        "artwork",
+        "metadata"
+      ],
+      "media_metadata_evidence_keys": [
+        "codec",
+        "container",
+        "bitrate",
+        "sample_rate",
+        "channels",
+        "duration",
+        "artwork",
+        "metadata",
+        "track_title",
+        "artist",
+        "album",
+        "album_artist"
+      ],
+      "media_identity_keys": [
+        "track_title",
+        "artist",
+        "album",
+        "album_artist"
+      ],
+      "per_backend": {
+        "mutagen": {
+          "count": 40,
+          "avg_ms": 34.2410174996985,
+          "median_ms": 18.66370000061579,
+          "max_ms": 668.2083000014245,
+          "success_key_rows": 39,
+          "error_code_counts": {
+            "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 1
+          },
+          "key_presence_counts": {
+            "artwork": 39,
+            "bitrate": 39,
+            "channels": 39,
+            "codec": 39,
+            "duration": 39,
+            "metadata": 39,
+            "sample_rate": 39
+          }
+        },
+        "ffprobe": {
+          "count": 40,
+          "avg_ms": 12.735137500203564,
+          "median_ms": 10.768850001113606,
+          "max_ms": 16.330700000253273,
+          "success_key_rows": 0,
+          "error_code_counts": {
+            "FFPROBE_NOT_AVAILABLE": 40
+          },
+          "key_presence_counts": {}
+        },
+        "native_minimal": {
+          "count": 40,
+          "avg_ms": 40.00970250017417,
+          "median_ms": 31.166400000074646,
+          "max_ms": 117.79459999888786,
+          "success_key_rows": 40,
+          "error_code_counts": {},
+          "key_presence_counts": {
+            "codec": 32,
+            "container": 40,
+            "duration": 32
+          }
+        }
+      },
+      "capability": {
+        "avg_ms": 17.053000000032625,
+        "median_ms": 16.28724999864062,
+        "max_ms": 26.37749999848893,
+        "attempted_backend_sequences": {
+          "('mutagen', 'ffprobe', 'native_minimal')": 40
+        },
+        "evidence_count_avg": 8.975,
+        "evidence_count_total": 359,
+        "evidence_bytes_total": 504181,
+        "evidence_bytes_avg": 12604.525,
+        "evidence_bytes_per_record_avg": 1404.4038997214484,
+        "by_key": {
+          "codec": 71,
+          "duration": 39,
+          "bitrate": 39,
+          "sample_rate": 39,
+          "channels": 39,
+          "metadata": 39,
+          "artwork": 39,
+          "container": 40,
+          "track_title": 7,
+          "artist": 7
+        },
+        "by_backend": {
+          "mutagen": 287,
+          "native_minimal": 72
+        }
+      }
+    },
+    "run_b_capacity_model": {
+      "logical_tasks_per_planned_physical_group": 7.0,
+      "attempted_groups_per_planned_groups": 0.15067264573991032,
+      "attempted_logical_claims_estimate": 2352,
+      "satisfied_claims_on_attempted_groups": 2339,
+      "unsatisfied_claims_on_attempted_groups_estimate": 13,
+      "attempted_subset_satisfaction_ratio": 0.9944727891156463,
+      "required_average_ms_per_probe_for_120s": 53.81165919282511,
+      "observed_budget_average_ms_per_attempted_probe": 357.14285714285717,
+      "descriptor_estimated_latency_ms": 100,
+      "descriptor_estimated_total_ms_for_planned_groups": 223000,
+      "materialized_bytes_per_attempted_group": 21831.255952380954,
+      "materialized_bytes_per_evidence_record": 2379.274083684723,
+      "linear_full_corpus_materialized_bytes_estimate": 48683701,
+      "linear_full_corpus_evidence_records_estimate": 20462,
+      "materialized_budget_used_fraction_at_block": 0.91691275,
+      "work_completed_fraction_at_block": 0.15067264573991032
+    }
+  },
+  "materialization_capacity_model": {
+    "observed": {
+      "logical_tasks_per_planned_physical_group": 7.0,
+      "attempted_groups_per_planned_groups": 0.15067264573991032,
+      "attempted_logical_claims_estimate": 2352,
+      "satisfied_claims_on_attempted_groups": 2339,
+      "unsatisfied_claims_on_attempted_groups_estimate": 13,
+      "attempted_subset_satisfaction_ratio": 0.9944727891156463,
+      "required_average_ms_per_probe_for_120s": 53.81165919282511,
+      "observed_budget_average_ms_per_attempted_probe": 357.14285714285717,
+      "descriptor_estimated_latency_ms": 100,
+      "descriptor_estimated_total_ms_for_planned_groups": 223000,
+      "materialized_bytes_per_attempted_group": 21831.255952380954,
+      "materialized_bytes_per_evidence_record": 2379.274083684723,
+      "linear_full_corpus_materialized_bytes_estimate": 48683701,
+      "linear_full_corpus_evidence_records_estimate": 20462,
+      "materialized_budget_used_fraction_at_block": 0.91691275,
+      "work_completed_fraction_at_block": 0.15067264573991032
+    },
+    "limitations": "No public per-record retained EvidenceSet decomposition for Run B; exact duplicated field contribution remains partial."
+  },
+  "mutagen_identity_evidence": {
+    "status": "PROVEN_BY_BOUNDED_SERVICE_EQUIVALENT_SAMPLE_NOT_PUBLIC_PROJECTION",
+    "sample_counts": {
+      "track_title": 7,
+      "artist": 7
+    },
+    "public_projection_available": false
+  },
+  "telemetry_p2": {
+    "status": "PROVEN",
+    "details": "Run B authoritative result/event includes physical probes and evidence_records_created, but summary/media_metadata_capability projected not_configured and no backend/key counts."
+  },
+  "hypotheses": {
+    "H1_static_total_budget_incompatible": {
+      "status": "PROVEN",
+      "supporting_evidence": {
+        "required_average_ms_per_probe_for_120s": 53.81165919282511,
+        "descriptor_estimated_latency_ms": 100,
+        "descriptor_estimated_total_ms": 223000,
+        "observed_attempted_probes": 336
+      },
+      "verdict": "Current 120s sequential budget is below even descriptor-estimated 223s for 2230 groups."
+    },
+    "H2_backend_policy_over_acquires": {
+      "status": "PROVEN",
+      "supporting_evidence": {
+        "code_stop_condition": "set(MEDIA_METADATA_CANONICAL_KEYS).issubset(observed_keys)",
+        "sample_attempted_backend_sequences": {
+          "('mutagen', 'ffprobe', 'native_minimal')": 40
+        }
+      },
+      "verdict": "Backend stopping is global technical-completeness-aware, not requested-claim-aware. Bounded sample attempted mutagen, ffprobe and native_minimal for every sampled file."
+    },
+    "H3_native_minimal_fallback_after_mutagen": {
+      "status": "PROVEN",
+      "supporting_evidence": {
+        "sample_native_minimal_count": 40,
+        "sample_count": 40,
+        "mutagen_success_key_rows": 39
+      },
+      "verdict": "Native minimal ran in all sampled observations even though Mutagen produced keys for 39/40 sample files."
+    },
+    "H4_evidence_materialization_budget_pressure": {
+      "status": "PARTIAL",
+      "supporting_evidence": {
+        "observed_bytes": 7335302,
+        "budget": 8000000,
+        "work_fraction": 0.15067264573991032,
+        "linear_estimate": 48683701
+      },
+      "verdict": "Capacity mismatch is strongly supported; exact duplication contributors require projected per-record decomposition from production telemetry."
+    },
+    "H5_filesystem_media_parsing_latency_dominates": {
+      "status": "PARTIAL",
+      "supporting_evidence": {
+        "run_b_effective_ms_per_attempted_probe": 357.14285714285717,
+        "bounded_sample_backend_avg_ms": {
+          "mutagen": 34.2410174996985,
+          "ffprobe": 12.735137500203564,
+          "native_minimal": 40.00970250017417
+        }
+      },
+      "verdict": "Parsing contributes, but run-level average includes isolated worker and per-result materialization; not isolated as sole dominant cause."
+    },
+    "H6_thread_isolation_executor_creation_dominates": {
+      "status": "NOT_PROVEN",
+      "supporting_evidence": {
+        "bounded_sample_capability_avg_ms": 17.053000000032625,
+        "run_b_effective_ms_per_attempted_probe": 357.14285714285717
+      },
+      "verdict": "No direct measurement isolated executor overhead. Difference between sample and run suggests overhead/materialization/variance but not enough to prove executor dominance."
+    },
+    "H7_public_telemetry_hides_mutagen_identity_path": {
+      "status": "PROVEN",
+      "supporting_evidence": {
+        "run_b_public_per_key_counts_available": false,
+        "sample_identity_counts": {
+          "track_title": 7,
+          "artist": 7
+        }
+      },
+      "verdict": "Bounded sample proves Mutagen can produce identity evidence on this corpus, but public Run B projection hides per-key/backend evidence counts."
+    }
+  },
+  "architecture_options": {
+    "A_simple_budget_increase": {
+      "benefit": "May allow more probes to run.",
+      "risk": "Likely still hits 8MB materialization budget; hides over-acquisition; extends wall time.",
+      "truth_impact": "Neutral if no semantics change.",
+      "terminality_impact": "Longer time before governed block/success.",
+      "memory_impact": "Higher retained evidence.",
+      "generality": "Weak without mechanism fix.",
+      "hardcode_risk": "Low if generic, but poor architecture."
+    },
+    "B_requested_claim_aware_backend_stopping": {
+      "benefit": "Avoids ffprobe/native_minimal when requested claims are already satisfied or backend known unavailable.",
+      "risk": "Must not skip evidence required by contract or audit policy.",
+      "truth_impact": "Positive if claim requirements explicit; avoids irrelevant evidence retention.",
+      "terminality_impact": "Reduces budget pressure.",
+      "memory_impact": "Lower.",
+      "generality": "Strong.",
+      "hardcode_risk": "Low if contract-driven."
+    },
+    "C_bounded_batching_checkpointed_materialization": {
+      "benefit": "Prevents large partial EvidenceSets from forcing monolithic materialization.",
+      "risk": "Must preserve provenance and deterministic replay.",
+      "truth_impact": "Neutral if refs/checksums preserve evidence.",
+      "terminality_impact": "Improves progress observability.",
+      "memory_impact": "Lower peak.",
+      "generality": "Strong."
+    },
+    "D_bounded_parallel_physical_execution": {
+      "benefit": "Can fit wall-clock budget without increasing total semantic work.",
+      "risk": "Timeout/quarantine and disk contention complexity; worker bound semantics must remain strict.",
+      "truth_impact": "Neutral if deterministic fanout/order retained.",
+      "terminality_impact": "Must preserve single terminal event.",
+      "memory_impact": "Higher concurrency pressure unless bounded.",
+      "generality": "Moderate/strong."
+    },
+    "E_combination_B_C_D": {
+      "benefit": "Most likely correct path: reduce unnecessary work, materialize incrementally, then add bounded parallelism if still needed.",
+      "risk": "Requires staged validation.",
+      "truth_impact": "Best if each slice preserves evidence contract.",
+      "terminality_impact": "Manageable with existing guarded terminality.",
+      "memory_impact": "Controlled.",
+      "generality": "Strongest."
+    }
+  },
+  "root_cause_gate": {
+    "BLOCKING_FRONTIER_STATUS": "PROVEN",
+    "TIME_CAPACITY_ROOT_CAUSE": "PROVEN",
+    "MATERIALIZATION_ROOT_CAUSE": "PARTIAL",
+    "BACKEND_OVER_ACQUISITION": "PROVEN",
+    "MUTAGEN_IDENTITY_ACQUISITION": "PROVEN",
+    "TELEMETRY_PROJECTION_BUG": "PROVEN"
+  },
+  "verdict": "R3_01_B1_ROOT_CAUSE_PROVEN",
+  "issues": [
+    {
+      "issue_id": "R3_01_B1_P1_TOTAL_OBSERVATION_BUDGET_CAPACITY_MISMATCH",
+      "priority": "P1",
+      "status": "PROVEN",
+      "title": "120s sequential total budget is incompatible with 2230 planned media groups under current advertised and observed cost envelope",
+      "supporting_evidence": {
+        "logical_tasks_per_planned_physical_group": 7.0,
+        "attempted_groups_per_planned_groups": 0.15067264573991032,
+        "attempted_logical_claims_estimate": 2352,
+        "satisfied_claims_on_attempted_groups": 2339,
+        "unsatisfied_claims_on_attempted_groups_estimate": 13,
+        "attempted_subset_satisfaction_ratio": 0.9944727891156463,
+        "required_average_ms_per_probe_for_120s": 53.81165919282511,
+        "observed_budget_average_ms_per_attempted_probe": 357.14285714285717,
+        "descriptor_estimated_latency_ms": 100,
+        "descriptor_estimated_total_ms_for_planned_groups": 223000,
+        "materialized_bytes_per_attempted_group": 21831.255952380954,
+        "materialized_bytes_per_evidence_record": 2379.274083684723,
+        "linear_full_corpus_materialized_bytes_estimate": 48683701,
+        "linear_full_corpus_evidence_records_estimate": 20462,
+        "materialized_budget_used_fraction_at_block": 0.91691275,
+        "work_completed_fraction_at_block": 0.15067264573991032
+      }
+    },
+    {
+      "issue_id": "R3_01_B1_P1_BACKEND_OVER_ACQUISITION_GLOBAL_COMPLETENESS_STOP",
+      "priority": "P1",
+      "status": "PROVEN",
+      "title": "Backend policy continues fallbacks based on global MEDIA_METADATA_CANONICAL_KEYS technical completeness rather than requested claims",
+      "supporting_evidence": {
+        "code_stop_condition": "set(MEDIA_METADATA_CANONICAL_KEYS).issubset(observed_keys)",
+        "sample_attempted_backend_sequences": {
+          "('mutagen', 'ffprobe', 'native_minimal')": 40
+        }
+      }
+    },
+    {
+      "issue_id": "R3_01_B1_P1_MATERIALIZED_OBSERVATION_BYTES_CAPACITY_PRESSURE",
+      "priority": "P1",
+      "status": "PARTIAL",
+      "title": "Materialized observation bytes reached 91.7% of budget after 15.1% of groups; exact duplication contributors not yet projected",
+      "supporting_evidence": {
+        "observed_bytes": 7335302,
+        "budget": 8000000,
+        "work_fraction": 0.15067264573991032,
+        "linear_estimate": 48683701
+      }
+    },
+    {
+      "issue_id": "R3_01_B1_P2_PUBLIC_BACKEND_KEY_TELEMETRY_GAP",
+      "priority": "P2",
+      "status": "PROVEN",
+      "title": "Public projections hide backend-specific and canonical-key evidence counts for partial post-compile execution",
+      "supporting_evidence": {
+        "run_b_public_per_key_counts_available": false,
+        "sample_identity_counts": {
+          "track_title": 7,
+          "artist": 7
+        }
+      }
+    },
+    {
+      "issue_id": "R3_01_B1_P3_SKILLS_INDEX_VOLATILE_TIMESTAMP",
+      "priority": "P3",
+      "status": "RESOLVED_LOCAL",
+      "title": "Pre-B local skills_index diff was timestamp-only generated metadata and was restored before B1 branch creation",
+      "supporting_evidence": {
+        "diff": "updated_at 2026-08-18T03:11:53+00:00 -> 2026-08-20T09:33:41+00:00 only"
+      }
+    }
+  ]
+}
