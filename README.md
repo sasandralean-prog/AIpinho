@@ -5,7 +5,7 @@ to "look intelligent" by filling fields or hiding failures. Its focus is to turn
 language into governed work with explicit contracts, evidence, validation,
 terminal state, and user-facing truth boundaries.
 
-The project is still experimental. FireTest 5 is not ready as of H1C0.R2.18.
+The project is currently in `H1C0.R3.01`. FireTest 5 remains `NOT_READY`. The latest reviewed pre-merge slice is `H1C0.R3.01.B3.5` on branch `agent/codex/r3-01-b3-5-postcompile-stall-route-boundary`, with verdict `R3_01_B3_5_PUBLIC_CANARY_POST_COMPILE_STALL_FORENSICS_READY`.
 
 ## Core Idea
 
@@ -47,6 +47,76 @@ unknown, what was observed, what was derived, and what cannot yet be claimed.
 These principles are reflected in the current H1C0 reports, the runtime
 services under `src/aipinho/services`, the policy/config files under `config/`,
 and the historical design material under `archaeology/` and `genome/`.
+
+
+## Current B3.5 / B3.6 Status
+
+```text
+H1C0.R3.01 status: OPEN
+Latest reviewed slice: H1C0.R3.01.B3.5
+Latest reviewed verdict: R3_01_B3_5_PUBLIC_CANARY_POST_COMPILE_STALL_FORENSICS_READY
+FireTest 5: NOT_READY, not executed in B3.5
+C gate: CORRECTIVE_REQUIRED_BEFORE_C
+Current blocker: POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED
+Next frontier: H1C0.R3.01.B3.6 — Capability Applicability Resolution Capacity & Admission Control
+```
+
+B3.5 moved the public canary from generic `POST_COMPILE_OBSERVATION_EXECUTION_STALLED` to the specific frontier `POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED`.
+
+Canary evidence:
+
+```text
+task_run_id                         task_run_10a7ad7dabca4687bcebbe5cba30ce25
+operation_id                        op_42cafcfaa0654bf299011345171199dc
+status                              blocked
+reason_code                         POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED
+terminal_blocking_event_count        1
+SpeakerTruth.safe_to_report_success false
+physical_probe_count                0
+
+task_count                          25
+tasks_seen                          9
+deferred_task_count                 7
+execute_observer_task_count          2
+target_entity_ref_count             10000
+capability_lookup_attempted          2
+capability_availability_checked      2
+applicability_started_count          9144
+applicability_completed_count        9144
+applicability_failed_count           0
+capability_applicable_count          0
+capability_inapplicable_count        9143
+capability_applicability_unknown_count 0
+inapplicable_reason                 MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS = 9143
+groups_created_count                0
+backend_snapshot_started            false
+backend_snapshot_completed          false
+before_physical_probe_emitted        false
+elapsed_ms                          120046
+```
+
+B3.6 central question:
+
+```text
+Why do 2 execute_observer tasks expand to 10000 target entity refs,
+perform 9144 applicability decisions,
+classify 9143 as inapplicable by extension,
+create 0 groups,
+consume 120046ms,
+and reach 0 physical probes?
+```
+
+## Route Boundary
+
+B3.5 clarified public route ownership:
+
+```text
+/api/v1/chat          -> canonical ChatRequest route
+/api/v1/runtime/chat  -> PublicRuntimeRequest chat route
+/api/v1/analyze       -> PublicRuntimeRequest analyze bridge used by canary
+```
+
+The route cleanup is not a FireTest success claim. It only removes public schema/handler ambiguity.
 
 ## Current Architecture
 
@@ -152,7 +222,7 @@ The genome is design DNA and orientation material. It is included in the
 repository because it explains intent and invariants, but it does not override
 current code, current configs, or validated runtime evidence.
 
-## Current Frontier
+## Historical R2/R3 Frontier History
 
 Published baseline:
 
@@ -323,12 +393,9 @@ completion handoff, artifact worker terminality, media corpus handoff,
 perception compile boundaries, fact projection, source binding, artifact
 persistence, and CSV streaming observability.
 
-It is not yet ready for FireTest 5.
+FireTest 5 remains `NOT_READY`.
 
-H1C0.R2 is consolidated and ready for the next architectural frontier. That
-does not mean FireTest 5 is ready; it means the remaining blocker is now a
-capability/evidence acquisition frontier rather than an R2 runtime governance
-defect.
+H1C0.R2 is consolidated. R3.01 is open. B3.5 is a forensic slice and merge candidate after review; it does not make FireTest 5 ready and it does not open C.
 
 The pre-R3 repository/knowledge consistency gate is closed:
 
@@ -349,7 +416,10 @@ H1C0.R3.01 — Governed Media Metadata Capability Configuration,
 Observation Execution & Semantic Identity Evidence Acquisition
 ```
 
-R2.18 moved the public boundary past identity coverage conflation. The next
-work should acquire or configure governed media metadata observations and bind
-their evidence into semantic identity without fabricating metadata, relaxing
-truth, or treating filenames/extensions as semantic facts.
+Immediate next frontier:
+
+```text
+H1C0.R3.01.B3.6 — Capability Applicability Resolution Capacity & Admission Control
+```
+
+B3.6 should explain and correct the applicability-resolution capacity/admission frontier before any FireTest 5 or C-gate execution.

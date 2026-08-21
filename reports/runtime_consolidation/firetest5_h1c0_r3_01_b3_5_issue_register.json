@@ -35,16 +35,44 @@
     },
     {
       "evidence": {
-        "applicability_completed_count": null,
-        "applicability_started_count": null,
-        "elapsed_ms": null,
-        "groups_created_count": null,
-        "reason_code": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED"
+        "applicability_completed_count": 9144,
+        "applicability_failed_count": 0,
+        "applicability_started_count": 9144,
+        "backend_snapshot_completed": false,
+        "backend_snapshot_started": false,
+        "before_physical_probe_emitted": false,
+        "capability_applicability_unknown_count": 0,
+        "capability_applicable_count": 0,
+        "capability_availability_checked": 2,
+        "capability_inapplicable_count": 9143,
+        "capability_inapplicable_reasons": {
+          "MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS": 9143
+        },
+        "capability_lookup_attempted": 2,
+        "deferred_task_count": 7,
+        "elapsed_ms": 120046,
+        "execute_observer_task_count": 2,
+        "groups_created_count": 0,
+        "operation_id": "op_42cafcfaa0654bf299011345171199dc",
+        "physical_probe_count": 0,
+        "reason_code": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",
+        "speaker_truth_safe_to_report_success": false,
+        "target_entity_ref_count": 10000,
+        "task_count": 25,
+        "task_run_id": "task_run_10a7ad7dabca4687bcebbe5cba30ce25",
+        "tasks_seen": 9,
+        "terminal_blocking_event_count": 1,
+        "value_source": [
+          "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_postcompile_stall_summary.md",
+          "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_postcompile_stall_diagnostic.json",
+          "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_public_canary_observation.json",
+          "persisted task-run result/events as already cited in those reports"
+        ]
       },
       "issue_id": "R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER",
       "priority": "P1",
       "status": "open_new_frontier",
-      "summary": "Public media canary spends the full total observation envelope during capability applicability resolution over 10000 target entity refs before any physical probe."
+      "summary": "Public media canary spends the total observation envelope during capability applicability resolution: 2 execute-observer tasks expand to 10000 target refs, 9144 applicability decisions complete, 9143 are inapplicable by declared backend extension support, 0 groups are created, and 0 physical probes dispatch."
     },
     {
       "issue_id": "R3_01_B3_4_P2_PUBLIC_CHAT_ROUTE_SCHEMA_COLLISION_OR_HANDLER_PRECEDENCE",

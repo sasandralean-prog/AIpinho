@@ -40,7 +40,7 @@ When sources disagree, prefer:
 
 Filename does not grant authority. A file named `FinalArchitecture` may still be a draft. A file's internal status, date, implementation evidence, and agreement with current code matter more than its title.
 
-Historical material is never automatic runtime authority.
+Historical material is never automatic runtime authority. Code/config/evidence still win over this Context Pack.
 
 ## Context rules
 
@@ -61,14 +61,21 @@ Never collapse these categories:
 
 ## Current checkpoint
 
-- `H1C0.R2 = H1C0_R2_READY_FOR_R3`
-- Final R2 wave: `H1C0.R2.18`
-- R2.18 verdict: `FIRETEST5_H1C0_R2_18_MEDIA_IDENTITY_GOVERNED_RESOLUTION_READY`
-- FireTest 5: `NOT_READY`
-- R2.18 reconciled into `main`: `bed449fa8d3e78670df2bdddf413da181add61ce`
-- Current gate: pre-R3 repository/knowledge consistency
-- Pre-R3 gate verdict: `H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY`
-- Engineering-agent entrypoint: `AGENTS.md`
-- Next runtime frontier after the gate: `H1C0.R3.01 — Governed Media Metadata Capability Configuration, Observation Execution & Semantic Identity Evidence Acquisition`
+- Context Pack: `v0.3`
+- `H1C0.R2 = H1C0_R2_READY_FOR_R3` remains historical baseline.
+- `H1C0.R3.01 = OPEN`
+- Latest reviewed slice: `H1C0.R3.01.B3.5`
+- Latest reviewed verdict: `R3_01_B3_5_PUBLIC_CANARY_POST_COMPILE_STALL_FORENSICS_READY`
+- Branch: `agent/codex/r3-01-b3-5-postcompile-stall-route-boundary`
+- Branch HEAD before this context update: `9d5e06c9d2cd8d0a885e53855bd100b4c7a84105`
+- Base main: `50af6491b78e662bbd3390a59400aec6f0eb0bb1`
+- FireTest 5: `NOT_READY`; not executed in B3.5.
+- C gate: `CORRECTIVE_REQUIRED_BEFORE_C`
+- B3.3 effect: `PARTIALLY_PROVEN`
+- Current blocker: `POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED`
+- Current P0: 0
+- Current P1: `R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER`
+- Current blocking P2: none after report projection correction.
+- Next frontier: `H1C0.R3.01.B3.6 — Capability Applicability Resolution Capacity & Admission Control`
 
 Read `09_CURRENT_FRONTIER.md` before proposing implementation work.

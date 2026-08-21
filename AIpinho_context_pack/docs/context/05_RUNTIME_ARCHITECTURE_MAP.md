@@ -211,6 +211,4 @@ R2 focused on reliable representation, execution, observation, terminality, mate
 
 R2.18 is now reconciled into `main`.
 
-Before R3 begins, the repository/knowledge consistency gate must align paths, current-state documents, authority markers, and handoff material.
-
-R3.01 then begins with a different problem: the representation exists, but the public runtime lacks a configured governed capability to acquire semantic media identity evidence.
+The pre-R3 repository/knowledge consistency gate is closed. R3.01 is open. B3.5 proved that the public canary now reaches a specific post-compile applicability-resolution capacity frontier before physical probes. B3.6 owns that capacity/admission question.

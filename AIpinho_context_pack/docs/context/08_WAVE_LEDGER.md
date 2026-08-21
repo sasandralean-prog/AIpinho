@@ -155,6 +155,55 @@ Engineering-agent infrastructure installed:
 
 This closes the repository/knowledge consistency gate without starting R3.01.
 
-## Next runtime frontier
 
-`H1C0.R3.01 — Governed Media Metadata Capability Configuration, Observation Execution & Semantic Identity Evidence Acquisition`
+## H1C0.R3.01 B3.4
+
+Purpose: main integration, canonical runtime synchronization, live provenance proof, and FireTest 5 re-entry gate.
+
+Evidence:
+- main/runtime sync proven at `50af6491b78e662bbd3390a59400aec6f0eb0bb1`;
+- canonical runtime repository: `C:\Dev\AIpinho`;
+- runtime imports proven from `C:\Dev\AIpinho\src`;
+- canary reached `/api/v1/analyze` artifact runtime path;
+- FireTest 5 was not executed.
+
+Observed blocker:
+`POST_COMPILE_OBSERVATION_EXECUTION_STALLED`
+
+Interpretation: the system entered post-compile observation but did not prove grouping, applicability, or probe dispatch. B3.5 was required to illuminate that corridor.
+
+## H1C0.R3.01 B3.5
+
+Verdict:
+`R3_01_B3_5_PUBLIC_CANARY_POST_COMPILE_STALL_FORENSICS_READY`
+
+Key changes:
+- bounded post-compile micro-checkpoints;
+- task scan / group planning / applicability telemetry;
+- route boundary cleanup;
+- `/api/v1/chat` preserved as canonical `ChatRequest`;
+- `/api/v1/runtime/chat` established as `PublicRuntimeRequest` chat route;
+- generic stall reason removed from the canary outcome.
+
+Public canary:
+- task_run_id: `task_run_10a7ad7dabca4687bcebbe5cba30ce25`;
+- operation_id: `op_42cafcfaa0654bf299011345171199dc`;
+- status: blocked;
+- reason: `POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED`;
+- terminal blocking event count: 1;
+- SpeakerTruth false;
+- physical probes: 0.
+
+Telemetry:
+- 2 execute-observer tasks expanded to 10000 target entity refs;
+- 9144 applicability decisions completed;
+- 9143 classified inapplicable by `MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS`;
+- 0 groups created;
+- 120046ms elapsed before physical probes.
+
+Current P1:
+`R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER`
+
+## Current next frontier
+
+`H1C0.R3.01.B3.6 — Capability Applicability Resolution Capacity & Admission Control`

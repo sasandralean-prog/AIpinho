@@ -1,0 +1,52 @@
+{
+  "audited_unchanged": [
+    "AIpinho_context_pack/docs/context/01_AIPINHO_PHILOSOPHY.md",
+    "AIpinho_context_pack/docs/context/02_LUCIO_RAFA_WORKING_RELATIONSHIP.md",
+    "AIpinho_context_pack/docs/context/03_ENGINEERING_WORKFLOW.md",
+    "AIpinho_context_pack/docs/context/10_IDEA_LAB.md"
+  ],
+  "b3_5_verdict": "R3_01_B3_5_PUBLIC_CANARY_POST_COMPILE_STALL_FORENSICS_READY",
+  "base_main_sha": "50af6491b78e662bbd3390a59400aec6f0eb0bb1",
+  "branch": "agent/codex/r3-01-b3-5-postcompile-stall-route-boundary",
+  "c_gate": "CORRECTIVE_REQUIRED_BEFORE_C",
+  "configs_changed": false,
+  "context_pack_version_from": "0.2",
+  "context_pack_version_to": "0.3",
+  "current_blocker": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",
+  "files_changed": [
+    "AIpinho_context_pack/README_CONTEXT_PACK.md",
+    "AIpinho_context_pack/docs/context/00_START_HERE.md",
+    "AIpinho_context_pack/docs/context/04_PROMPT_STYLE.md",
+    "AIpinho_context_pack/docs/context/05_RUNTIME_ARCHITECTURE_MAP.md",
+    "AIpinho_context_pack/docs/context/06_FIRETEST5.md",
+    "AIpinho_context_pack/docs/context/07_H1_TO_H4_ROADMAP.md",
+    "AIpinho_context_pack/docs/context/08_WAVE_LEDGER.md",
+    "AIpinho_context_pack/docs/context/09_CURRENT_FRONTIER.md",
+    "AIpinho_context_pack/docs/context/11_HANDOFF_PROTOCOL.md",
+    "AIpinho_context_pack/docs/context/current_state.json",
+    "README.md",
+    "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_issue_register.json",
+    "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_context_pack_update_summary.md",
+    "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_context_pack_update_manifest.json"
+  ],
+  "firetest5_executed": false,
+  "firetest5_status": "NOT_READY",
+  "forbidden_paths": [],
+  "forbidden_paths_touched": false,
+  "mission_class": "docs_context_pre_merge_alignment",
+  "mission_id": "H1C0.R3.01.B3.5",
+  "new_head_after_commit": null,
+  "next_frontier": "H1C0.R3.01.B3.6 — Capability Applicability Resolution Capacity & Admission Control",
+  "previous_head": "9d5e06c9d2cd8d0a885e53855bd100b4c7a84105",
+  "production_code_changed": false,
+  "readme_updated": true,
+  "remaining_p0": [],
+  "remaining_p1": [
+    "R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER"
+  ],
+  "remaining_p2": [],
+  "resolved_p2": [
+    "P2_B3_5_REPORT_PROJECTION_INCOMPLETE_FOR_GROUPING_APPLICABILITY_TELEMETRY"
+  ],
+  "tests_changed": false
+}

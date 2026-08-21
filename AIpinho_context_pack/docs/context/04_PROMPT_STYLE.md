@@ -76,3 +76,7 @@ Humor/metaphors are welcome when they reinforce the boundary:
 - "If 55k cells cost four minutes, do not blame the comma."
 - "The abacate should leave fingerprints at the scene."
 
+
+## Current prompt warning
+
+For the B3.6 frontier, mission orders must not authorize FireTest 5, C, ffprobe installation, budget increases, or corpus filtering before the public canary gate proves applicability-resolution capacity/admission behavior.
