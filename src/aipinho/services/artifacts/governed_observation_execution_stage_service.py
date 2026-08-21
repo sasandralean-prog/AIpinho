@@ -6,7 +6,6 @@ import time
 from concurrent.futures import Future, ThreadPoolExecutor, TimeoutError
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from pathlib import PurePath
 from typing import Any, Callable, Literal
 
 from aipinho.capabilities.media_metadata.descriptor import (
@@ -407,7 +406,6 @@ class GovernedObservationExecutionStageService:
         groups: dict[tuple[str, str, str], PhysicalObservationGroup] = {}
         applicability_counts = {"applicable": 0, "inapplicable": 0, "unknown": 0}
         inapplicable_reasons: dict[str, int] = {}
-        media_supported_extensions = self._media_supported_extensions()
         for task in observation_plan.observation_tasks:
             if not self._is_deferred_executable_task(task):
                 continue
@@ -431,7 +429,6 @@ class GovernedObservationExecutionStageService:
                     entity=entity,
                     task=task,
                     raw_source_ref=raw_source_ref,
-                    media_supported_extensions=media_supported_extensions,
                 )
                 applicability_counts[applicability.status] += 1
                 if applicability.status == "inapplicable":
@@ -470,7 +467,6 @@ class GovernedObservationExecutionStageService:
         entity: dict[str, Any],
         task: ObservationTask,
         raw_source_ref: str,
-        media_supported_extensions: set[str] | None = None,
     ) -> CapabilityApplicabilityDecision:
         capability = self.observer_registry.get(capability_id)
         if capability is None:
@@ -489,118 +485,78 @@ class GovernedObservationExecutionStageService:
                 "CAPABILITY_CANNOT_PRODUCE_REQUESTED_CLAIM",
                 {"canonical_key": canonical_key},
             )
-        if capability_id == "media_metadata_reader":
-            return self._media_metadata_applicability_decision(
-                entity=entity,
-                task=task,
-                raw_source_ref=raw_source_ref,
-                supported_extensions=media_supported_extensions or set(),
+        explicit = self._explicit_applicability_contract_decision(capability=capability, entity=entity, task=task)
+        if explicit is not None:
+            return explicit
+        resolver = self._capability_applicability_resolver(capability)
+        if callable(resolver):
+            return self._coerce_applicability_decision(
+                resolver(
+                    capability=capability,
+                    entity=entity,
+                    task=task,
+                    canonical_key=canonical_key,
+                    raw_source_ref=raw_source_ref,
+                )
             )
-        return self._generic_role_applicability_decision(capability=capability, entity=entity, task=task)
+        return CapabilityApplicabilityDecision("unknown", "CAPABILITY_APPLICABILITY_UNKNOWN")
 
-    def _generic_role_applicability_decision(
+    def _explicit_applicability_contract_decision(
         self,
         *,
         capability: ObservationCapability,
         entity: dict[str, Any],
         task: ObservationTask,
-    ) -> CapabilityApplicabilityDecision:
-        consumes = {str(item).casefold() for item in capability.consumes or [] if str(item).strip()}
-        generic_consumes = {"*", "file_path", "source_ref", "raw_ref"}
+    ) -> CapabilityApplicabilityDecision | None:
+        contract = capability.observer_binding.get("applicability") if isinstance(capability.observer_binding, dict) else None
+        if not isinstance(contract, dict):
+            return None
+        entity_roles = {str(item).casefold() for item in contract.get("entity_roles") or [] if str(item).strip()}
+        source_root_roles = {str(item).casefold() for item in contract.get("source_root_roles") or [] if str(item).strip()}
         role = str(self._entity_value(entity, "entity_role") or task.entity_ref.get("entity_role") or "").casefold()
-        if role and consumes and consumes.difference(generic_consumes) and role not in consumes:
+        root_role = str(self._entity_value(entity, "source_root_role") or task.entity_ref.get("source_root_role") or task.inputs.get("source_root_role") or "").casefold()
+        if entity_roles and role and role not in entity_roles:
             return CapabilityApplicabilityDecision(
                 "inapplicable",
-                "ENTITY_ROLE_INCOMPATIBLE_FOR_CAPABILITY",
-                {"entity_role": role, "capability_consumes": sorted(consumes)},
+                "ENTITY_ROLE_INCOMPATIBLE_FOR_EXPLICIT_APPLICABILITY_CONTRACT",
+                {"entity_role": role, "applicable_entity_roles": sorted(entity_roles)},
             )
-        if consumes.difference(generic_consumes) and not role:
+        if source_root_roles and root_role and root_role not in source_root_roles:
             return CapabilityApplicabilityDecision(
-                "unknown",
-                "ENTITY_ROLE_UNKNOWN_FOR_CAPABILITY",
-                {"capability_consumes": sorted(consumes)},
+                "inapplicable",
+                "SOURCE_ROOT_ROLE_INCOMPATIBLE_FOR_EXPLICIT_APPLICABILITY_CONTRACT",
+                {"source_root_role": root_role, "applicable_source_root_roles": sorted(source_root_roles)},
             )
+        if (entity_roles and not role) or (source_root_roles and not root_role):
+            return CapabilityApplicabilityDecision("unknown", "EXPLICIT_APPLICABILITY_CONTRACT_INPUT_UNKNOWN")
         return CapabilityApplicabilityDecision("applicable", "CAPABILITY_APPLICABLE")
 
-    def _media_metadata_applicability_decision(
-        self,
-        *,
-        entity: dict[str, Any],
-        task: ObservationTask,
-        raw_source_ref: str,
-        supported_extensions: set[str],
-    ) -> CapabilityApplicabilityDecision:
-        root_role = str(
-            self._entity_value(entity, "source_root_role")
-            or self._entity_value(entity, "root_role")
-            or task.inputs.get("source_root_role")
-            or task.entity_ref.get("source_root_role")
-            or ""
-        )
-        if root_role and root_role not in {"library_root", "corpus_root"}:
-            return CapabilityApplicabilityDecision(
-                "inapplicable",
-                "MEDIA_CAPABILITY_ROOT_ROLE_INAPPLICABLE",
-                {"source_root_role": root_role},
-            )
-        if not raw_source_ref:
-            return CapabilityApplicabilityDecision("unknown", "MEDIA_CAPABILITY_SOURCE_REF_UNKNOWN")
-        entity_role = str(self._entity_value(entity, "entity_role") or task.inputs.get("entity_role") or task.entity_ref.get("entity_role") or "")
-        routing_hints = {
-            str(item)
-            for item in self._entity_list_value(entity, "routing_hints")
-            if str(item).strip()
-        }
-        if entity_role in {"media_asset_candidate", "audio_track_candidate"} or "media_metadata_observation" in routing_hints:
-            return CapabilityApplicabilityDecision(
-                "applicable",
-                "MEDIA_CAPABILITY_APPLICABLE_BY_ENTITY_HINT",
-                {"entity_role": entity_role, "routing_hints": sorted(routing_hints)},
-            )
-        extension = self._source_extension(raw_source_ref=raw_source_ref, entity=entity)
-        if extension and extension in supported_extensions:
-            return CapabilityApplicabilityDecision(
-                "applicable",
-                "MEDIA_CAPABILITY_APPLICABLE_BY_CONFIGURED_ROUTING_HINT",
-                {"extension": extension},
-            )
-        if extension and supported_extensions:
-            return CapabilityApplicabilityDecision(
-                "inapplicable",
-                "MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS",
-                {"extension": extension, "supported_extension_count": len(supported_extensions)},
-            )
-        return CapabilityApplicabilityDecision("unknown", "MEDIA_CAPABILITY_APPLICABILITY_UNKNOWN")
+    def _capability_applicability_resolver(self, capability: ObservationCapability) -> Callable[..., Any] | None:
+        for candidate in (self._adapter_for_capability(capability), capability):
+            if candidate is None:
+                continue
+            for name in ("applicability_decision", "capability_applicability"):
+                resolver = getattr(candidate, name, None)
+                if callable(resolver):
+                    return resolver
+        return None
 
-    def _media_supported_extensions(self) -> set[str]:
-        adapter = self.observation_boundary.adapters.get("media_metadata_reader")
-        adapter_capability = getattr(adapter, "capability", None)
-        backends = getattr(adapter_capability, "backends", None)
-        extensions: set[str] = set()
-        if isinstance(backends, dict):
-            for backend in backends.values():
-                descriptor_factory = getattr(backend, "descriptor", None)
-                if not callable(descriptor_factory):
-                    continue
-                try:
-                    descriptor = descriptor_factory()
-                except Exception:
-                    continue
-                for item in getattr(descriptor, "supported_extensions", []) or []:
-                    text = str(item or "").strip().casefold().lstrip(".")
-                    if text:
-                        extensions.add(text)
-        return extensions
+    def _adapter_for_capability(self, capability: ObservationCapability) -> Any | None:
+        binding = capability.observer_binding if isinstance(capability.observer_binding, dict) else {}
+        adapter_id = str(binding.get("adapter_id") or binding.get("observer_id") or capability.capability_id or "")
+        return self.observation_boundary.adapters.get(adapter_id) or self.observation_boundary.adapters.get(capability.capability_id)
 
-    def _source_extension(self, *, raw_source_ref: str, entity: dict[str, Any]) -> str:
-        explicit = self._entity_value(entity, "extension")
-        if explicit not in (None, ""):
-            return str(explicit).strip().casefold().lstrip(".")
-        text = str(raw_source_ref or self._source_ref_for_entity(entity) or "").strip()
-        if not text:
-            return ""
-        suffix = PurePath(text.replace("\\", "/")).suffix
-        return suffix.casefold().lstrip(".")
+    def _coerce_applicability_decision(self, value: Any) -> CapabilityApplicabilityDecision:
+        if isinstance(value, CapabilityApplicabilityDecision):
+            return value
+        if isinstance(value, dict):
+            status = str(value.get("status") or "unknown")
+            if status not in {"applicable", "inapplicable", "unknown"}:
+                status = "unknown"
+            reason = str(value.get("reason_code") or value.get("reason") or "CAPABILITY_APPLICABILITY_UNKNOWN")
+            evidence = value.get("evidence") if isinstance(value.get("evidence"), dict) else {}
+            return CapabilityApplicabilityDecision(status, reason, dict(evidence))
+        return CapabilityApplicabilityDecision("unknown", "CAPABILITY_APPLICABILITY_UNKNOWN")
 
     def _entity_value(self, entity: dict[str, Any], key: str) -> Any | None:
         if key in entity and entity.get(key) not in (None, ""):
@@ -901,8 +857,14 @@ class GovernedObservationExecutionStageService:
         }
         media_codes = self._media_backend_error_codes(result)
         all_codes = set(error_codes).union(media_codes)
-        if all_codes and all_codes.issubset(self._expected_unsupported_error_codes()):
+        expected_codes = self._expected_unsupported_error_codes()
+        no_evidence_codes = {"OBSERVER_PRODUCED_NO_EVIDENCE"}
+        expected_explanations = all_codes.intersection(expected_codes)
+        unexplained_codes = all_codes.difference(expected_codes.union(no_evidence_codes))
+        if expected_explanations and not unexplained_codes:
             return "EXPECTED_UNSUPPORTED_OR_INAPPLICABLE"
+        if all_codes.intersection(no_evidence_codes):
+            return "SYSTEMIC_EXECUTION_FAILURE"
         if all_codes.intersection(self._systemic_execution_error_codes()):
             return "SYSTEMIC_EXECUTION_FAILURE"
         if result.status in {"FAILED", "BLOCKED_OBSERVER_ERROR", "BLOCKED_PRECONDITION"}:
@@ -922,7 +884,10 @@ class GovernedObservationExecutionStageService:
 
     def _expected_unsupported_error_codes(self) -> set[str]:
         return {
-            "OBSERVER_PRODUCED_NO_EVIDENCE",
+            "MEDIA_CAPABILITY_ENTITY_ROLE_REJECTED",
+            "MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS",
+            "MEDIA_CAPABILITY_FILE_PATH_MISSING",
+            "MEDIA_CAPABILITY_ROOT_ROLE_REJECTED",
             "MEDIA_BACKEND_UNSUPPORTED_FORMAT",
             "MEDIA_BACKEND_NO_EVIDENCE",
             "MEDIA_BACKEND_NOT_AVAILABLE",

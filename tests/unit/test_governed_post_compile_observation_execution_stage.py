@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import time
 import threading
+from pathlib import Path
 from typing import Any
 
 from aipinho.capabilities.media_metadata.descriptor import MEDIA_METADATA_EVIDENCE_KEYS
@@ -83,6 +84,46 @@ class _Adapter:
             with self._lock:
                 self.active_calls -= 1
 
+    def applicability_decision(
+        self,
+        *,
+        capability: Any,
+        entity: dict[str, Any],
+        task: ObservationTask,
+        canonical_key: str,
+        raw_source_ref: str,
+    ) -> dict[str, Any]:
+        if str(getattr(capability, "capability_id", "")) != "media_metadata_reader":
+            return {"status": "unknown", "reason_code": "TEST_CAPABILITY_APPLICABILITY_UNKNOWN"}
+        source_root_role = str(entity.get("source_root_role") or task.entity_ref.get("source_root_role") or task.inputs.get("source_root_role") or "")
+        if source_root_role and source_root_role not in {"library_root", "corpus_root"}:
+            return {"status": "inapplicable", "reason_code": "MEDIA_CAPABILITY_ROOT_ROLE_INAPPLICABLE"}
+        entity_role = str(entity.get("entity_role") or task.entity_ref.get("entity_role") or task.inputs.get("entity_role") or "")
+        routing_hints = {
+            str(item)
+            for item in list(entity.get("routing_hints") or [])
+            + list(task.entity_ref.get("routing_hints") or [])
+            + list(task.inputs.get("routing_hints") or [])
+            if str(item).strip()
+        }
+        if entity_role in {"media_asset_candidate", "audio_track_candidate"} or "media_metadata_observation" in routing_hints:
+            return {"status": "applicable", "reason_code": "MEDIA_CAPABILITY_ROUTING_HINT_APPLICABLE"}
+        supported = self._supported_extensions()
+        extension = Path(str(raw_source_ref or "")).suffix.lower().lstrip(".")
+        if extension and extension in supported:
+            return {"status": "applicable", "reason_code": "MEDIA_CAPABILITY_EXTENSION_DECLARED_BY_BACKEND"}
+        if extension and supported:
+            return {"status": "inapplicable", "reason_code": "MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS"}
+        return {"status": "unknown", "reason_code": "MEDIA_CAPABILITY_APPLICABILITY_UNKNOWN"}
+
+    def _supported_extensions(self) -> set[str]:
+        capability = getattr(self, "capability", None)
+        supported: set[str] = set()
+        for backend in getattr(capability, "backends", {}).values():
+            descriptor = backend.descriptor() if hasattr(backend, "descriptor") else None
+            supported.update(str(item).lower().lstrip(".") for item in getattr(descriptor, "supported_extensions", []) or [])
+        return supported
+
 
 class _SupportedExtensionBackend:
     backend_id = "fake_backend"
@@ -139,6 +180,33 @@ class _RuntimeFailureAdapter(_Adapter):
         with self._lock:
             self.calls.append(task)
         raise RuntimeError("observer exploded")
+
+
+class _SilentNoEvidenceAdapter(_Adapter):
+    def execute(self, task: ObservationTask, binding: Any) -> dict[str, Any]:
+        with self._lock:
+            self.calls.append(task)
+        return {"raw_ref": task.inputs.get("file_path"), "observations": []}
+
+
+class _RoleApplicabilityAdapter(_Adapter):
+    def __init__(self, *, applicable_roles: set[str], keys: list[str] | None = None) -> None:
+        super().__init__(keys=keys)
+        self.applicable_roles = set(applicable_roles)
+
+    def applicability_decision(
+        self,
+        *,
+        capability: Any,
+        entity: dict[str, Any],
+        task: ObservationTask,
+        canonical_key: str,
+        raw_source_ref: str,
+    ) -> dict[str, Any]:
+        role = str(entity.get("entity_role") or task.entity_ref.get("entity_role") or task.inputs.get("entity_role") or "")
+        if role in self.applicable_roles:
+            return {"status": "applicable", "reason_code": "TEST_ROLE_APPLICABLE", "evidence": {"entity_role": role}}
+        return {"status": "inapplicable", "reason_code": "TEST_ROLE_INAPPLICABLE", "evidence": {"entity_role": role}}
 
 
 class _SequenceAdapter(_UnsupportedAdapter):
@@ -215,8 +283,21 @@ def _capability(
     )
 
 
-def _generic_capability(capability_id: str, *, consumes: list[str], attributes: list[str] | None = None) -> ObservationCapability:
+def _generic_capability(
+    capability_id: str,
+    *,
+    consumes: list[str],
+    attributes: list[str] | None = None,
+    applicability_entity_roles: list[str] | None = None,
+) -> ObservationCapability:
     attrs = attributes or ["generic_signal"]
+    observer_binding: dict[str, Any] = {
+        "observer_id": capability_id,
+        "adapter_id": capability_id,
+        "input_schema": {"required": ["source_ref"]},
+    }
+    if applicability_entity_roles is not None:
+        observer_binding["applicability"] = {"entity_roles": applicability_entity_roles}
     return ObservationCapability(
         capability_id=capability_id,
         name=capability_id,
@@ -229,11 +310,7 @@ def _generic_capability(capability_id: str, *, consumes: list[str], attributes: 
         evidence_types=["generic_evidence"],
         supported_strategies=["execute_observer"],
         typical_confidence=0.9,
-        observer_binding={
-            "observer_id": capability_id,
-            "adapter_id": capability_id,
-            "input_schema": {"required": ["source_ref"]},
-        },
+        observer_binding=observer_binding,
         available=True,
         status="available",
     )
@@ -529,8 +606,8 @@ def test_generic_capability_applicability_is_contract_and_role_scoped() -> None:
     stage = GovernedObservationExecutionStageService(
         observation_boundary=ObservationExecutionBoundaryService(adapters={"capability_x": adapter_x, "capability_y": adapter_y}),
         observer_registry=CapabilityRegistry(capabilities=[
-            _generic_capability("capability_x", consumes=["x_candidate"]),
-            _generic_capability("capability_y", consumes=["y_candidate"]),
+            _generic_capability("capability_x", consumes=["file_path"], applicability_entity_roles=["x_candidate"]),
+            _generic_capability("capability_y", consumes=["file_path"], applicability_entity_roles=["y_candidate"]),
         ]),
         budget=PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=25),
     )
@@ -553,6 +630,72 @@ def test_generic_capability_applicability_is_contract_and_role_scoped() -> None:
     assert adapter_y.calls[0].inputs["entity_id"] == "entity_y"
     assert result.telemetry["capability_applicable_count"] == 2
     assert result.telemetry["capability_inapplicable_count"] == 1
+
+
+def test_consumes_is_not_interpreted_as_entity_role_applicability() -> None:
+    adapter = _Adapter(keys=["generic_signal"])
+    stage = GovernedObservationExecutionStageService(
+        observation_boundary=ObservationExecutionBoundaryService(adapters={"text_capability": adapter}),
+        observer_registry=CapabilityRegistry(capabilities=[
+            _generic_capability("text_capability", consumes=["file_path", "text_content"])
+        ]),
+        budget=PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=25),
+    )
+
+    result = stage.execute(
+        observation_plan=_generic_plan([
+            _generic_task("generic_signal", capability_id="text_capability", entity_id="entity_1")
+        ]),
+        selected_entities=[
+            {"entity_id": "entity_1", "path": "file://one", "entity_kind": "file", "entity_role": "corpus_file"}
+        ],
+    )
+
+    assert len(adapter.calls) == 1
+    assert result.telemetry["capability_applicability_unknown_count"] == 1
+    assert result.telemetry["capability_inapplicable_count"] == 0
+
+
+def test_two_fake_capabilities_own_distinct_applicability_without_stage_branching() -> None:
+    adapter_x = _RoleApplicabilityAdapter(applicable_roles={"x_candidate"}, keys=["generic_signal"])
+    adapter_y = _RoleApplicabilityAdapter(applicable_roles={"y_candidate"}, keys=["generic_signal"])
+    stage = GovernedObservationExecutionStageService(
+        observation_boundary=ObservationExecutionBoundaryService(adapters={"capability_x": adapter_x, "capability_y": adapter_y}),
+        observer_registry=CapabilityRegistry(capabilities=[
+            _generic_capability("capability_x", consumes=["file_path"]),
+            _generic_capability("capability_y", consumes=["file_path"]),
+        ]),
+        budget=PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=25),
+    )
+
+    result = stage.execute(
+        observation_plan=_generic_plan([
+            _generic_task("generic_signal", capability_id="capability_x", entity_id="entity_x"),
+            _generic_task("generic_signal", capability_id="capability_y", entity_id="entity_x"),
+            _generic_task("generic_signal", capability_id="capability_y", entity_id="entity_y"),
+        ]),
+        selected_entities=[
+            {"entity_id": "entity_x", "path": "file://x", "entity_kind": "file", "entity_role": "x_candidate"},
+            {"entity_id": "entity_y", "path": "file://y", "entity_kind": "file", "entity_role": "y_candidate"},
+        ],
+    )
+
+    assert len(adapter_x.calls) == 1
+    assert len(adapter_y.calls) == 1
+    assert adapter_x.calls[0].inputs["entity_id"] == "entity_x"
+    assert adapter_y.calls[0].inputs["entity_id"] == "entity_y"
+    assert result.telemetry["capability_applicable_count"] == 2
+    assert result.telemetry["capability_inapplicable_count"] == 1
+    decision_source = GovernedObservationExecutionStageService._capability_applicability_decision
+    source = Path(decision_source.__code__.co_filename).read_text(encoding="utf-8")
+    method_source = source[
+        source.index("    def _capability_applicability_decision("):
+        source.index("    def _explicit_applicability_contract_decision(")
+    ]
+    assert "media_metadata_reader" not in method_source
+    assert "MEDIA_CAPABILITY" not in method_source
+    assert "supported_extensions" not in method_source
+    assert ".consumes" not in method_source
 
 
 def test_expected_unsupported_outcomes_do_not_trigger_systemic_consecutive_failure_breaker() -> None:
@@ -579,6 +722,31 @@ def test_expected_unsupported_outcomes_do_not_trigger_systemic_consecutive_failu
     assert result.telemetry["systemic_execution_failure_count"] == 0
     assert result.telemetry["current_consecutive_systemic_failures"] == 0
     assert result.telemetry["max_consecutive_systemic_failures_observed"] == 0
+
+
+def test_unexplained_no_evidence_triggers_systemic_consecutive_failure_breaker() -> None:
+    adapter = _SilentNoEvidenceAdapter(keys=["artist"])
+    stage = _stage(
+        adapter,
+        budget=PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=25, max_consecutive_execution_failures=10),
+    )
+
+    result = stage.execute(
+        observation_plan=_plan([
+            _task("artist", entity_id=f"entity_{index}", source_ref=f"library/{index}.m4a")
+            for index in range(12)
+        ]),
+        selected_entities=[
+            {"entity_id": f"entity_{index}", "path": f"library/{index}.m4a", "entity_role": "media_asset_candidate", "source_root_role": "library_root"}
+            for index in range(12)
+        ],
+    )
+
+    assert len(adapter.calls) == 10
+    assert result.blocked_reason_code == "POST_COMPILE_OBSERVATION_CONSECUTIVE_EXECUTION_FAILURES_EXCEEDED"
+    assert result.telemetry["systemic_execution_failure_count"] == 10
+    assert result.telemetry["expected_unsupported_count"] == 0
+    assert result.telemetry["max_consecutive_systemic_failures_observed"] == 10
 
 
 def test_actual_runtime_failures_trigger_systemic_consecutive_failure_breaker() -> None:

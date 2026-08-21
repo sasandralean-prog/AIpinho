@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import PurePath
 from typing import Any
 
 from aipinho.capabilities.media_metadata.policy import MediaMetadataCapability
@@ -33,6 +34,65 @@ class MediaMetadataObserverAdapter:
             media_observation_demand=media_observation_demand if isinstance(media_observation_demand, dict) else None,
         )
 
+    def applicability_decision(
+        self,
+        *,
+        capability: Any,
+        entity: dict[str, Any],
+        task: ObservationTask,
+        canonical_key: str,
+        raw_source_ref: str,
+    ) -> dict[str, Any]:
+        source_root_role = str(
+            self._entity_value(entity, "source_root_role")
+            or task.entity_ref.get("source_root_role")
+            or task.inputs.get("source_root_role")
+            or ""
+        )
+        if source_root_role and source_root_role not in {"library_root", "corpus_root"}:
+            return {
+                "status": "inapplicable",
+                "reason_code": "MEDIA_CAPABILITY_ROOT_ROLE_INAPPLICABLE",
+                "evidence": {"source_root_role": source_root_role},
+            }
+        source_ref = str(raw_source_ref or task.inputs.get("file_path") or task.inputs.get("source_ref") or "")
+        if not source_ref:
+            return {"status": "unknown", "reason_code": "MEDIA_CAPABILITY_SOURCE_REF_UNKNOWN"}
+        entity_role = str(
+            self._entity_value(entity, "entity_role")
+            or task.entity_ref.get("entity_role")
+            or task.inputs.get("entity_role")
+            or ""
+        )
+        routing_hints = {
+            str(item)
+            for item in self._entity_list_value(entity, "routing_hints")
+            + list(task.entity_ref.get("routing_hints") or [])
+            + list(task.inputs.get("routing_hints") or [])
+            if str(item).strip()
+        }
+        if entity_role in {"media_asset_candidate", "audio_track_candidate"} or "media_metadata_observation" in routing_hints:
+            return {
+                "status": "applicable",
+                "reason_code": "MEDIA_CAPABILITY_ROUTING_HINT_APPLICABLE",
+                "evidence": {"entity_role": entity_role, "routing_hints": sorted(routing_hints)},
+            }
+        extension = self._source_extension(entity=entity, source_ref=source_ref)
+        supported_extensions = self._supported_extensions()
+        if extension and extension in supported_extensions:
+            return {
+                "status": "applicable",
+                "reason_code": "MEDIA_CAPABILITY_EXTENSION_DECLARED_BY_BACKEND",
+                "evidence": {"extension": extension, "supported_extensions": sorted(supported_extensions)},
+            }
+        if extension and supported_extensions:
+            return {
+                "status": "inapplicable",
+                "reason_code": "MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS",
+                "evidence": {"extension": extension, "supported_extensions": sorted(supported_extensions)},
+            }
+        return {"status": "unknown", "reason_code": "MEDIA_CAPABILITY_APPLICABILITY_UNKNOWN"}
+
     def _ensure_eligible(self, task: ObservationTask) -> None:
         entity_role = str(task.inputs.get("entity_role") or task.entity_ref.get("entity_role") or "")
         source_root_role = str(task.inputs.get("source_root_role") or task.entity_ref.get("source_root_role") or "")
@@ -43,3 +103,46 @@ class MediaMetadataObserverAdapter:
             raise ValueError("MEDIA_CAPABILITY_ROOT_ROLE_REJECTED")
         if not file_path:
             raise ValueError("MEDIA_CAPABILITY_FILE_PATH_MISSING")
+
+    def _supported_extensions(self) -> set[str]:
+        supported: set[str] = set()
+        for backend in getattr(self.capability, "backends", {}).values():
+            descriptor = backend.descriptor() if hasattr(backend, "descriptor") else None
+            if isinstance(descriptor, dict):
+                extensions = descriptor.get("supported_extensions") or []
+            else:
+                extensions = getattr(descriptor, "supported_extensions", []) or []
+            supported.update(str(item).lower().lstrip(".") for item in extensions if str(item).strip())
+        return supported
+
+    def _source_extension(self, *, entity: dict[str, Any], source_ref: str) -> str:
+        value = self._entity_value(entity, "extension")
+        if value:
+            return str(value).lower().lstrip(".")
+        suffix = PurePath(source_ref).suffix
+        return suffix.lower().lstrip(".")
+
+    def _entity_value(self, entity: dict[str, Any], key: str) -> Any | None:
+        if key in entity and entity.get(key) not in (None, ""):
+            return entity.get(key)
+        attributes = entity.get("attributes") if isinstance(entity.get("attributes"), dict) else {}
+        value = attributes.get(key)
+        if isinstance(value, dict):
+            return value.get("value")
+        if value not in (None, ""):
+            return value
+        observed = entity.get("observed_attributes") if isinstance(entity.get("observed_attributes"), dict) else {}
+        value = observed.get(key)
+        if isinstance(value, dict):
+            return value.get("value")
+        return value if value not in (None, "") else None
+
+    def _entity_list_value(self, entity: dict[str, Any], key: str) -> list[Any]:
+        value = self._entity_value(entity, key)
+        if isinstance(value, list):
+            return value
+        if isinstance(value, tuple):
+            return list(value)
+        if value in (None, ""):
+            return []
+        return [value]
