@@ -1,0 +1,96 @@
+{
+  "mission_id": "H1C0.R3.01.B3.6",
+  "mission_class": "hybrid_operational_correction",
+  "branch": "agent/codex/r3-01-b3-6-applicability-capacity-admission",
+  "base_main_sha": "496fd9af0cbb21e0ac98670c90b65f0134140b99",
+  "firetest5_executed": false,
+  "c_gate": "CORRECTIVE_REQUIRED_BEFORE_C",
+  "previous_frontier": {
+    "reason_code": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",
+    "target_entity_ref_count": 10000,
+    "applicability_started_count": 9144,
+    "applicability_completed_count": 9144,
+    "capability_inapplicable_count": 9143,
+    "groups_created_count": 0,
+    "physical_probe_count": 0,
+    "elapsed_ms": 120046
+  },
+  "implementation": {
+    "admission_control_implemented": true,
+    "generic_stage_owns_media_extensions": false,
+    "capability_owned_admission_methods": [
+      "applicability_admission_decision",
+      "cheap_applicability_decision"
+    ],
+    "media_adapter_admission_method": "MediaMetadataObserverAdapter.applicability_admission_decision",
+    "media_backend_descriptor_cache": true,
+    "admission_candidate_limit_derivation": "max_physical_probes * 2",
+    "admission_candidate_limit_value": 5000,
+    "budget_changes": false,
+    "ffprobe_installed": false,
+    "parallel_execution_added": false
+  },
+  "target_expansion_diagnosis": {
+    "execute_observer_task_count": 2,
+    "target_entity_ref_count": 10000,
+    "root_cause": "The canary observation plan expands two media execute-observer tasks over a broad selected entity window before any physical media group is admitted. Capability-owned admission now proves the first 5001 candidates are expected-inapplicable for media metadata by backend extension support, with zero eligible groups.",
+    "task_detail_source": "bounded runtime telemetry; full ObservationPlan task rows were not persisted in lightweight result payload",
+    "tasks": [
+      {
+        "capability_id": "media_metadata_reader",
+        "declared_target_entity_count": 5000,
+        "resolved_target_entity_count": 5000,
+        "canonical_key": "not_projected_from_persisted_lightweight_payload",
+        "strategy_kind": "execute_observer"
+      },
+      {
+        "capability_id": "media_metadata_reader",
+        "declared_target_entity_count": 5000,
+        "resolved_target_entity_count": 5000,
+        "canonical_key": "not_projected_from_persisted_lightweight_payload",
+        "strategy_kind": "execute_observer"
+      }
+    ]
+  },
+  "admission_control": {
+    "implemented": true,
+    "owner": "capability_or_adapter",
+    "eligible_candidate_count": 0,
+    "expected_inapplicable_candidate_count": 5001,
+    "unknown_candidate_count": 0,
+    "malformed_or_missing_source_ref_count": 0,
+    "skipped_or_deferred_candidate_count": 0,
+    "resolver_calls_attempted": 0,
+    "resolver_calls_avoided_by_admission": 5001,
+    "admission_decision_count": 5001,
+    "admission_elapsed_ms": 796,
+    "capability_inapplicable_reasons": {
+      "MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS": 5001
+    },
+    "count_invariant": {
+      "target_entity_ref_count": 10000,
+      "processed_before_block": 5001,
+      "processed_reconciles": true,
+      "processed_formula": "eligible + expected_inapplicable + unknown + malformed_or_missing + skipped_or_deferred",
+      "unprocessed_due_to_admission_limit": 4999
+    }
+  },
+  "post_patch_canary": {
+    "endpoint": "/api/v1/analyze",
+    "task_run_id": "task_run_a7a71c4e20554640923fe5b96437cea0",
+    "operation_id": "op_2e8f94a9aa694801a8c866d92c165082",
+    "status": "blocked",
+    "reason_code": "POST_COMPILE_APPLICABILITY_TARGET_EXPANSION_EXCEEDED",
+    "terminal_blocking_event_count": 1,
+    "speaker_truth_safe_to_report_success": false,
+    "target_entity_ref_count": 10000,
+    "groups_created_count": 0,
+    "before_physical_probe_dispatch_emitted": false,
+    "physical_probe_count": 0,
+    "elapsed_ms": 796,
+    "http_post_response": "client_timeout_180s",
+    "persisted_result_available": true,
+    "public_task_run_get_status": 200
+  },
+  "verdict": "R3_01_B3_6_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_READY"
+}

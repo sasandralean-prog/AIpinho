@@ -477,6 +477,17 @@ class GovernedObservationExecutionStageService:
         applicability_counts = {"applicable": 0, "inapplicable": 0, "unknown": 0}
         inapplicable_reasons: dict[str, int] = {}
         applicability_resolution_failures: list[dict[str, Any]] = []
+        target_partition_counts = {
+            "eligible_candidate_count": 0,
+            "expected_inapplicable_candidate_count": 0,
+            "unknown_candidate_count": 0,
+            "malformed_or_missing_source_ref_count": 0,
+            "skipped_or_deferred_candidate_count": 0,
+        }
+        resolver_calls_attempted = 0
+        resolver_calls_avoided_by_admission = 0
+        admission_decision_count = 0
+        admission_started = time.monotonic()
         blocked_reason: str | None = None
         planning_started = time.monotonic()
         task_count = len(observation_plan.observation_tasks)
@@ -488,6 +499,7 @@ class GovernedObservationExecutionStageService:
         capability_availability_check_count = 0
         applicability_started_count = 0
         applicability_completed_count = 0
+        admission_candidate_limit = self._applicability_admission_candidate_limit()
         capability_ids_seen: set[str] = set()
         canonical_keys_seen: set[str] = set()
         strategies_seen: set[str] = set()
@@ -545,8 +557,12 @@ class GovernedObservationExecutionStageService:
                     break
                 entity = entities_by_id.get(entity_id)
                 if entity is None:
+                    target_partition_counts["skipped_or_deferred_candidate_count"] += 1
                     continue
                 raw_source_ref = self._raw_source_ref(task=task, entity=entity)
+                if not str(raw_source_ref or "").strip():
+                    target_partition_counts["malformed_or_missing_source_ref_count"] += 1
+                    continue
                 applicability_started_count += 1
                 if applicability_started_count == 1:
                     self._checkpoint(
@@ -565,13 +581,26 @@ class GovernedObservationExecutionStageService:
                             "elapsed_ms": int((time.monotonic() - planning_started) * 1000),
                         },
                     )
-                applicability = self._capability_applicability_decision(
+                admission = self._capability_admission_decision(
                     capability_id=capability_id,
                     canonical_key=canonical_key,
                     entity=entity,
                     task=task,
                     raw_source_ref=raw_source_ref,
                 )
+                if admission is not None:
+                    applicability = admission
+                    resolver_calls_avoided_by_admission += 1
+                    admission_decision_count += 1
+                else:
+                    resolver_calls_attempted += 1
+                    applicability = self._capability_applicability_decision(
+                        capability_id=capability_id,
+                        canonical_key=canonical_key,
+                        entity=entity,
+                        task=task,
+                        raw_source_ref=raw_source_ref,
+                    )
                 applicability_completed_count += 1
                 if self._group_planning_total_budget_exceeded(started_at):
                     blocked_reason = "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED"
@@ -590,6 +619,10 @@ class GovernedObservationExecutionStageService:
                             "applicability_completed_count": applicability_completed_count,
                             "applicability_failed_count": len(applicability_resolution_failures),
                             "groups_created_count": len(groups),
+                            **target_partition_counts,
+                            "resolver_calls_attempted": resolver_calls_attempted,
+                            "resolver_calls_avoided_by_admission": resolver_calls_avoided_by_admission,
+                            "admission_decision_count": admission_decision_count,
                             "elapsed_ms": int((time.monotonic() - planning_started) * 1000),
                         },
                     )
@@ -598,8 +631,22 @@ class GovernedObservationExecutionStageService:
                     applicability_resolution_failures.append(dict(applicability.evidence))
                     break
                 applicability_counts[applicability.status] += 1
+                if applicability.status == "applicable":
+                    target_partition_counts["eligible_candidate_count"] += 1
+                elif applicability.status == "inapplicable":
+                    target_partition_counts["expected_inapplicable_candidate_count"] += 1
+                else:
+                    target_partition_counts["unknown_candidate_count"] += 1
                 if applicability.status == "inapplicable":
                     inapplicable_reasons[applicability.reason_code] = inapplicable_reasons.get(applicability.reason_code, 0) + 1
+                    if (
+                        admission_decision_count > 0
+                        and not groups
+                        and target_entity_ref_count > admission_candidate_limit
+                        and applicability_completed_count >= admission_candidate_limit
+                    ):
+                        blocked_reason = "POST_COMPILE_APPLICABILITY_TARGET_EXPANSION_EXCEEDED"
+                        break
                     continue
                 source_ref = self._normalized_source_ref(raw_source_ref=raw_source_ref, entity=entity)
                 key = (entity_id, capability_id, source_ref)
@@ -621,6 +668,19 @@ class GovernedObservationExecutionStageService:
                 group.tasks.append(task)
             if blocked_reason:
                 break
+        if (
+            blocked_reason is None
+            and execute_observer_task_count > 0
+            and target_entity_ref_count > 0
+            and not groups
+            and applicability_completed_count > 0
+            and admission_decision_count > 0
+            and target_entity_ref_count > admission_candidate_limit
+        ):
+            if target_partition_counts["eligible_candidate_count"] == 0 and target_partition_counts["unknown_candidate_count"] == 0:
+                blocked_reason = "POST_COMPILE_APPLICABILITY_NO_ELIGIBLE_CANDIDATES"
+            else:
+                blocked_reason = "POST_COMPILE_APPLICABILITY_NO_APPLICABLE_GROUPS"
         self._checkpoint(
             checkpoint,
             "after_observation_task_scan",
@@ -635,6 +695,11 @@ class GovernedObservationExecutionStageService:
                 "capability_availability_checked": capability_availability_check_count,
                 "capability_ids_sample": self._bounded_sorted_sample(capability_ids_seen),
                 "canonical_keys_sample": self._bounded_sorted_sample(canonical_keys_seen),
+                **target_partition_counts,
+                "resolver_calls_attempted": resolver_calls_attempted,
+                "resolver_calls_avoided_by_admission": resolver_calls_avoided_by_admission,
+                "admission_decision_count": admission_decision_count,
+                "max_applicability_admission_candidate_count": admission_candidate_limit,
                 "elapsed_ms": int((time.monotonic() - planning_started) * 1000),
             },
         )
@@ -646,6 +711,11 @@ class GovernedObservationExecutionStageService:
                 "applicability_completed_count": applicability_completed_count,
                 "applicability_failed_count": len(applicability_resolution_failures),
                 "groups_created_count": len(groups),
+                **target_partition_counts,
+                "resolver_calls_attempted": resolver_calls_attempted,
+                "resolver_calls_avoided_by_admission": resolver_calls_avoided_by_admission,
+                "admission_decision_count": admission_decision_count,
+                "max_applicability_admission_candidate_count": admission_candidate_limit,
                 "elapsed_ms": int((time.monotonic() - planning_started) * 1000),
                 "reason_code": blocked_reason,
             },
@@ -657,6 +727,13 @@ class GovernedObservationExecutionStageService:
             "capability_inapplicable_reasons": inapplicable_reasons,
             "capability_applicability_resolution_failure_count": len(applicability_resolution_failures),
             "capability_applicability_resolution_failures": applicability_resolution_failures[:5],
+            "groups_created_count": len(groups),
+            **target_partition_counts,
+            "resolver_calls_attempted": resolver_calls_attempted,
+            "resolver_calls_avoided_by_admission": resolver_calls_avoided_by_admission,
+            "admission_decision_count": admission_decision_count,
+            "max_applicability_admission_candidate_count": admission_candidate_limit,
+            "admission_elapsed_ms": int((time.monotonic() - admission_started) * 1000),
             "observation_group_planning": {
                 "task_count": task_count,
                 "tasks_seen": task_scan_count,
@@ -668,6 +745,11 @@ class GovernedObservationExecutionStageService:
                 "applicability_started_count": applicability_started_count,
                 "applicability_completed_count": applicability_completed_count,
                 "applicability_failed_count": len(applicability_resolution_failures),
+                **target_partition_counts,
+                "resolver_calls_attempted": resolver_calls_attempted,
+                "resolver_calls_avoided_by_admission": resolver_calls_avoided_by_admission,
+                "admission_decision_count": admission_decision_count,
+                "max_applicability_admission_candidate_count": admission_candidate_limit,
                 "groups_created_count": len(groups),
                 "elapsed_ms": int((time.monotonic() - planning_started) * 1000),
             },
@@ -680,6 +762,9 @@ class GovernedObservationExecutionStageService:
 
     def _bounded_sorted_sample(self, values: set[str], *, limit: int = 10) -> list[str]:
         return sorted(str(item) for item in values if str(item).strip())[:limit]
+
+    def _applicability_admission_candidate_limit(self) -> int:
+        return max(1, int(self.budget.max_physical_probes or 1) * 2)
 
     def _capability_applicability_decision(
         self,
@@ -737,6 +822,45 @@ class GovernedObservationExecutionStageService:
                 )
         return CapabilityApplicabilityDecision("unknown", "CAPABILITY_APPLICABILITY_UNKNOWN")
 
+    def _capability_admission_decision(
+        self,
+        *,
+        capability_id: str,
+        canonical_key: str,
+        entity: dict[str, Any],
+        task: ObservationTask,
+        raw_source_ref: str,
+    ) -> CapabilityApplicabilityDecision | None:
+        capability = self.observer_registry.get(capability_id)
+        if capability is None:
+            return CapabilityApplicabilityDecision("inapplicable", "CAPABILITY_NOT_REGISTERED")
+        resolver = self._capability_admission_resolver(capability)
+        if not callable(resolver):
+            return None
+        try:
+            return self._coerce_applicability_decision(
+                resolver(
+                    capability=capability,
+                    entity=entity,
+                    task=task,
+                    canonical_key=canonical_key,
+                    raw_source_ref=raw_source_ref,
+                )
+            )
+        except Exception as exc:
+            return CapabilityApplicabilityDecision(
+                "unknown",
+                "CAPABILITY_APPLICABILITY_RESOLUTION_FAILED",
+                {
+                    "capability_id": capability_id,
+                    "entity_id": str(entity.get("entity_id") or task.inputs.get("entity_id") or ""),
+                    "resolver_owner": self._resolver_owner(resolver),
+                    "exception_class": type(exc).__name__,
+                    "exception_reason": str(exc)[:200],
+                    "resolution_phase": "admission",
+                },
+            )
+
     def _resolver_owner(self, resolver: Callable[..., Any]) -> str:
         owner = getattr(resolver, "__self__", None)
         if owner is not None:
@@ -781,6 +905,16 @@ class GovernedObservationExecutionStageService:
             if candidate is None:
                 continue
             for name in ("applicability_decision", "capability_applicability"):
+                resolver = getattr(candidate, name, None)
+                if callable(resolver):
+                    return resolver
+        return None
+
+    def _capability_admission_resolver(self, capability: ObservationCapability) -> Callable[..., Any] | None:
+        for candidate in (self._adapter_for_capability(capability), capability):
+            if candidate is None:
+                continue
+            for name in ("applicability_admission_decision", "cheap_applicability_decision"):
                 resolver = getattr(candidate, name, None)
                 if callable(resolver):
                     return resolver

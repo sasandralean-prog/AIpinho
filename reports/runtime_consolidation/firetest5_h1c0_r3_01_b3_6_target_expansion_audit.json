@@ -1,0 +1,53 @@
+{
+  "mission_id": "H1C0.R3.01.B3.6",
+  "task_run_id": "task_run_a7a71c4e20554640923fe5b96437cea0",
+  "operation_id": "op_2e8f94a9aa694801a8c866d92c165082",
+  "audit_scope": "bounded target expansion and admission telemetry",
+  "target_expansion": {
+    "task_count": 25,
+    "tasks_seen": 9,
+    "deferred_task_count": 7,
+    "execute_observer_task_count": 2,
+    "target_entity_ref_count": 10000,
+    "rows_expected": 5000,
+    "interpretation": "Two execute-observer media tasks each target a 5000-entity selected window, producing 10000 task/entity applicability candidates before physical grouping."
+  },
+  "admission_partition": {
+    "processed_candidate_count_before_block": 5001,
+    "eligible_candidate_count": 0,
+    "expected_inapplicable_candidate_count": 5001,
+    "unknown_candidate_count": 0,
+    "malformed_or_missing_source_ref_count": 0,
+    "skipped_or_deferred_candidate_count": 0,
+    "unprocessed_candidate_count_due_to_admission_limit": 4999,
+    "max_applicability_admission_candidate_count": 5000,
+    "reconciliation": {
+      "processed_candidate_count": 5001,
+      "partition_sum": 5001,
+      "reconciles": true
+    }
+  },
+  "capability_decision": {
+    "capability_id": "media_metadata_reader",
+    "capability_lookup_attempted": 2,
+    "capability_availability_checked": 2,
+    "resolver_calls_attempted": 0,
+    "resolver_calls_avoided_by_admission": 5001,
+    "admission_decision_count": 5001,
+    "capability_applicable_count": 0,
+    "capability_inapplicable_count": 5001,
+    "capability_applicability_unknown_count": 0,
+    "capability_inapplicable_reasons": {
+      "MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS": 5001
+    }
+  },
+  "grouping": {
+    "groups_created_count": 0,
+    "dedup_group_count": 0,
+    "physical_probe_count": 0,
+    "backend_snapshot_started": false,
+    "before_physical_probe_dispatch_emitted": false
+  },
+  "root_cause": "Target expansion remains too broad for the media metadata capability path: the public canary asks media observation over a large selected file window, and the first admission window is dominated by sources whose extensions are not declared by media metadata backends. B3.6 prevents full-budget resolver burn but does not yet create an eligible media group.",
+  "next_frontier": "contract-scoped target selection/admission before media applicability iteration"
+}

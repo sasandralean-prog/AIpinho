@@ -1,0 +1,90 @@
+{
+  "mission_id": "H1C0.R3.01.B3.6",
+  "endpoint": "/api/v1/analyze",
+  "request_contract": {
+    "contract_type": "analysis_readonly",
+    "runtime_profile": "workspace_analysis_readonly",
+    "operation_type": "workspace_analysis_readonly",
+    "artifact_logical_paths": [
+      "reports/runtime_consolidation/b3_6_music_inventory_canary.csv"
+    ],
+    "workspace_mutation": false
+  },
+  "http_result": {
+    "post_status": "client_timeout",
+    "timeout_seconds": 180,
+    "persisted_task_run_created": true,
+    "public_task_run_get_endpoint": "/api/v1/task-runs/task_run_a7a71c4e20554640923fe5b96437cea0",
+    "public_task_run_get_status": 200
+  },
+  "task_run": {
+    "task_run_id": "task_run_a7a71c4e20554640923fe5b96437cea0",
+    "operation_id": "op_2e8f94a9aa694801a8c866d92c165082",
+    "session_id": "b3_6_public_media_canary",
+    "status": "blocked",
+    "reason_code": "POST_COMPILE_APPLICABILITY_TARGET_EXPANSION_EXCEEDED",
+    "started_at": "2026-08-21T22:45:43.306461+00:00",
+    "finished_at": "2026-08-21T22:49:05.217636+00:00"
+  },
+  "post_compile_observation_execution": {
+    "blocked_reason_code": "POST_COMPILE_APPLICABILITY_TARGET_EXPANSION_EXCEEDED",
+    "dedup_group_count": 0,
+    "files_planned": 0,
+    "grouped_observation_task_count": 0,
+    "requested_canonical_key_count": 0,
+    "task_count": 25,
+    "tasks_seen": 9,
+    "deferred_task_count": 7,
+    "execute_observer_task_count": 2,
+    "target_entity_ref_count": 10000,
+    "capability_lookup_attempted": 2,
+    "capability_availability_checked": 2,
+    "applicability_started_count": 5001,
+    "applicability_completed_count": 5001,
+    "applicability_failed_count": 0,
+    "eligible_candidate_count": 0,
+    "expected_inapplicable_candidate_count": 5001,
+    "unknown_candidate_count": 0,
+    "malformed_or_missing_source_ref_count": 0,
+    "skipped_or_deferred_candidate_count": 0,
+    "resolver_calls_attempted": 0,
+    "resolver_calls_avoided_by_admission": 5001,
+    "admission_decision_count": 5001,
+    "max_applicability_admission_candidate_count": 5000,
+    "admission_elapsed_ms": 796,
+    "capability_applicable_count": 0,
+    "capability_inapplicable_count": 5001,
+    "capability_applicability_unknown_count": 0,
+    "capability_inapplicable_reasons": {
+      "MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS": 5001
+    },
+    "groups_created_count": 0,
+    "backend_snapshot_started": false,
+    "backend_snapshot_completed": false,
+    "before_physical_probe_dispatch_emitted": false,
+    "physical_probe_count": 0,
+    "files_attempted": 0,
+    "files_succeeded": 0,
+    "files_failed": 0,
+    "evidence_records_produced": 0,
+    "evidence_records_accepted": 0,
+    "evidence_records_rejected": 0,
+    "checkpoint_count": 0,
+    "checkpoint_bytes": 0,
+    "inline_materialized_bytes": 0,
+    "systemic_execution_failure_count": 0,
+    "policy_or_governance_block_count": 1
+  },
+  "terminality": {
+    "terminal_blocking_event_count": 1,
+    "blocking_event_sequence": 96,
+    "blocking_reason_code": "POST_COMPILE_APPLICABILITY_TARGET_EXPANSION_EXCEEDED",
+    "speaker_truth_safe_to_report_success": false
+  },
+  "source_provenance": {
+    "result_payload": "data/runtime/task_runs/task_run_a7a71c4e20554640923fe5b96437cea0/result.json",
+    "events_payload": "data/runtime/task_runs/task_run_a7a71c4e20554640923fe5b96437cea0/events.json",
+    "run_payload": "data/runtime/task_runs/task_run_a7a71c4e20554640923fe5b96437cea0/run.json",
+    "public_get_endpoint": "/api/v1/task-runs/task_run_a7a71c4e20554640923fe5b96437cea0"
+  }
+}
