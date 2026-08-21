@@ -1,0 +1,36 @@
+{
+  "mission_id": "H1C0.R3.01.B3.6",
+  "repo_path": "C:\\Dev\\AIpinho",
+  "branch": "agent/codex/r3-01-b3-6-applicability-capacity-admission",
+  "base_head": "496fd9af0cbb21e0ac98670c90b65f0134140b99",
+  "origin_main": "496fd9af0cbb21e0ac98670c90b65f0134140b99",
+  "ahead_behind_before_commit": "0 / 0",
+  "working_tree_status_before_commit": "dirty_expected_b3_6_changes",
+  "runtime": {
+    "pid": 4808,
+    "started_at": "2026-08-21 19:44:34 local",
+    "cwd": "C:\\Dev\\AIpinho",
+    "command_line": "\"C:\\Program Files\\Python311\\python.exe\" -m uvicorn aipinho.main:app --host 0.0.0.0 --port 9088",
+    "python_executable": "C:\\Program Files\\Python311\\python.exe",
+    "python_version": "3.11.6",
+    "listen": "0.0.0.0:9088"
+  },
+  "import_root": "C:\\Dev\\AIpinho\\src",
+  "module_paths": {
+    "aipinho": "C:\\Dev\\AIpinho\\src\\aipinho\\__init__.py",
+    "aipinho.main": "C:\\Dev\\AIpinho\\src\\aipinho\\main.py",
+    "GovernedObservationExecutionStageService": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\governed_observation_execution_stage_service.py",
+    "MediaMetadataObserverAdapter": "C:\\Dev\\AIpinho\\src\\aipinho\\capabilities\\media_metadata\\adapter.py",
+    "ReadonlyAnalysisArtifactRuntimeService": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\governance\\runtime\\readonly_analysis_artifact_runtime_service.py",
+    "public_runtime_api_router": "C:\\Dev\\AIpinho\\src\\aipinho\\api\\routers\\public_runtime_api_router.py"
+  },
+  "canonical_endpoints": {
+    "GET /api/v1/version": 200,
+    "GET /api/v1/runtime": 200,
+    "GET /api/v1/modules": 200,
+    "GET /api/v1/contracts": 200
+  },
+  "firetest5_executed": false,
+  "ffprobe_installed": false,
+  "second_checkout_modified": false
+}

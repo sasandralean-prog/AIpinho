@@ -1,0 +1,65 @@
+{
+  "mission_id": "H1C0.R3.01.B3.6",
+  "remaining_p0": [],
+  "remaining_p1": [
+    "R3_01_B3_6_P1_TARGET_EXPANSION_SELECTION_TOO_BROAD_NO_ELIGIBLE_MEDIA_CANDIDATES"
+  ],
+  "remaining_p2": [
+    "R3_01_B3_6_P2_PUBLIC_ANALYZE_SYNC_RESPONSE_TIMEOUT_DESPITE_PERSISTED_RESULT"
+  ],
+  "resolved_issues": [
+    {
+      "issue_id": "R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER",
+      "status": "RESOLVED_BY_B3_6_ADMISSION_CONTROL",
+      "evidence": {
+        "previous_reason": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",
+        "new_reason": "POST_COMPILE_APPLICABILITY_TARGET_EXPANSION_EXCEEDED",
+        "resolver_calls_attempted": 0,
+        "resolver_calls_avoided_by_admission": 5001,
+        "admission_elapsed_ms": 796
+      }
+    }
+  ],
+  "new_issues": [
+    {
+      "issue_id": "R3_01_B3_6_P1_TARGET_EXPANSION_SELECTION_TOO_BROAD_NO_ELIGIBLE_MEDIA_CANDIDATES",
+      "priority": "P1",
+      "status": "OPEN",
+      "summary": "The public canary still expands two media execute-observer tasks to 10000 target entity refs. B3.6 admission prevents full-budget resolver burn, but the first 5001 candidates are expected-inapplicable by media backend extension support and no physical group is created.",
+      "evidence": {
+        "task_run_id": "task_run_a7a71c4e20554640923fe5b96437cea0",
+        "operation_id": "op_2e8f94a9aa694801a8c866d92c165082",
+        "reason_code": "POST_COMPILE_APPLICABILITY_TARGET_EXPANSION_EXCEEDED",
+        "execute_observer_task_count": 2,
+        "target_entity_ref_count": 10000,
+        "applicability_started_count": 5001,
+        "applicability_completed_count": 5001,
+        "eligible_candidate_count": 0,
+        "expected_inapplicable_candidate_count": 5001,
+        "capability_inapplicable_count": 5001,
+        "capability_inapplicable_reasons": {
+          "MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS": 5001
+        },
+        "groups_created_count": 0,
+        "physical_probe_count": 0
+      }
+    },
+    {
+      "issue_id": "R3_01_B3_6_P2_PUBLIC_ANALYZE_SYNC_RESPONSE_TIMEOUT_DESPITE_PERSISTED_RESULT",
+      "priority": "P2",
+      "status": "OPEN",
+      "summary": "The POST /api/v1/analyze canary request exceeded the 180 second client timeout even though the task-run later persisted a governed blocked result that is retrievable through /api/v1/task-runs/{run_id}.",
+      "evidence": {
+        "task_run_id": "task_run_a7a71c4e20554640923fe5b96437cea0",
+        "operation_id": "op_2e8f94a9aa694801a8c866d92c165082",
+        "post_timeout_seconds": 180,
+        "run_status": "blocked",
+        "result_reason_code": "POST_COMPILE_APPLICABILITY_TARGET_EXPANSION_EXCEEDED",
+        "get_task_run_status": 200
+      }
+    }
+  ],
+  "b3_3_effect_status": "PARTIALLY_PROVEN",
+  "c_gate_status": "CORRECTIVE_REQUIRED_BEFORE_C",
+  "firetest5_status": "NOT_READY"
+}

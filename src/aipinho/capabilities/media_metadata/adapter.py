@@ -13,6 +13,7 @@ class MediaMetadataObserverAdapter:
 
     def __init__(self, capability: MediaMetadataCapability | None = None) -> None:
         self.capability = capability or MediaMetadataCapability()
+        self._supported_extensions_cache: tuple[set[str], list[dict[str, str]]] | None = None
 
     def execute(self, task: ObservationTask, binding: ObserverBinding) -> dict[str, Any]:
         self._ensure_eligible(task)
@@ -43,6 +44,28 @@ class MediaMetadataObserverAdapter:
         canonical_key: str,
         raw_source_ref: str,
     ) -> dict[str, Any]:
+        return self.applicability_admission_decision(
+            capability=capability,
+            entity=entity,
+            task=task,
+            canonical_key=canonical_key,
+            raw_source_ref=raw_source_ref,
+        )
+
+    def applicability_admission_decision(
+        self,
+        *,
+        capability: Any,
+        entity: dict[str, Any],
+        task: ObservationTask,
+        canonical_key: str,
+        raw_source_ref: str,
+    ) -> dict[str, Any]:
+        """Cheap capability-owned source routing decision.
+
+        Extension/source-role checks are routing eligibility only. They do not
+        assert codec/container/title/artist Truth.
+        """
         source_root_role = str(
             self._entity_value(entity, "source_root_role")
             or task.entity_ref.get("source_root_role")
@@ -111,6 +134,9 @@ class MediaMetadataObserverAdapter:
             raise ValueError("MEDIA_CAPABILITY_FILE_PATH_MISSING")
 
     def _supported_extensions(self) -> tuple[set[str], list[dict[str, str]]]:
+        if self._supported_extensions_cache is not None:
+            supported, failures = self._supported_extensions_cache
+            return set(supported), [dict(item) for item in failures]
         supported: set[str] = set()
         failures: list[dict[str, str]] = []
         for backend_id, backend in getattr(self.capability, "backends", {}).items():
@@ -128,6 +154,7 @@ class MediaMetadataObserverAdapter:
             else:
                 extensions = getattr(descriptor, "supported_extensions", []) or []
             supported.update(str(item).lower().lstrip(".") for item in extensions if str(item).strip())
+        self._supported_extensions_cache = (set(supported), [dict(item) for item in failures])
         return supported, failures
 
     def _source_extension(self, *, entity: dict[str, Any], source_ref: str) -> str:
