@@ -189,7 +189,7 @@ def test_public_runtime_api_endpoints():
     client = TestClient(app)
 
     for path, operation in [
-        ("/api/v1/chat", "chat"),
+        ("/api/v1/runtime/chat", "chat"),
         ("/api/v1/execute", "execute"),
         ("/api/v1/analyze", "analyze"),
         ("/api/v1/doctor", "doctor"),

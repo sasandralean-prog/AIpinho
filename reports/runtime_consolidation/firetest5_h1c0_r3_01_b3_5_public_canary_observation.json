@@ -1,0 +1,31 @@
+{
+  "b3_5_pass_criteria": {
+    "generic_stall_removed": true,
+    "more_specific_stage_reason": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",
+    "speaker_truth_false_on_block": true,
+    "terminality_preserved": true
+  },
+  "grouping_and_applicability": {},
+  "mission_id": "H1C0.R3.01.B3.5",
+  "post_compile_observation_execution": {},
+  "public_canary": {
+    "endpoint": "/api/v1/analyze",
+    "firetest5_executed": false,
+    "operation_id": "op_42cafcfaa0654bf299011345171199dc",
+    "public_speaker_truth_can_claim_success": null,
+    "reason_code": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",
+    "speaker_truth_safe_to_report_success": false,
+    "status": "blocked",
+    "task_run_id": "task_run_10a7ad7dabca4687bcebbe5cba30ce25",
+    "terminal_blocking_event_count": 1
+  },
+  "runtime": {
+    "branch": "agent/codex/r3-01-b3-5-postcompile-stall-route-boundary",
+    "command_line": "\"C:\\Program Files\\Python311\\python.exe\" -m uvicorn aipinho.main:app --host 0.0.0.0 --port 9088",
+    "cwd": "C:\\Dev\\AIpinho",
+    "head_before_commit": "50af6491b78e662bbd3390a59400aec6f0eb0bb1",
+    "import_root": "C:\\Dev\\AIpinho\\src",
+    "pid": 25288,
+    "python_executable": "C:\\Program Files\\Python311\\python.exe"
+  }
+}

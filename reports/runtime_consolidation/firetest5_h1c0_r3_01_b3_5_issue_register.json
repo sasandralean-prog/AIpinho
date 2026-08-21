@@ -1,0 +1,74 @@
+{
+  "changed_files_complete": [
+    "docs/external/public_runtime_api.md",
+    "src/aipinho/api/routers/public_runtime_api_router.py",
+    "src/aipinho/services/artifacts/governed_observation_execution_stage_service.py",
+    "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "src/aipinho/services/runtime/task_run_store.py",
+    "tests/unit/test_public_runtime_api_ex3.py",
+    "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_issue_register.json",
+    "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_postcompile_stall_diagnostic.json",
+    "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_postcompile_stall_summary.md",
+    "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_public_canary_observation.json",
+    "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_route_boundary_observation.json",
+    "tests/unit/test_post_compile_applicability_resolution_boundedness.py",
+    "tests/unit/test_post_compile_observation_group_planning_checkpoints.py",
+    "tests/unit/test_post_compile_observation_stall_reason_refinement.py",
+    "tests/unit/test_public_runtime_chat_route_boundary.py"
+  ],
+  "full_unit_attempt": {
+    "b3_5_focused_scope_impact": "not attributed to B3.5 route/post-compile changes",
+    "command": "python -m pytest tests/unit -q -x",
+    "counts_before_stop": "1 failed, 16 passed",
+    "first_failure": "tests/unit/test_agent_delegation_service.py::test_delegation_request_result_parent_child_and_timeline",
+    "reason": "PermissionError: agent_profile_disabled while creating lucio agent session",
+    "status": "FAIL_EXTERNAL_SCOPE_FIRST_FAILURE"
+  },
+  "issues": [
+    {
+      "after": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED with bounded planning telemetry",
+      "before": "POST_COMPILE_OBSERVATION_EXECUTION_STALLED at before_post_compile_observation_execution",
+      "evidence": "task_run_10a7ad7dabca4687bcebbe5cba30ce25",
+      "issue_id": "R3_01_B3_4_P1_PUBLIC_CANARY_POST_COMPILE_OBSERVATION_STALL_BEFORE_FIRETEST",
+      "priority": "P1",
+      "status": "corrected_to_specific_frontier"
+    },
+    {
+      "evidence": {
+        "applicability_completed_count": null,
+        "applicability_started_count": null,
+        "elapsed_ms": null,
+        "groups_created_count": null,
+        "reason_code": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED"
+      },
+      "issue_id": "R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER",
+      "priority": "P1",
+      "status": "open_new_frontier",
+      "summary": "Public media canary spends the full total observation envelope during capability applicability resolution over 10000 target entity refs before any physical probe."
+    },
+    {
+      "issue_id": "R3_01_B3_4_P2_PUBLIC_CHAT_ROUTE_SCHEMA_COLLISION_OR_HANDLER_PRECEDENCE",
+      "priority": "P2",
+      "status": "resolved_or_isolated_with_tests",
+      "summary": "/api/v1/chat remains canonical ChatRequest; PublicRuntimeRequest chat operation moved to /api/v1/runtime/chat."
+    }
+  ],
+  "mission_id": "H1C0.R3.01.B3.5",
+  "remaining_p0": [],
+  "remaining_p1": [
+    "R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER"
+  ],
+  "remaining_p2": [],
+  "scan_summary": {
+    "current_main_reports_scanned": true,
+    "current_p0_observed": false,
+    "current_p1_observed": true,
+    "historical_context": "Older R1/R2 issue registers contain P0/P1 records, but R2 exit/consolidated registers report open_P0=0 and open_P1=0. They are not treated as current B3.5 blockers.",
+    "historical_p0_p1_found": true
+  },
+  "static_validation": {
+    "anti_hardcode_scan": "PASS_WITH_EXISTING_FIXTURE_AND_REPORT_PATH_MATCHES",
+    "compileall": "PASS",
+    "git_diff_check": "PASS"
+  }
+}

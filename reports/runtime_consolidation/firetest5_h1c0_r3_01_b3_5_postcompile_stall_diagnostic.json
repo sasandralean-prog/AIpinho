@@ -1,0 +1,105 @@
+{
+  "b3_4_canary": {
+    "applicability_telemetry": null,
+    "evidence": null,
+    "last_checkpoint": "before_post_compile_observation_execution",
+    "operation_id": "op_8b3ff1d9c04049e79a40632f3c9ab647",
+    "physical_probe_count": null,
+    "task_run_id": "task_run_cc55b69f128d48ae81ed4ad9984b83d9"
+  },
+  "baseline": {
+    "branch": "agent/codex/r3-01-b3-5-postcompile-stall-route-boundary",
+    "current_head_before_commit": "50af6491b78e662bbd3390a59400aec6f0eb0bb1",
+    "main_sha": "50af6491b78e662bbd3390a59400aec6f0eb0bb1",
+    "origin_main": "50af6491b78e662bbd3390a59400aec6f0eb0bb1",
+    "runtime_required": true
+  },
+  "changed_files_complete": [
+    "docs/external/public_runtime_api.md",
+    "src/aipinho/api/routers/public_runtime_api_router.py",
+    "src/aipinho/services/artifacts/governed_observation_execution_stage_service.py",
+    "src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+    "src/aipinho/services/runtime/task_run_store.py",
+    "tests/unit/test_public_runtime_api_ex3.py",
+    "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_issue_register.json",
+    "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_postcompile_stall_diagnostic.json",
+    "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_postcompile_stall_summary.md",
+    "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_public_canary_observation.json",
+    "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_route_boundary_observation.json",
+    "tests/unit/test_post_compile_applicability_resolution_boundedness.py",
+    "tests/unit/test_post_compile_observation_group_planning_checkpoints.py",
+    "tests/unit/test_post_compile_observation_stall_reason_refinement.py",
+    "tests/unit/test_public_runtime_chat_route_boundary.py"
+  ],
+  "code_path_assessment": {
+    "applicability_resolution_completed": null,
+    "applicability_resolution_started": null,
+    "backend_snapshot_completed": false,
+    "backend_snapshot_started": false,
+    "before_physical_probe_emitted": false,
+    "capability_availability_checked": null,
+    "capability_lookup_attempted": null,
+    "deferred_executable_tasks_seen": null,
+    "elapsed_ms": null,
+    "execute_entered": true,
+    "execute_observer_strategies_seen": null,
+    "groups_created": null,
+    "physical_groups_completed": false,
+    "physical_groups_started": false,
+    "stage_where_stall_occurs": "capability_applicability_resolution",
+    "strategies_seen": null,
+    "target_entities_seen": null,
+    "tasks_seen": null
+  },
+  "full_unit_attempt": {
+    "b3_5_focused_scope_impact": "not attributed to B3.5 route/post-compile changes",
+    "command": "python -m pytest tests/unit -q -x",
+    "counts_before_stop": "1 failed, 16 passed",
+    "first_failure": "tests/unit/test_agent_delegation_service.py::test_delegation_request_result_parent_child_and_timeline",
+    "reason": "PermissionError: agent_profile_disabled while creating lucio agent session",
+    "status": "FAIL_EXTERNAL_SCOPE_FIRST_FAILURE"
+  },
+  "hypotheses": {
+    "applicability_resolver_stall": "supported: 9144 applicability calls completed over 120046 ms before governed block",
+    "backend_snapshot_stall": "not_reached",
+    "capability_registry_lookup_stall": "not_supported: capability_lookup_attempted=2 and availability_checked=2",
+    "checkpoint_event_store_stall": "not_supported: micro-checkpoints were emitted and persisted",
+    "guard_budget_too_early_or_misattributed": "not_supported after corrective: reason is stage-specific",
+    "physical_grouping_stall": "partially_supported: grouping entered but did not complete because applicability iteration consumed total budget",
+    "public_bridge_payload_shape_issue": "not_supported for analyze bridge; route collision isolated separately",
+    "target_entity_expansion_stall": "not_primary: target_entity_ref_count=10000 was produced"
+  },
+  "interesting_checkpoints": [],
+  "mission_class": "hybrid_operational_correction",
+  "observed_blocker": "POST_COMPILE_OBSERVATION_EXECUTION_STALLED",
+  "patch_plan": [
+    "add bounded group-planning and applicability micro-checkpoints",
+    "check total observation budget inside task/entity/applicability grouping loops",
+    "map latest checkpoint stages to specific post-compile stall reason codes",
+    "relocate PublicRuntimeRequest chat operation to /api/v1/runtime/chat and keep /api/v1/chat canonical"
+  ],
+  "post_compile_observation_execution": {},
+  "post_patch_canary": {
+    "events_count": 120,
+    "operation_id": "op_42cafcfaa0654bf299011345171199dc",
+    "public_speaker_truth_can_claim_success": null,
+    "reason_code": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",
+    "speaker_truth_safe_to_report_success": false,
+    "status": "blocked",
+    "task_run_id": "task_run_10a7ad7dabca4687bcebbe5cba30ce25",
+    "terminal_blocking_event_count": 1
+  },
+  "route_boundary": {
+    "api_v1_analyze_public_runtime_ok": true,
+    "api_v1_chat_live_handler": "canonical ChatRequest route",
+    "api_v1_chat_public_runtime_request_expected": false,
+    "api_v1_chat_schema_collision_confirmed": "resolved_by_relocation: PublicRuntimeRequest no longer owns /api/v1/chat",
+    "public_runtime_chat_route": "/api/v1/runtime/chat",
+    "recommended_contract_boundary": "PUBLIC_CHAT_ROUTE_OWNER_CANONICAL_CHAT; PUBLIC_RUNTIME_CHAT_ROUTE_RELOCATED"
+  },
+  "static_validation": {
+    "anti_hardcode_scan": "PASS_WITH_EXISTING_FIXTURE_AND_REPORT_PATH_MATCHES",
+    "compileall": "PASS",
+    "git_diff_check": "PASS"
+  }
+}
