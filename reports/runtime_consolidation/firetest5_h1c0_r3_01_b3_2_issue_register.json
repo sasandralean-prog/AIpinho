@@ -1,0 +1,53 @@
+{
+  "schema_version": "r3_01_b3_2_issue_register_v1",
+  "task_run_id": "task_run_fb5e41300c3e43c9b7353e91c1c01569",
+  "issues": [
+    {
+      "id": "R3_01_B3R_P1_CONSECUTIVE_FAILURE_GUARD_CONFLATES_EXPECTED_UNSUPPORTED_WITH_SYSTEMIC_FAILURE",
+      "priority": "P1",
+      "status": "proven",
+      "classification": "FAILURE_GUARD_SEMANTICS_DEFECT",
+      "evidence": [
+        "Configured max_consecutive_execution_failures=10.",
+        "Probes 931-940 are ten consecutive LRC sidecar files with MEDIA_BACKEND_UNSUPPORTED_FORMAT and zero EvidenceRecords.",
+        "The guard increments on any non-EXECUTED-with-evidence result and does not distinguish unsupported/non-media outcomes from observer/runtime failure."
+      ],
+      "recommendation": "Correct the failure-guard semantics before Run C so expected unsupported/corpus-selection outcomes do not trip the systemic execution circuit breaker."
+    },
+    {
+      "id": "R3_01_B3R_P1_CORPUS_SELECTION_INCLUDED_NON_MEDIA_SIDECARS_AND_ARTWORK",
+      "priority": "P1",
+      "status": "proven",
+      "classification": "CORPUS_CONTAMINATION_INPUT_TO_FRONTIER",
+      "evidence": [
+        "10 selected failed probes are .lrc timed-lyrics text files clustered under lyrics/.",
+        "2 selected failed probes are JPEG album-art files.",
+        "These files were sent to media_metadata_reader as physical groups."
+      ],
+      "recommendation": "Treat this as a selection/media-candidate hygiene issue, but do not let it mask the guard-semantics defect."
+    },
+    {
+      "id": "R3_01_B3R_P2_EBML_WEBM_CONTENT_WITH_M4A_NAMES_REQUIRES_BACKEND_COVERAGE",
+      "priority": "P2",
+      "status": "proven",
+      "classification": "EXPECTED_FORMAT_COVERAGE_GAP",
+      "evidence": [
+        "10 failed .m4a-named files have EBML headers and webm markers.",
+        "Mutagen returned no recognized media object for these files.",
+        "ffprobe was unavailable and native_minimal cannot satisfy media_identity."
+      ],
+      "recommendation": "Run C may be useful later for backend coverage, but only after failure-guard semantics are corrected."
+    },
+    {
+      "id": "R3_01_B3R_P2_RESOLVER_BOUNDEDNESS_TELEMETRY_NOT_PROJECTED",
+      "priority": "P2",
+      "status": "preserved_not_fixed",
+      "classification": "OBSERVABILITY_GAP",
+      "evidence": [
+        "B3R projected checkpoint counts and bytes but did not project resolver_call_count or max EvidenceRecords resolved at once.",
+        "Run-local checkpoint artifacts prove 918 checkpoints and max 8 records/checkpoint, but public summary cannot show resolver boundedness directly."
+      ],
+      "recommendation": "Expose resolver boundedness telemetry in a later observability correction."
+    }
+  ]
+}

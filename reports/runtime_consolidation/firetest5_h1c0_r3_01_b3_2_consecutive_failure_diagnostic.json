@@ -1,0 +1,1395 @@
+{
+  "schema_version": "r3_01_b3_2_consecutive_failure_diagnostic_v1",
+  "generated_at_utc": "2026-08-21T15:18:57.642040+00:00",
+  "branch": "agent/codex/r3-01-b3-post-slice4-mutagen",
+  "diagnostic_head": "e4553a407b8dcabaf3aa32bf1a1d750aec9ee7a0",
+  "source_base": "08a7028047b0d0b216a576a68cd178085bfec9b0",
+  "task_run_id": "task_run_fb5e41300c3e43c9b7353e91c1c01569",
+  "operation_id": "op_634f30723a184308b9f91682e8b412ed",
+  "run_status": "blocked",
+  "blocked_reason": "POST_COMPILE_OBSERVATION_CONSECUTIVE_EXECUTION_FAILURES_EXCEEDED",
+  "terminal_event_count": 1,
+  "speaker_truth_safe_to_report_success": false,
+  "aggregate_telemetry": {
+    "physical_groups_planned": 2230,
+    "physical_probe_count": 940,
+    "files_succeeded": 918,
+    "files_failed": 22,
+    "grouped_observation_task_count": 24530,
+    "requested_canonical_key_count": 11,
+    "evidence_records_produced": 6852,
+    "evidence_records_accepted": 5934,
+    "evidence_records_rejected": 918,
+    "checkpoint_count": 918,
+    "checkpoint_bytes": 8813500,
+    "inline_materialized_bytes": 4829307,
+    "physical_backend_attempts": {
+      "mutagen": 940
+    },
+    "physical_backend_successes": {
+      "mutagen": 918
+    },
+    "physical_backend_failures": {},
+    "final_failure_window_backend_errors": {
+      "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 22,
+      "FFPROBE_NOT_AVAILABLE": 22
+    }
+  },
+  "consecutive_failure_frontier": {
+    "configured_max_consecutive_execution_failures": 10,
+    "actual_longest_consecutive_failure_streak": 10,
+    "streak_start_probe_index": 931,
+    "streak_end_probe_index": 940,
+    "all_failure_indices": [
+      21,
+      359,
+      445,
+      581,
+      584,
+      589,
+      595,
+      659,
+      718,
+      723,
+      748,
+      793,
+      931,
+      932,
+      933,
+      934,
+      935,
+      936,
+      937,
+      938,
+      939,
+      940
+    ],
+    "streaks": [
+      [
+        21,
+        21
+      ],
+      [
+        359,
+        359
+      ],
+      [
+        445,
+        445
+      ],
+      [
+        581,
+        581
+      ],
+      [
+        584,
+        584
+      ],
+      [
+        589,
+        589
+      ],
+      [
+        595,
+        595
+      ],
+      [
+        659,
+        659
+      ],
+      [
+        718,
+        718
+      ],
+      [
+        723,
+        723
+      ],
+      [
+        748,
+        748
+      ],
+      [
+        793,
+        793
+      ],
+      [
+        931,
+        940
+      ]
+    ],
+    "proof": "The first 930 probes include only isolated failed probes. Probes 931-940 are ten consecutive LRC sidecar files, each with zero EvidenceRecords and MEDIA_BACKEND_UNSUPPORTED_FORMAT, causing the counter to reach the configured bound of 10."
+  },
+  "last_40_probe_sequence": [
+    {
+      "probe_index": 901,
+      "entity_id": "observed_entity_341eb3545455d17acc9d56d7",
+      "source_ref": "WesGhost- MASCARA.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 902,
+      "entity_id": "observed_entity_1646c5f7ed21d707ed9f88f3",
+      "source_ref": "wet dreams -artemas sped up.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 903,
+      "entity_id": "observed_entity_1b4f0476f498833cc1641707",
+      "source_ref": "what's wrong.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 904,
+      "entity_id": "observed_entity_7c020fb46f6be6e10d2c934a",
+      "source_ref": "whatsaheart - for her i will do it all for her - 2.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 905,
+      "entity_id": "observed_entity_74e87e8f6e6a3454d463e5c3",
+      "source_ref": "whatsaheart - for her i will do it all for her.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 906,
+      "entity_id": "observed_entity_2d242ea2e2b4201584d8c93f",
+      "source_ref": "Where Is My Mind.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 907,
+      "entity_id": "observed_entity_88c73fe3086fab9add1e578c",
+      "source_ref": "Who Are You Now - 2.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 908,
+      "entity_id": "observed_entity_33912bbf5fa13dd4b430125e",
+      "source_ref": "Who Are You Now.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 909,
+      "entity_id": "observed_entity_c18ae50fff1c52bc55b3008c",
+      "source_ref": "Who Is She - 2.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 910,
+      "entity_id": "observed_entity_b8f860ab62d55c65ed8f0f5a",
+      "source_ref": "Who Is She.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 911,
+      "entity_id": "observed_entity_2618631a0f3b9be681c7f251",
+      "source_ref": "Why'd You Only Call Me When You're High.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 912,
+      "entity_id": "observed_entity_1b60cf5133f2282455de1635",
+      "source_ref": "Wires - 2.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 913,
+      "entity_id": "observed_entity_e83e327309fe46e246754193",
+      "source_ref": "Wires.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 914,
+      "entity_id": "observed_entity_8edeaf2a7027e94cb341b8d7",
+      "source_ref": "Wisp - Save me now - 2.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 915,
+      "entity_id": "observed_entity_e271b2727fe7e258382af57d",
+      "source_ref": "Wisp - Save me now.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 916,
+      "entity_id": "observed_entity_63c57ae450ed5dd0b73ee11b",
+      "source_ref": "Wisp - Serpentine - 2.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 917,
+      "entity_id": "observed_entity_4938f2e824155305cc08db6d",
+      "source_ref": "Wisp - Serpentine.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 918,
+      "entity_id": "observed_entity_6b97cf5458cbef11c29296d7",
+      "source_ref": "xanny - 2.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 919,
+      "entity_id": "observed_entity_e088cefd87ce9fe9423d8590",
+      "source_ref": "xanny.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 920,
+      "entity_id": "observed_entity_f07df2edff18f23f65e8c38c",
+      "source_ref": "xvideos.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 921,
+      "entity_id": "observed_entity_621018c5266b2e54dc43c1c8",
+      "source_ref": "You Are the Right One - 2.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 922,
+      "entity_id": "observed_entity_e50e62af659e1f87a6e7cde1",
+      "source_ref": "You Are the Right One.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 923,
+      "entity_id": "observed_entity_d23250a1957012581c0a6a33",
+      "source_ref": "You Were a Dream.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 924,
+      "entity_id": "observed_entity_9eed53e02ec719480a141e19",
+      "source_ref": "you're not gone, you're just dead!.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 925,
+      "entity_id": "observed_entity_40ec6673f57a386af388b78b",
+      "source_ref": "Youngest Daughter - 2.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 926,
+      "entity_id": "observed_entity_78863f00fa0be2bdf8d0c7a4",
+      "source_ref": "Youngest Daughter.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 927,
+      "entity_id": "observed_entity_a2f1bd095186ae128949e7f2",
+      "source_ref": "Your face - 2.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 928,
+      "entity_id": "observed_entity_b347df53cd2a3469daf970e6",
+      "source_ref": "Your face.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 929,
+      "entity_id": "observed_entity_88df647181d7b33bc2f58bd7",
+      "source_ref": "Your New Boyfriend.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 930,
+      "entity_id": "observed_entity_8aca3de0bb8a0bb3c8c3e20f",
+      "source_ref": "ZITTI E BUONI.m4a",
+      "extension": "m4a",
+      "result_status": "EXECUTED",
+      "evidence_record_count": 6,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": null,
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 931,
+      "entity_id": "observed_entity_8e8fc190f6422ebe6991c254",
+      "source_ref": "lyrics/2NE1_-_________Gotta_Be_You.lrc",
+      "extension": "lrc",
+      "result_status": "BLOCKED",
+      "evidence_record_count": 0,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT",
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 932,
+      "entity_id": "observed_entity_8b160a4a38b7db61be671772",
+      "source_ref": "lyrics/3dm_5qWWDV8.lrc",
+      "extension": "lrc",
+      "result_status": "BLOCKED",
+      "evidence_record_count": 0,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT",
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 933,
+      "entity_id": "observed_entity_f2a53eb0b0aab8e713a2dae3",
+      "source_ref": "lyrics/Alien_Blues.lrc",
+      "extension": "lrc",
+      "result_status": "BLOCKED",
+      "evidence_record_count": 0,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT",
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 934,
+      "entity_id": "observed_entity_ba7fcc4d8e094c9893e0e6da",
+      "source_ref": "lyrics/alt-J_____Breezeblocks.lrc",
+      "extension": "lrc",
+      "result_status": "BLOCKED",
+      "evidence_record_count": 0,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT",
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 935,
+      "entity_id": "observed_entity_c1531969edbf5931b37cb34f",
+      "source_ref": "lyrics/Always_Forever.lrc",
+      "extension": "lrc",
+      "result_status": "BLOCKED",
+      "evidence_record_count": 0,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT",
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 936,
+      "entity_id": "observed_entity_8a6b57f4518ecaec055c78e0",
+      "source_ref": "lyrics/Amy_Winehouse_-_Topic_-_Back_To_Black.lrc",
+      "extension": "lrc",
+      "result_status": "BLOCKED",
+      "evidence_record_count": 0,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT",
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 937,
+      "entity_id": "observed_entity_783111ebc0765461e86819eb",
+      "source_ref": "lyrics/Arctic_Monkeys_-_Crying_Lightning.lrc",
+      "extension": "lrc",
+      "result_status": "BLOCKED",
+      "evidence_record_count": 0,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT",
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 938,
+      "entity_id": "observed_entity_dd3f4a899f06bbd060fd635d",
+      "source_ref": "lyrics/Arctic_Monkeys_-_Topic_-_505.lrc",
+      "extension": "lrc",
+      "result_status": "BLOCKED",
+      "evidence_record_count": 0,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT",
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 939,
+      "entity_id": "observed_entity_0376c5a9be693ec9ff1b4e05",
+      "source_ref": "lyrics/Arctic_Monkeys_-_Topic_-_Fireside.lrc",
+      "extension": "lrc",
+      "result_status": "BLOCKED",
+      "evidence_record_count": 0,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT",
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    },
+    {
+      "probe_index": 940,
+      "entity_id": "observed_entity_7dea3701f8b2887f5bc606b4",
+      "source_ref": "lyrics/Arctic_Monkeys_-_Topic_-_Fluorescent_Adolescent.lrc",
+      "extension": "lrc",
+      "result_status": "BLOCKED",
+      "evidence_record_count": 0,
+      "backend_attempts": [
+        "mutagen"
+      ],
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT",
+      "requested_canonical_keys": [
+        "album",
+        "album_artist",
+        "artist",
+        "artwork",
+        "bitrate",
+        "channels",
+        "codec",
+        "container",
+        "duration",
+        "sample_rate",
+        "track_title"
+      ]
+    }
+  ],
+  "failed_physical_probes": [
+    {
+      "probe_index": 21,
+      "entity_id": "observed_entity_a5d5f66e8047bc991bac147a",
+      "source_ref": "AlbumArtSmall.jpg",
+      "extension": "jpg",
+      "classification": "NON_MEDIA_OR_CORPUS_CONTAMINATION",
+      "file_evidence": "JFIF/JPEG header; album-art image selected as media observation candidate",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 359,
+      "entity_id": "observed_entity_55bcbaba4f3f098244db76ea",
+      "source_ref": "Folder.jpg",
+      "extension": "jpg",
+      "classification": "NON_MEDIA_OR_CORPUS_CONTAMINATION",
+      "file_evidence": "JFIF/JPEG header; folder-art image selected as media observation candidate",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 445,
+      "entity_id": "observed_entity_1c0078eff85d0c6c44bbc085",
+      "source_ref": "ivri - tower of memories - 3.m4a",
+      "extension": "m4a",
+      "classification": "VALID_MEDIA_UNSUPPORTED_BY_MUTAGEN",
+      "file_evidence": "EBML header and webm marker despite .m4a extension",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 581,
+      "entity_id": "observed_entity_49a43aaa3f887924ad31c50e",
+      "source_ref": "Night Club - Barbwire Kiss - 2.m4a",
+      "extension": "m4a",
+      "classification": "VALID_MEDIA_UNSUPPORTED_BY_MUTAGEN",
+      "file_evidence": "EBML header and webm marker despite .m4a extension",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 584,
+      "entity_id": "observed_entity_72810125eedd60c8a60888d5",
+      "source_ref": "Night Club - Candy Coated Suicide - 3.m4a",
+      "extension": "m4a",
+      "classification": "VALID_MEDIA_UNSUPPORTED_BY_MUTAGEN",
+      "file_evidence": "EBML header and webm marker despite .m4a extension",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 589,
+      "entity_id": "observed_entity_6b947359cb590a78dbd1d9a7",
+      "source_ref": "Night Club - Miss Negativity - 2.m4a",
+      "extension": "m4a",
+      "classification": "VALID_MEDIA_UNSUPPORTED_BY_MUTAGEN",
+      "file_evidence": "EBML header and webm marker despite .m4a extension",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 595,
+      "entity_id": "observed_entity_c5e29299ff8aa5cfe62c130b",
+      "source_ref": "Night Club - Your Addiction - 2.m4a",
+      "extension": "m4a",
+      "classification": "VALID_MEDIA_UNSUPPORTED_BY_MUTAGEN",
+      "file_evidence": "EBML header and webm marker despite .m4a extension",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 659,
+      "entity_id": "observed_entity_851a4717b3954df393a10017",
+      "source_ref": "POORSTACY - Don't Look at Me - 2.m4a",
+      "extension": "m4a",
+      "classification": "VALID_MEDIA_UNSUPPORTED_BY_MUTAGEN",
+      "file_evidence": "EBML header and webm marker despite .m4a extension",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 718,
+      "entity_id": "observed_entity_7f16b490afca0ca59c512f40",
+      "source_ref": "Sir Chloe - Animal - 3.m4a",
+      "extension": "m4a",
+      "classification": "VALID_MEDIA_UNSUPPORTED_BY_MUTAGEN",
+      "file_evidence": "EBML header and webm marker despite .m4a extension",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 723,
+      "entity_id": "observed_entity_48ded6dd1be8ec5bf20006c3",
+      "source_ref": "Sir Chloe - Squaring Up - 3.m4a",
+      "extension": "m4a",
+      "classification": "VALID_MEDIA_UNSUPPORTED_BY_MUTAGEN",
+      "file_evidence": "EBML header and webm marker despite .m4a extension",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 748,
+      "entity_id": "observed_entity_b91cf22f78a06bdc01b0d2a1",
+      "source_ref": "Sohodolls - Bang Bang Bang Bang - 2.m4a",
+      "extension": "m4a",
+      "classification": "VALID_MEDIA_UNSUPPORTED_BY_MUTAGEN",
+      "file_evidence": "EBML header and webm marker despite .m4a extension",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 793,
+      "entity_id": "observed_entity_9d6abdf69d0e85636fae2f33",
+      "source_ref": "Tarantula Girl - 2.m4a",
+      "extension": "m4a",
+      "classification": "VALID_MEDIA_UNSUPPORTED_BY_MUTAGEN",
+      "file_evidence": "EBML header and webm marker despite .m4a extension",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 931,
+      "entity_id": "observed_entity_8e8fc190f6422ebe6991c254",
+      "source_ref": "lyrics/2NE1_-_________Gotta_Be_You.lrc",
+      "extension": "lrc",
+      "classification": "NON_MEDIA_OR_CORPUS_CONTAMINATION",
+      "file_evidence": "LRC timed-lyrics text sidecar selected as media observation candidate",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 932,
+      "entity_id": "observed_entity_8b160a4a38b7db61be671772",
+      "source_ref": "lyrics/3dm_5qWWDV8.lrc",
+      "extension": "lrc",
+      "classification": "NON_MEDIA_OR_CORPUS_CONTAMINATION",
+      "file_evidence": "LRC timed-lyrics text sidecar selected as media observation candidate",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 933,
+      "entity_id": "observed_entity_f2a53eb0b0aab8e713a2dae3",
+      "source_ref": "lyrics/Alien_Blues.lrc",
+      "extension": "lrc",
+      "classification": "NON_MEDIA_OR_CORPUS_CONTAMINATION",
+      "file_evidence": "LRC timed-lyrics text sidecar selected as media observation candidate",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 934,
+      "entity_id": "observed_entity_ba7fcc4d8e094c9893e0e6da",
+      "source_ref": "lyrics/alt-J_____Breezeblocks.lrc",
+      "extension": "lrc",
+      "classification": "NON_MEDIA_OR_CORPUS_CONTAMINATION",
+      "file_evidence": "LRC timed-lyrics text sidecar selected as media observation candidate",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 935,
+      "entity_id": "observed_entity_c1531969edbf5931b37cb34f",
+      "source_ref": "lyrics/Always_Forever.lrc",
+      "extension": "lrc",
+      "classification": "NON_MEDIA_OR_CORPUS_CONTAMINATION",
+      "file_evidence": "LRC timed-lyrics text sidecar selected as media observation candidate",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 936,
+      "entity_id": "observed_entity_8a6b57f4518ecaec055c78e0",
+      "source_ref": "lyrics/Amy_Winehouse_-_Topic_-_Back_To_Black.lrc",
+      "extension": "lrc",
+      "classification": "NON_MEDIA_OR_CORPUS_CONTAMINATION",
+      "file_evidence": "LRC timed-lyrics text sidecar selected as media observation candidate",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 937,
+      "entity_id": "observed_entity_783111ebc0765461e86819eb",
+      "source_ref": "lyrics/Arctic_Monkeys_-_Crying_Lightning.lrc",
+      "extension": "lrc",
+      "classification": "NON_MEDIA_OR_CORPUS_CONTAMINATION",
+      "file_evidence": "LRC timed-lyrics text sidecar selected as media observation candidate",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 938,
+      "entity_id": "observed_entity_dd3f4a899f06bbd060fd635d",
+      "source_ref": "lyrics/Arctic_Monkeys_-_Topic_-_505.lrc",
+      "extension": "lrc",
+      "classification": "NON_MEDIA_OR_CORPUS_CONTAMINATION",
+      "file_evidence": "LRC timed-lyrics text sidecar selected as media observation candidate",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 939,
+      "entity_id": "observed_entity_0376c5a9be693ec9ff1b4e05",
+      "source_ref": "lyrics/Arctic_Monkeys_-_Topic_-_Fireside.lrc",
+      "extension": "lrc",
+      "classification": "NON_MEDIA_OR_CORPUS_CONTAMINATION",
+      "file_evidence": "LRC timed-lyrics text sidecar selected as media observation candidate",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    },
+    {
+      "probe_index": 940,
+      "entity_id": "observed_entity_7dea3701f8b2887f5bc606b4",
+      "source_ref": "lyrics/Arctic_Monkeys_-_Topic_-_Fluorescent_Adolescent.lrc",
+      "extension": "lrc",
+      "classification": "NON_MEDIA_OR_CORPUS_CONTAMINATION",
+      "file_evidence": "LRC timed-lyrics text sidecar selected as media observation candidate",
+      "mutagen_result": "File() returned no recognized media object",
+      "backend_error": "MEDIA_BACKEND_UNSUPPORTED_FORMAT"
+    }
+  ],
+  "failure_classification": {
+    "counts": {
+      "NON_MEDIA_OR_CORPUS_CONTAMINATION": 12,
+      "VALID_MEDIA_UNSUPPORTED_BY_MUTAGEN": 10
+    },
+    "extensions_by_class": {
+      "NON_MEDIA_OR_CORPUS_CONTAMINATION": [
+        "jpg",
+        "lrc"
+      ],
+      "VALID_MEDIA_UNSUPPORTED_BY_MUTAGEN": [
+        "m4a"
+      ]
+    },
+    "zero_count_categories": [
+      "VALID_MEDIA_BUT_CORRUPT_OR_UNREADABLE",
+      "OBSERVER_RUNTIME_ERROR",
+      "INPUT/PATH/FILE_ACCESS_FAILURE",
+      "OTHER_PROVEN"
+    ]
+  },
+  "backend_decision_analysis": {
+    "why_mutagen_attempted": "Each failed group was an eligible media_metadata_reader physical group with media identity demand and Mutagen was the primary backend able to change that demand.",
+    "why_mutagen_failed": "Mutagen returned no recognized media object/evidence for JPEG art files, LRC text sidecars, and EBML/WebM-content files carrying .m4a names.",
+    "why_ffprobe_reported": "ffprobe is a configured fallback but was unavailable in the stage availability snapshot, so FFPROBE_NOT_AVAILABLE was reported without physical ffprobe execution.",
+    "why_native_minimal_not_executed": "native_minimal does not support media_identity; after Mutagen failed and ffprobe was unavailable, native_minimal could not change the blocking semantic identity outcome and was correctly skipped as a false semantic fallback.",
+    "native_minimal_skip_assessment": "correct under Slice 3 semantic-demand policy"
+  },
+  "ordering_analysis": {
+    "group_ordering_authority": "GovernedObservationExecutionStageService iterates observation_plan.observation_tasks, groups deferred executable tasks by (entity_id, capability_id, normalized_source_ref), stores groups in insertion-order dict, then returns list(groups.values()).",
+    "observed_cluster": "At probe 931 the ordered corpus enters the lyrics/ directory. Ten LRC text sidecars appear consecutively and trigger the consecutive failure bound.",
+    "cluster_factor": "directory/entity discovery ordering with sidecar lyrics files clustered together",
+    "distributed_failure_counterfactual": "If the same 22 expected unsupported/non-media outcomes were interleaved with successful probes like the earlier isolated failures, the longest observed streak would remain below the configured bound and would not trigger this frontier."
+  },
+  "failure_guard_semantic_analysis": {
+    "implementation": "A result with status EXECUTED and record_count > 0 resets consecutive_failures; every other outcome increments it. The guard checks consecutive_failures > 0 and consecutive_failures >= max_consecutive_execution_failures.",
+    "distinguishes_runtime_vs_expected_unsupported": false,
+    "unsupported_format_treated_like_execution_failure": true,
+    "assessment": "Expected unsupported format and corpus-contamination outcomes are currently consuming a systemic execution circuit breaker."
+  },
+  "secondary_issue": {
+    "issue_id": "R3_01_B3R_P2_RESOLVER_BOUNDEDNESS_TELEMETRY_NOT_PROJECTED",
+    "status": "preserved_not_fixed",
+    "existing_evidence": "918 checkpoint payloads, 8,813,500 checkpoint bytes, max single checkpoint 13,426 bytes, 4,829,307 inline bytes, and post-execution materialization completed with 55,750 AttributeObservations before the consecutive-failure block.",
+    "assessment": "Existing artifacts support that checkpoint retention and materialization progressed boundedly, but public telemetry still does not project resolver_call_count or max_records_resolved_at_once. This is P2 observability, not the B3R P1 frontier."
+  },
+  "primary_classification": "R3_01_B3R_FRONTIER_FAILURE_GUARD_SEMANTICS_DEFECT",
+  "c_gate_recommendation": "FAILURE_GUARD_CORRECTIVE_REQUIRED_BEFORE_C"
+}
