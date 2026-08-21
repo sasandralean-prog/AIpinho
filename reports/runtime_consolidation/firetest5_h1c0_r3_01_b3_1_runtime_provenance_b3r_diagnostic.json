@@ -1,0 +1,418 @@
+{
+  "schema": "firetest5_h1c0_r3_01_b3_1_runtime_provenance_b3r.v1",
+  "generated_at": "2026-08-21T15:04:33.998888+00:00",
+  "verdict": "R3_01_B3_1_STALE_RUNTIME_PROVEN",
+  "b3r_verdict": "FIRETEST5_R3_01_B3R_BLOCKED_WITH_NEW_FRONTIER_PROVEN",
+  "source_base": "08a7028047b0d0b216a576a68cd178085bfec9b0",
+  "repositories": {
+    "dev": {
+      "path": "C:\\Dev\\AIpinho",
+      "exists": true,
+      "branch": "agent/codex/r3-01-b3-post-slice4-mutagen",
+      "head": "74f35547a691cf6be1d552406544ca388e57b007",
+      "origin_main": "08a7028047b0d0b216a576a68cd178085bfec9b0",
+      "ahead_behind_origin_main": "0\t1",
+      "status_short_branch": "## agent/codex/r3-01-b3-post-slice4-mutagen...origin/agent/codex/r3-01-b3-post-slice4-mutagen"
+    },
+    "github_documents": {
+      "path": "C:\\Users\\rafae\\Documents\\GitHub\\AIpinho",
+      "exists": true,
+      "branch": "agent/codex/r3-01-b3-post-slice4-mutagen",
+      "head": "08a7028047b0d0b216a576a68cd178085bfec9b0",
+      "origin_main": "08a7028047b0d0b216a576a68cd178085bfec9b0",
+      "ahead_behind_origin_main": "0\t0",
+      "status_short_branch": "## agent/codex/r3-01-b3-post-slice4-mutagen...origin/agent/codex/r3-01-b3-post-slice4-mutagen [behind 1]"
+    }
+  },
+  "provenance": {
+    "original_b3_process": {
+      "pid": 18944,
+      "creation_time_local": "2026-08-20T08:46:41-03:00",
+      "executable": "C:\\Program Files\\Python311\\python.exe",
+      "command_line": "C:\\Program Files\\Python311\\python.exe -m uvicorn aipinho.main:app --host 0.0.0.0 --port 9088",
+      "cwd": "not_recoverable_after_restart",
+      "commit_08a7028_commit_time": "2026-08-21T10:44:59-03:00",
+      "stale_runtime_process_proven": true,
+      "note": "Process serving original B3 was created before the Slice 4 final source base commit existed."
+    },
+    "current_process_after_restart": {
+      "pid": 15424,
+      "cwd": "C:\\Dev\\AIpinho",
+      "exe": "C:\\Program Files\\Python311\\python.exe",
+      "cmdline": [
+        "C:\\Program Files\\Python311\\python.exe",
+        "-m",
+        "uvicorn",
+        "aipinho.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "9088"
+      ],
+      "ppid": 14504,
+      "create_time_epoch": 1787324123.00938,
+      "create_time_local": "2026-08-21T11:55:23.009380"
+    },
+    "module_provenance": {
+      "interpreter": "C:\\Program Files\\Python311\\python.exe",
+      "fresh_process_cwd": "C:\\Dev\\AIpinho",
+      "aipinho_file": "C:\\Dev\\AIpinho\\src\\aipinho\\__init__.py",
+      "readonly_runtime_file": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\governance\\runtime\\readonly_analysis_artifact_runtime_service.py",
+      "governed_stage_file": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\governed_observation_execution_stage_service.py",
+      "contains_checkpoint_count": true,
+      "contains_evidence_checkpoint_sink_wiring": true,
+      "contains_inline_materialized_bytes": true
+    },
+    "wrong_import_root_assessment": "No current wrong import root after restart: live process cwd is C:\\Dev\\AIpinho. Original process cwd/import root cannot be recovered because it was already stopped before the two-checkout evidence arrived.",
+    "alternate_public_runtime_path_assessment": "Not supported: public canary and B3R used the same /api/v1/chat public path and now show Slice 4 checkpoint schema.",
+    "restart_deviation": "Restart from C:\\Dev\\AIpinho occurred before the user supplied the two-repository evidence and before both repos were compared. This is recorded as a timing deviation; no code was copied or synchronized between repositories."
+  },
+  "environment_after_restart": {
+    "python": "3.11.6 C:\\Program Files\\Python311\\python.exe",
+    "mutagen": "importable 1.48.1",
+    "ffprobe": "unavailable",
+    "native_minimal": "available"
+  },
+  "slice4_canary": {
+    "run_id": "task_run_40669d95118040d58fab1f77932f925d",
+    "operation_id": "op_477a7e921da046ea87d793953d072c27",
+    "status": "blocked",
+    "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "terminal_event_count": 1,
+    "schema_metrics": {
+      "after_evidence_fanout": {
+        "checkpoint_count": 1,
+        "checkpoint_bytes": 6620,
+        "inline_materialized_bytes": 4963,
+        "evidence_records_produced": 4,
+        "evidence_records_accepted": 4,
+        "evidence_records_rejected": 0,
+        "physical_probe_count": 1,
+        "files_attempted": 1
+      },
+      "after_post_compile_observation_execution": {
+        "checkpoint_count": 1,
+        "checkpoint_bytes": 6620,
+        "inline_materialized_bytes": 4963,
+        "evidence_records_produced": 4,
+        "evidence_records_accepted": 4,
+        "evidence_records_rejected": 0,
+        "physical_probe_count": 1,
+        "files_attempted": 1
+      }
+    },
+    "payload_ref_files": [
+      {
+        "name": "a65e820bc17e721716c92432ed29c481a3b7f5753a6890473e4c0af44f69c8cd.json",
+        "bytes": 6620
+      }
+    ],
+    "canary_pass": true
+  },
+  "b3r": {
+    "run_id": "task_run_fb5e41300c3e43c9b7353e91c1c01569",
+    "operation_id": "op_634f30723a184308b9f91682e8b412ed",
+    "status": "blocked",
+    "reason_code": "POST_COMPILE_OBSERVATION_CONSECUTIVE_EXECUTION_FAILURES_EXCEEDED",
+    "terminal_event_count": 1,
+    "speaker_truth_safe_to_report_success": false,
+    "post_compile_execution": {
+      "dedup_group_count": 2230,
+      "files_planned": 2230,
+      "grouped_observation_task_count": 24530,
+      "requested_canonical_key_count": 11,
+      "goals_satisfied": 5934,
+      "goals_unsatisfied": 18596,
+      "fanout_claim_count": 5934,
+      "media_metadata_capability": {
+        "status": "blocked",
+        "configured": true,
+        "available": true,
+        "execution_status": "blocked",
+        "primary_backend": "mutagen",
+        "attempted_backends": {
+          "mutagen": 22
+        },
+        "successful_backends": {},
+        "fallback_backends_used": {},
+        "backend_error_counts": {
+          "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 22,
+          "FFPROBE_NOT_AVAILABLE": 22
+        },
+        "evidence_counts_by_canonical_key": {},
+        "evidence_counts_by_backend": {},
+        "semantic_identity_evidence_counts": {
+          "track_title": 0,
+          "artist": 0,
+          "album": 0,
+          "album_artist": 0
+        }
+      },
+      "attempted_backends": {
+        "mutagen": 22
+      },
+      "successful_backends": {},
+      "fallback_backends_used": {},
+      "backend_error_counts": {
+        "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 22,
+        "FFPROBE_NOT_AVAILABLE": 22
+      },
+      "evidence_counts_by_canonical_key": {},
+      "evidence_counts_by_backend": {},
+      "semantic_identity_evidence_counts": {
+        "track_title": 0,
+        "artist": 0,
+        "album": 0,
+        "album_artist": 0
+      },
+      "physical_probe_count": 940,
+      "files_attempted": 940,
+      "files_succeeded": 918,
+      "files_failed": 22,
+      "evidence_records_created": 5934,
+      "evidence_records_produced": 6852,
+      "evidence_records_accepted": 5934,
+      "evidence_records_rejected": 918,
+      "evidence_bytes_produced": 13529468,
+      "evidence_bytes_checkpointed": 8813500,
+      "inline_materialized_bytes": 4829307,
+      "checkpoint_count": 918,
+      "checkpoint_bytes": 8813500,
+      "checkpoint_write_failures": 0,
+      "physical_backend_attempts": {
+        "mutagen": 940
+      },
+      "physical_backend_successes": {
+        "mutagen": 918
+      },
+      "physical_backend_failures": {},
+      "results_physically_succeeded": 918,
+      "results_physically_failed": 22,
+      "results_accepted": 940,
+      "results_rejected_by_policy": 0,
+      "materialized_observation_bytes": 4829307,
+      "execution_status": "blocked",
+      "blocked_reason_code": "POST_COMPILE_OBSERVATION_CONSECUTIVE_EXECUTION_FAILURES_EXCEEDED"
+    },
+    "checkpoint_files_observed": 918,
+    "entity_payload_files_observed": 1,
+    "checkpoint_payload_total_bytes": 8813500,
+    "max_single_checkpoint_bytes_observed": 13426,
+    "max_records_per_checkpoint_observed": 8,
+    "evidence_counts_by_key_from_checkpoints": {
+      "artist": 214,
+      "artwork": 918,
+      "bitrate": 918,
+      "channels": 918,
+      "codec": 916,
+      "duration": 918,
+      "sample_rate": 918,
+      "track_title": 214
+    },
+    "evidence_counts_by_backend_from_checkpoints": {
+      "mutagen": 5934
+    },
+    "semantic_identity_counts_from_checkpoints": {
+      "track_title": 214,
+      "artist": 214,
+      "album": 0,
+      "album_artist": 0
+    },
+    "claim_level_samples": [
+      {
+        "evidence_id": "evidence_77426848eca649c7bf045b88529a7555",
+        "canonical_key": "track_title",
+        "normalized_value": "Sleepyhead",
+        "backend_id": "mutagen",
+        "raw_ref": "D:\\rafa\\pinho music\\Sleepyhead.m4a",
+        "confidence": 0.75,
+        "provenance": {
+          "backend_id": "mutagen",
+          "backend_version": "1",
+          "boundary": "ObservationExecutionBoundaryService",
+          "canonical_key": "track_title",
+          "file_ref": "D:\\rafa\\pinho music\\Sleepyhead.m4a",
+          "normalizer": "MediaMetadataNormalizer",
+          "observer_version": "1",
+          "physical_probe_key": [
+            "observed_entity_58b4e124b8bd41b6b0bf914c",
+            "media_metadata_reader",
+            "D:/rafa/pinho music/Sleepyhead.m4a"
+          ],
+          "raw_result_id": "raw_media_metadata_c98120e2f344494ca750cefb31d57053",
+          "raw_tag_key": "\u00a9nam",
+          "raw_tag_value_repr": "['Sleepyhead']",
+          "raw_tag_value_set_like": false,
+          "raw_tag_value_source_type": "list",
+          "semantic_mapper": "media_metadata_identity_tag_mapper_v1"
+        }
+      },
+      {
+        "evidence_id": "evidence_4d417a208f0f4e1bae2912f27e0a21fe",
+        "canonical_key": "artist",
+        "normalized_value": "Jutes - Topic",
+        "backend_id": "mutagen",
+        "raw_ref": "D:\\rafa\\pinho music\\Sleepyhead.m4a",
+        "confidence": 0.75,
+        "provenance": {
+          "backend_id": "mutagen",
+          "backend_version": "1",
+          "boundary": "ObservationExecutionBoundaryService",
+          "canonical_key": "artist",
+          "file_ref": "D:\\rafa\\pinho music\\Sleepyhead.m4a",
+          "normalizer": "MediaMetadataNormalizer",
+          "observer_version": "1",
+          "physical_probe_key": [
+            "observed_entity_58b4e124b8bd41b6b0bf914c",
+            "media_metadata_reader",
+            "D:/rafa/pinho music/Sleepyhead.m4a"
+          ],
+          "raw_result_id": "raw_media_metadata_c98120e2f344494ca750cefb31d57053",
+          "raw_tag_key": "\u00a9ART",
+          "raw_tag_value_repr": "['Jutes - Topic']",
+          "raw_tag_value_set_like": false,
+          "raw_tag_value_source_type": "list",
+          "semantic_mapper": "media_metadata_identity_tag_mapper_v1"
+        }
+      },
+      {
+        "evidence_id": "evidence_1dec96c05334425787e0a83fefa09d7b",
+        "canonical_key": "track_title",
+        "normalized_value": "Prey",
+        "backend_id": "mutagen",
+        "raw_ref": "D:\\rafa\\pinho music\\Prey.m4a",
+        "confidence": 0.75,
+        "provenance": {
+          "backend_id": "mutagen",
+          "backend_version": "1",
+          "boundary": "ObservationExecutionBoundaryService",
+          "canonical_key": "track_title",
+          "file_ref": "D:\\rafa\\pinho music\\Prey.m4a",
+          "normalizer": "MediaMetadataNormalizer",
+          "observer_version": "1",
+          "physical_probe_key": [
+            "observed_entity_a2ac461f438f1c01b43d259a",
+            "media_metadata_reader",
+            "D:/rafa/pinho music/Prey.m4a"
+          ],
+          "raw_result_id": "raw_media_metadata_d9c28df462074da78dfabef5af1f46c8",
+          "raw_tag_key": "\u00a9nam",
+          "raw_tag_value_repr": "['Prey']",
+          "raw_tag_value_set_like": false,
+          "raw_tag_value_source_type": "list",
+          "semantic_mapper": "media_metadata_identity_tag_mapper_v1"
+        }
+      },
+      {
+        "evidence_id": "evidence_97dbcd0922174284a1457cdc149a6bbb",
+        "canonical_key": "artist",
+        "normalized_value": "The Neighbourhood - Topic",
+        "backend_id": "mutagen",
+        "raw_ref": "D:\\rafa\\pinho music\\Prey.m4a",
+        "confidence": 0.75,
+        "provenance": {
+          "backend_id": "mutagen",
+          "backend_version": "1",
+          "boundary": "ObservationExecutionBoundaryService",
+          "canonical_key": "artist",
+          "file_ref": "D:\\rafa\\pinho music\\Prey.m4a",
+          "normalizer": "MediaMetadataNormalizer",
+          "observer_version": "1",
+          "physical_probe_key": [
+            "observed_entity_a2ac461f438f1c01b43d259a",
+            "media_metadata_reader",
+            "D:/rafa/pinho music/Prey.m4a"
+          ],
+          "raw_result_id": "raw_media_metadata_d9c28df462074da78dfabef5af1f46c8",
+          "raw_tag_key": "\u00a9ART",
+          "raw_tag_value_repr": "['The Neighbourhood - Topic']",
+          "raw_tag_value_set_like": false,
+          "raw_tag_value_source_type": "list",
+          "semantic_mapper": "media_metadata_identity_tag_mapper_v1"
+        }
+      }
+    ],
+    "materialization_events": [
+      {
+        "sequence": 172,
+        "stage": "after_post_execution_attribute_observation_materialization",
+        "projected_entity_count": 2230,
+        "attribute_observation_count": 55750,
+        "observation_execution_result_count": 940,
+        "evidence_record_referenced_count": null,
+        "elapsed_ms": 35750.0
+      },
+      {
+        "sequence": 173,
+        "stage": "after_post_execution_evidence_set_materialization",
+        "projected_entity_count": 2230,
+        "attribute_observation_count": null,
+        "observation_execution_result_count": 940,
+        "evidence_record_referenced_count": 2230,
+        "elapsed_ms": 35953.0
+      },
+      {
+        "sequence": 174,
+        "stage": "after_post_execution_perception_materialization",
+        "projected_entity_count": 2230,
+        "attribute_observation_count": 55750,
+        "observation_execution_result_count": 940,
+        "evidence_record_referenced_count": null,
+        "elapsed_ms": 36250.0
+      }
+    ],
+    "row_semantic_validation_reached": "not_projected; run blocked at post-compile observation frontier before row semantic validation result",
+    "resolver_calls": "not_projected",
+    "max_records_resolved_at_once": "not_projected; checkpoint file max record count observed is 8"
+  },
+  "comparison": {
+    "b2": {
+      "run_id": "task_run_a757d3160e6d4b3d92c3410936abc0d1",
+      "reason": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED",
+      "probes": 455,
+      "successes": 451,
+      "failures": 4,
+      "evidence_records": 3371,
+      "inline_bytes": 7994062,
+      "checkpoint_count": 0,
+      "checkpoint_bytes": 0,
+      "track_title": 108,
+      "artist": 108
+    },
+    "original_b3": {
+      "run_id": "task_run_724cad824d564da2b47433c8ce9b36c8",
+      "reason": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED",
+      "probes": 455,
+      "successes": 451,
+      "failures": 4,
+      "evidence_records": 3371,
+      "inline_bytes": 7994062,
+      "checkpoint_count": 0,
+      "checkpoint_bytes": 0,
+      "track_title": 108,
+      "artist": 108
+    },
+    "b3r": {
+      "run_id": "task_run_fb5e41300c3e43c9b7353e91c1c01569",
+      "reason": "POST_COMPILE_OBSERVATION_CONSECUTIVE_EXECUTION_FAILURES_EXCEEDED",
+      "probes": 940,
+      "successes": 918,
+      "failures": 22,
+      "evidence_records_accepted": 5934,
+      "evidence_records_produced": 6852,
+      "evidence_records_rejected": 918,
+      "inline_bytes": 4829307,
+      "checkpoint_count": 918,
+      "checkpoint_bytes": 8813500,
+      "track_title": 214,
+      "artist": 214
+    }
+  },
+  "conclusions": {
+    "was_original_b3_running_effective_slice4_runtime": false,
+    "b2_materialized_bytes_frontier_eliminated_after_verified_restart": true,
+    "first_new_governed_frontier": "POST_COMPILE_OBSERVATION_CONSECUTIVE_EXECUTION_FAILURES_EXCEEDED",
+    "root_cause_status": "PROVEN",
+    "recommended_next_gate": "Diagnose the 22 physical failures / consecutive unsupported-format sequence after 940 probes. Do not install ffprobe or change budgets before classifying whether this is ordering, media-format coverage, or failure-bound semantics."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "firetest5_h1c0_r3_01_b3_1_issue_register.v1",
+  "verdict": "R3_01_B3_1_STALE_RUNTIME_PROVEN",
+  "b3r_verdict": "FIRETEST5_R3_01_B3R_BLOCKED_WITH_NEW_FRONTIER_PROVEN",
+  "issues": [
+    {
+      "id": "R3_01_B3_1_P0_STALE_RUNTIME_PROCESS_INVALIDATED_ORIGINAL_B3",
+      "priority": "P0",
+      "status": "RESOLVED_BY_RESTART",
+      "evidence": [
+        "Original B3-serving process PID 18944 started 2026-08-20 08:46:41, before commit 08a7028 at 2026-08-21 10:44:59.",
+        "B3 telemetry lacked Slice 4 fields; post-restart canary projected checkpoint_count/checkpoint_bytes/inline_materialized_bytes and persisted a checkpoint payload."
+      ],
+      "impact": "Original B3 did not prove effective Slice 4 public runtime behavior."
+    },
+    {
+      "id": "R3_01_B3R_P1_CONSECUTIVE_EXECUTION_FAILURES_EXCEEDED",
+      "priority": "P1",
+      "status": "OPEN",
+      "frontier": "POST_COMPILE_OBSERVATION_CONSECUTIVE_EXECUTION_FAILURES_EXCEEDED",
+      "evidence": [
+        "B3R reached 940 physical probes, 918 physical successes, 22 failures.",
+        "Blocked with POST_COMPILE_OBSERVATION_CONSECUTIVE_EXECUTION_FAILURES_EXCEEDED.",
+        "Backend errors at terminal segment include MEDIA_BACKEND_UNSUPPORTED_FORMAT=22 and FFPROBE_NOT_AVAILABLE=22."
+      ],
+      "impact": "Slice 4 retention succeeded past the old inline frontier; next runtime blocker is the governed consecutive execution failure boundary."
+    },
+    {
+      "id": "R3_01_B3R_P2_RESOLVER_BOUNDEDNESS_TELEMETRY_NOT_PROJECTED",
+      "priority": "P2",
+      "status": "OPEN",
+      "evidence": [
+        "B3R projected checkpoint_count=918 and checkpoint_bytes=8813500 but did not project resolver_call_count or max_evidence_records_resolved_at_once.",
+        "Post-execution materialization completed bounded stages with AttributeObservation count 55750."
+      ],
+      "impact": "Bounded checkpoint resolution is operationally suggested but not publicly auditable from B3R telemetry."
+    },
+    {
+      "id": "R3_01_B3R_P2_MEDIA_CAPABILITY_SUMMARY_LAST_FAILURE_WINDOW",
+      "priority": "P2",
+      "status": "OPEN",
+      "evidence": [
+        "Top-level physical_backend_attempts/successes correctly show mutagen=940/918.",
+        "Nested media_metadata_capability summary in terminal event shows attempted_backends mutagen=22 and zero evidence counts, matching the final failure window rather than all accepted checkpoints.",
+        "Checkpoint aggregation recovers mutagen evidence count 5934 with track_title=214 and artist=214."
+      ],
+      "impact": "Physical authority is present, but nested summary can mislead readers after a terminal failure sequence."
+    }
+  ]
+}
