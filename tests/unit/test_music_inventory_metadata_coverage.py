@@ -15,7 +15,7 @@ def _render_for_library(tmp_path: Path, payload: bytes):
     library = tmp_path / "library"
     project.mkdir()
     library.mkdir()
-    (library / "Track.media").write_bytes(payload)
+    (library / "Track.mp3").write_bytes(payload)
     observed = ObservedEntityCompilationService()
     graph = observed.compile(
         workspace=str(project),

@@ -4,6 +4,7 @@ import time
 import threading
 from typing import Any
 
+from aipinho.capabilities.media_metadata.descriptor import MEDIA_METADATA_EVIDENCE_KEYS
 from aipinho.schemas.artifacts.contract_perception import (
     AttributeObservationRequirement,
     EvidenceRecord,
@@ -83,6 +84,79 @@ class _Adapter:
                 self.active_calls -= 1
 
 
+class _SupportedExtensionBackend:
+    backend_id = "fake_backend"
+
+    def __init__(self, extensions: list[str]) -> None:
+        self.extensions = extensions
+
+    def descriptor(self) -> Any:
+        return type("Descriptor", (), {"supported_extensions": self.extensions})()
+
+
+class _ApplicabilityCapability:
+    def __init__(self, extensions: list[str]) -> None:
+        self.backends = {"fake_backend": _SupportedExtensionBackend(extensions)}
+
+
+class _UnsupportedAdapter(_Adapter):
+    def execute(self, task: ObservationTask, binding: Any) -> dict[str, Any]:
+        with self._lock:
+            self.calls.append(task)
+            self.active_calls += 1
+            self.max_active_calls = max(self.max_active_calls, self.active_calls)
+        try:
+            return {
+                "raw_ref": task.inputs.get("file_path"),
+                "observations": [],
+                "media_metadata_capability": {
+                    "status": "blocked",
+                    "configured": True,
+                    "available": True,
+                    "execution_status": "blocked",
+                    "primary_backend": "mutagen",
+                    "attempted_backends": ["mutagen"],
+                    "successful_backends": [],
+                    "fallback_backends_used": [],
+                    "backend_error_counts": {"MEDIA_BACKEND_UNSUPPORTED_FORMAT": 1},
+                    "evidence_counts_by_canonical_key": {},
+                    "evidence_counts_by_backend": {},
+                    "semantic_identity_evidence_counts": {
+                        "track_title": 0,
+                        "artist": 0,
+                        "album": 0,
+                        "album_artist": 0,
+                    },
+                },
+            }
+        finally:
+            with self._lock:
+                self.active_calls -= 1
+
+
+class _RuntimeFailureAdapter(_Adapter):
+    def execute(self, task: ObservationTask, binding: Any) -> dict[str, Any]:
+        with self._lock:
+            self.calls.append(task)
+        raise RuntimeError("observer exploded")
+
+
+class _SequenceAdapter(_UnsupportedAdapter):
+    def __init__(self, sequence: list[str]) -> None:
+        super().__init__(keys=["artist"])
+        self.sequence = list(sequence)
+
+    def execute(self, task: ObservationTask, binding: Any) -> dict[str, Any]:
+        outcome = self.sequence.pop(0) if self.sequence else "success"
+        if outcome == "runtime":
+            with self._lock:
+                self.calls.append(task)
+            raise RuntimeError("observer exploded")
+        if outcome == "unsupported":
+            return super().execute(task, binding)
+        return _Adapter.execute(self, task, binding)
+
+
 class _SnapshotCapability:
     def __init__(self, *, status: str = "available") -> None:
         self.status = status
@@ -119,7 +193,7 @@ def _capability(
     status: str = "available",
     attributes: list[str] | None = None,
 ) -> ObservationCapability:
-    attrs = attributes or ["track_title", "artist", "album", "album_artist"]
+    attrs = attributes or list(MEDIA_METADATA_EVIDENCE_KEYS)
     return ObservationCapability(
         capability_id="media_metadata_reader",
         name="Media metadata reader",
@@ -138,6 +212,30 @@ def _capability(
         },
         available=available,
         status=status,
+    )
+
+
+def _generic_capability(capability_id: str, *, consumes: list[str], attributes: list[str] | None = None) -> ObservationCapability:
+    attrs = attributes or ["generic_signal"]
+    return ObservationCapability(
+        capability_id=capability_id,
+        name=capability_id,
+        version="1",
+        domain="generic",
+        observable_attributes=attrs,
+        supported_attribute_names=attrs,
+        compatible_entity_kinds=["file", "*"],
+        consumes=consumes,
+        evidence_types=["generic_evidence"],
+        supported_strategies=["execute_observer"],
+        typical_confidence=0.9,
+        observer_binding={
+            "observer_id": capability_id,
+            "adapter_id": capability_id,
+            "input_schema": {"required": ["source_ref"]},
+        },
+        available=True,
+        status="available",
     )
 
 
@@ -183,6 +281,29 @@ def _task(attribute: str, *, entity_id: str = "entity_1", source_ref: str = "med
     )
 
 
+def _generic_task(
+    attribute: str,
+    *,
+    capability_id: str,
+    entity_id: str = "entity_1",
+    source_ref: str = "file://one",
+) -> ObservationTask:
+    return ObservationTask(
+        goal_id=f"goal_{attribute}_{entity_id}_{source_ref}",
+        strategy_id=f"strategy_{capability_id}",
+        capability_id=capability_id,
+        entity_ref={"entity_ids": [entity_id]},
+        attribute_name=attribute,
+        canonical_key=attribute,
+        inputs={"target_entity_ids": [entity_id], "source_ref": source_ref},
+        expected_outputs=[attribute],
+        expected_evidence=["generic_evidence"],
+        status="PLANNED",
+        execution_disposition="deferred_by_compile_policy",
+        pre_defer_status="READY_FOR_OBSERVER",
+    )
+
+
 def _plan(tasks: list[ObservationTask]) -> ObservationPlan:
     return ObservationPlan(
         observation_strategies=[
@@ -197,6 +318,21 @@ def _plan(tasks: list[ObservationTask]) -> ObservationPlan:
         ],
         observation_tasks=tasks,
     )
+
+
+def _generic_plan(tasks: list[ObservationTask]) -> ObservationPlan:
+    strategies = [
+        ObservationStrategy(
+            goal_id=task.goal_id,
+            strategy_id=str(task.strategy_id),
+            strategy_kind="execute_observer",
+            attribute_name=task.attribute_name,
+            required_capability_kind=str(task.capability_id or ""),
+            rationale="unit test",
+        )
+        for task in tasks
+    ]
+    return ObservationPlan(observation_strategies=strategies, observation_tasks=tasks)
 
 
 def _plan_with_requirements(
@@ -325,6 +461,174 @@ def test_computed_metadata_status_task_does_not_create_physical_media_demand() -
     assert adapter.calls == []
     assert result.telemetry["dedup_group_count"] == 0
     assert result.telemetry["physical_probe_count"] == 0
+
+
+def test_contract_scoped_media_applicability_preserves_sidecar_and_artwork_entities_without_probe() -> None:
+    adapter = _Adapter(keys=["artist"])
+    adapter.capability = _ApplicabilityCapability(["mp3", "m4a", "mp4"])
+    stage = _stage(adapter)
+    selected_entities = [
+        {"entity_id": "track", "path": "library/song.m4a", "entity_kind": "file", "entity_role": "corpus_file", "source_root_role": "library_root"},
+        {"entity_id": "sidecar", "path": "library/sidecar_text.lrc", "entity_kind": "file", "entity_role": "corpus_file", "source_root_role": "library_root"},
+        {"entity_id": "art", "path": "library/cover_image.jpg", "entity_kind": "file", "entity_role": "corpus_file", "source_root_role": "library_root"},
+    ]
+
+    result = stage.execute(
+        observation_plan=_plan([
+            _task("artist", entity_id="track", source_ref="library/song.m4a"),
+            _task("artist", entity_id="sidecar", source_ref="library/sidecar_text.lrc"),
+            _task("artist", entity_id="art", source_ref="library/cover_image.jpg"),
+        ]),
+        selected_entities=selected_entities,
+    )
+
+    assert [call.inputs["source_ref"] for call in adapter.calls] == ["library/song.m4a"]
+    assert result.telemetry["capability_applicable_count"] == 1
+    assert result.telemetry["capability_inapplicable_count"] == 2
+    assert result.telemetry["capability_inapplicable_reasons"] == {
+        "MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS": 2
+    }
+    assert {entity["entity_id"] for entity in selected_entities} == {"track", "sidecar", "art"}
+
+
+def test_media_routing_hint_remains_hint_without_container_truth() -> None:
+    adapter = _Adapter(keys=["artist"])
+    adapter.capability = _ApplicabilityCapability(["mp3", "m4a", "mp4"])
+    stage = _stage(adapter)
+
+    result = stage.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_1", source_ref="library/mislabeled.m4a")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "library/mislabeled.m4a", "entity_kind": "file", "entity_role": "corpus_file", "source_root_role": "library_root"}],
+    )
+
+    assert len(adapter.calls) == 1
+    assert result.telemetry["physical_probe_count"] == 1
+    keys = [record.canonical_key for record in result.observation_execution_results[0].evidence_set.records]
+    assert keys == ["artist"]
+    assert "container" not in keys
+
+
+def test_unknown_applicability_is_not_silently_treated_as_inapplicable() -> None:
+    adapter = _Adapter(keys=["artist"])
+    adapter.capability = _ApplicabilityCapability(["mp3", "m4a"])
+    stage = _stage(adapter)
+
+    result = stage.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_1", source_ref="library/no_extension")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "library/no_extension", "entity_kind": "file", "entity_role": "corpus_file", "source_root_role": "library_root"}],
+    )
+
+    assert len(adapter.calls) == 1
+    assert result.telemetry["capability_applicability_unknown_count"] == 1
+    assert result.telemetry["physical_probe_count"] == 1
+
+
+def test_generic_capability_applicability_is_contract_and_role_scoped() -> None:
+    adapter_x = _Adapter(keys=["generic_signal"])
+    adapter_y = _Adapter(keys=["generic_signal"])
+    stage = GovernedObservationExecutionStageService(
+        observation_boundary=ObservationExecutionBoundaryService(adapters={"capability_x": adapter_x, "capability_y": adapter_y}),
+        observer_registry=CapabilityRegistry(capabilities=[
+            _generic_capability("capability_x", consumes=["x_candidate"]),
+            _generic_capability("capability_y", consumes=["y_candidate"]),
+        ]),
+        budget=PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=25),
+    )
+
+    result = stage.execute(
+        observation_plan=_generic_plan([
+            _generic_task("generic_signal", capability_id="capability_x", entity_id="entity_x"),
+            _generic_task("generic_signal", capability_id="capability_x", entity_id="entity_y"),
+            _generic_task("generic_signal", capability_id="capability_y", entity_id="entity_y"),
+        ]),
+        selected_entities=[
+            {"entity_id": "entity_x", "path": "file://x", "entity_kind": "file", "entity_role": "x_candidate"},
+            {"entity_id": "entity_y", "path": "file://y", "entity_kind": "file", "entity_role": "y_candidate"},
+        ],
+    )
+
+    assert len(adapter_x.calls) == 1
+    assert len(adapter_y.calls) == 1
+    assert adapter_x.calls[0].inputs["entity_id"] == "entity_x"
+    assert adapter_y.calls[0].inputs["entity_id"] == "entity_y"
+    assert result.telemetry["capability_applicable_count"] == 2
+    assert result.telemetry["capability_inapplicable_count"] == 1
+
+
+def test_expected_unsupported_outcomes_do_not_trigger_systemic_consecutive_failure_breaker() -> None:
+    adapter = _UnsupportedAdapter(keys=["artist"])
+    stage = _stage(
+        adapter,
+        budget=PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=25, max_consecutive_execution_failures=10),
+    )
+
+    result = stage.execute(
+        observation_plan=_plan([
+            _task("artist", entity_id=f"entity_{index}", source_ref=f"library/{index}.m4a")
+            for index in range(10)
+        ]),
+        selected_entities=[
+            {"entity_id": f"entity_{index}", "path": f"library/{index}.m4a", "entity_role": "media_asset_candidate", "source_root_role": "library_root"}
+            for index in range(10)
+        ],
+    )
+
+    assert len(adapter.calls) == 10
+    assert result.blocked_reason_code is None
+    assert result.telemetry["expected_unsupported_count"] == 10
+    assert result.telemetry["systemic_execution_failure_count"] == 0
+    assert result.telemetry["current_consecutive_systemic_failures"] == 0
+    assert result.telemetry["max_consecutive_systemic_failures_observed"] == 0
+
+
+def test_actual_runtime_failures_trigger_systemic_consecutive_failure_breaker() -> None:
+    adapter = _RuntimeFailureAdapter(keys=["artist"])
+    stage = _stage(
+        adapter,
+        budget=PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=25, max_consecutive_execution_failures=10),
+    )
+
+    result = stage.execute(
+        observation_plan=_plan([
+            _task("artist", entity_id=f"entity_{index}", source_ref=f"library/{index}.m4a")
+            for index in range(12)
+        ]),
+        selected_entities=[
+            {"entity_id": f"entity_{index}", "path": f"library/{index}.m4a", "entity_role": "media_asset_candidate", "source_root_role": "library_root"}
+            for index in range(12)
+        ],
+    )
+
+    assert len(adapter.calls) == 10
+    assert result.blocked_reason_code == "POST_COMPILE_OBSERVATION_CONSECUTIVE_EXECUTION_FAILURES_EXCEEDED"
+    assert result.telemetry["systemic_execution_failure_count"] == 10
+    assert result.telemetry["max_consecutive_systemic_failures_observed"] == 10
+
+
+def test_expected_unsupported_and_success_reset_systemic_failure_streak() -> None:
+    adapter = _SequenceAdapter(["runtime", "runtime", "unsupported", "runtime", "success", "runtime"])
+    stage = _stage(
+        adapter,
+        budget=PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=25, max_consecutive_execution_failures=3),
+    )
+
+    result = stage.execute(
+        observation_plan=_plan([
+            _task("artist", entity_id=f"entity_{index}", source_ref=f"library/{index}.m4a")
+            for index in range(6)
+        ]),
+        selected_entities=[
+            {"entity_id": f"entity_{index}", "path": f"library/{index}.m4a", "entity_role": "media_asset_candidate", "source_root_role": "library_root"}
+            for index in range(6)
+        ],
+    )
+
+    assert len(adapter.calls) == 6
+    assert result.blocked_reason_code is None
+    assert result.telemetry["systemic_execution_failure_count"] == 4
+    assert result.telemetry["expected_unsupported_count"] == 1
+    assert result.telemetry["max_consecutive_systemic_failures_observed"] == 2
+    assert result.telemetry["current_consecutive_systemic_failures"] == 1
 
 
 def test_physical_backend_and_key_telemetry_is_authoritative_and_bounded() -> None:

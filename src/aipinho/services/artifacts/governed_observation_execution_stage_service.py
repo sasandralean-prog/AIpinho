@@ -6,7 +6,8 @@ import time
 from concurrent.futures import Future, ThreadPoolExecutor, TimeoutError
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Callable
+from pathlib import PurePath
+from typing import Any, Callable, Literal
 
 from aipinho.capabilities.media_metadata.descriptor import (
     MEDIA_IDENTITY_CANONICAL_KEYS,
@@ -64,6 +65,22 @@ class PhysicalObservationGroup:
         })
 
 
+CapabilityApplicabilityStatus = Literal["applicable", "inapplicable", "unknown"]
+ExecutionOutcomeClass = Literal[
+    "SUCCESSFUL_EXECUTION",
+    "EXPECTED_UNSUPPORTED_OR_INAPPLICABLE",
+    "SYSTEMIC_EXECUTION_FAILURE",
+    "POLICY_OR_GOVERNANCE_BLOCK",
+]
+
+
+@dataclass(frozen=True)
+class CapabilityApplicabilityDecision:
+    status: CapabilityApplicabilityStatus
+    reason_code: str
+    evidence: dict[str, Any] = field(default_factory=dict)
+
+
 @dataclass(frozen=True)
 class GovernedObservationExecutionStageResult:
     observation_execution_results: list[ObservationExecutionResult]
@@ -114,15 +131,16 @@ class GovernedObservationExecutionStageService:
                 physical_groups=[],
                 blocked_reason_code=quarantine_block,
             )
-        groups = self._physical_groups(observation_plan=observation_plan, selected_entities=selected_entities)
+        groups, applicability_metrics = self._physical_groups(observation_plan=observation_plan, selected_entities=selected_entities)
         backend_snapshots = self._backend_availability_snapshots(groups=groups)
         self._checkpoint(
             checkpoint,
             "after_observation_task_grouping",
-            self._grouping_metrics(groups=groups),
+            {**self._grouping_metrics(groups=groups), **applicability_metrics},
         )
         results: list[ObservationExecutionResult] = []
         consecutive_failures = 0
+        max_consecutive_systemic_failures_observed = 0
         blocked_reason: str | None = None
         evidence_records_created = 0
         materialized_observation_bytes = 0
@@ -138,6 +156,9 @@ class GovernedObservationExecutionStageService:
             "results_physically_failed": 0,
             "results_accepted": 0,
             "results_rejected_by_policy": 0,
+            "expected_unsupported_or_inapplicable_count": 0,
+            "systemic_execution_failure_count": 0,
+            "policy_or_governance_block_count": 0,
         }
         physical_backend_attempts: dict[str, int] = {}
         physical_backend_successes: dict[str, int] = {}
@@ -295,10 +316,18 @@ class GovernedObservationExecutionStageService:
             results.append(result)
             evidence_records_created += record_count
             counters["results_accepted"] += 1
-            if result.status == "EXECUTED" and record_count > 0:
-                consecutive_failures = 0
-            else:
+            outcome_class = self._execution_outcome_class(result=result, record_count=record_count)
+            if outcome_class == "SYSTEMIC_EXECUTION_FAILURE":
                 consecutive_failures += 1
+                max_consecutive_systemic_failures_observed = max(max_consecutive_systemic_failures_observed, consecutive_failures)
+                counters["systemic_execution_failure_count"] += 1
+            elif outcome_class == "POLICY_OR_GOVERNANCE_BLOCK":
+                counters["policy_or_governance_block_count"] += 1
+            elif outcome_class == "EXPECTED_UNSUPPORTED_OR_INAPPLICABLE":
+                consecutive_failures = 0
+                counters["expected_unsupported_or_inapplicable_count"] += 1
+            else:
+                consecutive_failures = 0
             self._checkpoint(
                 checkpoint,
                 "after_physical_probe",
@@ -306,6 +335,8 @@ class GovernedObservationExecutionStageService:
                     **self._group_metrics(group),
                     "physical_probe_index": index,
                     "physical_probe_status": result.status,
+                    "execution_outcome_class": outcome_class,
+                    "current_consecutive_systemic_failures": consecutive_failures,
                     "evidence_record_count": record_count,
                 },
             )
@@ -318,6 +349,7 @@ class GovernedObservationExecutionStageService:
         fanout = self._fanout_metrics(groups=groups, results=results)
         telemetry = {
             **self._grouping_metrics(groups=groups),
+            **applicability_metrics,
             **fanout,
             **self._backend_telemetry(results=results, backend_snapshots=backend_snapshots),
             "physical_probe_count": len(results),
@@ -341,6 +373,11 @@ class GovernedObservationExecutionStageService:
             "results_physically_failed": counters["results_physically_failed"],
             "results_accepted": counters["results_accepted"],
             "results_rejected_by_policy": counters["results_rejected_by_policy"],
+            "expected_unsupported_count": counters["expected_unsupported_or_inapplicable_count"],
+            "systemic_execution_failure_count": counters["systemic_execution_failure_count"],
+            "policy_or_governance_block_count": counters["policy_or_governance_block_count"],
+            "current_consecutive_systemic_failures": consecutive_failures,
+            "max_consecutive_systemic_failures_observed": max_consecutive_systemic_failures_observed,
             "materialized_observation_bytes": materialized_observation_bytes,
             "execution_status": "blocked" if blocked_reason else "executed" if results else "not_started",
             "blocked_reason_code": blocked_reason,
@@ -359,7 +396,7 @@ class GovernedObservationExecutionStageService:
         *,
         observation_plan: ObservationPlan,
         selected_entities: list[dict[str, Any]],
-    ) -> list[PhysicalObservationGroup]:
+    ) -> tuple[list[PhysicalObservationGroup], dict[str, Any]]:
         entities_by_id = {str(entity.get("entity_id") or ""): entity for entity in selected_entities}
         strategies_by_id = {item.strategy_id: item for item in observation_plan.observation_strategies}
         requirements_by_key = {
@@ -368,6 +405,9 @@ class GovernedObservationExecutionStageService:
             if str(item.canonical_key or item.attribute_name or "").strip()
         }
         groups: dict[tuple[str, str, str], PhysicalObservationGroup] = {}
+        applicability_counts = {"applicable": 0, "inapplicable": 0, "unknown": 0}
+        inapplicable_reasons: dict[str, int] = {}
+        media_supported_extensions = self._media_supported_extensions()
         for task in observation_plan.observation_tasks:
             if not self._is_deferred_executable_task(task):
                 continue
@@ -385,6 +425,18 @@ class GovernedObservationExecutionStageService:
                 if entity is None:
                     continue
                 raw_source_ref = self._raw_source_ref(task=task, entity=entity)
+                applicability = self._capability_applicability_decision(
+                    capability_id=capability_id,
+                    canonical_key=canonical_key,
+                    entity=entity,
+                    task=task,
+                    raw_source_ref=raw_source_ref,
+                    media_supported_extensions=media_supported_extensions,
+                )
+                applicability_counts[applicability.status] += 1
+                if applicability.status == "inapplicable":
+                    inapplicable_reasons[applicability.reason_code] = inapplicable_reasons.get(applicability.reason_code, 0) + 1
+                    continue
                 source_ref = self._normalized_source_ref(raw_source_ref=raw_source_ref, entity=entity)
                 key = (entity_id, capability_id, source_ref)
                 group = groups.get(key)
@@ -403,7 +455,177 @@ class GovernedObservationExecutionStageService:
                 if canonical_key in requirements_by_key:
                     group.requirements_by_canonical_key[canonical_key] = requirements_by_key[canonical_key]
                 group.tasks.append(task)
-        return list(groups.values())
+        return list(groups.values()), {
+            "capability_applicable_count": applicability_counts["applicable"],
+            "capability_inapplicable_count": applicability_counts["inapplicable"],
+            "capability_applicability_unknown_count": applicability_counts["unknown"],
+            "capability_inapplicable_reasons": inapplicable_reasons,
+        }
+
+    def _capability_applicability_decision(
+        self,
+        *,
+        capability_id: str,
+        canonical_key: str,
+        entity: dict[str, Any],
+        task: ObservationTask,
+        raw_source_ref: str,
+        media_supported_extensions: set[str] | None = None,
+    ) -> CapabilityApplicabilityDecision:
+        capability = self.observer_registry.get(capability_id)
+        if capability is None:
+            return CapabilityApplicabilityDecision("inapplicable", "CAPABILITY_NOT_REGISTERED")
+        entity_kind = self._entity_value(entity, "entity_kind") or self._entity_value(entity, "kind")
+        compatible_kinds = {str(item).casefold() for item in capability.compatible_entity_kinds or []}
+        if entity_kind and "*" not in compatible_kinds and compatible_kinds and str(entity_kind).casefold() not in compatible_kinds:
+            return CapabilityApplicabilityDecision(
+                "inapplicable",
+                "ENTITY_KIND_INCOMPATIBLE_FOR_CAPABILITY",
+                {"entity_kind": entity_kind, "compatible_entity_kinds": sorted(compatible_kinds)},
+            )
+        if canonical_key and canonical_key not in set(capability.observable_attributes or capability.supported_attribute_names or []):
+            return CapabilityApplicabilityDecision(
+                "inapplicable",
+                "CAPABILITY_CANNOT_PRODUCE_REQUESTED_CLAIM",
+                {"canonical_key": canonical_key},
+            )
+        if capability_id == "media_metadata_reader":
+            return self._media_metadata_applicability_decision(
+                entity=entity,
+                task=task,
+                raw_source_ref=raw_source_ref,
+                supported_extensions=media_supported_extensions or set(),
+            )
+        return self._generic_role_applicability_decision(capability=capability, entity=entity, task=task)
+
+    def _generic_role_applicability_decision(
+        self,
+        *,
+        capability: ObservationCapability,
+        entity: dict[str, Any],
+        task: ObservationTask,
+    ) -> CapabilityApplicabilityDecision:
+        consumes = {str(item).casefold() for item in capability.consumes or [] if str(item).strip()}
+        generic_consumes = {"*", "file_path", "source_ref", "raw_ref"}
+        role = str(self._entity_value(entity, "entity_role") or task.entity_ref.get("entity_role") or "").casefold()
+        if role and consumes and consumes.difference(generic_consumes) and role not in consumes:
+            return CapabilityApplicabilityDecision(
+                "inapplicable",
+                "ENTITY_ROLE_INCOMPATIBLE_FOR_CAPABILITY",
+                {"entity_role": role, "capability_consumes": sorted(consumes)},
+            )
+        if consumes.difference(generic_consumes) and not role:
+            return CapabilityApplicabilityDecision(
+                "unknown",
+                "ENTITY_ROLE_UNKNOWN_FOR_CAPABILITY",
+                {"capability_consumes": sorted(consumes)},
+            )
+        return CapabilityApplicabilityDecision("applicable", "CAPABILITY_APPLICABLE")
+
+    def _media_metadata_applicability_decision(
+        self,
+        *,
+        entity: dict[str, Any],
+        task: ObservationTask,
+        raw_source_ref: str,
+        supported_extensions: set[str],
+    ) -> CapabilityApplicabilityDecision:
+        root_role = str(
+            self._entity_value(entity, "source_root_role")
+            or self._entity_value(entity, "root_role")
+            or task.inputs.get("source_root_role")
+            or task.entity_ref.get("source_root_role")
+            or ""
+        )
+        if root_role and root_role not in {"library_root", "corpus_root"}:
+            return CapabilityApplicabilityDecision(
+                "inapplicable",
+                "MEDIA_CAPABILITY_ROOT_ROLE_INAPPLICABLE",
+                {"source_root_role": root_role},
+            )
+        if not raw_source_ref:
+            return CapabilityApplicabilityDecision("unknown", "MEDIA_CAPABILITY_SOURCE_REF_UNKNOWN")
+        entity_role = str(self._entity_value(entity, "entity_role") or task.inputs.get("entity_role") or task.entity_ref.get("entity_role") or "")
+        routing_hints = {
+            str(item)
+            for item in self._entity_list_value(entity, "routing_hints")
+            if str(item).strip()
+        }
+        if entity_role in {"media_asset_candidate", "audio_track_candidate"} or "media_metadata_observation" in routing_hints:
+            return CapabilityApplicabilityDecision(
+                "applicable",
+                "MEDIA_CAPABILITY_APPLICABLE_BY_ENTITY_HINT",
+                {"entity_role": entity_role, "routing_hints": sorted(routing_hints)},
+            )
+        extension = self._source_extension(raw_source_ref=raw_source_ref, entity=entity)
+        if extension and extension in supported_extensions:
+            return CapabilityApplicabilityDecision(
+                "applicable",
+                "MEDIA_CAPABILITY_APPLICABLE_BY_CONFIGURED_ROUTING_HINT",
+                {"extension": extension},
+            )
+        if extension and supported_extensions:
+            return CapabilityApplicabilityDecision(
+                "inapplicable",
+                "MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS",
+                {"extension": extension, "supported_extension_count": len(supported_extensions)},
+            )
+        return CapabilityApplicabilityDecision("unknown", "MEDIA_CAPABILITY_APPLICABILITY_UNKNOWN")
+
+    def _media_supported_extensions(self) -> set[str]:
+        adapter = self.observation_boundary.adapters.get("media_metadata_reader")
+        adapter_capability = getattr(adapter, "capability", None)
+        backends = getattr(adapter_capability, "backends", None)
+        extensions: set[str] = set()
+        if isinstance(backends, dict):
+            for backend in backends.values():
+                descriptor_factory = getattr(backend, "descriptor", None)
+                if not callable(descriptor_factory):
+                    continue
+                try:
+                    descriptor = descriptor_factory()
+                except Exception:
+                    continue
+                for item in getattr(descriptor, "supported_extensions", []) or []:
+                    text = str(item or "").strip().casefold().lstrip(".")
+                    if text:
+                        extensions.add(text)
+        return extensions
+
+    def _source_extension(self, *, raw_source_ref: str, entity: dict[str, Any]) -> str:
+        explicit = self._entity_value(entity, "extension")
+        if explicit not in (None, ""):
+            return str(explicit).strip().casefold().lstrip(".")
+        text = str(raw_source_ref or self._source_ref_for_entity(entity) or "").strip()
+        if not text:
+            return ""
+        suffix = PurePath(text.replace("\\", "/")).suffix
+        return suffix.casefold().lstrip(".")
+
+    def _entity_value(self, entity: dict[str, Any], key: str) -> Any | None:
+        if key in entity and entity.get(key) not in (None, ""):
+            return entity.get(key)
+        attributes = entity.get("attributes") if isinstance(entity.get("attributes"), dict) else {}
+        value = attributes.get(key)
+        if isinstance(value, dict):
+            return value.get("value")
+        if value not in (None, ""):
+            return value
+        observed = entity.get("observed_attributes") if isinstance(entity.get("observed_attributes"), dict) else {}
+        value = observed.get(key)
+        if isinstance(value, dict):
+            return value.get("value")
+        return value if value not in (None, "") else None
+
+    def _entity_list_value(self, entity: dict[str, Any], key: str) -> list[Any]:
+        value = self._entity_value(entity, key)
+        if isinstance(value, list):
+            return value
+        if isinstance(value, tuple):
+            return list(value)
+        if value in (None, ""):
+            return []
+        return [value]
 
     def _execute_group(
         self,
@@ -661,6 +883,66 @@ class GovernedObservationExecutionStageService:
                 "blocked_reason_code": reason_code,
             },
         )
+
+    def _execution_outcome_class(
+        self,
+        *,
+        result: ObservationExecutionResult,
+        record_count: int,
+    ) -> ExecutionOutcomeClass:
+        if result.status == "EXECUTED" and record_count > 0:
+            return "SUCCESSFUL_EXECUTION"
+        if result.status in {"BLOCKED_POLICY", "BLOCKED_TIMEOUT"}:
+            return "POLICY_OR_GOVERNANCE_BLOCK"
+        error_codes = {
+            str(error.code or "")
+            for error in result.errors or []
+            if str(error.code or "").strip()
+        }
+        media_codes = self._media_backend_error_codes(result)
+        all_codes = set(error_codes).union(media_codes)
+        if all_codes and all_codes.issubset(self._expected_unsupported_error_codes()):
+            return "EXPECTED_UNSUPPORTED_OR_INAPPLICABLE"
+        if all_codes.intersection(self._systemic_execution_error_codes()):
+            return "SYSTEMIC_EXECUTION_FAILURE"
+        if result.status in {"FAILED", "BLOCKED_OBSERVER_ERROR", "BLOCKED_PRECONDITION"}:
+            return "SYSTEMIC_EXECUTION_FAILURE"
+        return "EXPECTED_UNSUPPORTED_OR_INAPPLICABLE"
+
+    def _media_backend_error_codes(self, result: ObservationExecutionResult) -> set[str]:
+        payload = (result.provenance or {}).get("observer_payload")
+        media = payload.get("media_metadata_capability") if isinstance(payload, dict) else None
+        if not isinstance(media, dict):
+            return set()
+        return {
+            str(code)
+            for code in dict(media.get("backend_error_counts") or {}).keys()
+            if str(code).strip()
+        }
+
+    def _expected_unsupported_error_codes(self) -> set[str]:
+        return {
+            "OBSERVER_PRODUCED_NO_EVIDENCE",
+            "MEDIA_BACKEND_UNSUPPORTED_FORMAT",
+            "MEDIA_BACKEND_NO_EVIDENCE",
+            "MEDIA_BACKEND_NOT_AVAILABLE",
+            "MEDIA_METADATA_BACKEND_NOT_AVAILABLE",
+            "MEDIA_METADATA_DEPENDENCY_MISSING",
+            "MUTAGEN_NOT_IMPORTABLE",
+            "FFPROBE_NOT_AVAILABLE",
+        }
+
+    def _systemic_execution_error_codes(self) -> set[str]:
+        return {
+            "OBSERVER_NOT_BOUND",
+            "OBSERVER_INPUT_SCHEMA_INVALID",
+            "OBSERVER_OUTPUT_SCHEMA_INVALID",
+            "OBSERVER_RUNTIME_ERROR",
+            "MEDIA_BACKEND_RUNTIME_ERROR",
+            "FFPROBE_RUNTIME_ERROR",
+            "FFPROBE_INVALID_JSON",
+            "FFPROBE_TIMEOUT",
+        }
 
     def _physical_telemetry_for_result(self, result: ObservationExecutionResult) -> dict[str, dict[str, int]]:
         attempted: dict[str, int] = {}
