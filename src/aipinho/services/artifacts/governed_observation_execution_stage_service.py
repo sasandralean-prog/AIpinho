@@ -130,7 +130,53 @@ class GovernedObservationExecutionStageService:
                 physical_groups=[],
                 blocked_reason_code=quarantine_block,
             )
-        groups, applicability_metrics = self._physical_groups(observation_plan=observation_plan, selected_entities=selected_entities)
+        groups, applicability_metrics, applicability_block = self._physical_groups(
+            observation_plan=observation_plan,
+            selected_entities=selected_entities,
+        )
+        if applicability_block:
+            telemetry = {
+                **self._grouping_metrics(groups=groups),
+                **applicability_metrics,
+                **self._empty_backend_telemetry(backend_snapshots={}),
+                "physical_probe_count": 0,
+                "files_attempted": 0,
+                "files_succeeded": 0,
+                "files_failed": 0,
+                "evidence_records_created": 0,
+                "evidence_records_produced": 0,
+                "evidence_records_accepted": 0,
+                "evidence_records_rejected": 0,
+                "evidence_bytes_produced": 0,
+                "evidence_bytes_checkpointed": 0,
+                "inline_materialized_bytes": 0,
+                "checkpoint_count": 0,
+                "checkpoint_bytes": 0,
+                "checkpoint_write_failures": 0,
+                "physical_backend_attempts": {},
+                "physical_backend_successes": {},
+                "physical_backend_failures": {},
+                "results_physically_succeeded": 0,
+                "results_physically_failed": 0,
+                "results_accepted": 0,
+                "results_rejected_by_policy": 1,
+                "expected_unsupported_count": 0,
+                "systemic_execution_failure_count": 0,
+                "policy_or_governance_block_count": 1,
+                "current_consecutive_systemic_failures": 0,
+                "max_consecutive_systemic_failures_observed": 0,
+                "materialized_observation_bytes": 0,
+                "execution_status": "blocked",
+                "blocked_reason_code": applicability_block,
+            }
+            self._checkpoint(checkpoint, "after_observation_task_grouping", telemetry)
+            self._checkpoint(checkpoint, "after_post_compile_observation_execution", telemetry)
+            return GovernedObservationExecutionStageResult(
+                observation_execution_results=[],
+                telemetry=telemetry,
+                physical_groups=[],
+                blocked_reason_code=applicability_block,
+            )
         backend_snapshots = self._backend_availability_snapshots(groups=groups)
         self._checkpoint(
             checkpoint,
@@ -395,7 +441,7 @@ class GovernedObservationExecutionStageService:
         *,
         observation_plan: ObservationPlan,
         selected_entities: list[dict[str, Any]],
-    ) -> tuple[list[PhysicalObservationGroup], dict[str, Any]]:
+    ) -> tuple[list[PhysicalObservationGroup], dict[str, Any], str | None]:
         entities_by_id = {str(entity.get("entity_id") or ""): entity for entity in selected_entities}
         strategies_by_id = {item.strategy_id: item for item in observation_plan.observation_strategies}
         requirements_by_key = {
@@ -406,6 +452,8 @@ class GovernedObservationExecutionStageService:
         groups: dict[tuple[str, str, str], PhysicalObservationGroup] = {}
         applicability_counts = {"applicable": 0, "inapplicable": 0, "unknown": 0}
         inapplicable_reasons: dict[str, int] = {}
+        applicability_resolution_failures: list[dict[str, Any]] = []
+        blocked_reason: str | None = None
         for task in observation_plan.observation_tasks:
             if not self._is_deferred_executable_task(task):
                 continue
@@ -430,6 +478,10 @@ class GovernedObservationExecutionStageService:
                     task=task,
                     raw_source_ref=raw_source_ref,
                 )
+                if applicability.reason_code == "CAPABILITY_APPLICABILITY_RESOLUTION_FAILED":
+                    blocked_reason = "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_FAILED"
+                    applicability_resolution_failures.append(dict(applicability.evidence))
+                    break
                 applicability_counts[applicability.status] += 1
                 if applicability.status == "inapplicable":
                     inapplicable_reasons[applicability.reason_code] = inapplicable_reasons.get(applicability.reason_code, 0) + 1
@@ -452,12 +504,16 @@ class GovernedObservationExecutionStageService:
                 if canonical_key in requirements_by_key:
                     group.requirements_by_canonical_key[canonical_key] = requirements_by_key[canonical_key]
                 group.tasks.append(task)
+            if blocked_reason:
+                break
         return list(groups.values()), {
             "capability_applicable_count": applicability_counts["applicable"],
             "capability_inapplicable_count": applicability_counts["inapplicable"],
             "capability_applicability_unknown_count": applicability_counts["unknown"],
             "capability_inapplicable_reasons": inapplicable_reasons,
-        }
+            "capability_applicability_resolution_failure_count": len(applicability_resolution_failures),
+            "capability_applicability_resolution_failures": applicability_resolution_failures[:5],
+        }, blocked_reason
 
     def _capability_applicability_decision(
         self,
@@ -490,16 +546,39 @@ class GovernedObservationExecutionStageService:
             return explicit
         resolver = self._capability_applicability_resolver(capability)
         if callable(resolver):
-            return self._coerce_applicability_decision(
-                resolver(
-                    capability=capability,
-                    entity=entity,
-                    task=task,
-                    canonical_key=canonical_key,
-                    raw_source_ref=raw_source_ref,
+            resolver_owner = self._resolver_owner(resolver)
+            try:
+                return self._coerce_applicability_decision(
+                    resolver(
+                        capability=capability,
+                        entity=entity,
+                        task=task,
+                        canonical_key=canonical_key,
+                        raw_source_ref=raw_source_ref,
+                    )
                 )
-            )
+            except Exception as exc:
+                return CapabilityApplicabilityDecision(
+                    "unknown",
+                    "CAPABILITY_APPLICABILITY_RESOLUTION_FAILED",
+                    {
+                        "capability_id": capability_id,
+                        "entity_id": str(entity.get("entity_id") or task.inputs.get("entity_id") or ""),
+                        "resolver_owner": resolver_owner,
+                        "exception_class": type(exc).__name__,
+                        "exception_reason": str(exc)[:200],
+                    },
+                )
         return CapabilityApplicabilityDecision("unknown", "CAPABILITY_APPLICABILITY_UNKNOWN")
+
+    def _resolver_owner(self, resolver: Callable[..., Any]) -> str:
+        owner = getattr(resolver, "__self__", None)
+        if owner is not None:
+            return f"{owner.__class__.__module__}.{owner.__class__.__qualname__}"
+        return str(getattr(resolver, "__qualname__", getattr(resolver, "__name__", "unknown_resolver")))
+
+    def _empty_backend_telemetry(self, *, backend_snapshots: dict[str, dict[str, Any]]) -> dict[str, Any]:
+        return self._backend_telemetry(results=[], backend_snapshots=backend_snapshots)
 
     def _explicit_applicability_contract_decision(
         self,

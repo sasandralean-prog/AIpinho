@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from aipinho.capabilities.media_metadata.descriptor import MEDIA_METADATA_EVIDENCE_KEYS
+from aipinho.capabilities.media_metadata.adapter import MediaMetadataObserverAdapter
 from aipinho.schemas.artifacts.contract_perception import (
     AttributeObservationRequirement,
     EvidenceRecord,
@@ -135,9 +136,44 @@ class _SupportedExtensionBackend:
         return type("Descriptor", (), {"supported_extensions": self.extensions})()
 
 
+class _BrokenDescriptorBackend:
+    def descriptor(self) -> Any:
+        raise RuntimeError("descriptor exploded")
+
+
 class _ApplicabilityCapability:
-    def __init__(self, extensions: list[str]) -> None:
-        self.backends = {"fake_backend": _SupportedExtensionBackend(extensions)}
+    def __init__(self, extensions: list[str], *, broken: bool = False, healthy_and_broken: bool = False) -> None:
+        if healthy_and_broken:
+            self.backends = {
+                "broken_backend": _BrokenDescriptorBackend(),
+                "healthy_backend": _SupportedExtensionBackend(extensions),
+            }
+        elif broken:
+            self.backends = {"broken_backend": _BrokenDescriptorBackend()}
+        else:
+            self.backends = {"fake_backend": _SupportedExtensionBackend(extensions)}
+
+
+class _MediaApplicabilityAdapter(MediaMetadataObserverAdapter):
+    def __init__(self, *, capability: Any) -> None:
+        super().__init__(capability=capability)
+        self.calls: list[ObservationTask] = []
+
+    def execute(self, task: ObservationTask, binding: Any) -> dict[str, Any]:
+        self.calls.append(task)
+        return {
+            "raw_ref": task.inputs.get("file_path"),
+            "observations": [
+                {
+                    "entity_ref": task.entity_ref,
+                    "attribute_name": "artist",
+                    "canonical_key": "artist",
+                    "normalized_value": "Artist",
+                    "confidence": 0.9,
+                    "raw_ref": task.inputs.get("file_path"),
+                }
+            ],
+        }
 
 
 class _UnsupportedAdapter(_Adapter):
@@ -207,6 +243,19 @@ class _RoleApplicabilityAdapter(_Adapter):
         if role in self.applicable_roles:
             return {"status": "applicable", "reason_code": "TEST_ROLE_APPLICABLE", "evidence": {"entity_role": role}}
         return {"status": "inapplicable", "reason_code": "TEST_ROLE_INAPPLICABLE", "evidence": {"entity_role": role}}
+
+
+class _FailingApplicabilityAdapter(_Adapter):
+    def applicability_decision(
+        self,
+        *,
+        capability: Any,
+        entity: dict[str, Any],
+        task: ObservationTask,
+        canonical_key: str,
+        raw_source_ref: str,
+    ) -> dict[str, Any]:
+        raise RuntimeError("resolver exploded")
 
 
 class _SequenceAdapter(_UnsupportedAdapter):
@@ -696,6 +745,79 @@ def test_two_fake_capabilities_own_distinct_applicability_without_stage_branchin
     assert "MEDIA_CAPABILITY" not in method_source
     assert "supported_extensions" not in method_source
     assert ".consumes" not in method_source
+
+
+def test_applicability_resolver_failure_is_governed_and_does_not_probe() -> None:
+    adapter = _FailingApplicabilityAdapter(keys=["generic_signal"])
+    stage = GovernedObservationExecutionStageService(
+        observation_boundary=ObservationExecutionBoundaryService(adapters={"failing_capability": adapter}),
+        observer_registry=CapabilityRegistry(capabilities=[
+            _generic_capability("failing_capability", consumes=["file_path"])
+        ]),
+        budget=PostCompileObservationBudget(max_probe_elapsed_ms=500, heartbeat_interval_ms=25),
+    )
+
+    result = stage.execute(
+        observation_plan=_generic_plan([
+            _generic_task("generic_signal", capability_id="failing_capability", entity_id="entity_1")
+        ]),
+        selected_entities=[
+            {"entity_id": "entity_1", "path": "file://one", "entity_kind": "file", "entity_role": "corpus_file"}
+        ],
+    )
+
+    assert adapter.calls == []
+    assert result.blocked_reason_code == "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_FAILED"
+    assert result.telemetry["physical_probe_count"] == 0
+    assert result.telemetry["files_attempted"] == 0
+    assert result.telemetry["capability_applicability_resolution_failure_count"] == 1
+    failure = result.telemetry["capability_applicability_resolution_failures"][0]
+    assert failure["capability_id"] == "failing_capability"
+    assert failure["entity_id"] == "entity_1"
+    assert failure["exception_class"] == "RuntimeError"
+    assert "FailingApplicabilityAdapter" in failure["resolver_owner"]
+    assert result.telemetry["capability_inapplicable_count"] == 0
+
+
+def test_media_descriptor_failure_is_governed_and_not_false_unsupported() -> None:
+    adapter = _MediaApplicabilityAdapter(capability=_ApplicabilityCapability(["m4a"], broken=True))
+    stage = _stage(adapter)
+
+    result = stage.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_1", source_ref="library/song.m4a")]),
+        selected_entities=[
+            {"entity_id": "entity_1", "path": "library/song.m4a", "entity_kind": "file", "entity_role": "corpus_file", "source_root_role": "library_root"}
+        ],
+    )
+
+    assert adapter.calls == []
+    assert result.blocked_reason_code == "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_FAILED"
+    assert result.telemetry["physical_probe_count"] == 0
+    assert result.telemetry["capability_inapplicable_count"] == 0
+    assert result.telemetry["capability_inapplicable_reasons"] == {}
+    failure = result.telemetry["capability_applicability_resolution_failures"][0]
+    assert failure["capability_id"] == "media_metadata_reader"
+    assert failure["exception_class"] == "RuntimeError"
+
+
+def test_healthy_backend_descriptor_can_govern_applicability_while_broken_backend_is_diagnostic() -> None:
+    adapter = _MediaApplicabilityAdapter(
+        capability=_ApplicabilityCapability(["m4a"], healthy_and_broken=True)
+    )
+    stage = _stage(adapter)
+
+    result = stage.execute(
+        observation_plan=_plan([_task("artist", entity_id="entity_1", source_ref="library/song.m4a")]),
+        selected_entities=[
+            {"entity_id": "entity_1", "path": "library/song.m4a", "entity_kind": "file", "entity_role": "corpus_file", "source_root_role": "library_root"}
+        ],
+    )
+
+    assert result.blocked_reason_code is None
+    assert len(adapter.calls) == 1
+    assert result.telemetry["physical_probe_count"] == 1
+    assert result.telemetry["capability_applicable_count"] == 1
+    assert result.telemetry["capability_applicability_resolution_failure_count"] == 0
 
 
 def test_expected_unsupported_outcomes_do_not_trigger_systemic_consecutive_failure_breaker() -> None:

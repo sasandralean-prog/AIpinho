@@ -78,13 +78,19 @@ class MediaMetadataObserverAdapter:
                 "evidence": {"entity_role": entity_role, "routing_hints": sorted(routing_hints)},
             }
         extension = self._source_extension(entity=entity, source_ref=source_ref)
-        supported_extensions = self._supported_extensions()
+        supported_extensions, descriptor_failures = self._supported_extensions()
         if extension and extension in supported_extensions:
             return {
                 "status": "applicable",
                 "reason_code": "MEDIA_CAPABILITY_EXTENSION_DECLARED_BY_BACKEND",
-                "evidence": {"extension": extension, "supported_extensions": sorted(supported_extensions)},
+                "evidence": {
+                    "extension": extension,
+                    "supported_extensions": sorted(supported_extensions),
+                    "descriptor_failures": descriptor_failures,
+                },
             }
+        if descriptor_failures:
+            raise RuntimeError("MEDIA_CAPABILITY_BACKEND_DESCRIPTOR_FAILED")
         if extension and supported_extensions:
             return {
                 "status": "inapplicable",
@@ -104,16 +110,25 @@ class MediaMetadataObserverAdapter:
         if not file_path:
             raise ValueError("MEDIA_CAPABILITY_FILE_PATH_MISSING")
 
-    def _supported_extensions(self) -> set[str]:
+    def _supported_extensions(self) -> tuple[set[str], list[dict[str, str]]]:
         supported: set[str] = set()
-        for backend in getattr(self.capability, "backends", {}).values():
-            descriptor = backend.descriptor() if hasattr(backend, "descriptor") else None
+        failures: list[dict[str, str]] = []
+        for backend_id, backend in getattr(self.capability, "backends", {}).items():
+            try:
+                descriptor = backend.descriptor() if hasattr(backend, "descriptor") else None
+            except Exception as exc:
+                failures.append({
+                    "backend_id": str(backend_id),
+                    "exception_class": type(exc).__name__,
+                    "exception_reason": str(exc)[:200],
+                })
+                continue
             if isinstance(descriptor, dict):
                 extensions = descriptor.get("supported_extensions") or []
             else:
                 extensions = getattr(descriptor, "supported_extensions", []) or []
             supported.update(str(item).lower().lstrip(".") for item in extensions if str(item).strip())
-        return supported
+        return supported, failures
 
     def _source_extension(self, *, entity: dict[str, Any], source_ref: str) -> str:
         value = self._entity_value(entity, "extension")
