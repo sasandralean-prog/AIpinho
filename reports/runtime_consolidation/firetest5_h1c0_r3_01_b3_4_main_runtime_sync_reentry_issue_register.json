@@ -1,0 +1,32 @@
+{
+  "schema": "firetest5_h1c0_r3_01_b3_4_issue_register.v1",
+  "generated_at": "2026-08-21T18:43:20.854745+00:00",
+  "issues": [
+    {
+      "id": "R3_01_B3_4_P1_PUBLIC_CANARY_POST_COMPILE_OBSERVATION_STALL_BEFORE_FIRETEST",
+      "priority": "P1",
+      "status": "OPEN",
+      "summary": "After B3.3 merge and canonical runtime restart, public /api/v1/analyze canary reached artifact runtime but terminalized with POST_COMPILE_OBSERVATION_EXECUTION_STALLED before physical probe proof.",
+      "evidence": {
+        "task_run_id": "task_run_cc55b69f128d48ae81ed4ad9984b83d9",
+        "reason_code": "POST_COMPILE_OBSERVATION_EXECUTION_STALLED",
+        "terminal_event_count": 1,
+        "last_checkpoint_stage": "before_post_compile_observation_execution",
+        "public_detail_stage": null
+      },
+      "recommended_gate": "Diagnose canary/public artifact terminalization around post-compile observation entry before rerunning FireTest 5."
+    },
+    {
+      "id": "R3_01_B3_4_P2_PUBLIC_CHAT_ROUTE_SCHEMA_COLLISION_OR_HANDLER_PRECEDENCE",
+      "priority": "P2",
+      "status": "OPEN",
+      "summary": "/api/v1/chat OpenAPI advertises PublicRuntimeRequest, but live request with PublicRuntimeRequest returned ChatRequest validation errors requiring message and forbidding contract/payload fields.",
+      "evidence": {
+        "endpoint": "/api/v1/chat",
+        "observed_error": "Field required: body.message; extra_forbidden: metadata, client_type, api_version, operation, contract, payload",
+        "workaround_for_diagnostic": "Used /api/v1/analyze public bridge endpoint, which accepted PublicRuntimeRequest."
+      },
+      "recommended_gate": "Clarify public chat route ownership/projection; this is secondary because /api/v1/analyze provided the public runtime bridge for canary."
+    }
+  ]
+}
