@@ -38,18 +38,31 @@ The B3.5 canary reached the post-compile dark zone and blocked with:
 
 Observed group-planning telemetry:
 
-- task_count: `None`
-- tasks_seen: `None`
-- deferred_task_count: `None`
-- execute_observer_task_count: `None`
-- target_entity_ref_count: `None`
-- applicability_started_count: `None`
-- applicability_completed_count: `None`
-- applicability_failed_count: `None`
-- groups_created_count: `None`
-- elapsed_ms: `None`
+- task_count: `25`
+- tasks_seen: `9`
+- deferred_task_count: `7`
+- execute_observer_task_count: `2`
+- target_entity_ref_count: `10000`
+- applicability_started_count: `9144`
+- applicability_completed_count: `9144`
+- applicability_failed_count: `0`
+- groups_created_count: `0`
+- elapsed_ms: `120046`
 
-No physical probe was claimed: physical_probe_count remained `None`.
+No physical probe was claimed: physical_probe_count remained `0`.
+
+
+### Report Projection Correction
+
+The grouping/applicability values above are reconstructed from persisted task-run evidence, not from memory or inference:
+
+- task_run_id: `task_run_10a7ad7dabca4687bcebbe5cba30ce25`
+- operation_id: `op_42cafcfaa0654bf299011345171199dc`
+- value_source: `data/runtime/task_runs/task_run_10a7ad7dabca4687bcebbe5cba30ce25/result.json`, under `outputs.validation_result.details.post_compile_observation_execution.observation_group_planning`
+- checkpoint source: `data/runtime/task_runs/task_run_10a7ad7dabca4687bcebbe5cba30ce25/events.json`
+- report-only issue closed: `P2_B3_5_REPORT_PROJECTION_INCOMPLETE_FOR_GROUPING_APPLICABILITY_TELEMETRY`
+
+Remaining P1 remains unchanged: `R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER`.
 
 ## Route Boundary
 

@@ -2,10 +2,156 @@
   "b3_5_pass_criteria": {
     "generic_stall_removed": true,
     "more_specific_stage_reason": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",
+    "report_projection_completed": true,
     "speaker_truth_false_on_block": true,
     "terminality_preserved": true
   },
-  "grouping_and_applicability": {},
+  "grouping_and_applicability": {
+    "applicability_completed_count": 9144,
+    "applicability_failed_count": 0,
+    "applicability_started_count": 9144,
+    "backend_snapshot_completed": false,
+    "backend_snapshot_started": false,
+    "before_physical_probe_emitted": false,
+    "capability_applicability_unknown_count": 0,
+    "capability_applicable_count": 0,
+    "capability_availability_checked": 2,
+    "capability_inapplicable_count": 9143,
+    "capability_inapplicable_reasons": {
+      "MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS": 9143
+    },
+    "capability_lookup_attempted": 2,
+    "deferred_task_count": 7,
+    "elapsed_ms": 120046,
+    "execute_observer_task_count": 2,
+    "groups_created_count": 0,
+    "physical_probe_count": 0,
+    "reason_code": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",
+    "source_provenance": {
+      "diagnostic_extraction": "report_only_projection_correction_from_persisted_artifacts",
+      "event_checkpoint_source": [
+        {
+          "bounded": true,
+          "event_id": "task_run_event_bb2c2b95d53d4143bd04b0d9e84c321c",
+          "event_type": "artifact_render_checkpoint",
+          "sequence": 85,
+          "stage": "before_post_compile_observation_execution",
+          "status": "running",
+          "timestamp": "2026-08-21T20:11:53.599277+00:00",
+          "value_source": "runtime_event_store_metadata_checkpoint"
+        },
+        {
+          "bounded": true,
+          "event_id": "task_run_event_6b9da5faba264f0bba1aaa5c27d99755",
+          "event_type": "artifact_render_checkpoint",
+          "sequence": 86,
+          "stage": "before_observation_physical_group_planning",
+          "status": "running",
+          "timestamp": "2026-08-21T20:11:53.640269+00:00",
+          "value_source": "runtime_event_store_metadata_checkpoint"
+        },
+        {
+          "bounded": true,
+          "event_id": "task_run_event_54c708a9ac634ca1a416cf9515abb302",
+          "event_type": "artifact_render_checkpoint",
+          "sequence": 87,
+          "stage": "observation_task_scan_checkpoint",
+          "status": "running",
+          "timestamp": "2026-08-21T20:11:53.686012+00:00",
+          "value_source": "runtime_event_store_metadata_checkpoint"
+        },
+        {
+          "bounded": true,
+          "event_id": "task_run_event_25eb0010302f45ae89dac138782d8991",
+          "event_type": "artifact_render_checkpoint",
+          "sequence": 88,
+          "stage": "before_capability_applicability_resolution",
+          "status": "running",
+          "timestamp": "2026-08-21T20:11:53.741972+00:00",
+          "value_source": "runtime_event_store_metadata_checkpoint"
+        },
+        {
+          "bounded": true,
+          "event_id": "task_run_event_bb747f8c9f1548ecb181d61d81716737",
+          "event_type": "artifact_render_checkpoint",
+          "sequence": 89,
+          "stage": "capability_applicability_resolution_checkpoint",
+          "status": "running",
+          "timestamp": "2026-08-21T20:11:53.903038+00:00",
+          "value_source": "runtime_event_store_metadata_checkpoint"
+        },
+        {
+          "bounded": true,
+          "event_id": "task_run_event_a2991bed77ea421e8f5627eea8d3149f",
+          "event_type": "artifact_render_checkpoint",
+          "sequence": 90,
+          "stage": "capability_applicability_resolution_checkpoint",
+          "status": "running",
+          "timestamp": "2026-08-21T20:12:00.085653+00:00",
+          "value_source": "runtime_event_store_metadata_checkpoint"
+        },
+        {
+          "bounded": true,
+          "event_id": "task_run_event_c07301a7ff4a45348f6cb4f0b90c8fec",
+          "event_type": "artifact_render_checkpoint",
+          "sequence": 103,
+          "stage": "capability_applicability_resolution_checkpoint",
+          "status": "running",
+          "timestamp": "2026-08-21T20:13:26.214249+00:00",
+          "value_source": "runtime_event_store_metadata_checkpoint"
+        },
+        {
+          "bounded": true,
+          "event_id": "task_run_event_9e847b330f804c33bc6a84931c4c43df",
+          "event_type": "artifact_render_checkpoint",
+          "sequence": 104,
+          "stage": "capability_applicability_resolution_checkpoint",
+          "status": "running",
+          "timestamp": "2026-08-21T20:13:32.605887+00:00",
+          "value_source": "runtime_event_store_metadata_checkpoint"
+        },
+        {
+          "bounded": true,
+          "event_id": "task_run_event_b42d6674d0344b859d33921d90e806f4",
+          "event_type": "artifact_render_checkpoint",
+          "sequence": 105,
+          "stage": "capability_applicability_resolution_checkpoint",
+          "status": "running",
+          "timestamp": "2026-08-21T20:13:38.008683+00:00",
+          "value_source": "runtime_event_store_metadata_checkpoint"
+        },
+        {
+          "bounded": true,
+          "event_id": "task_run_event_ce972b72de364070b70ed3fe8497cafe",
+          "event_type": "artifact_render_checkpoint",
+          "sequence": 106,
+          "stage": "capability_applicability_resolution_checkpoint",
+          "status": "running",
+          "timestamp": "2026-08-21T20:13:43.814139+00:00",
+          "value_source": "runtime_event_store_metadata_checkpoint"
+        },
+        {
+          "bounded": true,
+          "event_id": "task_run_event_539ec0f9c0be40c9a81a4d7921928258",
+          "event_type": "artifact_render_checkpoint",
+          "sequence": 107,
+          "stage": "capability_applicability_resolution_checkpoint",
+          "status": "running",
+          "timestamp": "2026-08-21T20:13:50.587471+00:00",
+          "value_source": "runtime_event_store_metadata_checkpoint"
+        }
+      ],
+      "event_checkpoint_source_note": "bounded sample: non-applicability dark-zone checkpoints plus first/last applicability checkpoint samples",
+      "operation_id": "op_42cafcfaa0654bf299011345171199dc",
+      "result_payload_source": "data/runtime/task_runs/task_run_10a7ad7dabca4687bcebbe5cba30ce25/result.json:outputs.validation_result.details.post_compile_observation_execution.observation_group_planning",
+      "runtime_event_store_source": "data/runtime/task_runs/task_run_10a7ad7dabca4687bcebbe5cba30ce25/events.json",
+      "task_run_id": "task_run_10a7ad7dabca4687bcebbe5cba30ce25",
+      "value_source": "persisted_task_run_result_payload_and_runtime_event_store"
+    },
+    "target_entity_ref_count": 10000,
+    "task_count": 25,
+    "tasks_seen": 9
+  },
   "mission_id": "H1C0.R3.01.B3.5",
   "post_compile_observation_execution": {},
   "public_canary": {

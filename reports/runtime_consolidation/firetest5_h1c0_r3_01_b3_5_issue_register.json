@@ -51,6 +51,19 @@
       "priority": "P2",
       "status": "resolved_or_isolated_with_tests",
       "summary": "/api/v1/chat remains canonical ChatRequest; PublicRuntimeRequest chat operation moved to /api/v1/runtime/chat."
+    },
+    {
+      "evidence": [
+        "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_postcompile_stall_summary.md updated",
+        "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_public_canary_observation.json grouping_and_applicability updated",
+        "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_5_postcompile_stall_diagnostic.json code_path_assessment updated"
+      ],
+      "issue_id": "P2_B3_5_REPORT_PROJECTION_INCOMPLETE_FOR_GROUPING_APPLICABILITY_TELEMETRY",
+      "priority": "P2",
+      "remaining_p1": "R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER",
+      "status": "RESOLVED_BY_REPORT_ONLY_COMMIT",
+      "summary": "B3.5 persisted canary evidence contained grouping/applicability telemetry, but summary/public_canary/diagnostic report projections omitted or nulled the fields.",
+      "value_source": "persisted_task_run_result_payload_and_runtime_event_store"
     }
   ],
   "mission_id": "H1C0.R3.01.B3.5",
@@ -59,6 +72,7 @@
     "R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER"
   ],
   "remaining_p2": [],
+  "report_projection_p2_status": "RESOLVED_BY_REPORT_ONLY_COMMIT",
   "scan_summary": {
     "current_main_reports_scanned": true,
     "current_p0_observed": false,
