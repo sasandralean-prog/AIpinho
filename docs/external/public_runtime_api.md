@@ -8,7 +8,7 @@ Public Runtime API -> External Gateway -> Runtime Kernel
 
 ## Endpoints
 
-- `POST /api/v1/chat`
+- `POST /api/v1/runtime/chat`
 - `POST /api/v1/execute`
 - `POST /api/v1/analyze`
 - `POST /api/v1/doctor`

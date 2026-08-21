@@ -1,0 +1,23 @@
+{
+  "analyze_route": {
+    "canary_task_run_id": "task_run_10a7ad7dabca4687bcebbe5cba30ce25",
+    "owner": "public_runtime_api_router.PublicRuntimeRequest",
+    "path": "/api/v1/analyze"
+  },
+  "canonical_chat_route": {
+    "compatibility": "canonical ChatRequest clients preserved",
+    "observed_validation": "body.message required; PublicRuntimeRequest fields rejected as extras",
+    "owner": "governance_lifecycle_router.ChatRequest",
+    "path": "/api/v1/chat",
+    "public_runtime_request_status": 422
+  },
+  "duplicate_route_ambiguity": "tested: exactly one POST /api/v1/chat owner remains",
+  "mission_id": "H1C0.R3.01.B3.5",
+  "public_runtime_chat_route": {
+    "operation": "chat",
+    "owner": "public_runtime_api_router.PublicRuntimeRequest",
+    "path": "/api/v1/runtime/chat",
+    "public_runtime_request_status": 200
+  },
+  "route_boundary_result": "PUBLIC_RUNTIME_ROUTE_SCHEMA_COLLISION_RESOLVED"
+}

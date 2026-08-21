@@ -133,6 +133,13 @@ class GovernedObservationExecutionStageService:
         groups, applicability_metrics, applicability_block = self._physical_groups(
             observation_plan=observation_plan,
             selected_entities=selected_entities,
+            checkpoint=checkpoint,
+            started_at=started,
+        )
+        self._checkpoint(
+            checkpoint,
+            "after_observation_physical_group_planning",
+            {**self._grouping_metrics(groups=groups), **applicability_metrics},
         )
         if applicability_block:
             telemetry = {
@@ -177,7 +184,17 @@ class GovernedObservationExecutionStageService:
                 physical_groups=[],
                 blocked_reason_code=applicability_block,
             )
+        self._checkpoint(
+            checkpoint,
+            "before_backend_availability_snapshot",
+            {**self._grouping_metrics(groups=groups), **applicability_metrics},
+        )
         backend_snapshots = self._backend_availability_snapshots(groups=groups)
+        self._checkpoint(
+            checkpoint,
+            "after_backend_availability_snapshot",
+            {**self._grouping_metrics(groups=groups), **self._empty_backend_telemetry(backend_snapshots=backend_snapshots)},
+        )
         self._checkpoint(
             checkpoint,
             "after_observation_task_grouping",
@@ -219,6 +236,11 @@ class GovernedObservationExecutionStageService:
             if quarantine_block:
                 blocked_reason = quarantine_block
                 break
+            self._checkpoint(
+                checkpoint,
+                "before_physical_probe_dispatch",
+                {**self._group_metrics(group), "physical_probe_index": index},
+            )
             self._checkpoint(
                 checkpoint,
                 "before_physical_probe",
@@ -441,6 +463,8 @@ class GovernedObservationExecutionStageService:
         *,
         observation_plan: ObservationPlan,
         selected_entities: list[dict[str, Any]],
+        checkpoint: Callable[[str, dict[str, Any]], None] | None = None,
+        started_at: float | None = None,
     ) -> tuple[list[PhysicalObservationGroup], dict[str, Any], str | None]:
         entities_by_id = {str(entity.get("entity_id") or ""): entity for entity in selected_entities}
         strategies_by_id = {item.strategy_id: item for item in observation_plan.observation_strategies}
@@ -454,23 +478,93 @@ class GovernedObservationExecutionStageService:
         inapplicable_reasons: dict[str, int] = {}
         applicability_resolution_failures: list[dict[str, Any]] = []
         blocked_reason: str | None = None
+        planning_started = time.monotonic()
+        task_count = len(observation_plan.observation_tasks)
+        task_scan_count = 0
+        deferred_task_count = 0
+        execute_observer_task_count = 0
+        target_entity_ref_count = 0
+        capability_lookup_count = 0
+        capability_availability_check_count = 0
+        applicability_started_count = 0
+        applicability_completed_count = 0
+        capability_ids_seen: set[str] = set()
+        canonical_keys_seen: set[str] = set()
+        strategies_seen: set[str] = set()
+        self._checkpoint(
+            checkpoint,
+            "before_observation_physical_group_planning",
+            {
+                "task_count": task_count,
+                "selected_entity_count": len(selected_entities),
+                "elapsed_ms": 0,
+            },
+        )
+        self._checkpoint(
+            checkpoint,
+            "observation_task_scan_checkpoint",
+            {
+                "task_count": task_count,
+                "tasks_seen": 0,
+                "deferred_task_count": 0,
+                "execute_observer_task_count": 0,
+                "selected_entity_count": len(selected_entities),
+                "elapsed_ms": 0,
+            },
+        )
         for task in observation_plan.observation_tasks:
+            task_scan_count += 1
+            if self._group_planning_total_budget_exceeded(started_at):
+                blocked_reason = "POST_COMPILE_OBSERVATION_GROUP_PLANNING_STALLED"
+                break
             if not self._is_deferred_executable_task(task):
                 continue
+            deferred_task_count += 1
             strategy = strategies_by_id.get(str(task.strategy_id or ""))
             if strategy is None or strategy.strategy_kind != "execute_observer":
                 continue
+            execute_observer_task_count += 1
+            strategies_seen.add(str(strategy.strategy_kind or ""))
             capability_id = str(task.capability_id or "")
             canonical_key = str(task.canonical_key or task.attribute_name or "")
+            if capability_id:
+                capability_ids_seen.add(capability_id)
+            if canonical_key:
+                canonical_keys_seen.add(canonical_key)
             if capability_id == "media_metadata_reader" and canonical_key not in set(MEDIA_METADATA_EVIDENCE_KEYS):
                 continue
+            capability_lookup_count += 1
+            capability_availability_check_count += 1
             if not capability_id or not self._capability_available(capability_id):
                 continue
-            for entity_id in self._target_entity_ids(task):
+            target_entity_ids = self._target_entity_ids(task)
+            target_entity_ref_count += len(target_entity_ids)
+            for entity_id in target_entity_ids:
+                if self._group_planning_total_budget_exceeded(started_at):
+                    blocked_reason = "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED"
+                    break
                 entity = entities_by_id.get(entity_id)
                 if entity is None:
                     continue
                 raw_source_ref = self._raw_source_ref(task=task, entity=entity)
+                applicability_started_count += 1
+                if applicability_started_count == 1:
+                    self._checkpoint(
+                        checkpoint,
+                        "before_capability_applicability_resolution",
+                        {
+                            "task_count": task_count,
+                            "tasks_seen": task_scan_count,
+                            "deferred_task_count": deferred_task_count,
+                            "execute_observer_task_count": execute_observer_task_count,
+                            "target_entity_ref_count": target_entity_ref_count,
+                            "capability_ids_sample": self._bounded_sorted_sample(capability_ids_seen),
+                            "canonical_keys_sample": self._bounded_sorted_sample(canonical_keys_seen),
+                            "applicability_started_count": applicability_started_count,
+                            "applicability_completed_count": applicability_completed_count,
+                            "elapsed_ms": int((time.monotonic() - planning_started) * 1000),
+                        },
+                    )
                 applicability = self._capability_applicability_decision(
                     capability_id=capability_id,
                     canonical_key=canonical_key,
@@ -478,6 +572,27 @@ class GovernedObservationExecutionStageService:
                     task=task,
                     raw_source_ref=raw_source_ref,
                 )
+                applicability_completed_count += 1
+                if self._group_planning_total_budget_exceeded(started_at):
+                    blocked_reason = "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED"
+                    break
+                if applicability_completed_count == 1 or applicability_completed_count % 250 == 0:
+                    self._checkpoint(
+                        checkpoint,
+                        "capability_applicability_resolution_checkpoint",
+                        {
+                            "task_count": task_count,
+                            "tasks_seen": task_scan_count,
+                            "deferred_task_count": deferred_task_count,
+                            "execute_observer_task_count": execute_observer_task_count,
+                            "target_entity_ref_count": target_entity_ref_count,
+                            "applicability_started_count": applicability_started_count,
+                            "applicability_completed_count": applicability_completed_count,
+                            "applicability_failed_count": len(applicability_resolution_failures),
+                            "groups_created_count": len(groups),
+                            "elapsed_ms": int((time.monotonic() - planning_started) * 1000),
+                        },
+                    )
                 if applicability.reason_code == "CAPABILITY_APPLICABILITY_RESOLUTION_FAILED":
                     blocked_reason = "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_FAILED"
                     applicability_resolution_failures.append(dict(applicability.evidence))
@@ -506,6 +621,35 @@ class GovernedObservationExecutionStageService:
                 group.tasks.append(task)
             if blocked_reason:
                 break
+        self._checkpoint(
+            checkpoint,
+            "after_observation_task_scan",
+            {
+                "task_count": task_count,
+                "tasks_seen": task_scan_count,
+                "deferred_task_count": deferred_task_count,
+                "execute_observer_task_count": execute_observer_task_count,
+                "strategies_seen": self._bounded_sorted_sample(strategies_seen),
+                "target_entity_ref_count": target_entity_ref_count,
+                "capability_lookup_attempted": capability_lookup_count,
+                "capability_availability_checked": capability_availability_check_count,
+                "capability_ids_sample": self._bounded_sorted_sample(capability_ids_seen),
+                "canonical_keys_sample": self._bounded_sorted_sample(canonical_keys_seen),
+                "elapsed_ms": int((time.monotonic() - planning_started) * 1000),
+            },
+        )
+        self._checkpoint(
+            checkpoint,
+            "after_capability_applicability_resolution",
+            {
+                "applicability_started_count": applicability_started_count,
+                "applicability_completed_count": applicability_completed_count,
+                "applicability_failed_count": len(applicability_resolution_failures),
+                "groups_created_count": len(groups),
+                "elapsed_ms": int((time.monotonic() - planning_started) * 1000),
+                "reason_code": blocked_reason,
+            },
+        )
         return list(groups.values()), {
             "capability_applicable_count": applicability_counts["applicable"],
             "capability_inapplicable_count": applicability_counts["inapplicable"],
@@ -513,7 +657,29 @@ class GovernedObservationExecutionStageService:
             "capability_inapplicable_reasons": inapplicable_reasons,
             "capability_applicability_resolution_failure_count": len(applicability_resolution_failures),
             "capability_applicability_resolution_failures": applicability_resolution_failures[:5],
+            "observation_group_planning": {
+                "task_count": task_count,
+                "tasks_seen": task_scan_count,
+                "deferred_task_count": deferred_task_count,
+                "execute_observer_task_count": execute_observer_task_count,
+                "target_entity_ref_count": target_entity_ref_count,
+                "capability_lookup_attempted": capability_lookup_count,
+                "capability_availability_checked": capability_availability_check_count,
+                "applicability_started_count": applicability_started_count,
+                "applicability_completed_count": applicability_completed_count,
+                "applicability_failed_count": len(applicability_resolution_failures),
+                "groups_created_count": len(groups),
+                "elapsed_ms": int((time.monotonic() - planning_started) * 1000),
+            },
         }, blocked_reason
+
+    def _group_planning_total_budget_exceeded(self, started_at: float | None) -> bool:
+        if started_at is None:
+            return False
+        return (time.monotonic() - started_at) * 1000 > self.budget.max_total_observation_elapsed_ms
+
+    def _bounded_sorted_sample(self, values: set[str], *, limit: int = 10) -> list[str]:
+        return sorted(str(item) for item in values if str(item).strip())[:limit]
 
     def _capability_applicability_decision(
         self,

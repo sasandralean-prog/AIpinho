@@ -21,8 +21,8 @@ def _request(operation: str, request: PublicRuntimeRequest) -> PublicRuntimeRequ
     return request.model_copy(update={"operation": operation})
 
 
-@router.post("/chat")
-def public_chat(request: PublicRuntimeRequest) -> dict[str, object]:
+@router.post("/runtime/chat")
+def public_runtime_chat(request: PublicRuntimeRequest) -> dict[str, object]:
     return _api().handle(_request("chat", request)).model_dump(mode="json")
 
 
