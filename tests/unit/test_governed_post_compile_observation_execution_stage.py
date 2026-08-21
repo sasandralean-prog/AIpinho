@@ -113,14 +113,20 @@ class _CountingCheckpointStore(RuntimeObservationEvidenceCheckpointStore):
         return resolved
 
 
-def _capability(*, available: bool = True, status: str = "available") -> ObservationCapability:
+def _capability(
+    *,
+    available: bool = True,
+    status: str = "available",
+    attributes: list[str] | None = None,
+) -> ObservationCapability:
+    attrs = attributes or ["track_title", "artist", "album", "album_artist"]
     return ObservationCapability(
         capability_id="media_metadata_reader",
         name="Media metadata reader",
         version="1",
         domain="media_metadata",
-        observable_attributes=["track_title", "artist", "album", "album_artist"],
-        supported_attribute_names=["track_title", "artist", "album", "album_artist"],
+        observable_attributes=attrs,
+        supported_attribute_names=attrs,
         compatible_entity_kinds=["file", "media_asset_candidate", "*"],
         evidence_types=["media_metadata_evidence"],
         supported_strategies=["execute_observer"],
@@ -1159,6 +1165,229 @@ def test_checkpointed_materialization_is_semantically_equivalent_to_inline_path(
         )
 
     assert observed_rows(inline_materialized) == observed_rows(checkpoint_materialized)
+    assert _knowledge_signature(inline_materialized) == _knowledge_signature(checkpoint_materialized)
+    assert _assertion_signature(inline_materialized) == _assertion_signature(checkpoint_materialized)
+    assert _self_review_signature(inline_materialized) == _self_review_signature(checkpoint_materialized)
+    assert _coverage2_signature(inline_materialized) == _coverage2_signature(checkpoint_materialized)
     assert checkpoint_materialized.evidence_set.records == []
     assert checkpoint_materialized.evidence_set.record_count == inline_materialized.evidence_set.record_count
     assert checkpoint_store.resolve_calls == 1
+
+
+def test_required_codec_claim_remains_evidence_sufficient_when_checkpointed(tmp_path) -> None:
+    service = ContractDrivenPerceptionService(
+        observer_registry=CapabilityRegistry(capabilities=[_capability(attributes=["codec"])])
+    )
+    selected_entities = [{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}]
+    declared_contract = {
+        "expected_kind": "tabular_collection",
+        "expected_schema": ["codec"],
+        "perception_compile_policy": {"mode": "compile_only"},
+    }
+    perception = service.compile(graph={"entities": selected_entities}, declared_contract=declared_contract)
+    stage = _stage_with_capability(_Adapter(keys=["codec"]), capability=_capability(attributes=["codec"]))
+    inline_execution = stage.execute(observation_plan=perception.observation_plan, selected_entities=selected_entities)
+    checkpoint_store = _CountingCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_required_codec",
+    )
+    original_result = inline_execution.observation_execution_results[0]
+    checkpoint_ref = checkpoint_store.write_checkpoint(
+        physical_probe_key=tuple(original_result.provenance["physical_probe_key"]),
+        entity_ref=original_result.evidence_set.records[0].entity_ref,
+        evidence_set=original_result.evidence_set,
+    )
+    checkpoint_result = stage._checkpoint_receipt_result(original_result, checkpoint_ref=checkpoint_ref)
+
+    inline_materialized = service.materialize_execution_results(
+        perception_result=perception,
+        selected_entities=selected_entities,
+        execution_results=inline_execution.observation_execution_results,
+        declared_contract=declared_contract,
+    )
+    checkpoint_materialized = service.materialize_execution_results(
+        perception_result=perception,
+        selected_entities=selected_entities,
+        execution_results=[checkpoint_result],
+        declared_contract=declared_contract,
+        evidence_checkpoint_resolver=checkpoint_store,
+    )
+
+    inline_assertion = _assertion_by_key(inline_materialized, "codec")
+    checkpoint_assertion = _assertion_by_key(checkpoint_materialized, "codec")
+    assert inline_assertion["state"] == "OBSERVED"
+    assert checkpoint_assertion == inline_assertion
+    assert "INSUFFICIENT_EVIDENCE" not in checkpoint_assertion["blocking_reasons"]
+    assert _knowledge_signature(inline_materialized) == _knowledge_signature(checkpoint_materialized)
+
+
+def test_checkpointed_media_identity_preserves_knowledge_and_assertion_semantics(tmp_path) -> None:
+    service = ContractDrivenPerceptionService(observer_registry=CapabilityRegistry(capabilities=[_capability()]))
+    selected_entities = [{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}]
+    declared_contract = {
+        "expected_kind": "tabular_collection",
+        "expected_schema": ["artist"],
+        "perception_compile_policy": {"mode": "compile_only"},
+    }
+    perception = service.compile(graph={"entities": selected_entities}, declared_contract=declared_contract)
+    stage = _stage(_Adapter(keys=["artist"]))
+    inline_execution = stage.execute(observation_plan=perception.observation_plan, selected_entities=selected_entities)
+    checkpoint_store = _CountingCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_identity_equivalence",
+    )
+    original_result = inline_execution.observation_execution_results[0]
+    checkpoint_ref = checkpoint_store.write_checkpoint(
+        physical_probe_key=tuple(original_result.provenance["physical_probe_key"]),
+        entity_ref=original_result.evidence_set.records[0].entity_ref,
+        evidence_set=original_result.evidence_set,
+    )
+    checkpoint_result = stage._checkpoint_receipt_result(original_result, checkpoint_ref=checkpoint_ref)
+
+    inline_materialized = service.materialize_execution_results(
+        perception_result=perception,
+        selected_entities=selected_entities,
+        execution_results=inline_execution.observation_execution_results,
+        declared_contract=declared_contract,
+    )
+    checkpoint_materialized = service.materialize_execution_results(
+        perception_result=perception,
+        selected_entities=selected_entities,
+        execution_results=[checkpoint_result],
+        declared_contract=declared_contract,
+        evidence_checkpoint_resolver=checkpoint_store,
+    )
+
+    assert _knowledge_signature(inline_materialized) == _knowledge_signature(checkpoint_materialized)
+    assert _assertion_signature(inline_materialized) == _assertion_signature(checkpoint_materialized)
+    assert _self_review_signature(inline_materialized) == _self_review_signature(checkpoint_materialized)
+    assert _coverage2_signature(inline_materialized) == _coverage2_signature(checkpoint_materialized)
+
+
+def test_checkpointed_conflicting_evidence_does_not_become_truth_eligible(tmp_path) -> None:
+    service = ContractDrivenPerceptionService(observer_registry=CapabilityRegistry(capabilities=[_capability()]))
+    selected_entities = [{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}]
+    declared_contract = {
+        "expected_kind": "tabular_collection",
+        "expected_schema": ["artist"],
+        "perception_compile_policy": {"mode": "compile_only"},
+    }
+    perception = service.compile(graph={"entities": selected_entities}, declared_contract=declared_contract)
+    stage = _stage(_Adapter(keys=["artist"]))
+    inline_execution = stage.execute(observation_plan=perception.observation_plan, selected_entities=selected_entities)
+    original_result = inline_execution.observation_execution_results[0]
+    conflicted_record = original_result.evidence_set.records[0].model_copy(
+        update={
+            "contradictions": [{"code": "CONFLICTING_ARTIST", "other_value": "Other"}],
+            "truth_eligible": True,
+        }
+    )
+    conflicted_result = original_result.model_copy(
+        update={
+            "evidence_set": original_result.evidence_set.model_copy(update={"records": [conflicted_record], "record_count": 1})
+        }
+    )
+    checkpoint_store = _CountingCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_conflict_equivalence",
+    )
+    checkpoint_ref = checkpoint_store.write_checkpoint(
+        physical_probe_key=tuple(conflicted_result.provenance["physical_probe_key"]),
+        entity_ref=conflicted_record.entity_ref,
+        evidence_set=conflicted_result.evidence_set,
+    )
+    checkpoint_result = stage._checkpoint_receipt_result(conflicted_result, checkpoint_ref=checkpoint_ref)
+
+    inline_materialized = service.materialize_execution_results(
+        perception_result=perception,
+        selected_entities=selected_entities,
+        execution_results=[conflicted_result],
+        declared_contract=declared_contract,
+    )
+    checkpoint_materialized = service.materialize_execution_results(
+        perception_result=perception,
+        selected_entities=selected_entities,
+        execution_results=[checkpoint_result],
+        declared_contract=declared_contract,
+        evidence_checkpoint_resolver=checkpoint_store,
+    )
+
+    assert _knowledge_signature(inline_materialized) == _knowledge_signature(checkpoint_materialized)
+    assert _assertion_signature(inline_materialized) == _assertion_signature(checkpoint_materialized)
+    assertion = _assertion_by_key(checkpoint_materialized, "artist")
+    assert assertion["state"] == "CONFLICTED"
+    assert assertion["truth_eligible"] is False
+    assert assertion["blocking_reasons"] == ("EVIDENCE_CONFLICT",)
+
+
+def _knowledge_signature(result):
+    return sorted(
+        (
+            item.canonical_key,
+            (item.entity_ref or {}).get("entity_id"),
+            item.value,
+            item.state,
+            item.fact_kind,
+            item.source_kind,
+            tuple(item.evidence_ids),
+            tuple(item.provenance_refs),
+            item.validation_eligibility,
+            item.truth_eligibility,
+            round(float(item.confidence or 0.0), 4),
+        )
+        for item in result.knowledge_records
+    )
+
+
+def _assertion_signature(result):
+    return sorted(
+        (
+            item.canonical_key,
+            item.state,
+            tuple(item.evidence_ids),
+            len(item.knowledge_ids),
+            round(float(item.confidence or 0.0), 4),
+            item.truth_eligible,
+            tuple(item.blocking_reasons),
+        )
+        for item in result.semantic_assertions
+    )
+
+
+def _assertion_by_key(result, key: str) -> dict[str, Any]:
+    for item in result.semantic_assertions:
+        if item.canonical_key == key:
+            return {
+                "state": item.state,
+                "evidence_ids": tuple(item.evidence_ids),
+                "knowledge_ids_count": len(item.knowledge_ids),
+                "confidence": round(float(item.confidence or 0.0), 4),
+                "truth_eligible": item.truth_eligible,
+                "blocking_reasons": tuple(item.blocking_reasons),
+            }
+    raise AssertionError(f"missing assertion for {key}")
+
+
+def _self_review_signature(result):
+    review = result.semantic_self_review
+    question_states = sorted(
+        (item.code, item.canonical_key, item.status, tuple(item.evidence_ids), item.reason_code)
+        for item in review.questions
+    )
+    return (
+        question_states,
+        review.evidence_count,
+        review.truth_readiness,
+        review.can_promote_to_validation,
+        review.can_speaker_claim,
+    )
+
+
+def _coverage2_signature(result):
+    coverage = result.semantic_coverage_2
+    return (
+        coverage.knowledge_coverage,
+        coverage.truth_coverage,
+        coverage.is_truth_ready,
+        tuple(coverage.blocking_reasons),
+    )

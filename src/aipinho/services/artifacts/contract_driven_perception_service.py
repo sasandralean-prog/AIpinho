@@ -52,6 +52,7 @@ from aipinho.services.artifacts.media_relationship_candidate_service import (
 
 @dataclass(frozen=True)
 class CompactExecutionEvidence:
+    source: str | None
     entity_ref: dict[str, Any]
     attribute_name: str | None
     canonical_key: str | None
@@ -67,10 +68,18 @@ class CompactExecutionEvidence:
     timestamp: str | None
     ambiguity: float
     semantic_type: str | None = None
+    truth_eligible: bool = False
+    provenance_trace_id: str | None = None
+    limitations: list[str] = field(default_factory=list)
+    contradictions: list[dict[str, Any]] = field(default_factory=list)
+    conflicts: list[dict[str, Any]] = field(default_factory=list)
+    evidence_type: str | None = None
 
 
 @dataclass
 class ExecutionEvidenceProjection:
+    evidence_records: list[CompactExecutionEvidence] = field(default_factory=list)
+    evidence_by_id: dict[str, CompactExecutionEvidence] = field(default_factory=dict)
     evidence_by_entity_attribute: dict[tuple[str, str], CompactExecutionEvidence] = field(default_factory=dict)
     confidence_by_key: dict[str, float] = field(default_factory=dict)
     capability_ids_by_key: dict[str, list[str]] = field(default_factory=dict)
@@ -923,12 +932,13 @@ class ContractDrivenPerceptionService:
             evidence_set=evidence_set,
             declared_contract=declared_contract or {},
         )
-        knowledge_records = self.knowledge_records(evidence_set=evidence_set)
+        knowledge_records = self.knowledge_records(evidence_set=evidence_set, execution_projection=execution_projection)
         semantic_assertions = self.semantic_assertions(
             plan=perception_result.contract_observation_plan,
             observation_plan=observation_plan,
             knowledge_records=knowledge_records,
             evidence_set=evidence_set,
+            execution_projection=execution_projection,
         )
         semantic_self_review = self.semantic_self_review(
             plan=perception_result.contract_observation_plan,
@@ -947,7 +957,8 @@ class ContractDrivenPerceptionService:
         checkpoint(
             "after_post_execution_perception_materialization",
             attribute_observation_count=len(observations),
-            evidence_record_count=len(evidence_set.records),
+            evidence_record_count=int(getattr(evidence_set, "record_count", 0) or len(evidence_set.records)),
+            inline_evidence_record_count=len(evidence_set.records),
             knowledge_record_count=len(knowledge_records),
             semantic_assertion_count=len(semantic_assertions),
         )
@@ -2207,11 +2218,20 @@ class ContractDrivenPerceptionService:
             is_semantically_complete=coverage.status == "complete" and not coverage.semantic_gaps,
         )
 
-    def knowledge_records(self, *, evidence_set: EvidenceSet) -> list[KnowledgeRecord]:
+    def knowledge_records(
+        self,
+        *,
+        evidence_set: EvidenceSet,
+        execution_projection: ExecutionEvidenceProjection | None = None,
+    ) -> list[KnowledgeRecord]:
         records: list[KnowledgeRecord] = []
-        for evidence in evidence_set.records:
+        seen_evidence_ids: set[str] = set()
+        for evidence in [*evidence_set.records, *((execution_projection.evidence_records if execution_projection else []) or [])]:
             if not evidence.evidence_id:
                 continue
+            if evidence.evidence_id in seen_evidence_ids:
+                continue
+            seen_evidence_ids.add(evidence.evidence_id)
             state = "OBSERVED"
             if evidence.contradictions:
                 state = "CONFLICTED"
@@ -2285,13 +2305,16 @@ class ContractDrivenPerceptionService:
         observation_plan: ObservationPlan,
         knowledge_records: list[KnowledgeRecord],
         evidence_set: EvidenceSet,
+        execution_projection: ExecutionEvidenceProjection | None = None,
     ) -> list[SemanticAssertion]:
         knowledge_by_key: dict[str, list[KnowledgeRecord]] = {}
         for item in knowledge_records:
             key = item.canonical_key or item.attribute_name or ""
             if key:
                 knowledge_by_key.setdefault(key, []).append(item)
-        records_by_id = {item.evidence_id: item for item in evidence_set.records}
+        records_by_id: dict[str, Any] = {item.evidence_id: item for item in evidence_set.records if item.evidence_id}
+        if execution_projection:
+            records_by_id.update(execution_projection.evidence_by_id)
         assertions: list[SemanticAssertion] = []
         for requirement in observation_plan.requirements:
             key = requirement.canonical_key or requirement.attribute_name
@@ -2308,9 +2331,9 @@ class ContractDrivenPerceptionService:
             contradictions = [
                 contradiction
                 for evidence_id in evidence_ids
-                for contradiction in records_by_id.get(evidence_id, EvidenceRecord()).contradictions
+                for contradiction in getattr(records_by_id.get(evidence_id, EvidenceRecord()), "contradictions", [])
             ]
-            if contradictions:
+            if contradictions or any(item.state == "CONFLICTED" for item in related_knowledge):
                 state = "CONFLICTED"
                 blocking_reasons = ["EVIDENCE_CONFLICT"]
             elif related_knowledge and confidence >= max(plan.minimum_confidence, requirement.confidence):
@@ -2521,7 +2544,7 @@ class ContractDrivenPerceptionService:
             task_run_id=plan.task_run_id,
             questions=questions,
             assertion_count=len(assertions),
-            evidence_count=len(evidence_set.records),
+            evidence_count=self._governed_evidence_count(evidence_set),
             knowledge_count=len(knowledge_records),
             findings=[
                 {
@@ -2539,6 +2562,9 @@ class ContractDrivenPerceptionService:
             can_speaker_claim=truth_ready,
             reason_codes=reason_codes,
         )
+
+    def _governed_evidence_count(self, evidence_set: EvidenceSet) -> int:
+        return int(getattr(evidence_set, "record_count", 0) or len(evidence_set.records))
 
     def semantic_coverage_2(
         self,
@@ -2666,12 +2692,13 @@ class ContractDrivenPerceptionService:
         }
 
     def _evidence_set_metrics(self, evidence_set: EvidenceSet) -> dict[str, Any]:
+        total_record_count = self._governed_evidence_count(evidence_set)
         return {
             "evidence_set_count": 1,
-            "evidence_record_count": len(evidence_set.records),
+            "evidence_record_count": total_record_count,
             "evidence_record_checkpointed_count": max(
                 0,
-                int(getattr(evidence_set, "record_count", 0) or len(evidence_set.records)) - len(evidence_set.records),
+                total_record_count - len(evidence_set.records),
             ),
             "evidence_checkpoint_ref_count": len(getattr(evidence_set, "checkpoint_refs", []) or []),
             "evidence_record_referenced_count": len({item.raw_ref for item in evidence_set.records if item.raw_ref}),
@@ -3266,6 +3293,9 @@ class ContractDrivenPerceptionService:
                 if not entity_id or not key:
                     continue
                 projection.total_record_count += 1
+                projection.evidence_records.append(compact)
+                if compact.evidence_id:
+                    projection.evidence_by_id[compact.evidence_id] = compact
                 projection.evidence_record_refs.add(compact.evidence_id)
                 projection.canonical_keys.add(key)
                 if compact.attribute_name:
@@ -3284,6 +3314,7 @@ class ContractDrivenPerceptionService:
 
     def _compact_execution_evidence(self, record: EvidenceRecord) -> CompactExecutionEvidence:
         return CompactExecutionEvidence(
+            source=record.source,
             entity_ref=dict(record.entity_ref or {}),
             attribute_name=record.attribute_name,
             canonical_key=record.canonical_key or record.attribute_name,
@@ -3299,6 +3330,12 @@ class ContractDrivenPerceptionService:
             timestamp=record.timestamp,
             ambiguity=float(record.ambiguity or 0.0),
             semantic_type=record.semantic_type,
+            truth_eligible=bool(record.truth_eligible),
+            provenance_trace_id=record.provenance_trace_id,
+            limitations=list(record.limitations or []),
+            contradictions=[dict(item) for item in record.contradictions or []],
+            conflicts=[dict(item) for item in record.conflicts or []],
+            evidence_type=record.evidence_type,
         )
 
     def _merge_backend_counts(self, target: dict[str, int], value: Any) -> None:
