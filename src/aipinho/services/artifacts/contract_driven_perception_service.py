@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 import time
 import unicodedata
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Callable
 
@@ -47,6 +48,49 @@ from aipinho.services.artifacts.media_relationship_candidate_service import (
     MEDIA_RELATIONSHIP_CAPABILITY_ID,
     MediaRelationshipCandidateService,
 )
+
+
+@dataclass(frozen=True)
+class CompactExecutionEvidence:
+    entity_ref: dict[str, Any]
+    attribute_name: str | None
+    canonical_key: str | None
+    normalized_value: Any
+    evidence_id: str
+    confidence: float
+    observer_id: str | None
+    capability_id: str | None
+    backend_id: str | None
+    raw_ref: str | None
+    acquisition_method: str | None
+    provenance: dict[str, Any]
+    timestamp: str | None
+    ambiguity: float
+    semantic_type: str | None = None
+
+
+@dataclass
+class ExecutionEvidenceProjection:
+    evidence_by_entity_attribute: dict[tuple[str, str], CompactExecutionEvidence] = field(default_factory=dict)
+    confidence_by_key: dict[str, float] = field(default_factory=dict)
+    capability_ids_by_key: dict[str, list[str]] = field(default_factory=dict)
+    checkpoint_refs: list[dict[str, Any]] = field(default_factory=list)
+    evidence_record_refs: set[str] = field(default_factory=set)
+    canonical_keys: set[str] = field(default_factory=set)
+    attribute_names: set[str] = field(default_factory=set)
+    observed_entity_ids: set[str] = field(default_factory=set)
+    evidence_counts_by_canonical_key: dict[str, int] = field(default_factory=dict)
+    evidence_counts_by_backend: dict[str, int] = field(default_factory=dict)
+    backend_attempt_counts: dict[str, int] = field(default_factory=dict)
+    backend_success_counts: dict[str, int] = field(default_factory=dict)
+    backend_block_counts: dict[str, int] = field(default_factory=dict)
+    backend_error_counts: dict[str, int] = field(default_factory=dict)
+    summaries: list[dict[str, Any]] = field(default_factory=list)
+    errors: list[dict[str, Any]] = field(default_factory=list)
+    limitations: list[str] = field(default_factory=list)
+    media_result_count: int = 0
+    total_record_count: int = 0
+    max_records_resolved_at_once: int = 0
 
 
 class CapabilityRegistry:
@@ -830,10 +874,14 @@ class ContractDrivenPerceptionService:
             )
 
         checkpoint("before_post_execution_perception_materialization")
+        execution_projection = self._build_execution_evidence_projection(
+            execution_results,
+            evidence_checkpoint_resolver=evidence_checkpoint_resolver,
+        )
         observation_plan = self._apply_execution_evidence_to_plan(
             observation_plan=perception_result.observation_plan,
             execution_results=execution_results,
-            evidence_checkpoint_resolver=evidence_checkpoint_resolver,
+            execution_projection=execution_projection,
         )
         observation_plan = self._mark_post_compile_physical_execution_outcomes(
             observation_plan=observation_plan,
@@ -843,7 +891,7 @@ class ContractDrivenPerceptionService:
         source_indexes = self._fact_source_indexes(
             observation_plan=observation_plan,
             execution_results=execution_results,
-            evidence_checkpoint_resolver=evidence_checkpoint_resolver,
+            execution_projection=execution_projection,
         )
         observations = self.attribute_observations(
             plan=perception_result.contract_observation_plan,
@@ -857,7 +905,7 @@ class ContractDrivenPerceptionService:
             observations=observations,
             execution_results=execution_results,
             relationship_evidence_records=perception_result.relationship_evidence,
-            evidence_checkpoint_resolver=evidence_checkpoint_resolver,
+            execution_projection=execution_projection,
         )
         checkpoint("after_post_execution_evidence_set_materialization", **self._evidence_set_metrics(evidence_set))
         coverage = self.semantic_coverage(
@@ -909,7 +957,7 @@ class ContractDrivenPerceptionService:
                 "observation_execution_results": execution_results,
                 "media_metadata_capability": self._media_metadata_capability_summary(
                     execution_results,
-                    evidence_checkpoint_resolver=evidence_checkpoint_resolver,
+                    execution_projection=execution_projection,
                 ),
                 "attribute_observations": observations,
                 "evidence_set": evidence_set,
@@ -927,6 +975,8 @@ class ContractDrivenPerceptionService:
                     "post_compile_evidence_record_count": int(getattr(evidence_set, "record_count", 0) or len(evidence_set.records)),
                     "post_compile_inline_evidence_record_count": len(evidence_set.records),
                     "post_compile_evidence_checkpoint_ref_count": len(getattr(evidence_set, "checkpoint_refs", []) or []),
+                    "post_compile_checkpoint_resolution_count": execution_projection.media_result_count,
+                    "post_compile_max_records_resolved_at_once": execution_projection.max_records_resolved_at_once,
                 },
                 "internal_reason_code": perception_result.internal_reason_code,
             }
@@ -1976,7 +2026,7 @@ class ContractDrivenPerceptionService:
         observations: list[AttributeObservation],
         execution_results: list[Any] | None = None,
         relationship_evidence_records: list[EvidenceRecord] | None = None,
-        evidence_checkpoint_resolver: ObservationEvidenceCheckpointSink | None = None,
+        execution_projection: ExecutionEvidenceProjection | None = None,
         progress_observer: Callable[[str, dict[str, Any]], None] | None = None,
     ) -> EvidenceSet:
         records: list[EvidenceRecord] = []
@@ -2035,12 +2085,9 @@ class ContractDrivenPerceptionService:
         records.extend(relationship_evidence_records or [])
         attribute_names = sorted({item.attribute_name for item in records if item.attribute_name})
         canonical_keys = sorted({item.canonical_key for item in records if item.canonical_key})
-        canonical_keys = sorted(set(canonical_keys).union({
-            str(key)
-            for result in execution_results or []
-            for key in getattr(result, "evidence_canonical_keys", []) or []
-            if str(key)
-        }))
+        projection = execution_projection or ExecutionEvidenceProjection()
+        canonical_keys = sorted(set(canonical_keys).union(projection.canonical_keys))
+        attribute_names = sorted(set(attribute_names).union(projection.attribute_names))
         entity_refs = self._unique_entity_refs([item.entity_ref for item in records if item.entity_ref])
         confidence_values = [item.confidence for item in records]
         relationship_records = [item for item in records if item.evidence_type == "relationship_observation"]
@@ -2561,6 +2608,7 @@ class ContractDrivenPerceptionService:
         observation_plan: ObservationPlan,
         execution_results: list[Any] | None = None,
         evidence_checkpoint_resolver: ObservationEvidenceCheckpointSink | None = None,
+        execution_projection: ExecutionEvidenceProjection | None = None,
     ) -> dict[str, Any]:
         requirement_by_attribute = {item.attribute_name: item for item in observation_plan.requirements}
         decision_by_id = {item.decision_id: item for item in observation_plan.capability_decisions}
@@ -2570,9 +2618,13 @@ class ContractDrivenPerceptionService:
             if decision.selected_capability_id
         }
         capability_by_id = {capability_id: self.observer_registry.get(capability_id) for capability_id in capability_ids}
-        execution_evidence = self._execution_evidence_by_entity_attribute(
-            execution_results or [],
-            evidence_checkpoint_resolver=evidence_checkpoint_resolver,
+        execution_evidence = (
+            execution_projection.evidence_by_entity_attribute
+            if execution_projection is not None
+            else self._execution_evidence_by_entity_attribute(
+                execution_results or [],
+                evidence_checkpoint_resolver=evidence_checkpoint_resolver,
+            )
         )
         return {
             "requirement_by_attribute": requirement_by_attribute,
@@ -3025,18 +3077,17 @@ class ContractDrivenPerceptionService:
         observation_plan: ObservationPlan,
         execution_results: list[Any],
         evidence_checkpoint_resolver: ObservationEvidenceCheckpointSink | None = None,
+        execution_projection: ExecutionEvidenceProjection | None = None,
     ) -> ObservationPlan:
-        confidence_by_key: dict[str, float] = {}
-        capability_ids_by_key: dict[str, list[str]] = {}
+        projection = execution_projection or self._build_execution_evidence_projection(
+            execution_results,
+            evidence_checkpoint_resolver=evidence_checkpoint_resolver,
+        )
+        confidence_by_key: dict[str, float] = dict(projection.confidence_by_key)
+        capability_ids_by_key: dict[str, list[str]] = {
+            key: list(values) for key, values in projection.capability_ids_by_key.items()
+        }
         failure_by_key = self._execution_failure_reason_by_key(execution_results)
-        for result in execution_results:
-            for record in self._execution_records(result, evidence_checkpoint_resolver=evidence_checkpoint_resolver):
-                key = str(record.canonical_key or record.attribute_name or "")
-                if not key:
-                    continue
-                confidence_by_key[key] = max(confidence_by_key.get(key, 0.0), float(record.confidence or 0.0))
-                if record.capability_id:
-                    capability_ids_by_key.setdefault(key, []).append(str(record.capability_id))
         if not confidence_by_key and not failure_by_key:
             return observation_plan
         observed_keys = set(confidence_by_key)
@@ -3175,34 +3226,125 @@ class ContractDrivenPerceptionService:
                 return code
         return codes[0] if codes else "OBSERVER_PRODUCED_NO_EVIDENCE"
 
+    def _build_execution_evidence_projection(
+        self,
+        execution_results: list[Any],
+        *,
+        evidence_checkpoint_resolver: ObservationEvidenceCheckpointSink | None = None,
+    ) -> ExecutionEvidenceProjection:
+        projection = ExecutionEvidenceProjection()
+        for result in execution_results:
+            if getattr(result, "capability_id", None) == "media_metadata_reader":
+                projection.media_result_count += 1
+            checkpoint_ref = getattr(result, "evidence_checkpoint_ref", None)
+            if checkpoint_ref:
+                projection.checkpoint_refs.append(dict(checkpoint_ref))
+            payload = getattr(result, "provenance", {}) or {}
+            observer_payload = payload.get("observer_payload") if isinstance(payload.get("observer_payload"), dict) else {}
+            summary = observer_payload.get("media_metadata_capability") if isinstance(observer_payload.get("media_metadata_capability"), dict) else {}
+            if summary:
+                projection.summaries.append(summary)
+                self._merge_backend_counts(projection.backend_attempt_counts, summary.get("attempted_backends"))
+                self._merge_backend_counts(projection.backend_success_counts, summary.get("successful_backends"))
+                self._merge_backend_counts(projection.backend_block_counts, summary.get("blocked_backends"))
+                for code, count in dict(summary.get("backend_error_counts") or {}).items():
+                    key = str(code)
+                    projection.backend_error_counts[key] = projection.backend_error_counts.get(key, 0) + int(count or 0)
+                projection.limitations.extend(str(item) for item in summary.get("limitations", []) or [] if item)
+                for error in summary.get("errors", []) or []:
+                    if isinstance(error, dict):
+                        projection.errors.append(error)
+            for error in getattr(result, "errors", []) or []:
+                projection.errors.append(error.model_dump(mode="json") if hasattr(error, "model_dump") else dict(error))
+            projection.limitations.extend(str(item) for item in getattr(result, "limitations", []) or [] if item)
+            records = self._execution_records(result, evidence_checkpoint_resolver=evidence_checkpoint_resolver)
+            projection.max_records_resolved_at_once = max(projection.max_records_resolved_at_once, len(records))
+            for record in records:
+                compact = self._compact_execution_evidence(record)
+                entity_id = str((compact.entity_ref or {}).get("entity_id") or "")
+                key = str(compact.canonical_key or compact.attribute_name or "")
+                if not entity_id or not key:
+                    continue
+                projection.total_record_count += 1
+                projection.evidence_record_refs.add(compact.evidence_id)
+                projection.canonical_keys.add(key)
+                if compact.attribute_name:
+                    projection.attribute_names.add(str(compact.attribute_name))
+                projection.observed_entity_ids.add(entity_id)
+                projection.confidence_by_key[key] = max(projection.confidence_by_key.get(key, 0.0), float(compact.confidence or 0.0))
+                if compact.capability_id:
+                    projection.capability_ids_by_key.setdefault(key, []).append(str(compact.capability_id))
+                projection.evidence_counts_by_canonical_key[key] = projection.evidence_counts_by_canonical_key.get(key, 0) + 1
+                if compact.backend_id:
+                    projection.evidence_counts_by_backend[compact.backend_id] = projection.evidence_counts_by_backend.get(compact.backend_id, 0) + 1
+                current = projection.evidence_by_entity_attribute.get((entity_id, key))
+                if current is None or compact.confidence > current.confidence:
+                    projection.evidence_by_entity_attribute[(entity_id, key)] = compact
+        return projection
+
+    def _compact_execution_evidence(self, record: EvidenceRecord) -> CompactExecutionEvidence:
+        return CompactExecutionEvidence(
+            entity_ref=dict(record.entity_ref or {}),
+            attribute_name=record.attribute_name,
+            canonical_key=record.canonical_key or record.attribute_name,
+            normalized_value=record.normalized_value,
+            evidence_id=record.evidence_id,
+            confidence=float(record.confidence or 0.0),
+            observer_id=record.observer_id,
+            capability_id=record.capability_id,
+            backend_id=record.backend_id,
+            raw_ref=record.raw_ref,
+            acquisition_method=record.acquisition_method,
+            provenance=dict(record.provenance or {}),
+            timestamp=record.timestamp,
+            ambiguity=float(record.ambiguity or 0.0),
+            semantic_type=record.semantic_type,
+        )
+
+    def _merge_backend_counts(self, target: dict[str, int], value: Any) -> None:
+        if isinstance(value, dict):
+            for key, count in value.items():
+                target[str(key)] = target.get(str(key), 0) + int(count or 0)
+            return
+        for item in value or []:
+            key = str(item)
+            target[key] = target.get(key, 0) + 1
+
+    def _backend_count_keys(self, value: Any) -> list[str]:
+        if isinstance(value, dict):
+            return [str(key) for key, count in value.items() if int(count or 0) > 0]
+        return [str(item) for item in value or [] if item]
+
     def _execution_evidence_by_entity_attribute(
         self,
         execution_results: list[Any],
         *,
         evidence_checkpoint_resolver: ObservationEvidenceCheckpointSink | None = None,
-    ) -> dict[tuple[str, str], EvidenceRecord]:
-        rows: dict[tuple[str, str], EvidenceRecord] = {}
-        for result in execution_results:
-            for record in self._execution_records(result, evidence_checkpoint_resolver=evidence_checkpoint_resolver):
-                entity_id = str((record.entity_ref or {}).get("entity_id") or "")
-                key = str(record.canonical_key or record.attribute_name or "")
-                if not entity_id or not key:
-                    continue
-                current = rows.get((entity_id, key))
-                if current is None or record.confidence > current.confidence:
-                    rows[(entity_id, key)] = record
-        return rows
+    ) -> dict[tuple[str, str], CompactExecutionEvidence]:
+        projection = self._build_execution_evidence_projection(
+            execution_results,
+            evidence_checkpoint_resolver=evidence_checkpoint_resolver,
+        )
+        return projection.evidence_by_entity_attribute
 
     def _media_metadata_capability_summary(
         self,
         execution_results: list[Any],
         *,
         evidence_checkpoint_resolver: ObservationEvidenceCheckpointSink | None = None,
+        execution_projection: ExecutionEvidenceProjection | None = None,
     ) -> dict[str, Any]:
         capability = self.observer_registry.get("media_metadata_reader")
         configured = capability is not None
         structurally_available = bool(getattr(capability, "available", False)) if capability is not None else False
         media_results = [item for item in execution_results if getattr(item, "capability_id", None) == "media_metadata_reader"]
+        if execution_projection is not None:
+            return self._media_metadata_capability_summary_from_projection(
+                execution_projection,
+                configured=configured,
+                structurally_available=structurally_available,
+                media_results=media_results,
+            )
         if not media_results:
             if configured and structurally_available:
                 status = "configured_but_deferred"
@@ -3386,6 +3528,151 @@ class ContractDrivenPerceptionService:
             "capability_attributes_unobserved": [key for key in MEDIA_METADATA_EVIDENCE_KEYS if key not in set(observed)],
             "limitations": sorted(set(limitations)),
             "errors": errors,
+        }
+
+    def _media_metadata_capability_summary_from_projection(
+        self,
+        projection: ExecutionEvidenceProjection,
+        *,
+        configured: bool,
+        structurally_available: bool,
+        media_results: list[Any],
+    ) -> dict[str, Any]:
+        if not media_results:
+            if configured and structurally_available:
+                status = "configured_but_deferred"
+                execution_status = "deferred"
+                limitations = ["media_metadata_observer_execution_deferred"]
+            elif configured:
+                status = "unavailable"
+                execution_status = "not_started"
+                limitations = ["media_metadata_capability_unavailable"]
+            else:
+                status = "not_configured"
+                execution_status = "not_started"
+                limitations = ["media_metadata_capability_not_configured"]
+            return {
+                "status": status,
+                "capability_id": "media_metadata_reader",
+                "configured": configured,
+                "available": structurally_available,
+                "execution_status": execution_status,
+                "files_attempted": 0,
+                "files_succeeded": 0,
+                "files_failed": 0,
+                "primary_backend": "mutagen",
+                "selected_backend": None,
+                "available_backends": [],
+                "blocked_backends": [],
+                "globally_blocked_backends": [],
+                "partially_blocked_backends": [],
+                "missing_dependency": [],
+                "attempted_backends": [],
+                "successful_backends": [],
+                "fallback_backends_used": [],
+                "backend_error_counts": {},
+                "evidence_records_created": 0,
+                "attributes_observed": [],
+                "attributes_missing": list(MEDIA_METADATA_EVIDENCE_KEYS),
+                "capability_attributes_unobserved": list(MEDIA_METADATA_EVIDENCE_KEYS),
+                "limitations": limitations,
+                "errors": [],
+            }
+        observed = sorted(projection.canonical_keys)
+        selected_backend = next((str(summary.get("selected_backend")) for summary in projection.summaries if summary.get("selected_backend")), None)
+        primary_backend = next((str(summary.get("primary_backend")) for summary in projection.summaries if summary.get("primary_backend")), "mutagen")
+        attempted_backends = sorted(projection.backend_attempt_counts)
+        successful_backends = sorted(projection.backend_success_counts)
+        fallback_backends_used = sorted({
+            backend
+            for summary in projection.summaries
+            for backend in self._backend_count_keys(summary.get("fallback_backends_used"))
+        })
+        available_backends = sorted({
+            *[
+                str(item)
+                for summary in projection.summaries
+                for item in summary.get("available_backends", []) or []
+                if item
+            ],
+            *[
+                backend
+                for backend, count in projection.evidence_counts_by_backend.items()
+                if int(count or 0) > 0
+            ],
+        })
+        blocked_backends = sorted(projection.backend_block_counts)
+        globally_blocked_backends = sorted(
+            backend
+            for backend, count in projection.backend_attempt_counts.items()
+            if count > 0
+            and projection.backend_success_counts.get(backend, 0) == 0
+            and projection.backend_block_counts.get(backend, 0) >= count
+        )
+        partially_blocked_backends = sorted(
+            backend
+            for backend, count in projection.backend_block_counts.items()
+            if count > 0 and projection.backend_success_counts.get(backend, 0) > 0
+        )
+        missing_dependency = sorted({
+            str(item)
+            for summary in projection.summaries
+            for item in summary.get("missing_dependency", []) or []
+            if item
+        })
+        dependency_error_tokens = ("NOT_AVAILABLE", "NOT_IMPORTABLE", "DEPENDENCY")
+        non_dependency_errors = [
+            item
+            for item in projection.errors
+            if isinstance(item, dict)
+            and not any(token in str(item.get("code") or "") for token in dependency_error_tokens)
+        ]
+        if projection.total_record_count:
+            status = "available" if set(MEDIA_METADATA_CANONICAL_KEYS).issubset(set(observed)) else "partial"
+        elif non_dependency_errors:
+            status = "blocked"
+        elif missing_dependency:
+            status = "missing_dependency"
+        elif projection.errors:
+            status = "blocked"
+        else:
+            status = "not_configured"
+        files_attempted = len(media_results)
+        files_succeeded = len(projection.observed_entity_ids)
+        return {
+            "status": status,
+            "capability_id": "media_metadata_reader",
+            "configured": configured,
+            "available": structurally_available,
+            "execution_status": "executed" if status in {"available", "partial"} else status,
+            "files_attempted": files_attempted,
+            "files_succeeded": files_succeeded,
+            "files_failed": max(0, files_attempted - files_succeeded),
+            "primary_backend": primary_backend,
+            "selected_backend": selected_backend,
+            "available_backends": available_backends,
+            "blocked_backends": blocked_backends,
+            "globally_blocked_backends": globally_blocked_backends,
+            "partially_blocked_backends": partially_blocked_backends,
+            "missing_dependency": missing_dependency,
+            "attempted_backends": attempted_backends,
+            "successful_backends": successful_backends,
+            "fallback_backends_used": fallback_backends_used,
+            "backend_error_counts": dict(projection.backend_error_counts),
+            "evidence_records_created": projection.total_record_count,
+            "evidence_counts_by_canonical_key": dict(projection.evidence_counts_by_canonical_key),
+            "evidence_counts_by_backend": dict(projection.evidence_counts_by_backend),
+            "semantic_identity_evidence_counts": {
+                key: projection.evidence_counts_by_canonical_key.get(key, 0)
+                for key in ("track_title", "artist", "album", "album_artist")
+            },
+            "attributes_observed": observed,
+            "attributes_missing": [key for key in MEDIA_METADATA_EVIDENCE_KEYS if key not in set(observed)],
+            "capability_attributes_unobserved": [key for key in MEDIA_METADATA_EVIDENCE_KEYS if key not in set(observed)],
+            "limitations": sorted(set(projection.limitations)),
+            "errors": projection.errors,
+            "checkpoint_ref_count": len(projection.checkpoint_refs),
+            "max_records_resolved_at_once": projection.max_records_resolved_at_once,
         }
 
     def _mark_post_compile_physical_execution_outcomes(

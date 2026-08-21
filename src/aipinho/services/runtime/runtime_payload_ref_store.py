@@ -16,8 +16,30 @@ class RuntimePayloadRefStore:
         self.root = root
 
     def write_payload_ref(self, *, run_id: str, key: str, path: str, value: Any) -> dict[str, Any]:
+        encoded, digest = self.serialize_payload(value)
+        return self.write_serialized_payload_ref(
+            run_id=run_id,
+            key=key,
+            path=path,
+            encoded=encoded,
+            digest=digest,
+            value=value,
+        )
+
+    def serialize_payload(self, value: Any) -> tuple[bytes, str]:
         encoded = json.dumps(value, ensure_ascii=False, default=str, sort_keys=True).encode("utf-8")
-        digest = hashlib.sha256(encoded).hexdigest()
+        return encoded, hashlib.sha256(encoded).hexdigest()
+
+    def write_serialized_payload_ref(
+        self,
+        *,
+        run_id: str,
+        key: str,
+        path: str,
+        encoded: bytes,
+        digest: str,
+        value: Any,
+    ) -> dict[str, Any]:
         run_dir = resolve_within_root(self.root / run_id, self.root)
         ref_dir = resolve_within_root(run_dir / "payload_refs", self.root)
         ref_dir.mkdir(parents=True, exist_ok=True)

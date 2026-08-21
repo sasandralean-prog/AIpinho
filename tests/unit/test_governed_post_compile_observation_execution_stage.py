@@ -20,6 +20,7 @@ from aipinho.services.artifacts.governed_observation_execution_stage_service imp
 )
 from aipinho.services.artifacts.observation_evidence_checkpoint_service import (
     EvidenceCheckpointResolutionError,
+    EvidenceCheckpointWriteError,
     RuntimeObservationEvidenceCheckpointStore,
 )
 from aipinho.services.artifacts.observation_execution_boundary_service import ObservationExecutionBoundaryService
@@ -99,6 +100,19 @@ class _SnapshotCapability:
         }
 
 
+class _CountingCheckpointStore(RuntimeObservationEvidenceCheckpointStore):
+    def __init__(self, *, payload_refs: RuntimePayloadRefStore, run_id: str) -> None:
+        super().__init__(payload_refs=payload_refs, run_id=run_id)
+        self.resolve_calls = 0
+        self.max_records_resolved = 0
+
+    def resolve_checkpoint(self, ref: dict[str, Any]) -> EvidenceSet:
+        self.resolve_calls += 1
+        resolved = super().resolve_checkpoint(ref)
+        self.max_records_resolved = max(self.max_records_resolved, len(resolved.records))
+        return resolved
+
+
 def _capability(*, available: bool = True, status: str = "available") -> ObservationCapability:
     return ObservationCapability(
         capability_id="media_metadata_reader",
@@ -118,6 +132,31 @@ def _capability(*, available: bool = True, status: str = "available") -> Observa
         },
         available=available,
         status=status,
+    )
+
+
+def _evidence_record(
+    *,
+    evidence_id: str = "evidence_artist",
+    entity_id: str = "entity_1",
+    canonical_key: str = "artist",
+    normalized_value: str = "Artist",
+    backend_id: str = "mutagen",
+    limitations: list[str] | None = None,
+) -> EvidenceRecord:
+    return EvidenceRecord(
+        evidence_id=evidence_id,
+        entity_ref={"entity_id": entity_id},
+        canonical_key=canonical_key,
+        attribute_name=canonical_key,
+        normalized_value=normalized_value,
+        backend_id=backend_id,
+        capability_id="media_metadata_reader",
+        observer_id="media_metadata_reader",
+        raw_ref=f"raw:{canonical_key}",
+        confidence=0.9,
+        provenance={"raw_tag_key": canonical_key.upper(), "raw_result_id": "raw_result_1"},
+        limitations=limitations or [],
     )
 
 
@@ -716,21 +755,61 @@ def test_checkpoint_receipt_retains_lightweight_result_and_resolves_records(tmp_
     assert all(record.entity_ref["entity_id"] == "entity_1" for record in resolved.records)
 
 
-def test_checkpoint_digest_mismatch_blocks_resolution(tmp_path) -> None:
-    evidence = EvidenceSet(
-        records=[
-            EvidenceRecord(
-                evidence_id="evidence_artist",
-                entity_ref={"entity_id": "entity_1"},
-                canonical_key="artist",
-                attribute_name="artist",
-                normalized_value="Artist",
-                backend_id="mutagen",
-                raw_ref="raw:artist",
-                provenance={"raw_tag_key": "ARTIST"},
-            )
-        ]
+def test_checkpoint_rejects_cross_entity_records_without_rewriting(tmp_path) -> None:
+    checkpoint_store = RuntimeObservationEvidenceCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_checkpoint",
     )
+    evidence = EvidenceSet(records=[
+        _evidence_record(evidence_id="evidence_1", entity_id="entity_1"),
+        _evidence_record(evidence_id="evidence_2", entity_id="entity_2"),
+    ])
+
+    try:
+        checkpoint_store.write_checkpoint(
+            physical_probe_key=("entity_1", "media_metadata_reader", "media://one"),
+            entity_ref={"entity_id": "entity_1"},
+            evidence_set=evidence,
+        )
+    except EvidenceCheckpointWriteError as exc:
+        assert exc.reason_code == "POST_COMPILE_EVIDENCE_CHECKPOINT_ENTITY_MISMATCH"
+    else:
+        raise AssertionError("cross-entity checkpoint was accepted")
+    assert list((tmp_path / "task_run_checkpoint" / "payload_refs").glob("*.json")) == []
+
+
+def test_checkpoint_round_trip_preserves_semantic_fields_for_same_entity_records(tmp_path) -> None:
+    checkpoint_store = RuntimeObservationEvidenceCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_checkpoint",
+    )
+    original = [
+        _evidence_record(evidence_id="evidence_title", canonical_key="track_title", normalized_value="Song", limitations=["limited"]),
+        _evidence_record(evidence_id="evidence_artist", canonical_key="artist", normalized_value="Artist"),
+    ]
+    evidence = EvidenceSet(records=original)
+
+    ref = checkpoint_store.write_checkpoint(
+        physical_probe_key=("entity_1", "media_metadata_reader", "media://one"),
+        entity_ref={"entity_id": "entity_1"},
+        evidence_set=evidence,
+    )
+    resolved = checkpoint_store.resolve_checkpoint(ref)
+
+    for before, after in zip(original, resolved.records, strict=True):
+        assert after.evidence_id == before.evidence_id
+        assert after.entity_ref["entity_id"] == before.entity_ref["entity_id"]
+        assert after.canonical_key == before.canonical_key
+        assert after.normalized_value == before.normalized_value
+        assert after.backend_id == before.backend_id
+        assert after.raw_ref == before.raw_ref
+        assert after.provenance == before.provenance
+        assert after.confidence == before.confidence
+        assert after.limitations == before.limitations
+
+
+def test_checkpoint_digest_mismatch_blocks_resolution(tmp_path) -> None:
+    evidence = EvidenceSet(records=[_evidence_record()])
     checkpoint_store = RuntimeObservationEvidenceCheckpointStore(
         payload_refs=RuntimePayloadRefStore(root=tmp_path),
         run_id="task_run_checkpoint",
@@ -847,7 +926,7 @@ def test_retention_policy_rejection_preserves_physical_backend_telemetry(tmp_pat
         evidence_checkpoint_sink=checkpoint_store,
     )
 
-    assert result.blocked_reason_code == "POST_COMPILE_EVIDENCE_CHECKPOINT_WRITE_FAILED"
+    assert result.blocked_reason_code == "POST_COMPILE_EVIDENCE_CHECKPOINT_SINGLE_BYTES_EXCEEDED"
     assert result.telemetry["physical_probe_count"] == 1
     assert result.telemetry["physical_backend_attempts"] == {"mutagen": 1}
     assert result.telemetry["physical_backend_successes"] == {"mutagen": 1}
@@ -857,6 +936,72 @@ def test_retention_policy_rejection_preserves_physical_backend_telemetry(tmp_pat
     assert result.telemetry["results_physically_succeeded"] == 1
     assert result.telemetry["results_accepted"] == 0
     assert result.telemetry["results_rejected_by_policy"] == 1
+
+
+def test_single_checkpoint_budget_blocks_before_durable_write(tmp_path) -> None:
+    adapter = _Adapter(keys=["artist"])
+    stage = _stage(
+        adapter,
+        budget=PostCompileObservationBudget(
+            max_probe_elapsed_ms=500,
+            heartbeat_interval_ms=10,
+            max_single_checkpoint_bytes=1,
+            max_checkpointed_observation_bytes=64_000_000,
+        ),
+    )
+    checkpoint_store = RuntimeObservationEvidenceCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_checkpoint",
+    )
+
+    result = stage.execute(
+        observation_plan=_plan([_task("artist")]),
+        selected_entities=[{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}],
+        evidence_checkpoint_sink=checkpoint_store,
+    )
+
+    assert result.blocked_reason_code == "POST_COMPILE_EVIDENCE_CHECKPOINT_SINGLE_BYTES_EXCEEDED"
+    assert result.telemetry["checkpoint_count"] == 0
+    assert result.telemetry["checkpoint_bytes"] == 0
+    assert list((tmp_path / "task_run_checkpoint" / "payload_refs").glob("*.json")) == []
+
+
+def test_cumulative_checkpoint_budget_blocks_before_crossing_write_and_preserves_prior_refs(tmp_path) -> None:
+    adapter = _Adapter(keys=["artist"])
+    stage = _stage(
+        adapter,
+        budget=PostCompileObservationBudget(
+            max_probe_elapsed_ms=500,
+            heartbeat_interval_ms=10,
+            max_single_checkpoint_bytes=512_000,
+            max_checkpointed_observation_bytes=2400,
+        ),
+    )
+    checkpoint_store = RuntimeObservationEvidenceCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_checkpoint",
+    )
+
+    result = stage.execute(
+        observation_plan=_plan([
+            _task("artist", entity_id="entity_1", source_ref="media://one"),
+            _task("artist", entity_id="entity_2", source_ref="media://two"),
+            _task("artist", entity_id="entity_3", source_ref="media://three"),
+        ]),
+        selected_entities=[
+            {"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"},
+            {"entity_id": "entity_2", "path": "media://two", "entity_role": "media_asset_candidate"},
+            {"entity_id": "entity_3", "path": "media://three", "entity_role": "media_asset_candidate"},
+        ],
+        evidence_checkpoint_sink=checkpoint_store,
+    )
+
+    committed = list((tmp_path / "task_run_checkpoint" / "payload_refs").glob("*.json"))
+    assert result.blocked_reason_code == "POST_COMPILE_OBSERVATION_CHECKPOINT_BYTES_BUDGET_EXCEEDED"
+    assert result.telemetry["checkpoint_count"] == len(committed)
+    assert result.telemetry["checkpoint_bytes"] <= 2400
+    assert result.telemetry["results_rejected_by_policy"] == 1
+    assert result.telemetry["evidence_records_rejected"] == 1
 
 
 def test_checkpointed_stage_scales_without_accumulating_hydrated_evidence_sets(tmp_path) -> None:
@@ -897,3 +1042,123 @@ def test_checkpointed_stage_scales_without_accumulating_hydrated_evidence_sets(t
     assert result.telemetry["inline_materialized_bytes"] < 8_000_000
     assert all(execution.evidence_set.records == [] for execution in result.observation_execution_results)
     assert all(execution.evidence_checkpoint_ref for execution in result.observation_execution_results)
+
+
+def test_checkpointed_post_execution_materialization_scales_with_bounded_resolution(tmp_path) -> None:
+    service = ContractDrivenPerceptionService(observer_registry=CapabilityRegistry(capabilities=[_capability()]))
+    adapter = _Adapter(keys=["artist"])
+    stage = _stage(
+        adapter,
+        budget=PostCompileObservationBudget(
+            max_probe_elapsed_ms=500,
+            heartbeat_interval_ms=10,
+            max_total_observation_elapsed_ms=120000,
+            max_materialized_observation_bytes=8_000_000,
+            max_checkpointed_observation_bytes=64_000_000,
+        ),
+    )
+    checkpoint_store = _CountingCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_scale",
+    )
+    entity_count = 2250
+    selected_entities = [
+        {"entity_id": f"entity_{index}", "path": f"media://{index}", "entity_role": "media_asset_candidate"}
+        for index in range(entity_count)
+    ]
+    perception = service.compile(
+        graph={"entities": selected_entities},
+        declared_contract={
+            "expected_kind": "tabular_collection",
+            "expected_schema": ["artist"],
+            "perception_compile_policy": {"mode": "compile_only"},
+        },
+    )
+    execution = stage.execute(
+        observation_plan=perception.observation_plan,
+        selected_entities=selected_entities,
+        evidence_checkpoint_sink=checkpoint_store,
+    )
+
+    materialized = service.materialize_execution_results(
+        perception_result=perception,
+        selected_entities=selected_entities,
+        execution_results=execution.observation_execution_results,
+        declared_contract={"expected_kind": "tabular_collection", "expected_schema": ["artist"]},
+        evidence_checkpoint_resolver=checkpoint_store,
+    )
+
+    observed = [
+        item
+        for item in materialized.attribute_observations
+        if item.canonical_key == "artist" and item.observation_state == "observed"
+    ]
+    assert execution.blocked_reason_code is None
+    assert execution.telemetry["checkpoint_count"] == entity_count
+    assert checkpoint_store.resolve_calls == entity_count
+    assert checkpoint_store.max_records_resolved == 1
+    assert len(observed) == entity_count
+    assert materialized.evidence_set.records == []
+    assert len(materialized.evidence_set.checkpoint_refs) == entity_count
+    assert materialized.evidence_set.record_count == entity_count
+    assert materialized.media_metadata_capability["evidence_records_created"] == entity_count
+    assert materialized.media_metadata_capability["semantic_identity_evidence_counts"]["artist"] == entity_count
+
+
+def test_checkpointed_materialization_is_semantically_equivalent_to_inline_path(tmp_path) -> None:
+    service = ContractDrivenPerceptionService(observer_registry=CapabilityRegistry(capabilities=[_capability()]))
+    selected_entities = [{"entity_id": "entity_1", "path": "media://one", "entity_role": "media_asset_candidate"}]
+    declared_contract = {
+        "expected_kind": "tabular_collection",
+        "expected_schema": ["artist", "track_title"],
+        "perception_compile_policy": {"mode": "compile_only"},
+    }
+    perception = service.compile(graph={"entities": selected_entities}, declared_contract=declared_contract)
+    stage = _stage(_Adapter(keys=["artist", "track_title"]))
+    inline_execution = stage.execute(
+        observation_plan=perception.observation_plan,
+        selected_entities=selected_entities,
+    )
+    checkpoint_store = _CountingCheckpointStore(
+        payload_refs=RuntimePayloadRefStore(root=tmp_path),
+        run_id="task_run_equivalence",
+    )
+    original_result = inline_execution.observation_execution_results[0]
+    checkpoint_ref = checkpoint_store.write_checkpoint(
+        physical_probe_key=tuple(original_result.provenance["physical_probe_key"]),
+        entity_ref=original_result.evidence_set.records[0].entity_ref,
+        evidence_set=original_result.evidence_set,
+    )
+    checkpoint_result = stage._checkpoint_receipt_result(original_result, checkpoint_ref=checkpoint_ref)
+
+    inline_materialized = service.materialize_execution_results(
+        perception_result=perception,
+        selected_entities=selected_entities,
+        execution_results=inline_execution.observation_execution_results,
+        declared_contract=declared_contract,
+    )
+    checkpoint_materialized = service.materialize_execution_results(
+        perception_result=perception,
+        selected_entities=selected_entities,
+        execution_results=[checkpoint_result],
+        declared_contract=declared_contract,
+        evidence_checkpoint_resolver=checkpoint_store,
+    )
+
+    def observed_rows(result):
+        return sorted(
+            (
+                item.entity_id,
+                item.canonical_key,
+                item.observed_value,
+                tuple(item.evidence_refs),
+                item.observation_state,
+            )
+            for item in result.attribute_observations
+            if item.observation_state == "observed"
+        )
+
+    assert observed_rows(inline_materialized) == observed_rows(checkpoint_materialized)
+    assert checkpoint_materialized.evidence_set.records == []
+    assert checkpoint_materialized.evidence_set.record_count == inline_materialized.evidence_set.record_count
+    assert checkpoint_store.resolve_calls == 1

@@ -23,7 +23,10 @@ from aipinho.schemas.artifacts.contract_perception import (
     ObservationPlan,
     ObservationTask,
 )
-from aipinho.services.artifacts.observation_evidence_checkpoint_service import ObservationEvidenceCheckpointSink
+from aipinho.services.artifacts.observation_evidence_checkpoint_service import (
+    EvidenceCheckpointWriteError,
+    ObservationEvidenceCheckpointSink,
+)
 from aipinho.services.artifacts.observation_execution_boundary_service import ObservationExecutionBoundaryService
 
 
@@ -222,16 +225,30 @@ class GovernedObservationExecutionStageService:
                         physical_probe_key=group.physical_probe_key,
                         entity_ref=result.evidence_set.records[0].entity_ref,
                         evidence_set=result.evidence_set,
+                        max_single_checkpoint_bytes=self.budget.max_single_checkpoint_bytes,
+                        max_checkpointed_observation_bytes=self.budget.max_checkpointed_observation_bytes,
+                        checkpointed_observation_bytes=checkpointed_observation_bytes,
                     )
+                except EvidenceCheckpointWriteError as exc:
+                    blocked_reason = exc.reason_code
+                    counters["checkpoint_write_failures"] += 1
                 except Exception:
                     blocked_reason = "POST_COMPILE_EVIDENCE_CHECKPOINT_WRITE_FAILED"
                     counters["checkpoint_write_failures"] += 1
+                if blocked_reason and checkpoint_ref is None:
+                    counters["results_rejected_by_policy"] += 1
+                    counters["evidence_records_rejected"] += record_count
+                    result = self._checkpoint_block_result(
+                        group=group,
+                        original_result=result,
+                        reason_code=blocked_reason,
+                        checkpoint_bytes=0,
+                        checkpointed_observation_bytes=checkpointed_observation_bytes,
+                    )
+                    results.append(result)
+                    break
                 if checkpoint_ref is not None:
                     checkpoint_bytes = int(checkpoint_ref.get("size_bytes") or 0)
-                    if checkpoint_bytes > self.budget.max_single_checkpoint_bytes:
-                        blocked_reason = "POST_COMPILE_EVIDENCE_CHECKPOINT_WRITE_FAILED"
-                    elif checkpointed_observation_bytes + checkpoint_bytes > self.budget.max_checkpointed_observation_bytes:
-                        blocked_reason = "POST_COMPILE_OBSERVATION_CHECKPOINT_BYTES_BUDGET_EXCEEDED"
                     if blocked_reason:
                         counters["results_rejected_by_policy"] += 1
                         counters["evidence_records_rejected"] += record_count
@@ -560,20 +577,26 @@ class GovernedObservationExecutionStageService:
         canonical_keys = sorted({str(record.canonical_key or record.attribute_name or "") for record in records if record.canonical_key or record.attribute_name})
         receipt_set = EvidenceSet(
             records=[],
-            entity_refs=self._unique_entity_refs([record.entity_ref for record in records]),
-            attribute_names=sorted({str(record.attribute_name or "") for record in records if record.attribute_name}),
-            canonical_keys=canonical_keys,
             coverage_summary={
                 "checkpointed_record_count": len(records),
                 "checkpoint_ref_count": 1,
                 "inline_record_count": 0,
             },
             confidence_summary=dict(result.evidence_set.confidence_summary or {}),
-            checkpoint_refs=[dict(checkpoint_ref)],
             record_count=len(records),
         )
-        provenance = dict(result.provenance or {})
-        provenance["evidence_checkpoint_ref"] = dict(checkpoint_ref)
+        original_provenance = dict(result.provenance or {})
+        provenance = {
+            "boundary": original_provenance.get("boundary"),
+            "policy_id": original_provenance.get("policy_id"),
+            "physical_probe_key": original_provenance.get("physical_probe_key"),
+            "raw_execution_source_ref": original_provenance.get("raw_execution_source_ref"),
+            "normalized_source_ref": original_provenance.get("normalized_source_ref"),
+            "grouped_observation_task_ids": original_provenance.get("grouped_observation_task_ids"),
+            "grouped_goal_ids": original_provenance.get("grouped_goal_ids"),
+            "requested_canonical_keys": original_provenance.get("requested_canonical_keys"),
+        }
+        provenance = {key: value for key, value in provenance.items() if value not in (None, [], {})}
         return result.model_copy(
             update={
                 "evidence_set": receipt_set,
