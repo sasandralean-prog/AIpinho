@@ -1,0 +1,354 @@
+{
+  "schema": "firetest5_h1c0_r3_01_b3_post_slice4_mutagen_diagnostic.v1",
+  "generated_at": "2026-08-21T14:46:13.511369+00:00",
+  "verdict": "FIRETEST5_R3_01_B3_BLOCKED_WITH_NEW_FRONTIER_PROVEN",
+  "repository": {
+    "branch": "agent/codex/r3-01-b3-post-slice4-mutagen",
+    "base_sha": "08a7028047b0d0b216a576a68cd178085bfec9b0",
+    "origin_main_sha_at_preflight": "08a7028047b0d0b216a576a68cd178085bfec9b0",
+    "working_tree_at_start": "clean"
+  },
+  "environment": {
+    "python_version": "3.11.6",
+    "python_executable": "C:\\Program Files\\Python311\\python.exe",
+    "mutagen": {
+      "importable": true,
+      "version": "1.48.1",
+      "origin": "C:\\Users\\rafae\\AppData\\Roaming\\Python\\Python311\\site-packages\\mutagen\\__init__.py"
+    },
+    "ffprobe": {
+      "available": false,
+      "path": null
+    },
+    "native_minimal": {
+      "available": true,
+      "supports_identity": false,
+      "supports_technical_metadata": true
+    }
+  },
+  "runtime": {
+    "health": "ok",
+    "queue_before_run": {
+      "active_count": 0,
+      "pending_count": 0,
+      "total_visible": 0
+    },
+    "result_endpoint_http": 200
+  },
+  "run": {
+    "task_run_id": "task_run_724cad824d564da2b47433c8ce9b36c8",
+    "operation_id": "op_9833059d3a504fea8cc0cde45da0ce6f",
+    "task_id": "task_3600dc27cd5e430f84eac4f68c5bd5db",
+    "session_id": "firetest5_h1c0_r3_01_b3",
+    "created_at": "2026-08-21T14:35:46.414239+00:00",
+    "started_at": "2026-08-21T14:35:46.535692+00:00",
+    "finished_at": "2026-08-21T14:38:22.077304+00:00",
+    "status": "blocked",
+    "reason_code": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED",
+    "phase": "phase_1",
+    "terminal_event_count": 1,
+    "terminal_events": [
+      {
+        "sequence": 164,
+        "type": "run_blocked",
+        "status": "blocked",
+        "timestamp": "2026-08-21T14:38:21.477623+00:00",
+        "reason_code": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED"
+      }
+    ],
+    "speaker_truth_safe_to_report_success": false
+  },
+  "corpus": {
+    "candidate_entity_count": 2286,
+    "selected_entity_count": 2272,
+    "row_materialized_entity_count": 2230,
+    "rows_expected": 2272,
+    "source_root_roles": {
+      "library_root": 2272,
+      "null": 14
+    },
+    "entity_roles": {
+      "corpus_file": 2272,
+      "null": 14
+    },
+    "project_like_contamination_count": 0,
+    "selected_not_row_materialized_gap": 42
+  },
+  "budgets": {
+    "max_physical_probes": 2500,
+    "max_total_observation_elapsed_ms": 120000,
+    "max_materialized_observation_bytes": 8000000,
+    "max_checkpointed_observation_bytes": 64000000,
+    "max_single_checkpoint_bytes": 512000
+  },
+  "typed_demand": {
+    "logical_task_count": 24530,
+    "physical_group_count": 2230,
+    "distinct_requested_key_count_projected": 11,
+    "requested_canonical_keys_from_contract_authority": [
+      "artwork",
+      "bitrate",
+      "channels",
+      "codec",
+      "container",
+      "duration",
+      "sample_rate",
+      "track_title",
+      "artist",
+      "album",
+      "album_artist"
+    ],
+    "required_non_identity_claims": [],
+    "media_identity_any_of": {
+      "candidate_keys": [
+        "track_title",
+        "artist",
+        "album",
+        "album_artist"
+      ],
+      "minimum_evidenced_claims": 1
+    },
+    "optional_enrichment_keys": [
+      "artwork",
+      "bitrate",
+      "channels",
+      "codec",
+      "container",
+      "duration",
+      "sample_rate"
+    ]
+  },
+  "post_compile_execution": {
+    "dedup_group_count": 2230,
+    "files_planned": 2230,
+    "grouped_observation_task_count": 24530,
+    "requested_canonical_key_count": 11,
+    "goals_satisfied": 2920,
+    "goals_unsatisfied": 21610,
+    "fanout_claim_count": 2920,
+    "media_metadata_capability": {
+      "status": "partial",
+      "configured": true,
+      "available": true,
+      "execution_status": "partial",
+      "primary_backend": "mutagen",
+      "attempted_backends": {
+        "mutagen": 454
+      },
+      "successful_backends": {
+        "mutagen": 451
+      },
+      "fallback_backends_used": {},
+      "backend_error_counts": {
+        "FFPROBE_NOT_AVAILABLE": 346,
+        "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 3
+      },
+      "evidence_counts_by_canonical_key": {
+        "codec": 449,
+        "duration": 451,
+        "bitrate": 451,
+        "sample_rate": 451,
+        "channels": 451,
+        "metadata": 451,
+        "artwork": 451,
+        "track_title": 108,
+        "artist": 108
+      },
+      "evidence_counts_by_backend": {
+        "mutagen": 3371
+      },
+      "semantic_identity_evidence_counts": {
+        "track_title": 108,
+        "artist": 108,
+        "album": 0,
+        "album_artist": 0
+      }
+    },
+    "attempted_backends": {
+      "mutagen": 454
+    },
+    "successful_backends": {
+      "mutagen": 451
+    },
+    "fallback_backends_used": {},
+    "backend_error_counts": {
+      "FFPROBE_NOT_AVAILABLE": 346,
+      "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 3
+    },
+    "evidence_counts_by_canonical_key": {
+      "codec": 449,
+      "duration": 451,
+      "bitrate": 451,
+      "sample_rate": 451,
+      "channels": 451,
+      "metadata": 451,
+      "artwork": 451,
+      "track_title": 108,
+      "artist": 108
+    },
+    "evidence_counts_by_backend": {
+      "mutagen": 3371
+    },
+    "semantic_identity_evidence_counts": {
+      "track_title": 108,
+      "artist": 108,
+      "album": 0,
+      "album_artist": 0
+    },
+    "physical_probe_count": 455,
+    "files_attempted": 455,
+    "files_succeeded": 451,
+    "files_failed": 4,
+    "evidence_records_created": 3371,
+    "materialized_observation_bytes": 7994062,
+    "execution_status": "blocked",
+    "blocked_reason_code": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED"
+  },
+  "backends": {
+    "availability_snapshot": {
+      "mutagen": "available",
+      "ffprobe": "unavailable",
+      "native_minimal": "available"
+    },
+    "attempts_by_backend": {
+      "mutagen": 454
+    },
+    "successes_by_backend": {
+      "mutagen": 451
+    },
+    "fallback_backends_used": {},
+    "backend_error_counts": {
+      "FFPROBE_NOT_AVAILABLE": 346,
+      "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 3
+    }
+  },
+  "evidence": {
+    "records_created_or_projected": 3371,
+    "records_accepted": "not_separately_projected_in_b3_public_telemetry",
+    "records_rejected": "not_separately_projected_in_b3_public_telemetry",
+    "counts_by_canonical_key": {
+      "codec": 449,
+      "duration": 451,
+      "bitrate": 451,
+      "sample_rate": 451,
+      "channels": 451,
+      "metadata": 451,
+      "artwork": 451,
+      "track_title": 108,
+      "artist": 108
+    },
+    "counts_by_backend": {
+      "mutagen": 3371
+    },
+    "semantic_identity_counts": {
+      "track_title": 108,
+      "artist": 108,
+      "album": 0,
+      "album_artist": 0
+    }
+  },
+  "checkpoint_retention": {
+    "checkpoint_keys_projected": false,
+    "checkpoint_file_count_observed_under_run_payload_refs": 0,
+    "payload_ref_files_observed": [
+      {
+        "name": "08731fb036db8d428881fc6acb06fc2400d8814404e4aecbb198f56b8df04c6b.json",
+        "bytes": 6048763
+      }
+    ],
+    "checkpoint_count": 0,
+    "cumulative_checkpoint_bytes": 0,
+    "max_single_checkpoint_bytes_observed": 0,
+    "checkpoint_write_failures": "not_projected",
+    "policy_rejections": "not_projected",
+    "interpretation": "No evidence checkpoint refs, counters, or checkpoint payload files were projected/persisted for the B3 public run."
+  },
+  "inline_retention": {
+    "materialized_observation_bytes": 7994062,
+    "budget": 8000000,
+    "final_evidence_set_records_count": "not_projected",
+    "final_checkpoint_refs_count": "not_projected",
+    "final_governed_record_count": "not_projected",
+    "post_execution_evidence_record_referenced_count_event": 2681
+  },
+  "bounded_resolution": {
+    "checkpoint_resolver_call_count": "not_projected_no_checkpoint_refs_observed",
+    "max_evidence_records_resolved_at_once": "not_projected_no_checkpoint_refs_observed",
+    "resolver_calls_equal_resolved_checkpoint_count": "not_applicable_no_checkpoint_refs_observed",
+    "second_hydration_pass": "not_observed_via_public_telemetry; no checkpoint hydration telemetry present"
+  },
+  "semantic_materialization": {
+    "attribute_observation_count": 55750,
+    "knowledge_record_count": "not_projected_before_block",
+    "semantic_assertion_count": "not_projected_before_block",
+    "semantic_self_review_evidence_count": "not_projected_before_block",
+    "semantic_coverage2": "not_projected_before_block",
+    "semantic_identity_evidence_ratio": "not_reached_or_not_projected",
+    "row_semantic_validation_reached": false,
+    "row_semantic_validation_result": "not_reached_before_block",
+    "post_execution_perception_materialization_elapsed_ms": 36984.0
+  },
+  "b2_comparison": {
+    "run_b2": {
+      "base_sha": "f3fec1c74a83a5b0bae08152756c98ae55d64f67",
+      "task_run_id": "task_run_a757d3160e6d4b3d92c3410936abc0d1",
+      "operation_id": "op_8e751117b72d40529b050dc3e0f5e2fb",
+      "candidate_entities": 2286,
+      "selected_entities": 2272,
+      "row_entities": 2230,
+      "logical_tasks": 24530,
+      "physical_groups": 2230,
+      "physical_probes_attempted": 455,
+      "physical_probes_succeeded": 451,
+      "physical_probes_failed": 4,
+      "mutagen_attempts": 454,
+      "ffprobe_attempts": 0,
+      "native_minimal_attempts": 0,
+      "evidence_records": 3371,
+      "materialized_bytes": 7994062,
+      "terminal_reason": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED",
+      "terminal_event_count": 1,
+      "speaker_truth_safe": false,
+      "track_title": 108,
+      "artist": 108,
+      "album": 0,
+      "album_artist": 0
+    },
+    "run_b3": {
+      "base_sha": "08a7028047b0d0b216a576a68cd178085bfec9b0",
+      "task_run_id": "task_run_724cad824d564da2b47433c8ce9b36c8",
+      "operation_id": "op_9833059d3a504fea8cc0cde45da0ce6f",
+      "candidate_entities": 2286,
+      "selected_entities": 2272,
+      "row_entities": 2230,
+      "logical_tasks": 24530,
+      "physical_groups": 2230,
+      "physical_probes_attempted": 455,
+      "physical_probes_succeeded": 451,
+      "physical_probes_failed": 4,
+      "mutagen_attempts": 454,
+      "ffprobe_attempts": 0,
+      "native_minimal_attempts": 0,
+      "evidence_records": 3371,
+      "materialized_bytes": 7994062,
+      "terminal_reason": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED",
+      "terminal_event_count": 1,
+      "speaker_truth_safe": false,
+      "track_title": 108,
+      "artist": 108,
+      "album": 0,
+      "album_artist": 0
+    },
+    "old_b2_frontier_eliminated": false
+  },
+  "root_cause": {
+    "status": "PROVEN",
+    "first_governing_frontier": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED",
+    "classification": "P1",
+    "interpretation": "B3 validly reproduced the B2 inline materialization budget frontier. The public run did not show ref-backed evidence checkpoint retention being active or projected: no checkpoint refs/counters appeared and no checkpoint payload files were persisted under the run."
+  },
+  "deviations": [
+    "The public run blocked before row semantic validation, so identity ratio and row validation result were not available.",
+    "Checkpoint retention telemetry was absent; report records observed absence rather than manufacturing checkpoint metrics."
+  ]
+}

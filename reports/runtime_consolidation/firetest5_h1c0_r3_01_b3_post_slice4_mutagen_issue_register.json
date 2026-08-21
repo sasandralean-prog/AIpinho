@@ -1,0 +1,42 @@
+{
+  "schema": "firetest5_h1c0_r3_01_b3_issue_register.v1",
+  "run_id": "task_run_724cad824d564da2b47433c8ce9b36c8",
+  "verdict": "FIRETEST5_R3_01_B3_BLOCKED_WITH_NEW_FRONTIER_PROVEN",
+  "issues": [
+    {
+      "id": "R3_01_B3_P1_PUBLIC_REF_BACKED_EVIDENCE_RETENTION_NOT_EFFECTIVE",
+      "priority": "P1",
+      "status": "OPEN",
+      "frontier": "POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED",
+      "evidence": [
+        "B3 blocked after 455 physical probes with materialized_observation_bytes=7994062/8000000.",
+        "No checkpoint_count/checkpoint_refs/evidence_checkpoint_ref keys were projected in result.json, events.json, or run.json.",
+        "Run payload_refs directory contains one 6048763-byte entity projection payload and no evidence checkpoint payloads.",
+        "B3 telemetry matches the B2 materialized-bytes frontier rather than showing ref-backed retention counters."
+      ],
+      "impact": "Slice 4 did not remove the public-run inline evidence materialization frontier under the real corpus.",
+      "recommended_next_gate": "Diagnose why the public runtime path did not persist/use ObservationEvidenceCheckpointStore receipts before another FireTest run."
+    },
+    {
+      "id": "R3_01_B3_P2_CHECKPOINT_RETENTION_TELEMETRY_ABSENT",
+      "priority": "P2",
+      "status": "OPEN",
+      "evidence": [
+        "Mandatory checkpoint metrics were absent from public run telemetry: checkpoint_count, checkpoint_bytes, inline_materialized_bytes, produced/accepted/rejected counters, resolver call counts.",
+        "Physical media capability telemetry remained available and truthful: configured=true, available=true, execution_status=partial."
+      ],
+      "impact": "The run proves the old frontier but cannot quantify checkpoint budget behavior because checkpoint telemetry was absent.",
+      "recommended_next_gate": "Expose lightweight checkpoint/retention authority whenever post-compile execution uses or is expected to use checkpoint sinks."
+    },
+    {
+      "id": "R3_01_B3_P2_ROW_SEMANTIC_VALIDATION_NOT_REACHED",
+      "priority": "P2",
+      "status": "OBSERVED_LIMITATION",
+      "evidence": [
+        "Run blocked before row semantic validation; semantic identity evidence counts were acquired for track_title=108 and artist=108 but row-level semantic identity ratio was not projected."
+      ],
+      "impact": "Mutagen acquisition remains visible, but downstream row validation after Slice 4 is still unproven on the public corpus.",
+      "recommended_next_gate": "Clear the retention frontier first, then rerun B baseline to test row semantic validation."
+    }
+  ]
+}
