@@ -4,18 +4,22 @@
 
 ```text
 H1C0.R2 = H1C0_R2_READY_FOR_R3
+H1C0.R3.01 = OPEN
 
-Final R2 wave:
-H1C0.R2.18
+Latest reviewed slice:
+H1C0.R3.01.B3.5
 
-R2.18 verdict:
-FIRETEST5_H1C0_R2_18_MEDIA_IDENTITY_GOVERNED_RESOLUTION_READY
+Latest reviewed verdict:
+R3_01_B3_5_PUBLIC_CANARY_POST_COMPILE_STALL_FORENSICS_READY
 
 FireTest 5:
-NOT_READY
+NOT_READY, not executed in B3.5
+
+C gate:
+CORRECTIVE_REQUIRED_BEFORE_C
 ```
 
-## Git baseline
+## Git/report baseline
 
 Repository:
 `https://github.com/sasandralean-prog/AIpinho`
@@ -23,57 +27,82 @@ Repository:
 Default branch:
 `main`
 
-R2.18 source commit:
-`cefa5069a44556b72908940fab0f8195dd9e2209`
+Base main for B3.5:
+`50af6491b78e662bbd3390a59400aec6f0eb0bb1`
 
-R2.18 reconciliation merge in `main`:
-`bed449fa8d3e78670df2bdddf413da181add61ce`
+B3.5 branch:
+`agent/codex/r3-01-b3-5-postcompile-stall-route-boundary`
 
-The previous R2.18/main divergence is closed.
+B3.5 reviewed/report-corrected head before this context update:
+`9d5e06c9d2cd8d0a885e53855bd100b4c7a84105`
 
 ## Current public truth
 
+B3.5 moved the canary from:
+
 ```text
-stable entity identity
-    ✅ available
-
-locator/display context
-    ✅ available, not Truth authority
-
-routing hints
-    ✅ available, not semantic identity
-
-semantic media identity evidence
-    ❌ unavailable
-
-media metadata capability
-    not_configured
+POST_COMPILE_OBSERVATION_EXECUTION_STALLED
 ```
 
-Current blocked reason:
-`MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT`
+to:
 
-This is considered a legitimate limitation, not unresolved R2 structural debt.
+```text
+POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED
+```
 
-## Pre-R3 consistency gate
+This is a forensic success, not FireTest success.
 
-R3.01 has not started.
+Current canary telemetry:
 
-Repository/knowledge consistency is closed:
-- Git lineage reconciled;
-- Context Pack path normalization to lowercase `docs/context/`;
-- Context Pack v0.2 installation;
-- authority-hygiene review;
-- final consistency audit.
-- engineering-agent infrastructure installed and classified outside runtime
-  agent namespaces.
+```text
+task_run_id                         task_run_10a7ad7dabca4687bcebbe5cba30ce25
+operation_id                        op_42cafcfaa0654bf299011345171199dc
+status                              blocked
+reason_code                         POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED
+terminal_blocking_event_count        1
+SpeakerTruth.safe_to_report_success false
+physical_probe_count                0
 
-Gate verdict:
-`H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY`
+task_count                          25
+tasks_seen                          9
+deferred_task_count                 7
+execute_observer_task_count          2
+target_entity_ref_count             10000
+capability_lookup_attempted          2
+capability_availability_checked      2
+applicability_started_count          9144
+applicability_completed_count        9144
+applicability_failed_count           0
+capability_applicable_count          0
+capability_inapplicable_count        9143
+capability_applicability_unknown_count 0
+capability_inapplicable_reasons      MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS: 9143
+groups_created_count                0
+backend_snapshot_started            false
+backend_snapshot_completed          false
+before_physical_probe_emitted        false
+elapsed_ms                          120046
+```
 
-## Next runtime frontier after the gate
+## Current issues
 
-`H1C0.R3.01 — Governed Media Metadata Capability Configuration, Observation Execution & Semantic Identity Evidence Acquisition`
+```text
+P0: none observed
+P1: R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER
+P2: none blocking after report projection correction
+```
+
+Resolved P2:
+- `P2_B3_5_REPORT_PROJECTION_INCOMPLETE_FOR_GROUPING_APPLICABILITY_TELEMETRY`
+- `R3_01_B3_4_P2_PUBLIC_CHAT_ROUTE_SCHEMA_COLLISION_OR_HANDLER_PRECEDENCE`
+
+## Route boundary
+
+```text
+/api/v1/chat          = canonical ChatRequest route
+/api/v1/runtime/chat  = PublicRuntimeRequest chat route
+/api/v1/analyze       = PublicRuntimeRequest analyze bridge used by canary
+```
 
 ## R3.01 central question
 
@@ -85,37 +114,21 @@ But:
 
 > How can AIpinho acquire governed observations that support semantic identity claims, preserve provenance, and distinguish unsupported/missing/failed evidence without using filename/path/extension as Truth?
 
-## Critical attention — claim-level evidence binding
-
-R2.18 row-level validation can observe semantic identity fields and row evidence refs.
-
-R3.01 should verify the stronger property:
-
-> Evidence bound to the row must actually support the specific semantic claim.
-
-Conceptually:
+## B3.6 central question
 
 ```text
-entity
-  └─ semantic claim
-       ├─ value
-       ├─ observation_ref
-       ├─ evidence_ref
-       └─ provenance_ref
+Why do 2 execute_observer tasks expand to 10000 target entity refs,
+perform 9144 applicability decisions,
+classify 9143 as inapplicable by extension,
+create 0 groups,
+consume 120046ms,
+and reach 0 physical probes?
 ```
 
-Rule:
+B3.6 must diagnose and correct applicability-resolution capacity/admission before FireTest 5 or C-gate work resumes.
 
-> Evidence co-presence is not claim-level evidence binding.
+## Historical R2.18 context
 
-## Additional attention
+R2.18 row-level validation can observe semantic identity fields and row evidence refs. It established that stable entity identity is not semantic media identity.
 
-Verify who owns the definition of semantic media identity fields such as track title, artist, album, and album artist.
-
-Possibilities:
-- artifact contract;
-- media identity contract;
-- schema;
-- domain-specific validation service.
-
-Do not refactor merely for purity. Establish semantic ownership first.
+That history remains authority for the no-filename/path/extension-Truth rule, but it is no longer the current frontier.

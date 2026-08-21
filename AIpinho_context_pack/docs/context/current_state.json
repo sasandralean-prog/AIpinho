@@ -1,43 +1,70 @@
 {
-  "context_pack_version": "0.2",
-  "generated_on": "2026-08-19",
+  "context_pack_version": "0.3",
+  "generated_on": "2026-08-21",
   "project": "AIpinho",
   "repository": "https://github.com/sasandralean-prog/AIpinho",
   "default_branch": "main",
   "canonical_context_path": "AIpinho_context_pack/docs/context",
   "h1c0_r2_status": "H1C0_R2_READY_FOR_R3",
-  "last_validated_wave": "H1C0.R2.18",
-  "last_wave_verdict": "FIRETEST5_H1C0_R2_18_MEDIA_IDENTITY_GOVERNED_RESOLUTION_READY",
+  "h1c0_r3_01_status": "OPEN",
+  "latest_reviewed_slice": "H1C0.R3.01.B3.5",
+  "latest_reviewed_verdict": "R3_01_B3_5_PUBLIC_CANARY_POST_COMPILE_STALL_FORENSICS_READY",
+  "latest_reviewed_branch": "agent/codex/r3-01-b3-5-postcompile-stall-route-boundary",
+  "latest_reviewed_head": "9d5e06c9d2cd8d0a885e53855bd100b4c7a84105",
+  "base_main_sha": "50af6491b78e662bbd3390a59400aec6f0eb0bb1",
   "firetest5_status": "NOT_READY",
-  "open_r2_p0": 0,
-  "open_r2_p1": 0,
-  "open_r2_p2_relevant": 0,
-  "r2_18_source_branch": "h1c0-r2.18-media-identity-coverage",
-  "r2_18_source_commit": "cefa5069a44556b72908940fab0f8195dd9e2209",
-  "r2_18_main_merge_commit": "bed449fa8d3e78670df2bdddf413da181add61ce",
-  "pre_r3_consistency_status": "H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY",
-  "pre_r3_consistency_completed": [
-    "git_lineage_reconciled",
-    "readme_r2_18_baseline_reconciled",
-    "context_path_normalized",
-    "context_pack_v0_2_installed",
-    "engineering_agent_infrastructure_v1_installed",
-    "authority_hygiene_review",
-    "final_repository_knowledge_consistency_audit"
+  "firetest5_executed_in_latest_slice": false,
+  "c_gate": "CORRECTIVE_REQUIRED_BEFORE_C",
+  "b3_3_effect_status": "PARTIALLY_PROVEN",
+  "current_blocker": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",
+  "current_p0": 0,
+  "current_p1": [
+    "R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER"
   ],
-  "pre_r3_consistency_pending": [],
-  "required_pre_r3_verdict": "H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY",
-  "pre_r3_consistency_verdict": "H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY",
-  "engineering_agent_infrastructure": {
-    "status": "implemented",
-    "entrypoint": "AGENTS.md",
-    "skills_root": ".agents/skills",
-    "docs_root": "docs/engineering_agents",
-    "replit_adapter": "replit.md",
-    "vscode_copilot_agents": ".github/agents",
-    "runtime_authority": false
+  "current_p2": [],
+  "resolved_p2": [
+    "P2_B3_5_REPORT_PROJECTION_INCOMPLETE_FOR_GROUPING_APPLICABILITY_TELEMETRY",
+    "R3_01_B3_4_P2_PUBLIC_CHAT_ROUTE_SCHEMA_COLLISION_OR_HANDLER_PRECEDENCE"
+  ],
+  "next_frontier": "H1C0.R3.01.B3.6 — Capability Applicability Resolution Capacity & Admission Control",
+  "route_boundary": {
+    "canonical_chat_route": "/api/v1/chat",
+    "canonical_chat_schema": "ChatRequest",
+    "public_runtime_chat_route": "/api/v1/runtime/chat",
+    "public_runtime_schema": "PublicRuntimeRequest",
+    "public_runtime_analyze_route": "/api/v1/analyze"
   },
-  "next_frontier": "H1C0.R3.01 — Governed Media Metadata Capability Configuration, Observation Execution & Semantic Identity Evidence Acquisition",
+  "latest_canary": {
+    "task_run_id": "task_run_10a7ad7dabca4687bcebbe5cba30ce25",
+    "operation_id": "op_42cafcfaa0654bf299011345171199dc",
+    "status": "blocked",
+    "reason_code": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",
+    "terminal_blocking_event_count": 1,
+    "speaker_truth_safe_to_report_success": false,
+    "physical_probe_count": 0,
+    "task_count": 25,
+    "tasks_seen": 9,
+    "deferred_task_count": 7,
+    "execute_observer_task_count": 2,
+    "target_entity_ref_count": 10000,
+    "applicability_started_count": 9144,
+    "applicability_completed_count": 9144,
+    "capability_inapplicable_count": 9143,
+    "groups_created_count": 0,
+    "elapsed_ms": 120046
+  },
+  "historical": {
+    "v0_2_baseline": "R2.18/pre-R3 baseline",
+    "last_validated_r2_wave": "H1C0.R2.18",
+    "last_r2_wave_verdict": "FIRETEST5_H1C0_R2_18_MEDIA_IDENTITY_GOVERNED_RESOLUTION_READY",
+    "r2_18_source_branch": "h1c0-r2.18-media-identity-coverage",
+    "r2_18_source_commit": "cefa5069a44556b72908940fab0f8195dd9e2209",
+    "r2_18_main_merge_commit": "bed449fa8d3e78670df2bdddf413da181add61ce",
+    "pre_r3_consistency_verdict": "H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY",
+    "open_r2_p0": 0,
+    "open_r2_p1": 0,
+    "open_r2_p2_relevant": 0
+  },
   "agent_taxonomy": {
     "internal_runtime_agents": "participate IN AIpinho under governed runtime namespaces",
     "external_agent_islands": "distinct governed executors/interpreters such as Codex and Gemini",
@@ -45,10 +72,11 @@
   },
   "notes": [
     "R2 structural debt is considered closed based on the validated R2.18 exit assessment.",
-    "FireTest 5 remains NOT_READY because governed semantic media identity evidence is unavailable.",
-    "R3.01 must explicitly validate claim-level evidence binding.",
-    "Pre-R3 repository/knowledge consistency is closed by H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY.",
-    "Engineering-agent infrastructure guides repository work only and has runtime_authority=false.",
-    "Filename does not grant document authority; code, canonical contracts/config, and validated evidence win."
+    "R3.01 is open; B3.5 is a forensic slice and merge candidate after review, not a FireTest success claim.",
+    "FireTest 5 remains NOT_READY and was not executed in B3.5.",
+    "C gate remains CORRECTIVE_REQUIRED_BEFORE_C.",
+    "B3.5 moved the public canary from a generic post-compile stall to a specific applicability-resolution capacity frontier.",
+    "Filename/path/extension remain routing or locator context, not semantic Truth.",
+    "Code, canonical contracts/config, and validated evidence win over this context pack when there is conflict."
   ]
 }

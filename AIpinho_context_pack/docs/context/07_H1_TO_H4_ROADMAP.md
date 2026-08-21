@@ -69,12 +69,14 @@ A capability belongs in a horizon when its prerequisites are actually reliable.
 
 ## Current state
 
-At the end of H1C0.R2:
+Current H1C0 state:
 - R2 reliability/governance scope is consolidated;
 - R2.18 is reconciled into `main`;
+- the pre-R3 repository/knowledge consistency gate is closed;
+- R3.01 is open;
+- B3.5 is the latest reviewed forensic slice;
 - FireTest 5 remains `NOT_READY`;
-- a pre-R3 repository/knowledge consistency gate is in progress;
-- the next runtime frontier is capability-based semantic media observation.
+- B3.6 is the next runtime frontier for capability applicability resolution capacity/admission.
 
 `R3.01` is a wave/frontier sequence label. It does not by itself mean Horizon 3 as a whole has been achieved.
 

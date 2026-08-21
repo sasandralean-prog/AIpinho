@@ -52,22 +52,20 @@ remote mutation capability
 
 Do not assume the chat's remembered state still matches GitHub.
 
-At Context Pack v0.2 generation time:
+At Context Pack v0.3 generation time:
 
 ```text
 repository = sasandralean-prog/AIpinho
 default branch = main
-R2.18 reconciliation merge = bed449fa8d3e78670df2bdddf413da181add61ce
+base main = 50af6491b78e662bbd3390a59400aec6f0eb0bb1
+current pre-merge branch = agent/codex/r3-01-b3-5-postcompile-stall-route-boundary
+current pre-context-update branch head = 9d5e06c9d2cd8d0a885e53855bd100b4c7a84105
 FireTest 5 = NOT_READY
-active gate = pre-R3 repository/knowledge consistency
+C gate = CORRECTIVE_REQUIRED_BEFORE_C
+current frontier = H1C0.R3.01.B3.6
 ```
 
-After the engineering-agent infrastructure mission:
-
-```text
-pre-R3 repository/knowledge consistency = H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY
-engineering-agent entrypoint = AGENTS.md
-```
+After any B3.5 merge, re-sync main and re-prove live runtime provenance before canary or FireTest work. Do not run FireTest 5 until the B3.6 canary gate passes or Rafa/Lúcio explicitly authorize a changed gate.
 
 ## Step 5 — Classify the agent context
 
@@ -132,9 +130,22 @@ When Rafa is working from a phone:
 
 If a connector is read-only or mutations fail, do not keep pretending the same write path will work. Switch explicitly to analysis → complete files → manual GitHub update → commit verification.
 
+
+## Current B3.5 / B3.6 handoff
+
+New agents must treat B3.5 branch reports and `current_state.json` v0.3 as the current pre-merge context.
+
+Current remaining P1:
+`R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER`
+
+Next corrective:
+`H1C0.R3.01.B3.6 — Capability Applicability Resolution Capacity & Admission Control`
+
+Do not run FireTest 5, install ffprobe, open C, or claim READY until the canary gate for B3.6 passes with evidence.
+
 ## Compact bootstrap prompt
 
-> You are joining the AIpinho project as Lúcio or as an engineering collaborator. Read `AIpinho_context_pack/docs/context/00_START_HERE.md` and the linked context pack in order. Treat current production code/contracts/config and validated public reports as higher authority than historical, generated, conversational, or speculative documents. Preserve AIpinho's truth, evidence, terminality, no-hardcode, no-false-success, and repository-consistency principles. Distinguish internal runtime agents, external agent islands, and engineering assistants working on the repository. Inspect the current Git state and summarize contradictions before proposing implementation work. Do not begin R3.01 while a pre-R3 consistency gate remains open.
+> You are joining the AIpinho project as Lúcio or as an engineering collaborator. Read `AIpinho_context_pack/docs/context/00_START_HERE.md` and the linked context pack in order. Treat current production code/contracts/config and validated public reports as higher authority than historical, generated, conversational, or speculative documents. Preserve AIpinho's truth, evidence, terminality, no-hardcode, no-false-success, and repository-consistency principles. Distinguish internal runtime agents, external agent islands, and engineering assistants working on the repository. Inspect the current Git state and summarize contradictions before proposing implementation work. Current pre-merge context is H1C0.R3.01.B3.5; FireTest 5 remains NOT_READY; B3.6 is the next corrective frontier.
 
 ## Point
 
