@@ -1,0 +1,29 @@
+{
+  "mission_id": "H1C0.R3.01.B3.10",
+  "mission_class": "hybrid_operational_correction",
+  "branch": "agent/codex/r3-01-b3-10-catalog-confidence-inferred-identity",
+  "base_main_sha": "2fe4cdb32ecc82b1631572e0528f58c7aae2bb82",
+  "head_before_commit": "2fe4cdb32ecc82b1631572e0528f58c7aae2bb82",
+  "origin_main": "2fe4cdb32ecc82b1631572e0528f58c7aae2bb82",
+  "ahead_behind": "0\t0",
+  "firetest5_official_pass_attempt": false,
+  "phase1_diagnostic_run": true,
+  "ffprobe_installed": false,
+  "c_gate": "CORRECTIVE_REQUIRED_BEFORE_C",
+  "remaining_p0": [],
+  "remaining_p1": [],
+  "remaining_p2": [
+    "R3_01_B3_9_P2_CONTAINER_AWARE_BACKEND_EXPANSION_MAY_BE_NEEDED",
+    "R3_01_B3_7_P2_ACCEPTED_RUNNING_WORKER_PROGRESS_VISIBILITY_DELAY",
+    "R3_01_B3_10_P2_LYRICS_RELATIONSHIP_CONFIRMATION_WORKFLOW_REMAINS_FUTURE"
+  ],
+  "resolved_issues": [
+    "R3_01_B3_9_P2_FILENAME_CANDIDATE_IDENTITY_REQUIRES_REVIEW_PROMOTION_POLICY",
+    "R3_01_B3_9_P2_ARTIFACT_VALIDATION_LIMITATION_LABELS_REQUIRE_RECONCILIATION"
+  ],
+  "reframed_issues": [
+    "R3_01_B3_9_P1_PRIMARY_MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT -> CATALOG_NOT_SAFE_FOR_FULL_TRUTH_CLAIM limitation; catalog/planning accepted with limitations"
+  ],
+  "new_issues": [],
+  "verdict": "R3_01_B3_10_CATALOG_CONFIDENCE_READY_FOR_PLANNING_WITH_LIMITATIONS"
+}

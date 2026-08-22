@@ -5,6 +5,7 @@ from types import SimpleNamespace
 from aipinho.schemas.chat.chat_response import ChatResponse
 from aipinho.schemas.public_runtime_api import PublicRuntimeRequest
 from aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_service import ReadonlyArtifactExecution
+from aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_service import ReadonlyAnalysisArtifactRuntimeService
 from aipinho.services.public_runtime_api_service import PublicRuntimeExecutionBridge
 
 
@@ -112,3 +113,12 @@ def test_public_analyze_returns_polling_handle_from_timeout_safe_boundary() -> N
     assert result["result_endpoint"] == "/api/v1/task-runs/task_run_public_boundary/result"
     assert result["events_endpoint"] == "/api/v1/task-runs/task_run_public_boundary/events"
     assert result["speaker_truth"]["can_claim_success"] is False
+
+
+def test_public_boundary_matches_workspace_across_windows_separator_forms() -> None:
+    service = ReadonlyAnalysisArtifactRuntimeService()
+
+    assert service._same_workspace(  # noqa: SLF001 - regression for public boundary run capture
+        "C:/Users/rafae/Documents/PinhoabacaxiMusicasDesktop",
+        r"C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop",
+    )

@@ -1,0 +1,91 @@
+{
+  "repo_path": "C:\\Dev\\AIpinho",
+  "branch": "agent/codex/r3-01-b3-10-catalog-confidence-inferred-identity",
+  "head": "2fe4cdb32ecc82b1631572e0528f58c7aae2bb82",
+  "origin_main": "2fe4cdb32ecc82b1631572e0528f58c7aae2bb82",
+  "ahead_behind": "0\t0",
+  "status_short": " M config/skills/registry/skills_index.json\n M src/aipinho/services/artifacts/media_candidate_identity_policy.py\n M src/aipinho/services/artifacts/media_inventory_row_taxonomy_service.py\n M src/aipinho/services/artifacts/media_inventory_sufficiency_service.py\n M src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py\n M src/aipinho/services/runtime/phase_semantic_completion_policy.py\n M src/aipinho/services/runtime/task_run_store.py\n M tests/unit/test_music_inventory_observational_binding_public.py\n M tests/unit/test_phase1_semantic_completion_policy.py\n M tests/unit/test_public_analyze_response_boundary.py\n M tests/unit/test_task_run_store.py\n?? src/aipinho/services/artifacts/artifact_use_safety_service.py\n?? src/aipinho/services/artifacts/catalog_confidence_model.py\n?? src/aipinho/services/artifacts/catalog_confidence_scoring_service.py\n?? src/aipinho/services/artifacts/catalog_field_status_service.py\n?? src/aipinho/services/artifacts/media_identity_resolution_service.py\n?? tests/unit/test_artifact_use_safety_service.py\n?? tests/unit/test_catalog_confidence_scoring_service.py\n?? tests/unit/test_catalog_field_status_service.py\n?? tests/unit/test_media_identity_resolution_service.py\n?? tests/unit/test_media_inventory_b3_10_catalog_confidence.py\n",
+  "python_executable": "C:\\Program Files\\Python311\\python.exe",
+  "sys_path_head": [
+    "C:\\Dev\\AIpinho",
+    "C:\\Program Files\\Python311\\python311.zip",
+    "C:\\Program Files\\Python311\\DLLs",
+    "C:\\Program Files\\Python311\\Lib",
+    "C:\\Program Files\\Python311",
+    "C:\\Users\\rafae\\AppData\\Roaming\\Python\\Python311\\site-packages",
+    "C:\\Dev\\AIpinho\\src",
+    "C:\\Program Files\\Python311\\Lib\\site-packages"
+  ],
+  "processes": [
+    {
+      "pid": 25096,
+      "cwd": "C:\\Dev\\AIpinho",
+      "exe": "C:\\Program Files\\Python311\\python.exe",
+      "cmdline": [
+        "C:\\Program Files\\Python311\\python.exe",
+        "-m",
+        "uvicorn",
+        "aipinho.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "9088"
+      ],
+      "started_at": "2026-08-22 11:20:59 -0300",
+      "listen": [
+        {
+          "ip": "0.0.0.0",
+          "port": 9088
+        }
+      ]
+    },
+    {
+      "pid": 30632,
+      "cwd": "C:\\Dev\\AIpinho",
+      "exe": "C:\\Users\\rafae\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+      "cmdline": [
+        "C:\\Users\\rafae\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+        "-Command",
+        "try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}\n@'\nimport importlib, json, os, subprocess, sys, time\nfrom pathlib import Path\ntry:\n    import psutil\nexcept Exception as exc:\n    print(json.dumps({'psutil_error': str(exc)})); raise\nrepo=Path('C:/Dev/AIpinho')\nmods=[\n 'aipinho',\n 'aipinho.main',\n 'aipinho.services.artifacts.file_container_signature_service',\n 'aipinho.services.artifacts.media_candidate_identity_policy',\n 'aipinho.services.artifacts.media_inventory_row_taxonomy_service',\n 'aipinho.services.artifacts.media_inventory_sufficiency_service',\n 'aipinho.services.artifacts.catalog_field_status_service',\n 'aipinho.services.artifacts.media_identity_resolution_service',\n 'aipinho.services.artifacts.catalog_confidence_scoring_service',\n 'aipinho.services.artifacts.artifact_use_safety_service',\n 'aipinho.api.routers.public_runtime_api_router',\n 'aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_service',\n]\nprocs=[]\nfor p in psutil.process_iter(['pid','name','exe','cmdline','cwd','create_time']):\n    try:\n        cmd=' '.join(p.info.get('cmdline') or [])\n        if 'uvicorn' in cmd and 'aipinho.main:app' in cmd and '9088' in cmd:\n            conns=[]\n            try:\n                for c in p.net_connections(kind='inet'):\n                    if c.status == psutil.CONN_LISTEN:\n                        conns.append({'ip': c.laddr.ip, 'port': c.laddr.port})\n            except Exception:\n                pass\n            procs.append({\n                'pid': p.pid,\n                'cwd': p.info.get('cwd'),\n                'exe': p.info.get('exe'),\n                'cmdline': p.info.get('cmdline'),\n                'started_at': time.strftime('%Y-%m-%d %H:%M:%S %z', time.localtime(p.info.get('create_time'))),\n                'listen': conns,\n            })\n    except Exception:\n        pass\nendpoints={}\nfor ep in ['version','runtime','modules','contracts']:\n    try:\n        r=subprocess.run([sys.executable,'-c',f\"import urllib.request,json; r=urllib.request.urlopen('http://127.0.0.1:9088/api/v1/{ep}', timeout=10); print(r.status); print(r.read().decode('utf-8')[:1000])\"],capture_output=True,text=True,timeout=15)\n        endpoints['/api/v1/'+ep]={'returncode':r.returncode,'stdout':r.stdout,'stderr':r.stderr}\n    except Exception as exc:\n        endpoints['/api/v1/'+ep]={'error':str(exc)}\ninfo={\n 'repo_path': str(repo),\n 'branch': subprocess.check_output(['git','branch','--show-current'],cwd=repo,text=True).strip(),\n 'head': subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip(),\n 'origin_main': subprocess.check_output(['git','rev-parse','origin/main'],cwd=repo,text=True).strip(),\n 'ahead_behind': subprocess.check_output(['git','rev-list','--left-right','--count','origin/main...HEAD'],cwd=repo,text=True).strip(),\n 'status_short': subprocess.check_output(['git','status','--short'],cwd=repo,text=True),\n 'python_executable': sys.executable,\n 'sys_path_head': sys.path[:8],\n 'processes': procs,\n 'modules': {},\n 'endpoints': endpoints,\n}\nfor m in mods:\n    mod=importlib.import_module(m)\n    info['modules'][m]=getattr(mod,'__file__',None)\nPath('tmp_b3_10_runtime_provenance_latest.json').write_text(json.dumps(info, indent=2), encoding='utf-8')\nprint(json.dumps(info, indent=2)[:12000])\n'@ | python -"
+      ],
+      "started_at": "2026-08-22 11:21:48 -0300",
+      "listen": []
+    }
+  ],
+  "modules": {
+    "aipinho": "C:\\Dev\\AIpinho\\src\\aipinho\\__init__.py",
+    "aipinho.main": "C:\\Dev\\AIpinho\\src\\aipinho\\main.py",
+    "aipinho.services.artifacts.file_container_signature_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\file_container_signature_service.py",
+    "aipinho.services.artifacts.media_candidate_identity_policy": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\media_candidate_identity_policy.py",
+    "aipinho.services.artifacts.media_inventory_row_taxonomy_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\media_inventory_row_taxonomy_service.py",
+    "aipinho.services.artifacts.media_inventory_sufficiency_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\media_inventory_sufficiency_service.py",
+    "aipinho.services.artifacts.catalog_field_status_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\catalog_field_status_service.py",
+    "aipinho.services.artifacts.media_identity_resolution_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\media_identity_resolution_service.py",
+    "aipinho.services.artifacts.catalog_confidence_scoring_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\catalog_confidence_scoring_service.py",
+    "aipinho.services.artifacts.artifact_use_safety_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\artifact_use_safety_service.py",
+    "aipinho.api.routers.public_runtime_api_router": "C:\\Dev\\AIpinho\\src\\aipinho\\api\\routers\\public_runtime_api_router.py",
+    "aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\governance\\runtime\\readonly_analysis_artifact_runtime_service.py"
+  },
+  "endpoints": {
+    "/api/v1/version": {
+      "returncode": 0,
+      "stdout": "200\n{\"api_version\":\"1.0\",\"app_version\":\"0.1.0\",\"supported_versions\":[\"1.0\"]}\n",
+      "stderr": ""
+    },
+    "/api/v1/runtime": {
+      "returncode": 0,
+      "stdout": "200\n{\"status\":\"ok\",\"kernel_state\":\"READY\",\"modules\":15,\"gateway_required\":true,\"kernel_required\":true}\n",
+      "stderr": ""
+    },
+    "/api/v1/modules": {
+      "returncode": 0,
+      "stdout": "200\n{\"modules\":[{\"module_id\":\"semantic_interpreter\",\"name\":\"Semantic Interpreter\",\"version\":\"1.0\",\"capabilities\":[\"semantic_understanding\"],\"contracts\":[\"semantic_ir\"],\"dependencies\":[],\"status\":\"registered\",\"health\":\"unknown\",\"can_read\":true,\"can_write\":false,\"can_execute\":false,\"requires_contract\":true,\"requires_validation\":true,\"contracts_supported\":[\"semantic_ir\"],\"required_models\":[],\"required_tools\":[],\"required_skills\":[],\"required_permissions\":[],\"metadata\":{}},{\"module_id\":\"normalizer\",\"name\":\"Semantic Normalizer\",\"version\":\"1.0\",\"capabilities\":[\"semantic_normalization\"],\"contracts\":[\"semantic_ir\"],\"dependencies\":[],\"status\":\"registered\",\"health\":\"unknown\",\"can_read\":true,\"can_write\":false,\"can_execute\":false,\"requires_contract\":true,\"requires_validation\":true,\"contracts_supported\":[\"semantic_ir\"],\"required_models\":[],\"required_tools\":[],\"required_skills\":[],\"required_permissions\":[],\"metadata\":{}},{\"module_id\":\"contract_compiler\",\"name\":\"Contract Compiler\",\"version\":\"1.0\",\"capabi\n",
+      "stderr": ""
+    },
+    "/api/v1/contracts": {
+      "returncode": 0,
+      "stdout": "200\n{\"version\":\"1.0\",\"contracts\":[{\"contract_id\":\"public_contract_6afa97f07b4341e08806c48b4a55219a\",\"operation\":\"chat\",\"version\":\"1.0\",\"contract_type\":\"conversation\",\"target_module\":\"semantic_interpreter\",\"schema_ref\":\"public.chat.v1\",\"gateway_required\":true,\"kernel_required\":true},{\"contract_id\":\"public_contract_e7e196161329431789368d8635e416e7\",\"operation\":\"execute\",\"version\":\"1.0\",\"contract_type\":\"execution_plan\",\"target_module\":\"planner\",\"schema_ref\":\"public.execute.v1\",\"gateway_required\":true,\"kernel_required\":true},{\"contract_id\":\"public_contract_a9cb686d228f452ea3a75f4a91815a6b\",\"operation\":\"analyze\",\"version\":\"1.0\",\"contract_type\":\"analysis\",\"target_module\":\"planner\",\"schema_ref\":\"public.analyze.v1\",\"gateway_required\":true,\"kernel_required\":true},{\"contract_id\":\"public_contract_abb05d3066e542e7a5f11ea9e18f38a4\",\"operation\":\"doctor\",\"version\":\"1.0\",\"contract_type\":\"runtime_doctor_report\",\"target_module\":\"runtime_doctor\",\"schema_ref\":\"public.doctor.v1\",\"gateway_required\":true,\"kernel\n",
+      "stderr": ""
+    }
+  }
+}

@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from aipinho.services.artifacts.artifact_use_safety_service import ArtifactUseSafetyService
+
 
 @dataclass(frozen=True)
 class MediaInventorySufficiencyPolicy:
@@ -40,8 +42,13 @@ class MediaInventorySufficiencyResult:
 class MediaInventorySufficiencyService:
     """Evaluates media inventory sufficiency from governed summaries only."""
 
-    def __init__(self, policy: MediaInventorySufficiencyPolicy | None = None) -> None:
+    def __init__(
+        self,
+        policy: MediaInventorySufficiencyPolicy | None = None,
+        use_safety: ArtifactUseSafetyService | None = None,
+    ) -> None:
         self.policy = policy or MediaInventorySufficiencyPolicy()
+        self.use_safety = use_safety or ArtifactUseSafetyService()
 
     def evaluate(
         self,
@@ -78,9 +85,11 @@ class MediaInventorySufficiencyService:
         primary_without_identity_count = int(row_applicability.get("primary_media_without_identity_tags_count") or 0)
         primary_backend_no_evidence_count = int(row_applicability.get("primary_media_backend_no_valid_evidence_count") or 0)
         candidate_identity_count = int(row_applicability.get("candidate_identity_available_count") or 0)
+        inferred_identity_count = int(row_applicability.get("inferred_identity_available_count") or 0)
         container_mismatch_count = int(row_applicability.get("file_anatomy_extension_container_mismatch_count") or 0)
         sidecar_relationship_count = int(row_applicability.get("sidecar_relationship_candidate_count") or 0)
         artwork_candidate_count = int(row_applicability.get("artwork_candidate_count") or 0)
+        inventory_confidence = row_applicability.get("inventory_confidence") if isinstance(row_applicability.get("inventory_confidence"), dict) else {}
         primary_identity_ratio = self._ratio(primary_governed_identity_count, primary_media_count)
         evidence_ratio = self._ratio(int(row_evidence.get("rows_with_evidence_ref") or evidence_refs), selected)
         selection_ratio = self._ratio(selected, expected)
@@ -138,6 +147,16 @@ class MediaInventorySufficiencyService:
         if row_applicability and candidate_identity_count > 0:
             reason_codes.append("MEDIA_CANDIDATE_IDENTITY_NOT_TRUTH")
             limitations.append("candidate_identity_available_but_not_semantic_truth")
+        if row_applicability and inferred_identity_count > 0:
+            reason_codes.append("CATALOG_INFERRED_IDENTITY_USED_WITH_LIMITATIONS")
+            limitations.append("inferred_identity_available_for_catalog_not_truth")
+        if row_applicability and primary_media_count and primary_identity_ratio < 1.0:
+            reason_codes.append("CATALOG_OBSERVED_IDENTITY_INCOMPLETE")
+            reason_codes.append("CATALOG_NOT_SAFE_FOR_FULL_TRUTH_CLAIM")
+            limitations.append("observed_identity_truth_claim_insufficient")
+        if inventory_confidence and inventory_confidence.get("safe_for_catalog"):
+            reason_codes.append("CATALOG_SAFE_FOR_PLANNING_WITH_LIMITATIONS")
+            limitations.append("catalog_representation_safe_for_planning_with_limitations")
         if row_applicability and sidecar_relationship_count > 0:
             reason_codes.append("MEDIA_SIDECAR_RELATIONSHIP_POLICY_REQUIRED")
             limitations.append("lyrics_sidecar_relationship_candidates_require_validation")
@@ -169,16 +188,41 @@ class MediaInventorySufficiencyService:
         status = "satisfied" if not reason_codes else "blocked"
         safe = status == "satisfied"
         full_truth_claim = safe and not metadata_attributes_missing
+        use_safety = self.use_safety.evaluate_catalog_artifact(
+            inventory_confidence=inventory_confidence,
+            reason_codes=reason_codes,
+            limitations=limitations,
+        )
+        phase1_discovery_safe = bool(use_safety.get("safe_for_catalog"))
         return MediaInventorySufficiencyResult(
             status=status,
             reason_code=None if safe else reason_codes[0],
             safe_to_use=safe,
             use_safety={
                 "unrestricted": safe,
-                "phase1_discovery": safe,
-                "downstream_static_analysis": safe,
+                "phase1_discovery": phase1_discovery_safe,
+                "downstream_static_analysis": use_safety.get("safe_for_downstream_static_analysis"),
                 "full_truth_claim": full_truth_claim,
                 "limited_truth_claim": safe,
+                "safe_for_truth_claim": use_safety.get("safe_for_truth_claim"),
+                "safe_for_catalog": use_safety.get("safe_for_catalog"),
+                "safe_for_planning": use_safety.get("safe_for_planning"),
+                "safe_for_downstream_static_analysis": use_safety.get("safe_for_downstream_static_analysis"),
+                "safe_for_destructive_action": use_safety.get("safe_for_destructive_action"),
+                "safe_for_user_report": use_safety.get("safe_for_user_report"),
+                "validation_status_for_truth_claim": "passed" if use_safety.get("safe_for_truth_claim") is True else "blocked",
+                "validation_status_for_catalog": "passed" if use_safety.get("safe_for_catalog") is True else "blocked",
+                "validation_status_for_planning": "passed_with_limitations"
+                if use_safety.get("safe_for_planning") == "true_with_limitations"
+                else "passed"
+                if use_safety.get("safe_for_planning") is True
+                else "blocked",
+                "artifact_safe_for_truth_claim": use_safety.get("safe_for_truth_claim"),
+                "artifact_safe_for_catalog": use_safety.get("safe_for_catalog"),
+                "artifact_safe_for_planning": use_safety.get("safe_for_planning"),
+                "observed_identity_truth_claim_insufficient": use_safety.get("observed_identity_truth_claim_insufficient"),
+                "catalog_complete_with_inferred_unknown_status": use_safety.get("catalog_complete_with_inferred_unknown_status"),
+                "planning_safe_with_limitations": use_safety.get("planning_safe_with_limitations"),
                 "reason_codes": reason_codes,
                 "limitations": [
                     *limitations,
@@ -212,6 +256,15 @@ class MediaInventorySufficiencyService:
                 "artwork_candidate_count": artwork_candidate_count,
                 "candidate_identity_available_count": candidate_identity_count,
                 "candidate_identity_not_truth_count": int(row_applicability.get("candidate_identity_not_truth_count") or 0),
+                "inferred_identity_available_count": inferred_identity_count,
+                "rows_observed_identity": int(row_applicability.get("rows_observed_identity") or 0),
+                "rows_inferred_identity": int(row_applicability.get("rows_inferred_identity") or 0),
+                "rows_candidate_identity": int(row_applicability.get("rows_candidate_identity") or 0),
+                "rows_unknown_identity": int(row_applicability.get("rows_unknown_identity") or 0),
+                "rows_not_applicable_identity": int(row_applicability.get("rows_not_applicable_identity") or 0),
+                "rows_unsupported_identity": int(row_applicability.get("rows_unsupported_identity") or 0),
+                "rows_container_mismatch": int(row_applicability.get("rows_container_mismatch") or 0),
+                "inventory_confidence": dict(inventory_confidence),
                 "technical_metadata_observed_count": int(row_applicability.get("technical_metadata_observed_count") or 0),
                 "technical_metadata_only_count": int(row_applicability.get("technical_metadata_only_count") or 0),
                 "file_anatomy_extension_container_mismatch_count": container_mismatch_count,

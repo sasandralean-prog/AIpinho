@@ -77,3 +77,47 @@ def test_rows_alone_are_not_sufficient_without_evidence_refs() -> None:
     assert decision.status == "blocked"
     assert decision.safe_to_report_success is False
     assert decision.reason_code != "PHASE1_DISCOVERY_COMPLETED_WITH_LIMITED_INVENTORY"
+
+
+def test_catalog_use_safety_reframes_identity_gap_as_limited_completion() -> None:
+    artifact = _partial_inventory_artifact()
+    artifact["metadata"]["reason_code"] = "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT"
+    artifact["metadata"]["inventory_sufficiency_summary"] = {
+        "status": "blocked",
+        "reason_code": "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+        "safe_to_use": False,
+        "use_safety": {
+            "safe_for_truth_claim": False,
+            "safe_for_catalog": True,
+            "safe_for_planning": "true_with_limitations",
+            "safe_for_downstream_static_analysis": "true_with_limitations",
+            "safe_for_destructive_action": False,
+            "safe_for_user_report": "true_with_limitations",
+            "catalog_complete_with_inferred_unknown_status": True,
+            "planning_safe_with_limitations": True,
+            "limitations": ["observed_identity_truth_claim_insufficient"],
+        },
+        "coverage_summary": {
+            "inventory_confidence": {
+                "safe_for_truth_claim": False,
+                "safe_for_catalog": True,
+                "safe_for_planning": "true_with_limitations",
+            }
+        },
+    }
+
+    decision = PhaseSemanticCompletionPolicy().evaluate(
+        phase_id="phase_1",
+        phase_kind="discovery",
+        runtime_status="blocked",
+        validation=_validation(),
+        artifacts=[artifact],
+    )
+
+    assert decision.status == "completed_with_limitations"
+    assert decision.reason_code == "CATALOG_READY_WITH_INFERRED_AND_UNKNOWN_IDENTITY"
+    assert decision.safe_to_report_success is False
+    assert decision.phase_dependency["artifact_safe_for_truth_claim"] is False
+    assert decision.phase_dependency["artifact_safe_for_catalog"] is True
+    assert decision.phase_dependency["artifact_safe_for_planning"] == "true_with_limitations"
+    assert "full_inventory" in decision.forbidden_claims

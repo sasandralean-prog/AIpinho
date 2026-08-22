@@ -165,6 +165,7 @@ class PhaseSemanticCompletionPolicy:
             and evidence_refs >= self.minimum_evidence_bound_rows
             and coverage == "satisfied"
         )
+        catalog_safety = self._catalog_use_safety(artifact)
         limitations = list(dict.fromkeys([
             "partial_media_corpus_inventory",
             "media_metadata_not_configured_or_not_observed",
@@ -175,6 +176,69 @@ class PhaseSemanticCompletionPolicy:
             *fulfilled,
             "partial_media_corpus_inventory",
         ]))
+        if catalog_safety and safe_for_limited:
+            reason_code = "CATALOG_READY_WITH_INFERRED_AND_UNKNOWN_IDENTITY"
+            use_safety = catalog_safety.get("use_safety", {})
+            inventory_confidence = catalog_safety.get("inventory_confidence", {})
+            catalog_limitations = list(dict.fromkeys([
+                *limitations,
+                *[str(item) for item in use_safety.get("limitations") or []],
+            ]))
+            return PhaseCompletionDecision(
+                status="completed_with_limitations",
+                safe_to_report_success=False,
+                reason_code=reason_code,
+                validation_status="passed_with_limitations",
+                phase_contract_status="satisfied_with_limitations",
+                artifact_sufficiency_status="catalog_planning_accepted_with_truth_limitations",
+                safe_for_limited_discovery=True,
+                partial_artifact_accepted=True,
+                expected_outputs=expected,
+                fulfilled_outputs=list(dict.fromkeys([*fulfilled, "artifact:catalog_inventory_with_limitations"])),
+                missing_outputs=[],
+                limited_outputs=list(dict.fromkeys([*limited_outputs, "catalog_inventory_with_limitations"])),
+                limiting_findings=list(dict.fromkeys([
+                    "CATALOG_OBSERVED_IDENTITY_INCOMPLETE",
+                    "CATALOG_INFERRED_IDENTITY_USED_WITH_LIMITATIONS",
+                    "CATALOG_SAFE_FOR_PLANNING_WITH_LIMITATIONS",
+                ])),
+                limitations=catalog_limitations,
+                allowed_claims=[
+                    "phase_1_catalog_ready_with_limitations",
+                    "inventory_safe_for_catalog",
+                    "inventory_safe_for_planning_with_limitations",
+                    f"catalog_inventory_rows_available:{bound_rows}",
+                ],
+                forbidden_claims=self._forbidden_claims(),
+                required_disclosures=catalog_limitations,
+                phase_dependency={
+                    "status": "satisfied_with_limitations",
+                    "upstream_phase_id": phase_id,
+                    "artifact_contract_status": "partial",
+                    "artifact_safe_to_use": False,
+                    "artifact_safe_for_truth_claim": use_safety.get("safe_for_truth_claim"),
+                    "artifact_safe_for_catalog": use_safety.get("safe_for_catalog"),
+                    "artifact_safe_for_planning": use_safety.get("safe_for_planning"),
+                    "allowed_downstream_uses": ["catalog_planning_with_limitations"],
+                    "forbidden_downstream_claims": self._forbidden_claims(),
+                    "reason_codes": [reason_code, "CATALOG_NOT_SAFE_FOR_FULL_TRUTH_CLAIM"],
+                },
+                metadata={
+                    **self._metadata(
+                        phase_id=phase_id,
+                        phase_kind=phase_kind,
+                        artifact=artifact,
+                        selected_rows=selected_rows,
+                        bound_rows=bound_rows,
+                        evidence_refs=evidence_refs,
+                        safe_for_limited=safe_for_limited,
+                    ),
+                    "policy_mode": "catalog_confidence_use_safety",
+                    "inventory_confidence": inventory_confidence,
+                    "use_safety": use_safety,
+                    "safe_to_report_success_reason": "full_truth_claim_not_satisfied",
+                },
+            )
         if self.partial_inventory_allowed and safe_for_limited:
             reason_code = "PHASE1_DISCOVERY_COMPLETED_WITH_LIMITED_INVENTORY"
             return PhaseCompletionDecision(
@@ -390,6 +454,30 @@ class PhaseSemanticCompletionPolicy:
         if isinstance(coverage, dict):
             return str(coverage.get("status") or "")
         return str(coverage or "")
+
+    def _catalog_use_safety(self, artifact: dict[str, Any]) -> dict[str, Any] | None:
+        sufficiency = self._field(artifact, "inventory_sufficiency_summary", default={})
+        if not isinstance(sufficiency, dict):
+            schema = self._field(artifact, "schema_coverage", default={})
+            sufficiency = (schema or {}).get("inventory_sufficiency_summary") if isinstance(schema, dict) else {}
+        if not isinstance(sufficiency, dict):
+            return None
+        use_safety = sufficiency.get("use_safety") if isinstance(sufficiency.get("use_safety"), dict) else {}
+        coverage = sufficiency.get("coverage_summary") if isinstance(sufficiency.get("coverage_summary"), dict) else {}
+        inventory_confidence = coverage.get("inventory_confidence") if isinstance(coverage.get("inventory_confidence"), dict) else {}
+        catalog_safe = use_safety.get("safe_for_catalog") is True or inventory_confidence.get("safe_for_catalog") is True
+        planning = use_safety.get("safe_for_planning", inventory_confidence.get("safe_for_planning"))
+        truth_safe = use_safety.get("safe_for_truth_claim", inventory_confidence.get("safe_for_truth_claim"))
+        catalog_complete = bool(use_safety.get("catalog_complete_with_inferred_unknown_status"))
+        planning_safe = planning is True or planning == "true_with_limitations"
+        truth_limited = truth_safe is False
+        if not (catalog_safe and planning_safe and catalog_complete and truth_limited):
+            return None
+        return {
+            "use_safety": use_safety,
+            "inventory_confidence": inventory_confidence,
+            "sufficiency": sufficiency,
+        }
 
     def _int_field(self, artifact: dict[str, Any], key: str) -> int:
         try:

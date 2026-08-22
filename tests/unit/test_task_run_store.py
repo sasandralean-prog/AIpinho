@@ -130,6 +130,31 @@ def test_store_terminal_result_coheres_run_status(tmp_path):
     assert loaded.current_step_id is None
 
 
+def test_store_completed_with_limitations_result_coheres_run_to_partial(tmp_path):
+    store = TaskRunStore(root=tmp_path / "runs")
+    run = runtime_run().model_copy(update={"status": "running", "started_at": "2026-01-01T00:00:00+00:00"})
+    store.create_run(run)
+
+    store.save_result(
+        run.run_id,
+        TaskRunResult(
+            run_id=run.run_id,
+            status="completed_with_limitations",
+            reason_code="CATALOG_READY_WITH_INFERRED_AND_UNKNOWN_IDENTITY",
+            summary="catalog ready with limitations",
+        ),
+    )
+    loaded = store.get_run(run.run_id)
+    result = store.get_result(run.run_id)
+
+    assert loaded is not None
+    assert loaded.status == "partial"
+    assert loaded.finished_at is not None
+    assert loaded.current_step_id is None
+    assert result is not None
+    assert result.status == "completed_with_limitations"
+
+
 def test_store_terminalizes_running_run_when_runtime_budget_exceeded(tmp_path):
     store = TaskRunStore(root=tmp_path / "runs")
     run = runtime_run().model_copy(

@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "commands": [
+    {
+      "command": "python -m compileall -q src tests",
+      "status": "passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_catalog_field_status_service.py tests/unit/test_catalog_confidence_scoring_service.py tests/unit/test_artifact_use_safety_service.py tests/unit/test_media_identity_resolution_service.py tests/unit/test_media_inventory_b3_10_catalog_confidence.py -q",
+      "status": "passed",
+      "result": "10 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_phase1_semantic_completion_policy.py tests/unit/test_partial_artifact_acceptance_policy.py tests/unit/test_semantic_completion_finalization_handoff.py tests/unit/test_task_run_store.py -q",
+      "status": "passed",
+      "result": "23 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_media_inventory_row_applicability_taxonomy.py tests/unit/test_media_inventory_sufficiency_by_row_class.py tests/unit/test_file_container_signature_service.py tests/unit/test_media_candidate_identity_policy.py -q",
+      "status": "passed",
+      "result": "9 passed"
+    }
+  ],
+  "json_reports_parsed": [
+    "reports\\runtime_consolidation\\firetest5_h1c0_r3_01_b3_10_artifact_metadata_projection.json",
+    "reports\\runtime_consolidation\\firetest5_h1c0_r3_01_b3_10_catalog_confidence_diagnostic.json",
+    "reports\\runtime_consolidation\\firetest5_h1c0_r3_01_b3_10_csv_schema_delta.json",
+    "reports\\runtime_consolidation\\firetest5_h1c0_r3_01_b3_10_field_status_audit.json",
+    "reports\\runtime_consolidation\\firetest5_h1c0_r3_01_b3_10_identity_resolution_audit.json",
+    "reports\\runtime_consolidation\\firetest5_h1c0_r3_01_b3_10_inventory_confidence_summary.json",
+    "reports\\runtime_consolidation\\firetest5_h1c0_r3_01_b3_10_issue_register.json",
+    "reports\\runtime_consolidation\\firetest5_h1c0_r3_01_b3_10_item_confidence_audit.json",
+    "reports\\runtime_consolidation\\firetest5_h1c0_r3_01_b3_10_p1_p2_resolution_audit.json",
+    "reports\\runtime_consolidation\\firetest5_h1c0_r3_01_b3_10_public_phase1_observation.json",
+    "reports\\runtime_consolidation\\firetest5_h1c0_r3_01_b3_10_runtime_provenance.json",
+    "reports\\runtime_consolidation\\firetest5_h1c0_r3_01_b3_10_test_validation.json",
+    "reports\\runtime_consolidation\\firetest5_h1c0_r3_01_b3_10_use_safety_matrix.json"
+  ],
+  "full_unit_suite": "not_attempted_due_to_user_requested_low-usage_finalization"
+}

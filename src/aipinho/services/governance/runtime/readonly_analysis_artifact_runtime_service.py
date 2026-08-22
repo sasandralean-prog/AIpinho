@@ -595,24 +595,23 @@ class ReadonlyAnalysisArtifactRuntimeService:
         original_store_create_run = self.runtime.store.create_run
         original_runtime_create_run = self.runtime.create_run
 
-        def capture_store_create_run(run):
-            created = original_store_create_run(run)
-            if (
-                created.workspace == workspace
+        def matches_public_boundary_run(created) -> bool:
+            return (
+                self._same_workspace(created.workspace, workspace)
                 and created.operation_type == "workspace_analysis_readonly"
                 and (created.intent_map or {}).get("raw_prompt") == request.message
-            ):
+            )
+
+        def capture_store_create_run(run):
+            created = original_store_create_run(run)
+            if matches_public_boundary_run(created):
                 holder["store_run_id"] = created.run_id
             return created
 
         def capture_runtime_create_run(run_request):
             holder["runtime_create_started"] = True
             created = original_runtime_create_run(run_request)
-            if (
-                created.workspace == workspace
-                and created.operation_type == "workspace_analysis_readonly"
-                and (created.intent_map or {}).get("raw_prompt") == request.message
-            ):
+            if matches_public_boundary_run(created):
                 holder["run_id"] = created.run_id
                 holder["runtime_create_completed"] = True
             return created
@@ -1359,6 +1358,11 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "result_url": f"/api/v1/task-runs/{run_id}/result",
         }
 
+    def _same_workspace(self, left: str | None, right: str | None) -> bool:
+        if not left or not right:
+            return False
+        return os.path.normcase(os.path.normpath(str(left))) == os.path.normcase(os.path.normpath(str(right)))
+
     def execute(
         self,
         *,
@@ -1814,7 +1818,17 @@ class ReadonlyAnalysisArtifactRuntimeService:
             status=status,
             phase_decision=phase_completion_decision,
         )
-        result_status = "completed" if status == "completed" and completion.status == "completed" else "cancelled" if status == "cancelled" else "blocked"
+        result_status = (
+            "completed"
+            if completion.status == "completed"
+            else "completed_with_limitations"
+            if completion.status == "completed_with_limitations"
+            else "cancelled"
+            if status == "cancelled"
+            else "failed"
+            if status == "failed"
+            else "blocked"
+        )
         self.runtime.events.create(
             run.run_id,
             "runtime_finalization_checkpoint",
@@ -1837,6 +1851,8 @@ class ReadonlyAnalysisArtifactRuntimeService:
             summary=(
                 f"Read-only analysis generated {len(created_artifacts)} governed artifact(s)."
                 if result_status == "completed"
+                else f"Read-only analysis generated {len(created_artifacts)} governed artifact(s) with limitations."
+                if result_status == "completed_with_limitations"
                 else "Read-only analysis was cancelled at a governed checkpoint."
                 if result_status == "cancelled"
                 else "Read-only analysis did not satisfy required artifact outputs."
@@ -1873,7 +1889,13 @@ class ReadonlyAnalysisArtifactRuntimeService:
                     "phase_dependency": phase_completion_decision.phase_dependency,
                 },
             },
-            warnings=[] if result_status == "completed" else ["task_run_cancelled"] if result_status == "cancelled" else ["artifact_validation_failed"],
+            warnings=[]
+            if result_status == "completed"
+            else ["artifact_validation_limited"]
+            if result_status == "completed_with_limitations"
+            else ["task_run_cancelled"]
+            if result_status == "cancelled"
+            else ["artifact_validation_failed"],
             blocked_items=list(validation.get("blocking_findings") or validation.get("missing_outputs") or []),
             events_count=len(self.runtime.events.list(run.run_id)),
             trace_ref=f"task-runs/{run.run_id}/trace",
@@ -1904,7 +1926,8 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 "bounded": True,
             },
         )
-        self._transition(run, result_status)
+        run_terminal_status = "partial" if result_status == "completed_with_limitations" else result_status
+        self._transition(run, run_terminal_status)
         self.runtime.canonical_states.bind_artifacts(run, final_artifacts, required=logical_paths)
         self.runtime.store.save_result(run.run_id, result)
         self.runtime.events.create(
@@ -1922,8 +1945,16 @@ class ReadonlyAnalysisArtifactRuntimeService:
         )
         self._emit_terminal_event(
             run.run_id,
-            "run_completed" if result_status == "completed" else "run_cancelled" if result_status == "cancelled" else "run_blocked",
-            result_status,
+            "run_completed"
+            if result_status == "completed"
+            else "run_partial"
+            if result_status == "completed_with_limitations"
+            else "run_cancelled"
+            if result_status == "cancelled"
+            else "run_failed"
+            if result_status == "failed"
+            else "run_blocked",
+            run_terminal_status,
             result.summary,
         )
         self._calibrate_phase0_prediction(run.run_id, phase0_ref)
@@ -3883,6 +3914,47 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "candidate_identity_confidence",
             "candidate_truth_status",
             "candidate_risk_flags",
+            "catalog_item_status",
+            "technical_score",
+            "identity_observed_score",
+            "identity_inferred_score",
+            "identity_candidate_score",
+            "container_score",
+            "relationship_score",
+            "evidence_binding_score",
+            "overall_catalog_confidence",
+            "truth_claim_confidence",
+            "planning_confidence",
+            "safe_for_truth_claim",
+            "safe_for_catalog",
+            "safe_for_planning",
+            "safe_for_downstream_static_analysis",
+            "safe_for_destructive_action",
+            "safe_for_user_report",
+            "track_title_status",
+            "artist_status",
+            "album_status",
+            "album_artist_status",
+            "track_title_confidence",
+            "artist_confidence",
+            "album_confidence",
+            "album_artist_confidence",
+            "observed_track_title",
+            "observed_artist",
+            "observed_album",
+            "observed_album_artist",
+            "inferred_track_title",
+            "inferred_artist",
+            "inferred_album",
+            "inferred_album_artist",
+            "candidate_track_title",
+            "candidate_album_artist",
+            "resolved_display_title",
+            "resolved_display_artist",
+            "resolved_display_album",
+            "resolved_identity_source_status",
+            "resolved_identity_confidence",
+            "resolved_identity_limitations",
             "row_sufficiency_status",
             "row_sufficiency_reason_code",
             "observed_container",
@@ -5431,10 +5503,17 @@ class ReadonlyAnalysisArtifactRuntimeService:
             or (project_roots_from_prompt[0] if project_roots_from_prompt else explicit_roots[0] if explicit_roots else "")
         )
         external_roots = self._string_list(context.get("external_roots"))
+        for root in self._string_list(context.get("external_root")):
+            if root and root not in external_roots:
+                external_roots.append(root)
         for root in explicit_roots:
             if root and root != project_root and role_by_root.get(root) not in {"library_root", "corpus_root"} and root not in external_roots:
                 external_roots.append(root)
         library_roots = self._string_list(context.get("library_roots"))
+        for key in ("library_root", "corpus_root", "corpus_roots"):
+            for root in self._string_list(context.get(key)):
+                if root and root not in library_roots:
+                    library_roots.append(root)
         for root in explicit_roots:
             if role_by_root.get(root) in {"library_root", "corpus_root"} and root not in library_roots:
                 library_roots.append(root)
@@ -6869,6 +6948,9 @@ class ReadonlyAnalysisArtifactRuntimeService:
         inventory_sufficiency = artifact.get("inventory_sufficiency_summary") or metadata.get("inventory_sufficiency_summary")
         if not isinstance(inventory_sufficiency, dict):
             inventory_sufficiency = schema_coverage.get("inventory_sufficiency_summary") if isinstance(schema_coverage.get("inventory_sufficiency_summary"), dict) else {}
+        use_safety = inventory_sufficiency.get("use_safety") if isinstance(inventory_sufficiency.get("use_safety"), dict) else {}
+        coverage_summary = inventory_sufficiency.get("coverage_summary") if isinstance(inventory_sufficiency.get("coverage_summary"), dict) else {}
+        inventory_confidence = coverage_summary.get("inventory_confidence") if isinstance(coverage_summary.get("inventory_confidence"), dict) else {}
         row_evidence = artifact.get("row_evidence_coverage") or metadata.get("row_evidence_coverage")
         if not isinstance(row_evidence, dict):
             row_evidence = {}
@@ -6888,6 +6970,21 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "reason_code": artifact.get("reason_code") or metadata.get("reason_code"),
             "semantic_contract_status": artifact.get("semantic_contract_status") or metadata.get("semantic_contract_status"),
             "safe_to_use": artifact.get("safe_to_use") if "safe_to_use" in artifact else metadata.get("safe_to_use"),
+            "safe_for_truth_claim": use_safety.get("safe_for_truth_claim", inventory_confidence.get("safe_for_truth_claim")),
+            "safe_for_catalog": use_safety.get("safe_for_catalog", inventory_confidence.get("safe_for_catalog")),
+            "safe_for_planning": use_safety.get("safe_for_planning", inventory_confidence.get("safe_for_planning")),
+            "safe_for_downstream_static_analysis": use_safety.get(
+                "safe_for_downstream_static_analysis",
+                inventory_confidence.get("safe_for_downstream_static_analysis"),
+            ),
+            "safe_for_destructive_action": use_safety.get(
+                "safe_for_destructive_action",
+                inventory_confidence.get("safe_for_destructive_action"),
+            ),
+            "safe_for_user_report": use_safety.get("safe_for_user_report", inventory_confidence.get("safe_for_user_report")),
+            "validation_status_for_truth_claim": use_safety.get("validation_status_for_truth_claim"),
+            "validation_status_for_catalog": use_safety.get("validation_status_for_catalog"),
+            "validation_status_for_planning": use_safety.get("validation_status_for_planning"),
             "limitations": list(artifact.get("limitations") or metadata.get("limitations") or [])[:20],
             "partial_rows": artifact.get("partial_rows") or metadata.get("partial_rows"),
             "expected_rows": artifact.get("expected_rows") or metadata.get("expected_rows"),

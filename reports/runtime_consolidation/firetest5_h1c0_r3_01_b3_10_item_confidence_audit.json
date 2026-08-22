@@ -1,0 +1,22 @@
+{
+  "catalog_item_status_distribution": {
+    "cataloged_candidate": 524,
+    "cataloged_observed": 214,
+    "cataloged_inferred": 177,
+    "cataloged_unknown_identity": 123,
+    "cataloged_container_mismatch": 13
+  },
+  "safe_distributions": {
+    "safe_for_truth_claim_distribution": {
+      "False": 837,
+      "True": 214
+    },
+    "safe_for_catalog_distribution": {
+      "True": 1051
+    },
+    "safe_for_planning_distribution": {
+      "true_with_limitations": 837,
+      "True": 214
+    }
+  }
+}
