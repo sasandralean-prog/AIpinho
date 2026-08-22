@@ -13,6 +13,9 @@ This is not an official FireTest 5 PASS. C gate remains `CORRECTIVE_REQUIRED_BEF
 - Added bounded file/container anatomy from magic bytes as routing/anatomy evidence, not song identity.
 - Updated sufficiency to use primary-media identity denominator when row taxonomy is present.
 - Updated metadata projection to recover backend/key/identity counts from bounded observations and, in final code, prefer physical backend telemetry.
+- Completion update extracted bounded file/container signature observation into `FileContainerSignatureService`.
+- Completion update extracted filename-derived candidate identity into `MediaCandidateIdentityPolicy`.
+- Completion update added artifact metadata projection with local sha256 verification for the diagnostic artifacts.
 
 ## Controlled Phase-1 Diagnostic
 
@@ -30,6 +33,7 @@ This is not an official FireTest 5 PASS. C gate remains `CORRECTIVE_REQUIRED_BEF
 - rows: 2230
 - columns: 46
 - bytes: 1501438
+- sha256: `c69ea1a2b0c135fe0675b15aba7e5696186835bef89fa4710cbd8de9e4db639d`
 - old 8 MB inline frontier observed: false
 
 The CSV is larger than B3.8 because B3.9 adds row taxonomy, candidate identity, and file anatomy columns, and this diagnostic selected 2230 rows instead of the B3.8 1051-row music-only CSV. It is still below 8 MB. The 8,813,500-byte figure is durable checkpoint evidence, not inline CSV materialization.
@@ -80,10 +84,26 @@ Mismatch count: 13
 
 ## Tests
 
+- Completion focused: 10 passed
+- Required B3.9 nominal files: 2 passed, 2 passed, 3 passed, 2 passed
+- B3.6/B3.7 admission/route regressions: 6 passed and 4 passed
+- Media capability pack: 34 passed, 1 skipped
+- Metadata/sufficiency projection: 8 passed
 - B3.9 focused: 12 passed
 - B3.5-B3.7 post-compile/public boundary: 74 passed
 - Static: compileall PASS, diff-check PASS
 - One broader contract group failure recorded as outside B3.9 scope: stale `.track` fixture now blocks under B3.7 target-selection semantics.
+
+## Completion Audit
+
+The partial B3.9 implementation already covered row taxonomy, sufficiency by class, candidate fields, container anatomy projection, runtime provenance, a controlled Phase-1 diagnostic run, and reports. The completion pass closed the ownership/test/report gaps without restarting architecture:
+
+- file/container anatomy is now owned by `FileContainerSignatureService`;
+- filename candidate identity is now owned by `MediaCandidateIdentityPolicy`;
+- row taxonomy consumes both as inputs and remains the row-classification layer;
+- unknown signatures remain unknown, not false unsupported;
+- container mismatch remains a routing/backend diagnostic, not semantic identity;
+- artifact metadata projection now explains safety, reason, digest, and storage-ref availability in the B3.9 public observation report.
 
 ## Full Unit Attempt
 

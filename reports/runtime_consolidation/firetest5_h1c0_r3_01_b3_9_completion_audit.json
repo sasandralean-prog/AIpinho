@@ -1,0 +1,101 @@
+{
+  "mission_id": "H1C0.R3.01.B3.9",
+  "mission_class": "hybrid_operational_correction_completion_update",
+  "branch": "agent/codex/r3-01-b3-9-media-row-taxonomy-container-anatomy",
+  "base_main_sha": "d76a1a21ceeef00f953d87a6aca07dcb6635c834",
+  "previous_branch_head": "a409e868bafe5f499a07b2b7b0f3b30b63b53979",
+  "official_firetest5_pass_executed": false,
+  "c_gate": "CORRECTIVE_REQUIRED_BEFORE_C",
+  "implementation_audit": {
+    "row_applicability_taxonomy": "implemented_before_completion_update_and_verified",
+    "semantic_sufficiency_by_row_class": "implemented_before_completion_update_and_verified",
+    "file_container_anatomy": "completed_with_file_container_signature_service",
+    "candidate_identity": "completed_with_media_candidate_identity_policy",
+    "lyrics_sidecar_relationship": "implemented_in_row_taxonomy_and_verified_as_candidate_only",
+    "backend_telemetry_reconciliation": "implemented_before_completion_update_and_verified",
+    "artifact_metadata_projection": "completed_in_public_phase1_observation_report",
+    "csv_schema_or_telemetry_schema_delta": "B3.9 CSV includes row taxonomy, candidate identity, and file anatomy columns",
+    "tests": "completed_with_required_named_B3_9_test_files",
+    "runtime_validation": "completed_before_update; behavior-preserving extraction verified by unit and static validation",
+    "public_phase1_diagnostic_run": "completed_before_update; report projection enriched without rerun"
+  },
+  "ownership_boundaries": {
+    "file_anatomy_owner": "FileContainerSignatureService",
+    "candidate_identity_owner": "MediaCandidateIdentityPolicy",
+    "row_taxonomy_owner": "MediaInventoryRowTaxonomyService",
+    "truth_policy": {
+      "filename_identity_truth": false,
+      "lyrics_sidecar_identity_truth": false,
+      "container_signature_identity_truth": false,
+      "candidate_identity_truth_status": "candidate_only_not_truth"
+    }
+  },
+  "artifact_metadata_projection": {
+    "source_report": "reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_public_phase1_observation.json",
+    "music_inventory_csv_sha256": "c69ea1a2b0c135fe0675b15aba7e5696186835bef89fa4710cbd8de9e4db639d",
+    "music_inventory_csv_safe_to_use": false,
+    "music_inventory_csv_reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING",
+    "storage_ref_status": "local_artifact_file",
+    "runtime_payload_storage_ref_field": "not_projected_by_public_phase1_result"
+  },
+  "validation": [
+    {
+      "command": "python -m pytest tests/unit/test_file_container_signature_service.py tests/unit/test_media_candidate_identity_policy.py tests/unit/test_media_inventory_row_applicability_taxonomy.py tests/unit/test_media_inventory_b3_9_firetest_phase1_diagnostic.py -q",
+      "result": "10 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_media_inventory_row_applicability_taxonomy.py -q",
+      "result": "2 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_media_inventory_sufficiency_by_row_class.py -q",
+      "result": "2 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_file_container_signature_service.py -q",
+      "result": "3 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_media_candidate_identity_policy.py -q",
+      "result": "2 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_post_compile_applicability_admission_control.py tests/unit/test_post_compile_target_selection_narrowing.py -q",
+      "result": "6 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_public_analyze_response_boundary.py tests/unit/test_public_runtime_chat_route_boundary.py -q",
+      "result": "4 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_media_metadata_capability_pack.py -q",
+      "result": "34 passed, 1 skipped"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_media_inventory_metadata_projection.py tests/unit/test_music_inventory_metadata_coverage.py tests/unit/test_music_inventory_complete_sufficiency_policy.py -q",
+      "result": "8 passed"
+    },
+    {
+      "command": "python -m compileall -q src tests",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    },
+    {
+      "command": "python -c \"parse B3.9 JSON reports\"",
+      "result": "parsed 5 json reports"
+    }
+  ],
+  "remaining_p0": [],
+  "remaining_p1": [
+    "R3_01_B3_9_P1_MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "R3_01_B3_9_P1_ARTIFACT_EVIDENCE_BINDING_DENOMINATOR_MISMATCH",
+    "R3_01_B3_9_P1_MUSIC_INVENTORY_SCOPE_INCLUDES_NON_PRIMARY_MEMBERS_IN_DIAGNOSTIC_RUN"
+  ],
+  "remaining_p2": [
+    "R3_01_B3_9_P2_ACCEPTED_RUNNING_PUBLIC_PROGRESS_VISIBILITY_DELAY"
+  ],
+  "verdict": "R3_01_B3_9_COMPLETION_READY_WITH_REMAINING_FRONTIER"
+}

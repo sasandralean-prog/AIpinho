@@ -7,6 +7,42 @@
       "result": "9 passed"
     },
     {
+      "command": "python -m pytest tests/unit/test_file_container_signature_service.py tests/unit/test_media_candidate_identity_policy.py tests/unit/test_media_inventory_row_applicability_taxonomy.py tests/unit/test_media_inventory_b3_9_firetest_phase1_diagnostic.py -q",
+      "result": "10 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_media_inventory_row_applicability_taxonomy.py -q",
+      "result": "2 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_media_inventory_sufficiency_by_row_class.py -q",
+      "result": "2 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_file_container_signature_service.py -q",
+      "result": "3 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_media_candidate_identity_policy.py -q",
+      "result": "2 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_post_compile_applicability_admission_control.py tests/unit/test_post_compile_target_selection_narrowing.py -q",
+      "result": "6 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_public_analyze_response_boundary.py tests/unit/test_public_runtime_chat_route_boundary.py -q",
+      "result": "4 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_media_metadata_capability_pack.py -q",
+      "result": "34 passed, 1 skipped"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_media_inventory_metadata_projection.py tests/unit/test_music_inventory_metadata_coverage.py tests/unit/test_music_inventory_complete_sufficiency_policy.py -q",
+      "result": "8 passed"
+    },
+    {
       "command": "python -m pytest tests/unit/test_media_inventory_row_taxonomy_service.py tests/unit/test_media_inventory_sufficiency_by_row_class.py tests/unit/test_music_inventory_metadata_projection.py tests/unit/test_music_inventory_metadata_coverage.py tests/unit/test_music_inventory_complete_sufficiency_policy.py -q",
       "result": "12 passed"
     },
@@ -25,7 +61,8 @@
     "failure": "test_renderer_uses_only_contract_eligible_entities_for_corpus_inventory blocks before render with B3.7 target-selection no-eligible behavior for .track fixture.",
     "attributed_to_b3_9": false
   },
-  "anti_hardcode_scan": "PASS: no ffprobe install, no FireTest PASS claim, no filename/extension truth promotion; only explicit filename_identity_truth=False flag observed.",
+  "json_parse": "PASS: parsed all B3.9 JSON reports after completion update",
+  "anti_hardcode_scan": "PASS: no ffprobe install, no FireTest PASS claim, no filename/extension/container/LRC truth promotion; explicit candidate/container truth false flags observed.",
   "full_unit_attempt": {
     "command": "python -m pytest tests/unit -q -x",
     "status": "FAIL_OUTSIDE_B3_9_SCOPE_FIRST_FAILURE",

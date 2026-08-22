@@ -50,6 +50,60 @@
       "size_bytes": 211146
     }
   ],
+  "artifact_metadata_projection": {
+    "projection_source": "persisted task-run result artifacts plus local artifact file digest verification",
+    "runtime_payload_storage_ref_field": "not_projected_by_public_phase1_result",
+    "artifacts": [
+      {
+        "artifact_id": "artifact_84fe9fd666544477808a80b417277f3f",
+        "logical_path": "reports/firetest5/phase1_discovery.md",
+        "status": "ready",
+        "validation_status": "validated",
+        "content_type": "text/markdown",
+        "size_bytes": 9517,
+        "sha256": "aefe98a0b5a902f6197b387456f81b48a4fd34adf36fcf46aa2d3d213ebb010c",
+        "storage_ref_status": "local_artifact_file",
+        "safe_to_use": true,
+        "reason_code": null
+      },
+      {
+        "artifact_id": "artifact_66a39cffa5e64072b82a91ee97b59d93",
+        "logical_path": "reports/firetest5/project_inventory.md",
+        "status": "ready",
+        "validation_status": "validated",
+        "content_type": "text/markdown",
+        "size_bytes": 9518,
+        "sha256": "fa987e98fd564ebfff7d4e031649e822bed93345277a4f0488b63e527f754a1c",
+        "storage_ref_status": "local_artifact_file",
+        "safe_to_use": true,
+        "reason_code": null
+      },
+      {
+        "artifact_id": "artifact_52ed4f5843e249deb16ed7a545dcd916",
+        "logical_path": "reports/firetest5/music_inventory.csv",
+        "status": "blocked",
+        "validation_status": "blocked",
+        "content_type": "text/csv",
+        "size_bytes": 1501438,
+        "sha256": "c69ea1a2b0c135fe0675b15aba7e5696186835bef89fa4710cbd8de9e4db639d",
+        "storage_ref_status": "local_artifact_file",
+        "safe_to_use": false,
+        "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING"
+      },
+      {
+        "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
+        "logical_path": "reports/firetest5/evidence_phase1.zip",
+        "status": "ready",
+        "validation_status": "validated",
+        "content_type": "application/zip",
+        "size_bytes": 211146,
+        "sha256": "0b1422f643afc63874c3048f6657b881cc5a53650f04d0603444e5a5ea5d9118",
+        "storage_ref_status": "local_artifact_file",
+        "safe_to_use": true,
+        "reason_code": null
+      }
+    ]
+  },
   "music_inventory_csv": {
     "artifact_id": "artifact_52ed4f5843e249deb16ed7a545dcd916",
     "logical_path": "reports/firetest5/music_inventory.csv",
