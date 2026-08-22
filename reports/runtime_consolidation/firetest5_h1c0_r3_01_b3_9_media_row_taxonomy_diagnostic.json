@@ -658,19 +658,24 @@
   "issue_classification": {
     "remaining_p0": [],
     "remaining_p1": [
-      "R3_01_B3_9_P1_MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
-      "R3_01_B3_9_P1_ARTIFACT_REQUIRED_COLUMNS_NOT_OBSERVED_FOR_EVIDENCE_BINDING"
+      "R3_01_B3_9_P1_PRIMARY_MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
     ],
     "remaining_p2": [
-      "R3_01_B3_9_P2_ACCEPTED_RUNNING_PUBLIC_PROGRESS_VISIBILITY_DELAY"
+      "R3_01_B3_9_P2_FILENAME_CANDIDATE_IDENTITY_REQUIRES_REVIEW_PROMOTION_POLICY",
+      "R3_01_B3_9_P2_LYRICS_SIDECAR_RELATIONSHIP_CANDIDATES_REQUIRE_GOVERNED_CONFIRMATION",
+      "R3_01_B3_9_P2_CONTAINER_AWARE_BACKEND_EXPANSION_MAY_BE_NEEDED",
+      "R3_01_B3_7_P2_ACCEPTED_RUNNING_WORKER_PROGRESS_VISIBILITY_DELAY",
+      "R3_01_B3_9_P2_ARTIFACT_VALIDATION_LIMITATION_LABELS_REQUIRE_RECONCILIATION"
     ],
     "resolved_issues": [
+      "R3_01_B3_8_1_P1_MEDIA_INVENTORY_DENOMINATOR_LACKS_ROW_APPLICABILITY_TAXONOMY",
       "B3_9_ROW_APPLICABILITY_TAXONOMY_PROJECTED",
       "B3_9_SEMANTIC_IDENTITY_DENOMINATOR_BY_ROW_CLASS",
       "B3_9_FILE_CONTAINER_SIGNATURE_SERVICE_EXTRACTED",
       "B3_9_MEDIA_CANDIDATE_IDENTITY_POLICY_EXTRACTED",
       "B3_9_ARTIFACT_METADATA_PROJECTION_COMPLETED",
-      "B3_9_BACKEND_TELEMETRY_RECONCILED_FROM_ARTIFACT_METADATA"
+      "B3_9_BACKEND_TELEMETRY_RECONCILED_FROM_ARTIFACT_METADATA",
+      "B3_9_CSV_SCHEMA_EXPANDED_WITH_ROW_TAXONOMY_CANDIDATE_AND_ANATOMY_COLUMNS"
     ],
     "new_issues": []
   },
@@ -736,5 +741,23 @@
     },
     "health_endpoint_note": "/api/v1/health is not used as canonical blocker"
   },
-  "verdict": "R3_01_B3_9_MEDIA_ROW_TAXONOMY_CONTAINER_ANATOMY_READY_WITH_REMAINING_FRONTIER"
+  "verdict": "R3_01_B3_9_MEDIA_ROW_TAXONOMY_AND_CONTAINER_ANATOMY_READY",
+  "ready_requirements": {
+    "branch_from_current_main": true,
+    "no_main_merge": true,
+    "official_firetest5_pass_attempt": false,
+    "ffprobe_installed": false,
+    "runtime_provenance_proven_after_patch": true,
+    "row_taxonomy_implemented": true,
+    "sidecar_artwork_excluded_from_primary_media_identity_denominator": true,
+    "filename_lyrics_container_candidates_not_promoted_to_truth": true,
+    "file_container_anatomy_implemented": true,
+    "problematic_m4a_cases_classified_with_signature_detail": true,
+    "backend_telemetry_reconciled": true,
+    "artifact_metadata_projected": true,
+    "public_phase1_diagnostic_blocked_precisely": true,
+    "speaker_truth_false_on_block": true,
+    "focused_tests_passed": true,
+    "json_reports_parse_ok": true
+  }
 }
