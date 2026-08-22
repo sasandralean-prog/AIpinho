@@ -1,117 +1,56 @@
 {
-  "task_run_id": "task_run_5732815a2d3c4ed99034ac48b69b9169",
-  "operation_id": "op_21efc8b6e30445ed850947ce3d0d8160",
-  "post_response": {
-    "status_code": 200,
-    "elapsed_ms": 6595,
-    "status": "accepted_running",
-    "reason_code": "RUN_ACCEPTED_ASYNC",
-    "safe_to_report_success": false
-  },
-  "terminal": {
-    "run_status": "blocked",
-    "result_status": "blocked",
-    "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING",
-    "finished_at": "2026-08-22T05:06:56.029572+00:00",
-    "events_count": 347,
-    "speaker_truth_safe_to_report_success": false
-  },
-  "artifacts": [
-    {
-      "artifact_id": "artifact_84fe9fd666544477808a80b417277f3f",
-      "logical_path": "reports/firetest5/phase1_discovery.md",
-      "status": "ready",
-      "validation_status": "validated",
-      "content_type": "text/markdown",
-      "size_bytes": 9517
+  "task_run_id": "task_run_8c5a622574d847a287cc60e28c3097df",
+  "operation_id": "op_aa54373588d54fdea7fca3a6900e714d",
+  "public_api": {
+    "post_status": 200,
+    "response_mode": "accepted_running",
+    "elapsed_ms": 6553,
+    "task_run_id": "task_run_8c5a622574d847a287cc60e28c3097df",
+    "operation_id": "op_aa54373588d54fdea7fca3a6900e714d",
+    "polling_endpoints": {
+      "run": "/api/v1/task-runs/task_run_8c5a622574d847a287cc60e28c3097df",
+      "result": "/api/v1/task-runs/task_run_8c5a622574d847a287cc60e28c3097df/result",
+      "events": "/api/v1/task-runs/task_run_8c5a622574d847a287cc60e28c3097df/events",
+      "summary": "/api/v1/task-runs/task_run_8c5a622574d847a287cc60e28c3097df/summary",
+      "timeline": "/api/v1/task-runs/task_run_8c5a622574d847a287cc60e28c3097df/timeline"
     },
-    {
-      "artifact_id": "artifact_66a39cffa5e64072b82a91ee97b59d93",
-      "logical_path": "reports/firetest5/project_inventory.md",
-      "status": "ready",
-      "validation_status": "validated",
-      "content_type": "text/markdown",
-      "size_bytes": 9518
-    },
-    {
-      "artifact_id": "artifact_52ed4f5843e249deb16ed7a545dcd916",
-      "logical_path": "reports/firetest5/music_inventory.csv",
-      "status": "blocked",
-      "validation_status": "blocked",
-      "content_type": "text/csv",
-      "size_bytes": 1501438
-    },
-    {
-      "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-      "logical_path": "reports/firetest5/evidence_phase1.zip",
-      "status": "ready",
-      "validation_status": "validated",
-      "content_type": "application/zip",
-      "size_bytes": 211146
+    "polling_statuses": {
+      "run": 200,
+      "result": 200,
+      "events": 200,
+      "summary": 200,
+      "timeline": 200
     }
-  ],
-  "artifact_metadata_projection": {
-    "projection_source": "persisted task-run result artifacts plus local artifact file digest verification",
-    "runtime_payload_storage_ref_field": "not_projected_by_public_phase1_result",
-    "artifacts": [
-      {
-        "artifact_id": "artifact_84fe9fd666544477808a80b417277f3f",
-        "logical_path": "reports/firetest5/phase1_discovery.md",
-        "status": "ready",
-        "validation_status": "validated",
-        "content_type": "text/markdown",
-        "size_bytes": 9517,
-        "sha256": "aefe98a0b5a902f6197b387456f81b48a4fd34adf36fcf46aa2d3d213ebb010c",
-        "storage_ref_status": "local_artifact_file",
-        "safe_to_use": true,
-        "reason_code": null
-      },
-      {
-        "artifact_id": "artifact_66a39cffa5e64072b82a91ee97b59d93",
-        "logical_path": "reports/firetest5/project_inventory.md",
-        "status": "ready",
-        "validation_status": "validated",
-        "content_type": "text/markdown",
-        "size_bytes": 9518,
-        "sha256": "fa987e98fd564ebfff7d4e031649e822bed93345277a4f0488b63e527f754a1c",
-        "storage_ref_status": "local_artifact_file",
-        "safe_to_use": true,
-        "reason_code": null
-      },
-      {
-        "artifact_id": "artifact_52ed4f5843e249deb16ed7a545dcd916",
-        "logical_path": "reports/firetest5/music_inventory.csv",
-        "status": "blocked",
-        "validation_status": "blocked",
-        "content_type": "text/csv",
-        "size_bytes": 1501438,
-        "sha256": "c69ea1a2b0c135fe0675b15aba7e5696186835bef89fa4710cbd8de9e4db639d",
-        "storage_ref_status": "local_artifact_file",
-        "safe_to_use": false,
-        "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING"
-      },
-      {
-        "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-        "logical_path": "reports/firetest5/evidence_phase1.zip",
-        "status": "ready",
-        "validation_status": "validated",
-        "content_type": "application/zip",
-        "size_bytes": 211146,
-        "sha256": "0b1422f643afc63874c3048f6657b881cc5a53650f04d0603444e5a5ea5d9118",
-        "storage_ref_status": "local_artifact_file",
-        "safe_to_use": true,
-        "reason_code": null
-      }
-    ]
   },
-  "music_inventory_csv": {
-    "artifact_id": "artifact_52ed4f5843e249deb16ed7a545dcd916",
+  "terminality": {
+    "task_run_id": "task_run_8c5a622574d847a287cc60e28c3097df",
+    "operation_id": "op_aa54373588d54fdea7fca3a6900e714d",
+    "status": "blocked",
+    "reason_code": "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "terminal_blocking_event_count": 1,
+    "speaker_truth_safe_to_report_success": false,
+    "event_count": 297,
+    "last_checkpoint": {
+      "type": "runtime_finalization_checkpoint",
+      "status": "running",
+      "metadata": {
+        "stage": "after_taskrun_result_persist",
+        "artifact_count": 4,
+        "result_status": "blocked",
+        "reason_code": "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+        "bounded": true
+      }
+    }
+  },
+  "artifact": {
+    "artifact_id": "artifact_327f349bca50420083692816c982c52d",
     "logical_path": "reports/firetest5/music_inventory.csv",
-    "runtime_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_52ed4f5843e249deb16ed7a545dcd916_reports__firetest5__music_inventory.csv",
-    "exists": true,
-    "bytes": 1501438,
-    "rows": 2230,
-    "columns": [
+    "storage_ref": "data\\artifacts\\universal\\artifact_327f349bca50420083692816c982c52d_reports__firetest5__music_inventory.csv",
+    "csv_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_327f349bca50420083692816c982c52d_reports__firetest5__music_inventory.csv",
+    "csv_exists": true,
+    "csv_bytes": 678101,
+    "csv_rows": 1051,
+    "csv_columns": [
       "entity_id",
       "source_root_role",
       "relative_path",
@@ -159,220 +98,158 @@
       "routing_hint_only",
       "semantic_truth_claim"
     ],
-    "column_count": 46,
-    "storage_mode": "artifact_file_reference_payload_ref_manifest",
+    "sha256": "d8b2ef8c5c42261c495c144977d512ee98fff791aaba10449125c8f450f5023c",
+    "status": "blocked",
+    "validation_status": "blocked",
+    "safe_to_use": false,
+    "reason_code": "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
     "old_8mb_inline_frontier_observed": false
   },
-  "row_taxonomy": {
-    "row_class_counts": {
-      "non_primary_corpus_member": 1176,
-      "primary_media_without_identity_tags": 704,
-      "primary_media_with_governed_identity": 214,
-      "lyrics_sidecar_candidate": 121,
-      "primary_media_backend_no_valid_evidence": 10,
-      "artwork_candidate": 5
-    },
-    "extension_counts_top20": {
-      "m4a": 921,
-      "class": 244,
-      "dll": 244,
-      "jar": 138,
-      "lrc": 121,
-      "len": 72,
-      "h": 64,
-      "kt": 46,
-      "lib": 41,
-      "md": 34,
-      "exe": 27,
-      "tab": 26,
-      "keystream": 24,
-      "at": 24,
-      "tab_i": 24,
-      "xsd": 19,
-      "properties": 18,
-      "config": 16,
-      "bin": 15,
-      "txt": 11
-    },
-    "row_sufficiency_reason_code_counts": {
-      "": 1390,
-      "MEDIA_PRIMARY_IDENTITY_TAGS_ABSENT": 704,
-      "MEDIA_SIDECAR_RELATIONSHIP_POLICY_REQUIRED": 121,
-      "MEDIA_CONTAINER_EXTENSION_MISMATCH": 10,
-      "MEDIA_ARTWORK_RELATIONSHIP_POLICY_REQUIRED": 5
-    },
-    "observed_signature_family_counts": {
-      "unknown": 1176,
-      "iso_bmff": 916,
-      "text_lrc_candidate": 121,
-      "ebml_candidate": 10,
-      "png": 3,
-      "jpeg": 2,
-      "mp3_candidate": 2
-    },
-    "file_anatomy_reason_code_counts": {
-      "FILE_CONTAINER_SIGNATURE_UNKNOWN": 1176,
-      "FILE_CONTAINER_EXTENSION_MATCHED": 1041,
-      "FILE_CONTAINER_EXTENSION_MISMATCH": 13
-    },
-    "semantic_identity_observed_counts": {
-      "False": 2016,
-      "True": 214
-    },
-    "primary_media_denominator": 928,
-    "semantic_identity_true_count": 214,
-    "candidate_identity_available_count": 2230
-  },
-  "metadata_coverage_summary": {
-    "status": "partial",
-    "capability_id": "media_metadata_reader",
-    "configured": true,
-    "available": true,
-    "execution_status": "blocked",
-    "files_planned": 928,
-    "files_expected": 2230,
-    "files_attempted": 928,
-    "files_succeeded": 918,
-    "files_failed": 10,
-    "primary_media_files_expected": 928,
-    "primary_media_files_attempted": 928,
-    "primary_media_files_succeeded": 918,
-    "primary_media_files_failed": 10,
-    "entity_observation_files_attempted": 919,
-    "entity_observation_files_succeeded": 918,
-    "entity_observation_files_failed": 1,
-    "unsupported_count": 10,
-    "read_error_count": 0,
-    "coverage_ratio": 0.4117,
-    "primary_media_observation_ratio": 0.9892,
-    "attributes_observed": [
-      "artist",
-      "artwork",
-      "bitrate",
-      "channels",
-      "codec",
-      "duration",
-      "sample_rate",
-      "track_title"
-    ],
-    "attributes_missing": [],
-    "contract_required_attributes_missing": [],
-    "capability_attributes_unobserved": [
-      "container",
-      "metadata",
-      "album",
-      "album_artist"
-    ],
-    "physical_probe_count": 928,
-    "goals_satisfied": 5934,
-    "goals_unsatisfied": 4274,
-    "attempted_backends": {
-      "mutagen": 918
-    },
-    "successful_backends": {
-      "mutagen": 918
-    },
-    "fallback_backends_used": {},
-    "evidence_counts_by_canonical_key": {
-      "duration": 918,
-      "codec": 916,
-      "bitrate": 918,
-      "sample_rate": 918,
-      "channels": 918,
-      "artwork": 918,
-      "track_title": 214,
-      "artist": 214
-    },
-    "evidence_counts_by_backend": {
-      "mutagen": 5934
-    },
-    "semantic_identity_evidence_counts": {
-      "track_title": 214,
-      "artist": 214
-    },
-    "telemetry_projection_source": {
-      "attribute_observations_projected": true,
-      "execution_telemetry_present": true,
-      "row_applicability_summary_present": true
-    },
-    "backend_error_counts": {
-      "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 10,
-      "FFPROBE_NOT_AVAILABLE": 10
-    },
-    "reason_codes": [
-      "MEDIA_METADATA_OBSERVATION_INCOMPLETE"
+  "artifact_metadata_projection": {
+    "task_run_id": "task_run_8c5a622574d847a287cc60e28c3097df",
+    "operation_id": "op_aa54373588d54fdea7fca3a6900e714d",
+    "projection_source": "task-run result artifact_state plus local artifact files",
+    "artifacts": [
+      {
+        "artifact_id": "artifact_327f349bca50420083692816c982c52d",
+        "logical_path": "reports/firetest5/music_inventory.csv",
+        "storage_ref": "data\\artifacts\\universal\\artifact_327f349bca50420083692816c982c52d_reports__firetest5__music_inventory.csv",
+        "csv_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_327f349bca50420083692816c982c52d_reports__firetest5__music_inventory.csv",
+        "file_exists": true,
+        "size_bytes": 678101,
+        "sha256": "d8b2ef8c5c42261c495c144977d512ee98fff791aaba10449125c8f450f5023c",
+        "status": "blocked",
+        "validation_status": "blocked",
+        "safe_to_use": false,
+        "reason_code": "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+        "content_type": "text/csv",
+        "semantic_contract_status": "partial"
+      },
+      {
+        "artifact_id": "artifact_ddea5a4af4a541d2b492876a2b97d78b",
+        "logical_path": "reports/firetest5/phase1_discovery.md",
+        "storage_ref": "data\\artifacts\\universal\\artifact_ddea5a4af4a541d2b492876a2b97d78b_reports__firetest5__phase1_discovery.md",
+        "csv_path": null,
+        "file_exists": true,
+        "size_bytes": 9757,
+        "sha256": "b1bf2091000babd6936c0eff97e2b4090c6f2e51b1051c7b21e3af56c536b0f4",
+        "status": "ready",
+        "validation_status": "validated",
+        "safe_to_use": true,
+        "reason_code": null,
+        "content_type": "text/markdown",
+        "semantic_contract_status": "satisfied"
+      },
+      {
+        "artifact_id": "artifact_9c74f7b15c784f6a87091d8efb159a91",
+        "logical_path": "reports/firetest5/project_inventory.md",
+        "storage_ref": "data\\artifacts\\universal\\artifact_9c74f7b15c784f6a87091d8efb159a91_reports__firetest5__project_inventory.md",
+        "csv_path": null,
+        "file_exists": true,
+        "size_bytes": 9758,
+        "sha256": "2b06be7867ffd7b9a5b7713b8df761bb6633ab6efe049879798ba6d0e3b829a7",
+        "status": "ready",
+        "validation_status": "validated",
+        "safe_to_use": true,
+        "reason_code": null,
+        "content_type": "text/markdown",
+        "semantic_contract_status": "satisfied"
+      },
+      {
+        "artifact_id": "artifact_ef3ed4996436480383eb1b7ab9d0b327",
+        "logical_path": "reports/firetest5/evidence_phase1.zip",
+        "storage_ref": "data\\artifacts\\universal\\artifact_ef3ed4996436480383eb1b7ab9d0b327_reports__firetest5__evidence_phase1.zip",
+        "csv_path": null,
+        "file_exists": true,
+        "size_bytes": 211373,
+        "sha256": "50552ae22fdc85fcb65e9b4610e036cae6e3d4e0f046eaf20af8cb0661856d51",
+        "status": "ready",
+        "validation_status": "validated",
+        "safe_to_use": true,
+        "reason_code": null,
+        "content_type": "application/zip",
+        "semantic_contract_status": "satisfied"
+      }
     ]
   },
-  "inventory_sufficiency_summary": {
-    "status": "blocked",
-    "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING",
-    "safe_to_use": false,
-    "use_safety": {
-      "unrestricted": false,
-      "phase1_discovery": false,
-      "downstream_static_analysis": false,
-      "full_truth_claim": false,
-      "limited_truth_claim": false,
-      "reason_codes": [
-        "ARTIFACT_EVIDENCE_BINDING_MISSING",
-        "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
-        "MEDIA_PRIMARY_IDENTITY_TAGS_ABSENT",
-        "MEDIA_BACKEND_NO_VALID_EVIDENCE",
-        "MEDIA_CONTAINER_EXTENSION_MISMATCH",
-        "MEDIA_CANDIDATE_IDENTITY_NOT_TRUTH",
-        "MEDIA_SIDECAR_RELATIONSHIP_POLICY_REQUIRED",
-        "MEDIA_ARTWORK_RELATIONSHIP_POLICY_REQUIRED",
-        "MEDIA_METADATA_OBSERVATION_INCOMPLETE"
-      ],
-      "limitations": [
-        "row_evidence_coverage_incomplete",
-        "primary_media_semantic_identity_evidence_incomplete",
-        "primary_media_files_without_governed_identity_tags",
-        "primary_media_files_without_valid_backend_evidence",
-        "declared_extension_differs_from_observed_container_signature",
-        "candidate_identity_available_but_not_semantic_truth",
-        "lyrics_sidecar_relationship_candidates_require_validation",
-        "artwork_candidates_require_relationship_validation",
-        "metadata_observation_coverage_below_required_threshold"
-      ]
+  "row_taxonomy": {
+    "all_rows_count": 1051,
+    "primary_media_row_count": 928,
+    "primary_media_with_governed_identity_count": 214,
+    "primary_media_without_identity_tags_count": 704,
+    "primary_media_backend_no_valid_evidence_count": 10,
+    "lyrics_sidecar_candidate_count": 121,
+    "artwork_candidate_count": 2,
+    "unknown_or_unclassified_count": 0,
+    "row_class_distribution": {
+      "primary_media_without_identity_tags": 704,
+      "primary_media_with_governed_identity": 214,
+      "artwork_candidate": 2,
+      "primary_media_backend_no_valid_evidence": 10,
+      "lyrics_sidecar_candidate": 121
     },
+    "sidecar_artwork_excluded_from_primary_identity_denominator": true
+  },
+  "semantic_identity": {
+    "rows_with_stable_entity_identity": 1051,
+    "rows_with_semantic_identity_evidence": 214,
+    "primary_media_identity_denominator": 928,
+    "primary_media_identity_observed_count": 214,
+    "primary_media_identity_ratio": 0.2306,
+    "candidate_identity_available_count": 1051,
+    "candidate_identity_not_truth_count": 1051,
+    "filename_candidate_count": 1051,
+    "lrc_relationship_candidate_count": 53,
+    "promoted_to_semantic_truth_count": 0,
+    "sidecar_artwork_excluded_from_primary_identity_denominator": true,
+    "safe_to_use": false,
+    "reason_code": "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "reason_codes": [
+      "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "MEDIA_PRIMARY_IDENTITY_TAGS_ABSENT",
+      "MEDIA_BACKEND_NO_VALID_EVIDENCE",
+      "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+      "MEDIA_CANDIDATE_IDENTITY_NOT_TRUTH",
+      "MEDIA_SIDECAR_RELATIONSHIP_POLICY_REQUIRED",
+      "MEDIA_ARTWORK_RELATIONSHIP_POLICY_REQUIRED",
+      "MEDIA_METADATA_OBSERVATION_INCOMPLETE"
+    ],
     "coverage_summary": {
-      "expected_entities": 2272,
-      "selected_entities": 2272,
-      "bound_rows": 2272,
-      "rows_rendered": 2230,
-      "rows_with_evidence_ref": 2230,
-      "evidence_ref_count": 2272,
-      "rows_with_required_identity": 2230,
-      "rows_with_stable_entity_identity": 2230,
+      "expected_entities": 1051,
+      "selected_entities": 1051,
+      "bound_rows": 1051,
+      "rows_rendered": 1051,
+      "rows_with_evidence_ref": 1051,
+      "evidence_ref_count": 1051,
+      "rows_with_required_identity": 1051,
+      "rows_with_stable_entity_identity": 1051,
       "rows_with_semantic_identity_evidence": 214,
-      "rows_without_semantic_identity_evidence": 2016,
+      "rows_without_semantic_identity_evidence": 837,
       "selection_coverage_ratio": 1.0,
-      "evidence_coverage_ratio": 0.9815,
+      "evidence_coverage_ratio": 1.0,
       "identity_coverage_ratio": 1.0,
       "stable_entity_identity_ratio": 1.0,
-      "semantic_identity_evidence_ratio": 0.096,
+      "semantic_identity_evidence_ratio": 0.2036,
       "primary_media_row_count": 928,
       "lyrics_sidecar_row_count": 121,
-      "artwork_row_count": 5,
+      "artwork_row_count": 2,
       "primary_media_with_governed_identity_count": 214,
       "primary_media_without_identity_tags_count": 704,
       "primary_media_backend_no_valid_evidence_count": 10,
       "primary_media_identity_ratio": 0.2306,
       "sidecar_relationship_candidate_count": 53,
-      "artwork_candidate_count": 5,
-      "candidate_identity_available_count": 2230,
-      "candidate_identity_not_truth_count": 2230,
+      "artwork_candidate_count": 2,
+      "candidate_identity_available_count": 1051,
+      "candidate_identity_not_truth_count": 1051,
       "technical_metadata_observed_count": 918,
       "technical_metadata_only_count": 704,
       "file_anatomy_extension_container_mismatch_count": 13,
       "row_class_counts": {
         "primary_media_without_identity_tags": 704,
         "primary_media_with_governed_identity": 214,
-        "artwork_candidate": 5,
+        "artwork_candidate": 2,
         "primary_media_backend_no_valid_evidence": 10,
-        "lyrics_sidecar_candidate": 121,
-        "non_primary_corpus_member": 1176
+        "lyrics_sidecar_candidate": 121
       },
       "identity_status": "insufficient_evidence",
       "identity_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
@@ -397,250 +274,286 @@
       "unsupported_count": 10,
       "read_error_count": 0,
       "schema_status": "satisfied"
-    },
-    "reason_codes": [
-      "ARTIFACT_EVIDENCE_BINDING_MISSING",
-      "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
-      "MEDIA_PRIMARY_IDENTITY_TAGS_ABSENT",
-      "MEDIA_BACKEND_NO_VALID_EVIDENCE",
-      "MEDIA_CONTAINER_EXTENSION_MISMATCH",
-      "MEDIA_CANDIDATE_IDENTITY_NOT_TRUTH",
-      "MEDIA_SIDECAR_RELATIONSHIP_POLICY_REQUIRED",
-      "MEDIA_ARTWORK_RELATIONSHIP_POLICY_REQUIRED",
-      "MEDIA_METADATA_OBSERVATION_INCOMPLETE"
-    ],
-    "limitations": [
-      "row_evidence_coverage_incomplete",
-      "primary_media_semantic_identity_evidence_incomplete",
-      "primary_media_files_without_governed_identity_tags",
-      "primary_media_files_without_valid_backend_evidence",
-      "declared_extension_differs_from_observed_container_signature",
-      "candidate_identity_available_but_not_semantic_truth",
-      "lyrics_sidecar_relationship_candidates_require_validation",
-      "artwork_candidates_require_relationship_validation",
-      "metadata_observation_coverage_below_required_threshold"
-    ]
-  },
-  "last_events": [
-    {
-      "sequence": 328,
-      "type": "artifact_render_checkpoint",
-      "status": "running",
-      "stage": "after_sharded_manifest_persist",
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-      "artifact_content_bytes": 281528
-    },
-    {
-      "sequence": 329,
-      "type": "artifact_render_checkpoint",
-      "status": "running",
-      "stage": "before_light_index_persist",
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-      "artifact_content_bytes": 281528
-    },
-    {
-      "sequence": 330,
-      "type": "artifact_render_checkpoint",
-      "status": "running",
-      "stage": "after_light_index_persist",
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-      "artifact_content_bytes": 281528
-    },
-    {
-      "sequence": 331,
-      "type": "artifact_render_checkpoint",
-      "status": "running",
-      "stage": "legacy_registry_projection_skipped",
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-      "artifact_content_bytes": 281528
-    },
-    {
-      "sequence": 332,
-      "type": "artifact_render_checkpoint",
-      "status": "running",
-      "stage": "after_manifest_persist",
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-      "artifact_content_bytes": 281528
-    },
-    {
-      "sequence": 333,
-      "type": "artifact_render_checkpoint",
-      "status": "running",
-      "stage": "before_registry_index_update",
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-      "artifact_content_bytes": 281528
-    },
-    {
-      "sequence": 334,
-      "type": "artifact_render_checkpoint",
-      "status": "running",
-      "stage": "after_registry_index_update",
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-      "artifact_content_bytes": 281528
-    },
-    {
-      "sequence": 335,
-      "type": "artifact_render_checkpoint",
-      "status": "running",
-      "stage": "before_artifact_commit",
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-      "artifact_content_bytes": 281528
-    },
-    {
-      "sequence": 336,
-      "type": "artifact_render_checkpoint",
-      "status": "running",
-      "stage": "after_artifact_commit",
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-      "artifact_content_bytes": 281528
-    },
-    {
-      "sequence": 337,
-      "type": "artifact_render_checkpoint",
-      "status": "running",
-      "stage": "after_artifact_persist",
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-      "artifact_content_bytes": 211146
-    },
-    {
-      "sequence": 338,
-      "type": "artifact_render_checkpoint",
-      "status": "running",
-      "stage": "after_registry_create_before_event",
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": null,
-      "artifact_content_bytes": null
-    },
-    {
-      "sequence": 339,
-      "type": "artifact_created",
-      "status": "completed",
-      "stage": null,
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-      "artifact_content_bytes": null
-    },
-    {
-      "sequence": 340,
-      "type": "validation_finished",
-      "status": "blocked",
-      "stage": null,
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": null,
-      "artifact_content_bytes": null
-    },
-    {
-      "sequence": 341,
-      "type": "runtime_finalization_checkpoint",
-      "status": "running",
-      "stage": "before_phase_semantic_completion_policy",
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": null,
-      "artifact_content_bytes": null
-    },
-    {
-      "sequence": 342,
-      "type": "runtime_finalization_checkpoint",
-      "status": "running",
-      "stage": "after_phase_semantic_completion_policy",
-      "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING",
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": null,
-      "artifact_content_bytes": null
-    },
-    {
-      "sequence": 343,
-      "type": "runtime_finalization_checkpoint",
-      "status": "running",
-      "stage": "before_taskrun_result_build",
-      "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING",
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": null,
-      "artifact_content_bytes": null
-    },
-    {
-      "sequence": 344,
-      "type": "runtime_finalization_checkpoint",
-      "status": "running",
-      "stage": "before_taskrun_result_persist",
-      "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING",
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": null,
-      "artifact_content_bytes": null
-    },
-    {
-      "sequence": 345,
-      "type": "runtime_finalization_checkpoint",
-      "status": "running",
-      "stage": "after_taskrun_result_persist",
-      "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING",
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": null,
-      "artifact_content_bytes": null
-    },
-    {
-      "sequence": 346,
-      "type": "run_blocked",
-      "status": "blocked",
-      "stage": null,
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": null,
-      "artifact_content_bytes": null
-    },
-    {
-      "sequence": 346,
-      "type": "artifact_creation_terminalization_guard_skipped",
-      "status": "ignored",
-      "stage": null,
-      "reason_code": null,
-      "rows_rendered": null,
-      "rows_expected": null,
-      "artifact_id": null,
-      "artifact_content_bytes": null
     }
-  ]
+  },
+  "file_anatomy": {
+    "total_files_scanned_for_signature": 1051,
+    "declared_extension_distribution": {
+      "m4a": 921,
+      "jpg": 2,
+      "mp3": 5,
+      "mp4": 2,
+      "lrc": 121
+    },
+    "observed_container_distribution": {
+      "mp4_or_m4a_candidate": 916,
+      "jpeg": 2,
+      "mp3_candidate": 2,
+      "matroska_or_webm_candidate": 10,
+      "text_lrc_candidate": 121
+    },
+    "observed_signature_family_distribution": {
+      "iso_bmff": 916,
+      "jpeg": 2,
+      "mp3_candidate": 2,
+      "ebml_candidate": 10,
+      "text_lrc_candidate": 121
+    },
+    "file_anatomy_reason_code_distribution": {
+      "FILE_CONTAINER_EXTENSION_MATCHED": 1038,
+      "FILE_CONTAINER_EXTENSION_MISMATCH": 13
+    },
+    "extension_container_match_count": 1038,
+    "extension_container_mismatch_count": 13,
+    "unknown_signature_count": 0,
+    "read_error_count": 0,
+    "mismatch_samples": [
+      {
+        "entity_id": "observed_entity_6271805a34c5b8263ccde7c6",
+        "relative_path": "Black Sheep Brie Larson Vocal Version.mp3",
+        "declared_extension": "mp3",
+        "observed_signature_family": "iso_bmff",
+        "observed_container": "mp4_or_m4a_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_1c0078eff85d0c6c44bbc085",
+        "relative_path": "ivri - tower of memories - 3.m4a",
+        "declared_extension": "m4a",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_7d86a84aa1ca8cd7846c6996",
+        "relative_path": "ivri - tower of memories.mp3",
+        "declared_extension": "mp3",
+        "observed_signature_family": "iso_bmff",
+        "observed_container": "mp4_or_m4a_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_49a43aaa3f887924ad31c50e",
+        "relative_path": "Night Club - Barbwire Kiss - 2.m4a",
+        "declared_extension": "m4a",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_72810125eedd60c8a60888d5",
+        "relative_path": "Night Club - Candy Coated Suicide - 3.m4a",
+        "declared_extension": "m4a",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_6b947359cb590a78dbd1d9a7",
+        "relative_path": "Night Club - Miss Negativity - 2.m4a",
+        "declared_extension": "m4a",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_c5e29299ff8aa5cfe62c130b",
+        "relative_path": "Night Club - Your Addiction - 2.m4a",
+        "declared_extension": "m4a",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_1d7014a98d9892eb20b41b26",
+        "relative_path": "Numb Linkin Park.mp3",
+        "declared_extension": "mp3",
+        "observed_signature_family": "iso_bmff",
+        "observed_container": "mp4_or_m4a_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_851a4717b3954df393a10017",
+        "relative_path": "POORSTACY - Don't Look at Me - 2.m4a",
+        "declared_extension": "m4a",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_7f16b490afca0ca59c512f40",
+        "relative_path": "Sir Chloe - Animal - 3.m4a",
+        "declared_extension": "m4a",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      }
+    ],
+    "unsupported_m4a_reclassification": [
+      {
+        "entity_id": "observed_entity_1c0078eff85d0c6c44bbc085",
+        "relative_path": "ivri - tower of memories - 3.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_49a43aaa3f887924ad31c50e",
+        "relative_path": "Night Club - Barbwire Kiss - 2.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_72810125eedd60c8a60888d5",
+        "relative_path": "Night Club - Candy Coated Suicide - 3.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_6b947359cb590a78dbd1d9a7",
+        "relative_path": "Night Club - Miss Negativity - 2.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_c5e29299ff8aa5cfe62c130b",
+        "relative_path": "Night Club - Your Addiction - 2.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_851a4717b3954df393a10017",
+        "relative_path": "POORSTACY - Don't Look at Me - 2.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_7f16b490afca0ca59c512f40",
+        "relative_path": "Sir Chloe - Animal - 3.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_48ded6dd1be8ec5bf20006c3",
+        "relative_path": "Sir Chloe - Squaring Up - 3.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_b91cf22f78a06bdc01b0d2a1",
+        "relative_path": "Sohodolls - Bang Bang Bang Bang - 2.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_9d6abdf69d0e85636fae2f33",
+        "relative_path": "Tarantula Girl - 2.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      }
+    ],
+    "backend_routing_implications": {
+      "declared_m4a_with_ebml_candidate": "container_aware_backend_required; routing hint only; no semantic identity truth",
+      "ffprobe_installed": false
+    }
+  },
+  "backend_telemetry": {
+    "files_planned": 928,
+    "files_attempted": 928,
+    "files_succeeded": 918,
+    "files_failed": 10,
+    "physical_probe_count": 928,
+    "backend_attempt_counts": {
+      "mutagen": 928
+    },
+    "backend_success_counts": {
+      "mutagen": 918
+    },
+    "backend_failure_counts": {
+      "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 10,
+      "FFPROBE_NOT_AVAILABLE": 10
+    },
+    "evidence_records_by_backend": {
+      "mutagen": 5934
+    },
+    "evidence_records_by_canonical_key": {
+      "duration": 918,
+      "codec": 916,
+      "bitrate": 918,
+      "sample_rate": 918,
+      "channels": 918,
+      "artwork": 918,
+      "track_title": 214,
+      "artist": 214
+    },
+    "semantic_identity_evidence_counts": {
+      "track_title": 214,
+      "artist": 214
+    },
+    "technical_metadata_counts": {
+      "duration": 918,
+      "codec": 916,
+      "bitrate": 918,
+      "sample_rate": 918,
+      "channels": 918,
+      "artwork": 918
+    },
+    "telemetry_projection_source": {
+      "attribute_observations_projected": true,
+      "execution_telemetry_present": true,
+      "row_applicability_summary_present": true
+    },
+    "reconciles_with_evidence_records": true
+  },
+  "speaker_truth_safe_to_report_success": false,
+  "official_firetest5_pass_attempt": false
 }

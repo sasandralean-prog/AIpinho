@@ -1,0 +1,48 @@
+{
+  "files_planned": 928,
+  "files_attempted": 928,
+  "files_succeeded": 918,
+  "files_failed": 10,
+  "physical_probe_count": 928,
+  "backend_attempt_counts": {
+    "mutagen": 928
+  },
+  "backend_success_counts": {
+    "mutagen": 918
+  },
+  "backend_failure_counts": {
+    "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 10,
+    "FFPROBE_NOT_AVAILABLE": 10
+  },
+  "evidence_records_by_backend": {
+    "mutagen": 5934
+  },
+  "evidence_records_by_canonical_key": {
+    "duration": 918,
+    "codec": 916,
+    "bitrate": 918,
+    "sample_rate": 918,
+    "channels": 918,
+    "artwork": 918,
+    "track_title": 214,
+    "artist": 214
+  },
+  "semantic_identity_evidence_counts": {
+    "track_title": 214,
+    "artist": 214
+  },
+  "technical_metadata_counts": {
+    "duration": 918,
+    "codec": 916,
+    "bitrate": 918,
+    "sample_rate": 918,
+    "channels": 918,
+    "artwork": 918
+  },
+  "telemetry_projection_source": {
+    "attribute_observations_projected": true,
+    "execution_telemetry_present": true,
+    "row_applicability_summary_present": true
+  },
+  "reconciles_with_evidence_records": true
+}

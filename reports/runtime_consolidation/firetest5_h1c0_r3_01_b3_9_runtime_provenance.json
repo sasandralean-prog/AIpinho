@@ -1,33 +1,62 @@
 {
   "repo_path": "C:\\Dev\\AIpinho",
   "branch": "agent/codex/r3-01-b3-9-media-row-taxonomy-container-anatomy",
-  "base_main_sha": "d76a1a21ceeef00f953d87a6aca07dcb6635c834",
-  "head": "b163cc62e6fc349e68c4f5f8156ced8807d5a2cb",
+  "head": "6a69c62495edebfcd28f558ebec6dc336c6e7c2d",
   "origin_main": "d76a1a21ceeef00f953d87a6aca07dcb6635c834",
-  "ahead_behind_origin_main": "0 / 2",
-  "working_tree_status_after_provenance_cleanup": "clean",
+  "ahead_behind_origin_main": "0 / 3",
+  "working_tree_status_at_probe": [
+    " M reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_issue_register.json",
+    " M reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_media_row_taxonomy_diagnostic.json",
+    " M reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_media_row_taxonomy_summary.md",
+    " M reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_public_phase1_observation.json",
+    "?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_artifact_metadata_projection.json",
+    "?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_backend_telemetry_reconciliation.json",
+    "?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_candidate_identity_audit.json",
+    "?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_csv_schema_delta.json",
+    "?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_file_container_signature_audit.json",
+    "?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_row_applicability_audit.json",
+    "?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_semantic_identity_sufficiency.json"
+  ],
   "runtime_pid": 24840,
-  "runtime_started_at": "2026-08-22T04:23:05-03:00",
+  "runtime_started_at": "2026-08-22T04:23:05-0300",
   "cwd": "C:\\Dev\\AIpinho",
+  "command_line": "C:\\Program Files\\Python311\\python.exe -m uvicorn aipinho.main:app --host 0.0.0.0 --port 9088",
   "python": "C:\\Program Files\\Python311\\python.exe",
-  "command_line": "python -m uvicorn aipinho.main:app --host 0.0.0.0 --port 9088",
   "listen": "0.0.0.0:9088",
   "import_root": "C:\\Dev\\AIpinho\\src",
+  "aipinho_file": "C:\\Dev\\AIpinho\\src\\aipinho\\__init__.py",
   "modules": {
     "aipinho": "C:\\Dev\\AIpinho\\src\\aipinho\\__init__.py",
     "aipinho.main": "C:\\Dev\\AIpinho\\src\\aipinho\\main.py",
-    "ReadonlyAnalysisArtifactRuntimeService": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\governance\\runtime\\readonly_analysis_artifact_runtime_service.py",
-    "GovernedObservationExecutionStageService": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\governed_observation_execution_stage_service.py",
-    "MediaMetadataObserverAdapter": "C:\\Dev\\AIpinho\\src\\aipinho\\capabilities\\media_metadata\\adapter.py",
-    "public_runtime_api_router": "C:\\Dev\\AIpinho\\src\\aipinho\\api\\routers\\public_runtime_api_router.py",
-    "FileContainerSignatureService": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\file_container_signature_service.py",
-    "MediaCandidateIdentityPolicy": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\media_candidate_identity_policy.py",
-    "MediaInventoryRowTaxonomyService": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\media_inventory_row_taxonomy_service.py"
+    "aipinho.services.artifacts.governed_observation_execution_stage_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\governed_observation_execution_stage_service.py",
+    "aipinho.capabilities.media_metadata.adapter": "C:\\Dev\\AIpinho\\src\\aipinho\\capabilities\\media_metadata\\adapter.py",
+    "aipinho.capabilities.media_metadata.policy": "C:\\Dev\\AIpinho\\src\\aipinho\\capabilities\\media_metadata\\policy.py",
+    "aipinho.capabilities.media_metadata.normalizer": "C:\\Dev\\AIpinho\\src\\aipinho\\capabilities\\media_metadata\\normalizer.py",
+    "aipinho.services.artifacts.row_level_semantic_validation_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\row_level_semantic_validation_service.py",
+    "aipinho.services.artifacts.media_inventory_sufficiency_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\media_inventory_sufficiency_service.py",
+    "aipinho.services.artifacts.media_inventory_row_taxonomy_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\media_inventory_row_taxonomy_service.py",
+    "aipinho.services.artifacts.file_container_signature_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\file_container_signature_service.py",
+    "aipinho.services.artifacts.media_candidate_identity_policy": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\media_candidate_identity_policy.py",
+    "aipinho.api.routers.public_runtime_api_router": "C:\\Dev\\AIpinho\\src\\aipinho\\api\\routers\\public_runtime_api_router.py",
+    "aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\governance\\runtime\\readonly_analysis_artifact_runtime_service.py"
   },
   "endpoint_status": {
-    "/api/v1/version": 200,
-    "/api/v1/runtime": 200,
-    "/api/v1/modules": 200,
-    "/api/v1/contracts": 200
-  }
+    "/api/v1/version": {
+      "status_code": 200,
+      "body_sample": "{\"api_version\":\"1.0\",\"app_version\":\"0.1.0\",\"supported_versions\":[\"1.0\"]}"
+    },
+    "/api/v1/runtime": {
+      "status_code": 200,
+      "body_sample": "{\"status\":\"ok\",\"kernel_state\":\"READY\",\"modules\":15,\"gateway_required\":true,\"kernel_required\":true}"
+    },
+    "/api/v1/modules": {
+      "status_code": 200,
+      "body_sample": "{\"modules\":[{\"module_id\":\"semantic_interpreter\",\"name\":\"Semantic Interpreter\",\"version\":\"1.0\",\"capabilities\":[\"semantic_understanding\"],\"contracts\":[\"semantic_ir\"],\"dependencies\":[],\"status\":\"registered\",\"health\":\"unknown\",\"can_read\":true,\"can_write\":false,\"can_execute\":false,\"requires_contract\":tru"
+    },
+    "/api/v1/contracts": {
+      "status_code": 200,
+      "body_sample": "{\"version\":\"1.0\",\"contracts\":[{\"contract_id\":\"public_contract_b30a3f766ec746d1ac856ef6873b3da6\",\"operation\":\"chat\",\"version\":\"1.0\",\"contract_type\":\"conversation\",\"target_module\":\"semantic_interpreter\",\"schema_ref\":\"public.chat.v1\",\"gateway_required\":true,\"kernel_required\":true},{\"contract_id\":\"publi"
+    }
+  },
+  "health_endpoint_note": "/api/v1/health is not used as canonical blocker"
 }

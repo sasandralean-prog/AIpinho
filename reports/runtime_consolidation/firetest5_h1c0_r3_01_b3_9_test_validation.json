@@ -70,5 +70,33 @@
     "failure_reason": "PermissionError: agent_profile_disabled",
     "attributed_to_b3_9": false,
     "counts_before_stop": "1 failed, 16 passed"
+  },
+  "continuation_k_to_p_validation": {
+    "public_phase1_diagnostic_run": {
+      "task_run_id": "task_run_8c5a622574d847a287cc60e28c3097df",
+      "operation_id": "op_aa54373588d54fdea7fca3a6900e714d",
+      "status": "blocked",
+      "reason_code": "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "official_firetest5_pass_attempt": false,
+      "speaker_truth_safe_to_report_success": false
+    },
+    "commands": [
+      {
+        "command": "python -m pytest tests/unit/test_file_container_signature_service.py tests/unit/test_media_candidate_identity_policy.py tests/unit/test_media_inventory_row_applicability_taxonomy.py tests/unit/test_media_inventory_b3_9_firetest_phase1_diagnostic.py -q",
+        "result": "10 passed"
+      },
+      {
+        "command": "python -m compileall -q src tests",
+        "result": "PASS"
+      },
+      {
+        "command": "python -c \"parse B3.9 JSON reports\"",
+        "result": "parsed 13 json reports"
+      },
+      {
+        "command": "git diff --check",
+        "result": "PASS with CRLF normalization warnings on touched reports only"
+      }
+    ]
   }
 }

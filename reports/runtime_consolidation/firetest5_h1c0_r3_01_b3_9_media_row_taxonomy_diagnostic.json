@@ -1,629 +1,123 @@
 {
   "mission_id": "H1C0.R3.01.B3.9",
   "mission_class": "hybrid_operational_correction",
+  "update_context": {
+    "partial_prompt_received_before_completion": true,
+    "completion_update_applied": true,
+    "preserved_valid_existing_implementation": true,
+    "corrected_partial_implementation": "extracted file/container signature and filename candidate policy ownership; enriched artifact metadata projection; reran public Phase-1 diagnostic",
+    "missing_sections_completed": [
+      "I",
+      "J",
+      "K",
+      "L",
+      "M",
+      "N",
+      "O",
+      "P"
+    ]
+  },
   "branch": "agent/codex/r3-01-b3-9-media-row-taxonomy-container-anatomy",
   "base_main_sha": "d76a1a21ceeef00f953d87a6aca07dcb6635c834",
-  "firetest5_official_pass_executed": false,
-  "phase1_diagnostic_executed": true,
+  "head": "6a69c62495edebfcd28f558ebec6dc336c6e7c2d",
+  "firetest5_official_pass_attempt": false,
+  "phase1_diagnostic_run": true,
+  "ffprobe_installed": false,
   "c_gate": "CORRECTIVE_REQUIRED_BEFORE_C",
   "implementation": {
     "row_applicability_taxonomy": "implemented",
     "semantic_identity_sufficiency_by_class": "implemented",
-    "candidate_identity_policy": "implemented_candidate_only_not_truth",
-    "file_container_anatomy": "implemented_bounded_magic_bytes_routing_hint_only",
-    "metadata_projection_correction": "implemented_with_unit_proof_for_physical_backend_attempts"
+    "file_container_anatomy": "implemented_file_container_signature_service_routing_hint_only",
+    "candidate_identity_policy": "implemented_media_candidate_identity_policy_candidate_only_not_truth",
+    "lyrics_sidecar_relationship_policy": "implemented_relationship_candidate_only_no_full_lyrics",
+    "backend_telemetry_projection": "implemented_reconciled_from_artifact_metadata_coverage",
+    "artifact_metadata_projection": "implemented_logical_path_storage_ref_status_safe_to_use_reason_code_sha256"
   },
-  "baseline": {
+  "baseline_evidence": {
+    "b3_8_task_run_id": "task_run_02e3ebb7d7ec4afdae76117876639ba3",
     "b3_8_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
-    "b3_8_rows": 1051,
-    "b3_8_csv_bytes": 403647,
-    "b3_8_primary_media_files": 928,
-    "b3_8_identity_entities": 214,
-    "b3_8_checkpoint_bytes_total": 8813500
+    "rows": 1051,
+    "media_files": 928,
+    "media_with_governed_identity": 214,
+    "media_without_identity_tags": 704,
+    "mutagen_no_valid_evidence": 10,
+    "lrc_count": 121,
+    "jpg_count": 2
+  },
+  "public_api": {
+    "post_status": 200,
+    "response_mode": "accepted_running",
+    "elapsed_ms": 6553,
+    "task_run_id": "task_run_8c5a622574d847a287cc60e28c3097df",
+    "operation_id": "op_aa54373588d54fdea7fca3a6900e714d",
+    "polling_endpoints": {
+      "run": "/api/v1/task-runs/task_run_8c5a622574d847a287cc60e28c3097df",
+      "result": "/api/v1/task-runs/task_run_8c5a622574d847a287cc60e28c3097df/result",
+      "events": "/api/v1/task-runs/task_run_8c5a622574d847a287cc60e28c3097df/events",
+      "summary": "/api/v1/task-runs/task_run_8c5a622574d847a287cc60e28c3097df/summary",
+      "timeline": "/api/v1/task-runs/task_run_8c5a622574d847a287cc60e28c3097df/timeline"
+    },
+    "polling_statuses": {
+      "run": 200,
+      "result": 200,
+      "events": 200,
+      "summary": 200,
+      "timeline": 200
+    }
   },
   "post_patch_phase1": {
-    "task_run_id": "task_run_5732815a2d3c4ed99034ac48b69b9169",
-    "operation_id": "op_21efc8b6e30445ed850947ce3d0d8160",
-    "post_response": {
-      "status_code": 200,
-      "elapsed_ms": 6595,
-      "status": "accepted_running",
-      "reason_code": "RUN_ACCEPTED_ASYNC",
-      "safe_to_report_success": false
-    },
-    "terminal": {
-      "run_status": "blocked",
-      "result_status": "blocked",
-      "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING",
-      "finished_at": "2026-08-22T05:06:56.029572+00:00",
-      "events_count": 347,
-      "speaker_truth_safe_to_report_success": false
-    },
-    "artifacts": [
-      {
-        "artifact_id": "artifact_84fe9fd666544477808a80b417277f3f",
-        "logical_path": "reports/firetest5/phase1_discovery.md",
-        "status": "ready",
-        "validation_status": "validated",
-        "content_type": "text/markdown",
-        "size_bytes": 9517
-      },
-      {
-        "artifact_id": "artifact_66a39cffa5e64072b82a91ee97b59d93",
-        "logical_path": "reports/firetest5/project_inventory.md",
-        "status": "ready",
-        "validation_status": "validated",
-        "content_type": "text/markdown",
-        "size_bytes": 9518
-      },
-      {
-        "artifact_id": "artifact_52ed4f5843e249deb16ed7a545dcd916",
-        "logical_path": "reports/firetest5/music_inventory.csv",
-        "status": "blocked",
-        "validation_status": "blocked",
-        "content_type": "text/csv",
-        "size_bytes": 1501438
-      },
-      {
-        "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-        "logical_path": "reports/firetest5/evidence_phase1.zip",
-        "status": "ready",
-        "validation_status": "validated",
-        "content_type": "application/zip",
-        "size_bytes": 211146
-      }
-    ],
-    "music_inventory_csv": {
-      "artifact_id": "artifact_52ed4f5843e249deb16ed7a545dcd916",
-      "logical_path": "reports/firetest5/music_inventory.csv",
-      "runtime_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_52ed4f5843e249deb16ed7a545dcd916_reports__firetest5__music_inventory.csv",
-      "exists": true,
-      "bytes": 1501438,
-      "rows": 2230,
-      "columns": [
-        "entity_id",
-        "source_root_role",
-        "relative_path",
-        "filename",
-        "extension",
-        "media_type",
-        "size_bytes",
-        "track_title",
-        "artist",
-        "album",
-        "album_artist",
-        "duration_ms",
-        "codec",
-        "container",
-        "bitrate_bps",
-        "sample_rate_hz",
-        "channels",
-        "artwork_present",
-        "metadata_status",
-        "metadata_source",
-        "probe_status",
-        "evidence_ref",
-        "limitations",
-        "relationship_candidate_refs",
-        "validation_status",
-        "declared_extension",
-        "row_class",
-        "primary_media_identity_required",
-        "semantic_identity_observed",
-        "semantic_identity_candidate_available",
-        "candidate_title",
-        "candidate_artist",
-        "candidate_source",
-        "candidate_method",
-        "candidate_identity_confidence",
-        "candidate_truth_status",
-        "candidate_risk_flags",
-        "row_sufficiency_status",
-        "row_sufficiency_reason_code",
-        "observed_container",
-        "observed_signature_family",
-        "extension_container_match",
-        "file_anatomy_status",
-        "file_anatomy_reason_code",
-        "routing_hint_only",
-        "semantic_truth_claim"
-      ],
-      "column_count": 46,
-      "storage_mode": "artifact_file_reference_payload_ref_manifest",
-      "old_8mb_inline_frontier_observed": false
-    },
-    "row_taxonomy": {
-      "row_class_counts": {
-        "non_primary_corpus_member": 1176,
-        "primary_media_without_identity_tags": 704,
-        "primary_media_with_governed_identity": 214,
-        "lyrics_sidecar_candidate": 121,
-        "primary_media_backend_no_valid_evidence": 10,
-        "artwork_candidate": 5
-      },
-      "extension_counts_top20": {
-        "m4a": 921,
-        "class": 244,
-        "dll": 244,
-        "jar": 138,
-        "lrc": 121,
-        "len": 72,
-        "h": 64,
-        "kt": 46,
-        "lib": 41,
-        "md": 34,
-        "exe": 27,
-        "tab": 26,
-        "keystream": 24,
-        "at": 24,
-        "tab_i": 24,
-        "xsd": 19,
-        "properties": 18,
-        "config": 16,
-        "bin": 15,
-        "txt": 11
-      },
-      "row_sufficiency_reason_code_counts": {
-        "": 1390,
-        "MEDIA_PRIMARY_IDENTITY_TAGS_ABSENT": 704,
-        "MEDIA_SIDECAR_RELATIONSHIP_POLICY_REQUIRED": 121,
-        "MEDIA_CONTAINER_EXTENSION_MISMATCH": 10,
-        "MEDIA_ARTWORK_RELATIONSHIP_POLICY_REQUIRED": 5
-      },
-      "observed_signature_family_counts": {
-        "unknown": 1176,
-        "iso_bmff": 916,
-        "text_lrc_candidate": 121,
-        "ebml_candidate": 10,
-        "png": 3,
-        "jpeg": 2,
-        "mp3_candidate": 2
-      },
-      "file_anatomy_reason_code_counts": {
-        "FILE_CONTAINER_SIGNATURE_UNKNOWN": 1176,
-        "FILE_CONTAINER_EXTENSION_MATCHED": 1041,
-        "FILE_CONTAINER_EXTENSION_MISMATCH": 13
-      },
-      "semantic_identity_observed_counts": {
-        "False": 2016,
-        "True": 214
-      },
-      "primary_media_denominator": 928,
-      "semantic_identity_true_count": 214,
-      "candidate_identity_available_count": 2230
-    },
-    "metadata_coverage_summary": {
-      "status": "partial",
-      "capability_id": "media_metadata_reader",
-      "configured": true,
-      "available": true,
-      "execution_status": "blocked",
-      "files_planned": 928,
-      "files_expected": 2230,
-      "files_attempted": 928,
-      "files_succeeded": 918,
-      "files_failed": 10,
-      "primary_media_files_expected": 928,
-      "primary_media_files_attempted": 928,
-      "primary_media_files_succeeded": 918,
-      "primary_media_files_failed": 10,
-      "entity_observation_files_attempted": 919,
-      "entity_observation_files_succeeded": 918,
-      "entity_observation_files_failed": 1,
-      "unsupported_count": 10,
-      "read_error_count": 0,
-      "coverage_ratio": 0.4117,
-      "primary_media_observation_ratio": 0.9892,
-      "attributes_observed": [
-        "artist",
-        "artwork",
-        "bitrate",
-        "channels",
-        "codec",
-        "duration",
-        "sample_rate",
-        "track_title"
-      ],
-      "attributes_missing": [],
-      "contract_required_attributes_missing": [],
-      "capability_attributes_unobserved": [
-        "container",
-        "metadata",
-        "album",
-        "album_artist"
-      ],
-      "physical_probe_count": 928,
-      "goals_satisfied": 5934,
-      "goals_unsatisfied": 4274,
-      "attempted_backends": {
-        "mutagen": 918
-      },
-      "successful_backends": {
-        "mutagen": 918
-      },
-      "fallback_backends_used": {},
-      "evidence_counts_by_canonical_key": {
-        "duration": 918,
-        "codec": 916,
-        "bitrate": 918,
-        "sample_rate": 918,
-        "channels": 918,
-        "artwork": 918,
-        "track_title": 214,
-        "artist": 214
-      },
-      "evidence_counts_by_backend": {
-        "mutagen": 5934
-      },
-      "semantic_identity_evidence_counts": {
-        "track_title": 214,
-        "artist": 214
-      },
-      "telemetry_projection_source": {
-        "attribute_observations_projected": true,
-        "execution_telemetry_present": true,
-        "row_applicability_summary_present": true
-      },
-      "backend_error_counts": {
-        "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 10,
-        "FFPROBE_NOT_AVAILABLE": 10
-      },
-      "reason_codes": [
-        "MEDIA_METADATA_OBSERVATION_INCOMPLETE"
-      ]
-    },
-    "inventory_sufficiency_summary": {
-      "status": "blocked",
-      "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING",
-      "safe_to_use": false,
-      "use_safety": {
-        "unrestricted": false,
-        "phase1_discovery": false,
-        "downstream_static_analysis": false,
-        "full_truth_claim": false,
-        "limited_truth_claim": false,
-        "reason_codes": [
-          "ARTIFACT_EVIDENCE_BINDING_MISSING",
-          "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
-          "MEDIA_PRIMARY_IDENTITY_TAGS_ABSENT",
-          "MEDIA_BACKEND_NO_VALID_EVIDENCE",
-          "MEDIA_CONTAINER_EXTENSION_MISMATCH",
-          "MEDIA_CANDIDATE_IDENTITY_NOT_TRUTH",
-          "MEDIA_SIDECAR_RELATIONSHIP_POLICY_REQUIRED",
-          "MEDIA_ARTWORK_RELATIONSHIP_POLICY_REQUIRED",
-          "MEDIA_METADATA_OBSERVATION_INCOMPLETE"
-        ],
-        "limitations": [
-          "row_evidence_coverage_incomplete",
-          "primary_media_semantic_identity_evidence_incomplete",
-          "primary_media_files_without_governed_identity_tags",
-          "primary_media_files_without_valid_backend_evidence",
-          "declared_extension_differs_from_observed_container_signature",
-          "candidate_identity_available_but_not_semantic_truth",
-          "lyrics_sidecar_relationship_candidates_require_validation",
-          "artwork_candidates_require_relationship_validation",
-          "metadata_observation_coverage_below_required_threshold"
-        ]
-      },
-      "coverage_summary": {
-        "expected_entities": 2272,
-        "selected_entities": 2272,
-        "bound_rows": 2272,
-        "rows_rendered": 2230,
-        "rows_with_evidence_ref": 2230,
-        "evidence_ref_count": 2272,
-        "rows_with_required_identity": 2230,
-        "rows_with_stable_entity_identity": 2230,
-        "rows_with_semantic_identity_evidence": 214,
-        "rows_without_semantic_identity_evidence": 2016,
-        "selection_coverage_ratio": 1.0,
-        "evidence_coverage_ratio": 0.9815,
-        "identity_coverage_ratio": 1.0,
-        "stable_entity_identity_ratio": 1.0,
-        "semantic_identity_evidence_ratio": 0.096,
-        "primary_media_row_count": 928,
-        "lyrics_sidecar_row_count": 121,
-        "artwork_row_count": 5,
-        "primary_media_with_governed_identity_count": 214,
-        "primary_media_without_identity_tags_count": 704,
-        "primary_media_backend_no_valid_evidence_count": 10,
-        "primary_media_identity_ratio": 0.2306,
-        "sidecar_relationship_candidate_count": 53,
-        "artwork_candidate_count": 5,
-        "candidate_identity_available_count": 2230,
-        "candidate_identity_not_truth_count": 2230,
-        "technical_metadata_observed_count": 918,
-        "technical_metadata_only_count": 704,
-        "file_anatomy_extension_container_mismatch_count": 13,
-        "row_class_counts": {
-          "primary_media_without_identity_tags": 704,
-          "primary_media_with_governed_identity": 214,
-          "artwork_candidate": 5,
-          "primary_media_backend_no_valid_evidence": 10,
-          "lyrics_sidecar_candidate": 121,
-          "non_primary_corpus_member": 1176
-        },
-        "identity_status": "insufficient_evidence",
-        "identity_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
-        "identity_observed_semantic_fields": [
-          "artist",
-          "track_title"
-        ],
-        "identity_locator_context_fields": [
-          "name",
-          "relative_path"
-        ],
-        "identity_routing_hint_fields": [
-          "extension",
-          "media_type",
-          "source_root_role"
-        ],
-        "metadata_observation_ratio": 0.9892,
-        "metadata_status": "partial",
-        "metadata_files_attempted": 928,
-        "metadata_files_succeeded": 918,
-        "metadata_files_failed": 10,
-        "unsupported_count": 10,
-        "read_error_count": 0,
-        "schema_status": "satisfied"
-      },
-      "reason_codes": [
-        "ARTIFACT_EVIDENCE_BINDING_MISSING",
-        "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
-        "MEDIA_PRIMARY_IDENTITY_TAGS_ABSENT",
-        "MEDIA_BACKEND_NO_VALID_EVIDENCE",
-        "MEDIA_CONTAINER_EXTENSION_MISMATCH",
-        "MEDIA_CANDIDATE_IDENTITY_NOT_TRUTH",
-        "MEDIA_SIDECAR_RELATIONSHIP_POLICY_REQUIRED",
-        "MEDIA_ARTWORK_RELATIONSHIP_POLICY_REQUIRED",
-        "MEDIA_METADATA_OBSERVATION_INCOMPLETE"
-      ],
-      "limitations": [
-        "row_evidence_coverage_incomplete",
-        "primary_media_semantic_identity_evidence_incomplete",
-        "primary_media_files_without_governed_identity_tags",
-        "primary_media_files_without_valid_backend_evidence",
-        "declared_extension_differs_from_observed_container_signature",
-        "candidate_identity_available_but_not_semantic_truth",
-        "lyrics_sidecar_relationship_candidates_require_validation",
-        "artwork_candidates_require_relationship_validation",
-        "metadata_observation_coverage_below_required_threshold"
-      ]
-    },
-    "last_events": [
-      {
-        "sequence": 328,
-        "type": "artifact_render_checkpoint",
-        "status": "running",
-        "stage": "after_sharded_manifest_persist",
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-        "artifact_content_bytes": 281528
-      },
-      {
-        "sequence": 329,
-        "type": "artifact_render_checkpoint",
-        "status": "running",
-        "stage": "before_light_index_persist",
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-        "artifact_content_bytes": 281528
-      },
-      {
-        "sequence": 330,
-        "type": "artifact_render_checkpoint",
-        "status": "running",
-        "stage": "after_light_index_persist",
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-        "artifact_content_bytes": 281528
-      },
-      {
-        "sequence": 331,
-        "type": "artifact_render_checkpoint",
-        "status": "running",
-        "stage": "legacy_registry_projection_skipped",
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-        "artifact_content_bytes": 281528
-      },
-      {
-        "sequence": 332,
-        "type": "artifact_render_checkpoint",
-        "status": "running",
-        "stage": "after_manifest_persist",
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-        "artifact_content_bytes": 281528
-      },
-      {
-        "sequence": 333,
-        "type": "artifact_render_checkpoint",
-        "status": "running",
-        "stage": "before_registry_index_update",
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-        "artifact_content_bytes": 281528
-      },
-      {
-        "sequence": 334,
-        "type": "artifact_render_checkpoint",
-        "status": "running",
-        "stage": "after_registry_index_update",
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-        "artifact_content_bytes": 281528
-      },
-      {
-        "sequence": 335,
-        "type": "artifact_render_checkpoint",
-        "status": "running",
-        "stage": "before_artifact_commit",
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-        "artifact_content_bytes": 281528
-      },
-      {
-        "sequence": 336,
-        "type": "artifact_render_checkpoint",
-        "status": "running",
-        "stage": "after_artifact_commit",
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-        "artifact_content_bytes": 281528
-      },
-      {
-        "sequence": 337,
-        "type": "artifact_render_checkpoint",
-        "status": "running",
-        "stage": "after_artifact_persist",
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-        "artifact_content_bytes": 211146
-      },
-      {
-        "sequence": 338,
-        "type": "artifact_render_checkpoint",
-        "status": "running",
-        "stage": "after_registry_create_before_event",
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": null,
-        "artifact_content_bytes": null
-      },
-      {
-        "sequence": 339,
-        "type": "artifact_created",
-        "status": "completed",
-        "stage": null,
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": "artifact_b5493ccd546542a5950c731b9aefa883",
-        "artifact_content_bytes": null
-      },
-      {
-        "sequence": 340,
-        "type": "validation_finished",
-        "status": "blocked",
-        "stage": null,
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": null,
-        "artifact_content_bytes": null
-      },
-      {
-        "sequence": 341,
-        "type": "runtime_finalization_checkpoint",
-        "status": "running",
-        "stage": "before_phase_semantic_completion_policy",
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": null,
-        "artifact_content_bytes": null
-      },
-      {
-        "sequence": 342,
-        "type": "runtime_finalization_checkpoint",
-        "status": "running",
-        "stage": "after_phase_semantic_completion_policy",
-        "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING",
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": null,
-        "artifact_content_bytes": null
-      },
-      {
-        "sequence": 343,
-        "type": "runtime_finalization_checkpoint",
-        "status": "running",
-        "stage": "before_taskrun_result_build",
-        "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING",
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": null,
-        "artifact_content_bytes": null
-      },
-      {
-        "sequence": 344,
-        "type": "runtime_finalization_checkpoint",
-        "status": "running",
-        "stage": "before_taskrun_result_persist",
-        "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING",
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": null,
-        "artifact_content_bytes": null
-      },
-      {
-        "sequence": 345,
-        "type": "runtime_finalization_checkpoint",
-        "status": "running",
+    "task_run_id": "task_run_8c5a622574d847a287cc60e28c3097df",
+    "operation_id": "op_aa54373588d54fdea7fca3a6900e714d",
+    "status": "blocked",
+    "reason_code": "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "terminal_blocking_event_count": 1,
+    "speaker_truth_safe_to_report_success": false,
+    "event_count": 297,
+    "last_checkpoint": {
+      "type": "runtime_finalization_checkpoint",
+      "status": "running",
+      "metadata": {
         "stage": "after_taskrun_result_persist",
-        "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING",
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": null,
-        "artifact_content_bytes": null
-      },
-      {
-        "sequence": 346,
-        "type": "run_blocked",
-        "status": "blocked",
-        "stage": null,
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": null,
-        "artifact_content_bytes": null
-      },
-      {
-        "sequence": 346,
-        "type": "artifact_creation_terminalization_guard_skipped",
-        "status": "ignored",
-        "stage": null,
-        "reason_code": null,
-        "rows_rendered": null,
-        "rows_expected": null,
-        "artifact_id": null,
-        "artifact_content_bytes": null
+        "artifact_count": 4,
+        "result_status": "blocked",
+        "reason_code": "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+        "bounded": true
       }
-    ]
+    }
   },
-  "semantic_findings": {
-    "primary_media_identity_ratio": 0.2306,
+  "row_taxonomy": {
+    "all_rows_count": 1051,
+    "primary_media_row_count": 928,
     "primary_media_with_governed_identity_count": 214,
     "primary_media_without_identity_tags_count": 704,
     "primary_media_backend_no_valid_evidence_count": 10,
-    "lyrics_sidecar_row_count": 121,
-    "artwork_row_count": 5,
-    "candidate_identity_not_truth_count": 2230,
-    "container_mismatch_count": 13,
+    "lyrics_sidecar_candidate_count": 121,
+    "artwork_candidate_count": 2,
+    "unknown_or_unclassified_count": 0,
+    "row_class_distribution": {
+      "primary_media_without_identity_tags": 704,
+      "primary_media_with_governed_identity": 214,
+      "artwork_candidate": 2,
+      "primary_media_backend_no_valid_evidence": 10,
+      "lyrics_sidecar_candidate": 121
+    },
+    "sidecar_artwork_excluded_from_primary_identity_denominator": true
+  },
+  "semantic_identity_sufficiency": {
+    "rows_with_stable_entity_identity": 1051,
+    "rows_with_semantic_identity_evidence": 214,
+    "primary_media_identity_denominator": 928,
+    "primary_media_identity_observed_count": 214,
+    "primary_media_identity_ratio": 0.2306,
+    "candidate_identity_available_count": 1051,
+    "candidate_identity_not_truth_count": 1051,
+    "filename_candidate_count": 1051,
+    "lrc_relationship_candidate_count": 53,
+    "promoted_to_semantic_truth_count": 0,
+    "sidecar_artwork_excluded_from_primary_identity_denominator": true,
+    "safe_to_use": false,
+    "reason_code": "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
     "reason_codes": [
-      "ARTIFACT_EVIDENCE_BINDING_MISSING",
       "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
       "MEDIA_PRIMARY_IDENTITY_TAGS_ABSENT",
       "MEDIA_BACKEND_NO_VALID_EVIDENCE",
@@ -632,21 +126,615 @@
       "MEDIA_SIDECAR_RELATIONSHIP_POLICY_REQUIRED",
       "MEDIA_ARTWORK_RELATIONSHIP_POLICY_REQUIRED",
       "MEDIA_METADATA_OBSERVATION_INCOMPLETE"
+    ],
+    "coverage_summary": {
+      "expected_entities": 1051,
+      "selected_entities": 1051,
+      "bound_rows": 1051,
+      "rows_rendered": 1051,
+      "rows_with_evidence_ref": 1051,
+      "evidence_ref_count": 1051,
+      "rows_with_required_identity": 1051,
+      "rows_with_stable_entity_identity": 1051,
+      "rows_with_semantic_identity_evidence": 214,
+      "rows_without_semantic_identity_evidence": 837,
+      "selection_coverage_ratio": 1.0,
+      "evidence_coverage_ratio": 1.0,
+      "identity_coverage_ratio": 1.0,
+      "stable_entity_identity_ratio": 1.0,
+      "semantic_identity_evidence_ratio": 0.2036,
+      "primary_media_row_count": 928,
+      "lyrics_sidecar_row_count": 121,
+      "artwork_row_count": 2,
+      "primary_media_with_governed_identity_count": 214,
+      "primary_media_without_identity_tags_count": 704,
+      "primary_media_backend_no_valid_evidence_count": 10,
+      "primary_media_identity_ratio": 0.2306,
+      "sidecar_relationship_candidate_count": 53,
+      "artwork_candidate_count": 2,
+      "candidate_identity_available_count": 1051,
+      "candidate_identity_not_truth_count": 1051,
+      "technical_metadata_observed_count": 918,
+      "technical_metadata_only_count": 704,
+      "file_anatomy_extension_container_mismatch_count": 13,
+      "row_class_counts": {
+        "primary_media_without_identity_tags": 704,
+        "primary_media_with_governed_identity": 214,
+        "artwork_candidate": 2,
+        "primary_media_backend_no_valid_evidence": 10,
+        "lyrics_sidecar_candidate": 121
+      },
+      "identity_status": "insufficient_evidence",
+      "identity_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "identity_observed_semantic_fields": [
+        "artist",
+        "track_title"
+      ],
+      "identity_locator_context_fields": [
+        "name",
+        "relative_path"
+      ],
+      "identity_routing_hint_fields": [
+        "extension",
+        "media_type",
+        "source_root_role"
+      ],
+      "metadata_observation_ratio": 0.9892,
+      "metadata_status": "partial",
+      "metadata_files_attempted": 928,
+      "metadata_files_succeeded": 918,
+      "metadata_files_failed": 10,
+      "unsupported_count": 10,
+      "read_error_count": 0,
+      "schema_status": "satisfied"
+    }
+  },
+  "file_container_anatomy": {
+    "total_files_scanned_for_signature": 1051,
+    "declared_extension_distribution": {
+      "m4a": 921,
+      "jpg": 2,
+      "mp3": 5,
+      "mp4": 2,
+      "lrc": 121
+    },
+    "observed_container_distribution": {
+      "mp4_or_m4a_candidate": 916,
+      "jpeg": 2,
+      "mp3_candidate": 2,
+      "matroska_or_webm_candidate": 10,
+      "text_lrc_candidate": 121
+    },
+    "observed_signature_family_distribution": {
+      "iso_bmff": 916,
+      "jpeg": 2,
+      "mp3_candidate": 2,
+      "ebml_candidate": 10,
+      "text_lrc_candidate": 121
+    },
+    "file_anatomy_reason_code_distribution": {
+      "FILE_CONTAINER_EXTENSION_MATCHED": 1038,
+      "FILE_CONTAINER_EXTENSION_MISMATCH": 13
+    },
+    "extension_container_match_count": 1038,
+    "extension_container_mismatch_count": 13,
+    "unknown_signature_count": 0,
+    "read_error_count": 0,
+    "mismatch_samples": [
+      {
+        "entity_id": "observed_entity_6271805a34c5b8263ccde7c6",
+        "relative_path": "Black Sheep Brie Larson Vocal Version.mp3",
+        "declared_extension": "mp3",
+        "observed_signature_family": "iso_bmff",
+        "observed_container": "mp4_or_m4a_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_1c0078eff85d0c6c44bbc085",
+        "relative_path": "ivri - tower of memories - 3.m4a",
+        "declared_extension": "m4a",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_7d86a84aa1ca8cd7846c6996",
+        "relative_path": "ivri - tower of memories.mp3",
+        "declared_extension": "mp3",
+        "observed_signature_family": "iso_bmff",
+        "observed_container": "mp4_or_m4a_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_49a43aaa3f887924ad31c50e",
+        "relative_path": "Night Club - Barbwire Kiss - 2.m4a",
+        "declared_extension": "m4a",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_72810125eedd60c8a60888d5",
+        "relative_path": "Night Club - Candy Coated Suicide - 3.m4a",
+        "declared_extension": "m4a",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_6b947359cb590a78dbd1d9a7",
+        "relative_path": "Night Club - Miss Negativity - 2.m4a",
+        "declared_extension": "m4a",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_c5e29299ff8aa5cfe62c130b",
+        "relative_path": "Night Club - Your Addiction - 2.m4a",
+        "declared_extension": "m4a",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_1d7014a98d9892eb20b41b26",
+        "relative_path": "Numb Linkin Park.mp3",
+        "declared_extension": "mp3",
+        "observed_signature_family": "iso_bmff",
+        "observed_container": "mp4_or_m4a_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_851a4717b3954df393a10017",
+        "relative_path": "POORSTACY - Don't Look at Me - 2.m4a",
+        "declared_extension": "m4a",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      },
+      {
+        "entity_id": "observed_entity_7f16b490afca0ca59c512f40",
+        "relative_path": "Sir Chloe - Animal - 3.m4a",
+        "declared_extension": "m4a",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_truth_claim": "False"
+      }
+    ],
+    "unsupported_m4a_reclassification": [
+      {
+        "entity_id": "observed_entity_1c0078eff85d0c6c44bbc085",
+        "relative_path": "ivri - tower of memories - 3.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_49a43aaa3f887924ad31c50e",
+        "relative_path": "Night Club - Barbwire Kiss - 2.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_72810125eedd60c8a60888d5",
+        "relative_path": "Night Club - Candy Coated Suicide - 3.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_6b947359cb590a78dbd1d9a7",
+        "relative_path": "Night Club - Miss Negativity - 2.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_c5e29299ff8aa5cfe62c130b",
+        "relative_path": "Night Club - Your Addiction - 2.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_851a4717b3954df393a10017",
+        "relative_path": "POORSTACY - Don't Look at Me - 2.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_7f16b490afca0ca59c512f40",
+        "relative_path": "Sir Chloe - Animal - 3.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_48ded6dd1be8ec5bf20006c3",
+        "relative_path": "Sir Chloe - Squaring Up - 3.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_b91cf22f78a06bdc01b0d2a1",
+        "relative_path": "Sohodolls - Bang Bang Bang Bang - 2.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      },
+      {
+        "entity_id": "observed_entity_9d6abdf69d0e85636fae2f33",
+        "relative_path": "Tarantula Girl - 2.m4a",
+        "declared_extension": "m4a",
+        "row_class": "primary_media_backend_no_valid_evidence",
+        "observed_signature_family": "ebml_candidate",
+        "observed_container": "matroska_or_webm_candidate",
+        "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+        "semantic_identity_observed": "False"
+      }
+    ],
+    "backend_routing_implications": {
+      "declared_m4a_with_ebml_candidate": "container_aware_backend_required; routing hint only; no semantic identity truth",
+      "ffprobe_installed": false
+    }
+  },
+  "candidate_identity": {
+    "filename_candidate_count": 1051,
+    "lyrics_relationship_candidate_count": 53,
+    "promoted_to_semantic_truth_count": 0,
+    "candidate_only_not_truth_count": 1051,
+    "risk_flags_distribution": {
+      "candidate_not_truth": 1051,
+      "duplicate_suffix_candidate": 214,
+      "numeric_title_candidate": 214,
+      "low_confidence_candidate": 214,
+      "filename_stem_only": 614,
+      "artist_title_separator_candidate": 223
+    },
+    "candidate_truth_status": "candidate_only_not_truth",
+    "sample": [
+      {
+        "entity_id": "observed_entity_7035736169eedfbd5ca10be8",
+        "relative_path": "505 - 2.m4a",
+        "candidate_title": "505 - 2",
+        "candidate_artist": "",
+        "candidate_method": "filename_stem",
+        "candidate_risk_flags": "candidate_not_truth;duplicate_suffix_candidate;numeric_title_candidate;low_confidence_candidate",
+        "candidate_truth_status": "candidate_only_not_truth"
+      },
+      {
+        "entity_id": "observed_entity_d86f5ff0eec98280600583b8",
+        "relative_path": "505.m4a",
+        "candidate_title": "505",
+        "candidate_artist": "",
+        "candidate_method": "filename_stem",
+        "candidate_risk_flags": "candidate_not_truth;filename_stem_only",
+        "candidate_truth_status": "candidate_only_not_truth"
+      },
+      {
+        "entity_id": "observed_entity_cc341b6e1fccc5ce8b2fcf27",
+        "relative_path": "A Certain Romance.m4a",
+        "candidate_title": "A Certain Romance",
+        "candidate_artist": "",
+        "candidate_method": "filename_stem",
+        "candidate_risk_flags": "candidate_not_truth;filename_stem_only",
+        "candidate_truth_status": "candidate_only_not_truth"
+      },
+      {
+        "entity_id": "observed_entity_32beabbfb301467e45844385",
+        "relative_path": "A Day To Remember - All I Want.m4a",
+        "candidate_title": "All I Want",
+        "candidate_artist": "A Day To Remember",
+        "candidate_method": "artist_title_separator_candidate",
+        "candidate_risk_flags": "candidate_not_truth;artist_title_separator_candidate",
+        "candidate_truth_status": "candidate_only_not_truth"
+      },
+      {
+        "entity_id": "observed_entity_b0422bab8581a02a9a1b7254",
+        "relative_path": "A Day To Remember - I'm Made of Wax, Larry, What Are You Made Of Official Vide.m4a",
+        "candidate_title": "I'm Made of Wax, Larry, What Are You Made Of Official Vide",
+        "candidate_artist": "A Day To Remember",
+        "candidate_method": "artist_title_separator_candidate",
+        "candidate_risk_flags": "candidate_not_truth;artist_title_separator_candidate",
+        "candidate_truth_status": "candidate_only_not_truth"
+      },
+      {
+        "entity_id": "observed_entity_35c233f84d0c956e6f73d88c",
+        "relative_path": "A Day To Remember - If it means a lot to you.m4a",
+        "candidate_title": "If it means a lot to you",
+        "candidate_artist": "A Day To Remember",
+        "candidate_method": "artist_title_separator_candidate",
+        "candidate_risk_flags": "candidate_not_truth;artist_title_separator_candidate",
+        "candidate_truth_status": "candidate_only_not_truth"
+      },
+      {
+        "entity_id": "observed_entity_b14f4b8205305e15f7d99377",
+        "relative_path": "A Dozen Roses.m4a",
+        "candidate_title": "A Dozen Roses",
+        "candidate_artist": "",
+        "candidate_method": "filename_stem",
+        "candidate_risk_flags": "candidate_not_truth;filename_stem_only",
+        "candidate_truth_status": "candidate_only_not_truth"
+      },
+      {
+        "entity_id": "observed_entity_763b8182c301747611c6f349",
+        "relative_path": "A Fantastica Vida De Romantica.m4a",
+        "candidate_title": "A Fantastica Vida De Romantica",
+        "candidate_artist": "",
+        "candidate_method": "filename_stem",
+        "candidate_risk_flags": "candidate_not_truth;filename_stem_only",
+        "candidate_truth_status": "candidate_only_not_truth"
+      },
+      {
+        "entity_id": "observed_entity_a7edf5eee8619f7ed38eb11c",
+        "relative_path": "A Little Death.m4a",
+        "candidate_title": "A Little Death",
+        "candidate_artist": "",
+        "candidate_method": "filename_stem",
+        "candidate_risk_flags": "candidate_not_truth;filename_stem_only",
+        "candidate_truth_status": "candidate_only_not_truth"
+      },
+      {
+        "entity_id": "observed_entity_5d7d16f1be08b66c9bb1a334",
+        "relative_path": "A Pearl - 2.m4a",
+        "candidate_title": "A Pearl - 2",
+        "candidate_artist": "",
+        "candidate_method": "filename_stem",
+        "candidate_risk_flags": "candidate_not_truth;duplicate_suffix_candidate;numeric_title_candidate;low_confidence_candidate",
+        "candidate_truth_status": "candidate_only_not_truth"
+      },
+      {
+        "entity_id": "observed_entity_bcf9ae49e653769df4b2251c",
+        "relative_path": "A Pearl.m4a",
+        "candidate_title": "A Pearl",
+        "candidate_artist": "",
+        "candidate_method": "filename_stem",
+        "candidate_risk_flags": "candidate_not_truth;filename_stem_only",
+        "candidate_truth_status": "candidate_only_not_truth"
+      },
+      {
+        "entity_id": "observed_entity_966fe3ec228b95d6f5583580",
+        "relative_path": "A Skylit Drive - Love The Way You Lie Punk Goes Pop 4.m4a",
+        "candidate_title": "Love The Way You Lie Punk Goes Pop 4",
+        "candidate_artist": "A Skylit Drive",
+        "candidate_method": "artist_title_separator_candidate",
+        "candidate_risk_flags": "candidate_not_truth;artist_title_separator_candidate",
+        "candidate_truth_status": "candidate_only_not_truth"
+      }
     ]
   },
-  "artifact_size_analysis": {
-    "csv_bytes": 1501438,
-    "csv_under_8mb": true,
-    "b3_8_csv_bytes": 403647,
-    "b3_8_checkpoint_bytes_total": 8813500,
-    "checkpoint_bytes_are_durable_evidence_not_inline_csv": true,
-    "current_artifact_content_bytes": 1501438,
-    "old_8mb_inline_materialization_frontier_observed": false,
-    "explanation": "The file artifact is larger than B3.8 because B3.9 adds row taxonomy, candidate identity, and file anatomy columns, and this diagnostic selected 2230 rows instead of the B3.8 1051-row music-only CSV. It remains below 8 MB. The >8 MB number belongs to durable checkpoint evidence, not inline CSV materialization."
+  "backend_telemetry": {
+    "files_planned": 928,
+    "files_attempted": 928,
+    "files_succeeded": 918,
+    "files_failed": 10,
+    "physical_probe_count": 928,
+    "backend_attempt_counts": {
+      "mutagen": 928
+    },
+    "backend_success_counts": {
+      "mutagen": 918
+    },
+    "backend_failure_counts": {
+      "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 10,
+      "FFPROBE_NOT_AVAILABLE": 10
+    },
+    "evidence_records_by_backend": {
+      "mutagen": 5934
+    },
+    "evidence_records_by_canonical_key": {
+      "duration": 918,
+      "codec": 916,
+      "bitrate": 918,
+      "sample_rate": 918,
+      "channels": 918,
+      "artwork": 918,
+      "track_title": 214,
+      "artist": 214
+    },
+    "semantic_identity_evidence_counts": {
+      "track_title": 214,
+      "artist": 214
+    },
+    "technical_metadata_counts": {
+      "duration": 918,
+      "codec": 916,
+      "bitrate": 918,
+      "sample_rate": 918,
+      "channels": 918,
+      "artwork": 918
+    },
+    "telemetry_projection_source": {
+      "attribute_observations_projected": true,
+      "execution_telemetry_present": true,
+      "row_applicability_summary_present": true
+    },
+    "reconciles_with_evidence_records": true
   },
-  "deviations": [
-    "Controlled Phase-1 diagnostic selected 2230 rows, including 1176 non_primary_corpus_member rows, whereas B3.8 canonical music CSV had 1051 rows. This run still proves B3.9 projection behavior but should not be treated as official FireTest PASS.",
-    "Runtime diagnostic was executed before the final unit-level metadata projection patch that prefers physical_backend_attempts/physical_backend_successes; the correction is covered by tests/unit/test_media_inventory_metadata_projection.py."
-  ],
+  "artifact": {
+    "artifact_id": "artifact_327f349bca50420083692816c982c52d",
+    "logical_path": "reports/firetest5/music_inventory.csv",
+    "storage_ref": "data\\artifacts\\universal\\artifact_327f349bca50420083692816c982c52d_reports__firetest5__music_inventory.csv",
+    "csv_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_327f349bca50420083692816c982c52d_reports__firetest5__music_inventory.csv",
+    "csv_exists": true,
+    "csv_bytes": 678101,
+    "csv_rows": 1051,
+    "csv_columns": [
+      "entity_id",
+      "source_root_role",
+      "relative_path",
+      "filename",
+      "extension",
+      "media_type",
+      "size_bytes",
+      "track_title",
+      "artist",
+      "album",
+      "album_artist",
+      "duration_ms",
+      "codec",
+      "container",
+      "bitrate_bps",
+      "sample_rate_hz",
+      "channels",
+      "artwork_present",
+      "metadata_status",
+      "metadata_source",
+      "probe_status",
+      "evidence_ref",
+      "limitations",
+      "relationship_candidate_refs",
+      "validation_status",
+      "declared_extension",
+      "row_class",
+      "primary_media_identity_required",
+      "semantic_identity_observed",
+      "semantic_identity_candidate_available",
+      "candidate_title",
+      "candidate_artist",
+      "candidate_source",
+      "candidate_method",
+      "candidate_identity_confidence",
+      "candidate_truth_status",
+      "candidate_risk_flags",
+      "row_sufficiency_status",
+      "row_sufficiency_reason_code",
+      "observed_container",
+      "observed_signature_family",
+      "extension_container_match",
+      "file_anatomy_status",
+      "file_anatomy_reason_code",
+      "routing_hint_only",
+      "semantic_truth_claim"
+    ],
+    "sha256": "d8b2ef8c5c42261c495c144977d512ee98fff791aaba10449125c8f450f5023c",
+    "status": "blocked",
+    "validation_status": "blocked",
+    "safe_to_use": false,
+    "reason_code": "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "old_8mb_inline_frontier_observed": false
+  },
+  "issue_classification": {
+    "remaining_p0": [],
+    "remaining_p1": [
+      "R3_01_B3_9_P1_MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "R3_01_B3_9_P1_ARTIFACT_REQUIRED_COLUMNS_NOT_OBSERVED_FOR_EVIDENCE_BINDING"
+    ],
+    "remaining_p2": [
+      "R3_01_B3_9_P2_ACCEPTED_RUNNING_PUBLIC_PROGRESS_VISIBILITY_DELAY"
+    ],
+    "resolved_issues": [
+      "B3_9_ROW_APPLICABILITY_TAXONOMY_PROJECTED",
+      "B3_9_SEMANTIC_IDENTITY_DENOMINATOR_BY_ROW_CLASS",
+      "B3_9_FILE_CONTAINER_SIGNATURE_SERVICE_EXTRACTED",
+      "B3_9_MEDIA_CANDIDATE_IDENTITY_POLICY_EXTRACTED",
+      "B3_9_ARTIFACT_METADATA_PROJECTION_COMPLETED",
+      "B3_9_BACKEND_TELEMETRY_RECONCILED_FROM_ARTIFACT_METADATA"
+    ],
+    "new_issues": []
+  },
+  "runtime_provenance": {
+    "repo_path": "C:\\Dev\\AIpinho",
+    "branch": "agent/codex/r3-01-b3-9-media-row-taxonomy-container-anatomy",
+    "head": "6a69c62495edebfcd28f558ebec6dc336c6e7c2d",
+    "origin_main": "d76a1a21ceeef00f953d87a6aca07dcb6635c834",
+    "ahead_behind_origin_main": "0 / 3",
+    "working_tree_status_at_probe": [
+      " M reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_issue_register.json",
+      " M reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_media_row_taxonomy_diagnostic.json",
+      " M reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_media_row_taxonomy_summary.md",
+      " M reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_public_phase1_observation.json",
+      "?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_artifact_metadata_projection.json",
+      "?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_backend_telemetry_reconciliation.json",
+      "?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_candidate_identity_audit.json",
+      "?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_csv_schema_delta.json",
+      "?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_file_container_signature_audit.json",
+      "?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_row_applicability_audit.json",
+      "?? reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_9_semantic_identity_sufficiency.json"
+    ],
+    "runtime_pid": 24840,
+    "runtime_started_at": "2026-08-22T04:23:05-0300",
+    "cwd": "C:\\Dev\\AIpinho",
+    "command_line": "C:\\Program Files\\Python311\\python.exe -m uvicorn aipinho.main:app --host 0.0.0.0 --port 9088",
+    "python": "C:\\Program Files\\Python311\\python.exe",
+    "listen": "0.0.0.0:9088",
+    "import_root": "C:\\Dev\\AIpinho\\src",
+    "aipinho_file": "C:\\Dev\\AIpinho\\src\\aipinho\\__init__.py",
+    "modules": {
+      "aipinho": "C:\\Dev\\AIpinho\\src\\aipinho\\__init__.py",
+      "aipinho.main": "C:\\Dev\\AIpinho\\src\\aipinho\\main.py",
+      "aipinho.services.artifacts.governed_observation_execution_stage_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\governed_observation_execution_stage_service.py",
+      "aipinho.capabilities.media_metadata.adapter": "C:\\Dev\\AIpinho\\src\\aipinho\\capabilities\\media_metadata\\adapter.py",
+      "aipinho.capabilities.media_metadata.policy": "C:\\Dev\\AIpinho\\src\\aipinho\\capabilities\\media_metadata\\policy.py",
+      "aipinho.capabilities.media_metadata.normalizer": "C:\\Dev\\AIpinho\\src\\aipinho\\capabilities\\media_metadata\\normalizer.py",
+      "aipinho.services.artifacts.row_level_semantic_validation_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\row_level_semantic_validation_service.py",
+      "aipinho.services.artifacts.media_inventory_sufficiency_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\media_inventory_sufficiency_service.py",
+      "aipinho.services.artifacts.media_inventory_row_taxonomy_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\media_inventory_row_taxonomy_service.py",
+      "aipinho.services.artifacts.file_container_signature_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\file_container_signature_service.py",
+      "aipinho.services.artifacts.media_candidate_identity_policy": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\media_candidate_identity_policy.py",
+      "aipinho.api.routers.public_runtime_api_router": "C:\\Dev\\AIpinho\\src\\aipinho\\api\\routers\\public_runtime_api_router.py",
+      "aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\governance\\runtime\\readonly_analysis_artifact_runtime_service.py"
+    },
+    "endpoint_status": {
+      "/api/v1/version": {
+        "status_code": 200,
+        "body_sample": "{\"api_version\":\"1.0\",\"app_version\":\"0.1.0\",\"supported_versions\":[\"1.0\"]}"
+      },
+      "/api/v1/runtime": {
+        "status_code": 200,
+        "body_sample": "{\"status\":\"ok\",\"kernel_state\":\"READY\",\"modules\":15,\"gateway_required\":true,\"kernel_required\":true}"
+      },
+      "/api/v1/modules": {
+        "status_code": 200,
+        "body_sample": "{\"modules\":[{\"module_id\":\"semantic_interpreter\",\"name\":\"Semantic Interpreter\",\"version\":\"1.0\",\"capabilities\":[\"semantic_understanding\"],\"contracts\":[\"semantic_ir\"],\"dependencies\":[],\"status\":\"registered\",\"health\":\"unknown\",\"can_read\":true,\"can_write\":false,\"can_execute\":false,\"requires_contract\":tru"
+      },
+      "/api/v1/contracts": {
+        "status_code": 200,
+        "body_sample": "{\"version\":\"1.0\",\"contracts\":[{\"contract_id\":\"public_contract_b30a3f766ec746d1ac856ef6873b3da6\",\"operation\":\"chat\",\"version\":\"1.0\",\"contract_type\":\"conversation\",\"target_module\":\"semantic_interpreter\",\"schema_ref\":\"public.chat.v1\",\"gateway_required\":true,\"kernel_required\":true},{\"contract_id\":\"publi"
+      }
+    },
+    "health_endpoint_note": "/api/v1/health is not used as canonical blocker"
+  },
   "verdict": "R3_01_B3_9_MEDIA_ROW_TAXONOMY_CONTAINER_ANATOMY_READY_WITH_REMAINING_FRONTIER"
 }

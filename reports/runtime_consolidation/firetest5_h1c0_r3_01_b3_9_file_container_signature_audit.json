@@ -1,0 +1,230 @@
+{
+  "total_files_scanned_for_signature": 1051,
+  "declared_extension_distribution": {
+    "m4a": 921,
+    "jpg": 2,
+    "mp3": 5,
+    "mp4": 2,
+    "lrc": 121
+  },
+  "observed_container_distribution": {
+    "mp4_or_m4a_candidate": 916,
+    "jpeg": 2,
+    "mp3_candidate": 2,
+    "matroska_or_webm_candidate": 10,
+    "text_lrc_candidate": 121
+  },
+  "observed_signature_family_distribution": {
+    "iso_bmff": 916,
+    "jpeg": 2,
+    "mp3_candidate": 2,
+    "ebml_candidate": 10,
+    "text_lrc_candidate": 121
+  },
+  "file_anatomy_reason_code_distribution": {
+    "FILE_CONTAINER_EXTENSION_MATCHED": 1038,
+    "FILE_CONTAINER_EXTENSION_MISMATCH": 13
+  },
+  "extension_container_match_count": 1038,
+  "extension_container_mismatch_count": 13,
+  "unknown_signature_count": 0,
+  "read_error_count": 0,
+  "mismatch_samples": [
+    {
+      "entity_id": "observed_entity_6271805a34c5b8263ccde7c6",
+      "relative_path": "Black Sheep Brie Larson Vocal Version.mp3",
+      "declared_extension": "mp3",
+      "observed_signature_family": "iso_bmff",
+      "observed_container": "mp4_or_m4a_candidate",
+      "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_truth_claim": "False"
+    },
+    {
+      "entity_id": "observed_entity_1c0078eff85d0c6c44bbc085",
+      "relative_path": "ivri - tower of memories - 3.m4a",
+      "declared_extension": "m4a",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_truth_claim": "False"
+    },
+    {
+      "entity_id": "observed_entity_7d86a84aa1ca8cd7846c6996",
+      "relative_path": "ivri - tower of memories.mp3",
+      "declared_extension": "mp3",
+      "observed_signature_family": "iso_bmff",
+      "observed_container": "mp4_or_m4a_candidate",
+      "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_truth_claim": "False"
+    },
+    {
+      "entity_id": "observed_entity_49a43aaa3f887924ad31c50e",
+      "relative_path": "Night Club - Barbwire Kiss - 2.m4a",
+      "declared_extension": "m4a",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_truth_claim": "False"
+    },
+    {
+      "entity_id": "observed_entity_72810125eedd60c8a60888d5",
+      "relative_path": "Night Club - Candy Coated Suicide - 3.m4a",
+      "declared_extension": "m4a",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_truth_claim": "False"
+    },
+    {
+      "entity_id": "observed_entity_6b947359cb590a78dbd1d9a7",
+      "relative_path": "Night Club - Miss Negativity - 2.m4a",
+      "declared_extension": "m4a",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_truth_claim": "False"
+    },
+    {
+      "entity_id": "observed_entity_c5e29299ff8aa5cfe62c130b",
+      "relative_path": "Night Club - Your Addiction - 2.m4a",
+      "declared_extension": "m4a",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_truth_claim": "False"
+    },
+    {
+      "entity_id": "observed_entity_1d7014a98d9892eb20b41b26",
+      "relative_path": "Numb Linkin Park.mp3",
+      "declared_extension": "mp3",
+      "observed_signature_family": "iso_bmff",
+      "observed_container": "mp4_or_m4a_candidate",
+      "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_truth_claim": "False"
+    },
+    {
+      "entity_id": "observed_entity_851a4717b3954df393a10017",
+      "relative_path": "POORSTACY - Don't Look at Me - 2.m4a",
+      "declared_extension": "m4a",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_truth_claim": "False"
+    },
+    {
+      "entity_id": "observed_entity_7f16b490afca0ca59c512f40",
+      "relative_path": "Sir Chloe - Animal - 3.m4a",
+      "declared_extension": "m4a",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "file_anatomy_reason_code": "FILE_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_truth_claim": "False"
+    }
+  ],
+  "unsupported_m4a_reclassification": [
+    {
+      "entity_id": "observed_entity_1c0078eff85d0c6c44bbc085",
+      "relative_path": "ivri - tower of memories - 3.m4a",
+      "declared_extension": "m4a",
+      "row_class": "primary_media_backend_no_valid_evidence",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_identity_observed": "False"
+    },
+    {
+      "entity_id": "observed_entity_49a43aaa3f887924ad31c50e",
+      "relative_path": "Night Club - Barbwire Kiss - 2.m4a",
+      "declared_extension": "m4a",
+      "row_class": "primary_media_backend_no_valid_evidence",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_identity_observed": "False"
+    },
+    {
+      "entity_id": "observed_entity_72810125eedd60c8a60888d5",
+      "relative_path": "Night Club - Candy Coated Suicide - 3.m4a",
+      "declared_extension": "m4a",
+      "row_class": "primary_media_backend_no_valid_evidence",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_identity_observed": "False"
+    },
+    {
+      "entity_id": "observed_entity_6b947359cb590a78dbd1d9a7",
+      "relative_path": "Night Club - Miss Negativity - 2.m4a",
+      "declared_extension": "m4a",
+      "row_class": "primary_media_backend_no_valid_evidence",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_identity_observed": "False"
+    },
+    {
+      "entity_id": "observed_entity_c5e29299ff8aa5cfe62c130b",
+      "relative_path": "Night Club - Your Addiction - 2.m4a",
+      "declared_extension": "m4a",
+      "row_class": "primary_media_backend_no_valid_evidence",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_identity_observed": "False"
+    },
+    {
+      "entity_id": "observed_entity_851a4717b3954df393a10017",
+      "relative_path": "POORSTACY - Don't Look at Me - 2.m4a",
+      "declared_extension": "m4a",
+      "row_class": "primary_media_backend_no_valid_evidence",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_identity_observed": "False"
+    },
+    {
+      "entity_id": "observed_entity_7f16b490afca0ca59c512f40",
+      "relative_path": "Sir Chloe - Animal - 3.m4a",
+      "declared_extension": "m4a",
+      "row_class": "primary_media_backend_no_valid_evidence",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_identity_observed": "False"
+    },
+    {
+      "entity_id": "observed_entity_48ded6dd1be8ec5bf20006c3",
+      "relative_path": "Sir Chloe - Squaring Up - 3.m4a",
+      "declared_extension": "m4a",
+      "row_class": "primary_media_backend_no_valid_evidence",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_identity_observed": "False"
+    },
+    {
+      "entity_id": "observed_entity_b91cf22f78a06bdc01b0d2a1",
+      "relative_path": "Sohodolls - Bang Bang Bang Bang - 2.m4a",
+      "declared_extension": "m4a",
+      "row_class": "primary_media_backend_no_valid_evidence",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_identity_observed": "False"
+    },
+    {
+      "entity_id": "observed_entity_9d6abdf69d0e85636fae2f33",
+      "relative_path": "Tarantula Girl - 2.m4a",
+      "declared_extension": "m4a",
+      "row_class": "primary_media_backend_no_valid_evidence",
+      "observed_signature_family": "ebml_candidate",
+      "observed_container": "matroska_or_webm_candidate",
+      "row_sufficiency_reason_code": "MEDIA_CONTAINER_EXTENSION_MISMATCH",
+      "semantic_identity_observed": "False"
+    }
+  ],
+  "backend_routing_implications": {
+    "declared_m4a_with_ebml_candidate": "container_aware_backend_required; routing hint only; no semantic identity truth",
+    "ffprobe_installed": false
+  }
+}
