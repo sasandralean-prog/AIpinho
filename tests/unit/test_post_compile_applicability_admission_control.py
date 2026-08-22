@@ -187,11 +187,11 @@ def test_no_eligible_admission_blocks_precisely_without_probe_or_false_success()
         selected_entities=selected_entities,
     )
 
-    assert result.blocked_reason_code == "POST_COMPILE_APPLICABILITY_TARGET_EXPANSION_EXCEEDED"
+    assert result.blocked_reason_code == "POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES"
     assert result.telemetry["physical_probe_count"] == 0
     assert result.telemetry["files_attempted"] == 0
-    assert result.telemetry["expected_inapplicable_candidate_count"] == 5000
-    assert result.telemetry["capability_inapplicable_count"] == 5000
+    assert result.telemetry["expected_inapplicable_candidate_count"] == 5001
+    assert result.telemetry["capability_inapplicable_count"] == 5001
     assert result.telemetry["max_applicability_admission_candidate_count"] == 5000
     assert result.telemetry["groups_created_count"] == 0
     assert result.telemetry["results_rejected_by_policy"] == 1

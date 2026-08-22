@@ -81,6 +81,15 @@ class CapabilityApplicabilityDecision:
 
 
 @dataclass(frozen=True)
+class TargetCandidate:
+    entity_id: str
+    entity: dict[str, Any] | None
+    source: str
+    raw_source_ref: str
+    admission: CapabilityApplicabilityDecision | None = None
+
+
+@dataclass(frozen=True)
 class GovernedObservationExecutionStageResult:
     observation_execution_results: list[ObservationExecutionResult]
     telemetry: dict[str, Any]
@@ -484,6 +493,8 @@ class GovernedObservationExecutionStageService:
             "malformed_or_missing_source_ref_count": 0,
             "skipped_or_deferred_candidate_count": 0,
         }
+        target_entity_source_breakdown: dict[str, int] = {}
+        task_target_audit: list[dict[str, Any]] = []
         resolver_calls_attempted = 0
         resolver_calls_avoided_by_admission = 0
         admission_decision_count = 0
@@ -549,20 +560,64 @@ class GovernedObservationExecutionStageService:
             capability_availability_check_count += 1
             if not capability_id or not self._capability_available(capability_id):
                 continue
-            target_entity_ids = self._target_entity_ids(task)
-            target_entity_ref_count += len(target_entity_ids)
-            for entity_id in target_entity_ids:
+            target_candidates = self._target_candidates(task=task, entities_by_id=entities_by_id)
+            target_entity_ref_count += len(target_candidates)
+            task_sources: dict[str, int] = {}
+            for candidate in target_candidates:
+                task_sources[candidate.source] = task_sources.get(candidate.source, 0) + 1
+                target_entity_source_breakdown[candidate.source] = target_entity_source_breakdown.get(candidate.source, 0) + 1
+            task_audit: dict[str, Any] = {
+                "task_id": str(getattr(task, "task_id", "") or ""),
+                "goal_id": str(task.goal_id or ""),
+                "strategy_id": str(task.strategy_id or ""),
+                "strategy_kind": str(strategy.strategy_kind or ""),
+                "capability_id": capability_id,
+                "canonical_key": canonical_key,
+                "attribute_name": str(task.attribute_name or ""),
+                "target_entity_source_breakdown": dict(sorted(task_sources.items())),
+                "target_entity_source": self._dominant_source(task_sources),
+                "declared_target_count": len(target_candidates),
+                "resolved_target_count": len(target_candidates),
+                "candidate_ordering": "eligible_first_after_capability_owned_prefilter",
+                "eligible_candidate_count": 0,
+                "expected_inapplicable_candidate_count": 0,
+                "unknown_candidate_count": 0,
+                "malformed_or_missing_source_ref_count": 0,
+                "skipped_or_deferred_candidate_count": 0,
+                "resolver_calls_attempted": 0,
+                "resolver_calls_avoided_by_admission": 0,
+                "groups_created_count": 0,
+                "source_root_role_distribution": {},
+                "entity_kind_distribution": {},
+                "extension_distribution": {},
+            }
+            eligible_candidates: list[TargetCandidate] = []
+            unknown_candidates: list[TargetCandidate] = []
+            prefilter_started = time.monotonic()
+            for candidate in target_candidates:
                 if self._group_planning_total_budget_exceeded(started_at):
-                    blocked_reason = "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED"
+                    blocked_reason = "POST_COMPILE_TARGET_SELECTION_TOO_BROAD"
                     break
-                entity = entities_by_id.get(entity_id)
+                entity_id = candidate.entity_id
+                entity = candidate.entity
                 if entity is None:
                     target_partition_counts["skipped_or_deferred_candidate_count"] += 1
+                    task_audit["skipped_or_deferred_candidate_count"] += 1
                     continue
-                raw_source_ref = self._raw_source_ref(task=task, entity=entity)
+                raw_source_ref = candidate.raw_source_ref
                 if not str(raw_source_ref or "").strip():
                     target_partition_counts["malformed_or_missing_source_ref_count"] += 1
+                    task_audit["malformed_or_missing_source_ref_count"] += 1
                     continue
+                self._increment_distribution(
+                    task_audit["source_root_role_distribution"],
+                    self._entity_value(entity, "source_root_role") or "unknown",
+                )
+                self._increment_distribution(
+                    task_audit["entity_kind_distribution"],
+                    self._entity_value(entity, "entity_kind") or self._entity_value(entity, "kind") or "unknown",
+                )
+                self._increment_distribution(task_audit["extension_distribution"], self._routing_extension(raw_source_ref))
                 applicability_started_count += 1
                 if applicability_started_count == 1:
                     self._checkpoint(
@@ -574,6 +629,7 @@ class GovernedObservationExecutionStageService:
                             "deferred_task_count": deferred_task_count,
                             "execute_observer_task_count": execute_observer_task_count,
                             "target_entity_ref_count": target_entity_ref_count,
+                            "target_entity_source_breakdown": dict(sorted(target_entity_source_breakdown.items())),
                             "capability_ids_sample": self._bounded_sorted_sample(capability_ids_seen),
                             "canonical_keys_sample": self._bounded_sorted_sample(canonical_keys_seen),
                             "applicability_started_count": applicability_started_count,
@@ -591,20 +647,14 @@ class GovernedObservationExecutionStageService:
                 if admission is not None:
                     applicability = admission
                     resolver_calls_avoided_by_admission += 1
+                    task_audit["resolver_calls_avoided_by_admission"] += 1
                     admission_decision_count += 1
                 else:
-                    resolver_calls_attempted += 1
-                    applicability = self._capability_applicability_decision(
-                        capability_id=capability_id,
-                        canonical_key=canonical_key,
-                        entity=entity,
-                        task=task,
-                        raw_source_ref=raw_source_ref,
+                    applicability = CapabilityApplicabilityDecision(
+                        "unknown",
+                        "CAPABILITY_APPLICABILITY_REQUIRES_FULL_RESOLVER",
                     )
                 applicability_completed_count += 1
-                if self._group_planning_total_budget_exceeded(started_at):
-                    blocked_reason = "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED"
-                    break
                 if applicability_completed_count == 1 or applicability_completed_count % 250 == 0:
                     self._checkpoint(
                         checkpoint,
@@ -615,6 +665,7 @@ class GovernedObservationExecutionStageService:
                             "deferred_task_count": deferred_task_count,
                             "execute_observer_task_count": execute_observer_task_count,
                             "target_entity_ref_count": target_entity_ref_count,
+                            "target_entity_source_breakdown": dict(sorted(target_entity_source_breakdown.items())),
                             "applicability_started_count": applicability_started_count,
                             "applicability_completed_count": applicability_completed_count,
                             "applicability_failed_count": len(applicability_resolution_failures),
@@ -633,31 +684,81 @@ class GovernedObservationExecutionStageService:
                 applicability_counts[applicability.status] += 1
                 if applicability.status == "applicable":
                     target_partition_counts["eligible_candidate_count"] += 1
+                    task_audit["eligible_candidate_count"] += 1
+                    eligible_candidates.append(
+                        TargetCandidate(entity_id=entity_id, entity=entity, source=candidate.source, raw_source_ref=raw_source_ref, admission=applicability)
+                    )
                 elif applicability.status == "inapplicable":
                     target_partition_counts["expected_inapplicable_candidate_count"] += 1
+                    task_audit["expected_inapplicable_candidate_count"] += 1
+                    inapplicable_reasons[applicability.reason_code] = inapplicable_reasons.get(applicability.reason_code, 0) + 1
                 else:
                     target_partition_counts["unknown_candidate_count"] += 1
-                if applicability.status == "inapplicable":
-                    inapplicable_reasons[applicability.reason_code] = inapplicable_reasons.get(applicability.reason_code, 0) + 1
-                    if (
-                        admission_decision_count > 0
-                        and not groups
-                        and target_entity_ref_count > admission_candidate_limit
-                        and applicability_completed_count >= admission_candidate_limit
-                    ):
-                        blocked_reason = "POST_COMPILE_APPLICABILITY_TARGET_EXPANSION_EXCEEDED"
-                        break
+                    task_audit["unknown_candidate_count"] += 1
+                    unknown_candidates.append(
+                        TargetCandidate(entity_id=entity_id, entity=entity, source=candidate.source, raw_source_ref=raw_source_ref, admission=applicability)
+                    )
+            task_audit["prefilter_elapsed_ms"] = int((time.monotonic() - prefilter_started) * 1000)
+            if blocked_reason:
+                task_target_audit.append(task_audit)
+                break
+            if (
+                not groups
+                and len(target_candidates) >= admission_candidate_limit
+                and not eligible_candidates
+                and not unknown_candidates
+            ):
+                blocked_reason = "POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES"
+                task_target_audit.append(task_audit)
+                break
+            for candidate in [*eligible_candidates, *unknown_candidates]:
+                entity = candidate.entity
+                if entity is None:
                     continue
-                source_ref = self._normalized_source_ref(raw_source_ref=raw_source_ref, entity=entity)
-                key = (entity_id, capability_id, source_ref)
+                applicability = candidate.admission
+                if applicability is None or applicability.status == "unknown":
+                    resolver_calls_attempted += 1
+                    task_audit["resolver_calls_attempted"] += 1
+                    applicability = self._capability_applicability_decision(
+                        capability_id=capability_id,
+                        canonical_key=canonical_key,
+                        entity=entity,
+                        task=task,
+                        raw_source_ref=candidate.raw_source_ref,
+                    )
+                    if self._group_planning_total_budget_exceeded(started_at):
+                        blocked_reason = "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED"
+                        break
+                    if applicability.reason_code == "CAPABILITY_APPLICABILITY_RESOLUTION_FAILED":
+                        blocked_reason = "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_FAILED"
+                        applicability_resolution_failures.append(dict(applicability.evidence))
+                        break
+                    if applicability.status == "inapplicable":
+                        applicability_counts["unknown"] = max(0, applicability_counts["unknown"] - 1)
+                        applicability_counts["inapplicable"] += 1
+                        target_partition_counts["unknown_candidate_count"] = max(0, target_partition_counts["unknown_candidate_count"] - 1)
+                        target_partition_counts["expected_inapplicable_candidate_count"] += 1
+                        task_audit["unknown_candidate_count"] = max(0, int(task_audit["unknown_candidate_count"]) - 1)
+                        task_audit["expected_inapplicable_candidate_count"] = int(task_audit["expected_inapplicable_candidate_count"]) + 1
+                        inapplicable_reasons[applicability.reason_code] = inapplicable_reasons.get(applicability.reason_code, 0) + 1
+                        continue
+                    if applicability.status == "applicable":
+                        applicability_counts["unknown"] = max(0, applicability_counts["unknown"] - 1)
+                        applicability_counts["applicable"] += 1
+                        target_partition_counts["unknown_candidate_count"] = max(0, target_partition_counts["unknown_candidate_count"] - 1)
+                        target_partition_counts["eligible_candidate_count"] += 1
+                        task_audit["unknown_candidate_count"] = max(0, int(task_audit["unknown_candidate_count"]) - 1)
+                        task_audit["eligible_candidate_count"] = int(task_audit["eligible_candidate_count"]) + 1
+                source_ref = self._normalized_source_ref(raw_source_ref=candidate.raw_source_ref, entity=entity)
+                key = (candidate.entity_id, capability_id, source_ref)
                 group = groups.get(key)
                 if group is None:
                     group = PhysicalObservationGroup(
                         physical_probe_key=key,
-                        entity_id=entity_id,
+                        entity_id=candidate.entity_id,
                         capability_id=capability_id,
                         normalized_source_ref=source_ref,
-                        raw_execution_source_ref=raw_source_ref,
+                        raw_execution_source_ref=candidate.raw_source_ref,
                         entity=entity,
                         tasks=[],
                         requirements_by_canonical_key={},
@@ -666,6 +767,8 @@ class GovernedObservationExecutionStageService:
                 if canonical_key in requirements_by_key:
                     group.requirements_by_canonical_key[canonical_key] = requirements_by_key[canonical_key]
                 group.tasks.append(task)
+                task_audit["groups_created_count"] = int(task_audit["groups_created_count"]) + 1
+            task_target_audit.append(task_audit)
             if blocked_reason:
                 break
         if (
@@ -675,12 +778,11 @@ class GovernedObservationExecutionStageService:
             and not groups
             and applicability_completed_count > 0
             and admission_decision_count > 0
-            and target_entity_ref_count > admission_candidate_limit
         ):
             if target_partition_counts["eligible_candidate_count"] == 0 and target_partition_counts["unknown_candidate_count"] == 0:
-                blocked_reason = "POST_COMPILE_APPLICABILITY_NO_ELIGIBLE_CANDIDATES"
+                blocked_reason = "POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES"
             else:
-                blocked_reason = "POST_COMPILE_APPLICABILITY_NO_APPLICABLE_GROUPS"
+                blocked_reason = "POST_COMPILE_TARGET_SELECTION_NO_APPLICABLE_GROUPS"
         self._checkpoint(
             checkpoint,
             "after_observation_task_scan",
@@ -691,6 +793,8 @@ class GovernedObservationExecutionStageService:
                 "execute_observer_task_count": execute_observer_task_count,
                 "strategies_seen": self._bounded_sorted_sample(strategies_seen),
                 "target_entity_ref_count": target_entity_ref_count,
+                "target_entity_source_breakdown": dict(sorted(target_entity_source_breakdown.items())),
+                "target_selection_tasks": task_target_audit[:10],
                 "capability_lookup_attempted": capability_lookup_count,
                 "capability_availability_checked": capability_availability_check_count,
                 "capability_ids_sample": self._bounded_sorted_sample(capability_ids_seen),
@@ -718,6 +822,7 @@ class GovernedObservationExecutionStageService:
                 "max_applicability_admission_candidate_count": admission_candidate_limit,
                 "elapsed_ms": int((time.monotonic() - planning_started) * 1000),
                 "reason_code": blocked_reason,
+                "target_entity_source_breakdown": dict(sorted(target_entity_source_breakdown.items())),
             },
         )
         return list(groups.values()), {
@@ -728,6 +833,8 @@ class GovernedObservationExecutionStageService:
             "capability_applicability_resolution_failure_count": len(applicability_resolution_failures),
             "capability_applicability_resolution_failures": applicability_resolution_failures[:5],
             "groups_created_count": len(groups),
+            "target_entity_source_breakdown": dict(sorted(target_entity_source_breakdown.items())),
+            "target_selection_tasks": task_target_audit[:10],
             **target_partition_counts,
             "resolver_calls_attempted": resolver_calls_attempted,
             "resolver_calls_avoided_by_admission": resolver_calls_avoided_by_admission,
@@ -740,6 +847,8 @@ class GovernedObservationExecutionStageService:
                 "deferred_task_count": deferred_task_count,
                 "execute_observer_task_count": execute_observer_task_count,
                 "target_entity_ref_count": target_entity_ref_count,
+                "target_entity_source_breakdown": dict(sorted(target_entity_source_breakdown.items())),
+                "target_selection_tasks": task_target_audit[:10],
                 "capability_lookup_attempted": capability_lookup_count,
                 "capability_availability_checked": capability_availability_check_count,
                 "applicability_started_count": applicability_started_count,
@@ -1847,6 +1956,42 @@ class GovernedObservationExecutionStageService:
         if task.entity_ref.get("entity_id"):
             rows.append(str(task.entity_ref.get("entity_id")))
         return list(dict.fromkeys(rows))
+
+    def _target_candidates(self, *, task: ObservationTask, entities_by_id: dict[str, dict[str, Any]]) -> list[TargetCandidate]:
+        source_by_entity_id: dict[str, str] = {}
+        for source, values in (
+            ("entity_ref", task.entity_ref.get("entity_ids") or []),
+            ("task_inputs", task.inputs.get("target_entity_ids") or []),
+        ):
+            for item in values:
+                entity_id = str(item or "")
+                if entity_id:
+                    source_by_entity_id.setdefault(entity_id, source)
+        if task.entity_ref.get("entity_id"):
+            source_by_entity_id.setdefault(str(task.entity_ref.get("entity_id")), "entity_ref_single")
+        rows: list[TargetCandidate] = []
+        for entity_id, source in source_by_entity_id.items():
+            entity = entities_by_id.get(entity_id)
+            raw_source_ref = self._raw_source_ref(task=task, entity=entity or {"entity_id": entity_id})
+            rows.append(TargetCandidate(entity_id=entity_id, entity=entity, source=source, raw_source_ref=raw_source_ref))
+        return rows
+
+    def _dominant_source(self, sources: dict[str, int]) -> str | None:
+        if not sources:
+            return None
+        return sorted(sources.items(), key=lambda item: (-item[1], item[0]))[0][0]
+
+    def _increment_distribution(self, distribution: dict[str, int], value: Any) -> None:
+        key = str(value or "unknown").strip() or "unknown"
+        distribution[key] = distribution.get(key, 0) + 1
+
+    def _routing_extension(self, raw_source_ref: str) -> str:
+        text = str(raw_source_ref or "").strip().replace("\\", "/")
+        name = text.rsplit("/", 1)[-1]
+        if "." not in name:
+            return "none"
+        extension = name.rsplit(".", 1)[-1].strip().casefold()
+        return extension or "none"
 
     def _raw_source_ref(self, *, task: ObservationTask, entity: dict[str, Any]) -> str:
         source = (

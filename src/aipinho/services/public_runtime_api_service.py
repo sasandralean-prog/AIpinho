@@ -104,16 +104,25 @@ class PublicRuntimeExecutionBridge:
                 session_id=str(request.metadata.get("session_id") or request.payload.get("session_id") or "") or None,
                 workspace_context=workspace_context,
             )
-            execution = self.readonly_artifact_runtime.execute(
+            execution = self.readonly_artifact_runtime.start_public_boundary(
                 request=execution_request,
                 workspace=workspace,
                 label=str(contract.get("success_label") or "PUBLIC_RUNTIME_ANALYSIS_READY"),
             )
             response = execution.response
             run = self.readonly_artifact_runtime.runtime.store.get_run(execution.run_id) if execution.run_id else None
+            validation = response.contract_preview.get("validation_result") or execution.validation or {}
+            completion = response.contract_preview.get("completion") or {}
+            polling = response.contract_preview.get("polling") or response.governance_lifecycle.get("public_response_boundary", {}).get("polling") or {}
+            response_boundary = response.policy.get("public_response_boundary") or response.governance_lifecycle.get("public_response_boundary") or {}
+            reason_code = (
+                response.grounding_missing_reason
+                or str(validation.get("reason_code") or "")
+                or (response_boundary.get("reason_codes") or [None])[0]
+            )
             return {
                 "status": response.status,
-                "reason_code": response.grounding_missing_reason,
+                "reason_code": reason_code,
                 "task_id": run.task_id if run else response.task_id,
                 "task_run_id": execution.run_id or response.result_ref_id or response.task_id,
                 "operation_id": run.operation_id if run else response.operation_id,
@@ -121,12 +130,16 @@ class PublicRuntimeExecutionBridge:
                 "runtime_profile": run.runtime_profile if run else response.contract_preview.get("runtime_profile"),
                 "artifacts": [item.model_dump(mode="json") for item in response.artifact_links],
                 "artifact_ids": [item.artifact_id for item in response.artifact_links],
-                "validation": response.contract_preview.get("validation_result") or {},
-                "completion": response.contract_preview.get("completion") or {},
+                "validation": validation,
+                "completion": completion,
                 "speaker_truth": response.governance_lifecycle.get("speaker_truth") or {
-                    "can_claim_success": response.grounded,
+                    "can_claim_success": bool(response.grounded and response.status in {"ok", "ready"}),
                     "source": "public_runtime_execution_bridge",
                 },
+                "public_response_boundary": response_boundary,
+                "polling": polling,
+                "result_endpoint": polling.get("result") or polling.get("result_url"),
+                "events_endpoint": polling.get("events") or polling.get("events_url"),
                 "workspace_context": workspace_context,
                 "message": response.message,
                 "source": "public_runtime_execution_bridge",
