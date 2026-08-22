@@ -1,0 +1,67 @@
+{
+  "remaining_p0": [],
+  "remaining_p1": [
+    {
+      "id": "R3_01_B3_8_P1_MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT_PHASE1_FRONTIER",
+      "priority": "P1",
+      "status": "OPEN",
+      "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "evidence": {
+        "task_run_id": "task_run_02e3ebb7d7ec4afdae76117876639ba3",
+        "operation_id": "op_e6bed7d851254cccb7093cdc3bb5774b",
+        "rows_rendered": 1051,
+        "rows_with_semantic_identity_evidence": 214,
+        "rows_without_semantic_identity_evidence": 837,
+        "semantic_identity_evidence_ratio": 0.2036,
+        "metadata_observation_ratio": 0.8735,
+        "reason_codes": [
+          "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+          "MEDIA_METADATA_OBSERVATION_INCOMPLETE",
+          "MEDIA_METADATA_PROBE_NOT_RUN"
+        ],
+        "safe_to_use": false,
+        "speaker_truth_safe_to_report_success": false
+      }
+    }
+  ],
+  "remaining_p2": [
+    {
+      "id": "R3_01_B3_8_P2_BACKEND_AND_IDENTITY_TELEMETRY_PROJECTION_INCONSISTENT",
+      "priority": "P2",
+      "status": "OPEN",
+      "evidence": {
+        "physical_probe_count": null,
+        "attempted_backends_projected": null,
+        "semantic_identity_evidence_counts_projected": null,
+        "csv_identity_rows": 214,
+        "coverage_rows_with_semantic_identity_evidence": 214
+      },
+      "interpretation": "The runtime proves physical observation and identity-bearing rows, but some public summary aggregates appear under-projected or scoped to errors. This is diagnostic visibility, not the first Phase-1 blocker."
+    },
+    {
+      "id": "R3_01_B3_7_P2_ACCEPTED_RUNNING_WORKER_PROGRESS_VISIBILITY_DELAY",
+      "priority": "P2",
+      "status": "STILL_OBSERVED",
+      "evidence": {
+        "post_response_elapsed_ms": 5423,
+        "initial_response_mode": "accepted_running",
+        "polling_observation": "status remained created for several polls before terminal result appeared"
+      }
+    }
+  ],
+  "resolved_issues": [
+    {
+      "id": "R3_01_B3_7_P1_PUBLIC_CANARY_NO_ELIGIBLE_MEDIA_CANDIDATES_IN_SELECTED_TARGET_SCOPE",
+      "status": "CLEARED_FOR_REAL_FIRETEST5_B_PHASE1_SCENARIO",
+      "evidence": "B3.8 selected/rendered 1051 rows and reported 928 physical probes; target selection no longer blocked before physical observation in the real scenario."
+    },
+    {
+      "id": "R3_01_B2_MATERIALIZED_INLINE_8MB_FRONTIER",
+      "status": "NOT_OBSERVED_IN_B3_8",
+      "evidence": "CSV persisted as file/reference with 403647 bytes; no POST_COMPILE_OBSERVATION_MATERIALIZED_BYTES_BUDGET_EXCEEDED terminal reason appeared."
+    }
+  ],
+  "firetest5_status": "NOT_READY_DIAGNOSTIC_ONLY",
+  "c_gate": "CORRECTIVE_REQUIRED_BEFORE_C",
+  "b3_3_effect_status": "PROVEN_FOR_PUBLIC_PHASE1_ROUTE_PROGRESS_TO_PHYSICAL_OBSERVATION_PARTIAL_FOR_FULL_TRUTH"
+}

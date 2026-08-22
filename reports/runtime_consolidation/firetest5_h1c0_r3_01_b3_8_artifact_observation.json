@@ -1,0 +1,95 @@
+{
+  "mission_id": "H1C0.R3.01.B3.8",
+  "artifact": {
+    "artifact_ids": [
+      "artifact_e5512dcd48c54e8f8018c6f38c4a24e4"
+    ],
+    "logical_path": null,
+    "storage_ref": null,
+    "artifact_status": null,
+    "validation_status": null,
+    "reason_code": null,
+    "safe_to_use": null,
+    "content_type": null,
+    "persistence_mode": "file/reference",
+    "csv_exists": true,
+    "csv_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_e5512dcd48c54e8f8018c6f38c4a24e4_reports__firetest5__music_inventory.csv",
+    "csv_bytes": 403647,
+    "csv_line_count": 1052,
+    "csv_row_count": 1051,
+    "csv_columns": [
+      "entity_id",
+      "source_root_role",
+      "relative_path",
+      "filename",
+      "extension",
+      "media_type",
+      "size_bytes",
+      "track_title",
+      "artist",
+      "album",
+      "album_artist",
+      "duration_ms",
+      "codec",
+      "container",
+      "bitrate_bps",
+      "sample_rate_hz",
+      "channels",
+      "artwork_present",
+      "metadata_status",
+      "metadata_source",
+      "probe_status",
+      "evidence_ref",
+      "limitations",
+      "relationship_candidate_refs",
+      "validation_status"
+    ],
+    "sha256": null,
+    "old_8mb_inline_frontier_present": false
+  },
+  "csv_distributions": {
+    "extension_distribution": {
+      "m4a": 921,
+      "jpg": 2,
+      "mp3": 5,
+      "mp4": 2,
+      "lrc": 121
+    },
+    "source_root_role_distribution": {
+      "library_root": 1051
+    },
+    "probe_status_distribution": {
+      "executed": 918,
+      "executed_no_evidence": 133
+    },
+    "metadata_status_distribution": {
+      "partially_observed": 918,
+      "not_observed": 133
+    },
+    "media_type_distribution": {
+      "corpus_member": 1051
+    }
+  },
+  "semantic_identity": {
+    "row_evidence_coverage_status": "satisfied",
+    "rows_with_evidence_ref": 1051,
+    "rows_without_evidence_ref": 0,
+    "rows_with_stable_entity_identity": 1051,
+    "stable_entity_identity_ratio": 1.0,
+    "rows_with_semantic_identity_evidence": 214,
+    "rows_without_semantic_identity_evidence": 837,
+    "semantic_identity_evidence_ratio": 0.2036,
+    "identity_status": "insufficient_evidence",
+    "identity_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "identity_observed_semantic_fields": [
+      "artist",
+      "track_title"
+    ],
+    "track_title_rows": 214,
+    "artist_rows": 214,
+    "album_rows": 0,
+    "album_artist_rows": 0,
+    "identity_rows_by_csv_values": 214
+  },
+  "interpretation": "A CSV file/reference was produced, but Phase 1 blocked because the artifact was not semantically safe for required use."
+}

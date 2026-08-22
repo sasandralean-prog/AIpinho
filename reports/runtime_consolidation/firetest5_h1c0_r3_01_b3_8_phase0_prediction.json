@@ -1,0 +1,28 @@
+{
+  "created_task_run": false,
+  "expected_plan": [
+    "Use the public governed /api/v1/analyze boundary.",
+    "Create a readonly artifact task-run for the FireTest 5 music inventory contract.",
+    "Discover project_root and library_root entities without mutating either root.",
+    "Select contract-relevant media/library rows, preserve sidecars and artwork in corpus telemetry, and route media metadata only through capability applicability.",
+    "Persist the CSV as a governed artifact file/reference rather than inline response payload.",
+    "Stop after Phase 1 completion or the first governed blocker."
+  ],
+  "predicted_risks": [
+    "semantic identity evidence may be sparse in the real corpus",
+    "metadata observation may remain partial because ffprobe is unavailable",
+    "public response may use accepted-running and require polling",
+    "artifact semantic policy may reject a partial CSV even when a file is persisted"
+  ],
+  "predicted_possible_blockers": [
+    "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "MEDIA_METADATA_OBSERVATION_INCOMPLETE",
+    "metadata backend coverage limitation",
+    "artifact semantic contract rejection of partial inventory"
+  ],
+  "predicted_artifact_behavior": "CSV should be persisted by artifact storage/reference if generated; it must not be treated as full success unless semantic sufficiency passes.",
+  "predicted_capability_path": "Mutagen available, ffprobe unavailable, native_minimal available only as an appropriate technical fallback and not semantic identity fabrication.",
+  "eligible_media_candidates_expected": true,
+  "sidecar_artwork_expectation": ".lrc/.jpg should remain counted but not become media metadata candidates or semantic identity truth.",
+  "uncertainty": "The real tag density and downstream sufficiency thresholds could still block Phase 1 even after target selection fixes."
+}

@@ -1,0 +1,199 @@
+{
+  "mission_id": "H1C0.R3.01.B3.8",
+  "task_run_id": "task_run_02e3ebb7d7ec4afdae76117876639ba3",
+  "operation_id": "op_e6bed7d851254cccb7093cdc3bb5774b",
+  "public_api": {
+    "post_response_status": 200,
+    "post_response_mode": "accepted_running",
+    "post_response_elapsed_ms": 5423,
+    "task_run_id": "task_run_02e3ebb7d7ec4afdae76117876639ba3",
+    "operation_id": "op_e6bed7d851254cccb7093cdc3bb5774b",
+    "result_endpoint": "/api/v1/task-runs/task_run_02e3ebb7d7ec4afdae76117876639ba3/result",
+    "events_endpoint": "/api/v1/task-runs/task_run_02e3ebb7d7ec4afdae76117876639ba3/events",
+    "task_run_get_status_code": 200,
+    "result_get_status_code": 200,
+    "events_get_status_code": 200,
+    "summary_get_status_code": 200,
+    "timeline_get_status_code": 200
+  },
+  "terminality": {
+    "result_status": "blocked",
+    "result_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "validation_status": "blocked",
+    "validation_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "completion_status": "blocked",
+    "speaker_truth_safe_to_report_success": false,
+    "terminal_blocking_event_count": 1,
+    "event_count": 200,
+    "last_event": {
+      "event_id": "task_run_event_37d7482cccad48cb95aa05417d2f17be",
+      "run_id": "task_run_02e3ebb7d7ec4afdae76117876639ba3",
+      "sequence": 199,
+      "type": "artifact_creation_terminalization_guard_skipped",
+      "status": "ignored",
+      "message": "Accepted-running worker guard skipped because a terminal result or event already exists.",
+      "step_id": null,
+      "timestamp": "2026-08-22T02:12:17.350596+00:00",
+      "metadata": {
+        "source": "artifact_worker_terminalization_guard",
+        "reason": "terminal_state_already_set"
+      }
+    }
+  },
+  "events": {
+    "events_file": "C:\\Dev\\AIpinho\\data\\runtime\\task_runs\\task_run_02e3ebb7d7ec4afdae76117876639ba3\\events.json",
+    "events_count_file": 200,
+    "events_count_result_payload": 196,
+    "event_type_counts": {
+      "ExecutionPlanCreated": 1,
+      "PlanningFinished": 1,
+      "PlanningStarted": 1,
+      "artifact_blocked": 1,
+      "artifact_creation_started": 1,
+      "artifact_creation_terminalization_guard_skipped": 1,
+      "artifact_creation_terminalization_guard_started": 1,
+      "artifact_render_checkpoint": 178,
+      "project_analysis_finished": 1,
+      "project_analysis_partial": 1,
+      "project_analysis_started": 1,
+      "public_response_accepted_running": 1,
+      "run_blocked": 1,
+      "run_created": 1,
+      "run_queued": 1,
+      "run_started": 1,
+      "runtime_finalization_checkpoint": 5,
+      "task_bootstrap_created": 1,
+      "validation_finished": 1
+    },
+    "last_checkpoint_metadata": {
+      "stage": "after_taskrun_result_persist",
+      "artifact_count": 1,
+      "result_status": "blocked",
+      "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "bounded": true
+    }
+  },
+  "artifact": {
+    "artifact_ids": [
+      "artifact_e5512dcd48c54e8f8018c6f38c4a24e4"
+    ],
+    "logical_path": null,
+    "storage_ref": null,
+    "artifact_status": null,
+    "validation_status": null,
+    "reason_code": null,
+    "safe_to_use": null,
+    "content_type": null,
+    "persistence_mode": "file/reference",
+    "csv_exists": true,
+    "csv_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_e5512dcd48c54e8f8018c6f38c4a24e4_reports__firetest5__music_inventory.csv",
+    "csv_bytes": 403647,
+    "csv_line_count": 1052,
+    "csv_row_count": 1051,
+    "csv_columns": [
+      "entity_id",
+      "source_root_role",
+      "relative_path",
+      "filename",
+      "extension",
+      "media_type",
+      "size_bytes",
+      "track_title",
+      "artist",
+      "album",
+      "album_artist",
+      "duration_ms",
+      "codec",
+      "container",
+      "bitrate_bps",
+      "sample_rate_hz",
+      "channels",
+      "artwork_present",
+      "metadata_status",
+      "metadata_source",
+      "probe_status",
+      "evidence_ref",
+      "limitations",
+      "relationship_candidate_refs",
+      "validation_status"
+    ],
+    "sha256": null,
+    "old_8mb_inline_frontier_present": false
+  },
+  "corpus": {
+    "selected_entity_count": 1051,
+    "expected_entities": 1051,
+    "bound_rows": 1051,
+    "rows_rendered": 1051,
+    "media_candidate_count": 1051,
+    "source_root_role_distribution": {
+      "library_root": 1051
+    },
+    "media_type_distribution": {
+      "corpus_member": 1051
+    },
+    "extension_distribution": {
+      "m4a": 921,
+      "jpg": 2,
+      "mp3": 5,
+      "mp4": 2,
+      "lrc": 121
+    },
+    "library_root_entity_count": 1051,
+    "project_root_entity_count": 0,
+    "m4a_count": 921,
+    "mp3_count": 5,
+    "mp4_count": 2,
+    "lrc_count": 121,
+    "jpg_count": 2,
+    "unsupported_counted_but_not_hidden": true
+  },
+  "physical_observation": {
+    "files_planned": null,
+    "files_expected": null,
+    "files_attempted": null,
+    "files_succeeded": null,
+    "files_failed": null,
+    "entity_observation_files_attempted": null,
+    "entity_observation_files_succeeded": null,
+    "entity_observation_files_failed": null,
+    "unsupported_count": null,
+    "read_error_count": null,
+    "coverage_ratio": null,
+    "physical_probe_count": null,
+    "attempted_backends": null,
+    "successful_backends": null,
+    "backend_error_counts": null,
+    "attributes_observed": null,
+    "capability_attributes_unobserved": null,
+    "probe_status_distribution": {
+      "executed": 918,
+      "executed_no_evidence": 133
+    },
+    "metadata_status_distribution": {
+      "partially_observed": 918,
+      "not_observed": 133
+    }
+  },
+  "semantic_materialization": {
+    "row_evidence_coverage_status": "satisfied",
+    "rows_with_evidence_ref": 1051,
+    "rows_without_evidence_ref": 0,
+    "rows_with_stable_entity_identity": 1051,
+    "stable_entity_identity_ratio": 1.0,
+    "rows_with_semantic_identity_evidence": 214,
+    "rows_without_semantic_identity_evidence": 837,
+    "semantic_identity_evidence_ratio": 0.2036,
+    "identity_status": "insufficient_evidence",
+    "identity_reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "identity_observed_semantic_fields": [
+      "artist",
+      "track_title"
+    ],
+    "track_title_rows": 214,
+    "artist_rows": 214,
+    "album_rows": 0,
+    "album_artist_rows": 0,
+    "identity_rows_by_csv_values": 214
+  }
+}
