@@ -1,55 +1,111 @@
 # FireTest 5 H1C0.R3.01 B3.7 Target Selection Summary
 
-Mission: H1C0.R3.01.B3.7 — Contract-Scoped Target Selection & Public Analyze Response Boundary
+Mission: H1C0.R3.01.B3.7 - Contract-Scoped Target Selection & Public Analyze Response Boundary
+Mission class: hybrid_operational_correction
 
-Branch: $branch
-Base main: 700f6b747209c6020bcc9d02ea74c72d34b1f55
-Implementation HEAD used by runtime: $head
-FireTest 5 executed: NO
-C gate: CORRECTIVE_REQUIRED_BEFORE_C
+Branch: agent/codex/r3-01-b3-7-target-selection-public-analyze-boundary
+Base main: b700f6b747209c6020bcc9d02ea74c72d34b1f55
+Implementation commit: 0a6e90cda17224767aa4f4da2e621f564af32c06
+Final/report HEAD before this correction: 5991edaf05bff826bd1e51c9da1bef0a0639b0b6
 Verdict: R3_01_B3_7_CONTRACT_SCOPED_TARGET_SELECTION_READY
 
-## What Changed
-
-B3.7 added contract/capability-scoped target selection before media post-compile physical grouping. The stage now projects target-source provenance, applies capability-owned cheap admission before expensive applicability resolution, orders eligible/unknown candidates before expected-inapplicable candidates, and blocks broad no-eligible windows with POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES.
-
-/api/v1/analyze now returns an accepted-running public response boundary with task-run and polling endpoints instead of leaving clients with only a synchronous timeout while a governed task-run persists.
+FireTest 5 executed: NO
+C gate: CORRECTIVE_REQUIRED_BEFORE_C
 
 ## Public Canary
 
-Task run: $taskRunId
-Operation: $operationId
-Status: $(@{run_id=task_run_332d99706fe04efbaf78eb97eb1a787d; status=blocked; summary=Read-only analysis did not satisfy required artifact outputs.; source=phase_semantic_completion_policy; reason_code=POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES; finished_at=08/21/2026 21:13:24; outputs=; step_summaries=System.Object[]; limitations=System.Object[]; blocked_items=System.Object[]; warnings=System.Object[]; events_count=103; trace_ref=task-runs/task_run_332d99706fe04efbaf78eb97eb1a787d/trace; safe_to_display=True; validation=; block_cause=; completion=}.status)
-Reason: $(@{run_id=task_run_332d99706fe04efbaf78eb97eb1a787d; status=blocked; summary=Read-only analysis did not satisfy required artifact outputs.; source=phase_semantic_completion_policy; reason_code=POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES; finished_at=08/21/2026 21:13:24; outputs=; step_summaries=System.Object[]; limitations=System.Object[]; blocked_items=System.Object[]; warnings=System.Object[]; events_count=103; trace_ref=task-runs/task_run_332d99706fe04efbaf78eb97eb1a787d/trace; safe_to_display=True; validation=; block_cause=; completion=}.reason_code)
-Terminal blocking events: 1
-SpeakerTruth safe_to_report_success: false
-HTTP response behavior: accepted_running with polling endpoints
-Physical probes: $(@{dedup_group_count=0; files_planned=0; grouped_observation_task_count=0; requested_canonical_key_count=0; capability_applicable_count=0; capability_inapplicable_count=5000; capability_applicability_unknown_count=0; capability_inapplicable_reasons=; capability_applicability_resolution_failure_count=0; capability_applicability_resolution_failures=System.Object[]; groups_created_count=0; target_entity_source_breakdown=; target_selection_tasks=System.Object[]; eligible_candidate_count=0; expected_inapplicable_candidate_count=5000; unknown_candidate_count=0; malformed_or_missing_source_ref_count=0; skipped_or_deferred_candidate_count=0; resolver_calls_attempted=0; resolver_calls_avoided_by_admission=5000; admission_decision_count=5000; max_applicability_admission_candidate_count=5000; admission_elapsed_ms=375; observation_group_planning=; media_metadata_capability=; attempted_backends=; successful_backends=; fallback_backends_used=; backend_error_counts=; evidence_counts_by_canonical_key=; evidence_counts_by_backend=; semantic_identity_evidence_counts=; physical_probe_count=0; files_attempted=0; files_succeeded=0; files_failed=0; evidence_records_created=0; evidence_records_produced=0; evidence_records_accepted=0; evidence_records_rejected=0; evidence_bytes_produced=0; evidence_bytes_checkpointed=0; inline_materialized_bytes=0; checkpoint_count=0; checkpoint_bytes=0; checkpoint_write_failures=0; physical_backend_attempts=; physical_backend_successes=; physical_backend_failures=; results_physically_succeeded=0; results_physically_failed=0; results_accepted=0; results_rejected_by_policy=1; expected_unsupported_count=0; systemic_execution_failure_count=0; policy_or_governance_block_count=1; current_consecutive_systemic_failures=0; max_consecutive_systemic_failures_observed=0; materialized_observation_bytes=0; execution_status=blocked; blocked_reason_code=POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES}.physical_probe_count)
+Task run: task_run_332d99706fe04efbaf78eb97eb1a787d
+Operation: op_1662297d0de3433097e88f6d95532270
+Status: blocked
+Reason code: POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES
+Terminal blocking event count: 1
+SpeakerTruth.safe_to_report_success: false
+Physical probe count: 0
 
-## Target Selection Evidence
+## Target And Source Evidence
 
-- execute_observer_task_count: $(@{task_count=25; tasks_seen=8; deferred_task_count=6; execute_observer_task_count=1; target_entity_ref_count=5000; target_entity_source_breakdown=; target_selection_tasks=System.Object[]; capability_lookup_attempted=1; capability_availability_checked=1; applicability_started_count=5000; applicability_completed_count=5000; applicability_failed_count=0; eligible_candidate_count=0; expected_inapplicable_candidate_count=5000; unknown_candidate_count=0; malformed_or_missing_source_ref_count=0; skipped_or_deferred_candidate_count=0; resolver_calls_attempted=0; resolver_calls_avoided_by_admission=5000; admission_decision_count=5000; max_applicability_admission_candidate_count=5000; groups_created_count=0; elapsed_ms=375}.execute_observer_task_count)
-- target_entity_ref_count: $(@{task_count=25; tasks_seen=8; deferred_task_count=6; execute_observer_task_count=1; target_entity_ref_count=5000; target_entity_source_breakdown=; target_selection_tasks=System.Object[]; capability_lookup_attempted=1; capability_availability_checked=1; applicability_started_count=5000; applicability_completed_count=5000; applicability_failed_count=0; eligible_candidate_count=0; expected_inapplicable_candidate_count=5000; unknown_candidate_count=0; malformed_or_missing_source_ref_count=0; skipped_or_deferred_candidate_count=0; resolver_calls_attempted=0; resolver_calls_avoided_by_admission=5000; admission_decision_count=5000; max_applicability_admission_candidate_count=5000; groups_created_count=0; elapsed_ms=375}.target_entity_ref_count)
-- target_entity_source_breakdown: ntity_ref=5000
-- eligible_candidate_count: $(@{dedup_group_count=0; files_planned=0; grouped_observation_task_count=0; requested_canonical_key_count=0; capability_applicable_count=0; capability_inapplicable_count=5000; capability_applicability_unknown_count=0; capability_inapplicable_reasons=; capability_applicability_resolution_failure_count=0; capability_applicability_resolution_failures=System.Object[]; groups_created_count=0; target_entity_source_breakdown=; target_selection_tasks=System.Object[]; eligible_candidate_count=0; expected_inapplicable_candidate_count=5000; unknown_candidate_count=0; malformed_or_missing_source_ref_count=0; skipped_or_deferred_candidate_count=0; resolver_calls_attempted=0; resolver_calls_avoided_by_admission=5000; admission_decision_count=5000; max_applicability_admission_candidate_count=5000; admission_elapsed_ms=375; observation_group_planning=; media_metadata_capability=; attempted_backends=; successful_backends=; fallback_backends_used=; backend_error_counts=; evidence_counts_by_canonical_key=; evidence_counts_by_backend=; semantic_identity_evidence_counts=; physical_probe_count=0; files_attempted=0; files_succeeded=0; files_failed=0; evidence_records_created=0; evidence_records_produced=0; evidence_records_accepted=0; evidence_records_rejected=0; evidence_bytes_produced=0; evidence_bytes_checkpointed=0; inline_materialized_bytes=0; checkpoint_count=0; checkpoint_bytes=0; checkpoint_write_failures=0; physical_backend_attempts=; physical_backend_successes=; physical_backend_failures=; results_physically_succeeded=0; results_physically_failed=0; results_accepted=0; results_rejected_by_policy=1; expected_unsupported_count=0; systemic_execution_failure_count=0; policy_or_governance_block_count=1; current_consecutive_systemic_failures=0; max_consecutive_systemic_failures_observed=0; materialized_observation_bytes=0; execution_status=blocked; blocked_reason_code=POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES}.eligible_candidate_count)
-- expected_inapplicable_candidate_count: $(@{dedup_group_count=0; files_planned=0; grouped_observation_task_count=0; requested_canonical_key_count=0; capability_applicable_count=0; capability_inapplicable_count=5000; capability_applicability_unknown_count=0; capability_inapplicable_reasons=; capability_applicability_resolution_failure_count=0; capability_applicability_resolution_failures=System.Object[]; groups_created_count=0; target_entity_source_breakdown=; target_selection_tasks=System.Object[]; eligible_candidate_count=0; expected_inapplicable_candidate_count=5000; unknown_candidate_count=0; malformed_or_missing_source_ref_count=0; skipped_or_deferred_candidate_count=0; resolver_calls_attempted=0; resolver_calls_avoided_by_admission=5000; admission_decision_count=5000; max_applicability_admission_candidate_count=5000; admission_elapsed_ms=375; observation_group_planning=; media_metadata_capability=; attempted_backends=; successful_backends=; fallback_backends_used=; backend_error_counts=; evidence_counts_by_canonical_key=; evidence_counts_by_backend=; semantic_identity_evidence_counts=; physical_probe_count=0; files_attempted=0; files_succeeded=0; files_failed=0; evidence_records_created=0; evidence_records_produced=0; evidence_records_accepted=0; evidence_records_rejected=0; evidence_bytes_produced=0; evidence_bytes_checkpointed=0; inline_materialized_bytes=0; checkpoint_count=0; checkpoint_bytes=0; checkpoint_write_failures=0; physical_backend_attempts=; physical_backend_successes=; physical_backend_failures=; results_physically_succeeded=0; results_physically_failed=0; results_accepted=0; results_rejected_by_policy=1; expected_unsupported_count=0; systemic_execution_failure_count=0; policy_or_governance_block_count=1; current_consecutive_systemic_failures=0; max_consecutive_systemic_failures_observed=0; materialized_observation_bytes=0; execution_status=blocked; blocked_reason_code=POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES}.expected_inapplicable_candidate_count)
-- unknown_candidate_count: $(@{dedup_group_count=0; files_planned=0; grouped_observation_task_count=0; requested_canonical_key_count=0; capability_applicable_count=0; capability_inapplicable_count=5000; capability_applicability_unknown_count=0; capability_inapplicable_reasons=; capability_applicability_resolution_failure_count=0; capability_applicability_resolution_failures=System.Object[]; groups_created_count=0; target_entity_source_breakdown=; target_selection_tasks=System.Object[]; eligible_candidate_count=0; expected_inapplicable_candidate_count=5000; unknown_candidate_count=0; malformed_or_missing_source_ref_count=0; skipped_or_deferred_candidate_count=0; resolver_calls_attempted=0; resolver_calls_avoided_by_admission=5000; admission_decision_count=5000; max_applicability_admission_candidate_count=5000; admission_elapsed_ms=375; observation_group_planning=; media_metadata_capability=; attempted_backends=; successful_backends=; fallback_backends_used=; backend_error_counts=; evidence_counts_by_canonical_key=; evidence_counts_by_backend=; semantic_identity_evidence_counts=; physical_probe_count=0; files_attempted=0; files_succeeded=0; files_failed=0; evidence_records_created=0; evidence_records_produced=0; evidence_records_accepted=0; evidence_records_rejected=0; evidence_bytes_produced=0; evidence_bytes_checkpointed=0; inline_materialized_bytes=0; checkpoint_count=0; checkpoint_bytes=0; checkpoint_write_failures=0; physical_backend_attempts=; physical_backend_successes=; physical_backend_failures=; results_physically_succeeded=0; results_physically_failed=0; results_accepted=0; results_rejected_by_policy=1; expected_unsupported_count=0; systemic_execution_failure_count=0; policy_or_governance_block_count=1; current_consecutive_systemic_failures=0; max_consecutive_systemic_failures_observed=0; materialized_observation_bytes=0; execution_status=blocked; blocked_reason_code=POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES}.unknown_candidate_count)
-- resolver_calls_attempted: $(@{dedup_group_count=0; files_planned=0; grouped_observation_task_count=0; requested_canonical_key_count=0; capability_applicable_count=0; capability_inapplicable_count=5000; capability_applicability_unknown_count=0; capability_inapplicable_reasons=; capability_applicability_resolution_failure_count=0; capability_applicability_resolution_failures=System.Object[]; groups_created_count=0; target_entity_source_breakdown=; target_selection_tasks=System.Object[]; eligible_candidate_count=0; expected_inapplicable_candidate_count=5000; unknown_candidate_count=0; malformed_or_missing_source_ref_count=0; skipped_or_deferred_candidate_count=0; resolver_calls_attempted=0; resolver_calls_avoided_by_admission=5000; admission_decision_count=5000; max_applicability_admission_candidate_count=5000; admission_elapsed_ms=375; observation_group_planning=; media_metadata_capability=; attempted_backends=; successful_backends=; fallback_backends_used=; backend_error_counts=; evidence_counts_by_canonical_key=; evidence_counts_by_backend=; semantic_identity_evidence_counts=; physical_probe_count=0; files_attempted=0; files_succeeded=0; files_failed=0; evidence_records_created=0; evidence_records_produced=0; evidence_records_accepted=0; evidence_records_rejected=0; evidence_bytes_produced=0; evidence_bytes_checkpointed=0; inline_materialized_bytes=0; checkpoint_count=0; checkpoint_bytes=0; checkpoint_write_failures=0; physical_backend_attempts=; physical_backend_successes=; physical_backend_failures=; results_physically_succeeded=0; results_physically_failed=0; results_accepted=0; results_rejected_by_policy=1; expected_unsupported_count=0; systemic_execution_failure_count=0; policy_or_governance_block_count=1; current_consecutive_systemic_failures=0; max_consecutive_systemic_failures_observed=0; materialized_observation_bytes=0; execution_status=blocked; blocked_reason_code=POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES}.resolver_calls_attempted)
-- resolver_calls_avoided_by_admission: $(@{dedup_group_count=0; files_planned=0; grouped_observation_task_count=0; requested_canonical_key_count=0; capability_applicable_count=0; capability_inapplicable_count=5000; capability_applicability_unknown_count=0; capability_inapplicable_reasons=; capability_applicability_resolution_failure_count=0; capability_applicability_resolution_failures=System.Object[]; groups_created_count=0; target_entity_source_breakdown=; target_selection_tasks=System.Object[]; eligible_candidate_count=0; expected_inapplicable_candidate_count=5000; unknown_candidate_count=0; malformed_or_missing_source_ref_count=0; skipped_or_deferred_candidate_count=0; resolver_calls_attempted=0; resolver_calls_avoided_by_admission=5000; admission_decision_count=5000; max_applicability_admission_candidate_count=5000; admission_elapsed_ms=375; observation_group_planning=; media_metadata_capability=; attempted_backends=; successful_backends=; fallback_backends_used=; backend_error_counts=; evidence_counts_by_canonical_key=; evidence_counts_by_backend=; semantic_identity_evidence_counts=; physical_probe_count=0; files_attempted=0; files_succeeded=0; files_failed=0; evidence_records_created=0; evidence_records_produced=0; evidence_records_accepted=0; evidence_records_rejected=0; evidence_bytes_produced=0; evidence_bytes_checkpointed=0; inline_materialized_bytes=0; checkpoint_count=0; checkpoint_bytes=0; checkpoint_write_failures=0; physical_backend_attempts=; physical_backend_successes=; physical_backend_failures=; results_physically_succeeded=0; results_physically_failed=0; results_accepted=0; results_rejected_by_policy=1; expected_unsupported_count=0; systemic_execution_failure_count=0; policy_or_governance_block_count=1; current_consecutive_systemic_failures=0; max_consecutive_systemic_failures_observed=0; materialized_observation_bytes=0; execution_status=blocked; blocked_reason_code=POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES}.resolver_calls_avoided_by_admission)
-- groups_created_count: $(@{dedup_group_count=0; files_planned=0; grouped_observation_task_count=0; requested_canonical_key_count=0; capability_applicable_count=0; capability_inapplicable_count=5000; capability_applicability_unknown_count=0; capability_inapplicable_reasons=; capability_applicability_resolution_failure_count=0; capability_applicability_resolution_failures=System.Object[]; groups_created_count=0; target_entity_source_breakdown=; target_selection_tasks=System.Object[]; eligible_candidate_count=0; expected_inapplicable_candidate_count=5000; unknown_candidate_count=0; malformed_or_missing_source_ref_count=0; skipped_or_deferred_candidate_count=0; resolver_calls_attempted=0; resolver_calls_avoided_by_admission=5000; admission_decision_count=5000; max_applicability_admission_candidate_count=5000; admission_elapsed_ms=375; observation_group_planning=; media_metadata_capability=; attempted_backends=; successful_backends=; fallback_backends_used=; backend_error_counts=; evidence_counts_by_canonical_key=; evidence_counts_by_backend=; semantic_identity_evidence_counts=; physical_probe_count=0; files_attempted=0; files_succeeded=0; files_failed=0; evidence_records_created=0; evidence_records_produced=0; evidence_records_accepted=0; evidence_records_rejected=0; evidence_bytes_produced=0; evidence_bytes_checkpointed=0; inline_materialized_bytes=0; checkpoint_count=0; checkpoint_bytes=0; checkpoint_write_failures=0; physical_backend_attempts=; physical_backend_successes=; physical_backend_failures=; results_physically_succeeded=0; results_physically_failed=0; results_accepted=0; results_rejected_by_policy=1; expected_unsupported_count=0; systemic_execution_failure_count=0; policy_or_governance_block_count=1; current_consecutive_systemic_failures=0; max_consecutive_systemic_failures_observed=0; materialized_observation_bytes=0; execution_status=blocked; blocked_reason_code=POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES}.groups_created_count)
+- target_entity_ref_count: 5000
+- target_entity_source_breakdown: entity_ref=5000
+- execute_observer_task_count: 1
+- eligible_candidate_count: 0
+- expected_inapplicable_candidate_count: 5000
+- unknown_candidate_count: 0
+- malformed_or_missing_source_ref_count: 0
+- skipped_or_deferred_candidate_count: 0
+- resolver_calls_attempted: 0
+- resolver_calls_avoided_by_admission: 5000
+- admission_decision_count: 5000
+- admission_elapsed_ms: 375
+- groups_created_count: 0
 - before_physical_probe_dispatch_emitted: false
 
-Root cause: the public canary selected a 5000-entity ntity_ref window under library_root containing repository artifacts, not eligible media candidates. Capability-owned admission classified all 5000 as expected inapplicable using backend-declared extension routing evidence. Extension remained routing evidence only, not semantic Truth.
+Extension distribution, used only as capability/backend routing evidence:
+
+- yml: 1
+- json: 3870
+- toml: 1
+- md: 750
+- py: 27
+- csv: 30
+- zip: 27
+- jsonl: 276
+- txt: 11
+- yaml: 1
+- log: 2
+- after_reconcile: 4
+
+Root cause: the public canary selected a 5000-entity entity_ref window under library_root containing repository artifacts, not eligible media candidates. Capability-owned admission classified all 5000 as expected inapplicable using backend-declared extension routing evidence. Extension remained routing evidence only, not semantic Truth.
 
 ## Public Analyze Boundary
 
-POST /api/v1/analyze returned in 5635 ms with ccepted_running, task_run_id, operation_id, result endpoint and events endpoint. Polling later returned persisted blocked result with POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES.
+Previous POST status: client_timeout_180s
+Response mode: accepted_running_async_boundary
+POST response status code: 200
+POST response elapsed ms: 5635
+Returns task_run_id before long execution: true
+Public boundary reason code: RUN_ACCEPTED_ASYNC
+
+Polling endpoints:
+
+- /api/v1/task-runs/task_run_332d99706fe04efbaf78eb97eb1a787d
+- /api/v1/task-runs/task_run_332d99706fe04efbaf78eb97eb1a787d/result
+- /api/v1/task-runs/task_run_332d99706fe04efbaf78eb97eb1a787d/events
+
+Polling endpoint status:
+
+- task_run_get_status_code: 200
+- result_get_status_code: 200
+- events_get_status_code: 200
 
 ## Current Issues
 
 Remaining P0: none observed
-Remaining P1: R3_01_B3_7_P1_PUBLIC_CANARY_NO_ELIGIBLE_MEDIA_CANDIDATES_IN_SELECTED_TARGET_SCOPE
-Remaining P2: R3_01_B3_7_P2_ACCEPTED_RUNNING_WORKER_PROGRESS_VISIBILITY_DELAY
-Resolved: B3.6 target expansion generic blocker and public analyze client-timeout-only boundary
 
-FireTest 5 remains NOT_READY and was not executed. C remains NO-GO.
+Remaining P1:
+
+- R3_01_B3_7_P1_PUBLIC_CANARY_NO_ELIGIBLE_MEDIA_CANDIDATES_IN_SELECTED_TARGET_SCOPE
+
+Remaining P2:
+
+- R3_01_B3_7_P2_ACCEPTED_RUNNING_WORKER_PROGRESS_VISIBILITY_DELAY
+
+Resolved in B3.7:
+
+- B3.6 target expansion generic blocker replaced by target-source/no-eligible-media-candidate frontier.
+- Public analyze client-timeout-only boundary replaced by accepted_running_async_boundary with polling endpoints.
+
+## Gates
+
+B3.3 effect: PARTIALLY_PROVEN
+FireTest 5: NOT_READY / NOT_EXECUTED
+C gate: CORRECTIVE_REQUIRED_BEFORE_C
+
+## Evidence Sources
+
+- reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_7_target_selection_diagnostic.json
+- reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_7_public_canary_observation.json
+- reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_7_public_analyze_response_boundary.json
+- reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_7_target_source_audit.json
+- reports/runtime_consolidation/firetest5_h1c0_r3_01_b3_7_issue_register.json
+
+No FireTest 5 was executed for this report-only correction. Main was not modified.
