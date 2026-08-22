@@ -1,0 +1,67 @@
+{
+  "task_run_id": "task_run_8c5a622574d847a287cc60e28c3097df",
+  "operation_id": "op_aa54373588d54fdea7fca3a6900e714d",
+  "projection_source": "task-run result artifact_state plus local artifact files",
+  "artifacts": [
+    {
+      "artifact_id": "artifact_327f349bca50420083692816c982c52d",
+      "logical_path": "reports/firetest5/music_inventory.csv",
+      "storage_ref": "data\\artifacts\\universal\\artifact_327f349bca50420083692816c982c52d_reports__firetest5__music_inventory.csv",
+      "csv_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_327f349bca50420083692816c982c52d_reports__firetest5__music_inventory.csv",
+      "file_exists": true,
+      "size_bytes": 678101,
+      "sha256": "d8b2ef8c5c42261c495c144977d512ee98fff791aaba10449125c8f450f5023c",
+      "status": "blocked",
+      "validation_status": "blocked",
+      "safe_to_use": false,
+      "reason_code": "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+      "content_type": "text/csv",
+      "semantic_contract_status": "partial"
+    },
+    {
+      "artifact_id": "artifact_ddea5a4af4a541d2b492876a2b97d78b",
+      "logical_path": "reports/firetest5/phase1_discovery.md",
+      "storage_ref": "data\\artifacts\\universal\\artifact_ddea5a4af4a541d2b492876a2b97d78b_reports__firetest5__phase1_discovery.md",
+      "csv_path": null,
+      "file_exists": true,
+      "size_bytes": 9757,
+      "sha256": "b1bf2091000babd6936c0eff97e2b4090c6f2e51b1051c7b21e3af56c536b0f4",
+      "status": "ready",
+      "validation_status": "validated",
+      "safe_to_use": true,
+      "reason_code": null,
+      "content_type": "text/markdown",
+      "semantic_contract_status": "satisfied"
+    },
+    {
+      "artifact_id": "artifact_9c74f7b15c784f6a87091d8efb159a91",
+      "logical_path": "reports/firetest5/project_inventory.md",
+      "storage_ref": "data\\artifacts\\universal\\artifact_9c74f7b15c784f6a87091d8efb159a91_reports__firetest5__project_inventory.md",
+      "csv_path": null,
+      "file_exists": true,
+      "size_bytes": 9758,
+      "sha256": "2b06be7867ffd7b9a5b7713b8df761bb6633ab6efe049879798ba6d0e3b829a7",
+      "status": "ready",
+      "validation_status": "validated",
+      "safe_to_use": true,
+      "reason_code": null,
+      "content_type": "text/markdown",
+      "semantic_contract_status": "satisfied"
+    },
+    {
+      "artifact_id": "artifact_ef3ed4996436480383eb1b7ab9d0b327",
+      "logical_path": "reports/firetest5/evidence_phase1.zip",
+      "storage_ref": "data\\artifacts\\universal\\artifact_ef3ed4996436480383eb1b7ab9d0b327_reports__firetest5__evidence_phase1.zip",
+      "csv_path": null,
+      "file_exists": true,
+      "size_bytes": 211373,
+      "sha256": "50552ae22fdc85fcb65e9b4610e036cae6e3d4e0f046eaf20af8cb0661856d51",
+      "status": "ready",
+      "validation_status": "validated",
+      "safe_to_use": true,
+      "reason_code": null,
+      "content_type": "application/zip",
+      "semantic_contract_status": "satisfied"
+    }
+  ]
+}

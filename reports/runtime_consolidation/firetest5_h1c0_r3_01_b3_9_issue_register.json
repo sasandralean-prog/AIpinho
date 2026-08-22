@@ -2,95 +2,33 @@
   "mission_id": "H1C0.R3.01.B3.9",
   "remaining_p0": [],
   "remaining_p1": [
-    {
-      "issue_id": "R3_01_B3_9_P1_MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
-      "status": "OPEN",
-      "evidence": {
-        "primary_media_row_count": 928,
-        "primary_media_with_governed_identity_count": 214,
-        "primary_media_without_identity_tags_count": 704,
-        "primary_media_backend_no_valid_evidence_count": 10,
-        "primary_media_identity_ratio": 0.2306,
-        "reason_codes": [
-          "ARTIFACT_EVIDENCE_BINDING_MISSING",
-          "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
-          "MEDIA_PRIMARY_IDENTITY_TAGS_ABSENT",
-          "MEDIA_BACKEND_NO_VALID_EVIDENCE",
-          "MEDIA_CONTAINER_EXTENSION_MISMATCH",
-          "MEDIA_CANDIDATE_IDENTITY_NOT_TRUTH",
-          "MEDIA_SIDECAR_RELATIONSHIP_POLICY_REQUIRED",
-          "MEDIA_ARTWORK_RELATIONSHIP_POLICY_REQUIRED",
-          "MEDIA_METADATA_OBSERVATION_INCOMPLETE"
-        ]
-      }
-    },
-    {
-      "issue_id": "R3_01_B3_9_P1_ARTIFACT_EVIDENCE_BINDING_DENOMINATOR_MISMATCH",
-      "status": "OPEN",
-      "evidence": {
-        "expected_entities": 2272,
-        "selected_entities": 2272,
-        "bound_rows": 2272,
-        "rows_rendered": 2230,
-        "rows_with_evidence_ref": 2230,
-        "reason_code": "ARTIFACT_EVIDENCE_BINDING_MISSING"
-      }
-    },
-    {
-      "issue_id": "R3_01_B3_9_P1_MUSIC_INVENTORY_SCOPE_INCLUDES_NON_PRIMARY_MEMBERS_IN_DIAGNOSTIC_RUN",
-      "status": "OPEN",
-      "evidence": {
-        "row_class_counts": {
-          "non_primary_corpus_member": 1176,
-          "primary_media_without_identity_tags": 704,
-          "primary_media_with_governed_identity": 214,
-          "lyrics_sidecar_candidate": 121,
-          "primary_media_backend_no_valid_evidence": 10,
-          "artwork_candidate": 5
-        },
-        "extension_counts_top20": {
-          "m4a": 921,
-          "class": 244,
-          "dll": 244,
-          "jar": 138,
-          "lrc": 121,
-          "len": 72,
-          "h": 64,
-          "kt": 46,
-          "lib": 41,
-          "md": 34,
-          "exe": 27,
-          "tab": 26,
-          "keystream": 24,
-          "at": 24,
-          "tab_i": 24,
-          "xsd": 19,
-          "properties": 18,
-          "config": 16,
-          "bin": 15,
-          "txt": 11
-        },
-        "b3_8_rows": 1051,
-        "b3_9_diagnostic_rows": 2230
-      }
-    }
+    "R3_01_B3_9_P1_MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "R3_01_B3_9_P1_ARTIFACT_REQUIRED_COLUMNS_NOT_OBSERVED_FOR_EVIDENCE_BINDING"
   ],
   "remaining_p2": [
-    {
-      "issue_id": "R3_01_B3_9_P2_ACCEPTED_RUNNING_PUBLIC_PROGRESS_VISIBILITY_DELAY",
-      "status": "OPEN",
-      "evidence": "Public summary remained RUNNING/0-of-8 while internal artifact_render_checkpoint events progressed through probes, CSV render, persist, and finalization."
-    }
+    "R3_01_B3_9_P2_ACCEPTED_RUNNING_PUBLIC_PROGRESS_VISIBILITY_DELAY"
   ],
   "resolved_issues": [
     "B3_9_ROW_APPLICABILITY_TAXONOMY_PROJECTED",
-    "B3_9_CANDIDATE_IDENTITY_RETAINED_AS_NOT_TRUTH",
-    "B3_9_FILE_CONTAINER_ANATOMY_ROUTING_HINT_PROJECTED",
-    "B3_9_METADATA_BACKEND_EVIDENCE_COUNTS_PROJECTED_FROM_ATTRIBUTE_OBSERVATIONS",
-    "B3_9_FILE_CONTAINER_SIGNATURE_OWNERSHIP_EXTRACTED",
+    "B3_9_SEMANTIC_IDENTITY_DENOMINATOR_BY_ROW_CLASS",
+    "B3_9_FILE_CONTAINER_SIGNATURE_SERVICE_EXTRACTED",
     "B3_9_MEDIA_CANDIDATE_IDENTITY_POLICY_EXTRACTED",
-    "B3_9_ARTIFACT_METADATA_PROJECTION_COMPLETED_IN_REPORT"
+    "B3_9_ARTIFACT_METADATA_PROJECTION_COMPLETED",
+    "B3_9_BACKEND_TELEMETRY_RECONCILED_FROM_ARTIFACT_METADATA"
   ],
+  "new_issues": [],
   "firetest5_status": "NOT_READY_OFFICIAL_PASS_NOT_EXECUTED",
-  "c_gate": "CORRECTIVE_REQUIRED_BEFORE_C"
+  "c_gate": "CORRECTIVE_REQUIRED_BEFORE_C",
+  "evidence": {
+    "task_run_id": "task_run_8c5a622574d847a287cc60e28c3097df",
+    "operation_id": "op_aa54373588d54fdea7fca3a6900e714d",
+    "reason_code": "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "primary_media_identity_ratio": 0.2306,
+    "primary_media_without_identity_tags_count": 704,
+    "primary_media_backend_no_valid_evidence_count": 10,
+    "lyrics_sidecar_candidate_count": 121,
+    "artwork_candidate_count": 2,
+    "csv_sha256": "d8b2ef8c5c42261c495c144977d512ee98fff791aaba10449125c8f450f5023c",
+    "old_8mb_inline_frontier_observed": false
+  }
 }

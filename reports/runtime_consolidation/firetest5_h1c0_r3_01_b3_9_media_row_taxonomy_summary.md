@@ -6,105 +6,141 @@
 
 This is not an official FireTest 5 PASS. C gate remains `CORRECTIVE_REQUIRED_BEFORE_C`.
 
-## Implementation
+## Completion Update
 
-- Added row applicability taxonomy for media inventory rows.
-- Added candidate identity fields as `candidate_only_not_truth`.
-- Added bounded file/container anatomy from magic bytes as routing/anatomy evidence, not song identity.
-- Updated sufficiency to use primary-media identity denominator when row taxonomy is present.
-- Updated metadata projection to recover backend/key/identity counts from bounded observations and, in final code, prefer physical backend telemetry.
-- Completion update extracted bounded file/container signature observation into `FileContainerSignatureService`.
-- Completion update extracted filename-derived candidate identity into `MediaCandidateIdentityPolicy`.
-- Completion update added artifact metadata projection with local sha256 verification for the diagnostic artifacts.
+- Partial prompt work was preserved.
+- Completion update applied after the full prompt sections I-P.
+- File/container signature ownership is now `FileContainerSignatureService`.
+- Filename candidate identity ownership is now `MediaCandidateIdentityPolicy`.
+- Row taxonomy consumes those services and remains row applicability classification.
+- No partial implementation was reverted; ownership and reports were corrected.
 
-## Controlled Phase-1 Diagnostic
+## Public Phase-1 Diagnostic
 
-- task_run_id: `task_run_5732815a2d3c4ed99034ac48b69b9169`
-- operation_id: `op_21efc8b6e30445ed850947ce3d0d8160`
+- task_run_id: `task_run_8c5a622574d847a287cc60e28c3097df`
+- operation_id: `op_aa54373588d54fdea7fca3a6900e714d`
+- POST status: `200`
+- response mode: `accepted_running`
+- elapsed_ms: `6553`
 - terminal status: `blocked`
-- terminal reason: `ARTIFACT_EVIDENCE_BINDING_MISSING`
-- SpeakerTruth safe_to_report_success: false
-- events_count: 347
+- terminal reason: `MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT`
+- terminal blocking event count: `1`
+- SpeakerTruth safe_to_report_success: `false`
+- events_count: `297`
 
 ## CSV Artifact
 
-- artifact_id: `artifact_52ed4f5843e249deb16ed7a545dcd916`
-- path: `C:\Dev\AIpinho\data\artifacts\universal\artifact_52ed4f5843e249deb16ed7a545dcd916_reports__firetest5__music_inventory.csv`
-- rows: 2230
-- columns: 46
-- bytes: 1501438
-- sha256: `c69ea1a2b0c135fe0675b15aba7e5696186835bef89fa4710cbd8de9e4db639d`
-- old 8 MB inline frontier observed: false
+- artifact_id: `artifact_327f349bca50420083692816c982c52d`
+- logical_path: `reports/firetest5/music_inventory.csv`
+- storage_ref: `data\artifacts\universal\artifact_327f349bca50420083692816c982c52d_reports__firetest5__music_inventory.csv`
+- path: `C:\Dev\AIpinho\data\artifacts\universal\artifact_327f349bca50420083692816c982c52d_reports__firetest5__music_inventory.csv`
+- rows: `1051`
+- columns: `46`
+- bytes: `678101`
+- sha256: `d8b2ef8c5c42261c495c144977d512ee98fff791aaba10449125c8f450f5023c`
+- status: `blocked`
+- validation_status: `blocked`
+- safe_to_use: `false`
+- reason_code: `MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT`
+- old 8 MB inline frontier observed: `false`
 
-The CSV is larger than B3.8 because B3.9 adds row taxonomy, candidate identity, and file anatomy columns, and this diagnostic selected 2230 rows instead of the B3.8 1051-row music-only CSV. It is still below 8 MB. The 8,813,500-byte figure is durable checkpoint evidence, not inline CSV materialization.
+The CSV is larger than the B3.8 artifact because B3.9 adds row taxonomy, candidate identity, and file/container anatomy columns. It remains below 8 MB and is stored as an artifact file/reference. The old inline materialization frontier did not reappear.
 
 ## Row Taxonomy
 
 ```json
 {
-  "non_primary_corpus_member": 1176,
   "primary_media_without_identity_tags": 704,
   "primary_media_with_governed_identity": 214,
-  "lyrics_sidecar_candidate": 121,
+  "artwork_candidate": 2,
   "primary_media_backend_no_valid_evidence": 10,
-  "artwork_candidate": 5
+  "lyrics_sidecar_candidate": 121
 }
 ```
 
 Primary media identity denominator:
 
-- primary_media_row_count: 928
-- governed identity rows: 214
-- without identity tags: 704
-- backend/no-valid evidence: 10
-- primary identity ratio: 0.2306
+- primary_media_row_count: `928`
+- governed identity rows: `214`
+- without identity tags: `704`
+- backend/no-valid evidence: `10`
+- primary identity ratio: `0.2306`
 
-## Container Anatomy
+Sidecars/artwork remain visible and are excluded from the primary media identity denominator.
+
+## Candidate and Anatomy Truth Policy
+
+- filename/path/extension/container/LRC promoted to Truth: `false`
+- candidate identity represented as: `candidate_only_not_truth`
+- candidate_identity_available_count: `1051`
+- candidate_identity_not_truth_count: `1051`
+- lrc_relationship_candidate_count: `53`
+- extension_container_mismatch_count: `13`
+- unsupported .m4a reclassification count: `10`
+
+## Backend Telemetry
 
 ```json
 {
-  "unknown": 1176,
-  "iso_bmff": 916,
-  "text_lrc_candidate": 121,
-  "ebml_candidate": 10,
-  "png": 3,
-  "jpeg": 2,
-  "mp3_candidate": 2
+  "files_planned": 928,
+  "files_attempted": 928,
+  "files_succeeded": 918,
+  "files_failed": 10,
+  "physical_probe_count": 928,
+  "backend_attempt_counts": {
+    "mutagen": 928
+  },
+  "backend_success_counts": {
+    "mutagen": 918
+  },
+  "backend_failure_counts": {
+    "MEDIA_BACKEND_UNSUPPORTED_FORMAT": 10,
+    "FFPROBE_NOT_AVAILABLE": 10
+  },
+  "evidence_records_by_backend": {
+    "mutagen": 5934
+  },
+  "evidence_records_by_canonical_key": {
+    "duration": 918,
+    "codec": 916,
+    "bitrate": 918,
+    "sample_rate": 918,
+    "channels": 918,
+    "artwork": 918,
+    "track_title": 214,
+    "artist": 214
+  },
+  "semantic_identity_evidence_counts": {
+    "track_title": 214,
+    "artist": 214
+  },
+  "technical_metadata_counts": {
+    "duration": 918,
+    "codec": 916,
+    "bitrate": 918,
+    "sample_rate": 918,
+    "channels": 918,
+    "artwork": 918
+  },
+  "telemetry_projection_source": {
+    "attribute_observations_projected": true,
+    "execution_telemetry_present": true,
+    "row_applicability_summary_present": true
+  },
+  "reconciles_with_evidence_records": true
 }
 ```
 
-Mismatch count: 13
+## Gates
+
+- ffprobe installed: `false`
+- FireTest 5 PASS claimed: `false`
+- main touched: `false`
+- public polling available: `true`
+- backend telemetry reconciles with EvidenceRecords: `true`
 
 ## Remaining Frontiers
 
 - `R3_01_B3_9_P1_MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT`
-- `R3_01_B3_9_P1_ARTIFACT_EVIDENCE_BINDING_DENOMINATOR_MISMATCH`
-- `R3_01_B3_9_P1_MUSIC_INVENTORY_SCOPE_INCLUDES_NON_PRIMARY_MEMBERS_IN_DIAGNOSTIC_RUN`
+- `R3_01_B3_9_P1_ARTIFACT_REQUIRED_COLUMNS_NOT_OBSERVED_FOR_EVIDENCE_BINDING`
 - `R3_01_B3_9_P2_ACCEPTED_RUNNING_PUBLIC_PROGRESS_VISIBILITY_DELAY`
-
-## Tests
-
-- Completion focused: 10 passed
-- Required B3.9 nominal files: 2 passed, 2 passed, 3 passed, 2 passed
-- B3.6/B3.7 admission/route regressions: 6 passed and 4 passed
-- Media capability pack: 34 passed, 1 skipped
-- Metadata/sufficiency projection: 8 passed
-- B3.9 focused: 12 passed
-- B3.5-B3.7 post-compile/public boundary: 74 passed
-- Static: compileall PASS, diff-check PASS
-- One broader contract group failure recorded as outside B3.9 scope: stale `.track` fixture now blocks under B3.7 target-selection semantics.
-
-## Completion Audit
-
-The partial B3.9 implementation already covered row taxonomy, sufficiency by class, candidate fields, container anatomy projection, runtime provenance, a controlled Phase-1 diagnostic run, and reports. The completion pass closed the ownership/test/report gaps without restarting architecture:
-
-- file/container anatomy is now owned by `FileContainerSignatureService`;
-- filename candidate identity is now owned by `MediaCandidateIdentityPolicy`;
-- row taxonomy consumes both as inputs and remains the row-classification layer;
-- unknown signatures remain unknown, not false unsupported;
-- container mismatch remains a routing/backend diagnostic, not semantic identity;
-- artifact metadata projection now explains safety, reason, digest, and storage-ref availability in the B3.9 public observation report.
-
-## Full Unit Attempt
-
-`python -m pytest tests/unit -q -x` stopped at first failure outside B3.9 scope: `tests/unit/test_agent_delegation_service.py::test_delegation_request_result_parent_child_and_timeline` with `PermissionError: agent_profile_disabled` after `1 failed, 16 passed`.
