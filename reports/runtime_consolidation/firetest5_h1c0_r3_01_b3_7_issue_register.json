@@ -1,0 +1,63 @@
+{
+  "mission_id": "H1C0.R3.01.B3.7",
+  "remaining_p0": [],
+  "remaining_p1": [
+    {
+      "id": "R3_01_B3_7_P1_PUBLIC_CANARY_NO_ELIGIBLE_MEDIA_CANDIDATES_IN_SELECTED_TARGET_SCOPE",
+      "status": "OPEN",
+      "priority": "P1",
+      "summary": "The public canary target scope selected 5000 repository/library_root entities and no eligible media candidates, so media observation blocks before probes with a precise target-selection reason.",
+      "evidence": {
+        "task_run_id": "task_run_332d99706fe04efbaf78eb97eb1a787d",
+        "operation_id": "op_1662297d0de3433097e88f6d95532270",
+        "reason_code": "POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES",
+        "target_entity_ref_count": 5000,
+        "target_entity_source_breakdown": {
+          "entity_ref": 5000
+        },
+        "eligible_candidate_count": 0,
+        "expected_inapplicable_candidate_count": 5000,
+        "groups_created_count": 0,
+        "physical_probe_count": 0,
+        "extension_distribution": {
+          "yml": 1,
+          "json": 3870,
+          "toml": 1,
+          "md": 750,
+          "py": 27,
+          "csv": 30,
+          "zip": 27,
+          "jsonl": 276,
+          "txt": 11,
+          "yaml": 1,
+          "log": 2,
+          "after_reconcile": 4
+        }
+      }
+    }
+  ],
+  "remaining_p2": [
+    {
+      "id": "R3_01_B3_7_P2_ACCEPTED_RUNNING_WORKER_PROGRESS_VISIBILITY_DELAY",
+      "status": "OPEN_NON_BLOCKING",
+      "priority": "P2",
+      "summary": "The public analyze response now returns task_run_id and polling endpoints, but the accepted task can remain in created/running state for a visible interval before the persisted terminal block appears."
+    }
+  ],
+  "resolved_issues": [
+    {
+      "id": "R3_01_B3_6_P1_TARGET_EXPANSION_SELECTION_TOO_BROAD_NO_ELIGIBLE_MEDIA_CANDIDATES",
+      "status": "RESOLVED_REPLACED_BY_PRECISE_TARGET_SELECTION_FRONTIER",
+      "evidence": "B3.7 blocks after one 5000-candidate target task with source/partition telemetry and no full-budget applicability stall."
+    },
+    {
+      "id": "R3_01_B3_6_P2_PUBLIC_ANALYZE_SYNC_RESPONSE_TIMEOUT_DESPITE_PERSISTED_RESULT",
+      "status": "RESOLVED",
+      "evidence": "POST /api/v1/analyze returned accepted_running with task_run_id/result/events endpoints in 5635ms; polling endpoints returned 200."
+    }
+  ],
+  "new_issues": [],
+  "b3_3_effect_status": "PARTIALLY_PROVEN",
+  "c_gate_status": "CORRECTIVE_REQUIRED_BEFORE_C",
+  "firetest5_status": "NOT_READY_NOT_EXECUTED"
+}

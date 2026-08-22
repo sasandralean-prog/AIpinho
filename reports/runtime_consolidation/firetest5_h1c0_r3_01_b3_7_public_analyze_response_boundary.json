@@ -1,0 +1,26 @@
+{
+  "mission_id": "H1C0.R3.01.B3.7",
+  "previous_post_status": "client_timeout_180s",
+  "implemented": true,
+  "response_mode": "accepted_running_async_boundary",
+  "post_response_status_code": 200,
+  "post_response_elapsed_ms": 5635,
+  "returns_task_run_id_before_long_execution": true,
+  "task_run_id": "task_run_332d99706fe04efbaf78eb97eb1a787d",
+  "operation_id": "op_1662297d0de3433097e88f6d95532270",
+  "reason_code": "RUN_ACCEPTED_ASYNC",
+  "polling_endpoints": [
+    "/api/v1/task-runs/task_run_332d99706fe04efbaf78eb97eb1a787d",
+    "/api/v1/task-runs/task_run_332d99706fe04efbaf78eb97eb1a787d/result",
+    "/api/v1/task-runs/task_run_332d99706fe04efbaf78eb97eb1a787d/events"
+  ],
+  "safe_to_report_success_on_pending": false,
+  "persisted_task_run_status": "blocked",
+  "persisted_result_status": "blocked",
+  "persisted_result_reason_code": "POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES",
+  "task_run_get_status_code": 200,
+  "result_get_status_code": 200,
+  "events_get_status_code": 200,
+  "result_events_count": 103,
+  "source": "public POST /api/v1/analyze response and GET task-run/result/events after canary"
+}

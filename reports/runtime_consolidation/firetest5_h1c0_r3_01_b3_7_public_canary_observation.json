@@ -1,0 +1,46 @@
+{
+  "mission_id": "H1C0.R3.01.B3.7",
+  "endpoint": "/api/v1/analyze",
+  "task_run_id": "task_run_332d99706fe04efbaf78eb97eb1a787d",
+  "operation_id": "op_1662297d0de3433097e88f6d95532270",
+  "status": "blocked",
+  "reason_code": "POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES",
+  "terminal_blocking_event_count": 1,
+  "speaker_truth_safe_to_report_success": false,
+  "http_response_behavior": "accepted_running_with_task_run_and_polling_endpoints",
+  "http_post_elapsed_ms": 5635,
+  "polling_endpoints": [
+    "/api/v1/task-runs/task_run_332d99706fe04efbaf78eb97eb1a787d",
+    "/api/v1/task-runs/task_run_332d99706fe04efbaf78eb97eb1a787d/result",
+    "/api/v1/task-runs/task_run_332d99706fe04efbaf78eb97eb1a787d/events"
+  ],
+  "polling_status": {
+    "task_run": 200,
+    "result": 200,
+    "events": 200
+  },
+  "target_entity_ref_count": 5000,
+  "target_entity_source_breakdown": {
+    "entity_ref": 5000
+  },
+  "prefilter_partition": {
+    "eligible_candidate_count": 0,
+    "expected_inapplicable_candidate_count": 5000,
+    "unknown_candidate_count": 0,
+    "malformed_or_missing_source_ref_count": 0,
+    "skipped_or_deferred_candidate_count": 0
+  },
+  "capability_inapplicable_reasons": {
+    "MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS": 5000
+  },
+  "groups_created_count": 0,
+  "before_physical_probe_dispatch_emitted": false,
+  "physical_probe_count": 0,
+  "evidence_records_produced": 0,
+  "evidence_records_accepted": 0,
+  "evidence_records_rejected": 0,
+  "checkpoint_count": 0,
+  "checkpoint_bytes": 0,
+  "inline_materialized_bytes": 0,
+  "terminality_source": "persisted task-run result.json and task-run polling endpoints"
+}
