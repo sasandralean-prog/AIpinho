@@ -1,0 +1,37 @@
+{
+  "compileall": "PASS: python -m compileall -q src tests",
+  "diff_check": "PASS: git diff --check",
+  "focused_tests": [
+    {
+      "command": "python -m pytest tests/unit/test_media_inventory_row_taxonomy_service.py tests/unit/test_media_inventory_sufficiency_by_row_class.py tests/unit/test_music_inventory_complete_sufficiency_policy.py -q",
+      "result": "9 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_media_inventory_row_taxonomy_service.py tests/unit/test_media_inventory_sufficiency_by_row_class.py tests/unit/test_music_inventory_metadata_projection.py tests/unit/test_music_inventory_metadata_coverage.py tests/unit/test_music_inventory_complete_sufficiency_policy.py -q",
+      "result": "12 passed"
+    },
+    {
+      "command": "python -m pytest tests/unit/test_media_identity_governed_resolution.py tests/unit/test_music_inventory_metadata_coverage.py tests/unit/test_row_level_semantic_validation.py -q",
+      "result": "29 passed when run with B3.9 focused group"
+    },
+    {
+      "command": "python -m pytest B3.5-B3.7 post-compile/public boundary group -q",
+      "result": "74 passed"
+    }
+  ],
+  "known_regression_group_failure_outside_b3_9": {
+    "command": "python -m pytest tests/unit/test_media_metadata_capability_pack.py tests/unit/test_media_metadata_capability_policy.py tests/unit/test_contract_driven_perception_service.py tests/unit/test_semantic_artifact_intent_resolver.py tests/unit/test_file_selection_role_semantics.py -q",
+    "result": "57 passed, 1 skipped, 1 failed",
+    "failure": "test_renderer_uses_only_contract_eligible_entities_for_corpus_inventory blocks before render with B3.7 target-selection no-eligible behavior for .track fixture.",
+    "attributed_to_b3_9": false
+  },
+  "anti_hardcode_scan": "PASS: no ffprobe install, no FireTest PASS claim, no filename/extension truth promotion; only explicit filename_identity_truth=False flag observed.",
+  "full_unit_attempt": {
+    "command": "python -m pytest tests/unit -q -x",
+    "status": "FAIL_OUTSIDE_B3_9_SCOPE_FIRST_FAILURE",
+    "first_failure": "tests/unit/test_agent_delegation_service.py::test_delegation_request_result_parent_child_and_timeline",
+    "failure_reason": "PermissionError: agent_profile_disabled",
+    "attributed_to_b3_9": false,
+    "counts_before_stop": "1 failed, 16 passed"
+  }
+}

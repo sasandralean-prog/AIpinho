@@ -36,6 +36,7 @@ from aipinho.services.artifacts.contract_driven_perception_service import Contra
 from aipinho.services.artifacts.governed_observation_execution_stage_service import (
     GovernedObservationExecutionStageService,
 )
+from aipinho.services.artifacts.media_inventory_row_taxonomy_service import MediaInventoryRowTaxonomyService
 from aipinho.services.artifacts.media_inventory_sufficiency_service import MediaInventorySufficiencyService
 from aipinho.services.artifacts.observation_evidence_checkpoint_service import (
     EvidenceCheckpointResolutionError,
@@ -469,6 +470,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
         semantic_intents: SemanticArtifactIntentResolver | None = None,
         semantic_entity_selection: SemanticEntitySelectionService | None = None,
         row_level_validation: RowLevelSemanticValidationService | None = None,
+        media_inventory_row_taxonomy: MediaInventoryRowTaxonomyService | None = None,
         media_inventory_sufficiency: MediaInventorySufficiencyService | None = None,
         model_patch_planner: ModelAssistedPatchPlannerService | None = None,
         lifecycle: TaskRunLifecycleService | None = None,
@@ -494,6 +496,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
         self.semantic_intents = semantic_intents or SemanticArtifactIntentResolver()
         self.semantic_entity_selection = semantic_entity_selection or SemanticEntitySelectionService()
         self.row_level_validation = row_level_validation or RowLevelSemanticValidationService()
+        self.media_inventory_row_taxonomy = media_inventory_row_taxonomy or MediaInventoryRowTaxonomyService()
         self.media_inventory_sufficiency = media_inventory_sufficiency or MediaInventorySufficiencyService()
         self.model_patch_planner = model_patch_planner or ModelAssistedPatchPlannerService()
         self.lifecycle = lifecycle or TaskRunLifecycleService()
@@ -2976,6 +2979,8 @@ class ReadonlyAnalysisArtifactRuntimeService:
             for item in attribute_contracts
             if isinstance(item, dict)
         ] or [{"canonical_key": field, "display_label": field, "raw_label": field, "required": True} for field in expected_schema]
+        if intent_plan.artifact_kind == "media_corpus_inventory":
+            render_columns = self._with_media_inventory_row_taxonomy_columns(render_columns)
         self._check_artifact_render_checkpoint(
             render_run_id,
             phase_started,
@@ -3033,6 +3038,15 @@ class ReadonlyAnalysisArtifactRuntimeService:
             perception_payload=perception_payload,
             selected_entities=selected_entities,
         )
+        row_applicability = (
+            self.media_inventory_row_taxonomy.classify(
+                selected_entities=selected_entities,
+                claim_evidence_bindings=claim_evidence_bindings,
+                perception_payload=perception_payload,
+            )
+            if intent_plan.artifact_kind == "media_corpus_inventory"
+            else {"rows_by_entity": {}, "summary": {}}
+        )
         if len(selected_entities) > self.budget.max_artifact_rows:
             raise GovernedPhase1Block(
                 "ARTIFACT_RENDER_BUDGET_EXCEEDED",
@@ -3062,6 +3076,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
             perception_payload=perception_payload,
             selected_entities=selected_entities,
             render_columns=render_columns,
+            row_applicability_by_entity=row_applicability.get("rows_by_entity") if isinstance(row_applicability, dict) else {},
         )
         cell_lookup_metrics = self._new_csv_cell_lookup_metrics(lookup_context)
 
@@ -3524,6 +3539,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
         metadata_coverage = self._metadata_coverage_summary(
             perception_payload=perception_payload,
             selected_entities=selected_entities,
+            row_applicability_summary=row_applicability.get("summary") if isinstance(row_applicability, dict) else {},
         )
         self._check_artifact_render_checkpoint(
             render_run_id,
@@ -3536,6 +3552,15 @@ class ReadonlyAnalysisArtifactRuntimeService:
             cells_rendered=cells_rendered,
         )
         schema_coverage["metadata_coverage_summary"] = metadata_coverage
+        if intent_plan.artifact_kind == "media_corpus_inventory":
+            schema_coverage["row_applicability_summary"] = row_applicability.get("summary") if isinstance(row_applicability, dict) else {}
+            schema_coverage["file_anatomy_summary"] = {
+                "file_anatomy_observed_count": (row_applicability.get("summary") or {}).get("file_anatomy_observed_count") if isinstance(row_applicability, dict) else 0,
+                "extension_container_mismatch_count": (row_applicability.get("summary") or {}).get("file_anatomy_extension_container_mismatch_count") if isinstance(row_applicability, dict) else 0,
+                "signature_family_counts": (row_applicability.get("summary") or {}).get("file_anatomy_signature_family_counts") if isinstance(row_applicability, dict) else {},
+                "semantic_truth_claim": False,
+                "routing_hint_only": True,
+            }
         schema_status = "satisfied" if not column_coverage.get("missing_columns") else "blocked"
         inventory_sufficiency = None
         if intent_plan.artifact_kind == "media_corpus_inventory":
@@ -3563,6 +3588,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 media_metadata_capability=media_metadata_capability_for_sufficiency,
                 metadata_coverage=metadata_coverage,
                 schema_status=schema_status,
+                row_applicability=row_applicability.get("summary") if isinstance(row_applicability, dict) else {},
             )
             schema_coverage["inventory_sufficiency_summary"] = inventory_sufficiency.model_dump(mode="json")
             for reason in inventory_sufficiency.reason_codes:
@@ -3842,6 +3868,46 @@ class ReadonlyAnalysisArtifactRuntimeService:
             return "not_observed", True
         return None, False
 
+    def _with_media_inventory_row_taxonomy_columns(self, render_columns: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        existing = {str(item.get("canonical_key") or "") for item in render_columns if isinstance(item, dict)}
+        extra_columns = [
+            "declared_extension",
+            "row_class",
+            "primary_media_identity_required",
+            "semantic_identity_observed",
+            "semantic_identity_candidate_available",
+            "candidate_title",
+            "candidate_artist",
+            "candidate_source",
+            "candidate_method",
+            "candidate_identity_confidence",
+            "candidate_truth_status",
+            "candidate_risk_flags",
+            "row_sufficiency_status",
+            "row_sufficiency_reason_code",
+            "observed_container",
+            "observed_signature_family",
+            "extension_container_match",
+            "file_anatomy_status",
+            "file_anatomy_reason_code",
+            "routing_hint_only",
+            "semantic_truth_claim",
+        ]
+        merged = list(render_columns)
+        for key in extra_columns:
+            if key in existing:
+                continue
+            merged.append(
+                {
+                    "canonical_key": key,
+                    "display_label": key,
+                    "raw_label": key,
+                    "required": False,
+                }
+            )
+            existing.add(key)
+        return merged
+
     def _claim_evidence_bindings(
         self,
         *,
@@ -3951,6 +4017,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
         perception_payload: dict[str, Any],
         selected_entities: list[dict[str, Any]],
         render_columns: list[dict[str, Any]],
+        row_applicability_by_entity: dict[str, dict[str, Any]] | None = None,
     ) -> dict[str, Any]:
         started = time.monotonic()
         observed_values: dict[tuple[str, str], Any] = {}
@@ -3989,6 +4056,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
         for canonical, compact in render_field_aliases.values():
             needed_value_keys.add(canonical)
             needed_value_keys.add(compact)
+        row_applicability_by_entity = row_applicability_by_entity if isinstance(row_applicability_by_entity, dict) else {}
         for entity in selected_entities:
             if not isinstance(entity, dict):
                 continue
@@ -4022,6 +4090,16 @@ class ReadonlyAnalysisArtifactRuntimeService:
                     values.setdefault(field, values[canonical])
                 elif compact_canonical in values:
                     values.setdefault(field, values[compact_canonical])
+            row_applicability = row_applicability_by_entity.get(entity_id)
+            if isinstance(row_applicability, dict):
+                for raw_key, raw_value in row_applicability.items():
+                    raw_key_text = str(raw_key)
+                    compact_raw_key = raw_key_text.replace(" ", "_")
+                    canonical = canonical_name(raw_key_text)
+                    compact_canonical = canonical.replace(" ", "_")
+                    for candidate_key in (raw_key_text, compact_raw_key, canonical, compact_canonical):
+                        if candidate_key in needed_value_keys:
+                            values.setdefault(candidate_key, raw_value)
             entity_field_values[entity_id] = values
 
         relationship_values = self._relationship_render_values(perception_payload)
@@ -4045,6 +4123,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
                     "media_metadata_entity_count": len(media_metadata_by_entity),
                     "media_metadata_observation_count": sum(len(items) for items in media_metadata_by_entity.values()),
                     "entity_field_value_count": sum(len(values) for values in entity_field_values.values()),
+                    "row_applicability_entity_count": len(row_applicability_by_entity),
                     "relationship_value_count": len(relationship_values),
                 }
             ),
@@ -4205,7 +4284,13 @@ class ReadonlyAnalysisArtifactRuntimeService:
             and str(item.get("capability_id") or "") == "media_metadata_reader"
         ]
 
-    def _metadata_coverage_summary(self, *, perception_payload: dict[str, Any], selected_entities: list[dict[str, Any]]) -> dict[str, Any]:
+    def _metadata_coverage_summary(
+        self,
+        *,
+        perception_payload: dict[str, Any],
+        selected_entities: list[dict[str, Any]],
+        row_applicability_summary: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
         selected_ids = [str(item.get("entity_id") or "") for item in selected_entities if item.get("entity_id")]
         selected_id_set = set(selected_ids)
         observations = [
@@ -4230,6 +4315,30 @@ class ReadonlyAnalysisArtifactRuntimeService:
             for item in observations
             if item.get("entity_id") and item.get("observation_state") == "observed"
         }
+        projected_key_counts: dict[str, int] = {}
+        projected_backend_counts: dict[str, int] = {}
+        projected_identity_counts: dict[str, int] = {}
+        projected_successful_backend_entities: dict[str, int] = {}
+        backend_entity_pairs: set[tuple[str, str]] = set()
+        identity_keys = {"track_title", "artist", "album", "album_artist"}
+        for item in observations:
+            if item.get("observation_state") != "observed":
+                continue
+            key = str(item.get("canonical_key") or item.get("attribute_name") or "")
+            if key:
+                projected_key_counts[key] = projected_key_counts.get(key, 0) + 1
+                if key in identity_keys:
+                    projected_identity_counts[key] = projected_identity_counts.get(key, 0) + 1
+            provenance = item.get("provenance") if isinstance(item.get("provenance"), dict) else {}
+            backend_id = str(provenance.get("backend_id") or item.get("backend_id") or "")
+            entity_id = str(item.get("entity_id") or "")
+            if backend_id:
+                projected_backend_counts[backend_id] = projected_backend_counts.get(backend_id, 0) + 1
+                if entity_id:
+                    backend_entity_pairs.add((backend_id, entity_id))
+        for backend_id, entity_id in backend_entity_pairs:
+            if backend_id and entity_id:
+                projected_successful_backend_entities[backend_id] = projected_successful_backend_entities.get(backend_id, 0) + 1
         media = perception_payload.get("media_metadata_capability") if isinstance(perception_payload.get("media_metadata_capability"), dict) else {}
         execution_telemetry = perception_payload.get("post_compile_observation_execution") if isinstance(perception_payload.get("post_compile_observation_execution"), dict) else {}
         has_physical_telemetry = bool(execution_telemetry)
@@ -4262,6 +4371,13 @@ class ReadonlyAnalysisArtifactRuntimeService:
         unsupported_count = min(files_failed, raw_unsupported_count)
         read_error_count = min(files_failed, raw_read_error_count)
         selected_count = len(selected_ids)
+        row_applicability_summary = row_applicability_summary if isinstance(row_applicability_summary, dict) else {}
+        primary_media_count = int(row_applicability_summary.get("primary_media_row_count") or 0)
+        primary_observed_ids = {
+            entity_id
+            for entity_id in observed_ids
+            if entity_id in selected_id_set
+        }
         observed_attributes = sorted({
             str(item.get("canonical_key") or item.get("attribute_name") or "")
             for item in observations
@@ -4286,6 +4402,9 @@ class ReadonlyAnalysisArtifactRuntimeService:
         ]
         capability_attributes_unobserved = list(media.get("attributes_missing") or media.get("capability_attributes_unobserved") or [])
         coverage_ratio = files_succeeded / max(1, selected_count)
+        primary_files_attempted = min(primary_media_count, max(files_attempted, len(primary_observed_ids))) if primary_media_count else 0
+        primary_files_succeeded = min(primary_media_count, len(primary_observed_ids)) if primary_media_count else 0
+        primary_observation_ratio = primary_files_succeeded / max(1, primary_media_count) if primary_media_count else 0.0
         status = (
             "satisfied"
             if selected_count > 0 and files_succeeded == selected_count
@@ -4298,6 +4417,34 @@ class ReadonlyAnalysisArtifactRuntimeService:
         if has_physical_telemetry and files_attempted > 0 and status == "not_configured":
             status = "partial"
         capability_status = str(media.get("status") or status or "not_configured")
+        attempted_backends = self._prefer_projected_count_map(
+            media.get("physical_backend_attempts")
+            or execution_telemetry.get("physical_backend_attempts")
+            or media.get("attempted_backends")
+            or execution_telemetry.get("attempted_backends")
+            or {},
+            projected_successful_backend_entities,
+        )
+        successful_backends = self._prefer_projected_count_map(
+            media.get("physical_backend_successes")
+            or execution_telemetry.get("physical_backend_successes")
+            or media.get("successful_backends")
+            or execution_telemetry.get("successful_backends")
+            or {},
+            projected_successful_backend_entities,
+        )
+        evidence_counts_by_canonical_key = self._prefer_projected_count_map(
+            media.get("evidence_counts_by_canonical_key") or execution_telemetry.get("evidence_counts_by_canonical_key") or {},
+            projected_key_counts,
+        )
+        evidence_counts_by_backend = self._prefer_projected_count_map(
+            media.get("evidence_counts_by_backend") or execution_telemetry.get("evidence_counts_by_backend") or {},
+            projected_backend_counts,
+        )
+        semantic_identity_evidence_counts = self._prefer_projected_count_map(
+            media.get("semantic_identity_evidence_counts") or execution_telemetry.get("semantic_identity_evidence_counts") or {},
+            projected_identity_counts,
+        )
         return {
             "status": status,
             "capability_id": "media_metadata_reader",
@@ -4309,12 +4456,17 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "files_attempted": files_attempted,
             "files_succeeded": files_succeeded,
             "files_failed": files_failed,
+            "primary_media_files_expected": primary_media_count,
+            "primary_media_files_attempted": primary_files_attempted,
+            "primary_media_files_succeeded": primary_files_succeeded,
+            "primary_media_files_failed": max(0, primary_media_count - primary_files_succeeded) if primary_media_count else 0,
             "entity_observation_files_attempted": entity_files_attempted,
             "entity_observation_files_succeeded": entity_files_succeeded,
             "entity_observation_files_failed": entity_files_failed,
             "unsupported_count": unsupported_count,
             "read_error_count": read_error_count,
             "coverage_ratio": round(coverage_ratio, 4),
+            "primary_media_observation_ratio": round(primary_observation_ratio, 4),
             "attributes_observed": observed_attributes or list(media.get("attributes_observed") or []),
             "attributes_missing": contract_required_attributes_missing,
             "contract_required_attributes_missing": contract_required_attributes_missing,
@@ -4322,12 +4474,17 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "physical_probe_count": physical_int("physical_probe_count", files_attempted),
             "goals_satisfied": physical_int("goals_satisfied", 0),
             "goals_unsatisfied": physical_int("goals_unsatisfied", 0),
-            "attempted_backends": media.get("attempted_backends") or execution_telemetry.get("attempted_backends") or {},
-            "successful_backends": media.get("successful_backends") or execution_telemetry.get("successful_backends") or {},
+            "attempted_backends": attempted_backends,
+            "successful_backends": successful_backends,
             "fallback_backends_used": media.get("fallback_backends_used") or execution_telemetry.get("fallback_backends_used") or {},
-            "evidence_counts_by_canonical_key": media.get("evidence_counts_by_canonical_key") or execution_telemetry.get("evidence_counts_by_canonical_key") or {},
-            "evidence_counts_by_backend": media.get("evidence_counts_by_backend") or execution_telemetry.get("evidence_counts_by_backend") or {},
-            "semantic_identity_evidence_counts": media.get("semantic_identity_evidence_counts") or execution_telemetry.get("semantic_identity_evidence_counts") or {},
+            "evidence_counts_by_canonical_key": evidence_counts_by_canonical_key,
+            "evidence_counts_by_backend": evidence_counts_by_backend,
+            "semantic_identity_evidence_counts": semantic_identity_evidence_counts,
+            "telemetry_projection_source": {
+                "attribute_observations_projected": bool(projected_key_counts),
+                "execution_telemetry_present": has_physical_telemetry,
+                "row_applicability_summary_present": bool(row_applicability_summary),
+            },
             "backend_error_counts": dict(errors),
             "reason_codes": self._metadata_coverage_reason_codes(
                 status=status,
@@ -4337,6 +4494,17 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 capability_status=capability_status,
             ),
         }
+
+    def _prefer_projected_count_map(self, current: Any, projected: dict[str, int]) -> dict[str, int]:
+        current_map = {
+            str(key): int(value or 0)
+            for key, value in (current.items() if isinstance(current, dict) else [])
+            if str(key)
+        }
+        projected_map = {str(key): int(value or 0) for key, value in projected.items() if str(key)}
+        if sum(projected_map.values()) > sum(current_map.values()):
+            return projected_map
+        return current_map
 
     def _metadata_coverage_reason_codes(
         self,
