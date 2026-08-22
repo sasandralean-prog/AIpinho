@@ -1,6 +1,6 @@
 # H1C0.R3.01.B3.9 Completion Audit
 
-Verdict: `R3_01_B3_9_COMPLETION_READY_WITH_REMAINING_FRONTIER`
+Verdict: `R3_01_B3_9_MEDIA_ROW_TAXONOMY_AND_CONTAINER_ANATOMY_READY`
 
 This update completed the partial B3.9 slice without rerunning official FireTest 5, opening C gate, installing ffprobe, or merging main.
 
@@ -22,7 +22,7 @@ This update completed the partial B3.9 slice without rerunning official FireTest
 
 ## Remaining Frontiers
 
-- `R3_01_B3_9_P1_MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT`
+- `R3_01_B3_9_P1_PRIMARY_MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT`
 - `R3_01_B3_9_P1_ARTIFACT_EVIDENCE_BINDING_DENOMINATOR_MISMATCH`
 - `R3_01_B3_9_P1_MUSIC_INVENTORY_SCOPE_INCLUDES_NON_PRIMARY_MEMBERS_IN_DIAGNOSTIC_RUN`
 - `R3_01_B3_9_P2_ACCEPTED_RUNNING_PUBLIC_PROGRESS_VISIBILITY_DELAY`

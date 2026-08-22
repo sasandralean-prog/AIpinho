@@ -2,19 +2,24 @@
   "mission_id": "H1C0.R3.01.B3.9",
   "remaining_p0": [],
   "remaining_p1": [
-    "R3_01_B3_9_P1_MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
-    "R3_01_B3_9_P1_ARTIFACT_REQUIRED_COLUMNS_NOT_OBSERVED_FOR_EVIDENCE_BINDING"
+    "R3_01_B3_9_P1_PRIMARY_MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
   ],
   "remaining_p2": [
-    "R3_01_B3_9_P2_ACCEPTED_RUNNING_PUBLIC_PROGRESS_VISIBILITY_DELAY"
+    "R3_01_B3_9_P2_FILENAME_CANDIDATE_IDENTITY_REQUIRES_REVIEW_PROMOTION_POLICY",
+    "R3_01_B3_9_P2_LYRICS_SIDECAR_RELATIONSHIP_CANDIDATES_REQUIRE_GOVERNED_CONFIRMATION",
+    "R3_01_B3_9_P2_CONTAINER_AWARE_BACKEND_EXPANSION_MAY_BE_NEEDED",
+    "R3_01_B3_7_P2_ACCEPTED_RUNNING_WORKER_PROGRESS_VISIBILITY_DELAY",
+    "R3_01_B3_9_P2_ARTIFACT_VALIDATION_LIMITATION_LABELS_REQUIRE_RECONCILIATION"
   ],
   "resolved_issues": [
+    "R3_01_B3_8_1_P1_MEDIA_INVENTORY_DENOMINATOR_LACKS_ROW_APPLICABILITY_TAXONOMY",
     "B3_9_ROW_APPLICABILITY_TAXONOMY_PROJECTED",
     "B3_9_SEMANTIC_IDENTITY_DENOMINATOR_BY_ROW_CLASS",
     "B3_9_FILE_CONTAINER_SIGNATURE_SERVICE_EXTRACTED",
     "B3_9_MEDIA_CANDIDATE_IDENTITY_POLICY_EXTRACTED",
     "B3_9_ARTIFACT_METADATA_PROJECTION_COMPLETED",
-    "B3_9_BACKEND_TELEMETRY_RECONCILED_FROM_ARTIFACT_METADATA"
+    "B3_9_BACKEND_TELEMETRY_RECONCILED_FROM_ARTIFACT_METADATA",
+    "B3_9_CSV_SCHEMA_EXPANDED_WITH_ROW_TAXONOMY_CANDIDATE_AND_ANATOMY_COLUMNS"
   ],
   "new_issues": [],
   "firetest5_status": "NOT_READY_OFFICIAL_PASS_NOT_EXECUTED",
@@ -30,5 +35,12 @@
     "artwork_candidate_count": 2,
     "csv_sha256": "d8b2ef8c5c42261c495c144977d512ee98fff791aaba10449125c8f450f5023c",
     "old_8mb_inline_frontier_observed": false
+  },
+  "verdict": "R3_01_B3_9_MEDIA_ROW_TAXONOMY_AND_CONTAINER_ANATOMY_READY",
+  "issue_notes": {
+    "primary_identity_frontier": "704 primary media rows have technical metadata but no governed title/artist/album/album_artist tags; 10 primary media rows have no valid backend evidence/container mismatch detail.",
+    "candidate_policy": "Filename and LRC candidates are projected as candidate_only_not_truth and require a future governed promotion/confirmation policy before any Truth use.",
+    "container_backend": "10 declared .m4a files show EBML/WebM-family anatomy; ffprobe/container-aware expansion may be relevant later but was not installed in B3.9.",
+    "artifact_validation_labels": "Artifact metadata is coherent, but the runtime validation limitations still include column-observed labels that should be reconciled in a later cleanup without changing B3.9 truth result."
   }
 }

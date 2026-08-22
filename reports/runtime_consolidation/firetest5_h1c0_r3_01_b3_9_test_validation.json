@@ -98,5 +98,70 @@
         "result": "PASS with CRLF normalization warnings on touched reports only"
       }
     ]
+  },
+  "final_q_to_x_validation": {
+    "verdict": "R3_01_B3_9_MEDIA_ROW_TAXONOMY_AND_CONTAINER_ANATOMY_READY",
+    "commands": [
+      {
+        "command": "git status --short",
+        "result": "reports-only changes before final commit"
+      },
+      {
+        "command": "git diff --check",
+        "result": "PASS with CRLF normalization warnings on touched reports only"
+      },
+      {
+        "command": "python -c \"parse all B3.9 JSON reports\"",
+        "result": "parsed 13 json reports"
+      },
+      {
+        "command": "python -m compileall -q src tests",
+        "result": "PASS"
+      },
+      {
+        "command": "python -m pytest tests/unit/test_media_inventory_row_applicability_taxonomy.py -q",
+        "result": "2 passed"
+      },
+      {
+        "command": "python -m pytest tests/unit/test_media_inventory_sufficiency_by_row_class.py -q",
+        "result": "2 passed"
+      },
+      {
+        "command": "python -m pytest tests/unit/test_file_container_signature_service.py -q",
+        "result": "3 passed"
+      },
+      {
+        "command": "python -m pytest tests/unit/test_media_candidate_identity_policy.py -q",
+        "result": "2 passed"
+      },
+      {
+        "command": "python -m pytest tests/unit/test_media_inventory_b3_9_firetest_phase1_diagnostic.py -q",
+        "result": "3 passed"
+      },
+      {
+        "command": "python -m pytest tests/unit/test_post_compile_applicability_admission_control.py tests/unit/test_post_compile_target_selection_narrowing.py -q",
+        "result": "6 passed"
+      },
+      {
+        "command": "python -m pytest tests/unit/test_public_analyze_response_boundary.py tests/unit/test_public_runtime_chat_route_boundary.py -q",
+        "result": "4 passed"
+      },
+      {
+        "command": "python -m pytest tests/unit/test_media_metadata_capability_pack.py -q",
+        "result": "34 passed, 1 skipped"
+      }
+    ],
+    "self_check": {
+      "row_applicability_taxonomy": true,
+      "sufficiency_by_row_class": true,
+      "file_container_anatomy": true,
+      "ten_problematic_m4a_classified_more_precisely": true,
+      "filename_candidates_candidate_only_not_truth": true,
+      "lrc_matches_relationship_candidates_only": true,
+      "lrc_jpg_excluded_from_primary_media_denominator": true,
+      "ffprobe_install_avoided": true,
+      "speakertruth_false_on_block": true,
+      "firetest_pass_not_claimed": true
+    }
   }
 }
