@@ -1,0 +1,38 @@
+{
+  "mission_id": "H1C0.R3.01.B3.8.2",
+  "mission_class": "sanitized_media_evidence_bundle_report_only",
+  "root": "D:\\rafa\\pinho music",
+  "total_files": 1051,
+  "files_by_extension": {
+    "jpg": 2,
+    "lrc": 121,
+    "m4a": 921,
+    "mp3": 5,
+    "mp4": 2
+  },
+  "total_media_files": 928,
+  "media_identity_classification_counts": {
+    "observed_media_without_identity_tags": 704,
+    "observed_identity_title_artist": 214,
+    "mutagen_no_valid_evidence": 10
+  },
+  "media_with_title_artist_tags": 214,
+  "media_without_identity_tags": 704,
+  "mutagen_no_valid_evidence": 10,
+  "unsupported_or_parse_error": 0,
+  "lrc_count": 121,
+  "lrc_with_likely_audio_match": 116,
+  "lrc_without_likely_audio_match": 5,
+  "protected_content_policy": {
+    "audio_video_uploaded": false,
+    "full_lrc_uploaded": false,
+    "image_payload_uploaded": false,
+    "embedded_artwork_payload_uploaded": false,
+    "binary_payload_uploaded": false,
+    "only_hashes_metadata_tag_keys_and_structural_stats": true
+  },
+  "likely_cause_of_media_identity_evidence_insufficient": "The local corpus has many playable media files whose Mutagen-opened tags do not contain governed track_title/artist/album/album_artist fields. Filename-derived candidates exist but remain candidate_only_not_truth. Sidecar .lrc files are matchable structurally but cannot satisfy media identity truth without a governed lyrics/relationship policy.",
+  "recommendation_for_b3_9": "Introduce a row applicability/sufficiency taxonomy that distinguishes media rows with governed tags, media rows with only technical metadata, unsupported media candidates, and sidecar relationship candidates. Preserve filename/lyrics candidates as non-truth hints unless a governed policy explicitly promotes them with evidence/provenance.",
+  "c_gate": "CLOSED_CORRECTIVE_REQUIRED_BEFORE_C",
+  "firetest_pass_claimed": false
+}
