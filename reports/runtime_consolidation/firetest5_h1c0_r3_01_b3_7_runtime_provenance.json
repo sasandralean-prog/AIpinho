@@ -1,0 +1,36 @@
+{
+  "mission_id": "H1C0.R3.01.B3.7",
+  "repo_path": "C:\\Dev\\AIpinho",
+  "branch": "agent/codex/r3-01-b3-7-target-selection-public-analyze-boundary",
+  "head": "0a6e90cda17224767aa4f4da2e621f564af32c06",
+  "origin_main": "b700f6b747209c6020bcc9d02ea74c72d34b1f55",
+  "ahead_behind": "1\t0",
+  "working_tree_status": "clean_at_runtime_provenance_before_report_generation",
+  "pid": 19164,
+  "process_started_at": "2026-08-21T21:08:49.37047-03:00",
+  "cwd": "C:\\Dev\\AIpinho",
+  "command_line": "\"C:\\Program Files\\Python311\\python.exe\" -m uvicorn aipinho.main:app --host 0.0.0.0 --port 9088",
+  "python_executable": "C:\\Program Files\\Python311\\python.exe",
+  "listen": "0.0.0.0:9088",
+  "aipinho_file": "C:\\Dev\\AIpinho\\src\\aipinho\\__init__.py",
+  "aipinho_main": "C:\\Dev\\AIpinho\\src\\aipinho\\main.py",
+  "governed_stage": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\governed_observation_execution_stage_service.py",
+  "media_adapter": "C:\\Dev\\AIpinho\\src\\aipinho\\capabilities\\media_metadata\\adapter.py",
+  "readonly_runtime": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\governance\\runtime\\readonly_analysis_artifact_runtime_service.py",
+  "public_runtime_api_router": "C:\\Dev\\AIpinho\\src\\aipinho\\api\\routers\\public_runtime_api_router.py",
+  "public_runtime_api_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\public_runtime_api_service.py",
+  "task_runtime_router": "C:\\Dev\\AIpinho\\src\\aipinho\\api\\routers\\task_runtime_router.py",
+  "sys_path": "['', 'C:\\\\Program Files\\\\Python311\\\\python311.zip', 'C:\\\\Program Files\\\\Python311\\\\DLLs', 'C:\\\\Program Files\\\\Python311\\\\Lib', 'C:\\\\Program Files\\\\Python311', 'C:\\\\Users\\\\rafae\\\\AppData\\\\Roaming\\\\Python\\\\Python311\\\\site-packages', 'C:\\\\Dev\\\\AIpinho\\\\src', 'C:\\\\Program Files\\\\Python311\\\\Lib\\\\site-packages']",
+  "endpoints": {
+    "contracts_status": 200,
+    "version": {
+      "api_version": "1.0",
+      "app_version": "0.1.0",
+      "supported_versions": [
+        "1.0"
+      ]
+    },
+    "modules_status": 200,
+    "runtime_status": "ok"
+  }
+}

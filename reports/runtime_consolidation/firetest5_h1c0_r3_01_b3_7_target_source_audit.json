@@ -1,0 +1,63 @@
+{
+  "mission_id": "H1C0.R3.01.B3.7",
+  "task_run_id": "task_run_332d99706fe04efbaf78eb97eb1a787d",
+  "operation_id": "op_1662297d0de3433097e88f6d95532270",
+  "root_cause": "public_canary_selected_entity_scope_contains_repository_artifacts_not_eligible_media_candidates",
+  "diagnosis": "One execute_observer media task targeted 5000 entity_ref candidates from the selected library_root window. Capability-owned cheap admission classified all 5000 as expected inapplicable by backend-declared extension support, so no groups or physical probes were created.",
+  "target_entity_source_breakdown": {
+    "entity_ref": 5000
+  },
+  "target_selection_tasks": [
+    {
+      "task_id": "",
+      "goal_id": "observation_goal_935a1dc6cd50468181190d58b26b9c0b",
+      "strategy_id": "observation_strategy_2c47991481094ad78144a48602b29b2a",
+      "strategy_kind": "execute_observer",
+      "capability_id": "media_metadata_reader",
+      "canonical_key": "track_title",
+      "attribute_name": "track_title",
+      "target_entity_source_breakdown": {
+        "entity_ref": 5000
+      },
+      "target_entity_source": "entity_ref",
+      "declared_target_count": 5000,
+      "resolved_target_count": 5000,
+      "candidate_ordering": "eligible_first_after_capability_owned_prefilter",
+      "eligible_candidate_count": 0,
+      "expected_inapplicable_candidate_count": 5000,
+      "unknown_candidate_count": 0,
+      "malformed_or_missing_source_ref_count": 0,
+      "skipped_or_deferred_candidate_count": 0,
+      "resolver_calls_attempted": 0,
+      "resolver_calls_avoided_by_admission": 5000,
+      "groups_created_count": 0,
+      "source_root_role_distribution": {
+        "library_root": 5000
+      },
+      "entity_kind_distribution": {
+        "file": 5000
+      },
+      "extension_distribution": {
+        "yml": 1,
+        "json": 3870,
+        "toml": 1,
+        "md": 750,
+        "py": 27,
+        "csv": 30,
+        "zip": 27,
+        "jsonl": 276,
+        "txt": 11,
+        "yaml": 1,
+        "log": 2,
+        "after_reconcile": 4
+      },
+      "prefilter_elapsed_ms": 233
+    }
+  ],
+  "eligible_candidates_exist_beyond_initial_window": false,
+  "candidate_ordering_problem": false,
+  "candidate_ordering_evidence": "eligible_first_after_capability_owned_prefilter",
+  "extension_is_routing_hint_not_truth": true,
+  "unsupported_sidecars_preserved_in_telemetry": true,
+  "physical_probe_count": 0
+}
