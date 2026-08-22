@@ -1,0 +1,126 @@
+{
+  "mission_id": "H1C0.R3.01.B3.8.1",
+  "remaining_p0": [],
+  "remaining_p1": [
+    {
+      "id": "R3_01_B3_8_1_P1_MEDIA_IDENTITY_EVIDENCE_SPARSITY_PHASE1_FRONTIER",
+      "status": "OPEN",
+      "priority": "P1",
+      "evidence": {
+        "rows_rendered": 1051,
+        "rows_with_semantic_identity_evidence": 214,
+        "rows_without_semantic_identity_evidence": 837,
+        "observed_media_rows": 918,
+        "observed_media_without_identity": 704,
+        "bounded_mutagen_sample_tag_result": "observed no-identity m4a files had MP4 technical info but no title/artist tags",
+        "reason_code": "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+      }
+    },
+    {
+      "id": "R3_01_B3_8_1_P1_MEDIA_INVENTORY_DENOMINATOR_LACKS_ROW_APPLICABILITY_TAXONOMY",
+      "status": "OPEN",
+      "priority": "P1",
+      "evidence": {
+        "sidecar_artwork_rows_in_denominator": 123,
+        "lrc_rows": 121,
+        "jpg_rows": 2,
+        "all_rows_validation_status": "semantic_validation_required",
+        "assessment": "Sidecar/artwork rows remain visible but are currently counted against full media semantic identity coverage."
+      }
+    }
+  ],
+  "remaining_p2": [
+    {
+      "id": "R3_01_B3_8_1_P2_MEDIA_METADATA_SUMMARY_BACKEND_IDENTITY_PROJECTION_INCONSISTENT",
+      "status": "OPEN",
+      "priority": "P2",
+      "evidence": {
+        "metadata_summary_physical_probe_count": 928,
+        "metadata_summary_attempted_backends": {
+          "mutagen": 10
+        },
+        "metadata_summary_successful_backends": {},
+        "metadata_summary_semantic_identity_evidence_counts": {
+          "track_title": 0,
+          "artist": 0,
+          "album": 0,
+          "album_artist": 0
+        },
+        "checkpoint_backend_counts": {
+          "mutagen": 5934
+        },
+        "checkpoint_identity_counts": {
+          "track_title": 214,
+          "artist": 214,
+          "album": 0,
+          "album_artist": 0
+        }
+      }
+    },
+    {
+      "id": "R3_01_B3_8_1_P2_UNSUPPORTED_M4A_CLASSIFICATION_NEEDS_CONTENT_SIGNATURE_DETAIL",
+      "status": "OPEN",
+      "priority": "P2",
+      "evidence": {
+        "unsupported_m4a_count": 10,
+        "mutagen_file_none_count": 10,
+        "sample_paths": [
+          "ivri - tower of memories - 3.m4a",
+          "Night Club - Barbwire Kiss - 2.m4a",
+          "Night Club - Candy Coated Suicide - 3.m4a",
+          "Night Club - Miss Negativity - 2.m4a",
+          "Night Club - Your Addiction - 2.m4a"
+        ]
+      }
+    }
+  ],
+  "resolved_or_disproven": [
+    {
+      "id": "IDENTITY_EVIDENCE_LOST_DOWNSTREAM",
+      "status": "DISPROVEN",
+      "evidence": "checkpoint entities with identity equals CSV rows with identity: 214"
+    },
+    {
+      "id": "OLD_8MB_INLINE_FRONTIER",
+      "status": "NOT_OBSERVED",
+      "evidence": "CSV persisted as file/reference, 403647 bytes"
+    },
+    {
+      "id": "FILENAME_PATH_EXTENSION_AS_SEMANTIC_IDENTITY",
+      "status": "NOT_OBSERVED",
+      "evidence": "704 observed media rows have semantic-looking filenames but no semantic identity claim counted without governed tag evidence"
+    },
+    {
+      "id": "CSV_ARTIFACT_EXCEEDS_8MB_INLINE_BUDGET",
+      "status": "DISPROVEN",
+      "evidence": {
+        "csv_bytes": 403647,
+        "old_8mb_inline_frontier_observed": false,
+        "checkpoint_bytes_total": 8813500,
+        "checkpoint_budget_bytes": 64000000
+      },
+      "interpretation": "The CSV artifact is smaller than 8 MB. The larger-than-8-MB value belongs to durable checkpoint evidence, not inline CSV materialization."
+    }
+  ],
+  "firetest5_status": "NOT_READY_DIAGNOSTIC_ONLY",
+  "c_gate": "CORRECTIVE_REQUIRED_BEFORE_C",
+  "recommended_next_mission": "H1C0.R3.01.B3.9 — Media Inventory Row Applicability Taxonomy & Semantic Identity Sufficiency Policy Correction",
+  "storage_size_autopsy": {
+    "csv_bytes": 403647,
+    "csv_exceeds_8mb_inline_budget": false,
+    "checkpoint_bytes_total": 8813500,
+    "checkpoint_bytes_exceeds_8mb": true,
+    "checkpoint_budget_bytes": 64000000,
+    "checkpoint_bytes_within_checkpoint_budget": true,
+    "payload_refs_total_bytes": 14920628,
+    "payload_ref_count": 919,
+    "largest_payload_ref": "7f1b8b1557f7d3b16d3c524b8877114fc67463403031688f4c6b63247d7217fa.json",
+    "largest_payload_ref_bytes": 6107128,
+    "largest_payload_ref_role": "selected entity/corpus observation payload, not the CSV artifact",
+    "events_json_bytes": 1169181,
+    "result_json_bytes": 118399,
+    "run_json_bytes": 97414,
+    "run_dir_total_bytes": 16306462,
+    "interpretation": "The produced CSV is 403647 bytes and does not exceed 8 MB. The >8 MB figure is the durable checkpoint/evidence payload total (8813500 bytes) and broader task-run storage (16306462 bytes). After Slice 4, max_materialized_observation_bytes governs the inline retained materialization envelope, while checkpointed evidence is governed by max_checkpointed_observation_bytes=64000000. B3.8 stayed within the checkpoint budget and did not reintroduce the old inline 8 MB frontier."
+  }
+}

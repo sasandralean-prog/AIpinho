@@ -1,0 +1,676 @@
+{
+  "mission_id": "H1C0.R3.01.B3.8.1",
+  "source_task_run_id": "task_run_02e3ebb7d7ec4afdae76117876639ba3",
+  "source_operation_id": "op_e6bed7d851254cccb7093cdc3bb5774b",
+  "artifact_id": "artifact_e5512dcd48c54e8f8018c6f38c4a24e4",
+  "csv_path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_e5512dcd48c54e8f8018c6f38c4a24e4_reports__firetest5__music_inventory.csv",
+  "row_count": 1051,
+  "columns": [
+    "entity_id",
+    "source_root_role",
+    "relative_path",
+    "filename",
+    "extension",
+    "media_type",
+    "size_bytes",
+    "track_title",
+    "artist",
+    "album",
+    "album_artist",
+    "duration_ms",
+    "codec",
+    "container",
+    "bitrate_bps",
+    "sample_rate_hz",
+    "channels",
+    "artwork_present",
+    "metadata_status",
+    "metadata_source",
+    "probe_status",
+    "evidence_ref",
+    "limitations",
+    "relationship_candidate_refs",
+    "validation_status"
+  ],
+  "row_classification_counts": {
+    "observed_media_without_governed_identity_tags": 704,
+    "observed_media_with_governed_identity": 214,
+    "sidecar_or_artwork_without_media_identity_contract": 123,
+    "media_candidate_no_valid_mutagen_evidence": 10
+  },
+  "extension_distribution": {
+    "m4a": 921,
+    "jpg": 2,
+    "mp3": 5,
+    "mp4": 2,
+    "lrc": 121
+  },
+  "identity_by_extension": {
+    "jpg": {
+      "rows": 2,
+      "rows_with_identity": 0,
+      "rows_without_identity": 2,
+      "executed": 0,
+      "executed_no_evidence": 2,
+      "partially_observed": 0,
+      "not_observed": 2
+    },
+    "lrc": {
+      "rows": 121,
+      "rows_with_identity": 0,
+      "rows_without_identity": 121,
+      "executed": 0,
+      "executed_no_evidence": 121,
+      "partially_observed": 0,
+      "not_observed": 121
+    },
+    "m4a": {
+      "rows": 921,
+      "rows_with_identity": 210,
+      "rows_without_identity": 711,
+      "executed": 911,
+      "executed_no_evidence": 10,
+      "partially_observed": 911,
+      "not_observed": 10
+    },
+    "mp3": {
+      "rows": 5,
+      "rows_with_identity": 2,
+      "rows_without_identity": 3,
+      "executed": 5,
+      "executed_no_evidence": 0,
+      "partially_observed": 5,
+      "not_observed": 0
+    },
+    "mp4": {
+      "rows": 2,
+      "rows_with_identity": 2,
+      "rows_without_identity": 0,
+      "executed": 2,
+      "executed_no_evidence": 0,
+      "partially_observed": 2,
+      "not_observed": 0
+    }
+  },
+  "denominator_models": {
+    "all_rows": {
+      "denominator": 1051,
+      "identity": 214,
+      "without_identity": 837,
+      "identity_ratio": 0.2036
+    },
+    "media_extension_rows_m4a_mp3_mp4": {
+      "denominator": 928,
+      "identity": 214,
+      "without_identity": 714,
+      "identity_ratio": 0.2306
+    },
+    "observed_media_rows": {
+      "denominator": 918,
+      "identity": 214,
+      "without_identity": 704,
+      "identity_ratio": 0.2331
+    },
+    "sidecar_artwork_rows": {
+      "denominator": 123,
+      "identity": 0,
+      "without_identity": 123,
+      "identity_ratio": 0.0
+    }
+  },
+  "samples": {
+    "identity_rows": [
+      {
+        "entity_id": "observed_entity_d86f5ff0eec98280600583b8",
+        "relative_path": "505.m4a",
+        "extension": "m4a",
+        "track_title": "505",
+        "artist": "Arctic Monkeys - Topic",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "253.595283",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\505.m4a"
+      },
+      {
+        "entity_id": "observed_entity_bcf9ae49e653769df4b2251c",
+        "relative_path": "A Pearl.m4a",
+        "extension": "m4a",
+        "track_title": "A Pearl",
+        "artist": "Mitski - Topic",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "156.164354",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\A Pearl.m4a"
+      },
+      {
+        "entity_id": "observed_entity_7bbae23d782ffce6a17ed05f",
+        "relative_path": "Afraid.m4a",
+        "extension": "m4a",
+        "track_title": "Afraid",
+        "artist": "The Neighbourhood - Topic",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "251.203628",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Afraid.m4a"
+      },
+      {
+        "entity_id": "observed_entity_148cd39bad51f3dfb6a878e9",
+        "relative_path": "After Dark.m4a",
+        "extension": "m4a",
+        "track_title": "After Dark",
+        "artist": "Mr.Kitty - Topic",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "259.168073",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\After Dark.m4a"
+      },
+      {
+        "entity_id": "observed_entity_d0140a039b272d46b3a2a398",
+        "relative_path": "Alien Blues.m4a",
+        "extension": "m4a",
+        "track_title": "Alien Blues",
+        "artist": "Vundabar - Topic",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "155.955374",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Alien Blues.m4a"
+      },
+      {
+        "entity_id": "observed_entity_062fb686c8f975cd6c3c0105",
+        "relative_path": "All For Us.m4a",
+        "extension": "m4a",
+        "track_title": "All For Us",
+        "artist": "Labrinth - Topic",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "212.263764",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\All For Us.m4a"
+      },
+      {
+        "entity_id": "observed_entity_a13fe97bebf6c66364d015e5",
+        "relative_path": "Altitude.m4a",
+        "extension": "m4a",
+        "track_title": "Altitude",
+        "artist": "Montell Fish - Topic",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "164.012698",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Altitude.m4a"
+      },
+      {
+        "entity_id": "observed_entity_e2240a30f83e6ecd949a1e8e",
+        "relative_path": "Always Forever.m4a",
+        "extension": "m4a",
+        "track_title": "Always Forever",
+        "artist": "Cults - Topic",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "223.757642",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Always Forever.m4a"
+      },
+      {
+        "entity_id": "observed_entity_29c19c54baa94f2900659543",
+        "relative_path": "Amira Elfeky - Crossed The Line.m4a",
+        "extension": "m4a",
+        "track_title": "Amira Elfeky - Crossed The Line",
+        "artist": "Amira Elfeky",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "194.885079",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Amira Elfeky - Crossed The Line.m4a"
+      },
+      {
+        "entity_id": "observed_entity_0a30342551cf1d5200e54166",
+        "relative_path": "Are You Satisfied.m4a",
+        "extension": "m4a",
+        "track_title": "Are You Satisfied?",
+        "artist": "MARINA - Topic",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "198.98195",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Are You Satisfied.m4a"
+      }
+    ],
+    "observed_media_without_identity": [
+      {
+        "entity_id": "observed_entity_7035736169eedfbd5ca10be8",
+        "relative_path": "505 - 2.m4a",
+        "extension": "m4a",
+        "track_title": "",
+        "artist": "",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "253.561905",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\505 - 2.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_cc341b6e1fccc5ce8b2fcf27",
+        "relative_path": "A Certain Romance.m4a",
+        "extension": "m4a",
+        "track_title": "",
+        "artist": "",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "331.209433",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\A Certain Romance.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_32beabbfb301467e45844385",
+        "relative_path": "A Day To Remember - All I Want.m4a",
+        "extension": "m4a",
+        "track_title": "",
+        "artist": "",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "222.493605",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\A Day To Remember - All I Want.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_b0422bab8581a02a9a1b7254",
+        "relative_path": "A Day To Remember - I'm Made of Wax, Larry, What Are You Made Of Official Vide.m4a",
+        "extension": "m4a",
+        "track_title": "",
+        "artist": "",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "179.39737",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\A Day To Remember - I'm Made of Wax, Larry, What Are You Made Of Official Vide.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_35c233f84d0c956e6f73d88c",
+        "relative_path": "A Day To Remember - If it means a lot to you.m4a",
+        "extension": "m4a",
+        "track_title": "",
+        "artist": "",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "243.995283",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\A Day To Remember - If it means a lot to you.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_b14f4b8205305e15f7d99377",
+        "relative_path": "A Dozen Roses.m4a",
+        "extension": "m4a",
+        "track_title": "",
+        "artist": "",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "156.177415",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\A Dozen Roses.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_763b8182c301747611c6f349",
+        "relative_path": "A Fantastica Vida De Romantica.m4a",
+        "extension": "m4a",
+        "track_title": "",
+        "artist": "",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "153.73932",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\A Fantastica Vida De Romantica.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_a7edf5eee8619f7ed38eb11c",
+        "relative_path": "A Little Death.m4a",
+        "extension": "m4a",
+        "track_title": "",
+        "artist": "",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "209.69941",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\A Little Death.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_5d7d16f1be08b66c9bb1a334",
+        "relative_path": "A Pearl - 2.m4a",
+        "extension": "m4a",
+        "track_title": "",
+        "artist": "",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "156.130975",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\A Pearl - 2.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_966fe3ec228b95d6f5583580",
+        "relative_path": "A Skylit Drive - Love The Way You Lie Punk Goes Pop 4.m4a",
+        "extension": "m4a",
+        "track_title": "",
+        "artist": "",
+        "album": "",
+        "album_artist": "",
+        "duration_ms": "382.061134",
+        "codec": "mp4a.40.2",
+        "metadata_status": "partially_observed",
+        "probe_status": "executed",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\A Skylit Drive - Love The Way You Lie Punk Goes Pop 4.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      }
+    ],
+    "sidecar_or_artwork": [
+      {
+        "entity_id": "observed_entity_a5d5f66e8047bc991bac147a",
+        "relative_path": "AlbumArtSmall.jpg",
+        "extension": "jpg",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\AlbumArtSmall.jpg",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_55bcbaba4f3f098244db76ea",
+        "relative_path": "Folder.jpg",
+        "extension": "jpg",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Folder.jpg",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_8e8fc190f6422ebe6991c254",
+        "relative_path": "lyrics\\2NE1_-_________Gotta_Be_You.lrc",
+        "extension": "lrc",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\lyrics\\2NE1_-_________Gotta_Be_You.lrc",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_8b160a4a38b7db61be671772",
+        "relative_path": "lyrics\\3dm_5qWWDV8.lrc",
+        "extension": "lrc",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\lyrics\\3dm_5qWWDV8.lrc",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_f2a53eb0b0aab8e713a2dae3",
+        "relative_path": "lyrics\\Alien_Blues.lrc",
+        "extension": "lrc",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\lyrics\\Alien_Blues.lrc",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_ba7fcc4d8e094c9893e0e6da",
+        "relative_path": "lyrics\\alt-J_____Breezeblocks.lrc",
+        "extension": "lrc",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\lyrics\\alt-J_____Breezeblocks.lrc",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_c1531969edbf5931b37cb34f",
+        "relative_path": "lyrics\\Always_Forever.lrc",
+        "extension": "lrc",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\lyrics\\Always_Forever.lrc",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_8a6b57f4518ecaec055c78e0",
+        "relative_path": "lyrics\\Amy_Winehouse_-_Topic_-_Back_To_Black.lrc",
+        "extension": "lrc",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\lyrics\\Amy_Winehouse_-_Topic_-_Back_To_Black.lrc",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_783111ebc0765461e86819eb",
+        "relative_path": "lyrics\\Arctic_Monkeys_-_Crying_Lightning.lrc",
+        "extension": "lrc",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\lyrics\\Arctic_Monkeys_-_Crying_Lightning.lrc",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_dd3f4a899f06bbd060fd635d",
+        "relative_path": "lyrics\\Arctic_Monkeys_-_Topic_-_505.lrc",
+        "extension": "lrc",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\lyrics\\Arctic_Monkeys_-_Topic_-_505.lrc",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      }
+    ],
+    "media_candidate_no_valid_mutagen_evidence": [
+      {
+        "entity_id": "observed_entity_1c0078eff85d0c6c44bbc085",
+        "relative_path": "ivri - tower of memories - 3.m4a",
+        "extension": "m4a",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\ivri - tower of memories - 3.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_49a43aaa3f887924ad31c50e",
+        "relative_path": "Night Club - Barbwire Kiss - 2.m4a",
+        "extension": "m4a",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Night Club - Barbwire Kiss - 2.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_72810125eedd60c8a60888d5",
+        "relative_path": "Night Club - Candy Coated Suicide - 3.m4a",
+        "extension": "m4a",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Night Club - Candy Coated Suicide - 3.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_6b947359cb590a78dbd1d9a7",
+        "relative_path": "Night Club - Miss Negativity - 2.m4a",
+        "extension": "m4a",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Night Club - Miss Negativity - 2.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_c5e29299ff8aa5cfe62c130b",
+        "relative_path": "Night Club - Your Addiction - 2.m4a",
+        "extension": "m4a",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Night Club - Your Addiction - 2.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_851a4717b3954df393a10017",
+        "relative_path": "POORSTACY - Don't Look at Me - 2.m4a",
+        "extension": "m4a",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\POORSTACY - Don't Look at Me - 2.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_7f16b490afca0ca59c512f40",
+        "relative_path": "Sir Chloe - Animal - 3.m4a",
+        "extension": "m4a",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Sir Chloe - Animal - 3.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_48ded6dd1be8ec5bf20006c3",
+        "relative_path": "Sir Chloe - Squaring Up - 3.m4a",
+        "extension": "m4a",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Sir Chloe - Squaring Up - 3.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_b91cf22f78a06bdc01b0d2a1",
+        "relative_path": "Sohodolls - Bang Bang Bang Bang - 2.m4a",
+        "extension": "m4a",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Sohodolls - Bang Bang Bang Bang - 2.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      },
+      {
+        "entity_id": "observed_entity_9d6abdf69d0e85636fae2f33",
+        "relative_path": "Tarantula Girl - 2.m4a",
+        "extension": "m4a",
+        "metadata_status": "not_observed",
+        "probe_status": "executed_no_evidence",
+        "evidence_ref": "file:D:\\rafa\\pinho music\\Tarantula Girl - 2.m4a",
+        "limitations": "CORPUS_ROOT_POLICY_BLOCKED;ROOT_OBSERVATION_POLICY_BLOCKED;NO_MATCHING_CAPABILITY"
+      }
+    ]
+  },
+  "bounded_mutagen_samples": {
+    "observed_media_without_identity": [
+      {
+        "relative_path": "505 - 2.m4a",
+        "mutagen_type": "MP4",
+        "info_type": "MP4Info",
+        "tag_keys_sample": [
+          "gsst",
+          "gstd"
+        ],
+        "title_tag_values": [],
+        "artist_tag_values": []
+      },
+      {
+        "relative_path": "A Certain Romance.m4a",
+        "mutagen_type": "MP4",
+        "info_type": "MP4Info",
+        "tag_keys_sample": [
+          "gsst",
+          "gstd"
+        ],
+        "title_tag_values": [],
+        "artist_tag_values": []
+      },
+      {
+        "relative_path": "A Day To Remember - All I Want.m4a",
+        "mutagen_type": "MP4",
+        "info_type": "MP4Info",
+        "tag_keys_sample": [
+          "©too/encoder-like only"
+        ],
+        "title_tag_values": [],
+        "artist_tag_values": []
+      }
+    ],
+    "unsupported_m4a_mutagen_file_none_count": 10,
+    "unsupported_m4a_examples": [
+      "ivri - tower of memories - 3.m4a",
+      "Night Club - Barbwire Kiss - 2.m4a",
+      "Night Club - Candy Coated Suicide - 3.m4a",
+      "Night Club - Miss Negativity - 2.m4a",
+      "Night Club - Your Addiction - 2.m4a",
+      "POORSTACY - Don't Look at Me - 2.m4a",
+      "Sir Chloe - Animal - 3.m4a",
+      "Sir Chloe - Squaring Up - 3.m4a",
+      "Sohodolls - Bang Bang Bang Bang - 2.m4a",
+      "Tarantula Girl - 2.m4a"
+    ]
+  },
+  "classification": {
+    "rows_marked_invalid_are_genuinely_under_evidenced": true,
+    "identity_evidence_lost_downstream": false,
+    "sidecar_artwork_denominator_contributes_to_block": true,
+    "sidecar_artwork_denominator_is_sufficient_alone_to_explain_block": false,
+    "filename_path_extension_used_as_identity_truth": false,
+    "generic_evidence_ref_satisfies_semantic_identity": false
+  },
+  "storage_size_autopsy": {
+    "csv_bytes": 403647,
+    "csv_exceeds_8mb_inline_budget": false,
+    "checkpoint_bytes_total": 8813500,
+    "checkpoint_bytes_exceeds_8mb": true,
+    "checkpoint_budget_bytes": 64000000,
+    "checkpoint_bytes_within_checkpoint_budget": true,
+    "payload_refs_total_bytes": 14920628,
+    "payload_ref_count": 919,
+    "largest_payload_ref": "7f1b8b1557f7d3b16d3c524b8877114fc67463403031688f4c6b63247d7217fa.json",
+    "largest_payload_ref_bytes": 6107128,
+    "largest_payload_ref_role": "selected entity/corpus observation payload, not the CSV artifact",
+    "events_json_bytes": 1169181,
+    "result_json_bytes": 118399,
+    "run_json_bytes": 97414,
+    "run_dir_total_bytes": 16306462,
+    "interpretation": "The produced CSV is 403647 bytes and does not exceed 8 MB. The >8 MB figure is the durable checkpoint/evidence payload total (8813500 bytes) and broader task-run storage (16306462 bytes). After Slice 4, max_materialized_observation_bytes governs the inline retained materialization envelope, while checkpointed evidence is governed by max_checkpointed_observation_bytes=64000000. B3.8 stayed within the checkpoint budget and did not reintroduce the old inline 8 MB frontier."
+  }
+}

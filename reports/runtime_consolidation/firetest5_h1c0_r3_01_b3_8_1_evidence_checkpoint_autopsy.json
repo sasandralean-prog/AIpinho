@@ -1,0 +1,130 @@
+{
+  "checkpoint_count": 918,
+  "checkpoint_bytes_total": 8813500,
+  "checkpoint_bytes_max": 13426,
+  "checkpoint_bytes_average": 9600.76,
+  "evidence_record_count": 5934,
+  "canonical_key_counts": {
+    "codec": 916,
+    "duration": 918,
+    "bitrate": 918,
+    "sample_rate": 918,
+    "channels": 918,
+    "artwork": 918,
+    "track_title": 214,
+    "artist": 214
+  },
+  "backend_counts": {
+    "mutagen": 5934
+  },
+  "semantic_type_counts": {
+    "technical_metadata": 4588,
+    "embedded_assets": 918,
+    "media_identity": 428
+  },
+  "identity_record_count": 428,
+  "entities_with_identity_evidence": 214,
+  "record_bytes_by_key": {
+    "codec": {
+      "count": 916,
+      "avg": 1479.3,
+      "median": 1472.0,
+      "min": 1421,
+      "max": 1658
+    },
+    "duration": {
+      "count": 918,
+      "avg": 1484.13,
+      "median": 1477.0,
+      "min": 1426,
+      "max": 1663
+    },
+    "bitrate": {
+      "count": 918,
+      "avg": 1475.43,
+      "median": 1467.0,
+      "min": 1416,
+      "max": 1653
+    },
+    "sample_rate": {
+      "count": 918,
+      "avg": 1486.25,
+      "median": 1479.0,
+      "min": 1428,
+      "max": 1665
+    },
+    "channels": {
+      "count": 918,
+      "avg": 1475.25,
+      "median": 1468.0,
+      "min": 1417,
+      "max": 1654
+    },
+    "artwork": {
+      "count": 918,
+      "avg": 1481.3,
+      "median": 1475.0,
+      "min": 1421,
+      "max": 1658
+    },
+    "track_title": {
+      "count": 214,
+      "avg": 1722.49,
+      "median": 1714.0,
+      "min": 1649,
+      "max": 1940
+    },
+    "artist": {
+      "count": 214,
+      "avg": 1706.67,
+      "median": 1702.0,
+      "min": 1646,
+      "max": 1859
+    }
+  },
+  "checkpoint_vs_csv_identity": {
+    "checkpoint_entities_with_identity": 214,
+    "csv_rows_with_identity": 214,
+    "matches": true
+  },
+  "runtime_projection_discrepancy": {
+    "metadata_summary_physical_probe_count": 928,
+    "metadata_summary_attempted_backends": {
+      "mutagen": 10
+    },
+    "metadata_summary_successful_backends": {},
+    "metadata_summary_semantic_identity_evidence_counts": {
+      "track_title": 0,
+      "artist": 0,
+      "album": 0,
+      "album_artist": 0
+    },
+    "checkpoint_backend_counts": {
+      "mutagen": 5934
+    },
+    "checkpoint_identity_counts": {
+      "track_title": 214,
+      "artist": 214,
+      "album": 0,
+      "album_artist": 0
+    }
+  },
+  "storage_size_autopsy": {
+    "csv_bytes": 403647,
+    "csv_exceeds_8mb_inline_budget": false,
+    "checkpoint_bytes_total": 8813500,
+    "checkpoint_bytes_exceeds_8mb": true,
+    "checkpoint_budget_bytes": 64000000,
+    "checkpoint_bytes_within_checkpoint_budget": true,
+    "payload_refs_total_bytes": 14920628,
+    "payload_ref_count": 919,
+    "largest_payload_ref": "7f1b8b1557f7d3b16d3c524b8877114fc67463403031688f4c6b63247d7217fa.json",
+    "largest_payload_ref_bytes": 6107128,
+    "largest_payload_ref_role": "selected entity/corpus observation payload, not the CSV artifact",
+    "events_json_bytes": 1169181,
+    "result_json_bytes": 118399,
+    "run_json_bytes": 97414,
+    "run_dir_total_bytes": 16306462,
+    "interpretation": "The produced CSV is 403647 bytes and does not exceed 8 MB. The >8 MB figure is the durable checkpoint/evidence payload total (8813500 bytes) and broader task-run storage (16306462 bytes). After Slice 4, max_materialized_observation_bytes governs the inline retained materialization envelope, while checkpointed evidence is governed by max_checkpointed_observation_bytes=64000000. B3.8 stayed within the checkpoint budget and did not reintroduce the old inline 8 MB frontier."
+  }
+}
