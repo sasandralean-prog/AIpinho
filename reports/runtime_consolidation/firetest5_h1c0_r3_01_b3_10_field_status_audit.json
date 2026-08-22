@@ -1,0 +1,42 @@
+{
+  "field_status": {
+    "observed_count": 214,
+    "inferred_count": 178,
+    "candidate_count": 526,
+    "unknown_count": 0,
+    "not_applicable_count": 123,
+    "unsupported_count": 0,
+    "read_error_count": 0,
+    "container_mismatch_count": 10
+  },
+  "column_distributions": {
+    "identity_status_distribution": {
+      "candidate": 526,
+      "observed": 214,
+      "inferred": 178,
+      "not_applicable": 123,
+      "container_mismatch": 10
+    },
+    "catalog_item_status_distribution": {
+      "cataloged_candidate": 524,
+      "cataloged_observed": 214,
+      "cataloged_inferred": 177,
+      "cataloged_unknown_identity": 123,
+      "cataloged_container_mismatch": 13
+    },
+    "track_title_status_distribution": {
+      "candidate": 524,
+      "observed": 214,
+      "inferred": 177,
+      "not_applicable": 123,
+      "container_mismatch": 13
+    },
+    "artist_status_distribution": {
+      "unknown": 524,
+      "observed": 214,
+      "inferred": 177,
+      "not_applicable": 123,
+      "container_mismatch": 13
+    }
+  }
+}

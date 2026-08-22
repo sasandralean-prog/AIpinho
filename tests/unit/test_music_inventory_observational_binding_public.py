@@ -2,6 +2,7 @@ from pathlib import Path
 
 from aipinho.services.artifacts.observed_entity_compilation_service import ObservedEntityCompilationService
 from aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_service import (
+    GovernedPhase1Block,
     Phase1RuntimeBudget,
     ReadonlyAnalysisArtifactRuntimeService,
 )
@@ -41,6 +42,31 @@ def test_public_prompt_projects_declared_library_root_into_workspace_context(tmp
     assert context["library_roots"] == [str(library.resolve(strict=False))]
     assert context["readonly_flags"][str(project.resolve(strict=False))] is True
     assert context["readonly_flags"][str(library.resolve(strict=False))] is True
+
+
+def test_public_structured_library_root_alias_is_preserved_for_selection(tmp_path: Path) -> None:
+    project = tmp_path / "app"
+    library = tmp_path / "library"
+    project.mkdir()
+    library.mkdir()
+    request = type(
+        "Request",
+        (),
+        {
+            "workspace_context": {
+                "project_root": str(project),
+                "library_root": str(library),
+                "external_roots": [str(library)],
+            },
+            "message": "Generate a governed music inventory for Phase 1.",
+        },
+    )()
+
+    context = ReadonlyAnalysisArtifactRuntimeService()._request_workspace_context(request)
+
+    assert context["project_root"] == str(project)
+    assert context["library_roots"] == [str(library)]
+    assert context["external_roots"] == [str(library)]
 
 
 def test_music_inventory_render_binds_library_entities_before_budget_window(tmp_path: Path) -> None:
@@ -87,7 +113,7 @@ def test_music_inventory_render_binds_library_entities_before_budget_window(tmp_
     assert selection["rejection_reasons"]["ROOT_ROLE_NOT_ALLOWED"] >= 1
 
 
-def test_metadata_not_configured_is_rendered_as_limitation_not_fake_metadata(tmp_path: Path) -> None:
+def test_unsupported_media_source_blocks_before_fake_metadata_render(tmp_path: Path) -> None:
     project = tmp_path / "app"
     library = tmp_path / "library"
     project.mkdir()
@@ -105,19 +131,17 @@ def test_metadata_not_configured_is_rendered_as_limitation_not_fake_metadata(tmp
     )
     contract["workspace_context"] = {"project_root": str(project), "library_roots": [str(library)]}
 
-    render = runtime._contract_tabular_collection_content(
-        expected_schema=contract["expected_schema"],
-        request_text="Inventariar a biblioteca de audio com evidencias.",
-        analysis_payload={"observed_entity_graph": graph},
-        declared_contract=contract,
-    )
-
-    assert "not_configured" in render.content
-    assert "media_metadata_observer_execution_deferred" in render.content
-    assert render.bound_rows == 1
-    assert render.safe_to_use is False
-    assert render.reason_code == "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
-    sufficiency = render.entity_summary["inventory_sufficiency_summary"]
-    assert "MEDIA_METADATA_CAPABILITY_NOT_CONFIGURED" not in sufficiency["reason_codes"]
-    assert "MEDIA_METADATA_PROBE_NOT_RUN" in sufficiency["reason_codes"]
-    assert "MEDIA_METADATA_OBSERVATION_INCOMPLETE" in sufficiency["reason_codes"]
+    try:
+        runtime._contract_tabular_collection_content(
+            expected_schema=contract["expected_schema"],
+            request_text="Inventariar a biblioteca de audio com evidencias.",
+            analysis_payload={"observed_entity_graph": graph},
+            declared_contract=contract,
+        )
+    except GovernedPhase1Block as exc:
+        telemetry = exc.details["post_compile_observation_execution"]
+        assert exc.reason_code == "POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES"
+        assert telemetry["groups_created_count"] == 0
+        assert telemetry["capability_inapplicable_reasons"] == {"MEDIA_CAPABILITY_EXTENSION_NOT_DECLARED_BY_BACKENDS": 11}
+    else:  # pragma: no cover - defensive assertion for the old unsafe path
+        raise AssertionError("Unsupported media source should not render fake metadata.")

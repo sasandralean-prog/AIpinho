@@ -1297,15 +1297,16 @@ class TaskRunStore:
             return None
 
     def _cohere_terminal_result(self, run_id: str, result: TaskRunResult) -> None:
-        terminal = {"completed", "partial", "failed", "cancelled", "blocked"}
+        terminal = {"completed", "completed_with_limitations", "partial", "failed", "cancelled", "blocked"}
         if result.status not in terminal:
             return
+        run_status = "partial" if result.status == "completed_with_limitations" else result.status
         path = self._run_dir(run_id) / "run.json"
         data = self._read(path)
         if not isinstance(data, dict):
             return
-        if data.get("status") != result.status:
-            data["status"] = result.status
+        if data.get("status") != run_status:
+            data["status"] = run_status
         if not data.get("finished_at"):
             data["finished_at"] = datetime.now(timezone.utc).isoformat()
         data["current_step_id"] = None
