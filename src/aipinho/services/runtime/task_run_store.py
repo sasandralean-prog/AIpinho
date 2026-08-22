@@ -107,6 +107,8 @@ _MEDIA_INVENTORY_STAGE_STALL_REASONS: dict[str, str] = {
     "before_post_compile_observation_execution": "POST_COMPILE_OBSERVATION_GROUP_PLANNING_STALLED",
     "before_observation_physical_group_planning": "POST_COMPILE_OBSERVATION_GROUP_PLANNING_STALLED",
     "observation_task_scan_checkpoint": "POST_COMPILE_OBSERVATION_TASK_SCAN_STALLED",
+    "target_selection_checkpoint": "POST_COMPILE_TARGET_SELECTION_TOO_BROAD",
+    "target_selection_no_eligible_candidates": "POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES",
     "after_observation_task_scan": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",
     "before_capability_applicability_resolution": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",
     "capability_applicability_resolution_checkpoint": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",

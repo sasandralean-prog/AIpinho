@@ -75,13 +75,14 @@ def test_public_analyze_with_runtime_contract_creates_taskrun_and_artifacts(tmp_
         )
     )
 
-    assert response.status == "ok"
+    assert response.status == "accepted_running"
     assert response.task_run_id and response.task_run_id.startswith("task_run_")
     assert response.task_id and response.task_id.startswith("task_")
-    assert len(response.artifact_ids) == 2
-    assert response.validation_state["status"] == "passed"
-    assert response.completion_state["safe_to_report_success"] is True
-    assert response.speaker_truth_state["can_claim_success"] is True
+    assert response.runtime_result["reason_code"] == "RUN_ACCEPTED_ASYNC"
+    assert response.runtime_result["result_endpoint"].endswith(f"/api/v1/task-runs/{response.task_run_id}/result")
+    assert response.validation_state["status"] == "accepted_running"
+    assert response.completion_state.get("safe_to_report_success") is not True
+    assert response.speaker_truth_state["can_claim_success"] is False
     assert response.gateway_response.status == "accepted"
     assert response.runtime_result["workspace_context"]["library_roots"] == [str(tmp_path / "library")]
 
