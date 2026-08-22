@@ -56,7 +56,8 @@ def test_metadata_probe_coverage_does_not_satisfy_identity_without_claim_evidenc
         "album_artist": 0,
     }
     assert sufficiency["status"] == "blocked"
-    assert sufficiency["reason_code"] == "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+    assert sufficiency["reason_code"] == "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT"
+    assert "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT" not in sufficiency["reason_codes"]
     assert sufficiency["use_safety"]["phase1_discovery"] is False
     assert sufficiency["use_safety"]["full_truth_claim"] is False
     assert "media_metadata_capability_blocked" in render.content
@@ -69,8 +70,8 @@ def test_metadata_probe_incomplete_blocks_with_specific_reason(tmp_path: Path) -
     metadata = render.schema_coverage["metadata_coverage_summary"]
     sufficiency = render.schema_coverage["inventory_sufficiency_summary"]
     assert render.safe_to_use is False
-    assert render.reason_code == "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+    assert render.reason_code == "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT"
     assert metadata["files_attempted"] == 1
     assert metadata["files_succeeded"] == 0
-    assert sufficiency["reason_code"] == "MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT"
+    assert sufficiency["reason_code"] == "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT"
     assert "MEDIA_METADATA_OBSERVATION_INCOMPLETE" in sufficiency["reason_codes"]

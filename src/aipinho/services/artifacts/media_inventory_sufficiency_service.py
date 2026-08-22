@@ -54,6 +54,7 @@ class MediaInventorySufficiencyService:
         media_metadata_capability: dict[str, Any],
         metadata_coverage: dict[str, Any],
         schema_status: str,
+        row_applicability: dict[str, Any] | None = None,
     ) -> MediaInventorySufficiencyResult:
         expected = max(0, int(expected_rows or 0))
         selected = max(0, int(selected_rows or 0))
@@ -71,10 +72,31 @@ class MediaInventorySufficiencyService:
         semantic_identity_rows = int(row_identity.get("rows_with_semantic_identity_evidence") or 0)
         stable_identity_ratio = self._ratio(stable_identity_rows, rendered)
         semantic_identity_ratio = self._ratio(semantic_identity_rows, rendered)
+        row_applicability = row_applicability if isinstance(row_applicability, dict) else {}
+        primary_media_count = int(row_applicability.get("primary_media_row_count") or 0)
+        primary_governed_identity_count = int(row_applicability.get("primary_media_with_governed_identity_count") or 0)
+        primary_without_identity_count = int(row_applicability.get("primary_media_without_identity_tags_count") or 0)
+        primary_backend_no_evidence_count = int(row_applicability.get("primary_media_backend_no_valid_evidence_count") or 0)
+        candidate_identity_count = int(row_applicability.get("candidate_identity_available_count") or 0)
+        container_mismatch_count = int(row_applicability.get("file_anatomy_extension_container_mismatch_count") or 0)
+        sidecar_relationship_count = int(row_applicability.get("sidecar_relationship_candidate_count") or 0)
+        artwork_candidate_count = int(row_applicability.get("artwork_candidate_count") or 0)
+        primary_identity_ratio = self._ratio(primary_governed_identity_count, primary_media_count)
         evidence_ratio = self._ratio(int(row_evidence.get("rows_with_evidence_ref") or evidence_refs), selected)
         selection_ratio = self._ratio(selected, expected)
-        metadata_ratio = float(metadata_coverage.get("coverage_ratio") or 0.0)
-        attempted = int(metadata_coverage.get("files_attempted") or 0)
+        metadata_ratio = float(
+            metadata_coverage.get("primary_media_observation_ratio")
+            if row_applicability and metadata_coverage.get("primary_media_observation_ratio") is not None
+            else metadata_coverage.get("coverage_ratio")
+            or 0.0
+        )
+        attempted = int(
+            metadata_coverage.get("primary_media_files_attempted")
+            if row_applicability and metadata_coverage.get("primary_media_files_attempted") is not None
+            else metadata_coverage.get("files_attempted")
+            or 0
+        )
+        selected_for_metadata = primary_media_count if row_applicability else selected
         unsupported = int(metadata_coverage.get("unsupported_count") or 0)
         read_errors = int(metadata_coverage.get("read_error_count") or 0)
         reason_codes: list[str] = []
@@ -98,16 +120,37 @@ class MediaInventorySufficiencyService:
         if self.policy.require_full_identity_coverage and rendered and stable_identity_ratio < 1.0:
             reason_codes.append("MEDIA_IDENTITY_BINDING_INCOMPLETE")
             limitations.append("stable_entity_identity_binding_incomplete")
-        if self.policy.require_full_identity_coverage and rendered and semantic_identity_ratio < 1.0:
+        if row_applicability and self.policy.require_full_identity_coverage and primary_media_count and primary_identity_ratio < 1.0:
+            reason_codes.append("MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT")
+            limitations.append("primary_media_semantic_identity_evidence_incomplete")
+        elif self.policy.require_full_identity_coverage and rendered and semantic_identity_ratio < 1.0:
             reason_codes.append("MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT")
             limitations.append("semantic_media_identity_evidence_incomplete")
+        if row_applicability and primary_without_identity_count > 0:
+            reason_codes.append("MEDIA_PRIMARY_IDENTITY_TAGS_ABSENT")
+            limitations.append("primary_media_files_without_governed_identity_tags")
+        if row_applicability and primary_backend_no_evidence_count > 0:
+            reason_codes.append("MEDIA_BACKEND_NO_VALID_EVIDENCE")
+            limitations.append("primary_media_files_without_valid_backend_evidence")
+        if row_applicability and container_mismatch_count > 0:
+            reason_codes.append("MEDIA_CONTAINER_EXTENSION_MISMATCH")
+            limitations.append("declared_extension_differs_from_observed_container_signature")
+        if row_applicability and candidate_identity_count > 0:
+            reason_codes.append("MEDIA_CANDIDATE_IDENTITY_NOT_TRUTH")
+            limitations.append("candidate_identity_available_but_not_semantic_truth")
+        if row_applicability and sidecar_relationship_count > 0:
+            reason_codes.append("MEDIA_SIDECAR_RELATIONSHIP_POLICY_REQUIRED")
+            limitations.append("lyrics_sidecar_relationship_candidates_require_validation")
+        if row_applicability and artwork_candidate_count > 0:
+            reason_codes.append("MEDIA_ARTWORK_RELATIONSHIP_POLICY_REQUIRED")
+            limitations.append("artwork_candidates_require_relationship_validation")
         if schema_status != "satisfied":
             reason_codes.append("MEDIA_INVENTORY_SCHEMA_INSUFFICIENT")
             limitations.append("schema_or_alias_validation_not_satisfied")
-        if self.policy.require_metadata_observation and selected and metadata_ratio < 1.0:
+        if self.policy.require_metadata_observation and selected_for_metadata and metadata_ratio < 1.0:
             reason_codes.append("MEDIA_METADATA_OBSERVATION_INCOMPLETE")
             limitations.append("metadata_observation_coverage_below_required_threshold")
-        if self.policy.require_metadata_probe_attempted and selected and attempted < selected:
+        if self.policy.require_metadata_probe_attempted and selected_for_metadata and attempted < selected_for_metadata:
             reason_codes.append("MEDIA_METADATA_PROBE_NOT_RUN")
             limitations.append("metadata_probe_not_attempted_for_all_selected_entities")
         if capability_status in {"not_configured", "missing_dependency", "unavailable"}:
@@ -158,6 +201,21 @@ class MediaInventorySufficiencyService:
                 "identity_coverage_ratio": round(stable_identity_ratio, 4),
                 "stable_entity_identity_ratio": round(stable_identity_ratio, 4),
                 "semantic_identity_evidence_ratio": round(semantic_identity_ratio, 4),
+                "primary_media_row_count": primary_media_count,
+                "lyrics_sidecar_row_count": int(row_applicability.get("lyrics_sidecar_row_count") or 0),
+                "artwork_row_count": int(row_applicability.get("artwork_row_count") or 0),
+                "primary_media_with_governed_identity_count": primary_governed_identity_count,
+                "primary_media_without_identity_tags_count": primary_without_identity_count,
+                "primary_media_backend_no_valid_evidence_count": primary_backend_no_evidence_count,
+                "primary_media_identity_ratio": round(primary_identity_ratio, 4),
+                "sidecar_relationship_candidate_count": sidecar_relationship_count,
+                "artwork_candidate_count": artwork_candidate_count,
+                "candidate_identity_available_count": candidate_identity_count,
+                "candidate_identity_not_truth_count": int(row_applicability.get("candidate_identity_not_truth_count") or 0),
+                "technical_metadata_observed_count": int(row_applicability.get("technical_metadata_observed_count") or 0),
+                "technical_metadata_only_count": int(row_applicability.get("technical_metadata_only_count") or 0),
+                "file_anatomy_extension_container_mismatch_count": container_mismatch_count,
+                "row_class_counts": dict(row_applicability.get("row_class_counts") or {}),
                 "identity_status": row_identity.get("status") if row_identity else None,
                 "identity_reason_code": row_identity.get("reason_code") if row_identity else None,
                 "identity_observed_semantic_fields": list(row_identity.get("observed_semantic_identity_fields") or []),

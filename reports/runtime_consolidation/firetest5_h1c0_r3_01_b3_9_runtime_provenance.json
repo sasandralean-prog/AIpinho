@@ -1,0 +1,26 @@
+{
+  "repo_path": "C:\\Dev\\AIpinho",
+  "branch": "agent/codex/r3-01-b3-9-media-row-taxonomy-container-anatomy",
+  "base_main_sha": "d76a1a21ceeef00f953d87a6aca07dcb6635c834",
+  "runtime_pid": 28324,
+  "runtime_started_at": "2026-08-22T01:55:57.609573-03:00",
+  "cwd": "C:\\Dev\\AIpinho",
+  "python": "C:\\Program Files\\Python311\\python.exe",
+  "command_line": "python -m uvicorn aipinho.main:app --host 0.0.0.0 --port 9088",
+  "listen": "0.0.0.0:9088",
+  "import_root": "C:\\Dev\\AIpinho\\src",
+  "modules": {
+    "aipinho": "C:\\Dev\\AIpinho\\src\\aipinho\\__init__.py",
+    "aipinho.main": "C:\\Dev\\AIpinho\\src\\aipinho\\main.py",
+    "ReadonlyAnalysisArtifactRuntimeService": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\governance\\runtime\\readonly_analysis_artifact_runtime_service.py",
+    "GovernedObservationExecutionStageService": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\governed_observation_execution_stage_service.py",
+    "MediaMetadataObserverAdapter": "C:\\Dev\\AIpinho\\src\\aipinho\\capabilities\\media_metadata\\adapter.py",
+    "public_runtime_api_router": "C:\\Dev\\AIpinho\\src\\aipinho\\api\\routers\\public_runtime_api_router.py"
+  },
+  "endpoint_status": {
+    "/api/v1/version": 200,
+    "/api/v1/runtime": 200,
+    "/api/v1/modules": 200,
+    "/api/v1/contracts": 200
+  }
+}
