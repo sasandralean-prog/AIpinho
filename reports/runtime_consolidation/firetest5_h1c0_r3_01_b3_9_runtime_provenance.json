@@ -2,8 +2,12 @@
   "repo_path": "C:\\Dev\\AIpinho",
   "branch": "agent/codex/r3-01-b3-9-media-row-taxonomy-container-anatomy",
   "base_main_sha": "d76a1a21ceeef00f953d87a6aca07dcb6635c834",
-  "runtime_pid": 28324,
-  "runtime_started_at": "2026-08-22T01:55:57.609573-03:00",
+  "head": "b163cc62e6fc349e68c4f5f8156ced8807d5a2cb",
+  "origin_main": "d76a1a21ceeef00f953d87a6aca07dcb6635c834",
+  "ahead_behind_origin_main": "0 / 2",
+  "working_tree_status_after_provenance_cleanup": "clean",
+  "runtime_pid": 24840,
+  "runtime_started_at": "2026-08-22T04:23:05-03:00",
   "cwd": "C:\\Dev\\AIpinho",
   "python": "C:\\Program Files\\Python311\\python.exe",
   "command_line": "python -m uvicorn aipinho.main:app --host 0.0.0.0 --port 9088",
@@ -15,7 +19,10 @@
     "ReadonlyAnalysisArtifactRuntimeService": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\governance\\runtime\\readonly_analysis_artifact_runtime_service.py",
     "GovernedObservationExecutionStageService": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\governed_observation_execution_stage_service.py",
     "MediaMetadataObserverAdapter": "C:\\Dev\\AIpinho\\src\\aipinho\\capabilities\\media_metadata\\adapter.py",
-    "public_runtime_api_router": "C:\\Dev\\AIpinho\\src\\aipinho\\api\\routers\\public_runtime_api_router.py"
+    "public_runtime_api_router": "C:\\Dev\\AIpinho\\src\\aipinho\\api\\routers\\public_runtime_api_router.py",
+    "FileContainerSignatureService": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\file_container_signature_service.py",
+    "MediaCandidateIdentityPolicy": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\media_candidate_identity_policy.py",
+    "MediaInventoryRowTaxonomyService": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\media_inventory_row_taxonomy_service.py"
   },
   "endpoint_status": {
     "/api/v1/version": 200,
