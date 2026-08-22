@@ -1,0 +1,106 @@
+{
+  "mission_id": "H1C0.R3.01.B3.7.post_merge_runtime_sync",
+  "mission_class": "post_merge_operational_runtime_provenance",
+  "generated_on": "2026-08-21",
+  "repository": "C:\\Dev\\AIpinho",
+  "report_branch": "agent/codex/r3-01-b3-7-post-merge-runtime-provenance",
+  "canonical_main_sha": "d76a1a21ceeef00f953d87a6aca07dcb6635c834",
+  "local_head": "d76a1a21ceeef00f953d87a6aca07dcb6635c834",
+  "origin_main": "d76a1a21ceeef00f953d87a6aca07dcb6635c834",
+  "ahead_behind_origin_main": "0\t0",
+  "working_tree_status": " M config/skills/registry/skills_index.json",
+  "official_start": {
+    "script": "scripts/start_aipinho.ps1 -HostName 0.0.0.0 -Port 9088",
+    "dev_script": "scripts/dev/start_aipinho_9088.ps1",
+    "status_script": "scripts/status_aipinho.ps1",
+    "status_output": [
+      "AIpinho status: ready_with_warnings",
+      "- Bootstrap Control 9080: offline",
+      "- Core Backend 9088: online",
+      "- Realtime 9089: optional",
+      "- Artifacts Port 9098: offline",
+      "- Monitor Supervisor 9099: reserved",
+      "- backend_health: ok",
+      "- health_semantics: offline",
+      "- mobile_dashboard: offline",
+      "- mobile_debugger: ok",
+      "- agents_status: ok",
+      "- runtime_hygiene_status: ok"
+    ]
+  },
+  "runtime_process": {
+    "pid": 22032,
+    "cwd": "C:\\Dev\\AIpinho",
+    "cmdline": [
+      "C:\\Program Files\\Python311\\python.exe",
+      "-m",
+      "uvicorn",
+      "aipinho.main:app",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "9088"
+    ],
+    "exe": "C:\\Program Files\\Python311\\python.exe",
+    "create_time_local": "2026-08-21T22:37:10.435025-03:00"
+  },
+  "import_provenance": {
+    "python": "C:\\Program Files\\Python311\\python.exe",
+    "sys_path": [
+      "",
+      "C:\\Dev\\AIpinho\\src",
+      "C:\\Program Files\\Python311\\python311.zip",
+      "C:\\Program Files\\Python311\\DLLs",
+      "C:\\Program Files\\Python311\\Lib",
+      "C:\\Program Files\\Python311",
+      "C:\\Users\\rafae\\AppData\\Roaming\\Python\\Python311\\site-packages",
+      "C:\\Program Files\\Python311\\Lib\\site-packages"
+    ],
+    "aipinho_file": "C:\\Dev\\AIpinho\\src\\aipinho\\__init__.py",
+    "aipinho_main": "C:\\Dev\\AIpinho\\src\\aipinho\\main.py",
+    "governed_stage": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\artifacts\\governed_observation_execution_stage_service.py",
+    "media_adapter": "C:\\Dev\\AIpinho\\src\\aipinho\\capabilities\\media_metadata\\adapter.py",
+    "readonly_runtime": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\governance\\runtime\\readonly_analysis_artifact_runtime_service.py",
+    "public_runtime_api_router": "C:\\Dev\\AIpinho\\src\\aipinho\\api\\routers\\public_runtime_api_router.py",
+    "public_runtime_api_service": "C:\\Dev\\AIpinho\\src\\aipinho\\services\\public_runtime_api_service.py",
+    "task_runtime_router": "C:\\Dev\\AIpinho\\src\\aipinho\\api\\routers\\task_runtime_router.py"
+  },
+  "endpoints": {
+    "version": {
+      "status_code": 200,
+      "bytes": 72
+    },
+    "runtime": {
+      "status_code": 200,
+      "bytes": 98
+    },
+    "modules": {
+      "status_code": 200,
+      "bytes": 6938
+    },
+    "contracts": {
+      "status_code": 200,
+      "bytes": 1564
+    }
+  },
+  "gates": {
+    "firetest5": "NOT_READY_NOT_EXECUTED",
+    "c_gate": "CORRECTIVE_REQUIRED_BEFORE_C",
+    "b3_7": "MERGED",
+    "r3_01": "OPEN"
+  },
+  "known_issues": {
+    "remaining_p0": [],
+    "remaining_p1": [
+      "R3_01_B3_7_P1_PUBLIC_CANARY_NO_ELIGIBLE_MEDIA_CANDIDATES_IN_SELECTED_TARGET_SCOPE"
+    ],
+    "remaining_p2": [
+      "R3_01_B3_7_P2_ACCEPTED_RUNNING_WORKER_PROGRESS_VISIBILITY_DELAY"
+    ]
+  },
+  "notes": [
+    "Runtime was started by the repository official script after local main fast-forward to d76a1a21.",
+    "A startup-generated skills_index.json timestamp change was restored as volatile local state before report branch creation.",
+    "No FireTest 5 run was executed and ffprobe was not installed."
+  ]
+}

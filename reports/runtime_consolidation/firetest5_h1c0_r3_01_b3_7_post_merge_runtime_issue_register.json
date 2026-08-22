@@ -1,0 +1,18 @@
+{
+  "mission_id": "H1C0.R3.01.B3.7.post_merge_runtime_sync",
+  "remaining_p0": [],
+  "remaining_p1": [
+    "R3_01_B3_7_P1_PUBLIC_CANARY_NO_ELIGIBLE_MEDIA_CANDIDATES_IN_SELECTED_TARGET_SCOPE"
+  ],
+  "remaining_p2": [
+    "R3_01_B3_7_P2_ACCEPTED_RUNNING_WORKER_PROGRESS_VISIBILITY_DELAY"
+  ],
+  "new_issues": [],
+  "resolved_by_this_step": [
+    "post_merge_main_sync_complete",
+    "official_backend_restart_complete",
+    "runtime_provenance_proven"
+  ],
+  "firetest5_status": "NOT_READY_NOT_EXECUTED",
+  "c_gate": "CORRECTIVE_REQUIRED_BEFORE_C"
+}
