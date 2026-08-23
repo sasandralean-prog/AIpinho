@@ -1,0 +1,74 @@
+{
+  "mission_id": "FIRETEST_C_FFMPEG_ENVIRONMENT_CLOSURE_FULL_PHASE_RUN",
+  "timeline_generated_at": "2026-08-23T19:07:12.556983+00:00",
+  "events": [
+    {
+      "timestamp": "2026-08-23T18:49:58.433392+00:00",
+      "event": "ffmpeg_environment_ready",
+      "details": {
+        "ffmpeg": "C:\\Users\\rafae\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffmpeg.exe",
+        "ffprobe": "C:\\Users\\rafae\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffprobe.exe"
+      }
+    },
+    {
+      "timestamp": null,
+      "event": "runtime_initial_observation",
+      "details": {
+        "pid": 18068,
+        "state": "RUNNING_HEALTHY",
+        "ownership": "adoptable_unowned"
+      }
+    },
+    {
+      "timestamp": null,
+      "event": "runtime_governed_restart",
+      "details": {
+        "old_pid": 18068,
+        "new_pid": 16684,
+        "source_head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+        "state": "RUNNING_HEALTHY"
+      }
+    },
+    {
+      "timestamp": "2026-08-23T18:59:49.543396+00:00",
+      "event": "phase1_first_submit",
+      "details": {
+        "task_run_id": "task_run_37c7586654c84434a37dfd307af48c10",
+        "contract": "analysis_readonly + forced media csv"
+      }
+    },
+    {
+      "timestamp": "2026-08-23T19:00:14.470572+00:00",
+      "event": "phase1_first_terminal_blocked",
+      "details": {
+        "task_run_id": "task_run_37c7586654c84434a37dfd307af48c10",
+        "reason": "MEDIA_CORPUS_ENTITY_SELECTION_EMPTY"
+      }
+    },
+    {
+      "timestamp": "2026-08-23T19:01:32.969158+00:00",
+      "event": "phase1_retry_submit",
+      "details": {
+        "task_run_id": "task_run_de983f60f23f4b3d8264367cbfcc18b1",
+        "contract": "analysis_readonly one diagnosis artifact"
+      }
+    },
+    {
+      "timestamp": "2026-08-23T19:02:01.675100+00:00",
+      "event": "phase1_retry_runtime_completed",
+      "details": {
+        "task_run_id": "task_run_de983f60f23f4b3d8264367cbfcc18b1",
+        "artifact_id": "artifact_589c2c5923f04329abbf0a45ff0b0f85"
+      }
+    },
+    {
+      "timestamp": "2026-08-23T19:07:12.556983+00:00",
+      "event": "human_gate_evaluation",
+      "details": {
+        "phase": "Phase 1",
+        "verdict": "FAIL_GATE",
+        "primary_boundary": "DATA_ANALYSIS"
+      }
+    }
+  ]
+}

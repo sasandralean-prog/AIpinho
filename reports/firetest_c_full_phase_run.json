@@ -1,0 +1,443 @@
+{
+  "mission_id": "FIRETEST_C_FFMPEG_ENVIRONMENT_CLOSURE_FULL_PHASE_RUN",
+  "generated_at": "2026-08-23T19:07:12.556983+00:00",
+  "branch": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+  "starting_head_for_phase_run": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+  "final_head": null,
+  "origin_main": "cb6aca595eb12dd64171c52f7dd779f50ebf2d5c",
+  "ahead_behind_origin_main_head": "0\t1",
+  "phase_verdicts": {
+    "phase_0": "PASS",
+    "phase_1": "FAIL_GATE",
+    "phase_2": "NOT_RUN_PREVIOUS_GATE_FAILED",
+    "phase_3": "NOT_RUN_PREVIOUS_GATE_FAILED",
+    "phase_4": "NOT_RUN_PREVIOUS_GATE_FAILED",
+    "phase_5": "NOT_RUN_PREVIOUS_GATE_FAILED",
+    "phase_6": "NOT_RUN_PREVIOUS_GATE_FAILED"
+  },
+  "highest_successfully_completed_phase": "Phase 0",
+  "blocking_phase": "Phase 1",
+  "primary_boundary_classification": "DATA_ANALYSIS",
+  "secondary_boundaries": [
+    "SPEAKER_TRUTH",
+    "RESPONSE_SYNTHESIS",
+    "ARTIFACT_MATERIALIZATION"
+  ],
+  "success_label": "FIRETEST_C_BLOCKED_AT_PHASE_1_DATA_ANALYSIS",
+  "ffmpeg_environment": {
+    "verdict": "FFMPEG_ENVIRONMENT_READY",
+    "installation": {
+      "current_shell_path_discovery": "where.exe ffmpeg/ffprobe failed until shell/env refresh",
+      "installed_version": "9.0",
+      "installer_hash_verified_by_winget": true,
+      "mechanism": "winget",
+      "package_id": "Gyan.FFmpeg",
+      "persistent_user_path_contains_package": true,
+      "source": "winget"
+    },
+    "ffmpeg": {
+      "path": "C:\\Users\\rafae\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffmpeg.exe",
+      "version_result": {
+        "argv": [
+          "C:\\Users\\rafae\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffmpeg.exe",
+          "-version"
+        ],
+        "returncode": 0,
+        "stderr_first_line": "",
+        "stdout_first_line": "ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers"
+      }
+    },
+    "ffprobe": {
+      "path": "C:\\Users\\rafae\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffprobe.exe",
+      "version_result": {
+        "argv": [
+          "C:\\Users\\rafae\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffprobe.exe",
+          "-version"
+        ],
+        "returncode": 0,
+        "stderr_first_line": "",
+        "stdout_first_line": "ffprobe version 9.0-full_build-www.gyan.dev Copyright (c) 2007-2026 the FFmpeg developers"
+      }
+    },
+    "real_media_fixture": {
+      "container": "wav",
+      "duration": "1.000000",
+      "ffprobe_returncode": 0,
+      "path": "reports\\firetest_c_media_fixture\\sine.wav",
+      "sha256": "d74a5bc0d070b17330bc5d14643c33fd8feb5326638c0ddf161dc32c362e6f7b",
+      "size_bytes": 88278,
+      "streams": [
+        {
+          "avg_frame_rate": "0/0",
+          "bit_rate": "705600",
+          "bits_per_sample": 16,
+          "channels": 1,
+          "codec_long_name": "PCM signed 16-bit little-endian",
+          "codec_name": "pcm_s16le",
+          "codec_tag": "0x0001",
+          "codec_tag_string": "[1][0][0][0]",
+          "codec_type": "audio",
+          "disposition": {
+            "attached_pic": 0,
+            "captions": 0,
+            "clean_effects": 0,
+            "comment": 0,
+            "default": 0,
+            "dependent": 0,
+            "descriptions": 0,
+            "dub": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "karaoke": 0,
+            "lyrics": 0,
+            "metadata": 0,
+            "multilayer": 0,
+            "non_diegetic": 0,
+            "original": 0,
+            "still_image": 0,
+            "timed_thumbnails": 0,
+            "visual_impaired": 0
+          },
+          "duration": "1.000000",
+          "duration_ts": 44100,
+          "index": 0,
+          "initial_padding": 0,
+          "r_frame_rate": "0/0",
+          "sample_fmt": "s16",
+          "sample_rate": "44100",
+          "time_base": "1/44100"
+        }
+      ]
+    }
+  },
+  "target_project": {
+    "path": "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop",
+    "git_state": "not_a_git_repository",
+    "file_count": 1458,
+    "extension_counts_top": {
+      ".class": 343,
+      ".dll": 246,
+      ".jar": 138,
+      "<no_ext>": 98,
+      ".md": 80,
+      ".len": 72,
+      ".h": 64,
+      ".kt": 53,
+      ".lib": 41,
+      ".exe": 27,
+      ".tab": 26,
+      ".at": 24,
+      ".keystream": 24,
+      ".tab_i": 24,
+      ".policy": 21,
+      ".xsd": 19,
+      ".properties": 18,
+      ".config": 16,
+      ".bin": 15,
+      ".txt": 13,
+      ".xml": 11,
+      ".dat": 9,
+      ".targets": 6,
+      ".cfg": 5,
+      ".lock": 5
+    },
+    "primary_media_files": [],
+    "primary_media_files_count": 0,
+    "observed_structures": [
+      "Gradle Kotlin JVM",
+      "Compose Desktop",
+      "src/main",
+      "src/test",
+      "docs",
+      "EQsample JSON"
+    ]
+  },
+  "phase_0": {
+    "verdict": "PASS",
+    "ai_pinho_branch": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+    "ai_pinho_head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+    "tracked_worktree_clean_before_reports": true,
+    "runtime_old_pid": 18068,
+    "runtime_new_pid": 16684,
+    "lifecycle_state": "RUNNING_HEALTHY",
+    "ownership_state": "control_owned",
+    "source_provenance_state": "control_started_exact_head",
+    "exact_runtime_source_proven": true,
+    "runtime_repo_head_at_start": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+    "endpoint_health_ok": true,
+    "ffmpeg_path": "C:\\Users\\rafae\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffmpeg.exe",
+    "ffprobe_path": "C:\\Users\\rafae\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffprobe.exe",
+    "ffmpeg_version": "ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe_version": "ffprobe version 9.0-full_build-www.gyan.dev Copyright (c) 2007-2026 the FFmpeg developers",
+    "target_git_state": "not_a_git_repository",
+    "target_file_count": 1458,
+    "target_media_files_count": 0
+  },
+  "phase_1": {
+    "verdict": "FAIL_GATE",
+    "technical_runtime_status_first_attempt": "blocked",
+    "technical_runtime_status_retry": "completed",
+    "first_attempt_task_run_id": "task_run_37c7586654c84434a37dfd307af48c10",
+    "retry_task_run_id": "task_run_de983f60f23f4b3d8264367cbfcc18b1",
+    "first_attempt_block_reason": "MEDIA_CORPUS_ENTITY_SELECTION_EMPTY",
+    "retry_artifact_id": "artifact_589c2c5923f04329abbf0a45ff0b0f85",
+    "gate_fail_reasons": [
+      "diagnostic_artifact_is_shallow_inventory_not_specific_defect_diagnosis",
+      "internal_contradiction_tests_not_detected_while_test_modules_are_listed",
+      "does_not_classify_important_claims_as_observed_inferred_hypothesized_historical_unknown",
+      "does_not_explicitly_handle_absent_target_media_corpus_in_final_artifact",
+      "does_not_provide_actionable_causal_phase1_basis_for_phase2_planning"
+    ],
+    "primary_boundary": "DATA_ANALYSIS",
+    "secondary_boundaries": [
+      "SPEAKER_TRUTH",
+      "RESPONSE_SYNTHESIS"
+    ],
+    "intent_routing": "PASS_readonly_analysis_routed_to_async_governed_task",
+    "ui_polling": "PASS_harness_observed_accepted_running_and_polled_until_terminal_state",
+    "media_understanding": "NOT_AVAILABLE_FOR_TARGET_no_primary_media_corpus_present; ffmpeg fixture technical extraction passed separately"
+  },
+  "artifacts": [
+    {
+      "path": "C:\\Dev\\AIpinho\\reports\\firetest_c_ffmpeg_environment_closure.md",
+      "logical_identity": "reports/firetest_c_ffmpeg_environment_closure.md",
+      "producing_operation": "ffmpeg_environment_closure",
+      "run_or_operation_id": "FFMPEG_ENVIRONMENT_READY",
+      "timestamp_utc": "2026-08-23T18:49:58.715654+00:00",
+      "source_inputs": [],
+      "source_head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+      "exists": true,
+      "size_bytes": 2415,
+      "format": "md",
+      "sha256": "aa6842aff658e2e416673301c780da5cf0e344fc4b21ceb0225b47cd539d7acf",
+      "parseability": "text_readable",
+      "schema_or_contract_validity": "ffmpeg_environment_contract_report",
+      "content_plausibility": "supports FFMPEG_ENVIRONMENT_READY",
+      "internal_consistency": "ffmpeg_and_ffprobe_paths_versions_present",
+      "cross_artifact_consistency": "not_checked",
+      "supports_textual_claim": "supports FFmpeg environment closure"
+    },
+    {
+      "path": "C:\\Dev\\AIpinho\\reports\\firetest_c_ffmpeg_environment_closure.json",
+      "logical_identity": "reports/firetest_c_ffmpeg_environment_closure.json",
+      "producing_operation": "ffmpeg_environment_closure",
+      "run_or_operation_id": "FFMPEG_ENVIRONMENT_READY",
+      "timestamp_utc": "2026-08-23T18:49:58.700006+00:00",
+      "source_inputs": [],
+      "source_head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+      "exists": true,
+      "size_bytes": 5434,
+      "format": "json",
+      "sha256": "98fd11201b43faf682c2d143f5d1fc0df21a466ef5afc1bb1ff1773a1d09acf4",
+      "parseability": "valid_json",
+      "schema_or_contract_validity": "ffmpeg_environment_contract_report",
+      "content_plausibility": "supports FFMPEG_ENVIRONMENT_READY",
+      "internal_consistency": "ffmpeg_and_ffprobe_paths_versions_present",
+      "cross_artifact_consistency": "not_checked",
+      "supports_textual_claim": "supports FFmpeg environment closure"
+    },
+    {
+      "path": "C:\\Dev\\AIpinho\\reports\\firetest_c_runtime_phase0_transition.json",
+      "logical_identity": "reports/firetest_c_runtime_phase0_transition.json",
+      "producing_operation": "governed_runtime_restart",
+      "run_or_operation_id": "op_firetest_c_runtime_restart_phase0",
+      "timestamp_utc": "2026-08-23T18:57:28.635467+00:00",
+      "source_inputs": [],
+      "source_head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+      "exists": true,
+      "size_bytes": 34068,
+      "format": "json",
+      "sha256": "5778038df613d727e0bb4ddaa3725df86263f08d83a0184425ce72a508ad7272",
+      "parseability": "valid_json",
+      "schema_or_contract_validity": "control_lifecycle_evidence_json",
+      "content_plausibility": "supports Phase0 runtime provenance",
+      "internal_consistency": "old_pid_new_pid_stop_start_sequence_present",
+      "cross_artifact_consistency": "not_checked",
+      "supports_textual_claim": "supports RUNNING_HEALTHY control_owned exact runtime source"
+    },
+    {
+      "path": "C:\\Dev\\AIpinho\\reports\\firetest_c_phase1_raw_capture.json",
+      "logical_identity": "reports/firetest_c_phase1_raw_capture.json",
+      "producing_operation": "phase1_firetest_capture",
+      "run_or_operation_id": "firetest_c_20260823_phase1",
+      "timestamp_utc": "2026-08-23T19:00:16.590663+00:00",
+      "source_inputs": [
+        "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop"
+      ],
+      "source_head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+      "exists": true,
+      "size_bytes": 4130357,
+      "format": "json",
+      "sha256": "e3e4d9725e9c755b10a4819bc2b08bbca078752d14b1b975d5080dca67520734",
+      "parseability": "valid_json",
+      "schema_or_contract_validity": "not_checked",
+      "content_plausibility": "not_checked",
+      "internal_consistency": "not_checked",
+      "cross_artifact_consistency": "not_checked",
+      "supports_textual_claim": "not_checked"
+    },
+    {
+      "path": "C:\\Dev\\AIpinho\\reports\\firetest_c_phase1b_raw_capture.json",
+      "logical_identity": "reports/firetest_c_phase1b_raw_capture.json",
+      "producing_operation": "phase1b_firetest_capture",
+      "run_or_operation_id": "firetest_c_20260823_phase1b",
+      "timestamp_utc": "2026-08-23T19:02:01.694256+00:00",
+      "source_inputs": [
+        "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop"
+      ],
+      "source_head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+      "exists": true,
+      "size_bytes": 736563,
+      "format": "json",
+      "sha256": "8c5b2d7731582696d95c11f73d5d0297391b180b75f5d5d56e16e1334e77124c",
+      "parseability": "valid_json",
+      "schema_or_contract_validity": "not_checked",
+      "content_plausibility": "not_checked",
+      "internal_consistency": "not_checked",
+      "cross_artifact_consistency": "not_checked",
+      "supports_textual_claim": "not_checked"
+    },
+    {
+      "path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_9ba023c754e0441ab1d53fe23e06d1e9_reports__firetest_c__phase1_observation_diagnosis.md",
+      "logical_identity": "reports/firetest_c/phase1_observation_diagnosis.md",
+      "producing_operation": "readonly_analysis_artifact_runtime",
+      "run_or_operation_id": "task_run_37c7586654c84434a37dfd307af48c10",
+      "timestamp_utc": "2026-08-23T18:59:58.310738+00:00",
+      "source_inputs": [
+        "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop"
+      ],
+      "source_head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+      "exists": true,
+      "size_bytes": 8387,
+      "format": "md",
+      "sha256": "b2795462cc369a4582861c9e69e01bd65c82f3e6eddc453f2ee20f7d5bf8bec3",
+      "parseability": "text_readable",
+      "schema_or_contract_validity": "runtime_marked_validated_but paired required CSV blocked",
+      "content_plausibility": "same shallow inventory pattern as retry",
+      "internal_consistency": "weak_specificity",
+      "cross_artifact_consistency": "not_checked",
+      "supports_textual_claim": "partial only; run terminal blocked due CSV"
+    },
+    {
+      "path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_be51a0a5e78745e5a5b99a3c555e9152_reports__media__corpus_inventory.csv",
+      "logical_identity": "reports/media/corpus_inventory.csv",
+      "producing_operation": "readonly_analysis_artifact_runtime",
+      "run_or_operation_id": "task_run_37c7586654c84434a37dfd307af48c10",
+      "timestamp_utc": "2026-08-23T19:00:05.047108+00:00",
+      "source_inputs": [],
+      "source_head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+      "exists": true,
+      "size_bytes": 1669,
+      "format": "csv",
+      "sha256": "3c0e56324c31d16881954d5f6755d21ae6eddc2515dcb1b5d2857930cbd03b84",
+      "parseability": "valid_csv",
+      "schema_or_contract_validity": "blocked_by_runtime_contract",
+      "content_plausibility": "empty_header_only_inventory_matches zero selected/bound rows but overconstrained target without media corpus",
+      "internal_consistency": "consistent_with_MEDIA_CORPUS_ENTITY_SELECTION_EMPTY",
+      "cross_artifact_consistency": "not_checked",
+      "supports_textual_claim": "supports first-run blocked status; not evidence of semantic media understanding",
+      "row_count_including_header": 1,
+      "data_row_count": 0
+    },
+    {
+      "path": "C:\\Dev\\AIpinho\\data\\artifacts\\universal\\artifact_589c2c5923f04329abbf0a45ff0b0f85_reports__firetest_c__phase1_observation_diagnosis_v2.md",
+      "logical_identity": "reports/firetest_c/phase1_observation_diagnosis_v2.md",
+      "producing_operation": "readonly_analysis_artifact_runtime",
+      "run_or_operation_id": "task_run_de983f60f23f4b3d8264367cbfcc18b1",
+      "timestamp_utc": "2026-08-23T19:01:40.809253+00:00",
+      "source_inputs": [
+        "C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop"
+      ],
+      "source_head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+      "exists": true,
+      "size_bytes": 8518,
+      "format": "md",
+      "sha256": "e691d02a9c99e3b2336dec1502f8d7045884d3f7110b8ce47a31bb8d8d01e286",
+      "parseability": "text_readable",
+      "schema_or_contract_validity": "runtime_marked_validated_and_satisfied",
+      "content_plausibility": "weak_for_human_phase1_gate",
+      "internal_consistency": "contradiction_tests_not_detected_but_test_modules_listed",
+      "cross_artifact_consistency": "conflicts_with_target_tree_src_test_present",
+      "supports_textual_claim": "supports runtime completion only; does not support Phase1 PASS"
+    }
+  ],
+  "artifact_quality_findings": [
+    "Artifact existence was not treated as correctness: retry artifact was syntactically valid and runtime-safe, but failed human Phase 1 diagnostic quality gate.",
+    "First media CSV was valid CSV but header-only and blocked with MEDIA_CORPUS_ENTITY_SELECTION_EMPTY; this reflected an overconstrained harness expectation for a target without media corpus.",
+    "Retry markdown contradicted observed target state by saying tests were not detected while listing test classes and while src/test exists."
+  ],
+  "media_evidence_findings": [
+    "FFmpeg/ffprobe are installed and usable; real sine.wav fixture was probed successfully.",
+    "PinhoAbacaxi target contains EQ JSON samples but no primary audio/video corpus in the bounded workspace inventory.",
+    "No semantic media understanding claim is supported for the target run because no target media corpus or UI recording was available."
+  ],
+  "data_analysis_findings": [
+    "AIpinho detected Kotlin/Gradle/Docs structures and selected/read 12 files, but did not produce concrete defect diagnosis.",
+    "AIpinho missed or contradicted the presence of src/test despite file inventory containing test files.",
+    "Semantic category extraction was keyword-driven and not sufficient for causal diagnosis."
+  ],
+  "intent_routing_findings": [
+    "Request reached /api/v1/analyze and was routed as workspace_analysis_readonly.",
+    "Runtime declared deterministic=true, mutates_runtime=false, internal_access_granted=false.",
+    "Intent routing did not become ordinary chat or mutation execution."
+  ],
+  "speaker_truth_findings": [
+    "Runtime truth engine allowed success for retry, but artifact content did not preserve requested claim classifications.",
+    "The artifact presented a contradictory test-discovery claim without self-correction."
+  ],
+  "response_quality_findings": [
+    "Output is operationally useful as an inventory, not as Phase 1 diagnosis.",
+    "No prioritized causal hypotheses or falsification evidence were provided at the level required for Phase 2 planning."
+  ],
+  "ui_polling_findings": [
+    "Harness polling behaved correctly: accepted_running was not reported as success; polling continued to terminal blocked/completed states.",
+    "AIpinho artifact did not provide a useful UI polling/feedback analysis for PinhoAbacaxi due absence of live UI evidence."
+  ],
+  "planning_findings": [
+    "Phase 2 was not run because Phase 1 gate failed."
+  ],
+  "recovery_reasoning_findings": [
+    "Phases 5-6 not reached."
+  ],
+  "competing_hypotheses": [
+    {
+      "hypothesis": "File selection budget omitted files needed for better diagnosis",
+      "support": "Only 12 files read out of 76/78 discovered",
+      "against": "Even selected evidence included tests, but artifact contradicted that",
+      "confidence": "medium"
+    },
+    {
+      "hypothesis": "Readonly analysis artifact generator is keyword/category based rather than causal",
+      "support": "Findings are semantic category signals and generic structure notes",
+      "against": "Could still improve if given a more specific Phase 2 prompt, but Phase 1 did not pass",
+      "confidence": "high"
+    },
+    {
+      "hypothesis": "Harness media requirement caused first failure",
+      "support": "Target has zero primary media files and CSV blocked with empty selection",
+      "against": "Corrected retry still failed content quality",
+      "confidence": "high"
+    }
+  ],
+  "recommended_next_corrective_mission": "FireTest C Phase1 diagnostic-quality corrective: improve readonly analysis artifact generation to preserve epistemic labels, reconcile inventory contradictions, explicitly handle absent media/UI evidence, and produce concrete evidence-backed defect hypotheses before planning.",
+  "no_corrective_drift": {
+    "pinhoabacaxi_manual_repair_performed": false,
+    "firetest_phase2_started": false,
+    "firetest_executed": true,
+    "aipinho_runtime_source_modified_during_phase_run": false,
+    "ffmpeg_environment_contract_was_modified_in_part_a": true
+  },
+  "locks": {
+    "used": [
+      "firetest",
+      "repository-write:aipinho",
+      "runtime"
+    ],
+    "release_required_after_report_commit": true
+  },
+  "remaining_unknowns": [
+    "Whether a narrower file-selection strategy or improved artifact renderer would pass Phase 1 without changing runtime authority.",
+    "Whether Phase 2 planning quality can be evaluated after Phase 1 diagnosis quality is corrected.",
+    "Whether live PinhoAbacaxi UI behavior contains polling/feedback defects; no UI recording was available in this run."
+  ]
+}

@@ -1,0 +1,813 @@
+{
+  "operation_sequence": [
+    "adopt",
+    "restart"
+  ],
+  "before": {
+    "lifecycle_state": "RUNNING_HEALTHY",
+    "contract": {
+      "contract_id": "aipinho_uvicorn_9088_v1",
+      "python_executable": "C:\\Program Files\\Python311\\python.exe",
+      "argv": [
+        "C:\\Program Files\\Python311\\python.exe",
+        "-m",
+        "uvicorn",
+        "aipinho.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "9088"
+      ],
+      "cwd": "C:\\Dev\\AIpinho",
+      "host": "0.0.0.0",
+      "port": 9088,
+      "shell": false
+    },
+    "candidate_process_count": 1,
+    "process_candidates": [
+      {
+        "pid": 18068,
+        "ppid": 18560,
+        "exe": "C:\\Program Files\\Python311\\python.exe",
+        "cwd": "C:\\Dev\\AIpinho",
+        "cmdline": [
+          "C:\\Program Files\\Python311\\python.exe",
+          "-m",
+          "uvicorn",
+          "aipinho.main:app",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "9088"
+        ],
+        "create_time": 1787453689.3306415,
+        "alive": true,
+        "identity_components": {
+          "pid": 18068,
+          "executable_matches": true,
+          "cwd_matches": true,
+          "cmdline_matches": true,
+          "listener_pid_matches": true,
+          "identity_proven": true
+        }
+      }
+    ],
+    "proven_runtime_pid": 18068,
+    "proven_runtime_count": 1,
+    "listener": {
+      "port": 9088,
+      "pid": 18068,
+      "listening": true
+    },
+    "endpoint_health": {
+      "/api/v1/version": {
+        "status": 200,
+        "ok": true,
+        "excerpt": "{\"api_version\":\"1.0\",\"app_version\":\"0.1.0\",\"supported_versions\":[\"1.0\"]}"
+      },
+      "/api/v1/runtime": {
+        "status": 200,
+        "ok": true,
+        "excerpt": "{\"status\":\"ok\",\"kernel_state\":\"READY\",\"modules\":15,\"gateway_required\":true,\"kernel_required\":true}"
+      },
+      "/api/v1/modules": {
+        "status": 200,
+        "ok": true,
+        "excerpt": "{\"modules\":[{\"module_id\":\"semantic_interpreter\",\"name\":\"Semantic Interpreter\",\"version\":\"1.0\",\"capabilities\":[\"semantic_understanding\"],\"contracts\":[\"semantic_ir\"],\"dependencies\":[],\"status\":\"registered\",\"health\":\"unknown\",\"can_read\":true,\"can_write\":false,\"can_execute\":false,\"requires_contract\":true,\"requires_validation\":true,\"contracts_supported\":[\"semantic_ir\"],\"required_models\":[],\"required_tools\":[],\"required_skills\":[],\"required_permissions\":[],\"metadata\":{}},{\"module_id\":\"normalizer\",\"nam"
+      },
+      "/api/v1/contracts": {
+        "status": 200,
+        "ok": true,
+        "excerpt": "{\"version\":\"1.0\",\"contracts\":[{\"contract_id\":\"public_contract_94067799536e49a495752e4f26900f5e\",\"operation\":\"chat\",\"version\":\"1.0\",\"contract_type\":\"conversation\",\"target_module\":\"semantic_interpreter\",\"schema_ref\":\"public.chat.v1\",\"gateway_required\":true,\"kernel_required\":true},{\"contract_id\":\"public_contract_e0de27ab85a64c15b175f940b8177684\",\"operation\":\"execute\",\"version\":\"1.0\",\"contract_type\":\"execution_plan\",\"target_module\":\"planner\",\"schema_ref\":\"public.execute.v1\",\"gateway_required\":true,\""
+      }
+    },
+    "endpoint_health_ok": true,
+    "ownership": {
+      "state": "adoptable_unowned",
+      "record": null,
+      "record_matches_live_process": false,
+      "stale_reason": "no_record"
+    },
+    "repository": {
+      "root": "C:\\Dev\\AIpinho",
+      "branch": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+      "head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+      "origin_main": "cb6aca595eb12dd64171c52f7dd779f50ebf2d5c",
+      "ahead_behind": "0\t1",
+      "tracked_status": "",
+      "tracked_working_tree_clean": true,
+      "proves_exact_head": true
+    }
+  },
+  "adopt": {
+    "transition": "adopt",
+    "before": {
+      "lifecycle_state": "RUNNING_HEALTHY",
+      "contract": {
+        "contract_id": "aipinho_uvicorn_9088_v1",
+        "python_executable": "C:\\Program Files\\Python311\\python.exe",
+        "argv": [
+          "C:\\Program Files\\Python311\\python.exe",
+          "-m",
+          "uvicorn",
+          "aipinho.main:app",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "9088"
+        ],
+        "cwd": "C:\\Dev\\AIpinho",
+        "host": "0.0.0.0",
+        "port": 9088,
+        "shell": false
+      },
+      "candidate_process_count": 1,
+      "process_candidates": [
+        {
+          "pid": 18068,
+          "ppid": 18560,
+          "exe": "C:\\Program Files\\Python311\\python.exe",
+          "cwd": "C:\\Dev\\AIpinho",
+          "cmdline": [
+            "C:\\Program Files\\Python311\\python.exe",
+            "-m",
+            "uvicorn",
+            "aipinho.main:app",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "9088"
+          ],
+          "create_time": 1787453689.3306415,
+          "alive": true,
+          "identity_components": {
+            "pid": 18068,
+            "executable_matches": true,
+            "cwd_matches": true,
+            "cmdline_matches": true,
+            "listener_pid_matches": true,
+            "identity_proven": true
+          }
+        }
+      ],
+      "proven_runtime_pid": 18068,
+      "proven_runtime_count": 1,
+      "listener": {
+        "port": 9088,
+        "pid": 18068,
+        "listening": true
+      },
+      "endpoint_health": {
+        "/api/v1/version": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"api_version\":\"1.0\",\"app_version\":\"0.1.0\",\"supported_versions\":[\"1.0\"]}"
+        },
+        "/api/v1/runtime": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"status\":\"ok\",\"kernel_state\":\"READY\",\"modules\":15,\"gateway_required\":true,\"kernel_required\":true}"
+        },
+        "/api/v1/modules": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"modules\":[{\"module_id\":\"semantic_interpreter\",\"name\":\"Semantic Interpreter\",\"version\":\"1.0\",\"capabilities\":[\"semantic_understanding\"],\"contracts\":[\"semantic_ir\"],\"dependencies\":[],\"status\":\"registered\",\"health\":\"unknown\",\"can_read\":true,\"can_write\":false,\"can_execute\":false,\"requires_contract\":true,\"requires_validation\":true,\"contracts_supported\":[\"semantic_ir\"],\"required_models\":[],\"required_tools\":[],\"required_skills\":[],\"required_permissions\":[],\"metadata\":{}},{\"module_id\":\"normalizer\",\"nam"
+        },
+        "/api/v1/contracts": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"version\":\"1.0\",\"contracts\":[{\"contract_id\":\"public_contract_5a6b5f3fab36419aab46d7d1c99531f2\",\"operation\":\"chat\",\"version\":\"1.0\",\"contract_type\":\"conversation\",\"target_module\":\"semantic_interpreter\",\"schema_ref\":\"public.chat.v1\",\"gateway_required\":true,\"kernel_required\":true},{\"contract_id\":\"public_contract_fcc71ad682e841d6be5392eea5e7c2fc\",\"operation\":\"execute\",\"version\":\"1.0\",\"contract_type\":\"execution_plan\",\"target_module\":\"planner\",\"schema_ref\":\"public.execute.v1\",\"gateway_required\":true,\""
+        }
+      },
+      "endpoint_health_ok": true,
+      "ownership": {
+        "state": "adoptable_unowned",
+        "record": null,
+        "record_matches_live_process": false,
+        "stale_reason": "no_record"
+      },
+      "repository": {
+        "root": "C:\\Dev\\AIpinho",
+        "branch": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+        "head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+        "origin_main": "cb6aca595eb12dd64171c52f7dd779f50ebf2d5c",
+        "ahead_behind": "0\t1",
+        "tracked_status": "",
+        "tracked_working_tree_clean": true,
+        "proves_exact_head": true
+      }
+    },
+    "transition_evidence": {
+      "lock": {
+        "lock_path": "C:\\Dev\\AIpinho-FireTest-Control\\operations\\runtime\\aipinho_runtime_9088.lock"
+      },
+      "adoption_record_written": true,
+      "process_identity_proven": true,
+      "source_provenance_state": "unproven_at_process_start"
+    },
+    "after": {
+      "lifecycle_state": "RUNNING_HEALTHY",
+      "contract": {
+        "contract_id": "aipinho_uvicorn_9088_v1",
+        "python_executable": "C:\\Program Files\\Python311\\python.exe",
+        "argv": [
+          "C:\\Program Files\\Python311\\python.exe",
+          "-m",
+          "uvicorn",
+          "aipinho.main:app",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "9088"
+        ],
+        "cwd": "C:\\Dev\\AIpinho",
+        "host": "0.0.0.0",
+        "port": 9088,
+        "shell": false
+      },
+      "candidate_process_count": 1,
+      "process_candidates": [
+        {
+          "pid": 18068,
+          "ppid": 18560,
+          "exe": "C:\\Program Files\\Python311\\python.exe",
+          "cwd": "C:\\Dev\\AIpinho",
+          "cmdline": [
+            "C:\\Program Files\\Python311\\python.exe",
+            "-m",
+            "uvicorn",
+            "aipinho.main:app",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "9088"
+          ],
+          "create_time": 1787453689.3306415,
+          "alive": true,
+          "identity_components": {
+            "pid": 18068,
+            "executable_matches": true,
+            "cwd_matches": true,
+            "cmdline_matches": true,
+            "listener_pid_matches": true,
+            "identity_proven": true
+          }
+        }
+      ],
+      "proven_runtime_pid": 18068,
+      "proven_runtime_count": 1,
+      "listener": {
+        "port": 9088,
+        "pid": 18068,
+        "listening": true
+      },
+      "endpoint_health": {
+        "/api/v1/version": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"api_version\":\"1.0\",\"app_version\":\"0.1.0\",\"supported_versions\":[\"1.0\"]}"
+        },
+        "/api/v1/runtime": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"status\":\"ok\",\"kernel_state\":\"READY\",\"modules\":15,\"gateway_required\":true,\"kernel_required\":true}"
+        },
+        "/api/v1/modules": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"modules\":[{\"module_id\":\"semantic_interpreter\",\"name\":\"Semantic Interpreter\",\"version\":\"1.0\",\"capabilities\":[\"semantic_understanding\"],\"contracts\":[\"semantic_ir\"],\"dependencies\":[],\"status\":\"registered\",\"health\":\"unknown\",\"can_read\":true,\"can_write\":false,\"can_execute\":false,\"requires_contract\":true,\"requires_validation\":true,\"contracts_supported\":[\"semantic_ir\"],\"required_models\":[],\"required_tools\":[],\"required_skills\":[],\"required_permissions\":[],\"metadata\":{}},{\"module_id\":\"normalizer\",\"nam"
+        },
+        "/api/v1/contracts": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"version\":\"1.0\",\"contracts\":[{\"contract_id\":\"public_contract_452581ee927b4d89b616e8f71ef7c34f\",\"operation\":\"chat\",\"version\":\"1.0\",\"contract_type\":\"conversation\",\"target_module\":\"semantic_interpreter\",\"schema_ref\":\"public.chat.v1\",\"gateway_required\":true,\"kernel_required\":true},{\"contract_id\":\"public_contract_bed9ec11760841e0ab90eff43f76cf54\",\"operation\":\"execute\",\"version\":\"1.0\",\"contract_type\":\"execution_plan\",\"target_module\":\"planner\",\"schema_ref\":\"public.execute.v1\",\"gateway_required\":true,\""
+        }
+      },
+      "endpoint_health_ok": true,
+      "ownership": {
+        "state": "control_owned",
+        "record": {
+          "ownership_record_version": 2,
+          "pid": 18068,
+          "create_time": 1787453689.3306415,
+          "contract_id": "aipinho_uvicorn_9088_v1",
+          "operation_id": "op_firetest_c_runtime_adopt_phase0",
+          "ownership_source": "adopted_existing_runtime",
+          "process_identity_proven": true,
+          "source_provenance_state": "unproven_at_process_start",
+          "exact_runtime_source_proven": false,
+          "repo_branch_observed": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+          "repo_head_at_start": null,
+          "repo_head_observed_at_ownership": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+          "repo_tracked_status_observed_at_ownership": "",
+          "repo_tracked_working_tree_clean_observed_at_ownership": true,
+          "started_at_epoch": null,
+          "adopted_at_epoch": 1787511421.1604834,
+          "log_paths": {}
+        },
+        "record_matches_live_process": true,
+        "stale_reason": null,
+        "source_provenance_state": "unproven_at_process_start",
+        "exact_runtime_source_proven": false
+      },
+      "repository": {
+        "root": "C:\\Dev\\AIpinho",
+        "branch": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+        "head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+        "origin_main": "cb6aca595eb12dd64171c52f7dd779f50ebf2d5c",
+        "ahead_behind": "0\t1",
+        "tracked_status": "",
+        "tracked_working_tree_clean": true,
+        "proves_exact_head": true
+      }
+    }
+  },
+  "restart": {
+    "transition": "restart",
+    "before": {
+      "lifecycle_state": "RUNNING_HEALTHY",
+      "contract": {
+        "contract_id": "aipinho_uvicorn_9088_v1",
+        "python_executable": "C:\\Program Files\\Python311\\python.exe",
+        "argv": [
+          "C:\\Program Files\\Python311\\python.exe",
+          "-m",
+          "uvicorn",
+          "aipinho.main:app",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "9088"
+        ],
+        "cwd": "C:\\Dev\\AIpinho",
+        "host": "0.0.0.0",
+        "port": 9088,
+        "shell": false
+      },
+      "candidate_process_count": 1,
+      "process_candidates": [
+        {
+          "pid": 18068,
+          "ppid": 18560,
+          "exe": "C:\\Program Files\\Python311\\python.exe",
+          "cwd": "C:\\Dev\\AIpinho",
+          "cmdline": [
+            "C:\\Program Files\\Python311\\python.exe",
+            "-m",
+            "uvicorn",
+            "aipinho.main:app",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "9088"
+          ],
+          "create_time": 1787453689.3306415,
+          "alive": true,
+          "identity_components": {
+            "pid": 18068,
+            "executable_matches": true,
+            "cwd_matches": true,
+            "cmdline_matches": true,
+            "listener_pid_matches": true,
+            "identity_proven": true
+          }
+        }
+      ],
+      "proven_runtime_pid": 18068,
+      "proven_runtime_count": 1,
+      "listener": {
+        "port": 9088,
+        "pid": 18068,
+        "listening": true
+      },
+      "endpoint_health": {
+        "/api/v1/version": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"api_version\":\"1.0\",\"app_version\":\"0.1.0\",\"supported_versions\":[\"1.0\"]}"
+        },
+        "/api/v1/runtime": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"status\":\"ok\",\"kernel_state\":\"READY\",\"modules\":15,\"gateway_required\":true,\"kernel_required\":true}"
+        },
+        "/api/v1/modules": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"modules\":[{\"module_id\":\"semantic_interpreter\",\"name\":\"Semantic Interpreter\",\"version\":\"1.0\",\"capabilities\":[\"semantic_understanding\"],\"contracts\":[\"semantic_ir\"],\"dependencies\":[],\"status\":\"registered\",\"health\":\"unknown\",\"can_read\":true,\"can_write\":false,\"can_execute\":false,\"requires_contract\":true,\"requires_validation\":true,\"contracts_supported\":[\"semantic_ir\"],\"required_models\":[],\"required_tools\":[],\"required_skills\":[],\"required_permissions\":[],\"metadata\":{}},{\"module_id\":\"normalizer\",\"nam"
+        },
+        "/api/v1/contracts": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"version\":\"1.0\",\"contracts\":[{\"contract_id\":\"public_contract_61b96e3f94864b91bc0ec2c3211cb332\",\"operation\":\"chat\",\"version\":\"1.0\",\"contract_type\":\"conversation\",\"target_module\":\"semantic_interpreter\",\"schema_ref\":\"public.chat.v1\",\"gateway_required\":true,\"kernel_required\":true},{\"contract_id\":\"public_contract_9f3b22ed2dc541e49239371f9f0a8492\",\"operation\":\"execute\",\"version\":\"1.0\",\"contract_type\":\"execution_plan\",\"target_module\":\"planner\",\"schema_ref\":\"public.execute.v1\",\"gateway_required\":true,\""
+        }
+      },
+      "endpoint_health_ok": true,
+      "ownership": {
+        "state": "control_owned",
+        "record": {
+          "ownership_record_version": 2,
+          "pid": 18068,
+          "create_time": 1787453689.3306415,
+          "contract_id": "aipinho_uvicorn_9088_v1",
+          "operation_id": "op_firetest_c_runtime_adopt_phase0",
+          "ownership_source": "adopted_existing_runtime",
+          "process_identity_proven": true,
+          "source_provenance_state": "unproven_at_process_start",
+          "exact_runtime_source_proven": false,
+          "repo_branch_observed": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+          "repo_head_at_start": null,
+          "repo_head_observed_at_ownership": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+          "repo_tracked_status_observed_at_ownership": "",
+          "repo_tracked_working_tree_clean_observed_at_ownership": true,
+          "started_at_epoch": null,
+          "adopted_at_epoch": 1787511421.1604834,
+          "log_paths": {}
+        },
+        "record_matches_live_process": true,
+        "stale_reason": null,
+        "source_provenance_state": "unproven_at_process_start",
+        "exact_runtime_source_proven": false
+      },
+      "repository": {
+        "root": "C:\\Dev\\AIpinho",
+        "branch": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+        "head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+        "origin_main": "cb6aca595eb12dd64171c52f7dd779f50ebf2d5c",
+        "ahead_behind": "0\t1",
+        "tracked_status": "",
+        "tracked_working_tree_clean": true,
+        "proves_exact_head": true
+      }
+    },
+    "transition_evidence": {
+      "lock": {
+        "lock_path": "C:\\Dev\\AIpinho-FireTest-Control\\operations\\runtime\\aipinho_runtime_9088.lock"
+      },
+      "stop_mechanism": {
+        "mechanism": "powershell_stop_process_exact_revalidated_pid",
+        "argv": [
+          "powershell",
+          "-NoProfile",
+          "-Command",
+          "Stop-Process -Id <proven_pid>"
+        ],
+        "target_pid": 18068,
+        "shell": false,
+        "exit_code": 0,
+        "stdout_excerpt": "",
+        "stderr_excerpt": ""
+      },
+      "stopped": {
+        "lifecycle_state": "STOPPED",
+        "contract": {
+          "contract_id": "aipinho_uvicorn_9088_v1",
+          "python_executable": "C:\\Program Files\\Python311\\python.exe",
+          "argv": [
+            "C:\\Program Files\\Python311\\python.exe",
+            "-m",
+            "uvicorn",
+            "aipinho.main:app",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "9088"
+          ],
+          "cwd": "C:\\Dev\\AIpinho",
+          "host": "0.0.0.0",
+          "port": 9088,
+          "shell": false
+        },
+        "candidate_process_count": 0,
+        "process_candidates": [],
+        "proven_runtime_pid": null,
+        "proven_runtime_count": 0,
+        "listener": {
+          "port": 9088,
+          "pid": null,
+          "listening": false
+        },
+        "endpoint_health": {
+          "/api/v1/version": {
+            "ok": false,
+            "error": "URLError",
+            "message": "<urlopen error [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente>"
+          },
+          "/api/v1/runtime": {
+            "ok": false,
+            "error": "URLError",
+            "message": "<urlopen error [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente>"
+          },
+          "/api/v1/modules": {
+            "ok": false,
+            "error": "URLError",
+            "message": "<urlopen error [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente>"
+          },
+          "/api/v1/contracts": {
+            "ok": false,
+            "error": "URLError",
+            "message": "<urlopen error [WinError 10061] Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente>"
+          }
+        },
+        "endpoint_health_ok": false,
+        "ownership": {
+          "state": "ownership_record_stale",
+          "record": {
+            "ownership_record_version": 2,
+            "pid": 18068,
+            "create_time": 1787453689.3306415,
+            "contract_id": "aipinho_uvicorn_9088_v1",
+            "operation_id": "op_firetest_c_runtime_adopt_phase0",
+            "ownership_source": "adopted_existing_runtime",
+            "process_identity_proven": true,
+            "source_provenance_state": "unproven_at_process_start",
+            "exact_runtime_source_proven": false,
+            "repo_branch_observed": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+            "repo_head_at_start": null,
+            "repo_head_observed_at_ownership": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+            "repo_tracked_status_observed_at_ownership": "",
+            "repo_tracked_working_tree_clean_observed_at_ownership": true,
+            "started_at_epoch": null,
+            "adopted_at_epoch": 1787511421.1604834,
+            "log_paths": {}
+          },
+          "record_matches_live_process": false,
+          "stale_reason": "process_gone"
+        },
+        "repository": {
+          "root": "C:\\Dev\\AIpinho",
+          "branch": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+          "head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+          "origin_main": "cb6aca595eb12dd64171c52f7dd779f50ebf2d5c",
+          "ahead_behind": "0\t1",
+          "tracked_status": "",
+          "tracked_working_tree_clean": true,
+          "proves_exact_head": true
+        },
+        "polling": {
+          "attempts": 1,
+          "timeout_seconds": 20,
+          "interval_seconds": 0.5
+        }
+      },
+      "launch": {
+        "pid": 16684,
+        "argv": [
+          "C:\\Program Files\\Python311\\python.exe",
+          "-m",
+          "uvicorn",
+          "aipinho.main:app",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "9088"
+        ],
+        "cwd": "C:\\Dev\\AIpinho",
+        "shell": false,
+        "stdout_log": "C:\\Dev\\AIpinho\\data\\logs\\runtime\\control_b0_4_aipinho_9088_op_firetest_c_runtime_restart_phase0.out.log",
+        "stderr_log": "C:\\Dev\\AIpinho\\data\\logs\\runtime\\control_b0_4_aipinho_9088_op_firetest_c_runtime_restart_phase0.err.log"
+      },
+      "stop_before_start": true,
+      "restart_timeout": 90
+    },
+    "after": {
+      "lifecycle_state": "RUNNING_HEALTHY",
+      "contract": {
+        "contract_id": "aipinho_uvicorn_9088_v1",
+        "python_executable": "C:\\Program Files\\Python311\\python.exe",
+        "argv": [
+          "C:\\Program Files\\Python311\\python.exe",
+          "-m",
+          "uvicorn",
+          "aipinho.main:app",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "9088"
+        ],
+        "cwd": "C:\\Dev\\AIpinho",
+        "host": "0.0.0.0",
+        "port": 9088,
+        "shell": false
+      },
+      "candidate_process_count": 1,
+      "process_candidates": [
+        {
+          "pid": 16684,
+          "ppid": 27520,
+          "exe": "C:\\Program Files\\Python311\\python.exe",
+          "cwd": "C:\\Dev\\AIpinho",
+          "cmdline": [
+            "C:\\Program Files\\Python311\\python.exe",
+            "-m",
+            "uvicorn",
+            "aipinho.main:app",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "9088"
+          ],
+          "create_time": 1787511439.0058868,
+          "alive": true,
+          "identity_components": {
+            "pid": 16684,
+            "executable_matches": true,
+            "cwd_matches": true,
+            "cmdline_matches": true,
+            "listener_pid_matches": true,
+            "identity_proven": true
+          }
+        }
+      ],
+      "proven_runtime_pid": 16684,
+      "proven_runtime_count": 1,
+      "listener": {
+        "port": 9088,
+        "pid": 16684,
+        "listening": true
+      },
+      "endpoint_health": {
+        "/api/v1/version": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"api_version\":\"1.0\",\"app_version\":\"0.1.0\",\"supported_versions\":[\"1.0\"]}"
+        },
+        "/api/v1/runtime": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"status\":\"ok\",\"kernel_state\":\"READY\",\"modules\":15,\"gateway_required\":true,\"kernel_required\":true}"
+        },
+        "/api/v1/modules": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"modules\":[{\"module_id\":\"semantic_interpreter\",\"name\":\"Semantic Interpreter\",\"version\":\"1.0\",\"capabilities\":[\"semantic_understanding\"],\"contracts\":[\"semantic_ir\"],\"dependencies\":[],\"status\":\"registered\",\"health\":\"unknown\",\"can_read\":true,\"can_write\":false,\"can_execute\":false,\"requires_contract\":true,\"requires_validation\":true,\"contracts_supported\":[\"semantic_ir\"],\"required_models\":[],\"required_tools\":[],\"required_skills\":[],\"required_permissions\":[],\"metadata\":{}},{\"module_id\":\"normalizer\",\"nam"
+        },
+        "/api/v1/contracts": {
+          "status": 200,
+          "ok": true,
+          "excerpt": "{\"version\":\"1.0\",\"contracts\":[{\"contract_id\":\"public_contract_f437ab62dba24c989799c78a1ee64f22\",\"operation\":\"chat\",\"version\":\"1.0\",\"contract_type\":\"conversation\",\"target_module\":\"semantic_interpreter\",\"schema_ref\":\"public.chat.v1\",\"gateway_required\":true,\"kernel_required\":true},{\"contract_id\":\"public_contract_918c077394664553ad89e97e37a5435f\",\"operation\":\"execute\",\"version\":\"1.0\",\"contract_type\":\"execution_plan\",\"target_module\":\"planner\",\"schema_ref\":\"public.execute.v1\",\"gateway_required\":true,\""
+        }
+      },
+      "endpoint_health_ok": true,
+      "ownership": {
+        "state": "control_owned",
+        "record": {
+          "ownership_record_version": 2,
+          "pid": 16684,
+          "create_time": 1787511439.0058868,
+          "contract_id": "aipinho_uvicorn_9088_v1",
+          "operation_id": "op_firetest_c_runtime_restart_phase0",
+          "ownership_source": "control_started_runtime",
+          "process_identity_proven": true,
+          "source_provenance_state": "control_started_exact_head",
+          "exact_runtime_source_proven": true,
+          "repo_branch_observed": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+          "repo_head_at_start": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+          "repo_head_observed_at_ownership": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+          "repo_tracked_status_observed_at_ownership": "",
+          "repo_tracked_working_tree_clean_observed_at_ownership": true,
+          "started_at_epoch": 1787511439.2704704,
+          "adopted_at_epoch": null,
+          "log_paths": {
+            "stdout": "C:\\Dev\\AIpinho\\data\\logs\\runtime\\control_b0_4_aipinho_9088_op_firetest_c_runtime_restart_phase0.out.log",
+            "stderr": "C:\\Dev\\AIpinho\\data\\logs\\runtime\\control_b0_4_aipinho_9088_op_firetest_c_runtime_restart_phase0.err.log"
+          }
+        },
+        "record_matches_live_process": true,
+        "stale_reason": null,
+        "source_provenance_state": "control_started_exact_head",
+        "exact_runtime_source_proven": true
+      },
+      "repository": {
+        "root": "C:\\Dev\\AIpinho",
+        "branch": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+        "head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+        "origin_main": "cb6aca595eb12dd64171c52f7dd779f50ebf2d5c",
+        "ahead_behind": "0\t1",
+        "tracked_status": "",
+        "tracked_working_tree_clean": true,
+        "proves_exact_head": true
+      }
+    }
+  },
+  "after": {
+    "lifecycle_state": "RUNNING_HEALTHY",
+    "contract": {
+      "contract_id": "aipinho_uvicorn_9088_v1",
+      "python_executable": "C:\\Program Files\\Python311\\python.exe",
+      "argv": [
+        "C:\\Program Files\\Python311\\python.exe",
+        "-m",
+        "uvicorn",
+        "aipinho.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "9088"
+      ],
+      "cwd": "C:\\Dev\\AIpinho",
+      "host": "0.0.0.0",
+      "port": 9088,
+      "shell": false
+    },
+    "candidate_process_count": 1,
+    "process_candidates": [
+      {
+        "pid": 16684,
+        "ppid": 27520,
+        "exe": "C:\\Program Files\\Python311\\python.exe",
+        "cwd": "C:\\Dev\\AIpinho",
+        "cmdline": [
+          "C:\\Program Files\\Python311\\python.exe",
+          "-m",
+          "uvicorn",
+          "aipinho.main:app",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "9088"
+        ],
+        "create_time": 1787511439.0058868,
+        "alive": true,
+        "identity_components": {
+          "pid": 16684,
+          "executable_matches": true,
+          "cwd_matches": true,
+          "cmdline_matches": true,
+          "listener_pid_matches": true,
+          "identity_proven": true
+        }
+      }
+    ],
+    "proven_runtime_pid": 16684,
+    "proven_runtime_count": 1,
+    "listener": {
+      "port": 9088,
+      "pid": 16684,
+      "listening": true
+    },
+    "endpoint_health": {
+      "/api/v1/version": {
+        "status": 200,
+        "ok": true,
+        "excerpt": "{\"api_version\":\"1.0\",\"app_version\":\"0.1.0\",\"supported_versions\":[\"1.0\"]}"
+      },
+      "/api/v1/runtime": {
+        "status": 200,
+        "ok": true,
+        "excerpt": "{\"status\":\"ok\",\"kernel_state\":\"READY\",\"modules\":15,\"gateway_required\":true,\"kernel_required\":true}"
+      },
+      "/api/v1/modules": {
+        "status": 200,
+        "ok": true,
+        "excerpt": "{\"modules\":[{\"module_id\":\"semantic_interpreter\",\"name\":\"Semantic Interpreter\",\"version\":\"1.0\",\"capabilities\":[\"semantic_understanding\"],\"contracts\":[\"semantic_ir\"],\"dependencies\":[],\"status\":\"registered\",\"health\":\"unknown\",\"can_read\":true,\"can_write\":false,\"can_execute\":false,\"requires_contract\":true,\"requires_validation\":true,\"contracts_supported\":[\"semantic_ir\"],\"required_models\":[],\"required_tools\":[],\"required_skills\":[],\"required_permissions\":[],\"metadata\":{}},{\"module_id\":\"normalizer\",\"nam"
+      },
+      "/api/v1/contracts": {
+        "status": 200,
+        "ok": true,
+        "excerpt": "{\"version\":\"1.0\",\"contracts\":[{\"contract_id\":\"public_contract_d8c4e4622dea40e692717e5bc5012f7c\",\"operation\":\"chat\",\"version\":\"1.0\",\"contract_type\":\"conversation\",\"target_module\":\"semantic_interpreter\",\"schema_ref\":\"public.chat.v1\",\"gateway_required\":true,\"kernel_required\":true},{\"contract_id\":\"public_contract_7dfa869f7d284a4cb73956499ab0ee39\",\"operation\":\"execute\",\"version\":\"1.0\",\"contract_type\":\"execution_plan\",\"target_module\":\"planner\",\"schema_ref\":\"public.execute.v1\",\"gateway_required\":true,\""
+      }
+    },
+    "endpoint_health_ok": true,
+    "ownership": {
+      "state": "control_owned",
+      "record": {
+        "ownership_record_version": 2,
+        "pid": 16684,
+        "create_time": 1787511439.0058868,
+        "contract_id": "aipinho_uvicorn_9088_v1",
+        "operation_id": "op_firetest_c_runtime_restart_phase0",
+        "ownership_source": "control_started_runtime",
+        "process_identity_proven": true,
+        "source_provenance_state": "control_started_exact_head",
+        "exact_runtime_source_proven": true,
+        "repo_branch_observed": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+        "repo_head_at_start": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+        "repo_head_observed_at_ownership": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+        "repo_tracked_status_observed_at_ownership": "",
+        "repo_tracked_working_tree_clean_observed_at_ownership": true,
+        "started_at_epoch": 1787511439.2704704,
+        "adopted_at_epoch": null,
+        "log_paths": {
+          "stdout": "C:\\Dev\\AIpinho\\data\\logs\\runtime\\control_b0_4_aipinho_9088_op_firetest_c_runtime_restart_phase0.out.log",
+          "stderr": "C:\\Dev\\AIpinho\\data\\logs\\runtime\\control_b0_4_aipinho_9088_op_firetest_c_runtime_restart_phase0.err.log"
+        }
+      },
+      "record_matches_live_process": true,
+      "stale_reason": null,
+      "source_provenance_state": "control_started_exact_head",
+      "exact_runtime_source_proven": true
+    },
+    "repository": {
+      "root": "C:\\Dev\\AIpinho",
+      "branch": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+      "head": "4b64c1a19fca47f919af7bddff1ec9b5d22ef300",
+      "origin_main": "cb6aca595eb12dd64171c52f7dd779f50ebf2d5c",
+      "ahead_behind": "0\t1",
+      "tracked_status": "",
+      "tracked_working_tree_clean": true,
+      "proves_exact_head": true
+    }
+  },
+  "status": "completed"
+}
