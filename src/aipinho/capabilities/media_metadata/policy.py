@@ -17,6 +17,7 @@ from aipinho.capabilities.media_metadata.descriptor import (
     MediaMetadataObservationResult,
     RawMediaMetadataResult,
 )
+from aipinho.capabilities.media_metadata.environment import media_environment_snapshot
 from aipinho.capabilities.media_metadata.normalizer import MediaMetadataNormalizer
 
 
@@ -31,6 +32,7 @@ class MediaMetadataCapability:
             "native_minimal": NativeMinimalMediaProbeBackend(),
         }
         self.normalizer = MediaMetadataNormalizer(policy=self.backend_policy)
+        self._environment_snapshot: dict[str, dict[str, Any]] | None = None
 
     def observe(
         self,
@@ -193,6 +195,13 @@ class MediaMetadataCapability:
         return {
             "raw_ref": file_path,
             "observations": observation.evidence_records,
+            "media_environment": {
+                "scope": "media_metadata",
+                "ffmpeg_required_for_media_environment": True,
+                "ffprobe_required_for_metadata_backend": True,
+                "degraded_operation_allowed": self.backend_policy.allow_partial_evidence,
+                "tools": self._media_environment_snapshot(),
+            },
             "media_metadata_capability": {
                 "status": observation.status,
                 "configured": True,
@@ -237,6 +246,14 @@ class MediaMetadataCapability:
         if code == "FFPROBE_NOT_AVAILABLE":
             return "ffprobe"
         return backend_id or code
+
+    def _media_environment_snapshot(self) -> dict[str, dict[str, Any]]:
+        if self._environment_snapshot is None:
+            self._environment_snapshot = media_environment_snapshot()
+        return {
+            key: dict(value)
+            for key, value in self._environment_snapshot.items()
+        }
 
     def backend_availability_snapshot(self) -> dict[str, dict[str, Any]]:
         snapshot: dict[str, dict[str, Any]] = {}

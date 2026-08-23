@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from aipinho.core.paths import PATHS
+from aipinho.capabilities.media_metadata.environment import discover_media_tool
 from aipinho.schemas.pinhoforge_bridge.hardware_profiler import (
     PinhoForgeHardwareProfilerRequest,
     PinhoForgeHardwareProfilerResult,
@@ -89,10 +90,16 @@ class PinhoForgeHardwareProfilerProvider:
         for item in provider.get("tools") or []:
             tool_id = str(item.get("tool_id"))
             display_name = str(item.get("display_name") or tool_id)
-            executable = shutil.which(str(item.get("command") or tool_id))
+            command = str(item.get("command") or tool_id)
+            discovery = discover_media_tool(command, tool_id=tool_id) if tool_id in {"ffmpeg", "ffprobe"} else None
+            executable = discovery.resolved_executable_path if discovery else shutil.which(command)
             status = "available" if executable else "missing"
+            if discovery and discovery.status not in {"available", "unavailable"}:
+                status = "error"
             version = None
-            if executable:
+            if discovery and discovery.version:
+                version = discovery.version
+            elif executable:
                 version = self._redact(str(Path(executable).name))
             items.append(
                 PinhoForgeToolAvailabilityItem(
@@ -103,8 +110,8 @@ class PinhoForgeHardwareProfilerProvider:
                     executable_path_redacted=self._redact(executable) if executable else None,
                     used_by_capabilities=list(item.get("used_by_capabilities") or []),
                     readiness_impact="supports_capability" if executable else "capability_degraded",
-                    warnings=[] if executable else [f"{tool_id} missing"],
-                    errors=[],
+                    warnings=[] if status == "available" else [f"{tool_id} missing" if status == "missing" else f"{tool_id} unusable"],
+                    errors=[] if status in {"available", "missing"} else [discovery.reason_code or f"{tool_id}_error"] if discovery else [],
                 )
             )
         return items
@@ -117,7 +124,7 @@ class PinhoForgeHardwareProfilerProvider:
 
         conversion = "ready" if has("ffmpeg", "libreoffice", "pandoc", "calibre", "inkscape") else "degraded" if has("tesseract", "whisper") else "missing"
         android = "ready" if has("java", "gradle", "adb") and (os.getenv("ANDROID_HOME") or os.getenv("ANDROID_SDK_ROOT")) else "degraded" if has("java", "adb") else "missing"
-        media = "ready" if has("ffmpeg", "tesseract", "whisper") else "degraded" if has("ffmpeg", "tesseract", "whisper") else "missing"
+        media = "ready" if tool_status.get("ffmpeg") == "available" and tool_status.get("ffprobe") == "available" else "degraded" if has("ffmpeg", "ffprobe", "tesseract", "whisper") else "missing"
         development = "ready" if has("java", "python", "git") else "degraded" if has("java", "python", "git", "node") else "missing"
         warnings = []
         blockers = []
@@ -127,6 +134,8 @@ class PinhoForgeHardwareProfilerProvider:
             warnings.append("android_readiness_not_full")
         if tool_status.get("ffmpeg") != "available":
             blockers.append("FFmpeg nao detectado.")
+        if tool_status.get("ffprobe") != "available":
+            blockers.append("FFprobe nao detectado.")
         if not (os.getenv("ANDROID_HOME") or os.getenv("ANDROID_SDK_ROOT")):
             blockers.append("Android SDK nao configurado.")
         if tool_status.get("adb") != "available":

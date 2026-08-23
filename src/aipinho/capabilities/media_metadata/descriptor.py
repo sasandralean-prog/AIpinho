@@ -9,7 +9,15 @@ from aipinho.schemas.artifacts.contract_perception import ObservationCapability
 from aipinho.schemas.common.base import AIpinhoModel
 
 
-MediaMetadataBackendStatus = Literal["available", "unavailable", "partial", "test_only", "disabled"]
+MediaMetadataBackendStatus = Literal[
+    "available",
+    "unavailable",
+    "executable_but_unusable",
+    "version_or_probe_error",
+    "partial",
+    "test_only",
+    "disabled",
+]
 MediaMetadataBackendType = Literal["python_library", "external_cli", "native_minimal", "fake"]
 
 
@@ -77,6 +85,9 @@ class MediaMetadataBackendDescriptor(AIpinhoModel):
     requires_python_dependency: bool = False
     dependency_name: str | None = None
     dependency_version: str | None = None
+    resolved_executable_path: str | None = None
+    environment_reason_code: str | None = None
+    environment_message: str | None = None
     confidence_profile: dict[str, Any] = Field(default_factory=dict)
     limitations: list[str] = Field(default_factory=list)
     status: MediaMetadataBackendStatus = "unavailable"

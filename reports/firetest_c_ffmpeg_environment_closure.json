@@ -1,0 +1,119 @@
+{
+  "contract_changes": [
+    "Added deterministic media CLI discovery/version contract for ffmpeg and ffprobe.",
+    "Expanded media backend statuses: available, unavailable, executable_but_unusable, version_or_probe_error.",
+    "FFprobe backend records resolved executable path/version and uses resolved executable for subprocess argv with shell=False.",
+    "Media metadata payload now exposes media_environment with ffmpeg/ffprobe state.",
+    "PinhoForge hardware profiler now includes ffprobe and media readiness requires ffmpeg+ffprobe.",
+    "Artifact runtime preserves compile_only observer-deferred semantics when FFprobe availability makes media capability configured."
+  ],
+  "ffmpeg": {
+    "path": "C:\\Users\\rafae\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffmpeg.exe",
+    "version_result": {
+      "argv": [
+        "C:\\Users\\rafae\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffmpeg.exe",
+        "-version"
+      ],
+      "returncode": 0,
+      "stderr_first_line": "",
+      "stdout_first_line": "ffmpeg version 9.0-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers"
+    }
+  },
+  "ffprobe": {
+    "path": "C:\\Users\\rafae\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffprobe.exe",
+    "version_result": {
+      "argv": [
+        "C:\\Users\\rafae\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0-full_build\\bin\\ffprobe.exe",
+        "-version"
+      ],
+      "returncode": 0,
+      "stderr_first_line": "",
+      "stdout_first_line": "ffprobe version 9.0-full_build-www.gyan.dev Copyright (c) 2007-2026 the FFmpeg developers"
+    }
+  },
+  "generated_at": "2026-08-23T18:49:58.433392+00:00",
+  "installation": {
+    "current_shell_path_discovery": "where.exe ffmpeg/ffprobe failed until shell/env refresh",
+    "installed_version": "9.0",
+    "installer_hash_verified_by_winget": true,
+    "mechanism": "winget",
+    "package_id": "Gyan.FFmpeg",
+    "persistent_user_path_contains_package": true,
+    "source": "winget"
+  },
+  "mission_id": "FIRETEST_C_FFMPEG_ENVIRONMENT_CLOSURE",
+  "real_media_fixture": {
+    "container": "wav",
+    "duration": "1.000000",
+    "ffprobe_returncode": 0,
+    "path": "reports\\firetest_c_media_fixture\\sine.wav",
+    "sha256": "d74a5bc0d070b17330bc5d14643c33fd8feb5326638c0ddf161dc32c362e6f7b",
+    "size_bytes": 88278,
+    "streams": [
+      {
+        "avg_frame_rate": "0/0",
+        "bit_rate": "705600",
+        "bits_per_sample": 16,
+        "channels": 1,
+        "codec_long_name": "PCM signed 16-bit little-endian",
+        "codec_name": "pcm_s16le",
+        "codec_tag": "0x0001",
+        "codec_tag_string": "[1][0][0][0]",
+        "codec_type": "audio",
+        "disposition": {
+          "attached_pic": 0,
+          "captions": 0,
+          "clean_effects": 0,
+          "comment": 0,
+          "default": 0,
+          "dependent": 0,
+          "descriptions": 0,
+          "dub": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "karaoke": 0,
+          "lyrics": 0,
+          "metadata": 0,
+          "multilayer": 0,
+          "non_diegetic": 0,
+          "original": 0,
+          "still_image": 0,
+          "timed_thumbnails": 0,
+          "visual_impaired": 0
+        },
+        "duration": "1.000000",
+        "duration_ts": 44100,
+        "index": 0,
+        "initial_padding": 0,
+        "r_frame_rate": "0/0",
+        "sample_fmt": "s16",
+        "sample_rate": "44100",
+        "time_base": "1/44100"
+      }
+    ]
+  },
+  "repo": {
+    "branch": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+    "head": "cb6aca595eb12dd64171c52f7dd779f50ebf2d5c",
+    "origin_main": "cb6aca595eb12dd64171c52f7dd779f50ebf2d5c",
+    "status_short": [
+      "M config/providers/pinhoforge_hardware_profiler.yaml",
+      " M src/aipinho/capabilities/media_metadata/backends/ffprobe_backend.py",
+      " M src/aipinho/capabilities/media_metadata/descriptor.py",
+      " M src/aipinho/capabilities/media_metadata/policy.py",
+      " M src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py",
+      " M src/aipinho/services/pinhoforge_bridge/pinhoforge_hardware_profiler_provider.py",
+      " M tests/unit/test_media_metadata_capability_pack.py",
+      " M tests/unit/test_pinhoforge_bridge.py",
+      "?? reports/firetest_c_media_fixture/",
+      "?? src/aipinho/capabilities/media_metadata/environment.py"
+    ]
+  },
+  "validation": {
+    "compile": "python -m compileall -q src tests -> PASS",
+    "diff_check": "git diff --check -> PASS",
+    "focused": "python -m pytest tests/unit/test_media_metadata_capability_pack.py tests/unit/test_pinhoforge_bridge.py -q -> 82 passed, 1 skipped",
+    "relevant_regression": "python -m pytest tests/unit/test_media_metadata_capability_pack.py tests/unit/test_media_metadata_capability_policy.py tests/unit/test_pinhoforge_bridge.py tests/unit/test_governed_post_compile_observation_execution_stage.py tests/unit/test_contract_driven_perception_service.py -q -> 151 passed, 1 skipped"
+  },
+  "verdict": "FFMPEG_ENVIRONMENT_READY"
+}

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -21,6 +22,15 @@ from aipinho.capabilities.media_metadata.descriptor import (
     RawMediaMetadataField,
     RawMediaMetadataResult,
     media_metadata_capability_descriptor,
+)
+from aipinho.capabilities.media_metadata.environment import (
+    MEDIA_TOOL_STATUS_AVAILABLE,
+    MEDIA_TOOL_STATUS_EXECUTABLE_BUT_UNUSABLE,
+    MEDIA_TOOL_STATUS_UNAVAILABLE,
+    MEDIA_TOOL_STATUS_VERSION_OR_PROBE_ERROR,
+    MediaToolDiscoveryResult,
+    discover_media_tool,
+    media_environment_snapshot,
 )
 from aipinho.capabilities.media_metadata.normalizer import MediaMetadataNormalizer
 from aipinho.capabilities.media_metadata.policy import MediaMetadataCapability
@@ -256,6 +266,165 @@ def test_ffprobe_backend_reports_typed_error_when_cli_is_absent(tmp_path: Path) 
     assert result.errors
     assert result.errors[0].code == "FFPROBE_NOT_AVAILABLE"
     assert result.raw_fields == []
+
+
+def test_media_tool_discovery_reports_available_executable(tmp_path: Path) -> None:
+    executable = tmp_path / "ffprobe.exe"
+    executable.write_text("fake", encoding="utf-8")
+
+    def fake_runner(command, **kwargs):
+        return subprocess.CompletedProcess(command, 0, stdout="ffprobe version 9.0-full_build\n", stderr="")
+
+    result = discover_media_tool(
+        "ffprobe",
+        tool_id="ffprobe",
+        runner=fake_runner,
+        which=lambda _command: str(executable),
+    )
+
+    assert result.status == MEDIA_TOOL_STATUS_AVAILABLE
+    assert result.available is True
+    assert result.version == "9.0-full_build"
+    assert result.resolved_executable_path == str(executable)
+
+
+def test_media_tool_discovery_reports_absent_executable() -> None:
+    result = discover_media_tool("ffprobe", tool_id="ffprobe", which=lambda _command: None)
+
+    assert result.status == MEDIA_TOOL_STATUS_UNAVAILABLE
+    assert result.reason_code == "FFPROBE_NOT_AVAILABLE"
+    assert result.available is False
+
+
+def test_media_tool_discovery_reports_invalid_resolved_executable(tmp_path: Path) -> None:
+    directory = tmp_path / "ffprobe"
+    directory.mkdir()
+
+    result = discover_media_tool("ffprobe", tool_id="ffprobe", which=lambda _command: str(directory))
+
+    assert result.status == MEDIA_TOOL_STATUS_EXECUTABLE_BUT_UNUSABLE
+    assert result.reason_code == "FFPROBE_EXECUTABLE_INVALID"
+    assert result.available is False
+
+
+def test_media_tool_discovery_reports_nonzero_version_probe(tmp_path: Path) -> None:
+    executable = tmp_path / "ffprobe.exe"
+    executable.write_text("fake", encoding="utf-8")
+
+    def fake_runner(command, **kwargs):
+        return subprocess.CompletedProcess(command, 2, stdout="", stderr="boom")
+
+    result = discover_media_tool(
+        "ffprobe",
+        tool_id="ffprobe",
+        runner=fake_runner,
+        which=lambda _command: str(executable),
+    )
+
+    assert result.status == MEDIA_TOOL_STATUS_VERSION_OR_PROBE_ERROR
+    assert result.reason_code == "FFPROBE_VERSION_OR_PROBE_ERROR"
+    assert result.available is False
+
+
+def test_media_tool_discovery_reports_malformed_version_probe(tmp_path: Path) -> None:
+    executable = tmp_path / "ffprobe.exe"
+    executable.write_text("fake", encoding="utf-8")
+
+    def fake_runner(command, **kwargs):
+        return subprocess.CompletedProcess(command, 0, stdout="not a version banner\n", stderr="")
+
+    result = discover_media_tool(
+        "ffprobe",
+        tool_id="ffprobe",
+        runner=fake_runner,
+        which=lambda _command: str(executable),
+    )
+
+    assert result.status == MEDIA_TOOL_STATUS_VERSION_OR_PROBE_ERROR
+    assert result.reason_code == "FFPROBE_VERSION_OR_PROBE_ERROR"
+    assert result.available is False
+
+
+def test_ffprobe_descriptor_distinguishes_unusable_executable(monkeypatch, tmp_path: Path) -> None:
+    executable = tmp_path / "ffprobe.exe"
+    executable.write_text("fake", encoding="utf-8")
+
+    def fake_discover(*args, **kwargs):
+        return MediaToolDiscoveryResult(
+            tool_id="ffprobe",
+            command="ffprobe",
+            status=MEDIA_TOOL_STATUS_EXECUTABLE_BUT_UNUSABLE,
+            resolved_executable_path=str(executable),
+            reason_code="FFPROBE_VERSION_TIMEOUT",
+            message="timeout",
+        )
+
+    monkeypatch.setattr("aipinho.capabilities.media_metadata.backends.ffprobe_backend.discover_media_tool", fake_discover)
+
+    descriptor = FFprobeMediaMetadataBackend().descriptor()
+
+    assert descriptor.status == "executable_but_unusable"
+    assert descriptor.environment_reason_code == "FFPROBE_VERSION_TIMEOUT"
+    assert descriptor.resolved_executable_path == str(executable)
+
+
+def test_ffprobe_backend_uses_discovered_executable(monkeypatch, tmp_path: Path) -> None:
+    sample = tmp_path / "sample.m4a"
+    sample.write_bytes(b"fake media")
+    executable = tmp_path / "bin" / "ffprobe.exe"
+    executable.parent.mkdir()
+    executable.write_text("fake", encoding="utf-8")
+    commands: list[list[str]] = []
+
+    def fake_discover(*args, **kwargs):
+        return MediaToolDiscoveryResult(
+            tool_id="ffprobe",
+            command="ffprobe",
+            status=MEDIA_TOOL_STATUS_AVAILABLE,
+            resolved_executable_path=str(executable),
+            version="9.0",
+            version_first_line="ffprobe version 9.0",
+        )
+
+    def fake_run(command, **kwargs):
+        commands.append(list(command))
+        return subprocess.CompletedProcess(
+            command,
+            0,
+            stdout='{"format":{"format_name":"mov,mp4,m4a","duration":"2.5"},"streams":[{"codec_type":"audio","codec_name":"aac","channels":2}]}',
+            stderr="",
+        )
+
+    monkeypatch.setattr("aipinho.capabilities.media_metadata.backends.ffprobe_backend.discover_media_tool", fake_discover)
+    monkeypatch.setattr("aipinho.capabilities.media_metadata.backends.ffprobe_backend.subprocess.run", fake_run)
+
+    result = FFprobeMediaMetadataBackend().probe(file_path=str(sample), entity_ref={"entity_id": "entity_1"})
+
+    assert not result.errors
+    assert commands[0][0] == str(executable)
+    assert result.provenance["shell"] is False
+    fields = {field.canonical_key: field.normalized_value for field in result.raw_fields}
+    assert fields["container"] == "mov"
+    assert fields["codec"] == "aac"
+    assert fields["duration"] == "2.5"
+
+
+def test_media_environment_snapshot_reports_ffmpeg_and_ffprobe() -> None:
+    snapshot = media_environment_snapshot()
+
+    assert set(snapshot) == {"ffmpeg", "ffprobe"}
+    assert snapshot["ffmpeg"]["status"] in {
+        MEDIA_TOOL_STATUS_AVAILABLE,
+        MEDIA_TOOL_STATUS_UNAVAILABLE,
+        MEDIA_TOOL_STATUS_EXECUTABLE_BUT_UNUSABLE,
+        MEDIA_TOOL_STATUS_VERSION_OR_PROBE_ERROR,
+    }
+    assert snapshot["ffprobe"]["status"] in {
+        MEDIA_TOOL_STATUS_AVAILABLE,
+        MEDIA_TOOL_STATUS_UNAVAILABLE,
+        MEDIA_TOOL_STATUS_EXECUTABLE_BUT_UNUSABLE,
+        MEDIA_TOOL_STATUS_VERSION_OR_PROBE_ERROR,
+    }
 
 
 def test_native_minimal_backend_detects_mp4_container_duration_and_codec_from_headers(tmp_path: Path) -> None:
@@ -715,6 +884,10 @@ def test_media_metadata_policy_selects_primary_and_records_fallback_semantics(tm
     payload = capability.payload_for_boundary(file_path=str(sample), entity_ref={"entity_id": "entity_1"})
     summary = payload["media_metadata_capability"]
 
+    assert payload["media_environment"]["scope"] == "media_metadata"
+    assert payload["media_environment"]["ffmpeg_required_for_media_environment"] is True
+    assert payload["media_environment"]["ffprobe_required_for_metadata_backend"] is True
+    assert set(payload["media_environment"]["tools"]) == {"ffmpeg", "ffprobe"}
     assert summary["primary_backend"] == "mutagen"
     assert summary["selected_backend"] == "mutagen"
     assert summary["attempted_backends"] == ["mutagen", "ffprobe", "native_minimal"]

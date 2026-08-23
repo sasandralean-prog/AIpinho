@@ -34,6 +34,7 @@ from aipinho.services.artifacts.artifact_semantic_contract_service import Artifa
 from aipinho.services.artifacts.artifact_runtime_service import ArtifactRuntimeService
 from aipinho.services.artifacts.contract_driven_perception_service import ContractDrivenPerceptionService
 from aipinho.services.artifacts.governed_observation_execution_stage_service import (
+    GovernedObservationExecutionStageResult,
     GovernedObservationExecutionStageService,
 )
 from aipinho.services.artifacts.media_inventory_row_taxonomy_service import MediaInventoryRowTaxonomyService
@@ -2925,23 +2926,44 @@ class ReadonlyAnalysisArtifactRuntimeService:
             payload_refs=self.runtime.store.payload_refs,
             run_id=render_run_id,
         )
-        execution_stage = self.post_compile_observation_execution.execute(
-            observation_plan=perception_result.observation_plan,
-            selected_entities=execution_selected_entities,
-            evidence_checkpoint_sink=evidence_checkpoint_store,
-            checkpoint=lambda stage, metrics: self._check_artifact_render_checkpoint(
-                render_run_id,
-                phase_started,
-                artifact_started,
-                stage=stage,
-                logical_path=logical_path,
-                rows_rendered=self._int_or_none(metrics.get("files_attempted") or metrics.get("physical_probe_count")),
-                rows_expected=self._int_or_none(metrics.get("files_planned") or metrics.get("dedup_group_count"))
-                or selection_result.selected_rows,
-                cells_rendered=self._int_or_none(metrics.get("goals_satisfied") or metrics.get("grouped_observation_task_count")),
-                extra_metadata=dict(metrics or {}),
-            ),
-        )
+        if perception_contract["perception_compile_policy"].get("execute_observers") is False:
+            execution_stage = GovernedObservationExecutionStageResult(
+                observation_execution_results=[],
+                physical_groups=[],
+                blocked_reason_code=None,
+                telemetry={
+                    "execution_status": "deferred",
+                    "deferred_by_compile_policy": True,
+                    "physical_probe_count": 0,
+                    "files_attempted": 0,
+                    "files_planned": 0,
+                    "media_metadata_capability": {
+                        "status": "configured_but_deferred",
+                        "configured": True,
+                        "available": True,
+                        "execution_status": "deferred",
+                        "files_attempted": 0,
+                    },
+                },
+            )
+        else:
+            execution_stage = self.post_compile_observation_execution.execute(
+                observation_plan=perception_result.observation_plan,
+                selected_entities=execution_selected_entities,
+                evidence_checkpoint_sink=evidence_checkpoint_store,
+                checkpoint=lambda stage, metrics: self._check_artifact_render_checkpoint(
+                    render_run_id,
+                    phase_started,
+                    artifact_started,
+                    stage=stage,
+                    logical_path=logical_path,
+                    rows_rendered=self._int_or_none(metrics.get("files_attempted") or metrics.get("physical_probe_count")),
+                    rows_expected=self._int_or_none(metrics.get("files_planned") or metrics.get("dedup_group_count"))
+                    or selection_result.selected_rows,
+                    cells_rendered=self._int_or_none(metrics.get("goals_satisfied") or metrics.get("grouped_observation_task_count")),
+                    extra_metadata=dict(metrics or {}),
+                ),
+            )
         if execution_stage.observation_execution_results:
             try:
                 perception_result = self.perception.materialize_execution_results(

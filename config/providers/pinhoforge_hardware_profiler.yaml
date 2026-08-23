@@ -30,6 +30,10 @@ provider:
       display_name: FFmpeg
       command: ffmpeg
       used_by_capabilities: [conversion_readiness, media_readiness]
+    - tool_id: ffprobe
+      display_name: FFprobe
+      command: ffprobe
+      used_by_capabilities: [media_metadata, media_readiness]
     - tool_id: tesseract
       display_name: Tesseract
       command: tesseract
@@ -66,4 +70,3 @@ provider:
       display_name: Node.js
       command: node
       used_by_capabilities: [development_readiness]
-

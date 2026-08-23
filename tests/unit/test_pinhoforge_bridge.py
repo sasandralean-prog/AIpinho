@@ -321,6 +321,16 @@ def test_hardware_profiler_blocks_environment_mutation() -> None:
 
 
 def test_missing_ffmpeg_marks_conversion_degraded(monkeypatch) -> None:
+    def fake_discover(command: str, *, tool_id: str, **kwargs):
+        from aipinho.capabilities.media_metadata.environment import MediaToolDiscoveryResult
+
+        return MediaToolDiscoveryResult(
+            tool_id=tool_id,
+            command=command,
+            status="unavailable",
+            reason_code=f"{tool_id.upper()}_NOT_AVAILABLE",
+        )
+
     def fake_which(name: str) -> str | None:
         mapping = {
             "java": "C:\\Tools\\java.exe",
@@ -329,6 +339,7 @@ def test_missing_ffmpeg_marks_conversion_degraded(monkeypatch) -> None:
         }
         return mapping.get(name)
 
+    monkeypatch.setattr("aipinho.services.pinhoforge_bridge.pinhoforge_hardware_profiler_provider.discover_media_tool", fake_discover)
     monkeypatch.setattr("aipinho.services.pinhoforge_bridge.pinhoforge_hardware_profiler_provider.shutil.which", fake_which)
     monkeypatch.delenv("ANDROID_HOME", raising=False)
     monkeypatch.delenv("ANDROID_SDK_ROOT", raising=False)
