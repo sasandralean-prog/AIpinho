@@ -471,12 +471,72 @@ class PublicRuntimeAPI:
         telemetry: RuntimeTelemetryService | None = None,
         execution_bridge: PublicRuntimeExecutionBridge | None = None,
     ) -> None:
-        self.gateway = gateway or ExternalGateway()
-        self.contracts = contracts or PublicContractRegistryService()
-        self.versions = versions or ApiVersionManager()
-        self.compatibility = compatibility or ApiCompatibilityLayer()
-        self.telemetry = telemetry or RuntimeTelemetryService()
-        self.execution_bridge = execution_bridge or PublicRuntimeExecutionBridge()
+        self._gateway = gateway
+        self._contracts = contracts
+        self._versions = versions
+        self._compatibility = compatibility
+        self._telemetry = telemetry
+        self._execution_bridge = execution_bridge
+
+    @property
+    def gateway(self) -> ExternalGateway:
+        if self._gateway is None:
+            self._gateway = ExternalGateway()
+        return self._gateway
+
+    @gateway.setter
+    def gateway(self, value: ExternalGateway | None) -> None:
+        self._gateway = value
+
+    @property
+    def contracts(self) -> PublicContractRegistryService:
+        if self._contracts is None:
+            self._contracts = PublicContractRegistryService()
+        return self._contracts
+
+    @contracts.setter
+    def contracts(self, value: PublicContractRegistryService | None) -> None:
+        self._contracts = value
+
+    @property
+    def versions(self) -> ApiVersionManager:
+        if self._versions is None:
+            self._versions = ApiVersionManager()
+        return self._versions
+
+    @versions.setter
+    def versions(self, value: ApiVersionManager | None) -> None:
+        self._versions = value
+
+    @property
+    def compatibility(self) -> ApiCompatibilityLayer:
+        if self._compatibility is None:
+            self._compatibility = ApiCompatibilityLayer()
+        return self._compatibility
+
+    @compatibility.setter
+    def compatibility(self, value: ApiCompatibilityLayer | None) -> None:
+        self._compatibility = value
+
+    @property
+    def telemetry(self) -> RuntimeTelemetryService:
+        if self._telemetry is None:
+            self._telemetry = RuntimeTelemetryService()
+        return self._telemetry
+
+    @telemetry.setter
+    def telemetry(self, value: RuntimeTelemetryService | None) -> None:
+        self._telemetry = value
+
+    @property
+    def execution_bridge(self) -> PublicRuntimeExecutionBridge:
+        if self._execution_bridge is None:
+            self._execution_bridge = PublicRuntimeExecutionBridge()
+        return self._execution_bridge
+
+    @execution_bridge.setter
+    def execution_bridge(self, value: PublicRuntimeExecutionBridge | None) -> None:
+        self._execution_bridge = value
 
     def handle(self, request: PublicRuntimeRequest) -> PublicRuntimeResponse:
         public_contract = self.contracts.for_operation(request.operation)
