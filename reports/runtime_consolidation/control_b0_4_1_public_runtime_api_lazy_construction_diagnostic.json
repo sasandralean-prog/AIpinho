@@ -1,0 +1,142 @@
+{
+  "mission_id": "CONTROL_B0.4.1",
+  "repository": "sasandralean-prog/AIpinho",
+  "branch": "agent/codex/b0-4-1-public-runtime-api-lazy-construction",
+  "base_preserved_head": "8f04a24f465a44e0789243c38ce11631025c1d29",
+  "final_head": "reported_after_commit",
+  "origin_main_at_start": "2fe4cdb32ecc82b1631572e0528f58c7aae2bb82",
+  "d1_verdict": "CONTROL_B0_4_1_D1_EAGER_CONSTRUCTION_CAUSAL_MODEL_CONFIRMED",
+  "corrective_applied": true,
+  "source_changes": [
+    {
+      "path": "src/aipinho/services/public_runtime_api_service.py",
+      "change": "PublicRuntimeAPI dependencies are now constructed lazily per instance through cached properties while preserving explicit dependency injection."
+    }
+  ],
+  "d1_constructor_injection_matrix_ms": {
+    "full_real_public_runtime_api_avg": 3930.637,
+    "stub_execution_bridge_avg": 0.055,
+    "stub_gateway_avg": 3989.05,
+    "stub_telemetry_avg": 3962.791,
+    "stub_gateway_telemetry_execution_bridge_avg": 0.004
+  },
+  "d1_execution_bridge_bisection_ms": {
+    "full_real_bridge_avg": 3965.615,
+    "stub_readonly_real_task_avg": 1579.534,
+    "real_readonly_stub_task_avg": 2326.265,
+    "both_stub_avg": 0.002
+  },
+  "d1_readonly_related_ms": {
+    "readonly_analysis_artifact_runtime_avg": 2291.973,
+    "task_runtime_service_avg": 1695.824
+  },
+  "method_dependency_map": {
+    "version": [
+      "ApiVersionManager"
+    ],
+    "contracts_view": [
+      "PublicContractRegistryService"
+    ],
+    "modules": [
+      "ModuleLoader"
+    ],
+    "runtime": [
+      "RuntimeKernel"
+    ],
+    "handle": [
+      "PublicContractRegistryService",
+      "ApiVersionManager",
+      "ApiCompatibilityLayer",
+      "ExternalGateway",
+      "PublicRuntimeExecutionBridge",
+      "RuntimeTelemetryService"
+    ]
+  },
+  "post_patch_constructor_ms": {
+    "samples": [
+      0.002600019797682762,
+      0.0005999754648655653,
+      0.000400003045797348,
+      0.000400003045797348,
+      0.000300002284348011,
+      0.000500003807246685,
+      0.000300002284348011,
+      0.001100008375942707,
+      0.000500003807246685,
+      0.000300002284348011
+    ],
+    "average": 0.0007000024197623134,
+    "max": 0.002600019797682762
+  },
+  "live_endpoint_timing_after_patch": {
+    "/docs": {
+      "status": 200,
+      "tcp_connect_ms": 15.775,
+      "first_byte_ms": 16.849,
+      "total_ms": 16.997
+    },
+    "/openapi.json": {
+      "status": 200,
+      "tcp_connect_ms": 14.617,
+      "first_byte_ms": 735.708,
+      "total_ms": 753.856
+    },
+    "/api/v1/version": {
+      "status": 200,
+      "tcp_connect_ms": 21.278,
+      "first_byte_ms": 24.032,
+      "total_ms": 24.095
+    },
+    "/api/v1/contracts": {
+      "status": 200,
+      "tcp_connect_ms": 0.807,
+      "first_byte_ms": 2.46,
+      "total_ms": 2.581
+    },
+    "/api/v1/modules": {
+      "status": 200,
+      "tcp_connect_ms": 0.489,
+      "first_byte_ms": 2.168,
+      "total_ms": 2.297
+    },
+    "/api/v1/runtime": {
+      "status": 200,
+      "tcp_connect_ms": 7.769,
+      "first_byte_ms": 9.689,
+      "total_ms": 9.805
+    }
+  },
+  "governed_lifecycle_validation": {
+    "restart_operation_id": "op_b041_restart_after_lazy_patch",
+    "restart_status": "completed",
+    "old_pid": 29420,
+    "new_pid": 13228,
+    "after_lifecycle_state": "RUNNING_HEALTHY",
+    "endpoint_health_ok": true,
+    "readiness_timeout_changed": false
+  },
+  "background_queue": {
+    "AIPINHO_BACKGROUND_TASK_QUEUE": "absent",
+    "queue_policy_changed": false
+  },
+  "control_authority": {
+    "broadened": false,
+    "firetest_authority_added": false,
+    "timeout_inflation_used": false,
+    "queue_disabled": false
+  },
+  "tests": {
+    "python -m compileall -q src tests": "PASS",
+    "python -m pytest tests/unit/test_public_runtime_api_lazy_construction.py -q": "PASS, 5 passed",
+    "python -m pytest tests/unit/test_public_runtime_api_ex3.py -q": "PASS, 9 passed",
+    "python -m pytest tests/unit/test_public_analyze_response_boundary.py tests/unit/test_public_runtime_chat_route_boundary.py -q": "PASS, 5 passed",
+    "git diff --check": "PASS"
+  },
+  "remaining_limitations": [
+    "The runtime was restarted from a dirty worktree before commit because the live acceptance needed to validate the uncommitted corrective code.",
+    "The background queue remains enabled; a long-running historical task remains a separate diagnostic concern and was not modified.",
+    "Active Uvicorn log files could not be hashed with Get-FileHash because the process held them open."
+  ],
+  "verdict": "CONTROL_B0_4_1_PUBLIC_RUNTIME_API_READINESS_LATENCY_CLOSED_READY_FOR_REVIEW",
+  "updated_b0_4_lifecycle_verdict": "CONTROL_B0_4_GOVERNED_RUNTIME_LIFECYCLE_READY_FOR_REVIEW"
+}
