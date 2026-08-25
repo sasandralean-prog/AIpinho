@@ -97,6 +97,70 @@ sync main
 
 Never use force push or destructive reset as a convenience for reconciling validated history.
 
+## External governed Control Plane
+
+AIpinho has a separate operations repository:
+
+`sasandralean-prog/AIpinho-FireTest-Control`
+
+Its job is to bridge GitHub with the local machine through named governed capabilities and structured evidence. It is not a replacement for the runtime architecture and it is not permission to turn repository text into a terminal.
+
+Current proven loop after B1.0-D / B1.0-E / B1.0-E.1:
+
+```text
+allowlisted operation file
+→ GitHub Actions workflow_dispatch
+→ persistent self-hosted runner aipinho-pc
+→ governed dispatcher
+→ named capability
+→ result.json
+→ execution_manifest.json
+→ GitHub artifact
+→ final truthful verdict
+→ optional rerun with explicit attempt provenance
+```
+
+The runner is an official Windows service under `\.\aipinho-runner`, startup `Automatic`, status `Running`.
+
+The current Control surface can perform bounded repository observation/synchronization, static governed test profiles/quick validation, runtime lifecycle operations, and Phase 1 diagnostics. Every operation remains constrained by its capability schema, target allowlist, expected provenance, timeout/output budget, and evidence requirements.
+
+### Control Plane truth rules
+
+- Control evidence proves what the Control Plane requested, executed, observed, or packaged at that scope.
+- Control evidence does not silently override AIpinho production code/config or validated runtime evidence.
+- `repository.pull_ff_only` may fast-forward an expected clean branch; divergence must fail and become evidence rather than trigger hidden merge/rebase/reset.
+- GitHub rerun is another attempt of the same workflow request, not permission to update source or repair provenance behind the scenes.
+- Read/download an attempt's evidence before rerunning when historical artifact retention matters.
+- Runner/service configuration is operations infrastructure; it does not grant new runtime or FireTest authority.
+
+### Current Control limitations
+
+The merged system does **not** currently authorize:
+
+- generic shell;
+- arbitrary argv/pytest/path;
+- arbitrary dependency installation;
+- direct ChatGPT-created operation submission/start;
+- governed FireTest execution from Lúcio;
+- authenticated `lucio.shell`.
+
+Those capabilities must be admitted explicitly rather than inferred from trust or convenience.
+
+### Agreed Control roadmap
+
+```text
+F   -> Governed Operation Submission / start loop
+F.1 -> Lúcio-operated bounded FireTest profiles
+G   -> Lúcio Authenticated Control Channel
+G.1 -> authenticated lucio.shell authority
+```
+
+`F` should close the missing start/submission leg without broadening the operation schema into free-form commands.
+
+`F.1` should expose FireTest through static bounded profiles. FireTest commonly needs around ten minutes, so its planned normal execution ceiling is about 15 minutes rather than inheriting the short generic workflow budget.
+
+`G`/`G.1` should treat broad authority as an authentication problem: signed operation hash, replay protection/nonce, short expiry, provenance, and audit evidence. A string claiming `requested_by=Lucio`, a model name, or a conversation ID is informative provenance only unless backed by a trustworthy cryptographic attestation path.
+
 ## Engineering-agent infrastructure
 
 Repository engineering assistants should use:
@@ -118,7 +182,16 @@ agent/<agent>/<task>
 ```
 
 The intended workflow is one active engineering agent and one active task
-branch at a time.
+branch at a time unless explicit coordination/leases permit parallel non-overlapping work.
+
+## Shared-resource coordination
+
+When work touches shared Control/runtime/FireTest resources, use the canonical coordination surfaces in `AIpinho-FireTest-Control`:
+
+1. `COMMUNICATION_SYNC_LUCIO.md`
+2. `COMMUNICATION_SYNC.md`
+
+Read them in that order. Logical locks coordinate overlapping work, but a lock never grants an operation that the current mission/capability did not already authorize.
 
 ## Local overlay
 
@@ -141,6 +214,8 @@ When Rafa is operating from a phone:
 - avoid dozens of microdiffs when one bounded replacement is clearer;
 - do not use full-file replacement for large production code unless the whole file has been verified.
 
+When the governed Control Plane can perform the operation safely, prefer that evidence-producing path over requiring physical access to the PC. If the Control Plane lacks the required authority, state that boundary instead of simulating it with a broader mechanism.
+
 ## Issue schema
 
 Prefer separate dimensions:
@@ -161,3 +236,5 @@ A proven bug is not automatically a resolved bug.
 ## End-of-wave
 
 State exact verdict, FireTest status, root cause, changes, proof level, open P0/P1/P2, terminality, SpeakerTruth, next frontier, and Git branch/commit/push state.
+
+For Control Plane work, also state operation/run IDs, attempt, artifact/provenance evidence, authority not granted, and whether any shared lock was acquired/released.
