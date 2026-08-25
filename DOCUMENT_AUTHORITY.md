@@ -2,69 +2,71 @@
 
 Status: `CURRENT_AUTHORITY_INDEX`
 
-Baseline inspected: `main` at `d993da01eb6022772969b6f7168bb3b9aa06c9e1`
+Baseline inspected: AIpinho `main` through `6d3d3966e2f21b93632ff0a7ca5a6dbfdb0ff732`
 
-Generated: 2026-08-19
+External Control baseline inspected: `sasandralean-prog/AIpinho-FireTest-Control` `main` at `fe9daa384ff83c0c417677f07d4bb317301f812e`
+
+Updated: 2026-08-25
 
 ## Purpose
 
-This file routes readers to the right source. It does not create a new runtime authority and does not promote documents merely by listing them.
+This file routes readers to the right source and defines how conflicting evidence should be interpreted. It does not create runtime authority merely by naming a document, agent, repository, workflow, model, or conversation.
 
-Core rule:
+Core rules:
 
 > Filename does not grant authority.
 
+> A lock does not grant capability authority.
+
+> A claimed identity string does not authenticate the claimant.
+
+> Control Plane evidence proves the bounded Control operation it records; it does not silently become AIpinho runtime truth.
+
 A document named `Final`, `Canonical`, `Current`, `MasterPlan`, or `Architecture` must still be interpreted through its internal status, date, implementation evidence, and agreement with current code/config/tests.
 
-## Authority order
+## Authority order for AIpinho runtime truth
 
-When sources disagree, use this order:
+When sources disagree about what AIpinho currently does, use this order:
 
-1. current production code and canonical contracts/config;
-2. validated public runtime evidence;
-3. current issue registers and wave reports;
+1. current AIpinho production code and canonical contracts/config actually used by the path;
+2. validated public/live runtime evidence for the relevant scope;
+3. current issue registers and wave reports tied to that evidence;
 4. architecture documents explicitly marked current/canonical and corroborated by implementation;
 5. current repository/context orientation documents;
 6. generated snapshots such as `genome/`;
 7. historical architecture, audits, release notes, and `archaeology/`;
-8. conversation-derived context and planning;
+8. conversation-derived context/planning;
 9. speculative ideas.
 
 No lower layer may silently override a higher one.
 
-## Class A — Runtime authority
+The external Control Plane is a parallel operational authority domain. Its signed/structured results may prove what was requested, executed, observed, packaged, or returned by the Control Plane, but runtime claims still resolve through the hierarchy above.
 
-These sources define or implement current behavior. They remain subject to tests and observed runtime evidence.
+## Class A — AIpinho runtime authority
+
+These sources define or implement current AIpinho behavior. They remain subject to tests and observed runtime evidence.
 
 | Source | Role | Authority note |
 |---|---|---|
 | `src/aipinho/` | Production implementation | Highest repository authority for implemented behavior. |
 | `config/` | Active policy, registry, capability, runtime, and provider configuration | Authoritative for configured state when loaded by current code. Configuration existence alone does not prove successful execution. |
 | `src/aipinho/schemas/` | Runtime/public contracts | Authoritative for current accepted/emitted shapes when used by live paths. |
-| `AIpinho_Canonical_Flow.md` | Canonical runtime flow and ownership boundaries | Status is `CANONICAL_FLOW_DEFINED`; use as the current architectural control document, but resolve implementation details against code/config/tests. |
-| `config/agents/agent_registry.yaml` | Configured agent identities/capabilities | Current registry authority. Enabled/configured does not equal end-to-end public validation. |
+| `AIpinho_Canonical_Flow.md` | Canonical runtime flow and ownership boundaries | Architectural control document; implementation details still resolve against code/config/tests/evidence. |
+| `config/agents/agent_registry.yaml` | Configured internal/external-agent identities and capabilities | Enabled/configured does not equal end-to-end public validation. |
 | `config/agents/delegation_policy.yaml` | Governed delegation routes and bounds | Current configured route authority. |
-| `config/agents/hybrid_execution_policy.yaml` | Codex modes and interpretation-island policy | Current configured hybrid-execution authority. |
+| `config/agents/hybrid_execution_policy.yaml` | Hybrid/Codex interpretation-island policy | Current configured hybrid-execution authority. |
 
-## Class B — Validated current evidence
+## Class B — Validated runtime evidence
 
-These sources prove bounded observations at their recorded scope. They do not automatically generalize beyond that scope.
+Validated public/live evidence proves bounded observations at the recorded scope. It does not automatically generalize beyond that scope.
 
 | Source | Role | Authority note |
 |---|---|---|
-| `reports/runtime_consolidation/firetest5_h1c0_r2_18_*` | R2.18 public diagnostics, A+B comparison, evidence sufficiency, identity coverage, and issue state | Current validated R2.18 evidence. |
-| `reports/runtime_consolidation/firetest5_h1c0_r2_exit_assessment.md` | R2 exit assessment | Supports `H1C0_R2_READY_FOR_R3`. |
-| `reports/runtime_consolidation/firetest5_h1c0_r2_consolidated_issue_register.json` | Consolidated R2 issue state | Current for the R2 exit scope. |
-| Tests tied to the implemented boundary | Unit/regression proof | Proof scope must be stated; unit proof is not public proof. |
+| `reports/runtime_consolidation/` wave reports | Runtime diagnostics, comparisons, issue state, verdicts | Interpret by exact branch/commit/run/scope. Newer evidence may supersede older evidence only where scope overlaps. |
+| Issue registers tied to the active wave | Problem/evidence/resolution state | Keep evidence status separate from resolution status. |
+| Tests tied to an implemented boundary | Unit/regression proof | Unit proof is not automatically public/live proof. |
 
-Current validated conclusion:
-
-```text
-H1C0.R2 = H1C0_R2_READY_FOR_R3
-FireTest 5 = NOT_READY
-current blocked reason = MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT
-next runtime frontier = H1C0.R3.01
-```
+The Context Pack currently retains the B3.5 runtime checkpoint as continuity context. That recorded pointer must not be assumed current without re-reading Git/code/reports.
 
 ## Class C — Current orientation and continuity
 
@@ -72,101 +74,170 @@ These documents summarize current state. They are deliberately subordinate to Cl
 
 | Source | Role | Authority note |
 |---|---|---|
-| `README.md` | Public repository orientation and current frontier | Must remain aligned with validated reports and `main`. |
+| `README.md` | Public repository orientation/current frontier | Must stay aligned with validated reports and `main`; not runtime proof by itself. |
 | `AIpinho_context_pack/README_CONTEXT_PACK.md` | Context Pack entrypoint | Current continuity entrypoint. |
 | `AIpinho_context_pack/docs/context/00_START_HERE.md` | Read order and authority rules | Current handoff orientation. |
-| `AIpinho_context_pack/docs/context/05_RUNTIME_ARCHITECTURE_MAP.md` | Two-layer architectural orientation and agent taxonomy | Orientation only; code/config and canonical flow win. |
-| `AIpinho_context_pack/docs/context/09_CURRENT_FRONTIER.md` | Current project/runtime frontier | Must be updated when the validated frontier changes. |
-| `AIpinho_context_pack/docs/context/current_state.json` | Machine-readable continuity state | Current state pointer, not runtime state storage. |
+| `AIpinho_context_pack/docs/context/03_ENGINEERING_WORKFLOW.md` | Engineering/control workflow continuity | Process guidance; not runtime implementation authority. |
+| `AIpinho_context_pack/docs/context/05_RUNTIME_ARCHITECTURE_MAP.md` | Runtime architectural orientation and agent taxonomy | Orientation only; code/config/canonical flow win. |
+| `AIpinho_context_pack/docs/context/09_CURRENT_FRONTIER.md` | Recorded runtime frontier | Must be reconciled when newer validated runtime evidence changes the frontier. |
+| `AIpinho_context_pack/docs/context/11_HANDOFF_PROTOCOL.md` | Lúcio/agent continuity protocol | Handoff guidance; never substitutes for current repository inspection. |
+| `AIpinho_context_pack/docs/context/current_state.json` | Machine-readable continuity state | Current-state pointer, not runtime state storage. |
 
 ## Class C2 — Engineering-agent infrastructure
 
-These documents guide external engineering assistants working ON AIpinho. They
-do not define runtime behavior and do not modify AIpinho internal runtime-agent
-semantics.
+These documents guide external engineering assistants working **ON** AIpinho. They do not define AIpinho runtime behavior and do not modify internal runtime-agent semantics.
 
 | Source | Role | Authority note |
 |---|---|---|
-| `AGENTS.md` | Canonical engineering instruction entrypoint | Shared constitution/map for repository engineering agents. Subordinate to runtime code/config/evidence for runtime truth. |
-| `.agents/skills/` | Reusable engineering workflow procedures | Portable skill layer for engineering tasks; not runtime skills or runtime agents. |
-| `docs/engineering_agents/` | Detailed engineering operating policy | Git, platform, validation-authority, local-overlay, and handoff policy for repository work. |
-| `replit.md` | Thin Replit adapter | Points Replit Agent back to `AGENTS.md`; not a second constitution. |
+| `AGENTS.md` | Canonical repository-local engineering instruction entrypoint | Shared constitution/map for repository engineering agents. Subordinate to runtime code/config/evidence for runtime truth. |
+| `.agents/skills/` | Reusable engineering workflow procedures | Portable engineering skill layer; not runtime skills or runtime agents. |
+| `docs/engineering_agents/` | Detailed engineering operating policy | Git, platform, validation-authority, local-overlay, and handoff policy. |
+| `replit.md` | Thin Replit adapter | Points back to `AGENTS.md`; not a second constitution. |
 | `.github/agents/` | VS Code/GitHub Copilot role profiles | Specialized repository engineering roles; not AIpinho runtime agents. |
+
+## Class C3 — External governed Control Plane
+
+Repository:
+
+`sasandralean-prog/AIpinho-FireTest-Control`
+
+This is a separate operations/engineering authority domain that bridges GitHub and the local PC. It is not an AIpinho runtime-agent namespace and it does not outrank Class A/B for AIpinho runtime truth.
+
+### Current Control authority sources
+
+| Source | Role | Authority note |
+|---|---|---|
+| Control `main` code | Governs which named local operations exist | Highest authority for implemented Control capabilities, subject to its tests and real Actions evidence. |
+| `control_plane/capabilities.py` | Named capability registry and bounded implementations | Caller authority is limited by capability IDs, targets, schemas, static plans, budgets, and provenance checks. |
+| `.github/workflows/governed-local-runner.yml` | GitHub Actions execution/packaging/verdict contract | Current workflow accepts only the bounded operation-file input. |
+| `control_plane/actions_result.py` | Result/manifest packaging contract | Governs bounded artifact staging and fail-closed result handling. |
+| `reports/control_b1_0_d_*` | B1.0-D validation evidence | Governed test/profile/quick-validation proof at recorded scope. |
+| `reports/control_b1_0_e_*` and `reports/actions_validation/` | B1.0-E/E.1 evidence | Actions result/artifact/rerun and persistent-runner proof at recorded scope. |
+| `COMMUNICATION_SYNC_LUCIO.md` | Lúcio coordination directives | Read before the canonical shared ledger. Does not itself grant a capability. |
+| `COMMUNICATION_SYNC.md` | Canonical shared coordination ledger | Locks/leases coordinate shared work only; they never create shell/runtime/FireTest authority. |
+
+### Current proven Control state
+
+```text
+B1.0-D   = merged
+B1.0-E   = merged
+B1.0-E.1 = merged
+runner aipinho-pc = official Windows service / Automatic / Running
+service account = .\aipinho-runner
+service-backed run = 32848578948
+validated rerun attempt = 2
+artifact = 9563333072
+```
+
+This proves the bounded GitHub Actions result/artifact/rerun loop through the persistent service runner.
+
+### Current Control authority that is **not** granted
+
+The following must be treated as false unless/until later code/evidence explicitly admits them:
+
+```text
+generic shell = NOT AUTHORIZED
+arbitrary argv = NOT AUTHORIZED
+arbitrary pytest = NOT AUTHORIZED
+arbitrary path execution = NOT AUTHORIZED
+dependency install = NOT AUTHORIZED
+ChatGPT/Lúcio direct operation submission/start = NOT YET AUTHORIZED
+Lúcio-operated FireTest = NOT YET AUTHORIZED
+lucio.shell = NOT AUTHORIZED
+```
+
+Agreed future roadmap:
+
+```text
+F   -> Governed Operation Submission / start loop
+F.1 -> Lúcio-operated bounded FireTest profiles
+G   -> Lúcio Authenticated Control Channel
+G.1 -> authenticated lucio.shell authority
+```
+
+Those labels are planning context only until merged code and validation prove them.
+
+### Identity/authentication rule for future Lúcio authority
+
+A field such as:
+
+```text
+requested_by = lucio
+model = GPT-5.6 Sol
+conversation_id = <value>
+```
+
+is provenance text, **not authentication**.
+
+Future broad authority should require a trustworthy attestation/signing boundary that cryptographically binds at least the operation hash and anti-replay state, with short expiry and audit evidence. If a ChatGPT conversation/thread identifier can later be supplied by a trustworthy signer, it may be bound as provenance; a caller-provided string alone must never unlock shell authority.
+
+### FireTest timeout rule
+
+FireTest execution budgets must be capability/profile-specific. The agreed planning baseline is roughly:
+
+```text
+generic short operations -> short bounded budget
+normal governed FireTest  -> about 900 seconds / 15 minutes
+heavier FireTest profile  -> only via explicitly admitted larger ceiling
+```
+
+This is roadmap policy, not current FireTest authority.
 
 ## Class D — Active ledgers and partially current working documents
 
-These may contain useful current entries, but their titles/statuses do not imply complete coverage of the current repository.
+These may contain useful current entries, but their titles/statuses do not imply complete present coverage.
 
-| Document | Internal status | Interpretation |
-|---|---|---|
-| `AIpinho_BreakingChanges.md` | `NO_BREAKING_CHANGES` plus dated wave entries | Active historical ledger; verify completeness for later waves. |
-| `AIpinho_RemovedFiles.md` | `FILES_REMOVED_WITH_TESTED_REPLACEMENTS` | Removal ledger; authoritative only for recorded removals. |
-| `AIpinho_TestCoverageMatrix.md` | `WAVE_9_CANONICAL_TEST_MATRIX_STARTED` | Partial test index, not a claim of complete present coverage. |
-| `AIpinho_CompatibilityMatrix.md` | `COMPATIBILITY_MATRIX_STARTED` | Started migration/compatibility ledger; not a final present-state matrix. |
-| `AIpinho_DuplicateClasses.md` | `DUPLICATE_CLASS_LEDGER_STARTED` | Working ledger; not proof that every duplicate remains current. |
-| `AIpinho_Hardcode_Remediation.md` | `HARDCODE_REMEDIATION_PLAN_STARTED` | Working plan/ledger; verify each entry against current code. |
+| Document | Interpretation |
+|---|---|
+| `AIpinho_BreakingChanges.md` | Active historical ledger; verify completeness for later waves. |
+| `AIpinho_RemovedFiles.md` | Removal ledger; authoritative only for recorded removals. |
+| `AIpinho_TestCoverageMatrix.md` | Partial test index, not proof of complete current coverage. |
+| `AIpinho_CompatibilityMatrix.md` | Started compatibility/migration ledger; not final present-state authority. |
+| `AIpinho_DuplicateClasses.md` | Working duplicate ledger; verify against current code. |
+| `AIpinho_Hardcode_Remediation.md` | Working remediation plan/ledger; verify each item against current code. |
 
 ## Class E — Draft, target, or migration planning
 
-These documents preserve design intent and migration history. They must not be used as evidence that a target is implemented.
+These preserve design intent and migration history. They must not be used as evidence that a target is implemented.
 
-| Document | Internal status | Classification |
-|---|---|---|
-| `AIpinho_CanonicalDirectories.md` | `CANONICAL_DIRECTORIES_DRAFTED` | Draft target ownership map. Unresolved `or` choices are not canonical runtime decisions. |
-| `AIpinho_FinalArchitecture.md` | `TARGET_ARCHITECTURE_DRAFT` | Target/draft despite the filename `FinalArchitecture`. |
-| `AIpinho_Consolidation_MasterPlan.md` | `CONSOLIDATION_MASTERPLAN_STARTED` | Migration master plan and historical consolidation guidance. |
-| `AIpinho_MigrationPlan.md` | `MIGRATION_PLAN_STARTED` | Historical/ongoing migration plan; not current runtime truth by itself. |
-| `AIpinho_RuntimeContractBundle.md` | `RUNTIME_CONTRACT_BUNDLE_DRAFTED` | Draft contract design; current schemas/code determine implemented shape. |
+| Document | Classification |
+|---|---|
+| `AIpinho_CanonicalDirectories.md` | Draft target ownership map. |
+| `AIpinho_FinalArchitecture.md` | Target/draft despite the filename `FinalArchitecture`. |
+| `AIpinho_Consolidation_MasterPlan.md` | Migration master plan/history. |
+| `AIpinho_MigrationPlan.md` | Historical/ongoing migration plan. |
+| `AIpinho_RuntimeContractBundle.md` | Draft contract design; current schemas/code determine implemented shape. |
+
+The same rule applies to future Control labels such as F/F.1/G/G.1: roadmap naming does not create implemented authority.
 
 ## Class F — Historical evidence, snapshots, and archaeology
 
 These preserve why decisions were made. They are valuable but not current runtime authority.
 
-| Source | Classification | Notes |
-|---|---|---|
-| `AIpinho_Architecture_Audit.md` | Historical large audit corpus | Use bounded sections; do not treat its size or filename as current truth. |
-| `AIpinho_Architecture_Audit_Consolidated_Report.md` | Historical audit consolidation | Generated 2026-07-31 from the audit state at that time. |
-| `genome/` | Generated architecture snapshot/design DNA | The summary was generated 2026-07-30 and explicitly contains `UNKNOWN` areas. |
-| `archaeology/` | Historical project archaeology | Context and rationale only. |
-| `RELEASE_NOTES_RC1.md`, `RELEASE_NOTES_RC2.md`, `RELEASE_NOTES_RC3.md` | Historical release snapshots | Do not interpret RC numbering as the current H1C0 wave state. |
-| `docs/architecture/CURRENT_RUNTIME_INVENTORY_20260621.md` | Timestamped historical inventory | Date-bounded snapshot. |
-| `docs/architecture/FINAL_MULTI_AGENT_ARCHITECTURE.md` | RC1-era architecture snapshot | The word `FINAL` does not override current code/config or later canonical flow. |
-| `docs/architecture/MULTI_AGENT_KERNEL_ROADMAP*.md` | Roadmap/history | Directional material; verify completed items independently. |
+| Source | Classification |
+|---|---|
+| `AIpinho_Architecture_Audit.md` | Historical large audit corpus. |
+| `AIpinho_Architecture_Audit_Consolidated_Report.md` | Historical audit consolidation. |
+| `genome/` | Generated architecture snapshot/design DNA. |
+| `archaeology/` | Historical project archaeology. |
+| `RELEASE_NOTES_RC*.md` | Historical release snapshots. |
+| timestamped `docs/architecture/*` inventories | Date-bounded snapshots unless separately revalidated. |
+| old `FINAL_*` architecture files | Historical/design material unless current implementation/evidence reconfirms them. |
 
 ## Class G — Operational guides and surface matrices
 
-These are user/operator aids. Commands, ports, endpoints, and feature status must be checked against current scripts/config before use.
+User/operator guides are aids. Commands, ports, endpoints, and feature status must be checked against current scripts/config before use.
 
-| Document | Classification |
-|---|---|
-| `README_FIRST_RUN.md` | RC3-era first-run guide; operationally useful but potentially stale. |
-| `README_OPERATIONAL.md` | RC3-era operational guide; verify scripts, ports, and current startup behavior. |
-| `DESKTOP_MOBILE_PARITY_MATRIX.md` | Surface-status snapshot; not a runtime authority. |
-| `docs/architecture/CURRENT_RUNTIME_INVENTORY.md` | Sprint-0 inventory; useful orientation, not guaranteed current despite its filename. |
+Examples include:
 
-## Empty architecture placeholders
+- `README_FIRST_RUN.md`
+- `README_OPERATIONAL.md`
+- `DESKTOP_MOBILE_PARITY_MATRIX.md`
+- older/current-runtime inventory documents under `docs/architecture/`
 
-The following files currently have zero bytes and therefore provide no architectural evidence:
+## Agent/control vocabulary
 
-```text
-docs/architecture/010_runtime_flow.md
-docs/architecture/020_policy_kernel.md
-docs/architecture/030_multirole_pipeline.md
-docs/architecture/040_memory.md
-docs/architecture/050_rag.md
-docs/architecture/060_tools_and_skills.md
-docs/architecture/070_security_model.md
-```
-
-Rule:
-
-> File existence is not documentation completeness.
-
-Do not populate, delete, or promote these placeholders merely to make the tree look finished. Each requires an explicit owner and evidence-backed purpose.
-
-## Agent-document interpretation
-
-Keep three categories separate:
+Keep four categories separate:
 
 ```text
 AIpinho internal runtime agents
@@ -179,28 +250,30 @@ external agent islands
 engineering agents working on the repository
     AGENTS.md, .agents/skills/, docs/engineering_agents/,
     replit.md, .github/agents/, Codex, Devin, Replit, VS Code/Copilot, etc.
+
+external Control Plane
+    sasandralean-prog/AIpinho-FireTest-Control
+    named governed PC operations + evidence return
 ```
 
-`AGENTS.md` is now the canonical repository-local engineering instruction
-entrypoint. `.agents/skills/` contains reusable engineering procedures.
-`docs/engineering_agents/` contains detailed operating policy.
-
-These files guide engineering assistants working ON AIpinho. They do not become
-runtime authority and must never be interpreted as mutating `config/agents/` or
-`src/aipinho/services/agents/`.
-
-Documents under `docs/architecture/` describing Codex, Gemini, Lúcio, delegation, memory gateway, event bus, policy kernel, or tool gateway may describe implemented subsystems or historical design phases. Verify them against the current registry, policy configuration, services, tests, and runtime evidence before treating them as present behavior.
+Do not infer runtime-agent semantics from engineering-agent instructions, and do not infer shell/runtime/FireTest authority from the existence of the external Control Plane.
 
 ## Conflict resolution procedure
 
 When two sources disagree:
 
 1. state the contradiction explicitly;
-2. identify each source's class and date/status;
-3. inspect current code/config/contracts;
+2. identify each source's authority class and date/status;
+3. inspect current code/config/contracts for the domain being claimed;
 4. inspect the narrowest relevant validated evidence;
-5. preserve historical intent without promoting it;
-6. update the current orientation document only after the target branch contains the claimed state.
+5. inspect current Git provenance/branch/HEAD;
+6. preserve historical intent without promoting it;
+7. update current orientation only after the target branch/main actually contains the claimed state.
+
+For a disagreement between Control evidence and AIpinho runtime evidence, first classify the claim:
+
+- **What did the Control Plane execute/observe/package?** -> Control code/manifest/result has authority at that scope.
+- **What does AIpinho currently do at runtime?** -> AIpinho Class A/B wins.
 
 ## Update policy
 
@@ -208,7 +281,9 @@ Update this index when:
 - a new canonical authority is established;
 - a draft becomes implemented/current;
 - a current document becomes historical;
-- a new validated wave changes the authority map;
-- repository-local engineering-agent infrastructure is introduced.
+- a new validated runtime wave changes the authority map;
+- repository-local engineering-agent infrastructure changes materially;
+- the external Control Plane gains or loses an authority class;
+- a new authenticated remote-control boundary is actually implemented and validated.
 
-Do not update it merely because a new document was added.
+Do not update it merely because a document, branch, roadmap label, or conversation claim exists.
