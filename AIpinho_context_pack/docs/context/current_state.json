@@ -1,6 +1,6 @@
 {
-  "context_pack_version": "0.3",
-  "generated_on": "2026-08-21",
+  "context_pack_version": "0.4",
+  "generated_on": "2026-08-25",
   "project": "AIpinho",
   "repository": "https://github.com/sasandralean-prog/AIpinho",
   "default_branch": "main",
@@ -53,7 +53,47 @@
     "groups_created_count": 0,
     "elapsed_ms": 120046
   },
+  "control_plane": {
+    "repository": "https://github.com/sasandralean-prog/AIpinho-FireTest-Control",
+    "observed_main_after_b1_0_e_service_integration_and_readme_refresh": "fe9daa384ff83c0c417677f07d4bb317301f812e",
+    "b1_0_d_status": "MERGED",
+    "b1_0_e_status": "MERGED",
+    "b1_0_e_1_status": "MERGED",
+    "runner": {
+      "name": "aipinho-pc",
+      "mode": "official_windows_service",
+      "service_account": ".\\aipinho-runner",
+      "startup": "Automatic",
+      "status": "Running"
+    },
+    "post_service_validation": {
+      "run_id": 32848578948,
+      "rerun_attempt": 2,
+      "artifact_id": 9563333072,
+      "result_status": "completed",
+      "is_rerun_attempt": true
+    },
+    "current_authority": {
+      "generic_shell": false,
+      "arbitrary_argv": false,
+      "arbitrary_pytest": false,
+      "arbitrary_paths": false,
+      "dependency_install": false,
+      "chatgpt_operation_submission_start": false,
+      "firetest_from_lucio": false,
+      "lucio_shell": false
+    },
+    "roadmap": [
+      "F — Governed Operation Submission / start loop",
+      "F.1 — Lúcio-operated bounded FireTest profiles",
+      "G — Lúcio Authenticated Control Channel",
+      "G.1 — authenticated lucio.shell authority"
+    ],
+    "planned_firetest_normal_timeout_seconds": 900,
+    "authority_note": "Control evidence is authoritative for bounded Control operations and provenance at its scope; it does not override AIpinho production runtime truth."
+  },
   "historical": {
+    "v0_3_baseline": "B3.5 forensic/report-correction runtime checkpoint",
     "v0_2_baseline": "R2.18/pre-R3 baseline",
     "last_validated_r2_wave": "H1C0.R2.18",
     "last_r2_wave_verdict": "FIRETEST5_H1C0_R2_18_MEDIA_IDENTITY_GOVERNED_RESOLUTION_READY",
@@ -68,14 +108,18 @@
   "agent_taxonomy": {
     "internal_runtime_agents": "participate IN AIpinho under governed runtime namespaces",
     "external_agent_islands": "distinct governed executors/interpreters such as Codex and Gemini",
-    "engineering_agents": "assistants working ON the AIpinho repository"
+    "engineering_agents": "assistants working ON the AIpinho repository",
+    "external_control_plane": "separate governed operations layer bridging GitHub and the local PC"
   },
   "notes": [
     "R2 structural debt is considered closed based on the validated R2.18 exit assessment.",
-    "R3.01 is open; B3.5 is a forensic slice and merge candidate after review, not a FireTest success claim.",
-    "FireTest 5 remains NOT_READY and was not executed in B3.5.",
-    "C gate remains CORRECTIVE_REQUIRED_BEFORE_C.",
+    "R3.01 is open; B3.5 remains the latest reviewed runtime slice recorded by this pack until newer runtime evidence is inspected and reconciled.",
+    "FireTest 5 remains NOT_READY in the recorded B3.5 runtime checkpoint.",
+    "C gate remains CORRECTIVE_REQUIRED_BEFORE_C in the recorded runtime checkpoint.",
     "B3.5 moved the public canary from a generic post-compile stall to a specific applicability-resolution capacity frontier.",
+    "B1.0-D/E/E.1 are integrated in the external Control Plane and the aipinho-pc runner is persistent as an official Windows service.",
+    "Control Plane progress does not by itself change AIpinho runtime verdicts or FireTest readiness.",
+    "F/F.1/G/G.1 are planned authority expansions and must not be treated as already implemented.",
     "Filename/path/extension remain routing or locator context, not semantic Truth.",
     "Code, canonical contracts/config, and validated evidence win over this context pack when there is conflict."
   ]
