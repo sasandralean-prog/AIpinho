@@ -1,6 +1,6 @@
 {
-  "context_pack_version": "0.4",
-  "generated_on": "2026-08-25",
+  "context_pack_version": "0.4.1",
+  "generated_on": "2026-09-04",
   "project": "AIpinho",
   "repository": "https://github.com/sasandralean-prog/AIpinho",
   "default_branch": "main",
@@ -26,7 +26,24 @@
     "P2_B3_5_REPORT_PROJECTION_INCOMPLETE_FOR_GROUPING_APPLICABILITY_TELEMETRY",
     "R3_01_B3_4_P2_PUBLIC_CHAT_ROUTE_SCHEMA_COLLISION_OR_HANDLER_PRECEDENCE"
   ],
-  "next_frontier": "H1C0.R3.01.B3.6 — Capability Applicability Resolution Capacity & Admission Control",
+  "next_frontier": "FireTest C governed FFmpeg capability admission and Phase 1/Phase 2 product diagnostic, while retaining B3.6 applicability-capacity evidence as an unresolved diagnostic constraint",
+  "firetest_operational_checkpoint": {
+    "updated_on": "2026-09-04",
+    "branch": "agent/codex/firetest-c-ffmpeg-full-phase-diagnostic",
+    "head": "cb3846bdbc2372150ba8164a667ef8ef7921cb7e",
+    "checkpoint": "FireTest C / FFmpeg full-phase diagnostic",
+    "next_capability": "FFmpeg governed media observation capability",
+    "next_product_evidence": [
+      "Phase 1 diagnosis",
+      "Phase 2 diagnosis only if Phase 1 permits continuation"
+    ],
+    "corpus_expected_path_operator_orientation": "D:\\Rafa\\músicas",
+    "corpus_path_host_verified": false,
+    "previous_corpus_path_must_not_be_assumed": true,
+    "fixture_format": "adversarial fake .m4a files",
+    "fixture_semantics": "extension and filename are routing/locator context only; semantic media truth requires governed observation evidence",
+    "firetest_global_ready_claimed": false
+  },
   "route_boundary": {
     "canonical_chat_route": "/api/v1/chat",
     "canonical_chat_schema": "ChatRequest",
@@ -90,7 +107,7 @@
       "G.1 — authenticated lucio.shell authority"
     ],
     "planned_firetest_normal_timeout_seconds": 900,
-    "authority_note": "Control evidence is authoritative for bounded Control operations and provenance at its scope; it does not override AIpinho production runtime truth."
+    "authority_note": "This nested Control snapshot is historical Context Pack orientation and is known to lag the current external Control H3 state. Control evidence is authoritative only for bounded Control operations and provenance; it does not override AIpinho runtime truth."
   },
   "historical": {
     "v0_3_baseline": "B3.5 forensic/report-correction runtime checkpoint",
@@ -114,12 +131,13 @@
   "notes": [
     "R2 structural debt is considered closed based on the validated R2.18 exit assessment.",
     "R3.01 is open; B3.5 remains the latest reviewed runtime slice recorded by this pack until newer runtime evidence is inspected and reconciled.",
-    "FireTest 5 remains NOT_READY in the recorded B3.5 runtime checkpoint.",
-    "C gate remains CORRECTIVE_REQUIRED_BEFORE_C in the recorded runtime checkpoint.",
-    "B3.5 moved the public canary from a generic post-compile stall to a specific applicability-resolution capacity frontier.",
-    "B1.0-D/E/E.1 are integrated in the external Control Plane and the aipinho-pc runner is persistent as an official Windows service.",
+    "FireTest 5 remains NOT_READY; the next operational product-test checkpoint is FireTest C with governed FFmpeg capability admission.",
+    "The previous music corpus path must not be assumed. Operator orientation is approximately D:\\Rafa\\músicas and must be verified by governed host evidence before execution.",
+    "The corpus uses adversarial fake .m4a files; extension/filename are not semantic Truth.",
+    "The next FireTest objective is evidence-backed Phase 1 and, conditionally, Phase 2 diagnosis, not a global READY claim.",
+    "C gate remains CORRECTIVE_REQUIRED_BEFORE_C in the recorded reviewed runtime checkpoint.",
+    "B3.5 moved the public canary from a generic post-compile stall to a specific applicability-resolution capacity frontier; that evidence remains relevant during FireTest-C re-entry.",
     "Control Plane progress does not by itself change AIpinho runtime verdicts or FireTest readiness.",
-    "F/F.1/G/G.1 are planned authority expansions and must not be treated as already implemented.",
     "Filename/path/extension remain routing or locator context, not semantic Truth.",
     "Code, canonical contracts/config, and validated evidence win over this context pack when there is conflict."
   ]
