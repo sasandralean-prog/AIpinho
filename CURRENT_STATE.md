@@ -1,12 +1,12 @@
 # AIpinho — Current External Control State
 
-_Last updated: 2026-08-31T01:50:00Z by Lúcio_
+_Last updated: 2026-09-04 by Lúcio_
 
 ## Repository role
 
 `sasandralean-prog/AIpinho` is the AIpinho runtime/application repository.
 
-It is **not** the source of Control Plane authority. Canonical governance, authentication, replay, broker authority, Script Catalog, shell execution, lifecycle evidence, the frozen G3 benchmark baseline, and the next H1 control workstream live in:
+It is **not** the source of Control Plane authority. Canonical governance, authentication, replay, broker authority, Script Catalog, governed engineering execution, and current CONTROL-H3/H3-J state live in:
 
 ```text
 sasandralean-prog/AIpinho-FireTest-Control
@@ -20,9 +20,25 @@ sasandralean-prog/AIpinho-Envelope-Requests
 
 The AIpinho root `COMMUNICATION_SYNC.md` is a redirect/mirror marker only.
 
-## Repository checkpoint
+## 2026-09-04 coordination correction
 
-Benchmark checkpoint immediately before this final documentation refresh:
+The older sections below preserve the historical G3/H1 checkpoint that originally parked FireTest. They are retained as provenance, not as the current Control roadmap.
+
+Current cross-repository truth is:
+
+```text
+Control progressed through CONTROL-H1 and CONTROL-H2.
+CONTROL-H3-A through H3-H are accepted at their defined scopes.
+CONTROL-H3-I has end-to-end authority-compression acceptance, including a second independent promotion.
+CONTROL-H3-J has started progressive FireTest re-entry.
+FireTest broad/global READY is NOT claimed.
+```
+
+The FireTest product workstream is therefore no longer globally `PARKED`; it is in **progressive governed re-entry**, beginning from the narrow historical FireTest-C/FFmpeg diagnostic checkpoint.
+
+## Historical repository checkpoint
+
+Benchmark checkpoint immediately before the 2026-08-31 documentation refresh:
 
 ```text
 Control main:  b43e368a229ac941fb2e9b31d499d58d85906e0d
@@ -30,11 +46,11 @@ Envelope main: a462adce003a52daf75a236cf3c72b62c4de4df3
 AIpinho main:  091ae4442f217b9133c20048e0289d8b3690ca9c
 ```
 
-The recent G3 benchmark work occurred in external Control/Envelope repositories. It did not silently mutate AIpinho runtime source on `main`.
+The G3 benchmark work occurred in external Control/Envelope repositories. It did not silently mutate AIpinho runtime source on `main`.
 
-## Current external Control Plane status
+## Historical external Control Plane baseline
 
-The Lúcio Shell / G3 execution path is operationally validated and benchmark-frozen as:
+The Lúcio Shell / G3 execution path was operationally validated and benchmark-frozen as:
 
 ```text
 G3_BASELINE_VALIDATED
@@ -46,7 +62,7 @@ Canonical benchmark report in Control:
 reports/control_g3_benchmark_baseline_20260830.md
 ```
 
-The currently validated execution model is:
+The validated execution model remains relevant as a lower-layer invariant:
 
 ```text
 self-hosted runner:  aipinho-pc
@@ -56,8 +72,6 @@ process creation:    CreateProcessW
 ```
 
 Control verifies actual parent/session identity and returned child-token identity and fails closed if the configured identity does not match the live runner context.
-
-The earlier fresh credentialed-logon path is not the current G3 production path because native runtime initialization remained unreliable under fresh `LogonUserW`-derived contexts.
 
 ## Lúcio Shell engine split
 
@@ -93,53 +107,26 @@ The frozen Control benchmark includes:
 - Run #89 / `33344739293`: fixed 5 s task under 1 s grant truthfully produced `SHELL_TIMEOUT`.
 - Run #90 / `33344847751`, attempt 2: consumed signed authorization rejected as `AUTH_ALREADY_CONSUMED`, with no second dispatch.
 
-This proves the governed transport/execution/lifecycle substrate. It does **not** prove any new AIpinho runtime capability or FireTest readiness.
+This proved the governed transport/execution/lifecycle substrate. It did **not** by itself prove any AIpinho runtime capability or FireTest readiness.
 
-## Benchmark-discovered truths relevant to future runtime work
+## Historical CONTROL-H1 transition
 
-The benchmark exposed one deterministic environment dependency in Control CMD profiles and repaired it by binding Python to an absolute governed runtime path rather than `%ProgramFiles%`.
+The 2026-08-31 document named CONTROL-H1 — Identity & Session Control as the next external workstream. That workstream and CONTROL-H2 have since progressed in the external Control repository; consult Control `CURRENT_STATE.md` for current authority rather than this historical section.
 
-A later quick-regression profile then reached Python correctly but found that the selected deterministic runtime does not contain `pytest`.
+The frozen lower-layer principles remain relevant:
 
-The current Control disposition is:
-
-```text
-g3.test.control_quick_regression.cmd = NOT_READY
-```
-
-until a separate governed test-runtime/dependency-provisioning authority exists.
-
-AIpinho must not interpret that gap as permission to mutate Control's Python environment, install dependencies ad hoc, or bypass the Script Catalog.
-
-The fixed deadline benchmark also proved `SHELL_TIMEOUT`, but did not provide positive launcher-level process-tree kill proof in that run because the terminal marker reported `process_tree_terminated=false`. That remains an explicit Control H1 hardening/observability item rather than a hidden claim.
-
-## Next external workstream — CONTROL-H1
-
-After repository synchronization, the next Control workstream is:
-
-```text
-CONTROL-H1 — Identity & Session Control
-```
-
-Initial H1 boundary relevant to AIpinho:
-
-- provider/account/session identity will become explicit Control representations for Codex CLI and other admitted agents;
 - account identity is metadata/authority state, never credential material;
-- passwords, tokens, cookies, private keys, browser/session secrets, or equivalent credentials must not flow into AIpinho source, ordinary child evidence, or repository documents;
-- account/session transitions, when later admitted, must be explicit governed capabilities;
-- observed post-transition identity becomes evidence;
-- quota/session state may be observable but is not authority by itself;
+- passwords, tokens, cookies, private keys, browser/session secrets, or equivalent credentials must not flow into AIpinho source or ordinary child evidence;
+- account/session transitions require explicit governed capabilities;
+- observed post-transition identity is evidence;
+- quota/session state is observable but is not authority by itself;
 - an agent able to receive a prompt does not gain arbitrary shell or AIpinho mutation authority.
 
-H1 must preserve the frozen G3 lower-layer invariants: authentication, replay, Script Catalog, execution identity proof, Job Object containment, secret scrubbing, deadline/output controls, and lifecycle truth.
+## FireTest status — PROGRESSIVE GOVERNED RE-ENTRY
 
-## FireTest status — PARKED
+FireTest is no longer globally parked. Re-entry has been explicitly authorized and is being staged through CONTROL-H3-J. This does **not** mean FireTest 5 is `READY` and does not authorize unrestricted live execution.
 
-**FireTest remains intentionally parked.**
-
-This repository still contains historical/current FireTest branches and evidence, but the workstream is not presently executing.
-
-Concrete parked checkpoint:
+Historical concrete checkpoint:
 
 ```text
 branch: agent/codex/firetest-c-ffmpeg-full-phase-diagnostic
@@ -147,15 +134,49 @@ head:   cb3846bdbc2372150ba8164a667ef8ef7921cb7e
 last head commit: 2026-08-23 — test(firetest): record phase c diagnostic evidence
 ```
 
-Parking means:
+The restored practical product-test frontier is:
 
-- preserve FireTest branches, reports, artifacts, and evidence;
-- do not infer `READY` from Control/G3 closure or benchmark validation;
-- do not start a new FireTest merely because remote governed shell execution works or H1 begins;
-- resume only after an explicit Lúcio directive;
-- on resumption, obey canonical Control `firetest`/`runtime` coordination and evidence requirements.
+```text
+FireTest C
+→ admit/configure FFmpeg as a governed AIpinho media-observation capability
+→ run the FireTest product path
+→ obtain evidence-backed Phase 1 diagnosis
+→ execute/diagnose Phase 2 only if Phase 1 permits continuation
+```
 
-The existing AIpinho README/runtime reports remain the source for the detailed H1C0/R3/FireTest technical frontier. This file records only the current cross-repository operational coordination state.
+The purpose is diagnostic. A truthful block is an acceptable product-test result; success must not be manufactured.
+
+### Music corpus update
+
+The previous local music-folder location must no longer be assumed valid; it may have been moved or deleted.
+
+Operator-provided expected location is approximately:
+
+```text
+D:\Rafa\músicas
+```
+
+This path is not yet host-verified evidence. Before the next FireTest execution, the governed local runner must discover/verify the actual path and bind the observed location into execution evidence.
+
+The corpus consists of deliberately adversarial fake `.m4a` files. Production code must not treat the extension or filename as semantic media truth. `.m4a` may be routing/locator context; actual media identity/structure must come from governed observation evidence, including the planned FFmpeg capability where semantically applicable.
+
+### FireTest re-entry invariants
+
+- preserve historical FireTest branches, reports, artifacts, and evidence;
+- do not infer `READY` from Control/H3 acceptance;
+- do not hard-code `D:\Rafa\músicas`, Pinhoabacaxi, `.m4a`, row counts, filenames, or artifact names into production logic;
+- FFmpeg must enter through the normal AIpinho capability/governance model rather than an ad-hoc subprocess bypass;
+- Phase 2 must not pretend to execute if Phase 1 blocks;
+- external Control evidence proves what Control executed/observed, not AIpinho semantic success;
+- AIpinho Runtime/Validation/Completion/SpeakerTruth remain the authority for product/runtime truth.
+
+The detailed technical context is maintained in:
+
+```text
+AIpinho_context_pack/docs/context/06_FIRETEST5.md
+AIpinho_context_pack/docs/context/09_CURRENT_FRONTIER.md
+AIpinho_context_pack/docs/context/current_state.json
+```
 
 ## Security / authority implication
 
@@ -172,14 +193,16 @@ AIpinho source/runtime work must not bypass Control:
 - deadline/output controls;
 - lifecycle truth.
 
-Lúcio Shell readiness is transport/execution authority for bounded governed tasks, not generic permission for AIpinho to self-modify or run arbitrary code.
+The current H3 governed-engineering platform increases what Lúcio can safely operate through named capabilities; it is not generic permission for AIpinho to self-modify or execute unrestricted host commands.
 
 ## Current next step
 
-1. Complete the three-repository benchmark-to-H1 documentation refresh.
-2. Safely synchronize local AIpinho with `origin/main` using fast-forward-only discipline while preserving local evidence/untracked files.
-3. Synchronize Control and Envelope the same way; do not use destructive cleanup.
-4. After all three repositories are synchronized, begin `CONTROL-H1 — Identity & Session Control` in Control.
-5. FireTest remains parked until explicitly resumed.
+1. Use H3-J progressive admission rather than jumping directly to full FireTest 5.
+2. Verify the real corpus path on the host, expected approximately at `D:\Rafa\músicas`.
+3. Verify the adversarial fake-`.m4a` corpus is present and characterize it without treating extension as Truth.
+4. Reconcile the historical FireTest-C branch with current `main`; do not blindly revive old code.
+5. Design/admit FFmpeg as a governed AIpinho capability with explicit applicability, execution, evidence, timeout and failure semantics.
+6. Run a bounded product diagnostic to obtain Phase 1 evidence and conditional Phase 2 evidence.
+7. Let the observed product result determine the next architectural wave; do not predeclare FireTest readiness.
 
-If this file conflicts with Control `CURRENT_STATE.md` or `COMMUNICATION_SYNC_LUCIO.md`, Control wins.
+If this file conflicts with Control `CURRENT_STATE.md`, Control wins for external execution/governance truth. AIpinho code/config and validated runtime evidence win for AIpinho product/runtime truth.
