@@ -10,7 +10,48 @@ It is not a project to perfect a music library scanner.
 
 The fixture may reveal architecture. The architecture may not become fixture-specific.
 
-## What FireTest 5 exposed across H1C0.R2
+## Current operational checkpoint — 2026-09-04
+
+The practical FireTest workstream had advanced beyond the older high-level B3.5 orientation and was parked at the **FireTest C / FFmpeg full-phase diagnostic boundary**.
+
+Historical branch retained for that checkpoint:
+
+```text
+branch: agent/codex/firetest-c-ffmpeg-full-phase-diagnostic
+head:   cb3846bdbc2372150ba8164a667ef8ef7921cb7e
+last recorded commit: test(firetest): record phase c diagnostic evidence
+```
+
+The next intended product-test step is not to declare FireTest ready. It is to introduce/admit **FFmpeg as a governed AIpinho capability** and then run the FireTest far enough to obtain evidence-backed diagnosis of **Phase 1 and Phase 2**.
+
+Operational intent:
+
+```text
+FFmpeg capability admitted through normal AIpinho governance
+→ FireTest product request
+→ Phase 1 executes or blocks honestly
+→ if Phase 1 permits continuation, Phase 2 executes or blocks honestly
+→ collect runtime/evidence/validation/SpeakerTruth
+→ diagnose the next real architectural frontier
+```
+
+No production code may special-case FireTest, Pinhoabacaxi, the corpus path, `.m4a`, FFmpeg output, row counts, or artifact names merely to make the scenario pass.
+
+## Local music corpus update
+
+The previous local music-corpus location must no longer be assumed valid. The old folder may have been moved or deleted.
+
+The new expected location is approximately:
+
+```text
+D:\Rafa\músicas
+```
+
+This path is **operator-provided orientation, not yet observed host evidence**. Before the next FireTest execution, the governed local runner must discover/verify the actual directory and bind the observed path into the test request/evidence rather than hard-code an unverified path into production logic.
+
+The corpus consists of deliberately adversarial **fake `.m4a` files**. Their `.m4a` extension must remain only locator/routing context. The test is specifically useful because semantic/media truth must come from governed observation (for example an admitted FFmpeg-backed capability), not from trusting the extension or filename.
+
+## What FireTest 5 exposed across H1C0.R2/R3 work
 
 - result finalization;
 - terminality;
@@ -24,9 +65,11 @@ The fixture may reveal architecture. The architecture may not become fixture-spe
 - cardinality ambiguity;
 - run-to-run determinism;
 - cell lookup complexity;
-- identity coverage semantics.
+- identity coverage semantics;
+- governed observation capability configuration;
+- post-compile capability applicability/admission capacity.
 
-## R3.01 / B3.5 canary status
+## R3.01 / B3.5 canary history
 
 Full FireTest 5 was not executed in B3.5.
 
@@ -44,7 +87,7 @@ physical_probe_count                0
 
 The canary proved that B3.5 removed the previous generic post-compile stall boundary and exposed a more specific capacity/admission frontier before physical probes.
 
-FireTest 5 remains `NOT_READY` until B3.6 resolves or further narrows the applicability-resolution capacity/admission frontier.
+This remains valid historical runtime evidence, but it must not erase the later operational FireTest-C/FFmpeg checkpoint described above.
 
 ## B3.5 telemetry
 
@@ -80,6 +123,7 @@ Production code should not branch on:
 - observed row counts;
 - task IDs;
 - filenames;
+- `.m4a` as semantic truth;
 - extension as semantic authority.
 
 Extension may remain a routing hint when semantically justified.
@@ -94,6 +138,8 @@ Expected pattern where applicable:
 status = skipped_due_to_prior_block
 api_called = false
 ```
+
+The next FFmpeg-backed FireTest-C diagnostic is specifically intended to produce truthful evidence for Phase 1 and, only when Phase 1 permits it, Phase 2.
 
 ## READY semantics
 
@@ -114,10 +160,25 @@ FireTest 5 = NOT_READY
 C gate = CORRECTIVE_REQUIRED_BEFORE_C
 ```
 
+At the restored operational checkpoint:
+
+```text
+FireTest C / FFmpeg diagnostic = next product-test frontier
+FFmpeg governed capability     = required/admission work
+Phase 1 + Phase 2 diagnosis    = intended next evidence
+FireTest 5 global READY        = NOT CLAIMED
+```
+
 ## Current FireTest question
 
-Can AIpinho reach governed post-compile observation with a bounded, contract-scoped applicability path, acquire evidence only where justified, preserve provenance, and refuse to convert filename/path/extension into Truth?
+Can AIpinho admit and execute a governed media-observation capability such as FFmpeg, use it against an adversarial corpus without trusting filename/path/extension as Truth, preserve provenance, and terminalize Phase 1 and Phase 2 with evidence-backed semantic reasons?
 
-## B3.6 canary gate
+## Re-entry rule
 
-Do not run full FireTest 5 until B3.6 canary work proves or blocks with a more precise evidence-backed boundary for applicability capacity/admission.
+Before the next product FireTest run:
+
+1. verify the actual corpus directory on the local host (expected around `D:\Rafa\músicas`);
+2. verify the adversarial fake-`.m4a` fixture is present;
+3. admit/configure FFmpeg through normal AIpinho capability governance rather than an ad-hoc subprocess bypass;
+4. use the external Control runner only as governed engineering/execution infrastructure; Control evidence does not replace AIpinho runtime truth;
+5. run the FireTest product path and accept either honest progress or an evidence-backed block as the diagnostic result.
