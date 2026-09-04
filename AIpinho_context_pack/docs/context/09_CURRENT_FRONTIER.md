@@ -19,6 +19,34 @@ C gate:
 CORRECTIVE_REQUIRED_BEFORE_C
 ```
 
+## Operational FireTest re-entry checkpoint — 2026-09-04
+
+The reviewed B3.5 state above remains valid runtime history, but the practical FireTest workstream had later been parked at a more concrete product-test boundary:
+
+```text
+branch: agent/codex/firetest-c-ffmpeg-full-phase-diagnostic
+head:   cb3846bdbc2372150ba8164a667ef8ef7921cb7e
+checkpoint: FireTest C / FFmpeg full-phase diagnostic
+```
+
+The next FireTest product-test objective is:
+
+```text
+admit/configure FFmpeg as a governed AIpinho capability
+→ execute FireTest against the adversarial music corpus
+→ obtain truthful Phase 1 evidence
+→ if Phase 1 permits continuation, obtain truthful Phase 2 evidence
+→ diagnose the next architectural boundary
+```
+
+The previous music-corpus directory must not be assumed to exist. Operator-provided current orientation is approximately:
+
+```text
+D:\Rafa\músicas
+```
+
+The corpus contains deliberately adversarial fake `.m4a` files. Before execution, the external governed runner must verify the actual host path and corpus presence. The path and `.m4a` extension are fixture/location evidence, not semantic media Truth.
+
 ## Git/report baseline
 
 Repository:
@@ -36,6 +64,12 @@ B3.5 branch:
 B3.5 reviewed/report-corrected head before this context update:
 `9d5e06c9d2cd8d0a885e53855bd100b4c7a84105`
 
+FireTest-C historical diagnostic branch:
+`agent/codex/firetest-c-ffmpeg-full-phase-diagnostic`
+
+FireTest-C recorded head:
+`cb3846bdbc2372150ba8164a667ef8ef7921cb7e`
+
 ## Current public truth
 
 B3.5 moved the canary from:
@@ -52,7 +86,7 @@ POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED
 
 This is a forensic success, not FireTest success.
 
-Current canary telemetry:
+Current reviewed canary telemetry:
 
 ```text
 task_run_id                         task_run_10a7ad7dabca4687bcebbe5cba30ce25
@@ -114,7 +148,7 @@ But:
 
 > How can AIpinho acquire governed observations that support semantic identity claims, preserve provenance, and distinguish unsupported/missing/failed evidence without using filename/path/extension as Truth?
 
-## B3.6 central question
+## B3.6 capacity question retained as historical/open diagnostic context
 
 ```text
 Why do 2 execute_observer tasks expand to 10000 target entity refs,
@@ -125,10 +159,23 @@ consume 120046ms,
 and reach 0 physical probes?
 ```
 
-B3.6 must diagnose and correct applicability-resolution capacity/admission before FireTest 5 or C-gate work resumes.
+That evidence remains important. Re-entering at FireTest C does not waive it. The FFmpeg-backed diagnostic must either show that the applicability/admission path is now sufficient for the bounded product flow or reproduce/replace it with a more precise evidence-backed boundary.
+
+## Immediate next product-test frontier
+
+```text
+1. governably verify the corpus path on the host (expected around D:\Rafa\músicas)
+2. verify the fake-.m4a adversarial corpus exists
+3. inspect/reconcile the FireTest-C branch against current main before reuse
+4. admit/configure FFmpeg through AIpinho's normal capability model
+5. run the bounded FireTest C product diagnostic
+6. collect Phase 1 truth
+7. execute Phase 2 only if Phase 1 permits it
+8. classify the resulting boundary without FireTest-specific production logic
+```
 
 ## Historical R2.18 context
 
 R2.18 row-level validation can observe semantic identity fields and row evidence refs. It established that stable entity identity is not semantic media identity.
 
-That history remains authority for the no-filename/path/extension-Truth rule, but it is no longer the current frontier.
+That history remains authority for the no-filename/path/extension-Truth rule, but it is no longer by itself the current operational FireTest checkpoint.
