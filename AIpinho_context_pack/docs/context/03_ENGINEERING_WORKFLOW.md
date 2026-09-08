@@ -11,8 +11,8 @@ baseline
 → bounded patch
 → focused tests
 → regressions
-→ public diagnostic rerun
-→ public clean validation rerun
+→ public/live diagnostic when required
+→ clean validation rerun
 → issue register
 → verdict
 → next frontier
@@ -20,180 +20,99 @@ baseline
 
 ## Baseline consistency gate
 
-Before starting a new wave, confirm that:
-- the intended implementation is present in the target branch;
-- README/current-state documents describe the same validated frontier;
-- reports and issue registers exist at the claimed validation scope;
-- no historical or draft document is silently treated as runtime authority;
-- repository paths work on case-sensitive systems.
+Before starting a new wave, confirm:
 
-If Git, code, reports, and current knowledge disagree, resolve that contradiction before widening runtime scope.
+- target implementation exists in the intended branch;
+- current README/state/context agree on the validated frontier;
+- reports and issue registers exist at the claimed proof scope;
+- current repository heads are observed rather than remembered;
+- historical or speculative documents are not silently treated as runtime authority;
+- shared runtime/test resources have no conflicting active lease;
+- the task execution class is explicit: repository-only, local-required, or hybrid.
+
+If Git, code, reports, runtime evidence, and current knowledge disagree, preserve the contradiction and resolve it before widening scope.
 
 ## Diagnose before patch
 
-Do not ask first: "what patch will make the test pass?"
+Do not begin with “what patch makes the test pass?”
 
-Ask: "what boundary is actually failing, and what evidence would prove or disprove each plausible cause?"
+Use:
+
+```text
+symptom
+→ evidence
+→ competing hypotheses
+→ disconfirming evidence
+→ diagnostic
+→ bounded correction
+→ validation
+→ consequence
+```
 
 ## Priority policy
 
 ### P0
 
-Truth, governance, terminality, corruption, false-success, authority confusion, or repository/knowledge contradictions that invalidate the working baseline.
+Truth, governance, terminality, corruption, false-success, authority confusion, or repository/knowledge contradictions that invalidate the baseline.
 
 ### P1
 
-Structural runtime blockers, complexity failures, generic capability/binding defects, nondeterminism.
+Structural runtime blockers, complexity/capacity failures, generic capability/binding defects, nondeterminism.
 
 ### P2
 
-Observability/schema/projection problems that affect diagnosis or validation.
+Observability/schema/projection defects that materially weaken diagnosis or validation.
 
 ### P3
 
-Cosmetic/report formatting; may be deferred.
+Cosmetic/report formatting.
 
-## Wave boundary
+A proven bug is not automatically fixed. Keep evidence status, resolution status, and validation scope distinct.
 
-A wave has an architectural owner. Internal iteration is allowed when the next blocker belongs to the same boundary:
-
-```text
-diagnostic → patch A → rerun → related blocker → patch B
-```
-
-Do not chase unrelated future frontiers forever inside one wave.
-
-## Public proof
+## Proof classes
 
 Distinguish:
-- unit validated;
-- regression validated;
-- diagnostic public reached;
-- clean public validation;
-- final public proof.
 
-Never say "publicly validated" when only a unit test exercised the behavior.
+```text
+unit validated
+regression validated
+repository/cloud validated
+live local diagnostic reached
+clean live validation
+final product/runtime proof
+```
 
-## A+B
+Never convert unit proof into public/live proof.
 
-When determinism matters, compare input identity, projected identity, row model identity, render order, schema digest, cardinality, semantic outcome, and terminal semantics. Wall time may differ; semantics should not.
+## Strategic Horizon namespace
+
+The roadmap names `Horizon H1/H2/H3/H4`. These are planning categories from near-term to long-range. They are **not patch IDs or implementation tranches**.
+
+Do not confuse them with the external Control Plane names:
+
+```text
+CONTROL-H1 / CONTROL-H2 / CONTROL-H3
+```
+
+Those are concrete Lúcio Shell/Control implementation and validation tranches. Always keep the namespace when ambiguity is possible.
 
 ## Git protocol
 
+Normal repository engineering flow:
+
 ```text
-sync main
+observe/sync main
 → create agent/<agent>/<task> branch
 → implement
-→ tests
-→ required validation for the execution class
-→ reports/docs update
-→ commit
-→ push task branch
-→ merge validated branch into main
-→ push main
-→ synchronize local main
-→ prove tracked(local main) == tracked(origin/main)
+→ validate claimed scope
+→ update only evidence-supported docs/reports
+→ commit/push branch
+→ review
+→ merge validated work
+→ reobserve main
 ```
 
-Never use force push or destructive reset as a convenience for reconciling validated history.
-
-## External governed Control Plane
-
-AIpinho has a separate operations repository:
-
-`sasandralean-prog/AIpinho-FireTest-Control`
-
-Its job is to bridge GitHub with the local machine through named governed capabilities and structured evidence. It is not a replacement for the runtime architecture and it is not permission to turn repository text into a terminal.
-
-Current proven loop after B1.0-D / B1.0-E / B1.0-E.1:
-
-```text
-allowlisted operation file
-→ GitHub Actions workflow_dispatch
-→ persistent self-hosted runner aipinho-pc
-→ governed dispatcher
-→ named capability
-→ result.json
-→ execution_manifest.json
-→ GitHub artifact
-→ final truthful verdict
-→ optional rerun with explicit attempt provenance
-```
-
-The runner is an official Windows service under `\.\aipinho-runner`, startup `Automatic`, status `Running`.
-
-The current Control surface can perform bounded repository observation/synchronization, static governed test profiles/quick validation, runtime lifecycle operations, and Phase 1 diagnostics. Every operation remains constrained by its capability schema, target allowlist, expected provenance, timeout/output budget, and evidence requirements.
-
-### Control Plane truth rules
-
-- Control evidence proves what the Control Plane requested, executed, observed, or packaged at that scope.
-- Control evidence does not silently override AIpinho production code/config or validated runtime evidence.
-- `repository.pull_ff_only` may fast-forward an expected clean branch; divergence must fail and become evidence rather than trigger hidden merge/rebase/reset.
-- GitHub rerun is another attempt of the same workflow request, not permission to update source or repair provenance behind the scenes.
-- Read/download an attempt's evidence before rerunning when historical artifact retention matters.
-- Runner/service configuration is operations infrastructure; it does not grant new runtime or FireTest authority.
-
-### Current Control limitations
-
-The merged system does **not** currently authorize:
-
-- generic shell;
-- arbitrary argv/pytest/path;
-- arbitrary dependency installation;
-- direct ChatGPT-created operation submission/start;
-- governed FireTest execution from Lúcio;
-- authenticated `lucio.shell`.
-
-Those capabilities must be admitted explicitly rather than inferred from trust or convenience.
-
-### Agreed Control roadmap
-
-```text
-F   -> Governed Operation Submission / start loop
-F.1 -> Lúcio-operated bounded FireTest profiles
-G   -> Lúcio Authenticated Control Channel
-G.1 -> authenticated lucio.shell authority
-```
-
-`F` should close the missing start/submission leg without broadening the operation schema into free-form commands.
-
-`F.1` should expose FireTest through static bounded profiles. FireTest commonly needs around ten minutes, so its planned normal execution ceiling is about 15 minutes rather than inheriting the short generic workflow budget.
-
-`G`/`G.1` should treat broad authority as an authentication problem: signed operation hash, replay protection/nonce, short expiry, provenance, and audit evidence. A string claiming `requested_by=Lucio`, a model name, or a conversation ID is informative provenance only unless backed by a trustworthy cryptographic attestation path.
-
-## Engineering-agent infrastructure
-
-Repository engineering assistants should use:
-
-- `AGENTS.md` as the concise shared engineering entrypoint;
-- `.agents/skills/` for reusable procedures;
-- `docs/engineering_agents/` for detailed operating policy;
-- `replit.md` as a thin Replit adapter;
-- `.github/agents/` for VS Code/GitHub Copilot role profiles.
-
-These files guide agents working ON AIpinho. They do not define AIpinho runtime
-agents and must not be confused with `config/agents/` or
-`src/aipinho/services/agents/`.
-
-Task branches should be named:
-
-```text
-agent/<agent>/<task>
-```
-
-The intended workflow is one active engineering agent and one active task
-branch at a time unless explicit coordination/leases permit parallel non-overlapping work.
-
-## Shared-resource coordination
-
-When work touches shared Control/runtime/FireTest resources, use the canonical coordination surfaces in `AIpinho-FireTest-Control`:
-
-1. `COMMUNICATION_SYNC_LUCIO.md`
-2. `COMMUNICATION_SYNC.md`
-
-Read them in that order. Logical locks coordinate overlapping work, but a lock never grants an operation that the current mission/capability did not already authorize.
-
-## Local overlay
+Do not force-push or use destructive cleanup to manufacture synchronization.
 
 Tracked synchronization means:
 
@@ -201,40 +120,143 @@ Tracked synchronization means:
 tracked(local main) == tracked(origin/main)
 ```
 
-It does not mean ignored/untracked local resources such as `.env*`, GGUF
-models, runtime state, corpora, or raw evidence are deleted or committed.
+It does not mean deleting ignored/untracked local overlay such as `.env*`, models, caches, corpora, runtime state, or raw evidence.
 
-## Mobile/manual protocol
+## Three repository roles
 
-When Rafa is operating from a phone:
-- read the current GitHub version before preparing a replacement;
-- provide complete file contents when replacement is safe;
-- identify `PATH`, `ACTION`, and commit message;
-- make Git actions independently verifiable;
-- avoid dozens of microdiffs when one bounded replacement is clearer;
-- do not use full-file replacement for large production code unless the whole file has been verified.
-
-When the governed Control Plane can perform the operation safely, prefer that evidence-producing path over requiring physical access to the PC. If the Control Plane lacks the required authority, state that boundary instead of simulating it with a broader mechanism.
-
-## Issue schema
-
-Prefer separate dimensions:
+### AIpinho
 
 ```text
-evidence_status:
-  not_proven | probable_with_evidence | proven
-
-resolution_status:
-  open | fixing | fixed | validated | deferred
-
-validation_scope:
-  none | unit | regression | diagnostic_public | final_public
+sasandralean-prog/AIpinho
 ```
 
-A proven bug is not automatically a resolved bug.
+Runtime/application source of truth. Product/runtime success is owned by AIpinho contracts, runtime, validation/completion, and SpeakerTruth.
 
-## End-of-wave
+### AIpinho-FireTest-Control
 
-State exact verdict, FireTest status, root cause, changes, proof level, open P0/P1/P2, terminality, SpeakerTruth, next frontier, and Git branch/commit/push state.
+```text
+sasandralean-prog/AIpinho-FireTest-Control
+```
 
-For Control Plane work, also state operation/run IDs, attempt, artifact/provenance evidence, authority not granted, and whether any shared lock was acquired/released.
+External governed operations/engineering layer. Current architecture includes Ed25519 principal authentication, local broker/sequence/replay, semantic engineering capabilities, Script Catalog hash binding, bounded execution, evidence/lifecycle, H1 account context, H2 delegated-agent surfaces, and CONTROL-H3 engineering governance.
+
+Current progression at the 2026-09-07 continuity checkpoint:
+
+```text
+G3_BASELINE_VALIDATED
+CONTROL-H1 through H1-E validated
+CONTROL-H2 through H2-E validated
+CONTROL-H3-A through H3-H accepted at defined scopes
+CONTROL-H3-I E2E authority compression live accepted and independently reproduced
+CONTROL-H3-J progressive FireTest re-entry started
+```
+
+The lower-layer execution invariant remains governed `current_session` execution under `aipinho-runner`/`CreateProcessW`, with fresh signed authority, replay protection, semantic/catalog binding, bounded runtime/output, non-elevation, secret scrubbing, containment, and structured evidence.
+
+Control progress does not itself change AIpinho runtime truth.
+
+### AIpinho-Envelope-Requests
+
+```text
+sasandralean-prog/AIpinho-Envelope-Requests
+```
+
+Unsigned request/intake transport. The local broker observes provenance, allocates sequence, signs locally, and publishes create-only signed Control envelopes. GitHub/request text is never signing authority.
+
+## Current FireTest workflow
+
+FireTest is in **progressive governed re-entry**, not unrestricted execution and not global READY.
+
+CONTROL-H3-J1 has fresh narrow unit proof: Control run `33933759448` executed the admitted CVL/FireTest unit file and returned `19 passed`.
+
+The later product FireTest B attempt, Control run `34059896495`, completed its governed diagnostic but the product request blocked before TaskRun creation:
+
+```text
+BLOCKED_PRE_TASK
+PUBLIC_RUNTIME_CREATE_RUN_NOT_REACHED
+task_run_id=null
+SpeakerTruth.safe_to_report_success=false
+Phases 2-6=skipped_due_to_prior_block
+```
+
+That is the latest product-facing boundary before reset.
+
+## Clean reset workflow
+
+The 2026-09-07 governed reset report establishes a cold, clean operational baseline:
+
+```text
+runtime/chat active=0
+pending=0
+orphaned=0
+leases=0
+hygiene candidates=0
+old TaskRun and observer terminalized as cancelled
+API/9088 offline
+old Control runner stopped/disabled
+Envelope runner retained
+AIpinho tracked tree clean at main a4253226...
+corpus present and unmodified
+FFmpeg/FFprobe present on host
+new FireTest not started
+```
+
+Treat this as hygiene success, not product success.
+
+Before the next FireTest, acquire fresh coordination locks and deliberately start only the runtime/runner resources required by the new campaign.
+
+## Dependency/tool evidence rule
+
+Host installation is not enough.
+
+The 06/09 FireTest execution context observed FFmpeg/FFprobe as unavailable, while the 07/09 reset observed them installed on the host. Therefore the next campaign must prove exact executable visibility and normal AIpinho capability admission in the governed execution context.
+
+```text
+installed != visible
+visible != admitted
+admitted != executed
+executed != semantic success
+```
+
+## FireTest invariants
+
+- no FireTest/Pinhoabacaxi/path/task-ID/row-count production special cases;
+- `.m4a`, filename and path are not semantic Truth;
+- the corpus path must be observed/bound, not baked into production logic;
+- Phase 2 must not execute if Phase 1 blocks;
+- green Control Actions is not product success;
+- TaskRun existence is not completion;
+- artifact/result existence is not fulfillment;
+- a blocked terminal result can be correct governance;
+- B3.5/B3.6 applicability-capacity evidence remains historical/open until newer evidence closes or supersedes it.
+
+## Shared-resource coordination
+
+For any work touching Control/runtime/FireTest resources, read in order:
+
+1. Control `COMMUNICATION_SYNC_LUCIO.md`
+2. Control `CURRENT_STATE.md`
+3. Control `CONTEXT_PACK_LUCIO_SHELL.md`
+4. Control `COMMUNICATION_SYNC.md`
+5. current relevant report/evidence
+
+Inspect active leases before mutation. A logical lock coordinates ownership; it never grants authority by itself.
+
+## End-of-wave report
+
+State:
+
+- exact scope and execution class;
+- repository/branch/head;
+- observed root cause/frontier;
+- changes made;
+- tests and live evidence by proof class;
+- runtime/product terminality and SpeakerTruth;
+- P0/P1/P2 still open;
+- FireTest status;
+- Control operation/run/artifact identifiers when relevant;
+- locks acquired/released;
+- authority explicitly **not** granted;
+- next bounded frontier.
+
+A clean verdict is useful only when the evidence deserves it.

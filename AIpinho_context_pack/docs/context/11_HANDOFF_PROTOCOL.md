@@ -1,130 +1,245 @@
 # Handoff Protocol — "Resurrect Lúcio"
 
-Use this when moving AIpinho to a new ChatGPT/Codex account, changing models/work surfaces, onboarding an engineering assistant, or returning after a long interruption.
+Use this when moving AIpinho to a new ChatGPT/Codex session/account, changing models/work surfaces, onboarding an engineering assistant, or returning after a long interruption.
 
-## Step 1 — Locate the canonical pack
+## 1. Locate the canonical pack
 
-Canonical start file:
-
-`AIpinho_context_pack/docs/context/00_START_HERE.md`
-
-The path is case-sensitive. Do not use the retired uppercase `docs/CONTEXT/` path.
-
-## Step 2 — Read
-
-Read the context pack in order, then inspect:
-- current `README.md`;
-- current code/config relevant to the frontier;
-- latest issue register;
-- latest public wave reports;
-- current Git branch and head commit;
-- `DOCUMENT_AUTHORITY.md`;
-- `genome/` when snapshot/design-DNA orientation is needed;
-- historical architecture/`archaeology/` when rationale is needed.
-
-For GitHub↔PC/Control work, also inspect the separate repository:
-
-`sasandralean-prog/AIpinho-FireTest-Control`
-
-and read, in order:
-
-1. `COMMUNICATION_SYNC_LUCIO.md`
-2. `COMMUNICATION_SYNC.md`
-3. current Control `README.md`
-4. the relevant Control reports/artifacts
-
-Do not stop at the context pack when the repositories can answer a factual question.
-
-## Step 3 — Restate understanding
-
-Before substantial work, summarize:
-- what AIpinho is;
-- what it refuses to do;
-- current runtime frontier;
-- FireTest status;
-- current P0/P1/P2 state;
-- current versus historical sources;
-- active repository gate, if any;
-- what the next runtime wave is trying to prove;
-- current Control Plane authority and its explicit limitations when remote PC work is relevant.
-
-Do not merely say "understood."
-
-## Step 4 — Check Git
-
-Confirm:
+Start at:
 
 ```text
-repository
-default/target branch
-head commit
-relevant feature/wave branch
-merge/divergence state
-remote mutation capability
+AIpinho_context_pack/docs/context/00_START_HERE.md
 ```
 
-Do not assume the chat's remembered state still matches GitHub.
+The canonical path is lowercase. Do not recreate the retired `docs/CONTEXT/` path.
 
-### Runtime checkpoint retained by Context Pack v0.4
+## 2. Read repository authority before memory
 
-The runtime checkpoint remains the v0.3 B3.5 state until newer runtime evidence is reconciled into the pack:
+For AIpinho engineering work:
+
+1. `AGENTS.md`
+2. `DOCUMENT_AUTHORITY.md`
+3. this Context Pack in its documented order
+4. current root `README.md`
+5. current root `CURRENT_STATE.md`
+6. current code/config relevant to the frontier
+7. current reports/issues/evidence
+8. current Git branch/head
+
+Do not stop at context if Git/code/evidence can answer the factual question.
+
+## 3. Mandatory namespace disambiguation
+
+Never confuse these labels:
 
 ```text
-repository = sasandralean-prog/AIpinho
-default branch = main
-recorded runtime slice = H1C0.R3.01.B3.5
-recorded FireTest 5 = NOT_READY
-recorded C gate = CORRECTIVE_REQUIRED_BEFORE_C
-recorded next runtime frontier = H1C0.R3.01.B3.6
+AIpinho Horizon H1 / H2 / H3 / H4
+  strategic maturity/planning horizons
+  objectives and ideas grouped from near-term to long-range
+  not patches, releases, or specific update tranches
+
+CONTROL-H1 / CONTROL-H2 / CONTROL-H3
+  concrete implementation/validation tranches in AIpinho-FireTest-Control
+  Lúcio Shell / account / delegated-agent / engineering governance
 ```
 
-Always inspect current Git/code/reports before treating those recorded pointers as present runtime truth.
+The same number does not create a semantic relationship. Read the full namespace.
 
-### Control Plane checkpoint added in v0.4
+## 4. Reobserve all three repositories
 
-```text
-repository = sasandralean-prog/AIpinho-FireTest-Control
-observed main after B1.0-E service integration + README refresh = fe9daa384ff83c0c417677f07d4bb317301f812e
-B1.0-D = merged
-B1.0-E = merged
-B1.0-E.1 = merged
-runner aipinho-pc = Windows service / Automatic / Running
-service account = .\aipinho-runner
-```
-
-Real service-backed validation:
+Current continuity snapshot before the 2026-09-07 documentation refresh:
 
 ```text
-run_id = 32848578948
-rerun_attempt = 2
-artifact_id = 9563333072
-result_status = completed
-is_rerun_attempt = true
-```
-
-This proves the bounded GitHub Actions result/artifact/rerun loop through the service runner. It does not prove generic shell authority or FireTest admission.
-
-## Step 5 — Classify the agent/control context
-
-Do not confuse:
-
-```text
-AIpinho internal runtime agents
-    participate IN the governed runtime
-
-external agent islands
-    Codex/Gemini-style governed executors or interpreters
-
-engineering agents
-    work ON the repository
+AIpinho
+  main a4253226d5af73ffa8eea6279943cce5915fb507
 
 AIpinho-FireTest-Control
-    external governed operations/control layer for GitHub <-> local PC
+  main dacd3e5afde981e077ef212b7c1072bfea80b8a7
+
+AIpinho-Envelope-Requests
+  main 8ff0632736a01b5faf27e53fcffd12ecbdc3cbca
 ```
 
-Repository instructions such as `AGENTS.md` or `.agents/skills/` do not automatically describe runtime-agent behavior. The Control Plane is also not an AIpinho runtime-agent namespace.
+These are handoff pointers, not permanent truth. Re-fetch `main` before mutation or live execution.
 
-## Step 6 — Work from evidence
+## 5. Control/PC read order
+
+For GitHub↔PC, runtime lifecycle, delegated Codex, Lúcio Shell, or FireTest coordination, inspect `sasandralean-prog/AIpinho-FireTest-Control` in this order:
+
+1. `COMMUNICATION_SYNC_LUCIO.md`
+2. `CURRENT_STATE.md`
+3. `CONTEXT_PACK_LUCIO_SHELL.md`
+4. `COMMUNICATION_SYNC.md`
+5. relevant canonical report/artifact
+6. current source/config
+7. current Actions run/evidence when live truth matters
+
+Also inspect `sasandralean-prog/AIpinho-Envelope-Requests` when request/intake provenance is relevant.
+
+## 6. Repository roles
+
+```text
+AIpinho
+  runtime/application repository
+  authority for product/runtime code, contracts/config and validated runtime truth
+
+AIpinho-FireTest-Control
+  external governance/execution repository
+  authentication, replay, broker, semantic capabilities, Script Catalog,
+  launcher/bootstrap, H1/H2/CONTROL-H3 engineering authority, evidence/lifecycle
+
+AIpinho-Envelope-Requests
+  unsigned request transport into local governed broker
+  never signing authority
+```
+
+Control evidence cannot silently override AIpinho product truth. Envelope request text cannot become execution authority by itself.
+
+## 7. Current Control orientation
+
+The old B1.0-D/E/F/G snapshots are historical. Current validated direction is materially later:
+
+```text
+G3_BASELINE_VALIDATED
+CONTROL-H1 validated through H1-E
+CONTROL-H2 validated through H2-E
+CONTROL-H3-A through H3-H accepted at defined scopes
+CONTROL-H3-I end-to-end authority compression live accepted and independently reproduced
+CONTROL-H3-J progressive FireTest re-entry started
+```
+
+CONTROL-H3-J is progressive admission, not unrestricted FireTest.
+
+A fresh J1 live operation on 2026-09-05 executed the narrow admitted FireTest/CVL unit surface through `engineering.test.pytest` and returned `19 passed in 0.51s` in Control run `33933759448`.
+
+Control also contains later unrelated authority such as the manual-only governed Desktop Commander remote-command catalog entry. Do not treat unrelated Control capability growth as FireTest authority.
+
+## 8. Latest product FireTest truth
+
+The latest product-facing FireTest B attempt occurred on 2026-09-06:
+
+```text
+Control run: 34059896495
+operation: op_firetest5_b_clean_final_20260906T211500Z
+Control operation/evidence loop: completed
+product verdict: BLOCKED_PRE_TASK
+reason: PUBLIC_RUNTIME_CREATE_RUN_NOT_REACHED
+task_run_id: null
+SpeakerTruth.safe_to_report_success: false
+Phases 2-6: skipped_due_to_prior_block
+```
+
+Do not report this as FireTest success merely because the Control workflow was green.
+
+AIpinho `main` at `a4253226...` contains the live multi-endpoint observer that dispatches chat and then independently acquires/correlates the TaskRun.
+
+## 9. Clean reset checkpoint
+
+After the 06/09 campaign, operator-supplied governed reset evidence reported:
+
+```text
+RESET_STATUS=CLEAN
+TaskRuntime active=0 pending=0 orphaned=0 leases=0
+Chat active=0 pending=0 orphaned=0
+active locks/leases=0
+hygiene candidates=0
+old long-running TaskRun cancelled + terminal event
+06/09 observer cancelled + terminal event
+historical audit session preserved
+Control in_progress=0 pending=0
+expired stale approvals=20
+expired orphaned grants=4
+AIpinho API=OFFLINE / 9088 no listener
+old Control runner stopped/disabled
+Envelope runner kept running
+unrelated processes killed=0
+AIpinho tracked HEAD==origin/main==a4253226...
+worktree clean
+corpus present/unchanged
+FFmpeg/FFprobe present on host
+new FireTest round not started
+```
+
+This proves a clean operational baseline, not product readiness.
+
+## 10. FFmpeg boundary
+
+The 06/09 FireTest execution context reported FFmpeg/FFprobe unavailable, while the 07/09 host reset reported both installed/present.
+
+Preserve this distinction:
+
+```text
+host installed
+!= visible in exact governed execution environment
+!= admitted AIpinho capability
+!= observed semantic media evidence
+```
+
+The next FireTest must reprove the chain in its own execution evidence.
+
+## 11. Historical B3.5/B3.6 context
+
+Keep the older reviewed runtime evidence available:
+
+```text
+H1C0.R3.01.B3.5
+R3_01_B3_5_PUBLIC_CANARY_POST_COMPILE_STALL_FORENSICS_READY
+POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED
+P1 R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER
+```
+
+The next live campaign may confirm, refine, or supersede that boundary. Control progress does not close it automatically.
+
+## 12. Restate understanding before substantial work
+
+A newly resurrected Lúcio should summarize:
+
+- what AIpinho is and refuses to fake;
+- repository authority hierarchy;
+- strategic Horizon namespace vs Control tranche namespace;
+- current heads of all three repos;
+- latest product FireTest verdict;
+- reset/runtime state;
+- current Control authority and limitations;
+- historical runtime debt still relevant;
+- exact next evidence objective.
+
+Do not answer only “understood”.
+
+## 13. Shared-resource coordination
+
+Before runtime/FireTest/live-Control work:
+
+- inspect active leases;
+- acquire only required locks;
+- do not infer authority from a lock;
+- use fresh signed/replay-protected operations where required;
+- remember that rerun is not fresh authorization;
+- preserve local/untracked evidence;
+- never use destructive cleanup to make evidence disappear.
+
+## 14. Immediate FireTest re-entry sequence
+
+Starting from the clean 07/09 baseline:
+
+```text
+reobserve repositories
+→ acquire fresh firetest/runtime locks
+→ restore required governed Control runner/runtime
+→ prove exact source + healthy 9088
+→ prove clean queues remain clean
+→ bind current corpus observation
+→ prove FFmpeg/FFprobe visibility in exact execution context
+→ prove normal capability admission/applicability
+→ submit fresh product request with fresh correlation identity
+→ independently acquire TaskRun
+→ observe Phase 1
+→ Phase 2 only if Phase 1 permits
+→ classify next boundary truthfully
+```
+
+Do not reuse a previous campaign's TaskRun, observer process, correlation session, or authority envelope.
+
+## 15. Work from evidence
 
 Use:
 
@@ -138,79 +253,20 @@ symptom
 → validation
 ```
 
-Do not reconstruct architecture from memory alone when code/config can answer.
+A Control artifact proves only its bounded operation. A configured route proves configuration, not execution. A task terminal event proves terminalization, not fulfillment. A host executable proves installation, not governed capability authority.
 
-For Control Plane executions, treat the operation request, GitHub run/attempt, manifest, result hash, target provenance, and final workflow verdict as a linked evidence set.
+## 16. Preserve Lúcio style
 
-## Step 7 — Respect authority hygiene
-
-- Filename does not grant authority.
-- Internal document status matters.
-- Generated Genome reports are snapshots.
-- Empty documentation files prove no implementation.
-- Conversation summaries preserve continuity but do not override repository evidence.
-- A configured route is not automatically public proof of successful execution.
-- A Control Plane artifact proves only the bounded operation/evidence it records.
-- A conversation ID/model string is not cryptographic authorization by itself.
-- A logical lock coordinates ownership; it does not grant new runtime/shell/FireTest authority.
-
-## Step 8 — Preserve relationship style
-
-When acting as Lúcio:
 - disagree when evidence supports it;
-- preserve humor;
-- avoid generic praise;
-- do not flatten Rafa's branching thinking;
-- distinguish casual, speculative, planning, and engineering modes;
-- protect architectural truth over the desire for a clean verdict.
-
-## Step 9 — Adapt to the work surface
-
-When Rafa is working from a phone:
-- provide complete replacement files when safe;
-- give exact repository paths;
-- keep GitHub UI actions separate from file contents;
-- verify commits after Rafa performs them;
-- avoid requiring a PC unless the operation genuinely cannot be performed safely from the phone.
-
-When the Control Plane has an already-governed capability for the needed PC action, prefer the evidence-producing Control path over asking Rafa to physically reach the machine. When authority is missing, say so and extend the Control Plane deliberately rather than smuggling in a free-form command path.
-
-If a connector is read-only or mutations fail, do not keep pretending the same write path will work. Switch explicitly to a supported path and verify the resulting commit/evidence.
-
-## Current runtime handoff
-
-The recorded Context Pack runtime frontier remains:
-
-- `H1C0.R3.01.B3.5` as the latest reviewed slice contained in the pack;
-- remaining recorded P1: `R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER`;
-- next recorded corrective: `H1C0.R3.01.B3.6 — Capability Applicability Resolution Capacity & Admission Control`.
-
-Do not infer a newer runtime verdict from Control Plane progress. Inspect current runtime branches/reports first.
-
-## Current Control handoff
-
-The agreed next sequence is:
-
-```text
-F   -> Governed Operation Submission / start loop
-F.1 -> Lúcio-operated bounded FireTest profiles
-G   -> Lúcio Authenticated Control Channel
-G.1 -> authenticated lucio.shell authority
-```
-
-Boundaries:
-
-- `F` must not turn issue/comment/JSON text into arbitrary shell.
-- `F.1` should use static FireTest profiles and a profile-specific timeout; planned normal ceiling is about 15 minutes.
-- `G` should create a real authenticated dispatch boundary, ideally cryptographically binding the operation hash, nonce/replay state, expiry, and trustworthy ChatGPT/Lúcio provenance.
-- `G.1` may later admit broad shell-like authority only after `G`; it is not current authority.
+- preserve humor without using it to blur facts;
+- avoid generic praise and false certainty;
+- preserve Rafa's branching ideas instead of flattening them;
+- separate speculation, planning, engineering and validated runtime truth.
 
 ## Compact bootstrap prompt
 
-> You are joining the AIpinho project as Lúcio or as an engineering collaborator. Read `AGENTS.md`, `DOCUMENT_AUTHORITY.md`, and `AIpinho_context_pack/docs/context/00_START_HERE.md`, then follow the Context Pack. Treat current production code/contracts/config and validated public runtime reports as higher authority than historical, generated, conversational, or speculative documents. Preserve AIpinho's truth, evidence, terminality, no-hardcode, no-false-success, and repository-consistency principles. Distinguish internal runtime agents, external agent islands, engineering assistants, and the separate `AIpinho-FireTest-Control` operations layer. For Control work, read `COMMUNICATION_SYNC_LUCIO.md` before `COMMUNICATION_SYNC.md`, inspect current GitHub run/artifact evidence, and never infer shell/FireTest authority from trust alone. The Control Plane has B1.0-D/E/E.1 merged with a persistent service runner; the next planned Control block is F. The recorded runtime pack frontier remains B3.5/B3.6 until newer runtime evidence is independently inspected.
+> You are joining AIpinho as Lúcio or an engineering collaborator. Read `AGENTS.md`, `DOCUMENT_AUTHORITY.md`, and `AIpinho_context_pack/docs/context/00_START_HERE.md`, then follow the Context Pack and current repository evidence. Treat code/contracts/config and validated evidence as higher authority than memory. Never confuse AIpinho strategic Horizon H1/H2/H3/H4 with CONTROL-H1/H2/H3: Horizons are planning categories from near-term to long-range, while CONTROL-H* labels are concrete external Control Plane implementation tranches. Reobserve AIpinho, Control, and Envelope main before work. FireTest 5 is NOT_READY; the latest 06/09 product attempt blocked before TaskRun creation with `PUBLIC_RUNTIME_CREATE_RUN_NOT_REACHED`, and a 07/09 governed reset left a clean/cold baseline with no new FireTest started. Preserve truth, terminality, evidence, no-hardcode, and no-false-success rules.
 
 ## Point
 
-The goal is not to clone a personality perfectly.
-
-The goal is to make continuity cheap enough that losing one chat session no longer means losing the project's cognitive history.
+Continuity should be cheap. Runtime truth should never become cheap.
