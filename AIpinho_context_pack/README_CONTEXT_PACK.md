@@ -1,87 +1,149 @@
-# AIpinho Context Pack v0.4
+# AIpinho Context Pack v0.4.2
 
 A structured continuity layer for AIpinho.
 
 Start at:
-`docs/context/00_START_HERE.md`
-
-This package separates philosophy, the Rafa + Lúcio working relationship,
-engineering workflow, runtime architecture, FireTest 5 rules, roadmap and wave
-history, current frontier, speculative ideas, handoff protocol, machine-readable
-current state, and the external governed Control Plane used to bridge GitHub and
-the local PC.
-
-## v0.4 continuity checkpoint
-
-Generated on 2026-08-25 after the reviewed Control Plane B1.0-D / B1.0-E / B1.0-E.1 integration and persistent self-hosted runner validation.
-
-Control repository:
-`sasandralean-prog/AIpinho-FireTest-Control`
-
-Observed Control `main` after the final B1.0-E service integration and README refresh:
-`fe9daa384ff83c0c417677f07d4bb317301f812e`
-
-Control state:
 
 ```text
-B1.0-D   = merged — governed test/profile/quick-validation expansion
-B1.0-E   = merged — GitHub Actions result/artifact/rerun loop
-B1.0-E.1 = merged — fail-closed result hardening + persistent service-runner fixes
-runner   = aipinho-pc, Windows service, Automatic, Running
+docs/context/00_START_HERE.md
 ```
 
-The persistent runner uses the official GitHub Actions Windows service mechanism under `\.\aipinho-runner`. Real service-backed run/rerun validation passed using run `32848578948`; attempt `2` produced artifact `9563333072` and recorded `is_rerun_attempt=true`.
+This pack separates philosophy, Rafa + Lúcio working style, engineering workflow, runtime architecture, FireTest rules, **strategic maturity Horizons**, wave history, current frontier, idea lab, handoff protocol, machine-readable state, and the separate external Control/Envelope repositories.
 
-This does **not** make the Control Plane a generic remote shell and does **not** change AIpinho runtime truth. Current Control authority remains named, schema-bounded capabilities with provenance and evidence.
+## v0.4.2 continuity checkpoint
 
-Agreed Control roadmap:
+Generated on **2026-09-07** to reconcile the repository documentation before the next FireTest campaign.
+
+Observed `main` heads before this documentation refresh:
 
 ```text
-F   -> Governed Operation Submission / start loop
-F.1 -> Lúcio-operated bounded FireTest profiles
-G   -> Lúcio Authenticated Control Channel
-G.1 -> authenticated lucio.shell authority
+AIpinho                       a4253226d5af73ffa8eea6279943cce5915fb507
+AIpinho-FireTest-Control      dacd3e5afde981e077ef212b7c1072bfea80b8a7
+AIpinho-Envelope-Requests     8ff0632736a01b5faf27e53fcffd12ecbdc3cbca
 ```
 
-`F`, `F.1`, `G`, and `G.1` are planned work, not currently granted authority. FireTest is expected to need a larger bounded execution window; the planned normal FireTest ceiling is about 15 minutes rather than the current short workflow budget.
+Reobserve them before live work; these are continuity anchors, not permanent authority.
 
-## Runtime frontier remains separate
+## Important terminology correction
 
-The v0.4 Control Plane checkpoint does not supersede the current AIpinho runtime frontier recorded in `09_CURRENT_FRONTIER.md` and `current_state.json`.
+`H1`, `H2`, `H3`, and `H4` in `docs/context/07_H1_TO_H4_ROADMAP.md` are **AIpinho strategic maturity horizons**. They categorize objectives and ideas by planning distance:
 
-The last Context Pack runtime checkpoint remains:
+```text
+Horizon H1 -> near-term foundational maturation
+Horizon H2 -> medium-term tool/operations maturation
+Horizon H3 -> medium-to-long-term agentic collaboration/initiative
+Horizon H4 -> long-range exploratory evolution
+```
 
-- `H1C0.R3.01 = OPEN`;
-- latest reviewed slice in the pack: `H1C0.R3.01.B3.5`;
-- latest reviewed verdict: `R3_01_B3_5_PUBLIC_CANARY_POST_COMPILE_STALL_FORENSICS_READY`;
-- current specific blocker in that checkpoint: `POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED`;
-- next runtime frontier in that checkpoint: `H1C0.R3.01.B3.6 — Capability Applicability Resolution Capacity & Admission Control`;
-- FireTest 5 remains `NOT_READY` at that recorded runtime checkpoint;
-- C gate remains `CORRECTIVE_REQUIRED_BEFORE_C`.
+They are not patches, releases, specific corrective waves, or claims of implementation.
 
-Before runtime work, always re-read current Git/code/reports because the runtime branch may have advanced after this continuity update.
+Do not confuse them with:
 
-## v0.3 historical baseline
+```text
+CONTROL-H1
+CONTROL-H2
+CONTROL-H3
+```
 
-v0.3 represented the B3.5 forensic/report-correction state on branch:
-`agent/codex/r3-01-b3-5-postcompile-stall-route-boundary`.
+Those labels belong to the separate `AIpinho-FireTest-Control` implementation/validation lineage for Lúcio Shell, account/delegated-agent authority, and engineering governance. The numbers are not semantically mapped.
 
-It moved the public canary from a generic post-compile stall to the specific applicability-resolution capacity frontier without claiming FireTest success.
+## Current cross-repository checkpoint
 
-## v0.2 historical baseline
+### AIpinho
 
-v0.2 represented the R2.18/pre-R3 baseline:
-- validated wave `H1C0.R2.18`;
-- R2 exit verdict `H1C0_R2_READY_FOR_R3`;
-- reconciliation of R2.18 into `main` at merge commit `bed449fa8d3e78670df2bdddf413da181add61ce`.
+- current pre-refresh `main`: `a4253226...`;
+- live multi-endpoint FireTest observer is merged;
+- FireTest 5 global state remains `NOT_READY`;
+- historical B3.5/B3.6 applicability-capacity evidence remains relevant.
 
-The pre-R3 repository/knowledge consistency gate remains historically closed:
-`H1C0_PRE_R3_REPOSITORY_KNOWLEDGE_CONSISTENCY_READY`.
+### AIpinho-FireTest-Control
+
+Current progression is far beyond the old B1.0-D/E snapshot:
+
+```text
+G3_BASELINE_VALIDATED
+CONTROL-H1 through H1-E validated
+CONTROL-H2 through H2-E validated
+CONTROL-H3-A through H3-H accepted at defined scopes
+CONTROL-H3-I end-to-end authority compression live accepted and independently reproduced
+CONTROL-H3-J progressive FireTest re-entry started
+```
+
+H3-J1 has fresh live narrow unit proof: Control run `33933759448`, operation `op_h3j_j1_firetest_unit_admission_after_venv_20260905T004300Z`, `19 passed in 0.51s`.
+
+Later Control growth, including a manual-only governed Desktop Commander remote-command catalog path, is unrelated to FireTest authority.
+
+### AIpinho-Envelope-Requests
+
+Unsigned request/intake transport only. The local broker remains the authority that observes trusted provenance, allocates sequence, signs locally, and publishes create-only signed Control envelopes. Request text/GitHub is not signing authority.
+
+## Latest product FireTest evidence
+
+The 2026-09-06 FireTest B product attempt did not succeed:
+
+```text
+Control run: 34059896495
+operation: op_firetest5_b_clean_final_20260906T211500Z
+product verdict: BLOCKED_PRE_TASK
+reason: PUBLIC_RUNTIME_CREATE_RUN_NOT_REACHED
+task_run_id: null
+SpeakerTruth.safe_to_report_success: false
+Phases 2-6: skipped_due_to_prior_block
+```
+
+The Control workflow completed truthfully; that is not the same thing as product success.
+
+## Reset checkpoint
+
+A governed reset/cleanup reported on 2026-09-07:
+
+```text
+RESET_STATUS=CLEAN
+runtime/chat active=0, pending=0, orphaned=0
+active locks/leases=0
+hygiene candidates=0
+historical long-running task and 06/09 observer -> cancelled with terminal events
+history preserved
+AIpinho API/9088 -> offline / no listener
+old Control runner -> stopped/disabled
+Envelope runner -> kept running
+AIpinho tracked HEAD == origin/main == a4253226...
+worktree clean
+corpus present and unmodified
+FFmpeg/FFprobe present on host
+new FireTest round -> not started
+```
+
+This is a **clean operational baseline**, not `READY`.
+
+## FFmpeg evidence boundary
+
+The 06/09 FireTest execution context observed FFmpeg/FFprobe unavailable, while the 07/09 reset observed both binaries present on the host.
+
+Therefore the next campaign must reprove:
+
+```text
+host presence
+→ exact governed execution visibility
+→ AIpinho capability admission/applicability
+→ governed observation
+→ semantic evidence
+```
+
+Do not collapse those stages.
+
+## Historical baselines retained
+
+- v0.4/v0.4.1: Control and FireTest-C re-entry orientation from late August/early September;
+- v0.3: B3.5 forensic/report-correction runtime checkpoint;
+- v0.2: R2.18/pre-R3 baseline.
+
+Historical material remains useful for rationale and evidence provenance, but current code/config/live evidence wins.
 
 ## Canonical path
 
-The canonical directory is lowercase:
-
-`AIpinho_context_pack/docs/context/`
+```text
+AIpinho_context_pack/docs/context/
+```
 
 Do not recreate the previous uppercase `docs/CONTEXT/` path.
