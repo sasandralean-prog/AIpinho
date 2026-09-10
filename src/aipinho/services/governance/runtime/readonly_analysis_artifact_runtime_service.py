@@ -586,44 +586,69 @@ class ReadonlyAnalysisArtifactRuntimeService:
         request,
         workspace: str,
         label: str = "WORKSPACE_ANALYSIS_ARTIFACTS_READY",
+        operation_id: str | None = None,
     ) -> ReadonlyArtifactExecution:
         policy = self.public_response_policy
         if not policy.accepted_running_enabled:
-            return self.execute(request=request, workspace=workspace, label=label)
-        self._reap_public_boundary_threads(max_wait_seconds=2.0)
-        holder: dict[str, Any] = {}
-        original_store_create_run = self.runtime.store.create_run
-        original_runtime_create_run = self.runtime.create_run
-
-        def matches_public_boundary_run(created) -> bool:
-            return (
-                self._same_workspace(created.workspace, workspace)
-                and created.operation_type == "workspace_analysis_readonly"
-                and (created.intent_map or {}).get("raw_prompt") == request.message
+            return self.execute(
+                request=request,
+                workspace=workspace,
+                label=label,
+                operation_id=operation_id,
             )
-
-        def capture_store_create_run(run):
-            created = original_store_create_run(run)
-            if matches_public_boundary_run(created):
-                holder["store_run_id"] = created.run_id
-            return created
-
-        def capture_runtime_create_run(run_request):
-            holder["runtime_create_started"] = True
-            created = original_runtime_create_run(run_request)
-            if matches_public_boundary_run(created):
-                holder["run_id"] = created.run_id
-                holder["runtime_create_completed"] = True
-            return created
+        self._reap_public_boundary_threads(max_wait_seconds=0.0)
+        holder: dict[str, Any] = {}
+        before_ids = {run.run_id for run in self.runtime.store.list_runs(limit=1000)}
+        prepared = None
+        reserved_request = None
+        uses_canonical_execute = type(self).execute is ReadonlyAnalysisArtifactRuntimeService.execute
+        if uses_canonical_execute:
+            prepared = self._prepare_public_execution(
+                request=request,
+                workspace=workspace,
+                operation_id=operation_id,
+            )
+            blocked = prepared.get("blocked_execution")
+            if isinstance(blocked, ReadonlyArtifactExecution):
+                return blocked
+            run_request = self._task_run_request(
+                request=request,
+                workspace=workspace,
+                operation_id=operation_id,
+                prepared=prepared,
+            )
+            reservation = self.runtime.reserve_run(run_request)
+            reserved_request = run_request.model_copy(
+                update={
+                    "task_id": reservation.task_id,
+                    "task_run_id": reservation.run_id,
+                    "operation_id": reservation.operation_id,
+                    "workspace_id": reservation.workspace_id,
+                    "project_id": reservation.project_id,
+                }
+            )
+            holder["run_id"] = reservation.run_id
 
         def worker() -> None:
             try:
-                self.runtime.store.create_run = capture_store_create_run  # type: ignore[method-assign]
-                self.runtime.create_run = capture_runtime_create_run  # type: ignore[method-assign]
-                holder["execution"] = self.execute(request=request, workspace=workspace, label=label)
+                if uses_canonical_execute:
+                    holder["execution"] = self.execute(
+                        request=request,
+                        workspace=workspace,
+                        label=label,
+                        operation_id=operation_id,
+                        _prepared=prepared,
+                        _run_request=reserved_request,
+                    )
+                else:
+                    holder["execution"] = self.execute(
+                        request=request,
+                        workspace=workspace,
+                        label=label,
+                    )
             except Exception as exc:  # pragma: no cover - defensive public boundary guard
                 holder["exception"] = exc
-                run_id = holder.get("run_id") or holder.get("store_run_id")
+                run_id = holder.get("run_id")
                 if run_id:
                     self._terminalize_accepted_worker_gap(
                         str(run_id),
@@ -632,9 +657,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
                         exception=exc,
                     )
             finally:
-                self.runtime.create_run = original_runtime_create_run  # type: ignore[method-assign]
-                self.runtime.store.create_run = original_store_create_run  # type: ignore[method-assign]
-                run_id = holder.get("run_id") or holder.get("store_run_id")
+                run_id = holder.get("run_id")
                 if run_id and "exception" not in holder:
                     self._terminalize_accepted_worker_gap(
                         str(run_id),
@@ -646,43 +669,24 @@ class ReadonlyAnalysisArtifactRuntimeService:
         thread = Thread(target=worker, name="aipinho-public-runtime-boundary", daemon=True)
         thread.start()
         _PUBLIC_BOUNDARY_THREADS.append(thread)
-        deadline = time.monotonic() + max(0.4, policy.initial_response_budget_ms / 1000)
+        deadline = time.monotonic() + max(0.01, policy.initial_response_budget_ms / 1000)
         discovered_run = None
         while time.monotonic() < deadline:
-            run_id = holder.get("run_id") or holder.get("store_run_id")
-            discovered_run = self.runtime.store.get_run(str(run_id)) if run_id else None
-            runtime_create_in_progress = bool(holder.get("runtime_create_started")) and not bool(holder.get("runtime_create_completed"))
-            direct_store_create = bool(holder.get("store_run_id")) and not bool(holder.get("runtime_create_started"))
-            if discovered_run is not None and (not runtime_create_in_progress or direct_store_create):
-                if holder.get("runtime_create_completed") and thread.is_alive():
-                    thread.join(timeout=0.25)
-                self._start_accepted_worker_guard(discovered_run.run_id, thread=thread, holder=holder)
-                self._mark_accepted_running(discovered_run, policy=policy)
-                return ReadonlyArtifactExecution(
-                    response=self._accepted_running_response(
-                        request,
-                        workspace=workspace,
-                        run=discovered_run,
-                        policy=policy,
-                    ),
-                    run_id=discovered_run.run_id,
-                    created_artifacts=[],
-                    validation={
-                        "status": "accepted_running",
-                        "safe_to_report_success": False,
-                        "reason_code": "RUN_ACCEPTED_ASYNC",
-                    },
-                )
             if "execution" in holder:
                 return holder["execution"]
             if "exception" in holder:
                 raise holder["exception"]
+            run_id = holder.get("run_id")
+            if not run_id and not uses_canonical_execute:
+                discovered = self._new_public_run(before_ids, request=request, workspace=workspace)
+                if discovered is not None:
+                    holder["run_id"] = discovered.run_id
+                    run_id = discovered.run_id
+            discovered_run = self.runtime.store.get_run(str(run_id)) if run_id else None
             time.sleep(0.01)
-        run_id = holder.get("run_id") or holder.get("store_run_id")
+        run_id = holder.get("run_id")
         discovered_run = self.runtime.store.get_run(str(run_id)) if run_id else None
         if discovered_run is not None:
-            if holder.get("runtime_create_completed") and thread.is_alive():
-                thread.join(timeout=0.25)
             self._start_accepted_worker_guard(discovered_run.run_id, thread=thread, holder=holder)
             self._mark_accepted_running(discovered_run, policy=policy)
             return ReadonlyArtifactExecution(
@@ -708,6 +712,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 workspace=workspace,
                 reason_code=self.public_preacceptance_policy.create_run_not_reached_reason_code,
                 policy=policy,
+                operation_id=operation_id,
             ),
             run_id=None,
             created_artifacts=[],
@@ -1275,6 +1280,13 @@ class ReadonlyAnalysisArtifactRuntimeService:
             },
             contract_preview={
                 "task_run_id": run.run_id,
+                "operation_id": run.operation_id,
+                "contract_type": run.contract_type,
+                "runtime_profile": run.runtime_profile,
+                "requires_task": True,
+                "read_only": True,
+                "artifact_generation": True,
+                "workspace_mutation": False,
                 "run_status": run.status,
                 "safe_to_report_success": False,
                 "accepted_at": utc_now(),
@@ -1305,10 +1317,12 @@ class ReadonlyAnalysisArtifactRuntimeService:
         workspace: str,
         reason_code: str,
         policy: PublicRuntimeResponsePolicy,
+        operation_id: str | None = None,
     ) -> ChatResponse:
         return ChatResponse(
             response_id=f"chat_timeout_blocked_{uuid4().hex}",
             session_id=request.session_id,
+            operation_id=operation_id,
             operation_type="workspace_analysis_readonly",
             message_type="blocked_policy_message",
             status="timeout_blocked",
@@ -1320,7 +1334,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
             ),
             intent={
                 "intent_type": "workspace_analysis_readonly",
-                "requires_task": False,
+                "requires_task": True,
                 "readonly": True,
                 "artifact_generation": True,
             },
@@ -1363,28 +1377,30 @@ class ReadonlyAnalysisArtifactRuntimeService:
             return False
         return os.path.normcase(os.path.normpath(str(left))) == os.path.normcase(os.path.normpath(str(right)))
 
-    def execute(
+    def _prepare_public_execution(
         self,
         *,
         request,
         workspace: str,
-        label: str = "WORKSPACE_ANALYSIS_ARTIFACTS_READY",
-    ) -> ReadonlyArtifactExecution:
+        operation_id: str | None = None,
+    ) -> dict[str, Any]:
         request_context = self._request_workspace_context(request)
         logical_paths = self.requested_artifact_paths(request.message)
         if not logical_paths:
-            return ReadonlyArtifactExecution(
-                response=self._blocked_response(
-                    request,
-                    workspace=workspace,
-                    reason_code="artifact_paths_missing",
-                    missing=["requested_artifact_paths"],
-                ),
-                run_id=None,
-                created_artifacts=[],
-                validation={"status": "blocked", "missing_outputs": ["requested_artifact_paths"]},
-            )
-
+            return {
+                "blocked_execution": ReadonlyArtifactExecution(
+                    response=self._blocked_response(
+                        request,
+                        workspace=workspace,
+                        operation_id=operation_id,
+                        reason_code="artifact_paths_missing",
+                        missing=["requested_artifact_paths"],
+                    ),
+                    run_id=None,
+                    created_artifacts=[],
+                    validation={"status": "blocked", "missing_outputs": ["requested_artifact_paths"]},
+                )
+            }
         phase_id = self._phase_id(request.message) or "phase_unknown"
         dependency_phase_ids = self._dependency_phase_ids(request.message, current_phase_id=phase_id)
         dependency_preflight = self._validate_phase_dependencies(
@@ -1392,58 +1408,114 @@ class ReadonlyAnalysisArtifactRuntimeService:
             dependency_phase_ids=dependency_phase_ids,
             semantic=False,
         )
-        dependency_check = dependency_preflight
         if dependency_preflight["status"] != "passed":
-            dependency_reason = str(dependency_preflight.get("reason_code") or "phase_dependency_artifacts_missing")
-            return ReadonlyArtifactExecution(
-                response=self._blocked_response(
-                    request,
-                    workspace=workspace,
-                    reason_code=dependency_reason,
-                    missing=dependency_preflight["missing"],
-                    dependency_check=dependency_preflight,
-                ),
-                run_id=None,
-                created_artifacts=[],
-                validation=dependency_preflight,
+            dependency_reason = str(
+                dependency_preflight.get("reason_code") or "phase_dependency_artifacts_missing"
             )
+            return {
+                "blocked_execution": ReadonlyArtifactExecution(
+                    response=self._blocked_response(
+                        request,
+                        workspace=workspace,
+                        operation_id=operation_id,
+                        reason_code=dependency_reason,
+                        missing=dependency_preflight["missing"],
+                        dependency_check=dependency_preflight,
+                    ),
+                    run_id=None,
+                    created_artifacts=[],
+                    validation=dependency_preflight,
+                )
+            }
+        return {
+            "request_context": request_context,
+            "logical_paths": logical_paths,
+            "phase_id": phase_id,
+            "dependency_phase_ids": dependency_phase_ids,
+            "dependency_preflight": dependency_preflight,
+        }
 
-        run = self.runtime.create_run(
-            TaskRunRequest(
-                source_type="direct",
-                session_id=request.session_id,
-                workspace=workspace,
-                contract_type="analysis_readonly",
-                operation_type="workspace_analysis_readonly",
-                runtime_profile="readonly_analysis",
-                capabilities_required=["read_workspace", "artifact_generate"],
-                intent_map={
-                    "intent_type": "workspace_analysis_readonly",
-                    "operation_type": "workspace_analysis_readonly",
-                    "artifact_generation": True,
-                    "workspace_mutation": False,
-                    "requested_artifact_paths": logical_paths,
-                    "phase_id": phase_id,
-                    "dependency_phase_ids": dependency_phase_ids,
-                    "raw_prompt": request.message,
-                    "external_roots": request_context.get("external_roots", []),
-                    "library_roots": request_context.get("library_roots", []),
-                    "readonly_flags": request_context.get("readonly_flags", {}),
-                    "workspace_ids": request_context.get("workspace_ids", []),
-                    "cognitive_readiness": self._phase0_readiness_ref(request),
-                },
-                policy_decision={
-                    "status": "allowed",
-                    "policy_status": "allowed",
-                    "allowed_actions": ["read_workspace", "read_files"],
-                    "approval_required_for": [],
-                    "denied_actions": [],
-                },
-                requested_actions=["read_workspace"],
-                mode="read_only",
-                start_immediately=False,
-            )
+    def _task_run_request(
+        self,
+        *,
+        request,
+        workspace: str,
+        operation_id: str | None,
+        prepared: dict[str, Any],
+    ) -> TaskRunRequest:
+        request_context = prepared["request_context"]
+        logical_paths = prepared["logical_paths"]
+        phase_id = prepared["phase_id"]
+        dependency_phase_ids = prepared["dependency_phase_ids"]
+        return TaskRunRequest(
+            source_type="direct",
+            source_channel="public_chat",
+            session_id=request.session_id,
+            operation_id=operation_id,
+            workspace=workspace,
+            contract_type="analysis_readonly",
+            operation_type="workspace_analysis_readonly",
+            runtime_profile="readonly_analysis",
+            capabilities_required=["read_workspace", "artifact_generate"],
+            intent_map={
+                "intent_type": "workspace_analysis_readonly",
+                "operation_type": "workspace_analysis_readonly",
+                "requires_task": True,
+                "read_only": True,
+                "artifact_generation": True,
+                "workspace_mutation": False,
+                "requested_artifact_paths": logical_paths,
+                "phase_id": phase_id,
+                "dependency_phase_ids": dependency_phase_ids,
+                "raw_prompt": request.message,
+                "external_roots": request_context.get("external_roots", []),
+                "library_roots": request_context.get("library_roots", []),
+                "readonly_flags": request_context.get("readonly_flags", {}),
+                "workspace_ids": request_context.get("workspace_ids", []),
+                "cognitive_readiness": self._phase0_readiness_ref(request),
+            },
+            policy_decision={
+                "status": "allowed",
+                "policy_status": "allowed",
+                "allowed_actions": ["read_workspace", "read_files"],
+                "approval_required_for": [],
+                "denied_actions": [],
+            },
+            requested_actions=["read_workspace"],
+            mode="read_only",
+            start_immediately=False,
         )
+
+    def execute(
+        self,
+        *,
+        request,
+        workspace: str,
+        label: str = "WORKSPACE_ANALYSIS_ARTIFACTS_READY",
+        operation_id: str | None = None,
+        _prepared: dict[str, Any] | None = None,
+        _run_request: TaskRunRequest | None = None,
+    ) -> ReadonlyArtifactExecution:
+        prepared = _prepared or self._prepare_public_execution(
+            request=request,
+            workspace=workspace,
+            operation_id=operation_id,
+        )
+        blocked = prepared.get("blocked_execution")
+        if isinstance(blocked, ReadonlyArtifactExecution):
+            return blocked
+        request_context = prepared["request_context"]
+        logical_paths = prepared["logical_paths"]
+        phase_id = prepared["phase_id"]
+        dependency_phase_ids = prepared["dependency_phase_ids"]
+        dependency_check = prepared["dependency_preflight"]
+        run_request = _run_request or self._task_run_request(
+            request=request,
+            workspace=workspace,
+            operation_id=operation_id,
+            prepared=prepared,
+        )
+        run = self.runtime.create_run(run_request)
 
         phase0_ref = self._phase0_readiness_ref(request)
         if phase0_ref.get("phase0_result_ref") or phase0_ref.get("cognitive_readiness_id"):
@@ -1983,6 +2055,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
             label=label,
             task_id=run.task_id,
             run_id=run.run_id,
+            operation_id=run.operation_id,
             logical_paths=logical_paths,
             artifacts=final_artifacts,
             validation=validation,
@@ -5920,6 +5993,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
         label: str,
         task_id: str | None,
         run_id: str,
+        operation_id: str | None,
         logical_paths: list[str],
         artifacts: list[dict[str, Any]],
         validation: dict[str, Any],
@@ -5964,7 +6038,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
             task_id=task_id,
             task_run_id=run_id,
             result_ref_id=run_id,
-            operation_id=f"chatop_{run_id.replace('task_run_', '')}",
+            operation_id=operation_id,
             operation_type="workspace_analysis_readonly",
             message_type="assistant_final_answer" if status == "completed" else "assistant_degraded_answer",
             status="ok" if status == "completed" else "blocked",
@@ -6022,6 +6096,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
         request,
         *,
         workspace: str,
+        operation_id: str | None = None,
         reason_code: str,
         missing: list[str],
         dependency_check: dict[str, Any] | None = None,
@@ -6029,6 +6104,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
         return ChatResponse(
             response_id=f"chat_blocked_{abs(hash((request.message, reason_code))) & 0xffffffff:x}",
             session_id=request.session_id,
+            operation_id=operation_id,
             operation_type="workspace_analysis_readonly",
             message_type="blocked_policy_message",
             status="blocked",
@@ -6245,7 +6321,20 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 "artifacts anteriores",
                 "artefatos anteriores",
                 "previous artifacts",
+                "use os artifacts",
+                "use artifacts",
+                "utilize os artifacts",
+                "utilize artifacts",
+                "use os artefatos",
+                "utilize os artefatos",
             )
+        ) or (
+            len(phase_ids) > 1
+            and any(verb in normalized_ascii for verb in ("use", "utilize", "consume"))
+            and any(noun in normalized_ascii for noun in ("artifact", "artefato"))
+        ) or (
+            "anteriores" in normalized_ascii
+            and any(stem in normalized_ascii for stem in ("fase", "phase", "evid", "artifact", "artefat"))
         )
         if not explicit_dependency_reference:
             return []

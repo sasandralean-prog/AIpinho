@@ -7,7 +7,7 @@ from aipinho.services.runtime.task_runtime_service import TaskRuntimeService
 
 
 def test_task_runtime_routes_are_registered():
-    routes = {getattr(route, "path", "") for route in create_app().routes}
+    routes = set(create_app().openapi()["paths"])
 
     expected = {
         "/api/v1/task-runtime/status",

@@ -8,6 +8,7 @@ from aipinho.core.paths import PATHS
 from aipinho.schemas.common.actor import Actor
 from aipinho.schemas.runtime.task_cancellation import TaskCancellationRequest
 from aipinho.schemas.runtime.task_run import TaskRun
+from aipinho.schemas.runtime.task_run_plan import TaskRunPlan
 from aipinho.schemas.runtime.task_queue import TaskQueueReconciliationResult
 from aipinho.schemas.runtime.task_run_request import TaskRunRequest
 from aipinho.schemas.runtime.task_runtime_status import TaskRuntimeStatus
@@ -152,7 +153,126 @@ class TaskRuntimeService:
         )
         self.execution_plan_promotion = ExecutionPlanPromotionService()
 
+    def reserve_run(self, request: TaskRunRequest) -> TaskRun:
+        """Persist immutable TaskRun identity before planning or enrichment."""
+        effective_operation_type = str(
+            request.operation_type
+            or request.intent_map.get("operation_type")
+            or request.intent_map.get("intent_type")
+            or request.contract_type
+        )
+        bootstrap = self.bootstrap.bootstrap(
+            TaskBootstrapRequest(
+                session_id=request.session_id,
+                workspace=request.workspace,
+                contract_type=request.contract_type,
+                operation_type=effective_operation_type,
+                runtime_profile=request.runtime_profile,
+                requested_actions=list(request.requested_actions),
+                intent_map=dict(request.intent_map),
+                source_channel=request.source_channel,
+                task_id=request.task_id,
+                operation_id=request.operation_id,
+                task_run_id=request.task_run_id,
+                workspace_id=request.workspace_id,
+                project_id=request.project_id,
+                parent_task_id=request.parent_task_id,
+            )
+        )
+        task = bootstrap.universal_task
+        if self.store.get_run(task.task_run_id) is not None:
+            raise ValueError("task_run_already_exists")
+        run = TaskRun(
+            run_id=task.task_run_id,
+            task_id=task.task_id,
+            operation_id=task.operation_id,
+            task_run_id=task.task_run_id,
+            workspace_id=task.workspace_id,
+            project_id=task.project_id,
+            parent_task_id=task.parent_task_id,
+            current_sprint=task.current_sprint,
+            current_phase=task.current_phase,
+            bootstrap_context={
+                **task.model_dump(mode="json"),
+                "reservation_status": "durable_pending_enrichment",
+            },
+            source_type=request.source_type,
+            draft_id=request.draft_id,
+            preview_id=request.preview_id,
+            approval_id=request.approval_id,
+            session_id=request.session_id,
+            workspace=request.workspace,
+            contract_type=request.contract_type,
+            operation_type=effective_operation_type,
+            runtime_profile=request.runtime_profile,
+            capabilities_required=list(request.capabilities_required),
+            requested_actions=list(request.requested_actions),
+            intent_map=dict(request.intent_map),
+            mode=request.mode,
+            plan=TaskRunPlan(
+                plan_id=f"plan_reservation_{uuid4().hex}",
+                contract_type=request.contract_type,
+                status="pending",
+                metadata={
+                    "reservation_only": True,
+                    "runtime_profile": request.runtime_profile,
+                    "normalized_actions": list(request.requested_actions),
+                },
+            ),
+            policy_snapshot=self.store.sanitize(request.policy_decision),
+            context_injection_plan_id=request.context_injection_plan_id,
+            auto_run_requested=bool(request.start_immediately),
+        )
+        self.store.create_run(run)
+        self.events.create(
+            run.run_id,
+            "run_created",
+            "created",
+            "TaskRun identity durably reserved before runtime enrichment.",
+            metadata={
+                "source_type": run.source_type,
+                "task_id": run.task_id,
+                "task_run_id": run.run_id,
+                "operation_id": run.operation_id,
+                "workspace_id": run.workspace_id,
+                "project_id": run.project_id,
+                "parent_task_id": run.parent_task_id,
+                "workflow_id": None,
+                "contract_type": run.contract_type,
+                "auto_run_requested": run.auto_run_requested,
+                "reservation_status": "durable_pending_enrichment",
+            },
+        )
+        self.events.create(
+            run.run_id,
+            "task_bootstrap_created",
+            "created",
+            "Universal Task identity created before execution.",
+            metadata={
+                "task_id": run.task_id,
+                "task_run_id": run.run_id,
+                "operation_id": run.operation_id,
+                "runtime_profile": run.runtime_profile,
+                "workspace_id": run.workspace_id,
+                "project_id": run.project_id,
+                "current_phase": run.current_phase,
+                "workflow_id": None,
+                "parent_task_id": run.parent_task_id,
+                "execution_allowed_to_start": False,
+                "reservation_status": "durable_pending_enrichment",
+            },
+        )
+        return run
+
     def create_run(self, request: TaskRunRequest) -> TaskRun:
+        reserved_run = self.store.get_run(request.task_run_id) if request.task_run_id else None
+        if reserved_run is not None:
+            if reserved_run.bootstrap_context.get("reservation_status") != "durable_pending_enrichment":
+                raise ValueError("task_run_already_exists")
+            if request.operation_id != reserved_run.operation_id:
+                raise ValueError("task_run_reservation_operation_mismatch")
+            if request.task_id != reserved_run.task_id:
+                raise ValueError("task_run_reservation_task_mismatch")
         requested_start = bool(request.start_immediately)
         plan = self.planner.plan(request)
         runtime_profile = str(plan.metadata.get("runtime_profile") or request.runtime_profile or "") or None
@@ -321,7 +441,19 @@ class TaskRuntimeService:
         if plan.status == "blocked":
             run.blocked_reasons.extend(plan.blocked_reasons)
 
-        self.store.create_run(run)
+        if reserved_run is not None:
+            latest_reserved = self.store.get_run(run.run_id) or reserved_run
+            run.created_at = latest_reserved.created_at
+            run.revision = max(run.revision, latest_reserved.revision + 1)
+            for key in ("public_response_boundary",):
+                if key in latest_reserved.intent_map:
+                    run.intent_map[key] = latest_reserved.intent_map[key]
+                if key in latest_reserved.bootstrap_context:
+                    run.bootstrap_context[key] = latest_reserved.bootstrap_context[key]
+            run.bootstrap_context["reservation_status"] = "enriched"
+            self.store.update_run(run)
+        else:
+            self.store.create_run(run)
         if run.approval_id:
             self.approvals.attach_runtime_context(
                 run.approval_id,
@@ -332,42 +464,43 @@ class TaskRuntimeService:
             )
             run.approval_snapshot = self._approval_snapshot(run.approval_id)
             self.store.update_run(run)
-        self.events.create(
-            run.run_id,
-            "run_created",
-            "created",
-            "TaskRun created without execution.",
-            metadata={
-                "source_type": run.source_type,
-                "task_id": run.task_id,
-                "task_run_id": run.run_id,
-                "operation_id": run.operation_id,
-                "workspace_id": run.workspace_id,
-                "project_id": run.project_id,
-                "parent_task_id": run.parent_task_id,
-                "workflow_id": run.workflow.workflow_id if run.workflow else None,
-                "contract_type": run.contract_type,
-                "auto_run_requested": run.auto_run_requested,
-            },
-        )
-        self.events.create(
-            run.run_id,
-            "task_bootstrap_created",
-            "created",
-            "Universal Task identity created before execution.",
-            metadata={
-                "task_id": run.task_id,
-                "task_run_id": run.run_id,
-                "operation_id": run.operation_id,
-                "runtime_profile": run.runtime_profile,
-                "workspace_id": run.workspace_id,
-                "project_id": run.project_id,
-                "current_phase": run.current_phase,
-                "workflow_id": run.workflow.workflow_id if run.workflow else None,
-                "parent_task_id": run.parent_task_id,
-                "execution_allowed_to_start": False,
-            },
-        )
+        if reserved_run is None:
+            self.events.create(
+                run.run_id,
+                "run_created",
+                "created",
+                "TaskRun created without execution.",
+                metadata={
+                    "source_type": run.source_type,
+                    "task_id": run.task_id,
+                    "task_run_id": run.run_id,
+                    "operation_id": run.operation_id,
+                    "workspace_id": run.workspace_id,
+                    "project_id": run.project_id,
+                    "parent_task_id": run.parent_task_id,
+                    "workflow_id": run.workflow.workflow_id if run.workflow else None,
+                    "contract_type": run.contract_type,
+                    "auto_run_requested": run.auto_run_requested,
+                },
+            )
+            self.events.create(
+                run.run_id,
+                "task_bootstrap_created",
+                "created",
+                "Universal Task identity created before execution.",
+                metadata={
+                    "task_id": run.task_id,
+                    "task_run_id": run.run_id,
+                    "operation_id": run.operation_id,
+                    "runtime_profile": run.runtime_profile,
+                    "workspace_id": run.workspace_id,
+                    "project_id": run.project_id,
+                    "current_phase": run.current_phase,
+                    "workflow_id": run.workflow.workflow_id if run.workflow else None,
+                    "parent_task_id": run.parent_task_id,
+                    "execution_allowed_to_start": False,
+                },
+            )
         self.events.create(
             run.run_id,
             "PlanningStarted",

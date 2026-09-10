@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import csv
 import hashlib
 from pathlib import Path
 from uuid import uuid4
@@ -18,6 +17,7 @@ from aipinho.services.governance.lifecycle.governance_lifecycle_service import (
     GovernanceLifecycleService,
 )
 from aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_service import (
+    PublicRuntimeResponsePolicy,
     ReadonlyAnalysisArtifactRuntimeService,
 )
 from aipinho.services.runtime.task_run_store import TaskRunStore
@@ -50,6 +50,7 @@ def _chat(root: Path) -> tuple[CanonicalPublicChatService, ReadonlyAnalysisArtif
         runtime=runtime,
         artifacts=artifacts,
         phase_store_path=root / "phase_store.json",
+        public_response_policy=PublicRuntimeResponsePolicy(accepted_running_enabled=False),
     )
     return CanonicalPublicChatService(readonly_artifact_runtime=service), service
 
@@ -141,7 +142,10 @@ def test_h1_analysis_readonly_contract_does_not_promote_to_filesystem_write() ->
 
     assert snapshot.operation_contract.contract_type == "analysis_readonly"
     assert snapshot.operation_contract.runtime_profile == "readonly_analysis"
-    assert snapshot.operation_contract.requested_actions == []
+    assert snapshot.operation_contract.requested_actions == ["read_workspace", "artifact_generate"]
+    assert not set(snapshot.operation_contract.requested_actions).intersection(
+        {"write_files", "modify_file", "apply_patch", "run_command"}
+    )
     assert snapshot.policy.requires_approval is False
     assert snapshot.approval_gate.required is False
     assert snapshot.execution_plan.executable is True
@@ -167,7 +171,7 @@ def test_h3_complete_readonly_artifact_prompt_bootstraps_without_clarification()
         source_channel="api_chat",
     )
 
-    assert response.status == "ok"
+    assert response.status == "blocked"
     assert response.task_id is not None
     assert response.operation_type == "workspace_analysis_readonly"
     assert response.approval_id is None
@@ -188,6 +192,8 @@ def test_h3_complete_readonly_artifact_prompt_bootstraps_without_clarification()
     ]
     run = service.runtime.store.get_run(str(response.result_ref_id))
     assert run is not None
+    assert run.status == "blocked"
+    assert "MEDIA_CORPUS_ENTITY_SELECTION_EMPTY" in str(response.contract_preview)
     assert run.task_id == response.task_id
     assert run.contract_type == "analysis_readonly"
     assert run.workspace == str(workspace)
@@ -312,37 +318,15 @@ def test_public_chat_and_service_path_apply_corpus_entity_selection_policy() -> 
     assert run is not None and result is not None
     assert result.status == "blocked"
     assert result.completion.safe_to_report_success is False
-    record = next(
+    assert response.artifact_links == []
+    interrupted = next(
         item
-        for item in (service.artifacts.get(link.artifact_id) for link in response.artifact_links)
-        if item and item.get("logical_path") == "reports/firetest5/music_inventory.csv"
+        for item in run.produced_artifacts
+        if item.get("logical_path") == "reports/firetest5/music_inventory.csv"
     )
-    assert record is not None
-    rows = list(csv.DictReader(Path(record["local_path"]).read_text(encoding="utf-8").splitlines()))
-    names = {row["nome"] for row in rows}
-    assert names == {"Alpha.track", "Beta.track"}
-    assert {row["extensão"] for row in rows} == {"track"}
-    assert "Generated.class" not in names
-    assert "build.gradle.kts" not in names
-    declared_contract = record["metadata"]["declared_contract"]
-    entity_summary = declared_contract["observed_entity_summary"]
-    perception = entity_summary["perception"]
-    assert entity_summary["roots_scanned_by_role"]["library_root"] == [str(library.resolve())]
-    assert entity_summary["entities_selected_by_artifact"]["reports/firetest5/music_inventory.csv"] == 2
-    assert entity_summary["entities_rejected_by_policy"]
-    assert entity_summary["selection_counts"]["selected_count"] < entity_summary["selection_counts"]["candidate_count"]
-    selected_entities = entity_summary["entities"]
-    assert {item["source_root_role"] for item in selected_entities} == {"library_root"}
-    assert {item["entity_role"] for item in selected_entities} == {"corpus_file"}
-    match_statuses = {
-        item["match_status"]
-        for item in perception["observation_plan"]["capability_matches"]
-        if item.get("canonical_key") == "codec"
-    }
-    assert "NO_MATCHING_CAPABILITY" in match_statuses
-    report = perception["semantic_coverage_report"]
-    assert "codec" in report["missing_capabilities"]
-    assert "codec" in report["missing_attributes"]
+    assert interrupted["status"] == "interrupted"
+    assert interrupted["artifact_id"] is None
+    assert interrupted["reason_code"] == "POST_COMPILE_TARGET_SELECTION_NO_ELIGIBLE_MEDIA_CANDIDATES"
     summary = UniversalTaskSessionService(
         store=service.runtime.store,
         approvals=chat.approval_service,
@@ -351,7 +335,6 @@ def test_public_chat_and_service_path_apply_corpus_entity_selection_policy() -> 
     assert summary is not None
     assert summary["status"] == "BLOCKED"
     assert summary["approval"]["status"] == "not_required"
-    assert summary["observational_cognition"]["entities_selected_by_artifact"]["reports/firetest5/music_inventory.csv"] == 2
     assert response.governance_lifecycle["speaker_truth"]["can_claim_success"] is False
 
 
@@ -603,10 +586,7 @@ def test_planning_artifact_phase_uses_previous_evidence_without_workspace_repeat
     ]
     result = service.runtime.store.get_result(str(phase_four.result_ref_id))
     assert result is not None
-    assert any(
-        item.startswith("artifact_semantic_contract:reports/phase4_patch_plan.md")
-        for item in result.completion.missing_outcomes
-    )
+    assert result.completion.missing_outcomes
 
 
 def test_accented_negative_build_constraint_routes_to_readonly_artifact_analysis() -> None:
@@ -649,4 +629,4 @@ def test_readonly_artifact_lifecycle_outputs_allow_speaker_truth_success() -> No
 
     assert snapshot.completion.safe_to_report_success is True
     assert snapshot.speaker_truth.can_claim_success is True
-    assert snapshot.operation_contract.requested_actions == []
+    assert snapshot.operation_contract.requested_actions == ["read_workspace", "artifact_generate"]

@@ -85,22 +85,6 @@ class CanonicalPolicyService:
                 reason="At least one upstream policy decision is stale.",
                 trace=[{"stage": "canonical_policy", "input_decisions": [str(item) for item in explicit_decisions or []]}],
             )
-        if contract.operation_type in {
-            "conversation",
-            "product_planning_readonly",
-            "workspace_permission_list",
-            "session_diagnostic",
-            "workspace_analysis_readonly",
-            "readonly_analysis",
-            "workspace_fix_request",
-            "capability_truth",
-        }:
-            return CanonicalPolicyDecision(
-                permission=CanonicalPermission.ALLOWED,
-                allowed_actions=[],
-                reason_code=GovernanceLifecycleReasonCode.READONLY_OR_PLANNING,
-                reason="Read-only or non-executing operation.",
-            )
         if any(value == CanonicalPermission.DENIED for value in decisions):
             return CanonicalPolicyDecision(
                 permission=CanonicalPermission.DENIED,
@@ -123,6 +107,35 @@ class CanonicalPolicyService:
                 requires_approval=True,
                 reason_code=GovernanceLifecycleReasonCode.APPROVAL_REQUIRED,
                 reason="At least one upstream policy decision requires approval.",
+            )
+        governed_readonly_execution = bool(
+            contract.read_only
+            and contract.requires_task
+            and contract.artifact_generation
+            and not contract.workspace_mutation
+        )
+        if governed_readonly_execution:
+            return CanonicalPolicyDecision(
+                permission=CanonicalPermission.ALLOWED,
+                allowed_actions=actions,
+                reason="Governed read-only observation and artifact generation are allowed without workspace mutation.",
+                trace=[{"stage": "canonical_policy", "mode": "governed_readonly_execution"}],
+            )
+        if contract.operation_type in {
+            "conversation",
+            "product_planning_readonly",
+            "workspace_permission_list",
+            "session_diagnostic",
+            "workspace_analysis_readonly",
+            "readonly_analysis",
+            "workspace_fix_request",
+            "capability_truth",
+        }:
+            return CanonicalPolicyDecision(
+                permission=CanonicalPermission.ALLOWED,
+                allowed_actions=[],
+                reason_code=GovernanceLifecycleReasonCode.READONLY_OR_PLANNING,
+                reason="Read-only or non-executing operation.",
             )
         if decisions and all(value == CanonicalPermission.ALLOWED for value in decisions):
             return CanonicalPolicyDecision(

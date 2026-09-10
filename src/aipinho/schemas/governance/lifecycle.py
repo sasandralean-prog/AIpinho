@@ -96,6 +96,10 @@ class CanonicalOperationContract(AIpinhoModel):
     operation_type: str = "conversation"
     contract_type: str = "conversation"
     runtime_profile: str = "conversation"
+    requires_task: bool = False
+    read_only: bool = False
+    artifact_generation: bool = False
+    workspace_mutation: bool = False
     requested_actions: list[str] = Field(default_factory=list)
     target_paths: list[str] = Field(default_factory=list)
     workspace_path: str | None = None

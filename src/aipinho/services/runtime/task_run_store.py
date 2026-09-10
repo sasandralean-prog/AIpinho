@@ -360,6 +360,7 @@ class TaskRunStore:
     def get_result(self, run_id: str) -> TaskRunResult | None:
         result = self._read_result_model(run_id)
         if result is not None:
+            self._cohere_terminal_result(run_id, result)
             return result
         index = self.get_run_index(run_id)
         if isinstance(index, dict) and str(index.get("status") or "") in self._terminal_statuses():
@@ -1305,11 +1306,18 @@ class TaskRunStore:
         data = self._read(path)
         if not isinstance(data, dict):
             return
+        changed = False
         if data.get("status") != run_status:
             data["status"] = run_status
+            changed = True
         if not data.get("finished_at"):
             data["finished_at"] = datetime.now(timezone.utc).isoformat()
-        data["current_step_id"] = None
+            changed = True
+        if data.get("current_step_id") is not None:
+            data["current_step_id"] = None
+            changed = True
+        if not changed:
+            return
         data["revision"] = int(data.get("revision") or 0) + 1
         self._write(path, data)
         self._write_run_index_from_data(run_id, data)
