@@ -64,6 +64,7 @@ class PublicRouteLifecycleService:
             user_text=prompt,
             source_channel=source_channel,
             session_id=response.session_id,
+            operation_id=response.operation_id,
             requested_actions=actions,
             operation_type=operation_type,
             contract_type=self._contract_type(response, operation_type),
@@ -350,13 +351,27 @@ class PublicRouteLifecycleService:
                 "artifact_id": response.artifact_id,
                 "artifact_links": [item.model_dump() for item in response.artifact_links],
             }
-            logical_paths = set()
+            logical_paths: list[str] = []
+            artifact_ids: list[str] = []
             if isinstance(response.contract_preview, dict):
-                logical_paths = {
+                logical_paths = [
                     str(item)
                     for item in response.contract_preview.get("logical_artifact_paths", []) or []
                     if str(item).strip()
-                }
+                ]
+                artifact_ids = [
+                    str(item)
+                    for item in response.contract_preview.get("artifact_ids", []) or []
+                    if str(item).strip()
+                ]
+            artifacts_by_id = {item.artifact_id: item for item in response.artifact_links}
+            for logical_path, artifact_id in zip(logical_paths, artifact_ids, strict=False):
+                link = artifacts_by_id.get(artifact_id)
+                if link is not None:
+                    outputs[f"artifact:{logical_path}"] = {
+                        "artifact_id": link.artifact_id,
+                        "download_endpoint": link.download_endpoint,
+                    }
             for link in response.artifact_links:
                 logical_path = str(link.label or "")
                 if logical_path in logical_paths:

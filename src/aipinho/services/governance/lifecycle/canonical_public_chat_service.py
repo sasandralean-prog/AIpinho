@@ -330,6 +330,7 @@ class CanonicalPublicChatService:
                     request=request,
                     workspace=workspace,
                     label="WORKSPACE_ANALYSIS_ARTIFACTS_READY",
+                    operation_id=snapshot.operation_contract.operation_id,
                 )
                 return self.lifecycle_public.finalize_chat_response(
                     execution.response,
@@ -1846,7 +1847,13 @@ class CanonicalPublicChatService:
             "preview_id": snapshot.approval_gate.preview_id,
             "draft_id": snapshot.approval_gate.draft_id,
         }
-        return response.model_copy(update={"policy": policy, "governance_lifecycle": snapshot.model_dump()})
+        return response.model_copy(
+            update={
+                "operation_id": snapshot.operation_contract.operation_id,
+                "policy": policy,
+                "governance_lifecycle": snapshot.model_dump(),
+            }
+        )
 
     def _workspace_from_request(self, request: ChatRequest) -> str | None:
         if request.context and request.context.active_workspace:

@@ -286,8 +286,16 @@ class CanonicalIntentRouter:
                 semantic_intent_graph=semantic_graph,
             )
         if semantic_graph.readonly_contract:
+            planning_only = bool(
+                semantic_graph.planning_intent
+                and semantic_graph.state_effect == "planning_only"
+                and not semantic_graph.artifact_output
+                and not semantic_graph.observational_intent
+            )
             readonly_intent = (
-                "workspace_analysis_readonly"
+                "product_planning_readonly"
+                if planning_only
+                else "workspace_analysis_readonly"
                 if self._has_workspace_analysis_scope(concept_matches, normalized)
                 or self._is_readonly_analysis_request(normalized)
                 else "product_planning_readonly"

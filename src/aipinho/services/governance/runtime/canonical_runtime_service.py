@@ -27,10 +27,16 @@ class CanonicalRuntimeService:
     ) -> CanonicalExecutionPlan:
         actions = set(contract.requested_actions)
         outputs = list(dict.fromkeys(self.default_expected_outputs(contract) if expected_outputs is None else expected_outputs))
-        readonly_artifact_execution = (
-            bool(executable_plan_ref)
-            and contract.runtime_profile == "readonly_analysis"
-            and "artifact_result" in outputs
+        readonly_artifact_execution = bool(
+            contract.read_only
+            and contract.requires_task
+            and contract.artifact_generation
+            and not contract.workspace_mutation
+        )
+        effective_executable_plan_ref = executable_plan_ref or (
+            f"readonly_analysis:{contract.operation_id}"
+            if readonly_artifact_execution
+            else None
         )
         needs_execution_plan = (
             bool(actions.intersection(self.WRITE_OR_EXECUTE))
@@ -47,11 +53,11 @@ class CanonicalRuntimeService:
                 blocked_reason=GovernanceLifecycleReasonCode.READONLY_OR_PLANNING,
                 trace=[{"stage": "canonical_runtime", "mode": "plan_only"}],
             )
-        if executable_plan_ref:
+        if effective_executable_plan_ref:
             return CanonicalExecutionPlan(
                 preview_kind=PreviewKind.EXECUTABLE,
                 executable=True,
-                executable_plan_ref=executable_plan_ref,
+                executable_plan_ref=effective_executable_plan_ref,
                 plan_kind=plan_kind or "executable_plan",
                 expected_outputs=outputs,
                 target_paths=targets,

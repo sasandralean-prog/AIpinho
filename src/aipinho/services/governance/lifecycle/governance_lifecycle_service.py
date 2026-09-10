@@ -69,6 +69,7 @@ class GovernanceLifecycleService:
         user_text: str,
         source_channel: str = "unknown",
         session_id: str | None = None,
+        operation_id: str | None = None,
         requested_actions: list[str] | None = None,
         operation_type: str | None = None,
         contract_type: str | None = None,
@@ -94,12 +95,21 @@ class GovernanceLifecycleService:
         actions = list(dict.fromkeys(requested_actions or self._default_actions_for_operation(op_type)))
         if self._readonly_hard_override(intent):
             readonly_expected_outputs = list(expected_outputs or [])
+            semantic_artifact_requested = bool(
+                intent.requires_task
+                and getattr(intent.semantic_intent_graph, "artifact_output", False)
+            )
             artifact_outputs_requested = (
-                bool(readonly_expected_outputs)
-                and any(
-                    str(item).startswith("artifact")
-                    or str(item) in {"validation_result", "project_analysis_report"}
-                    for item in readonly_expected_outputs
+                (
+                    semantic_artifact_requested
+                    or (
+                        bool(readonly_expected_outputs)
+                        and any(
+                            str(item).startswith("artifact")
+                            or str(item) in {"validation_result", "project_analysis_report"}
+                            for item in readonly_expected_outputs
+                        )
+                    )
                 )
                 and not (getattr(intent, "negative_constraints", {}) or {}).get("artifact_forbidden")
             )
@@ -109,21 +119,43 @@ class GovernanceLifecycleService:
                 op_type = operation_type or intent.operation_type or "workspace_analysis_readonly"
                 contract_type = contract_type or "analysis_readonly"
                 runtime_profile = runtime_profile or "readonly_analysis"
-                expected_outputs = readonly_expected_outputs
+                expected_outputs = readonly_expected_outputs or None
+                actions = ["read_workspace", "artifact_generate"]
             else:
                 op_type = intent.operation_type or "product_planning_readonly"
                 contract_type = op_type
                 runtime_profile = op_type
                 executable_plan_ref = None
                 expected_outputs = []
+        semantic_artifact_requested = bool(
+            getattr(intent.semantic_intent_graph, "artifact_output", False)
+        )
+        artifact_generation = bool(
+            semantic_artifact_requested
+            or any(
+                str(item).startswith("artifact")
+                or str(item) in {"artifact_result", "project_analysis_report"}
+                for item in (expected_outputs or [])
+            )
+        )
+        requires_task = bool(intent.requires_task or artifact_generation)
+        read_only = bool(intent.readonly)
+        workspace_mutation = bool(
+            not read_only
+            and set(actions).intersection(self.side_effect_actions)
+        )
         contract = CanonicalOperationContract(
-            operation_id=f"op_{uuid4().hex}",
+            operation_id=operation_id or f"op_{uuid4().hex}",
             session_id=session_id,
             source_channel=source_channel,
             intent_type=intent.intent_type,
             operation_type=op_type,
             contract_type=contract_type or self._default_contract_type(op_type, actions),
             runtime_profile=runtime_profile or self._default_runtime_profile(op_type, actions),
+            requires_task=requires_task,
+            read_only=read_only,
+            artifact_generation=artifact_generation,
+            workspace_mutation=workspace_mutation,
             requested_actions=actions,
             target_paths=list(dict.fromkeys(target_paths or [])),
             workspace_path=workspace_path,
