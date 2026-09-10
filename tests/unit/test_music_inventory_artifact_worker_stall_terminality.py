@@ -205,6 +205,29 @@ def test_known_render_stage_timeout_uses_stage_specific_reason(task_runtime_stor
     assert timeout.value.reason_code == "MUSIC_INVENTORY_CSV_STREAMING_BUDGET_EXCEEDED"
 
 
+def test_schema_coverage_timeout_uses_schema_specific_reason(task_runtime_store) -> None:
+    run = runtime_run(status="running")
+    task_runtime_store.create_run(run)
+    runtime = TaskRuntimeService(store=task_runtime_store)
+    service = ReadonlyAnalysisArtifactRuntimeService(runtime=runtime)
+    service.budget = replace(service.budget, max_artifact_render_seconds=0.001)
+    old_started = time.monotonic() - 1
+
+    with pytest.raises(GovernedPhase1Block) as timeout:
+        service._check_artifact_render_checkpoint(  # noqa: SLF001 - checkpoint contract unit
+            run.run_id,
+            old_started,
+            old_started,
+            stage="before_schema_coverage",
+            logical_path="reports/example_inventory.csv",
+            rows_rendered=10,
+            rows_expected=10,
+            cells_rendered=30,
+        )
+
+    assert timeout.value.reason_code == "MUSIC_INVENTORY_SCHEMA_COVERAGE_CALCULATION_STALLED"
+
+
 def test_lightweight_run_projection_does_not_hydrate_spilled_artifacts(task_runtime_store) -> None:
     run = runtime_run(status="running")
     run.produced_artifacts = [

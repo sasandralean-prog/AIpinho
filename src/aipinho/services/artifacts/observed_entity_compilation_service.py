@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import os
 import re
+import time
 import unicodedata
 from pathlib import Path
 from typing import Any
@@ -164,21 +165,76 @@ class ObservedEntityCompilationService:
         return [entity for entity in entities if str(entity.get("entity_kind") or "") == selected_kind]
 
     def schema_coverage(self, entities: list[dict[str, Any]], schema: list[str]) -> dict[str, Any]:
+        started = time.monotonic()
         if not schema:
-            return {"status": "not_applicable", "covered_fields": [], "missing_fields": []}
-        covered = []
-        missing = []
+            return {
+                "status": "not_applicable",
+                "covered_fields": [],
+                "missing_fields": [],
+                "coverage_metrics": {
+                    "schema_field_count": 0,
+                    "entity_count": len(entities),
+                    "canonicalization_count": 0,
+                    "entity_field_checks": 0,
+                    "elapsed_ms": 0.0,
+                    "lookup_strategy": "single_schema_projection",
+                },
+            }
+
+        # Resolve aliases once per schema and then read the entity maps directly.
+        # The previous value_for_field call repeated alias normalization and fuzzy
+        # matching for every entity-field pair in this aggregate-only projection.
+        canonical_to_fields: dict[str, list[str]] = {}
+        canonical_by_field: dict[str, str] = {}
         for field in schema:
-            if any(self.value_for_field(entity, field)[1] for entity in entities):
-                covered.append(field)
-            else:
-                missing.append(field)
+            canonical = self.canonical_attribute_name(field)
+            canonical_by_field[field] = canonical
+            canonical_to_fields.setdefault(canonical, []).append(field)
+
+        covered_by_canonical: set[str] = set()
+        entity_field_checks = 0
+        for entity in entities:
+            observed = entity.get("observed_attributes") if isinstance(entity.get("observed_attributes"), dict) else {}
+            inferred = entity.get("inferred_attributes") if isinstance(entity.get("inferred_attributes"), dict) else {}
+            for canonical in canonical_to_fields:
+                if canonical in covered_by_canonical:
+                    continue
+                entity_field_checks += 1
+                observed_value = observed.get(canonical)
+                inferred_value = inferred.get(canonical)
+                if (
+                    isinstance(observed_value, dict)
+                    and observed_value.get("status") in {"observed", "inferred"}
+                ) or (
+                    isinstance(inferred_value, dict)
+                    and inferred_value.get("status") in {"observed", "inferred"}
+                ):
+                    covered_by_canonical.add(canonical)
+
+            if len(covered_by_canonical) == len(canonical_to_fields):
+                break
+
+        covered = [
+            field
+            for field in schema
+            if canonical_by_field[field] in covered_by_canonical
+        ]
+        missing = [field for field in schema if field not in covered]
         ratio = 1.0 if not schema else len(covered) / max(1, len(schema))
         return {
             "status": "complete" if not missing else "partial",
             "coverage_ratio": ratio,
             "covered_fields": covered,
             "missing_fields": missing,
+            "coverage_metrics": {
+                "schema_field_count": len(schema),
+                "canonical_field_count": len(canonical_to_fields),
+                "entity_count": len(entities),
+                "canonicalization_count": len(schema),
+                "entity_field_checks": entity_field_checks,
+                "elapsed_ms": round((time.monotonic() - started) * 1000, 3),
+                "lookup_strategy": "single_schema_projection",
+            },
         }
 
     def _root_descriptors(self, *, workspace: str, workspace_context: dict[str, Any]) -> list[WorkspaceRootDescriptor]:

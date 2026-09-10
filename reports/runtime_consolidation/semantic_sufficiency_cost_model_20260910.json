@@ -1,0 +1,103 @@
+{
+  "schema_version": "aipinho.semantic_sufficiency_cost_model.v1",
+  "source_campaign": {
+    "campaign": "firetest5_live_20260910T085207Z",
+    "task_run_id": "task_run_179ebf56e2ef4c3eb7da644972870dfa",
+    "operation_id": "op_f1bd743638d24f0d82685337113b2970",
+    "reason_code": "MUSIC_INVENTORY_SUFFICIENCY_EVALUATION_STALLED",
+    "block_stage": "after_artifact_semantic_profile",
+    "artifact_budget_seconds": 420.0,
+    "block_elapsed_seconds": 420.219,
+    "csv_rows": {"expected": 1263, "rendered": 1263},
+    "csv_cells": {"expected": 109881, "rendered": 109881},
+    "csv_stream_ms": 154406,
+    "csv_cell_render_ms": 147542,
+    "lookup_ms": 297,
+    "index_build_ms": 140,
+    "fallback_scans": 0,
+    "exclusive_stage_metrics": {
+      "time_at_csv_complete_ms": "not_observed",
+      "remaining_budget_after_csv_ms": "not_observed",
+      "semantic_profile_ms": "not_observed",
+      "row_applicability_ms": "not_observed",
+      "inventory_confidence_ms": "not_observed",
+      "sufficiency_evaluate_ms": "not_observed",
+      "use_safety_ms": "not_observed",
+      "post_csv_total_ms": "not_observed"
+    },
+    "timestamp_window_observed": {
+      "after_row_validation": "2026-09-10T06:00:13",
+      "before_metadata_coverage_summary": "2026-09-10T06:01:10",
+      "after_metadata_coverage_summary": "2026-09-10T06:01:11",
+      "before_inventory_sufficiency": "2026-09-10T06:01:11",
+      "after_inventory_sufficiency": "2026-09-10T06:01:11",
+      "before_artifact_semantic_profile": "2026-09-10T06:01:13",
+      "after_artifact_semantic_profile": "2026-09-10T06:01:14"
+    }
+  },
+  "historical_b3_10": {
+    "reviewed": true,
+    "result": "completed_with_limitations / CATALOG_READY_WITH_INFERRED_AND_UNKNOWN_IDENTITY",
+    "inventory_rows": 1051,
+    "primary_media_rows": 928,
+    "identity_counts": {
+      "observed": 214,
+      "inferred": 178,
+      "candidate": 526,
+      "not_applicable": 123
+    },
+    "confidence": {
+      "overall_catalog": 0.7719,
+      "truth_claim": 0.1955,
+      "planning": 0.7903
+    },
+    "safe_for_truth_claim": false,
+    "safe_for_catalog": true,
+    "safe_for_planning": "true_with_limitations",
+    "ffprobe_installed": false,
+    "terminal_blocking_event_count": 0,
+    "terminal_partial_event_count": 1
+  },
+  "root_cause": {
+    "component": "ObservedEntityCompilationService.schema_coverage",
+    "mechanism": "repeated canonical alias/compact/near-match resolution for every entity-field pair",
+    "complexity_before": "O(E * F * A)",
+    "complexity_after": "O(F * A + E * F)",
+    "dominant_component_share": "not_proven",
+    "reason_attribution": "imprecise",
+    "generic_reproducer": {
+      "entities": 300,
+      "fields": 30,
+      "semantic_equivalence": true,
+      "before_ms": 6210.417,
+      "after_ms": 20.26,
+      "speedup_approx": 306.5,
+      "fallback_scans": 0
+    }
+  },
+  "hypotheses": {
+    "indexed_lookup_bypass": "disconfirmed",
+    "per_cell_render_lookup": "disconfirmed_as_dominant",
+    "checkpoint_overhead": "not_proven",
+    "repeated_projection": "proven",
+    "sufficiency_evaluate_dominant": "disconfirmed_as_dominant",
+    "use_safety_dominant": "disconfirmed_as_dominant",
+    "unicode_decode_error": "not_proven",
+    "ffmpeg_ffprobe_causal": "not_proven"
+  },
+  "validation": {
+    "focused_renderer_and_terminality": "32 passed",
+    "focused_semantic": "27 passed, 2 pre-existing failures",
+    "unit_suite": "2146 passed, 90 failed, 1 skipped",
+    "full_collection": "blocked by pre-existing vector_rag_test_helpers",
+    "baseline_differential_adjacent_failure": "equivalent on a843df9a baseline",
+    "compileall": "PASS",
+    "diff_check": "PASS",
+    "anti_hardcode": "PASS",
+    "budget_changed": false,
+    "rows_skipped": false,
+    "provenance_weakened": false,
+    "semantic_contract_weakened": false,
+    "firetest_rerun": false
+  }
+}

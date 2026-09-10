@@ -162,6 +162,8 @@ _MEDIA_INVENTORY_STAGE_STALL_REASONS: dict[str, str] = {
     "after_contract_perception": "MUSIC_INVENTORY_ROW_BINDING_STALLED",
     "before_row_binding": "MUSIC_INVENTORY_ROW_BINDING_STALLED",
     "after_row_binding": "MUSIC_INVENTORY_METADATA_COVERAGE_CALCULATION_STALLED",
+    "before_schema_coverage": "MUSIC_INVENTORY_SCHEMA_COVERAGE_CALCULATION_STALLED",
+    "after_schema_coverage": "MUSIC_INVENTORY_METADATA_COVERAGE_CALCULATION_STALLED",
     "before_metadata_coverage_summary": "MUSIC_INVENTORY_METADATA_COVERAGE_CALCULATION_STALLED",
     "after_metadata_coverage_summary": "MUSIC_INVENTORY_CSV_STREAMING_STALLED",
     "before_csv_row_stream": "MUSIC_INVENTORY_CSV_STREAMING_STALLED",
@@ -3610,7 +3612,30 @@ class ReadonlyAnalysisArtifactRuntimeService:
             for item in row_evidence_coverage.get("evidence_refs_sample", []) or []
             if item
         ]
+        self._check_artifact_render_checkpoint(
+            render_run_id,
+            phase_started,
+            artifact_started,
+            stage="before_schema_coverage",
+            logical_path=logical_path,
+            rows_rendered=len(selected_entities),
+            rows_expected=len(selected_entities),
+            cells_rendered=cells_rendered,
+        )
         schema_coverage = dict(self.observed_entities.schema_coverage(selected_entities, canonical_schema))
+        self._check_artifact_render_checkpoint(
+            render_run_id,
+            phase_started,
+            artifact_started,
+            stage="after_schema_coverage",
+            logical_path=logical_path,
+            rows_rendered=len(selected_entities),
+            rows_expected=len(selected_entities),
+            cells_rendered=cells_rendered,
+            extra_metadata={
+                "schema_coverage_metrics": schema_coverage.get("coverage_metrics", {}),
+            },
+        )
         schema_coverage["canonical_schema"] = canonical_schema
         schema_coverage["display_schema"] = [item["display_label"] for item in render_columns]
         schema_coverage["row_level_validation"] = row_validation
