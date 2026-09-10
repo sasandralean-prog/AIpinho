@@ -160,7 +160,7 @@ This is a clean/cold baseline, not readiness.
 Current host orientation:
 
 ```text
-D:\Rafa\músicas
+D:\rafa\novapinhomusic
 ```
 
 The 07/09 reset reported the paths present and corpus unmodified.
