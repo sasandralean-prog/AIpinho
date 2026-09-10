@@ -60,6 +60,13 @@ for identity/status polling. It is not part of the CSV renderer correction.
 
 - Focused renderer/lifecycle/terminality regression: PASS, 55 tests.
 - Generic scale validation: PASS.
+- Full repository collection: BLOCKED by the pre-existing missing
+  `vector_rag_test_helpers` import in
+  `tests/integration/test_real_llama_server_rag_runtime_smoke.py`.
+- The broader unit/contract/governance run also exposed an unrelated existing
+  `accepted_running` boundary failure in
+  `tests/unit/test_accepted_running_artifact_worker_terminalization_guard.py`;
+  it was not changed by this patch.
 - Artifact budget: unchanged at 420 seconds.
 - Rows skipped by the correction: none.
 - Provenance and semantic contract: unchanged.
