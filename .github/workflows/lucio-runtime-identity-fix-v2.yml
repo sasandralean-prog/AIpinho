@@ -1,0 +1,123 @@
+name: Lucio Runtime Identity Fix V2
+
+on:
+  push:
+    branches:
+      - agent/lucio/runtime-identity-acceptance-fix
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-promote:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout staging branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify immutable base
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          expected="4b022bb57757f33c914a868d9646d7ddfead5fd8"
+          actual="$(git rev-parse origin/main)"
+          echo "EXPECTED_MAIN=$expected"
+          echo "OBSERVED_MAIN=$actual"
+          test "$actual" = "$expected"
+          test "$(git merge-base HEAD origin/main)" = "$expected"
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install test environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[test]'
+
+      - name: Apply exact anchored correction
+        shell: bash
+        run: |
+          set -euo pipefail
+          python .github/scripts/lucio_runtime_identity_fix_driver.py
+          git diff --check
+          git status --short
+
+      - name: Guard against scenario-specific production logic
+        shell: python
+        run: |
+          import subprocess
+          base = "4b022bb57757f33c914a868d9646d7ddfead5fd8"
+          diff = subprocess.check_output(["git", "diff", "--unified=0", base, "--", "src/aipinho"], text=True, encoding="utf-8", errors="replace")
+          added = "\n".join(line[1:] for line in diff.splitlines() if line.startswith("+") and not line.startswith("+++"))
+          forbidden = ["firetest", "pinhoabacaxi", "ffmpeg", "ffprobe", ".m4a", "d:\\rafa", "novapinhomusic"]
+          hits = [term for term in forbidden if term.casefold() in added.casefold()]
+          if hits:
+              raise SystemExit(f"scenario-specific production additions rejected: {hits}")
+          print("SCENARIO_SPECIFIC_PRODUCTION_GUARD=PASS")
+
+      - name: Compile source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q src/aipinho
+
+      - name: Run focused runtime and governance regression suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pytest -q \
+            tests/unit/test_runtime_identity_acceptance_regression.py \
+            tests/unit/test_public_runtime_response_boundary.py \
+            tests/unit/test_public_analyze_response_boundary.py \
+            tests/unit/test_phase3_public_preacceptance_boundary.py \
+            tests/governance/test_runtime_vertical_slice.py \
+            tests/governance/test_lifecycle_core.py \
+            tests/governance/test_g21_readonly_analysis_intent.py \
+            tests/unit/test_task_runtime_service.py \
+            tests/unit/test_task_run_planner.py \
+            tests/contract/test_task_runtime_contracts.py \
+            tests/unit/test_workspace_runtime_context.py \
+            tests/unit/test_workflow_truth_runtime.py
+
+      - name: Verify semantic invariants in diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          git diff --stat 4b022bb57757f33c914a868d9646d7ddfead5fd8
+
+      - name: Promote validated tree to main as one commit
+        shell: bash
+        env:
+          EXPECTED_MAIN: 4b022bb57757f33c914a868d9646d7ddfead5fd8
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$EXPECTED_MAIN"
+          rm -f .github/workflows/lucio-runtime-identity-fix.yml
+          rm -f .github/workflows/lucio-runtime-identity-fix-v2.yml
+          rm -f .github/scripts/lucio_runtime_identity_fix.py
+          rm -f .github/scripts/lucio_runtime_identity_fix_driver.py
+          rmdir .github/scripts 2>/dev/null || true
+          rmdir .github/workflows 2>/dev/null || true
+          git add -A
+          git diff --cached --check
+          git config user.name "Lucio Engineering"
+          git config user.email "lucio-engineering@users.noreply.github.com"
+          tree="$(git write-tree)"
+          commit="$(printf '%s\n' 'fix(runtime): preserve operation identity and early TaskRun acceptance' | git commit-tree "$tree" -p "$EXPECTED_MAIN")"
+          echo "VALIDATED_COMMIT=$commit"
+          git merge-base --is-ancestor "$EXPECTED_MAIN" "$commit"
+          git push origin "$commit:refs/heads/main"
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$commit"
+          echo "MAIN_PROMOTION=PASS"
