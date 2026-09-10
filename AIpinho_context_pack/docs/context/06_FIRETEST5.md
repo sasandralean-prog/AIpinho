@@ -107,7 +107,7 @@ The exact boundary exposed by that run is now more concrete than the old 2026-09
 The expected corpus remains around:
 
 ```text
-D:\Rafa\músicas
+D:\rafa\novapinhomusic
 ```
 
 The 2026-09-07 reset report observed the corpus paths present, `corpus_ok=YES`, and no corpus file modified by the cleanup operation.
