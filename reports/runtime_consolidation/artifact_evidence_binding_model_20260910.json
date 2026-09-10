@@ -1,0 +1,45 @@
+{
+  "schema_version": "artifact_evidence_binding_model.v1",
+  "source_campaign": "firetest5_20260910T101500Z",
+  "source_task_run": "task_run_7c7441fb5ff7425598bef41057e2a6cb",
+  "source_operation": "op_aa06583d48a74c87a1c7a172048564bb",
+  "live_counts": {
+    "selected_rows": 1305,
+    "bound_rows": 1305,
+    "rows_rendered": 1263,
+    "rows_with_evidence_ref": 1263,
+    "rows_without_evidence_ref": 0,
+    "unique_evidence_ref_count": 1305,
+    "rows_with_stable_entity_identity": 1263,
+    "rows_with_semantic_identity_evidence": 0,
+    "selection_binding_ratio": 1.0,
+    "rendered_row_evidence_ratio": 1.0,
+    "legacy_mixed_ratio": 0.9678
+  },
+  "missing_binding_distribution": {
+    "selection_binding_missing": 0,
+    "rendered_row_evidence_missing": 0,
+    "perception_candidates_not_rendered": 42,
+    "not_rendered_primary_class": "library_root administrative/runtime files"
+  },
+  "root_cause": "COUNTING_SEMANTICS_MISMATCH",
+  "reference_presence_is_binding": true,
+  "reference_resolution_required": "not_proven_for_file_refs; required for post-compile checkpoint refs",
+  "claim_level_evidence_required": true,
+  "artifact_status_blocked_scope": "full artifact semantic contract",
+  "safe_to_use_scope": "unrestricted/full-contract artifact use",
+  "safe_for_catalog": true,
+  "safe_for_planning": "true_with_limitations",
+  "safe_for_truth_claim": false,
+  "safe_for_destructive_action": false,
+  "phase_completion": "completed_with_limitations",
+  "patch": {
+    "required": true,
+    "mechanism": "separate selection binding coverage from rendered-row evidence coverage",
+    "truth_gate_weakened": false,
+    "provenance_gate_weakened": false,
+    "destructive_gate_weakened": false,
+    "evidence_requirement_removed": false
+  },
+  "firetest_rerun": false
+}

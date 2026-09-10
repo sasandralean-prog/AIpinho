@@ -91,7 +91,12 @@ class MediaInventorySufficiencyService:
         artwork_candidate_count = int(row_applicability.get("artwork_candidate_count") or 0)
         inventory_confidence = row_applicability.get("inventory_confidence") if isinstance(row_applicability.get("inventory_confidence"), dict) else {}
         primary_identity_ratio = self._ratio(primary_governed_identity_count, primary_media_count)
-        evidence_ratio = self._ratio(int(row_evidence.get("rows_with_evidence_ref") or evidence_refs), selected)
+        rendered_evidence_rows = min(
+            rendered,
+            max(0, int(row_evidence.get("rows_with_evidence_ref") or 0)),
+        )
+        selection_binding_ratio = self._ratio(bound, selected)
+        evidence_ratio = self._ratio(rendered_evidence_rows, rendered)
         selection_ratio = self._ratio(selected, expected)
         metadata_ratio = float(
             metadata_coverage.get("primary_media_observation_ratio")
@@ -123,7 +128,9 @@ class MediaInventorySufficiencyService:
         if self.policy.require_complete_selection and expected and selected < expected:
             reason_codes.append("MEDIA_INVENTORY_COVERAGE_INSUFFICIENT")
             limitations.append("inventory_selection_does_not_cover_expected_entities")
-        if self.policy.require_full_evidence_coverage and selected and (bound < selected or evidence_ratio < 1.0):
+        if self.policy.require_full_evidence_coverage and selected and (
+            bound < selected or evidence_ratio < 1.0
+        ):
             reason_codes.append("ARTIFACT_EVIDENCE_BINDING_MISSING")
             limitations.append("row_evidence_coverage_incomplete")
         if self.policy.require_full_identity_coverage and rendered and stable_identity_ratio < 1.0:
@@ -234,14 +241,16 @@ class MediaInventorySufficiencyService:
                 "selected_entities": selected,
                 "bound_rows": bound,
                 "rows_rendered": rendered if rendered else selected,
-                "rows_with_evidence_ref": int(row_evidence.get("rows_with_evidence_ref") or evidence_refs),
+                "rows_with_evidence_ref": rendered_evidence_rows,
                 "evidence_ref_count": evidence_refs,
                 "rows_with_required_identity": stable_identity_rows,
                 "rows_with_stable_entity_identity": stable_identity_rows,
                 "rows_with_semantic_identity_evidence": semantic_identity_rows,
                 "rows_without_semantic_identity_evidence": int(row_identity.get("rows_without_semantic_identity_evidence") or 0),
                 "selection_coverage_ratio": round(selection_ratio, 4),
+                "selection_binding_coverage_ratio": round(selection_binding_ratio, 4),
                 "evidence_coverage_ratio": round(evidence_ratio, 4),
+                "rendered_row_evidence_coverage_ratio": round(evidence_ratio, 4),
                 "identity_coverage_ratio": round(stable_identity_ratio, 4),
                 "stable_entity_identity_ratio": round(stable_identity_ratio, 4),
                 "semantic_identity_evidence_ratio": round(semantic_identity_ratio, 4),
