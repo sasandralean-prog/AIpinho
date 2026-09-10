@@ -235,23 +235,102 @@ class TaskRunStore:
         return None
 
     def list_runs(self, *, status: str | None = None, session_id: str | None = None, draft_id: str | None = None, contract_type: str | None = None, created_after: str | None = None, limit: int = 100) -> list[TaskRun]:
+        """List lightweight run projections after filtering on durable indexes.
+
+        Listing is an identity/lifecycle query, not a request to hydrate runtime
+        evidence. Hydrating every payload ref before applying an exact session
+        filter makes correlation cost proportional to all historical evidence.
+        """
         if not self.root.exists():
             return []
-        runs: list[TaskRun] = []
-        for path in self.root.glob("*/run.json"):
+        candidates: list[tuple[str, str, TaskRun | None]] = []
+        for run_dir in self.root.glob("task_run_*"):
+            if not run_dir.is_dir():
+                continue
+            run_path = run_dir / "run.json"
+            if not run_path.exists():
+                continue
+            index_path = run_dir / "run_index.json"
+            index = self._read(index_path)
+            index_is_current = (
+                isinstance(index, dict)
+                and index_path.stat().st_mtime_ns >= run_path.stat().st_mtime_ns
+            )
+            if index_is_current:
+                if not self._run_index_matches(
+                    index,
+                    status=status,
+                    session_id=session_id,
+                    draft_id=draft_id,
+                    contract_type=contract_type,
+                    created_after=created_after,
+                ):
+                    continue
+                run_id = str(index.get("run_id") or run_dir.name)
+                candidates.append((str(index.get("created_at") or ""), run_id, None))
+                continue
             try:
-                run = self.get_run(path.parent.name)
+                run = self.get_run_lightweight(run_dir.name)
             except Exception:
                 continue
             if run is None:
                 continue
-            if status and run.status != status: continue
-            if session_id and run.session_id != session_id: continue
-            if draft_id and run.draft_id != draft_id: continue
-            if contract_type and run.contract_type != contract_type: continue
-            if created_after and run.created_at < created_after: continue
-            runs.append(run)
-        return sorted(runs, key=lambda item: item.created_at, reverse=True)[: max(1, min(limit, 1000))]
+            if not self._run_index_matches(
+                self._run_index_payload(run),
+                status=status,
+                session_id=session_id,
+                draft_id=draft_id,
+                contract_type=contract_type,
+                created_after=created_after,
+            ):
+                continue
+            candidates.append((str(run.created_at or ""), run.run_id, run))
+
+        effective_limit = max(1, min(limit, 1000))
+        candidates.sort(key=lambda item: item[0], reverse=True)
+        runs: list[TaskRun] = []
+        for _created_at, run_id, projected_run in candidates[:effective_limit]:
+            if projected_run is not None:
+                runs.append(projected_run)
+                continue
+            try:
+                run = self.get_run_lightweight(run_id)
+            except Exception:
+                continue
+            if run is not None:
+                runs.append(run)
+        return sorted(runs, key=lambda item: item.created_at, reverse=True)[:effective_limit]
+
+    def _run_index_matches(
+        self,
+        index: dict[str, Any],
+        *,
+        status: str | None,
+        session_id: str | None,
+        draft_id: str | None,
+        contract_type: str | None,
+        created_after: str | None,
+    ) -> bool:
+        if status and index.get("status") != status:
+            return False
+        if session_id and index.get("session_id") != session_id:
+            return False
+        if draft_id and index.get("draft_id") != draft_id:
+            return False
+        if contract_type and index.get("contract_type") != contract_type:
+            return False
+        if created_after and str(index.get("created_at") or "") < created_after:
+            return False
+        return True
+
+    def _run_index_payload(self, run: TaskRun) -> dict[str, Any]:
+        return {
+            "status": run.status,
+            "session_id": run.session_id,
+            "draft_id": run.draft_id,
+            "contract_type": run.contract_type,
+            "created_at": run.created_at,
+        }
 
     def list_queue_runs(self, *, active_statuses: set[str], limit: int = 1000) -> list[TaskRun]:
         """Return runs relevant to queue reconciliation without parsing terminal history."""

@@ -116,6 +116,55 @@ def test_store_hydrates_spilled_execution_context_before_task_run_validation(tmp
     assert loaded.execution_context.artifacts[0]["artifact_id"] == "artifact_0"
 
 
+def test_list_runs_filters_by_index_without_hydrating_payload_refs(tmp_path, monkeypatch):
+    store = TaskRunStore(root=tmp_path / "runs")
+    matching = runtime_run().model_copy(update={"session_id": "session_target"})
+    unrelated = runtime_run().model_copy(
+        update={
+            "run_id": "task_run_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "task_run_id": "task_run_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "session_id": "session_other",
+            "execution_context": ExecutionContext(
+                artifacts=[
+                    {"artifact_id": f"artifact_{index}", "evidence": "x" * 4000}
+                    for index in range(130)
+                ]
+            ),
+        }
+    )
+    store.create_run(matching)
+    store.create_run(unrelated)
+
+    def reject_hydration(*_args, **_kwargs):
+        raise AssertionError("list_runs must not hydrate runtime payload refs")
+
+    monkeypatch.setattr(store, "_hydrate_payload_refs", reject_hydration)
+
+    listed = store.list_runs(session_id="session_target", limit=10)
+
+    assert [run.run_id for run in listed] == [matching.run_id]
+
+
+def test_list_runs_falls_back_to_lightweight_projection_for_stale_index(tmp_path, monkeypatch):
+    store = TaskRunStore(root=tmp_path / "runs")
+    run = runtime_run().model_copy(update={"session_id": "session_target"})
+    store.create_run(run)
+    run_path = store.root / run.run_id / "run.json"
+    index_path = store.root / run.run_id / "run_index.json"
+    index_path.touch()
+    time.sleep(0.01)
+    run_path.touch()
+
+    def reject_hydration(*_args, **_kwargs):
+        raise AssertionError("stale-index fallback must remain lightweight")
+
+    monkeypatch.setattr(store, "_hydrate_payload_refs", reject_hydration)
+
+    listed = store.list_runs(session_id="session_target", limit=10)
+
+    assert [item.run_id for item in listed] == [run.run_id]
+
+
 def test_store_terminal_result_coheres_run_status(tmp_path):
     store = TaskRunStore(root=tmp_path / "runs")
     run = runtime_run().model_copy(update={"status": "running", "started_at": "2026-01-01T00:00:00+00:00"})

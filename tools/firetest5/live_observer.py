@@ -187,7 +187,6 @@ def _collect_runtime_observability(client: ApiClient, run_id: str | None = None)
         "doctor_status": client.request("GET", "/api/v1/runtime/doctor"),
         "runtime_doctor_status": client.request("GET", "/api/v1/runtime-doctor/status"),
         "runtime_queue": client.request("GET", "/api/v1/task-runtime/queue"),
-        "task_sessions": client.request("GET", "/api/v1/task_runs?limit=100"),
     }
 
 
@@ -267,7 +266,6 @@ def observe(
                 "/api/v1/runtime/operator/snapshot?task_run_id=...",
                 "/api/v1/runtime/doctor",
                 "/api/v1/runtime-doctor/status",
-                "/api/v1/task_runs?limit=100",
             ],
         },
         "preflight": {
