@@ -159,7 +159,7 @@ The next campaign must reprove executable visibility and normal capability admis
 The current host orientation remains approximately:
 
 ```text
-D:\Rafa\músicas
+D:\rafa\novapinhomusic
 ```
 
 The 2026-09-07 reset reported corpus paths present, `corpus_ok=YES`, and no corpus mutation by cleanup.
