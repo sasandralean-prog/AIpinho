@@ -43,7 +43,7 @@ def test_csv_render_emits_cardinality_chain_and_stable_digests(tmp_path: Path, t
         declared_contract={
             "task_run_id": run.run_id,
             "artifact_logical_path": "reports/generic_inventory.csv",
-            "contract_id": "media_corpus_inventory_artifact",
+            "contract_id": "generic_tabular_collection_artifact",
             "expected_kind": "tabular_collection",
             "expected_schema": FIELDS,
             "workspace_context": {"project_root": str(project), "library_roots": [str(library)]},

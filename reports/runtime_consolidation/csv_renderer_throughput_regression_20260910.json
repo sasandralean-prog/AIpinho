@@ -1,0 +1,49 @@
+{
+  "schema_version": "aipinho.csv_renderer_cost_model.v1",
+  "campaign_evidence": {
+    "task_run_id": "task_run_7bb8451172b74ecaabda3cb60727ea4b",
+    "operation_id": "op_0e10551cd12e4637a22af09d4af1ab00",
+    "rows_expected": 1263,
+    "rows_rendered": 1088,
+    "artifact_budget_seconds": 420,
+    "csv_stream_elapsed_ms": 224484,
+    "csv_cell_render_elapsed_ms": 212982,
+    "csv_cell_lookup_elapsed_ms": 33902,
+    "csv_cell_serialization_elapsed_ms": 79,
+    "index_build_elapsed_ms": 125,
+    "index_entry_count": 109214,
+    "cell_value_lookup_count": 94662,
+    "cell_index_lookup_count": 14144,
+    "cell_index_hit_count": 74571,
+    "cell_index_miss_count": 25529,
+    "cell_fallback_scan_count": 0,
+    "cell_fallback_scan_items_examined": 0
+  },
+  "r2_17_historical": {
+    "rows_rendered": 2230,
+    "cells_rendered": 55750,
+    "stream_elapsed_ms": 92063,
+    "cell_render_elapsed_ms": 88493,
+    "cell_lookup_elapsed_ms": 17165,
+    "cell_serialization_elapsed_ms": 14,
+    "index_build_elapsed_ms": 61,
+    "fallback_scan_count": 0
+  },
+  "root_cause": {
+    "mechanism": "repeated per-cell canonical_attribute_name normalization in the CSV hot path",
+    "before_complexity": "O(rows * columns * alias_candidates)",
+    "after_complexity": "O(schema_columns * alias_candidates) + O(rows * columns)",
+    "fallback_scan_dominant": false,
+    "serialization_dominant": false
+  },
+  "scale_validation": [
+    {"entities": 100, "observations": 400, "cells": 300, "reference_canonicalization_ms": 117.185, "projected_index_build_ms": 1.542, "projected_cell_resolution_ms": 0.364, "fallback_scans": 0},
+    {"entities": 500, "observations": 2000, "cells": 1500, "reference_canonicalization_ms": 572.613, "projected_index_build_ms": 2.279, "projected_cell_resolution_ms": 1.564, "fallback_scans": 0},
+    {"entities": 2500, "observations": 10000, "cells": 7500, "reference_canonicalization_ms": 2919.903, "projected_index_build_ms": 5.560, "projected_cell_resolution_ms": 7.790, "fallback_scans": 0}
+  ],
+  "budget_changed": false,
+  "rows_skipped_by_fix": false,
+  "provenance_weakened": false,
+  "semantic_contract_weakened": false,
+  "live_firetest_rerun": false
+}

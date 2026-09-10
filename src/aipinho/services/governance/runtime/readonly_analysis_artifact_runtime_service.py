@@ -3908,8 +3908,15 @@ class ReadonlyAnalysisArtifactRuntimeService:
         semantic_gaps: list[dict[str, Any]],
         lookup_context: dict[str, Any] | None = None,
     ) -> tuple[Any | None, bool]:
-        canonical = self.observed_entities.canonical_attribute_name(field)
-        canonical_key = str(canonical or "").replace(" ", "_")
+        canonical_field_by_field = lookup_context.get("canonical_field_by_field") if isinstance(lookup_context, dict) else None
+        canonical_key = (
+            str(canonical_field_by_field.get(field) or "")
+            if isinstance(canonical_field_by_field, dict)
+            else ""
+        )
+        if not canonical_key:
+            canonical = self.observed_entities.canonical_attribute_name(field)
+            canonical_key = str(canonical or "").replace(" ", "_")
         if canonical_key == "entity_id":
             return entity.get("entity_id"), bool(entity.get("entity_id"))
         if canonical_key == "evidence_ref":
@@ -4197,6 +4204,10 @@ class ReadonlyAnalysisArtifactRuntimeService:
             field: (canonical_name(field), canonical_name(field).replace(" ", "_"))
             for field in render_field_keys
         }
+        canonical_field_by_field = {
+            field: canonical.replace(" ", "_")
+            for field, (canonical, _compact) in render_field_aliases.items()
+        }
         needed_value_keys = set(render_field_keys)
         for canonical, compact in render_field_aliases.values():
             needed_value_keys.add(canonical)
@@ -4259,6 +4270,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "media_metadata_by_entity": media_metadata_by_entity,
             "entity_field_values": entity_field_values,
             "entity_field_values_complete": True,
+            "canonical_field_by_field": canonical_field_by_field,
             "relationship_values": relationship_values,
             "index_build_elapsed_ms": max(0.0, (time.monotonic() - started) * 1000),
             "index_entry_count": index_entry_count,

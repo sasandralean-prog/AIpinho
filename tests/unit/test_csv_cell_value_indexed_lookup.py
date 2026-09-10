@@ -90,6 +90,78 @@ def test_indexed_metadata_lookup_does_not_rescan_observation_list() -> None:
     assert payload["attribute_observations"].iteration_count > 0
 
 
+def test_csv_lookup_context_reuses_canonical_field_projection(monkeypatch) -> None:
+    service = ReadonlyAnalysisArtifactRuntimeService()
+    payload, selected_entities = _metadata_payload(entity_count=2, attributes_per_entity=2)
+    calls: list[str] = []
+    original = service.observed_entities.canonical_attribute_name
+
+    def counting_canonical_attribute_name(field: str) -> str:
+        calls.append(field)
+        return original(field)
+
+    monkeypatch.setattr(service.observed_entities, "canonical_attribute_name", counting_canonical_attribute_name)
+    context = service._build_csv_cell_lookup_context(
+        perception_payload=payload,
+        selected_entities=selected_entities,
+        render_columns=[
+            {"canonical_key": "entity_id"},
+            {"canonical_key": "metadata_status"},
+            {"canonical_key": "metadata_source"},
+        ],
+    )
+    calls.clear()
+
+    for entity in selected_entities:
+        for field in ("entity_id", "metadata_status", "metadata_source"):
+            service._semantic_inventory_field_value(
+                entity,
+                field,
+                perception_payload=payload,
+                semantic_gaps=[],
+                lookup_context=context,
+            )
+
+    assert calls == []
+
+
+def test_csv_canonical_field_resolution_is_bounded_by_schema_not_rows(monkeypatch) -> None:
+    service = ReadonlyAnalysisArtifactRuntimeService()
+    calls: list[str] = []
+    original = service.observed_entities.canonical_attribute_name
+
+    def counting_canonical_attribute_name(field: str) -> str:
+        calls.append(field)
+        return original(field)
+
+    monkeypatch.setattr(service.observed_entities, "canonical_attribute_name", counting_canonical_attribute_name)
+    render_columns = [
+        {"canonical_key": "entity_id"},
+        {"canonical_key": "metadata_status"},
+        {"canonical_key": "metadata_source"},
+    ]
+    for entity_count in (100, 500, 2500):
+        payload, selected_entities = _metadata_payload(entity_count=entity_count, attributes_per_entity=4)
+        context = service._build_csv_cell_lookup_context(
+            perception_payload=payload,
+            selected_entities=selected_entities,
+            render_columns=render_columns,
+        )
+        calls.clear()
+        for entity in selected_entities:
+            for field in ("entity_id", "metadata_status", "metadata_source"):
+                service._semantic_inventory_field_value(
+                    entity,
+                    field,
+                    perception_payload=payload,
+                    semantic_gaps=[],
+                    lookup_context=context,
+                )
+        assert calls == []
+
+    assert len(render_columns) == 3
+
+
 def test_csv_render_emits_bounded_lookup_metrics_and_column_cost(tmp_path: Path, task_runtime_store) -> None:
     project = tmp_path / "app"
     library = tmp_path / "library"
