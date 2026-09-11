@@ -37,7 +37,7 @@ class RootRoleResolverService:
         reasoner: ContractBoundSemanticReasoner | None = None,
         minimum_model_confidence: float = 0.62,
     ) -> None:
-        self.reasoner = reasoner or ContractBoundSemanticReasoner()
+        self.reasoner = reasoner
         self.minimum_model_confidence = max(0.0, min(1.0, minimum_model_confidence))
 
     def resolve(
@@ -90,7 +90,9 @@ class RootRoleResolverService:
                 provenance={"authority": "deterministic_gate", "model_used": False},
             )
 
-        proposal = self.reasoner.propose_json(
+        reasoner = self.reasoner or ContractBoundSemanticReasoner()
+        self.reasoner = reasoner
+        proposal = reasoner.propose_json(
             semantic_goal=(
                 "Classify the semantic role of this filesystem path relative to "
                 "the user's current request. Role is contextual, not intrinsic."
