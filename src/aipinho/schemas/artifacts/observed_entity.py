@@ -86,6 +86,7 @@ class WorkspaceRootDescriptor(AIpinhoModel):
     aliases: list[str] = Field(default_factory=list)
     purposes: list[str] = Field(default_factory=list)
     confidence: float = 1.0
+    role_decision: RootRoleDecision | None = None
     policy_status: str = "unknown"
     access_scope: list[str] = Field(default_factory=list)
     observation_allowed: bool = False
