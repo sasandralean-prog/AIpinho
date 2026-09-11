@@ -44,6 +44,31 @@ def test_public_prompt_projects_declared_library_root_into_workspace_context(tmp
     assert context["readonly_flags"][str(library.resolve(strict=False))] is True
 
 
+
+def test_unlabeled_second_path_is_not_promoted_to_library_root(tmp_path: Path) -> None:
+    project = tmp_path / "app"
+    second = tmp_path / "other"
+    project.mkdir()
+    second.mkdir()
+    request = type(
+        "Request",
+        (),
+        {
+            "workspace_context": {},
+            "message": f"{project}\n{second}\n",
+        },
+    )()
+
+    context = ReadonlyAnalysisArtifactRuntimeService()._request_workspace_context(request)
+
+    assert context["project_root"] == str(project.resolve(strict=False))
+    assert context["library_roots"] == []
+    assert context["ambiguous_roots"] == [str(second.resolve(strict=False))]
+    second_decision = context["root_role_decisions"][str(second.resolve(strict=False))]
+    assert second_decision["status"] == "unknown"
+    assert second_decision["role"] == "unknown_root"
+    assert "ROOT_ROLE_SEMANTIC_INTERPRETATION_REQUIRED" in second_decision["reason_codes"]
+
 def test_public_structured_library_root_alias_is_preserved_for_selection(tmp_path: Path) -> None:
     project = tmp_path / "app"
     library = tmp_path / "library"
