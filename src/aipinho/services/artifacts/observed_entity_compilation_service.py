@@ -247,6 +247,10 @@ class ObservedEntityCompilationService:
             raw_roots.append((raw, "external_roots", policy.get("external_root_role", "external_root")))
         for raw in self._string_list(workspace_context.get("library_roots")):
             raw_roots.append((raw, "library_roots", policy.get("library_root_role", "library_root")))
+        for raw in self._string_list(workspace_context.get("ambiguous_roots")):
+            raw_roots.append((raw, "ambiguous_roots", "unknown_root"))
+        role_decisions = workspace_context.get("root_role_decisions")
+        role_decisions = role_decisions if isinstance(role_decisions, dict) else {}
         descriptors: list[WorkspaceRootDescriptor] = []
         seen: dict[str, int] = {}
         for raw, source, role in raw_roots:
@@ -255,7 +259,18 @@ class ObservedEntityCompilationService:
             except Exception:
                 continue
             key = str(path).casefold()
+            raw_role_decision = role_decisions.get(str(path))
+            role_decision = raw_role_decision if isinstance(raw_role_decision, dict) else None
+            resolved_role = str((role_decision or {}).get("role") or role)
+            if (role_decision or {}).get("status") not in {"resolved"}:
+                resolved_role = role
+            role = resolved_role
             evidence_ref = f"root_binding:{self._stable_id('root', str(path), role)}"
+            role_evidence_refs = [
+                str(item)
+                for item in (role_decision or {}).get("evidence_refs") or []
+                if item
+            ]
             policy_decision = self._root_policy_decision(
                 root_id=self._stable_id("root", str(path), role),
                 path=path,
@@ -269,12 +284,14 @@ class ObservedEntityCompilationService:
                 role=role,
                 source=source,
                 purposes=["corpus"] if role in {"library_root", "corpus_root"} else ["project"] if role == "project_root" else [],
+                confidence=float((role_decision or {}).get("confidence") or 1.0),
+                role_decision=role_decision,
                 policy_status=policy_decision.policy_status,
                 access_scope=policy_decision.access_scope,
                 observation_allowed=policy_decision.observation_allowed,
                 mutation_allowed=policy_decision.mutation_allowed,
                 policy_reason_codes=policy_decision.reason_codes,
-                evidence_refs=[evidence_ref],
+                evidence_refs=list(dict.fromkeys([evidence_ref, *role_evidence_refs])),
             )
             if key in seen:
                 index = seen[key]
@@ -307,7 +324,17 @@ class ObservedEntityCompilationService:
                     purposes=list(descriptor.purposes),
                     provenance={
                         "source": descriptor.source,
-                        "role_assignment": "workspace_context_root_role",
+                        "role_assignment": (
+                            "root_role_decision"
+                            if descriptor.role_decision is not None
+                            else "workspace_context_root_role"
+                        ),
+                        "root_role_decision_id": (
+                            descriptor.role_decision.decision_id
+                            if descriptor.role_decision is not None
+                            else None
+                        ),
+                        "root_role_confidence": descriptor.confidence,
                         "path_authority": False,
                     },
                     evidence_refs=list(descriptor.evidence_refs),
