@@ -78,6 +78,18 @@ class PhaseOutcomeRepository:
             policy = completion_meta.get("policy") or {}
             if isinstance(policy.get("use_safety"), dict):
                 use_safety = dict(policy["use_safety"])
+        if not use_safety:
+            projection = {
+                "artifact_safe_for_truth_claim": "safe_for_truth_claim",
+                "artifact_safe_for_catalog": "safe_for_catalog",
+                "artifact_safe_for_planning": "safe_for_planning",
+                "artifact_safe_for_destructive_action": "safe_for_destructive_action",
+            }
+            use_safety = {
+                target: phase_dependency[source]
+                for source, target in projection.items()
+                if source in phase_dependency
+            }
 
         artifacts = [dict(item) for item in run.produced_artifacts if isinstance(item, dict)]
         artifact_refs = [str(item.get("artifact_id")) for item in artifacts if item.get("artifact_id")]
