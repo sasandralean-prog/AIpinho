@@ -21,7 +21,14 @@ class _FakeArtifactRuntime:
         return self.artifacts.get(artifact_id)
 
 
-def _service(tmp_path: Path, artifact: dict[str, Any]) -> ReadonlyAnalysisArtifactRuntimeService:
+def _service(
+    tmp_path: Path,
+    artifact: dict[str, Any],
+    *,
+    phase_status: str = "completed",
+    phase_dependency: dict[str, Any] | None = None,
+    use_safety: dict[str, Any] | None = None,
+) -> ReadonlyAnalysisArtifactRuntimeService:
     phase_store = tmp_path / "readonly_analysis_artifact_phases.json"
     phase_store.write_text(
         json.dumps(
@@ -35,8 +42,9 @@ def _service(tmp_path: Path, artifact: dict[str, Any]) -> ReadonlyAnalysisArtifa
                     "workspace": "C:/Workspace/Generic",
                     "logical_paths": [artifact["logical_path"]],
                     "artifacts": [{"artifact_id": artifact["artifact_id"], "logical_path": artifact["logical_path"]}],
-                    "status": "completed",
-                    "phase_dependency": {"status": "satisfied"},
+                    "status": phase_status,
+                    "phase_dependency": phase_dependency or {"status": "satisfied"},
+                    "use_safety": use_safety or {},
                     "evidence_refs": ["artifact:" + artifact["artifact_id"]],
                     "created_at": "2026-08-13T00:00:00Z",
                 }
@@ -132,6 +140,60 @@ def test_phase_dependency_passes_when_artifact_semantic_contract_is_satisfied(tm
     assert result["dependency_evaluation_status"] == "passed"
     assert result["dependency_evaluations"][0]["authorized"] is True
     assert result["artifact_semantic_validations"][0]["status"] == "passed"
+
+
+def test_phase_dependency_admits_partial_artifact_only_for_explicit_limited_use(tmp_path: Path) -> None:
+    artifact = _artifact(
+        tmp_path,
+        artifact_id="artifact_limited_inventory",
+        logical_path="reports/media/music_inventory.csv",
+        content=_rich_inventory_content(),
+    )
+    artifact["status"] = "partial"
+    service = _service(
+        tmp_path,
+        artifact,
+        phase_status="completed_with_limitations",
+        phase_dependency={
+            "status": "satisfied_with_limitations",
+            "allowed_downstream_uses": ["catalog_planning_with_limitations"],
+            "forbidden_downstream_claims": ["full_truth"],
+        },
+        use_safety={
+            "safe_for_truth_claim": False,
+            "safe_for_catalog": True,
+            "safe_for_planning": "true_with_limitations",
+            "safe_for_destructive_action": False,
+        },
+    )
+    requirements = DownstreamPhaseRequirements(
+        contract_id="limited_phase_2",
+        consumer_phase_id="phase_2",
+        operation_type="readonly_analysis_with_artifact_output",
+        allowed_dependency_statuses=["satisfied_with_limitations"],
+        required_downstream_uses=["catalog_planning_with_limitations"],
+        required_use_safety={
+            "safe_for_catalog": [True],
+            "safe_for_planning": ["true_with_limitations"],
+        },
+        evidence_required=True,
+    )
+
+    result = service._validate_phase_dependencies(  # noqa: SLF001 - scoped limited-use contract
+        session_id="session_semantic_gate",
+        dependency_phase_ids=["phase_1"],
+        consumer_task_run_id="task_run_phase2",
+        consumer_operation_id="operation_phase2",
+        consumer_phase_id="phase_2",
+        consumer_operation_type="readonly_analysis_with_artifact_output",
+        downstream_requirements=requirements,
+    )
+
+    assert result["status"] == "passed"
+    assert result["dependency_evaluations"][0]["decision"] == "ADMITTED_WITH_CONSTRAINTS"
+    assert result["dependency_evaluations"][0]["authorized"] is True
+    assert result["artifacts"][0]["status"] == "partial"
+    assert result["artifacts"][0]["dependency_artifact_scope"] == "producer_outcome_limited_use"
 
 
 def test_phase_dependency_without_compiled_downstream_demand_fails_closed(tmp_path: Path) -> None:
