@@ -64,11 +64,13 @@ from aipinho.services.runtime.task_run_lifecycle_service import TaskRunLifecycle
 from aipinho.services.runtime.phase_dependency_contract_registry import PhaseDependencyContractRegistry
 from aipinho.services.runtime.phase_dependency_evaluation_service import PhaseDependencyEvaluationService
 from aipinho.services.runtime.phase_semantic_demand_compiler import PhaseSemanticDemandCompiler
+from aipinho.services.runtime.phase_outcome_repository import PhaseOutcomeRepository
 from aipinho.services.runtime.phase_semantic_completion_policy import (
     PhaseCompletionDecision,
     PhaseSemanticCompletionPolicy,
 )
 from aipinho.services.session.session_store import utc_now
+from aipinho.services.semantics.root_role_resolver_service import RootRoleResolverService
 
 
 _ARTIFACT_PATH_RE = re.compile(
@@ -494,6 +496,8 @@ class ReadonlyAnalysisArtifactRuntimeService:
         phase_dependency_contracts: PhaseDependencyContractRegistry | None = None,
         phase_dependency_evaluator: PhaseDependencyEvaluationService | None = None,
         phase_semantic_demand_compiler: PhaseSemanticDemandCompiler | None = None,
+        phase_outcomes: PhaseOutcomeRepository | None = None,
+        root_role_resolver: RootRoleResolverService | None = None,
     ) -> None:
         self.runtime = runtime or TaskRuntimeService()
         self.analysis = analysis or ProjectAnalysisService()
@@ -527,6 +531,8 @@ class ReadonlyAnalysisArtifactRuntimeService:
         self.phase_semantic_demand_compiler = phase_semantic_demand_compiler or PhaseSemanticDemandCompiler(
             system_invariants=self.phase_dependency_contracts
         )
+        self.phase_outcomes = phase_outcomes or PhaseOutcomeRepository(store=self.runtime.store)
+        self.root_role_resolver = root_role_resolver or RootRoleResolverService()
         self._artifact_checkpoint_emitted: dict[tuple[str, str, str], float] = {}
 
     def requested_artifact_paths(self, text: str) -> list[str]:
@@ -547,6 +553,12 @@ class ReadonlyAnalysisArtifactRuntimeService:
     def workspace_from_phase_dependencies(self, *, text: str, session_id: str | None) -> str | None:
         phase_id = self._phase_id(text) or "phase_unknown"
         dependency_phase_ids = self._dependency_phase_ids(text, current_phase_id=phase_id)
+        for dependency_phase_id in dependency_phase_ids:
+            outcome = self.phase_outcomes.resolve(session_id=session_id, phase_id=dependency_phase_id)
+            if outcome is not None and outcome.workspace:
+                return str(outcome.workspace)
+        # Compatibility only: the legacy phase file is a rebuildable projection,
+        # never the authority for new phase dependency decisions.
         store = self._load_phase_store()
         for dependency_phase_id in dependency_phase_ids:
             record = self._latest_phase_record(store, session_id=session_id, phase_id=dependency_phase_id)
@@ -5725,43 +5737,97 @@ class ReadonlyAnalysisArtifactRuntimeService:
         value = getattr(request, "workspace_context", None)
         context = dict(value) if isinstance(value, dict) else {}
         message = getattr(request, "message", "") or ""
+        intent_map = getattr(request, "intent_map", None)
+        intent_map = dict(intent_map) if isinstance(intent_map, dict) else {}
         extracted_roots = PathExtractionService().extract(message)
         explicit_roots = [item.value for item in extracted_roots]
         role_by_root = self._explicit_root_roles(message, extracted_roots)
-        project_roots_from_prompt = [root for root in explicit_roots if role_by_root.get(root) == "project_root"]
+
+        declared_library_roots = self._string_list(context.get("library_roots"))
+        for key in ("library_root", "corpus_root", "corpus_roots"):
+            for root in self._string_list(context.get(key)):
+                if root and root not in declared_library_roots:
+                    declared_library_roots.append(root)
+        declared_external_roots = self._string_list(context.get("external_roots"))
+        for root in self._string_list(context.get("external_root")):
+            if root and root not in declared_external_roots:
+                declared_external_roots.append(root)
+
+        project_roots_from_prompt = [
+            root for root in explicit_roots if role_by_root.get(root) == "project_root"
+        ]
         project_root = str(
             context.get("project_root")
             or context.get("workspace")
-            or (project_roots_from_prompt[0] if project_roots_from_prompt else explicit_roots[0] if explicit_roots else "")
+            or (
+                project_roots_from_prompt[0]
+                if project_roots_from_prompt
+                else explicit_roots[0]
+                if explicit_roots
+                else ""
+            )
         )
-        external_roots = self._string_list(context.get("external_roots"))
-        for root in self._string_list(context.get("external_root")):
-            if root and root not in external_roots:
-                external_roots.append(root)
-        for root in explicit_roots:
-            if root and root != project_root and role_by_root.get(root) not in {"library_root", "corpus_root"} and root not in external_roots:
-                external_roots.append(root)
-        library_roots = self._string_list(context.get("library_roots"))
-        for key in ("library_root", "corpus_root", "corpus_roots"):
-            for root in self._string_list(context.get(key)):
-                if root and root not in library_roots:
+        library_roots = list(declared_library_roots)
+        external_roots = list(declared_external_roots)
+        ambiguous_roots: list[str] = []
+        root_role_decisions: dict[str, dict[str, Any]] = {}
+        allow_model_inference = bool(context.get("allow_root_role_model_inference", False))
+
+        all_roots = list(
+            dict.fromkeys(
+                [
+                    *([project_root] if project_root else []),
+                    *declared_library_roots,
+                    *declared_external_roots,
+                    *explicit_roots,
+                ]
+            )
+        )
+        for root in all_roots:
+            context_role = (
+                "project_root"
+                if root == project_root
+                else "library_root"
+                if root in declared_library_roots
+                else "external_root"
+                if root in declared_external_roots
+                else None
+            )
+            decision = self.root_role_resolver.resolve(
+                path=root,
+                prompt=message,
+                intent_map=intent_map,
+                explicit_role=role_by_root.get(root),
+                context_role=context_role,
+                allow_model_inference=allow_model_inference,
+            )
+            root_role_decisions[root] = decision.model_dump(mode="json")
+            if root == project_root:
+                continue
+            if decision.status == "resolved" and decision.role in {"library_root", "corpus_root"}:
+                if root not in library_roots:
                     library_roots.append(root)
-        for root in explicit_roots:
-            if role_by_root.get(root) in {"library_root", "corpus_root"} and root not in library_roots:
-                library_roots.append(root)
-        if len(explicit_roots) > 1:
-            for root in explicit_roots[1:]:
-                if root and root not in library_roots:
-                    library_roots.append(root)
+                continue
+            if decision.status == "resolved" and decision.role == "external_root":
+                if root not in external_roots:
+                    external_roots.append(root)
+                continue
+            if root in declared_library_roots or root in declared_external_roots:
+                continue
+            if root not in ambiguous_roots:
+                ambiguous_roots.append(root)
+
         readonly_flags = {
             str(key): bool(item)
             for key, item in (context.get("readonly_flags") or {}).items()
         } if isinstance(context.get("readonly_flags"), dict) else {}
-        for root in explicit_roots:
+        for root in all_roots:
             readonly_flags.setdefault(root, True)
         return {
             "external_roots": external_roots,
             "library_roots": library_roots,
+            "ambiguous_roots": ambiguous_roots,
+            "root_role_decisions": root_role_decisions,
             "readonly_flags": readonly_flags,
             "workspace_ids": self._string_list(context.get("workspace_ids")),
             "project_root": project_root,
@@ -6332,7 +6398,12 @@ class ReadonlyAnalysisArtifactRuntimeService:
         semantic_missing: list[str] = []
         dependency_evaluations: list[dict[str, Any]] = []
         for phase_id in dependency_phase_ids:
-            match = self._latest_phase_record(store, phase_id=phase_id, session_id=session_id)
+            outcome = self.phase_outcomes.resolve(session_id=session_id, phase_id=phase_id)
+            match = (
+                self._phase_outcome_record(outcome)
+                if outcome is not None
+                else self._latest_phase_record(store, phase_id=phase_id, session_id=session_id)
+            )
             if not match:
                 missing.append(f"phase:{phase_id}")
                 continue
@@ -6380,22 +6451,24 @@ class ReadonlyAnalysisArtifactRuntimeService:
                         )
                     continue
                 public = self.artifact_runtime.revalidate_public(artifact_id) if artifact_id else None
-                if not public or public.get("status") != "ready":
+                if not public:
                     missing.append(f"artifact:{artifact_id or 'missing'}")
-                else:
-                    if semantic:
-                        semantic_validation = self._validate_artifact_semantic_contract(
-                            str(public.get("logical_path") or (public.get("metadata") or {}).get("logical_path") or artifact_id),
-                            public,
-                        )
-                        semantic_validations.append(semantic_validation)
-                        if semantic_validation["status"] == "blocked":
-                            logical_path = semantic_validation.get("logical_path") or public.get("logical_path") or artifact_id
-                            semantic_missing.extend(
-                                f"artifact_semantic_contract:{logical_path}:{item}"
-                                for item in semantic_validation.get("missing_requirements", [])
-                            )
-                    artifacts.append(public)
+                    continue
+                # Lifecycle status is evidence, not downstream authorization.
+                # A partial or unrestricted-blocked artifact may still support a
+                # scoped use when the producer outcome explicitly permits it.
+                semantic_validation = self._validate_artifact_semantic_contract(
+                    str(public.get("logical_path") or (public.get("metadata") or {}).get("logical_path") or artifact_id),
+                    public,
+                )
+                semantic_validations.append(semantic_validation)
+                artifacts.append(
+                    {
+                        **public,
+                        "dependency_semantic_validation": semantic_validation,
+                        "dependency_artifact_scope": "producer_outcome_governed",
+                    }
+                )
             if semantic:
                 if not consumer_task_run_id or not consumer_operation_id or not consumer_phase_id or not consumer_operation_type:
                     semantic_missing.append(f"phase_dependency:{phase_id}:PHASE_DEPENDENCY_CONSUMER_BINDING_MISSING")
@@ -6600,6 +6673,30 @@ class ReadonlyAnalysisArtifactRuntimeService:
             and (not session_id or item.get("session_id") == session_id)
         ]
         return sorted(candidates, key=lambda item: str(item.get("created_at") or ""), reverse=True)[0] if candidates else None
+
+    def _phase_outcome_record(self, outcome) -> dict[str, Any]:
+        if outcome is None:
+            return {}
+        return {
+            "session_id": outcome.session_id,
+            "phase_id": outcome.phase_id,
+            "run_id": outcome.producer_task_run_id,
+            "operation_id": outcome.producer_operation_id,
+            "result_ref": outcome.result_ref,
+            "workspace": outcome.workspace,
+            "artifacts": [dict(item) for item in outcome.artifacts],
+            "status": outcome.result_status,
+            "phase_dependency": dict(outcome.phase_dependency),
+            "use_safety": dict(outcome.use_safety),
+            "semantic_properties": dict(outcome.semantic_properties),
+            "limitations": list(outcome.limitations),
+            "required_disclosures": list(outcome.required_disclosures),
+            "missing_truth": list(outcome.missing_truth),
+            "risk_constraints": list(outcome.risk_constraints),
+            "evidence_refs": list(outcome.evidence_refs),
+            "phase_outcome_authority_sha256": outcome.authority_sha256,
+            "phase_outcome_schema_version": outcome.schema_version,
+        }
 
     def _phase_dependency_snapshot(
         self,
