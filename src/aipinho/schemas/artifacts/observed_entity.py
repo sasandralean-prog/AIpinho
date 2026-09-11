@@ -54,6 +54,30 @@ class ObservedEntity(AIpinhoModel):
     schema_version: str = "observed_entity.v1"
 
 
+class RootRoleCandidate(AIpinhoModel):
+    role: WorkspaceRootRole
+    confidence: float = 0.0
+    rationale: str = ""
+    source: str
+    evidence_refs: list[str] = Field(default_factory=list)
+
+
+class RootRoleDecision(AIpinhoModel):
+    decision_id: str = Field(default_factory=lambda: f"root_role_decision_{uuid4().hex}")
+    path: str
+    role: WorkspaceRootRole = "unknown_root"
+    confidence: float = 0.0
+    status: Literal["resolved", "ambiguous", "unknown", "blocked"] = "unknown"
+    candidates: list[RootRoleCandidate] = Field(default_factory=list)
+    evidence_refs: list[str] = Field(default_factory=list)
+    model_id: str | None = None
+    model_response_id: str | None = None
+    contract_id: str = "root_role_resolution.v1"
+    deterministic_validation_status: str = "not_run"
+    reason_codes: list[str] = Field(default_factory=list)
+    provenance: dict[str, Any] = Field(default_factory=dict)
+
+
 class WorkspaceRootDescriptor(AIpinhoModel):
     root_id: str = Field(default_factory=lambda: f"workspace_root_{uuid4().hex}")
     path: str
