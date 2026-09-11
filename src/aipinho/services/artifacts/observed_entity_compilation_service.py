@@ -259,12 +259,24 @@ class ObservedEntityCompilationService:
             except Exception:
                 continue
             key = str(path).casefold()
-            raw_role_decision = role_decisions.get(str(path))
+            raw_role_decision = role_decisions.get(str(path)) or role_decisions.get(str(raw))
             role_decision = raw_role_decision if isinstance(raw_role_decision, dict) else None
-            resolved_role = str((role_decision or {}).get("role") or role)
-            if (role_decision or {}).get("status") not in {"resolved"}:
-                resolved_role = role
-            role = resolved_role
+            candidate_role = str((role_decision or {}).get("role") or "")
+            allowed_roles = {
+                "project_root",
+                "source_code_root",
+                "library_root",
+                "corpus_root",
+                "artifact_root",
+                "external_root",
+                "build_output_root",
+                "cache_root",
+                "generated_root",
+                "unknown_root",
+            }
+            if (role_decision or {}).get("status") == "resolved" and candidate_role in allowed_roles:
+                role = candidate_role
+            role_confidence = (role_decision or {}).get("confidence")
             evidence_ref = f"root_binding:{self._stable_id('root', str(path), role)}"
             role_evidence_refs = [
                 str(item)
@@ -284,7 +296,7 @@ class ObservedEntityCompilationService:
                 role=role,
                 source=source,
                 purposes=["corpus"] if role in {"library_root", "corpus_root"} else ["project"] if role == "project_root" else [],
-                confidence=float((role_decision or {}).get("confidence") or 1.0),
+                confidence=float(role_confidence) if role_confidence is not None else 1.0,
                 role_decision=role_decision,
                 policy_status=policy_decision.policy_status,
                 access_scope=policy_decision.access_scope,
