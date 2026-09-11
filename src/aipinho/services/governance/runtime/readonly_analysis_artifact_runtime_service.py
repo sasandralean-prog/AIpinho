@@ -6462,11 +6462,25 @@ class ReadonlyAnalysisArtifactRuntimeService:
                     public,
                 )
                 semantic_validations.append(semantic_validation)
+                scoped_limited_use = self._dependency_artifact_semantic_scope_allowed(
+                    match,
+                    requirements=requirements,
+                )
+                if semantic_validation["status"] == "blocked" and not scoped_limited_use:
+                    logical_path = semantic_validation.get("logical_path") or public.get("logical_path") or artifact_id
+                    semantic_missing.extend(
+                        f"artifact_semantic_contract:{logical_path}:{item}"
+                        for item in semantic_validation.get("missing_requirements", [])
+                    )
                 artifacts.append(
                     {
                         **public,
                         "dependency_semantic_validation": semantic_validation,
-                        "dependency_artifact_scope": "producer_outcome_governed",
+                        "dependency_artifact_scope": (
+                            "producer_outcome_limited_use"
+                            if scoped_limited_use
+                            else "semantic_contract_required"
+                        ),
                     }
                 )
             if semantic:
@@ -6673,6 +6687,33 @@ class ReadonlyAnalysisArtifactRuntimeService:
             and (not session_id or item.get("session_id") == session_id)
         ]
         return sorted(candidates, key=lambda item: str(item.get("created_at") or ""), reverse=True)[0] if candidates else None
+
+    def _dependency_artifact_semantic_scope_allowed(
+        self,
+        record: dict[str, Any],
+        *,
+        requirements: DownstreamPhaseRequirements,
+    ) -> bool:
+        phase_dependency = (
+            record.get("phase_dependency")
+            if isinstance(record.get("phase_dependency"), dict)
+            else {}
+        )
+        if str(phase_dependency.get("status") or "") != "satisfied_with_limitations":
+            return False
+        required_uses = {
+            str(item)
+            for item in requirements.required_downstream_uses
+            if str(item)
+        }
+        if not required_uses:
+            return False
+        allowed_uses = {
+            str(item)
+            for item in phase_dependency.get("allowed_downstream_uses") or []
+            if str(item)
+        }
+        return required_uses.issubset(allowed_uses)
 
     def _phase_outcome_record(self, outcome) -> dict[str, Any]:
         if outcome is None:
