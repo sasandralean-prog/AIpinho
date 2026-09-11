@@ -62,6 +62,41 @@ def test_promotes_candidate_plan_with_policy_snapshot_and_capabilities():
     assert restored.execution_id == decision.execution_plan.execution_id
 
 
+def test_promoted_plan_preserves_canonical_semantic_intent_source():
+    request = TaskRunRequest(
+        task_id="task_semantics",
+        task_run_id="run_semantics",
+        contract_type="readonly_analysis",
+        operation_type="workspace_analysis_readonly",
+        workspace="C:/workspace",
+        requested_actions=["project_analysis"],
+        intent_map={
+            "intent_id": "intent_semantics",
+            "semantic_intent_graph": {
+                "observational_intent": True,
+                "planning_intent": True,
+                "readonly_contract": True,
+                "prohibited_effects": ["workspace_mutation"],
+            },
+        },
+    )
+    task_plan = TaskRunPlan(
+        plan_id="plan_semantics",
+        contract_type="readonly_analysis",
+        steps=[TaskRunStep(step_id="step_analysis", step_type="analysis", action="project_analysis")],
+        metadata={"required_capabilities": ["read_workspace"]},
+    )
+
+    candidate = ExecutionPlanPromotionService().candidate_from_task_run_plan(
+        request=request,
+        plan=task_plan,
+        workspace_context={"workspace_path": "C:/workspace"},
+    )
+
+    assert candidate.metadata["source_intent_id"] == "intent_semantics"
+    assert candidate.metadata["semantic_intent_graph"] == request.intent_map["semantic_intent_graph"]
+
+
 def test_policy_denial_rejects_candidate_without_mutating_candidate():
     service = ExecutionPlanPromotionService()
     candidate = CandidatePlan(

@@ -6,6 +6,7 @@ from uuid import uuid4
 
 from aipinho.core.paths import PATHS
 from aipinho.schemas.chat.chat_request import ChatContext, ChatRequest
+from aipinho.schemas.runtime.phase_dependency_evaluation import DownstreamPhaseRequirements
 from aipinho.services.artifacts.artifact_interaction_core import ArtifactRegistryRepository
 from aipinho.services.artifacts.universal_artifact_registry_service import (
     UniversalArtifactRegistryService,
@@ -22,6 +23,7 @@ from aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_serv
 )
 from aipinho.services.runtime.task_run_store import TaskRunStore
 from aipinho.services.runtime.task_runtime_service import TaskRuntimeService
+from aipinho.services.runtime.phase_dependency_contract_registry import PhaseDependencyContractRegistry
 from aipinho.services.runtime.universal_task_session_service import UniversalTaskSessionService
 
 
@@ -51,6 +53,19 @@ def _chat(root: Path) -> tuple[CanonicalPublicChatService, ReadonlyAnalysisArtif
         artifacts=artifacts,
         phase_store_path=root / "phase_store.json",
         public_response_policy=PublicRuntimeResponsePolicy(accepted_running_enabled=False),
+        phase_dependency_contracts=PhaseDependencyContractRegistry(
+            [
+                DownstreamPhaseRequirements(
+                    contract_id=f"test_readonly_artifact_{phase_id}",
+                    consumer_phase_id=phase_id,
+                    operation_type="readonly_analysis_with_artifact_output",
+                    authority_source="trusted_registry",
+                    allowed_dependency_statuses=["satisfied"],
+                    evidence_required=True,
+                )
+                for phase_id in ("phase_2", "phase_3", "phase_4")
+            ]
+        ),
     )
     return CanonicalPublicChatService(readonly_artifact_runtime=service), service
 

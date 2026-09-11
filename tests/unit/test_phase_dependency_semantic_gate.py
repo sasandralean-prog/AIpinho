@@ -7,6 +7,8 @@ from typing import Any
 from aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_service import (
     ReadonlyAnalysisArtifactRuntimeService,
 )
+from aipinho.schemas.runtime.phase_dependency_evaluation import DownstreamPhaseRequirements
+from aipinho.services.runtime.phase_dependency_contract_registry import PhaseDependencyContractRegistry
 
 from tests.unit.test_artifact_semantic_contract_music_inventory import _rich_inventory_content
 
@@ -28,10 +30,14 @@ def _service(tmp_path: Path, artifact: dict[str, Any]) -> ReadonlyAnalysisArtifa
                     "session_id": "session_semantic_gate",
                     "phase_id": "phase_1",
                     "run_id": "task_run_phase1",
+                    "operation_id": "operation_phase1",
+                    "result_ref": "task_run_result:task_run_phase1",
                     "workspace": "C:/Workspace/Generic",
                     "logical_paths": [artifact["logical_path"]],
                     "artifacts": [{"artifact_id": artifact["artifact_id"], "logical_path": artifact["logical_path"]}],
                     "status": "completed",
+                    "phase_dependency": {"status": "satisfied"},
+                    "evidence_refs": ["artifact:" + artifact["artifact_id"]],
                     "created_at": "2026-08-13T00:00:00Z",
                 }
             ]
@@ -41,6 +47,16 @@ def _service(tmp_path: Path, artifact: dict[str, Any]) -> ReadonlyAnalysisArtifa
     return ReadonlyAnalysisArtifactRuntimeService(
         artifact_runtime=_FakeArtifactRuntime({artifact["artifact_id"]: artifact}),  # type: ignore[arg-type]
         phase_store_path=phase_store,
+        phase_dependency_contracts=PhaseDependencyContractRegistry(
+            [
+                DownstreamPhaseRequirements(
+                    contract_id="generic_phase_2",
+                    consumer_phase_id="phase_2",
+                    operation_type="readonly_analysis_with_artifact_output",
+                    evidence_required=True,
+                )
+            ]
+        ),
     )
 
 
@@ -70,6 +86,13 @@ def test_phase_dependency_blocks_ready_artifact_with_insufficient_semantic_contr
     result = service._validate_phase_dependencies(  # noqa: SLF001 - semantic dependency gate contract
         session_id="session_semantic_gate",
         dependency_phase_ids=["phase_1"],
+        consumer_task_run_id="task_run_phase2",
+        consumer_operation_id="operation_phase2",
+        consumer_phase_id="phase_2",
+        consumer_operation_type="readonly_analysis_with_artifact_output",
+        downstream_requirements=service.phase_dependency_contracts.resolve_invariants(
+            "phase_2", "readonly_analysis_with_artifact_output"
+        ),
     )
 
     assert result["status"] == "blocked"
@@ -94,9 +117,66 @@ def test_phase_dependency_passes_when_artifact_semantic_contract_is_satisfied(tm
     result = service._validate_phase_dependencies(  # noqa: SLF001 - semantic dependency gate contract
         session_id="session_semantic_gate",
         dependency_phase_ids=["phase_1"],
+        consumer_task_run_id="task_run_phase2",
+        consumer_operation_id="operation_phase2",
+        consumer_phase_id="phase_2",
+        consumer_operation_type="readonly_analysis_with_artifact_output",
+        downstream_requirements=service.phase_dependency_contracts.resolve_invariants(
+            "phase_2", "readonly_analysis_with_artifact_output"
+        ),
     )
 
     assert result["status"] == "passed"
     assert result["reason_code"] is None
     assert result["safe_to_report_success"] is True
+    assert result["dependency_evaluation_status"] == "passed"
+    assert result["dependency_evaluations"][0]["authorized"] is True
     assert result["artifact_semantic_validations"][0]["status"] == "passed"
+
+
+def test_phase_dependency_without_compiled_downstream_demand_fails_closed(tmp_path: Path) -> None:
+    artifact = _artifact(
+        tmp_path,
+        artifact_id="artifact_no_downstream_contract",
+        logical_path="reports/media/music_inventory.csv",
+        content=_rich_inventory_content(),
+    )
+    service = _service(tmp_path, artifact)
+    service.phase_dependency_contracts = PhaseDependencyContractRegistry()
+
+    result = service._validate_phase_dependencies(  # noqa: SLF001 - admission boundary contract
+        session_id="session_semantic_gate",
+        dependency_phase_ids=["phase_1"],
+        consumer_task_run_id="task_run_phase2",
+        consumer_operation_id="operation_phase2",
+        consumer_phase_id="phase_2",
+        consumer_operation_type="readonly_analysis_with_artifact_output",
+    )
+
+    assert result["status"] == "blocked"
+    assert result["reason_code"] == "PHASE_DEPENDENCY_INSUFFICIENT_CONTRACT_EVIDENCE"
+    assert result["dependency_evaluations"][0]["decision"] == "NOT_EVALUATED"
+    assert result["dependency_evaluations"][0]["authorized"] is False
+
+
+def test_phase_dependency_does_not_fall_back_to_another_session(tmp_path: Path) -> None:
+    artifact = _artifact(
+        tmp_path,
+        artifact_id="artifact_other_session",
+        logical_path="reports/media/music_inventory.csv",
+        content=_rich_inventory_content(),
+    )
+    service = _service(tmp_path, artifact)
+
+    result = service._validate_phase_dependencies(  # noqa: SLF001 - cross-session authority regression
+        session_id="different_session",
+        dependency_phase_ids=["phase_1"],
+        consumer_task_run_id="task_run_phase2",
+        consumer_operation_id="operation_phase2",
+        consumer_phase_id="phase_2",
+        consumer_operation_type="readonly_analysis_with_artifact_output",
+    )
+
+    assert result["status"] == "blocked"
+    assert result["missing"] == ["phase:phase_1"]
+    assert result["dependency_evaluations"] == []

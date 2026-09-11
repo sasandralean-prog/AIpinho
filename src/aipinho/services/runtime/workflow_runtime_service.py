@@ -10,6 +10,9 @@ from aipinho.schemas.runtime.workflow_runtime import (
     WorkflowResumePoint,
     WorkflowRuntimeInstance,
 )
+from aipinho.schemas.runtime.phase_dependency_evaluation import PhaseDependencySnapshot
+from aipinho.services.runtime.phase_dependency_evaluation_service import PhaseDependencyEvaluationService
+from aipinho.services.runtime.phase_semantic_demand_compiler import PhaseSemanticDemandCompiler
 
 
 _SUCCESS_STATUSES = {"completed", "partial", "skipped"}
@@ -18,6 +21,15 @@ _TERMINAL_STATUSES = {"completed", "partial", "failed", "blocked", "cancelled"}
 
 class WorkflowRuntimeService:
     """Canonical workflow/phase runtime for TaskRun execution state."""
+
+    def __init__(
+        self,
+        *,
+        dependency_evaluator: PhaseDependencyEvaluationService | None = None,
+        semantic_demand_compiler: PhaseSemanticDemandCompiler | None = None,
+    ) -> None:
+        self.dependency_evaluator = dependency_evaluator or PhaseDependencyEvaluationService()
+        self.semantic_demand_compiler = semantic_demand_compiler or PhaseSemanticDemandCompiler()
 
     def create_for_run(self, run: Any) -> WorkflowRuntimeInstance:
         phases: list[WorkflowPhase] = []
@@ -36,11 +48,19 @@ class WorkflowRuntimeService:
             )
             phases.append(phase)
             if previous_phase_id:
+                demand_compilation = self.semantic_demand_compiler.compile_for_run(
+                    run=run,
+                    consumer_phase_id=phase_id,
+                    consumer_operation_type=phase.action,
+                    source_step_id=step.step_id,
+                )
                 dependencies.append(
                     WorkflowPhaseDependency(
                         producer_phase_id=previous_phase_id,
                         consumer_phase_id=phase_id,
                         required_status="completed",
+                        demand_compilation=demand_compilation,
+                        requirements=demand_compilation.requirements,
                     )
                 )
             previous_phase_id = phase_id
@@ -75,6 +95,12 @@ class WorkflowRuntimeService:
             dependency.status = "completed" if not reasons else "missing"
             dependency.missing_reasons = reasons
             missing.extend([f"{dependency.dependency_id}:{reason}" for reason in reasons])
+            if not reasons:
+                admission_reason = self._dependency_admission_reason(workflow, producer, dependency)
+                if admission_reason:
+                    dependency.status = "missing"
+                    dependency.missing_reasons = [admission_reason]
+                    missing.append(f"{dependency.dependency_id}:{admission_reason}")
         if missing:
             phase.status = "blocked"
             phase.blocked_reasons = list(dict.fromkeys([*phase.blocked_reasons, "missing_required_phase_dependencies", *missing]))
@@ -84,6 +110,76 @@ class WorkflowRuntimeService:
             self._refresh(workflow)
             return False, list(dict.fromkeys(["missing_required_phase_dependencies", *missing]))
         return True, []
+
+    def _dependency_admission_reason(
+        self,
+        workflow: WorkflowRuntimeInstance,
+        producer: WorkflowPhase | None,
+        dependency: WorkflowPhaseDependency,
+    ) -> str | None:
+        if not dependency.evaluation_required:
+            return None
+        if dependency.demand_compilation is None:
+            return "PHASE_DEPENDENCY_DOWNSTREAM_DEMAND_NOT_COMPILED"
+        if dependency.demand_compilation.status != "compiled":
+            return (
+                dependency.demand_compilation.reason_codes[0]
+                if dependency.demand_compilation.reason_codes
+                else "PHASE_DEPENDENCY_INSUFFICIENT_CONTRACT_EVIDENCE"
+            )
+        requirements = dependency.requirements
+        if requirements is None or producer is None:
+            return "phase_dependency_evaluation_required"
+        if dependency.evaluation is None:
+            snapshot = PhaseDependencySnapshot(
+                dependency_id=dependency.dependency_id,
+                producer_task_run_id=workflow.task_run_id,
+                producer_operation_id=workflow.operation_id,
+                producer_phase_id=dependency.producer_phase_id,
+                upstream_result_ref=producer.validation_refs[-1] if producer.validation_refs else workflow.task_run_id,
+                dependency_status=(
+                    "satisfied"
+                    if producer.status == "completed"
+                    else "satisfied_with_limitations"
+                    if producer.status == "partial"
+                    else str(producer.status)
+                ),
+                evidence_refs=list(dict.fromkeys([*producer.produced_artifacts, *producer.validation_refs])),
+            )
+            dependency.evaluation = self.dependency_evaluator.evaluate(
+                snapshot=snapshot,
+                requirements=requirements,
+                consumer_task_run_id=workflow.task_run_id,
+                consumer_operation_id=str(workflow.operation_id or ""),
+                consumer_operation_type=requirements.operation_type,
+            )
+        if dependency.admission is None:
+            dependency.admission = self.dependency_evaluator.authorize(
+                evaluation=dependency.evaluation,
+                requirements=requirements,
+                consumer_task_run_id=workflow.task_run_id,
+                consumer_operation_id=str(workflow.operation_id or ""),
+                consumer_operation_type=requirements.operation_type,
+                producer_task_run_id=workflow.task_run_id,
+                producer_operation_id=workflow.operation_id,
+                dependency_id=dependency.dependency_id,
+                producer_phase_id=dependency.producer_phase_id,
+                consumer_phase_id=dependency.consumer_phase_id,
+            )
+        valid, reason = self.dependency_evaluator.validate_admission(
+            dependency.admission,
+            evaluation=dependency.evaluation,
+            requirements=requirements,
+            consumer_task_run_id=workflow.task_run_id,
+            consumer_operation_id=str(workflow.operation_id or ""),
+            consumer_operation_type=requirements.operation_type,
+            producer_task_run_id=workflow.task_run_id,
+            producer_operation_id=workflow.operation_id,
+            dependency_id=dependency.dependency_id,
+            producer_phase_id=dependency.producer_phase_id,
+            consumer_phase_id=dependency.consumer_phase_id,
+        )
+        return None if valid else str(reason or "phase_dependency_not_admitted")
 
     def start_phase_for_step(
         self,

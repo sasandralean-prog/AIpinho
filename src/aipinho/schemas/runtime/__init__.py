@@ -33,6 +33,16 @@ from aipinho.schemas.runtime.workflow_runtime import (
     WorkflowResumePoint,
     WorkflowRuntimeInstance,
 )
+from aipinho.schemas.runtime.phase_dependency_evaluation import (
+    DependencyRequirementCheck,
+    DownstreamPhaseRequirements,
+    LimitationAssessment,
+    PhaseSemanticDemandCompilation,
+    PhaseDependencyAdmission,
+    PhaseDependencyEvaluation,
+    PhaseDependencySnapshot,
+    RequirementProvenance,
+)
 from aipinho.schemas.runtime.workspace_context import ExecutionContext, RetrievalContext, WorkspaceContext
 
 __all__ = [
@@ -73,6 +83,14 @@ __all__ = [
     "WorkflowPhaseDependency",
     "WorkflowResumePoint",
     "WorkflowRuntimeInstance",
+    "DependencyRequirementCheck",
+    "DownstreamPhaseRequirements",
+    "LimitationAssessment",
+    "PhaseSemanticDemandCompilation",
+    "PhaseDependencyAdmission",
+    "PhaseDependencyEvaluation",
+    "PhaseDependencySnapshot",
+    "RequirementProvenance",
 ]
 from aipinho.schemas.runtime.runtime_contracts_v2 import (
     ApprovalContract,

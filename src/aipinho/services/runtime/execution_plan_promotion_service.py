@@ -68,6 +68,8 @@ class ExecutionPlanPromotionService:
                 "contract_type": request.contract_type,
                 "runtime_profile": plan.metadata.get("runtime_profile") or request.runtime_profile,
                 "source": "task_run_planner",
+                "source_intent_id": (request.intent_map or {}).get("intent_id"),
+                "semantic_intent_graph": self._semantic_intent_graph(request),
                 "requested_deliverables": self._requested_deliverables(request),
                 "workspace_references": self._workspace_references(request),
             },
@@ -204,6 +206,7 @@ class ExecutionPlanPromotionService:
         intent = request.intent_map if isinstance(request.intent_map, dict) else {}
         values = list(getattr(request, "expected_artifacts", []) or [])
         values.extend(str(item) for item in intent.get("logical_artifact_paths", []) or [])
+        values.extend(str(item) for item in intent.get("requested_artifact_paths", []) or [])
         return list(dict.fromkeys(item for item in values if item))
 
     def _step_inputs(self, request: TaskRunRequest, step: Any) -> dict[str, Any]:
@@ -224,3 +227,10 @@ class ExecutionPlanPromotionService:
     def _workspace_references(self, request: TaskRunRequest) -> list[str]:
         intent = request.intent_map if isinstance(request.intent_map, dict) else {}
         return [str(item) for item in intent.get("workspace_references", []) or [] if item]
+
+    def _semantic_intent_graph(self, request: TaskRunRequest) -> dict[str, Any]:
+        intent = request.intent_map if isinstance(request.intent_map, dict) else {}
+        graph = intent.get("semantic_intent_graph")
+        if hasattr(graph, "model_dump"):
+            return graph.model_dump(mode="json")
+        return dict(graph) if isinstance(graph, dict) else {}

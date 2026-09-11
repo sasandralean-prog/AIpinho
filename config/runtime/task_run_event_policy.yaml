@@ -114,6 +114,8 @@ events:
     - graph_review_requested
     - planning_report_created
     - execution_plan_replanned
+    - phase_dependency_evaluated
+    - phase_semantic_demand_compiled
 
 security:
   include_raw_file_content: false

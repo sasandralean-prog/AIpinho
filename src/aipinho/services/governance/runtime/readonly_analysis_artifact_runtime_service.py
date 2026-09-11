@@ -28,6 +28,11 @@ from aipinho.schemas.runtime.task_completion import (
 )
 from aipinho.schemas.runtime.task_run_request import TaskRunRequest
 from aipinho.schemas.runtime.task_run_result import TaskRunResult
+from aipinho.schemas.runtime.phase_dependency_evaluation import (
+    DownstreamPhaseRequirements,
+    PhaseDependencySnapshot,
+    PhaseSemanticDemandCompilation,
+)
 from aipinho.schemas.patching.repair_proposal_artifact import RepairProposalArtifact
 from aipinho.services.analysis.project_analysis_service import ProjectAnalysisService
 from aipinho.services.artifacts.artifact_semantic_contract_service import ArtifactSemanticContractService
@@ -56,6 +61,9 @@ from aipinho.services.patching.patch_plan_store import PatchPlanStore
 from aipinho.services.prompt_intelligence.path_extraction_service import PathExtractionService
 from aipinho.services.runtime.task_runtime_service import TaskRuntimeService
 from aipinho.services.runtime.task_run_lifecycle_service import TaskRunLifecycleService
+from aipinho.services.runtime.phase_dependency_contract_registry import PhaseDependencyContractRegistry
+from aipinho.services.runtime.phase_dependency_evaluation_service import PhaseDependencyEvaluationService
+from aipinho.services.runtime.phase_semantic_demand_compiler import PhaseSemanticDemandCompiler
 from aipinho.services.runtime.phase_semantic_completion_policy import (
     PhaseCompletionDecision,
     PhaseSemanticCompletionPolicy,
@@ -483,6 +491,9 @@ class ReadonlyAnalysisArtifactRuntimeService:
         public_preacceptance_policy: PublicPreAcceptancePolicy | None = None,
         accepted_worker_terminality_policy: AcceptedRunningWorkerTerminalityPolicy | None = None,
         phase_semantic_completion_policy: PhaseSemanticCompletionPolicy | None = None,
+        phase_dependency_contracts: PhaseDependencyContractRegistry | None = None,
+        phase_dependency_evaluator: PhaseDependencyEvaluationService | None = None,
+        phase_semantic_demand_compiler: PhaseSemanticDemandCompiler | None = None,
     ) -> None:
         self.runtime = runtime or TaskRuntimeService()
         self.analysis = analysis or ProjectAnalysisService()
@@ -511,6 +522,11 @@ class ReadonlyAnalysisArtifactRuntimeService:
         self.public_preacceptance_policy = public_preacceptance_policy or PublicPreAcceptancePolicy()
         self.accepted_worker_terminality_policy = accepted_worker_terminality_policy or AcceptedRunningWorkerTerminalityPolicy.from_environment()
         self.phase_semantic_completion_policy = phase_semantic_completion_policy or PhaseSemanticCompletionPolicy()
+        self.phase_dependency_contracts = phase_dependency_contracts or PhaseDependencyContractRegistry()
+        self.phase_dependency_evaluator = phase_dependency_evaluator or PhaseDependencyEvaluationService()
+        self.phase_semantic_demand_compiler = phase_semantic_demand_compiler or PhaseSemanticDemandCompiler(
+            system_invariants=self.phase_dependency_contracts
+        )
         self._artifact_checkpoint_emitted: dict[tuple[str, str, str], float] = {}
 
     def requested_artifact_paths(self, text: str) -> list[str]:
@@ -1467,8 +1483,21 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 "artifact_generation": True,
                 "workspace_mutation": False,
                 "requested_artifact_paths": logical_paths,
+                "requested_deliverables": logical_paths,
                 "phase_id": phase_id,
                 "dependency_phase_ids": dependency_phase_ids,
+                "semantic_intent_graph": {
+                    "observational_intent": True,
+                    "artifact_output": True,
+                    "readonly_contract": True,
+                    "state_effect": "knowledge_only",
+                    "workspace_effect": "immutable",
+                    "filesystem_effect": "knowledge_only",
+                    "runtime_effect": "none",
+                    "prohibited_effects": ["workspace_mutation", "destructive_action"],
+                    "requested_effects": ["knowledge_only", "artifact_output"],
+                    "evidence": ["public_readonly_artifact_boundary"],
+                },
                 "raw_prompt": request.message,
                 "external_roots": request_context.get("external_roots", []),
                 "library_roots": request_context.get("library_roots", []),
@@ -1519,6 +1548,40 @@ class ReadonlyAnalysisArtifactRuntimeService:
         )
         run = self.runtime.create_run(run_request)
 
+        demand_compilation: PhaseSemanticDemandCompilation | None = None
+        if dependency_phase_ids:
+            demand_compilation = self.phase_semantic_demand_compiler.compile_for_run(
+                run=run,
+                consumer_phase_id=phase_id,
+                consumer_operation_type=str(run.operation_type or ""),
+            )
+            demand_payload = demand_compilation.model_dump(mode="json")
+            run.plan.metadata["phase_semantic_demand"] = demand_payload
+            run.intent_map["phase_semantic_demand"] = demand_payload
+            run.bootstrap_context["phase_semantic_demand"] = demand_payload
+            self.runtime.store.update_run(run)
+            self.runtime.events.create(
+                run.run_id,
+                "phase_semantic_demand_compiled",
+                demand_compilation.status,
+                "Downstream semantic demand was compiled from the canonical execution plan.",
+                metadata={
+                    "compilation_id": demand_compilation.compilation_id,
+                    "consumer_phase_id": demand_compilation.consumer_phase_id,
+                    "consumer_operation_type": demand_compilation.consumer_operation_type,
+                    "source_plan_id": demand_compilation.source_plan_id,
+                    "source_execution_id": demand_compilation.source_execution_id,
+                    "source_semantics_sha256": demand_compilation.source_semantics_sha256,
+                    "requirements_sha256": (
+                        self.phase_dependency_evaluator.requirements_sha256(demand_compilation.requirements)
+                        if demand_compilation.requirements is not None
+                        else None
+                    ),
+                    "reason_codes": list(demand_compilation.reason_codes),
+                    "bounded": True,
+                },
+            )
+
         phase0_ref = self._phase0_readiness_ref(request)
         if phase0_ref.get("phase0_result_ref") or phase0_ref.get("cognitive_readiness_id"):
             run.intent_map["cognitive_readiness"] = phase0_ref
@@ -1548,7 +1611,35 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 session_id=request.session_id,
                 dependency_phase_ids=dependency_phase_ids,
                 semantic=True,
+                consumer_task_run_id=run.run_id,
+                consumer_operation_id=str(run.operation_id or ""),
+                consumer_phase_id=phase_id,
+                consumer_operation_type=str(run.operation_type or ""),
+                downstream_requirements=(
+                    demand_compilation.requirements
+                    if demand_compilation is not None and demand_compilation.status == "compiled"
+                    else None
+                ),
+                demand_compilation=demand_compilation,
             )
+            for item in dependency_check.get("dependency_evaluations") or []:
+                self.runtime.events.create(
+                    run.run_id,
+                    "phase_dependency_evaluated",
+                    "recorded",
+                    "Phase dependency admission was evaluated before downstream execution.",
+                    metadata={
+                        "dependency_id": item.get("dependency_id"),
+                        "evaluation_id": item.get("evaluation_id"),
+                        "admission_id": item.get("admission_id"),
+                        "decision": item.get("decision"),
+                        "authorized": item.get("authorized"),
+                        "reason_code": item.get("reason_code"),
+                        "constraint_count": len(item.get("constraints") or []),
+                        "evidence_ref_count": len(item.get("evidence_refs") or []),
+                        "bounded": True,
+                    },
+                )
             if dependency_check["status"] != "passed":
                 raise GovernedPhase1Block(
                     str(dependency_check.get("reason_code") or "phase_dependency_artifacts_missing"),
@@ -1562,6 +1653,34 @@ class ReadonlyAnalysisArtifactRuntimeService:
                         "safe_to_report_success": False,
                     },
                 )
+            dependency_authority = [
+                {
+                    "dependency_id": item.get("dependency_id"),
+                    "evaluation_id": item.get("evaluation_id"),
+                    "admission_id": item.get("admission_id"),
+                    "authorized_downstream_phase": item.get("consumer_phase_id"),
+                    "decision": item.get("decision"),
+                    "constraints": list(item.get("constraints") or []),
+                    "evidence_refs": list(item.get("evidence_refs") or []),
+                    "requirements_sha256": item.get("requirements_sha256"),
+                    "requirements_source": item.get("requirements_source"),
+                    "requirements_source_plan_id": item.get("requirements_source_plan_id"),
+                    "requirements_source_execution_id": item.get("requirements_source_execution_id"),
+                    "requirements_frozen_at": item.get("requirements_frozen_at"),
+                    "demand_compilation_id": item.get("demand_compilation_id"),
+                    "admission_authority_sha256": item.get("admission_authority_sha256"),
+                }
+                for item in dependency_check.get("dependency_evaluations") or []
+                if item.get("authorized") is True
+            ]
+            if dependency_authority:
+                run.intent_map["phase_dependency_admissions"] = dependency_authority
+                run.bootstrap_context["phase_dependency_admissions"] = dependency_authority
+                request_context = {
+                    **request_context,
+                    "phase_dependency_admissions": dependency_authority,
+                }
+                self.runtime.store.update_run(run)
             self._check_phase1_budget(run.run_id, started_monotonic, stage="before_project_analysis")
             self.runtime.events.create(run.run_id, "project_analysis_started", "running", "Project analysis started.")
             analysis_prompt = self._analysis_prompt_with_dependencies(request.message, dependency_check)
@@ -2049,6 +2168,9 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 artifacts=final_artifacts,
                 logical_paths=logical_paths,
                 patch_plan_id=self._patch_plan_id(analysis_payload),
+                operation_id=run.operation_id,
+                phase_completion_decision=phase_completion_decision,
+                validation=validation,
             )
 
         response = self._response(
@@ -6186,18 +6308,59 @@ class ReadonlyAnalysisArtifactRuntimeService:
         session_id: str | None,
         dependency_phase_ids: list[str],
         semantic: bool = True,
+        consumer_task_run_id: str | None = None,
+        consumer_operation_id: str | None = None,
+        consumer_phase_id: str | None = None,
+        consumer_operation_type: str | None = None,
+        downstream_requirements: DownstreamPhaseRequirements | None = None,
+        demand_compilation: PhaseSemanticDemandCompilation | None = None,
     ) -> dict[str, Any]:
         if not dependency_phase_ids:
-            return {"status": "passed", "dependency_phase_ids": [], "artifacts": [], "missing": [], "semantic_check_performed": False}
+            return {
+                "status": "passed",
+                "dependency_phase_ids": [],
+                "artifacts": [],
+                "missing": [],
+                "semantic_check_performed": False,
+                "dependency_evaluation_status": "not_applicable",
+                "dependency_evaluations": [],
+            }
         store = self._load_phase_store()
         missing: list[str] = []
         artifacts: list[dict[str, Any]] = []
         semantic_validations: list[dict[str, Any]] = []
         semantic_missing: list[str] = []
+        dependency_evaluations: list[dict[str, Any]] = []
         for phase_id in dependency_phase_ids:
             match = self._latest_phase_record(store, phase_id=phase_id, session_id=session_id)
             if not match:
                 missing.append(f"phase:{phase_id}")
+                continue
+            requirements = downstream_requirements if semantic else None
+            if semantic and requirements is None:
+                reason = (
+                    demand_compilation.reason_codes[0]
+                    if demand_compilation is not None and demand_compilation.reason_codes
+                    else "PHASE_DEPENDENCY_INSUFFICIENT_CONTRACT_EVIDENCE"
+                )
+                semantic_missing.append(f"phase_dependency:{phase_id}:{reason}")
+                dependency_evaluations.append(
+                    {
+                        "producer_phase_id": phase_id,
+                        "consumer_phase_id": consumer_phase_id,
+                        "decision": "NOT_EVALUATED",
+                        "authorized": False,
+                        "reason_code": reason,
+                        "demand_compilation_id": (
+                            demand_compilation.compilation_id if demand_compilation is not None else None
+                        ),
+                        "demand_compilation_status": (
+                            demand_compilation.status if demand_compilation is not None else "not_compiled"
+                        ),
+                        "constraints": [],
+                        "evidence_refs": [],
+                    }
+                )
                 continue
             for item in match.get("artifacts", []) or []:
                 artifact_id = str(item.get("artifact_id") or "")
@@ -6233,9 +6396,95 @@ class ReadonlyAnalysisArtifactRuntimeService:
                                 for item in semantic_validation.get("missing_requirements", [])
                             )
                     artifacts.append(public)
+            if semantic:
+                if not consumer_task_run_id or not consumer_operation_id or not consumer_phase_id or not consumer_operation_type:
+                    semantic_missing.append(f"phase_dependency:{phase_id}:PHASE_DEPENDENCY_CONSUMER_BINDING_MISSING")
+                    continue
+                snapshot = self._phase_dependency_snapshot(
+                    match,
+                    producer_phase_id=phase_id,
+                    consumer_phase_id=consumer_phase_id,
+                )
+                evaluation = self.phase_dependency_evaluator.evaluate(
+                    snapshot=snapshot,
+                    requirements=requirements,
+                    consumer_task_run_id=consumer_task_run_id,
+                    consumer_operation_id=consumer_operation_id,
+                    consumer_operation_type=consumer_operation_type,
+                )
+                admission = self.phase_dependency_evaluator.authorize(
+                    evaluation=evaluation,
+                    requirements=requirements,
+                    consumer_task_run_id=consumer_task_run_id,
+                    consumer_operation_id=consumer_operation_id,
+                    consumer_operation_type=consumer_operation_type,
+                    producer_task_run_id=snapshot.producer_task_run_id,
+                    producer_operation_id=snapshot.producer_operation_id,
+                    dependency_id=snapshot.dependency_id,
+                    producer_phase_id=phase_id,
+                    consumer_phase_id=consumer_phase_id,
+                )
+                admitted, admission_reason = self.phase_dependency_evaluator.validate_admission(
+                    admission,
+                    evaluation=evaluation,
+                    requirements=requirements,
+                    consumer_task_run_id=consumer_task_run_id,
+                    consumer_operation_id=consumer_operation_id,
+                    consumer_operation_type=consumer_operation_type,
+                    producer_task_run_id=snapshot.producer_task_run_id,
+                    producer_operation_id=snapshot.producer_operation_id,
+                    dependency_id=snapshot.dependency_id,
+                    producer_phase_id=phase_id,
+                    consumer_phase_id=consumer_phase_id,
+                )
+                dependency_evaluations.append(
+                    {
+                        "dependency_id": snapshot.dependency_id,
+                        "producer_phase_id": phase_id,
+                        "consumer_phase_id": consumer_phase_id,
+                        "evaluation_id": evaluation.evaluation_id,
+                        "admission_id": admission.admission_id,
+                        "evaluation_status": evaluation.evaluation_status,
+                        "decision": evaluation.decision,
+                        "authorized": admitted,
+                        "reason_code": admission_reason or admission.reason_code,
+                        "demand_compilation_id": (
+                            demand_compilation.compilation_id if demand_compilation is not None else None
+                        ),
+                        "demand_compilation_status": (
+                            demand_compilation.status if demand_compilation is not None else "compiled_external"
+                        ),
+                        "requirements_source": requirements.authority_source,
+                        "requirements_source_plan_id": requirements.source_plan_id,
+                        "requirements_source_execution_id": requirements.source_execution_id,
+                        "requirements_frozen_at": requirements.frozen_at,
+                        "requirements_sha256": evaluation.requirements_sha256,
+                        "evaluation_authority_sha256": evaluation.authority_sha256,
+                        "admission_authority_sha256": admission.authority_sha256,
+                        "constraints": list(admission.constraints),
+                        "evidence_refs": list(admission.evidence_refs),
+                        "requirement_checks": [item.model_dump(mode="json") for item in evaluation.requirement_checks],
+                        "limitation_assessments": [item.model_dump(mode="json") for item in evaluation.limitation_assessments],
+                    }
+                )
+                if not admitted:
+                    semantic_missing.append(
+                        f"phase_dependency:{phase_id}:{admission_reason or admission.reason_code}"
+                    )
         all_missing = [*missing, *semantic_missing]
         reason_code = (
             "PHASE_DEPENDENCY_SEMANTIC_INSUFFICIENT"
+            if semantic_missing and any(item.startswith("artifact_semantic_contract:") for item in semantic_missing)
+            else str(
+                next(
+                    (
+                        item.rsplit(":", 1)[-1]
+                        for item in semantic_missing
+                        if item.startswith("phase_dependency:")
+                    ),
+                    "PHASE_DEPENDENCY_EVALUATION_INCOMPLETE",
+                )
+            )
             if semantic_missing
             else "phase_dependency_artifacts_missing"
             if missing
@@ -6250,6 +6499,17 @@ class ReadonlyAnalysisArtifactRuntimeService:
             "missing": all_missing,
             "artifact_semantic_validations": semantic_validations,
             "semantic_check_performed": semantic,
+            "dependency_evaluation_status": (
+                "not_performed"
+                if not semantic
+                else "passed"
+                if dependency_evaluations and all(item.get("authorized") for item in dependency_evaluations)
+                else "blocked"
+            ),
+            "dependency_evaluations": dependency_evaluations,
+            "downstream_semantic_demand": (
+                demand_compilation.model_dump(mode="json") if demand_compilation is not None else None
+            ),
         }
 
     def _record_phase(
@@ -6262,18 +6522,55 @@ class ReadonlyAnalysisArtifactRuntimeService:
         artifacts: list[dict[str, Any]],
         logical_paths: list[str],
         patch_plan_id: str | None = None,
+        operation_id: str | None = None,
+        phase_completion_decision: PhaseCompletionDecision | None = None,
+        validation: dict[str, Any] | None = None,
     ) -> None:
         store = self._load_phase_store()
+        phase_dependency = (
+            dict(phase_completion_decision.phase_dependency)
+            if phase_completion_decision is not None
+            else {"status": "satisfied"}
+        )
+        phase_metadata = dict(phase_completion_decision.metadata) if phase_completion_decision is not None else {}
+        use_safety = dict(phase_metadata.get("use_safety") or {})
+        for source, target in (
+            ("artifact_safe_for_truth_claim", "safe_for_truth_claim"),
+            ("artifact_safe_for_catalog", "safe_for_catalog"),
+            ("artifact_safe_for_planning", "safe_for_planning"),
+            ("artifact_safe_for_destructive_action", "safe_for_destructive_action"),
+        ):
+            if source in phase_dependency and target not in use_safety:
+                use_safety[target] = phase_dependency[source]
+        artifact_ids = [str(item.get("artifact_id")) for item in artifacts if item.get("artifact_id")]
+        result_ref = f"task_run_result:{run_id}"
         store.append(
             {
                 "session_id": session_id,
                 "phase_id": phase_id,
                 "run_id": run_id,
+                "operation_id": operation_id,
+                "result_ref": result_ref,
                 "workspace": workspace,
                 "logical_paths": logical_paths,
                 "artifacts": artifacts,
                 "patch_plan_id": patch_plan_id,
-                "status": "completed",
+                "status": phase_completion_decision.status if phase_completion_decision is not None else "completed",
+                "phase_dependency": phase_dependency,
+                "limitations": list(phase_completion_decision.limitations) if phase_completion_decision is not None else [],
+                "required_disclosures": list(phase_completion_decision.required_disclosures) if phase_completion_decision is not None else [],
+                "missing_truth": list(phase_dependency.get("missing_truth") or phase_metadata.get("missing_truth") or []),
+                "risk_constraints": list(phase_dependency.get("risk_constraints") or phase_metadata.get("risk_constraints") or []),
+                "evidence_refs": list(dict.fromkeys([result_ref, *artifact_ids])),
+                "use_safety": use_safety,
+                "semantic_properties": {
+                    "analysis_completeness": (validation or {}).get("analysis_completeness"),
+                    "materialization_completeness": (validation or {}).get("materialization_completeness"),
+                    "truth_completeness": (validation or {}).get("truth_completeness"),
+                    "phase_contract_status": phase_completion_decision.phase_contract_status
+                    if phase_completion_decision is not None
+                    else None,
+                },
                 "created_at": utc_now(),
             }
         )
@@ -6302,9 +6599,45 @@ class ReadonlyAnalysisArtifactRuntimeService:
             if item.get("phase_id") == phase_id
             and (not session_id or item.get("session_id") == session_id)
         ]
-        if not candidates and session_id:
-            candidates = [item for item in store if item.get("phase_id") == phase_id]
         return sorted(candidates, key=lambda item: str(item.get("created_at") or ""), reverse=True)[0] if candidates else None
+
+    def _phase_dependency_snapshot(
+        self,
+        record: dict[str, Any],
+        *,
+        producer_phase_id: str,
+        consumer_phase_id: str,
+    ) -> PhaseDependencySnapshot:
+        phase_dependency = record.get("phase_dependency") if isinstance(record.get("phase_dependency"), dict) else {}
+        producer_task_run_id = str(record.get("run_id") or "")
+        dependency_status = str(phase_dependency.get("status") or record.get("status") or "")
+        if dependency_status in {"completed", "completed_with_limitations", "partial"}:
+            dependency_status = "satisfied_with_limitations" if dependency_status != "completed" else "satisfied"
+        evidence_refs = [str(item) for item in record.get("evidence_refs") or [] if str(item)]
+        if not evidence_refs:
+            evidence_refs = [
+                str(item.get("artifact_id"))
+                for item in record.get("artifacts") or []
+                if isinstance(item, dict) and item.get("artifact_id")
+            ]
+        return PhaseDependencySnapshot(
+            dependency_id=f"phase_dependency:{producer_task_run_id}:{producer_phase_id}:{consumer_phase_id}",
+            producer_task_run_id=producer_task_run_id,
+            producer_operation_id=str(record.get("operation_id") or "") or None,
+            producer_phase_id=producer_phase_id,
+            upstream_result_ref=str(record.get("result_ref") or producer_task_run_id),
+            dependency_status=dependency_status,
+            evidence_refs=evidence_refs,
+            limitations=[str(item) for item in record.get("limitations") or []],
+            required_disclosures=[str(item) for item in record.get("required_disclosures") or []],
+            missing_truth=[str(item) for item in record.get("missing_truth") or []],
+            risk_constraints=[str(item) for item in record.get("risk_constraints") or []],
+            allowed_downstream_uses=[str(item) for item in phase_dependency.get("allowed_downstream_uses") or []],
+            forbidden_downstream_uses=[str(item) for item in phase_dependency.get("forbidden_downstream_uses") or []],
+            forbidden_claims=[str(item) for item in phase_dependency.get("forbidden_downstream_claims") or []],
+            use_safety=dict(record.get("use_safety") or {}),
+            semantic_properties=dict(record.get("semantic_properties") or {}),
+        )
 
     def _phase_record_patch_plan_id(self, record: dict[str, Any]) -> str | None:
         value = record.get("patch_plan_id")

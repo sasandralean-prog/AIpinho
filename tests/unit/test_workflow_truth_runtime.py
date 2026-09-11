@@ -73,6 +73,10 @@ def test_r5_valid_phase_dependency_allows_next_phase(task_runtime_service):
     assert deps
     assert all(dep.status == "completed" for dep in deps)
     assert all(not dep.missing_reasons for dep in deps)
+    assert all(dep.evaluation is not None for dep in deps)
+    assert all(dep.admission is not None and dep.admission.authorized for dep in deps)
+    assert all(dep.admission.consumer_task_run_id == completed.run_id for dep in deps)
+    assert all(dep.admission.consumer_operation_id == completed.operation_id for dep in deps)
 
 
 def test_r5_missing_artifact_dependency_blocks_phase(task_runtime_service):

@@ -120,6 +120,7 @@ class TaskContractBuilder:
 
     def _intent_summary(self, intent_map: Any) -> dict[str, Any]:
         workspace = getattr(intent_map, "workspace", None)
+        semantic_graph = getattr(intent_map, "semantic_intent_graph", None)
         return {
             "intent_id": getattr(intent_map, "intent_id", None),
             "intent_type": getattr(intent_map, "intent_type", "unknown"),
@@ -140,6 +141,7 @@ class TaskContractBuilder:
             "requested_deliverables": list(
                 getattr(intent_map, "requested_deliverables", [])
             ),
+            "semantic_intent_graph": _dump_model(semantic_graph),
         }
 
     def _policy_summary(self, policy_decision: Any) -> dict[str, Any]:

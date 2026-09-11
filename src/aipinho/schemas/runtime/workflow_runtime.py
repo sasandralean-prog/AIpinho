@@ -7,6 +7,12 @@ from pydantic import Field
 
 from aipinho.schemas.common.base import AIpinhoModel
 from aipinho.schemas.events.contracts import utc_now_iso
+from aipinho.schemas.runtime.phase_dependency_evaluation import (
+    DownstreamPhaseRequirements,
+    PhaseSemanticDemandCompilation,
+    PhaseDependencyAdmission,
+    PhaseDependencyEvaluation,
+)
 
 
 class WorkflowCheckpoint(AIpinhoModel):
@@ -29,6 +35,11 @@ class WorkflowPhaseDependency(AIpinhoModel):
     required_validations: list[str] = Field(default_factory=list)
     status: str = "pending"
     missing_reasons: list[str] = Field(default_factory=list)
+    evaluation_required: bool = True
+    requirements: DownstreamPhaseRequirements | None = None
+    demand_compilation: PhaseSemanticDemandCompilation | None = None
+    evaluation: PhaseDependencyEvaluation | None = None
+    admission: PhaseDependencyAdmission | None = None
 
 
 class WorkflowPhase(AIpinhoModel):
