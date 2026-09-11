@@ -54,7 +54,7 @@ def test_unlabeled_second_path_is_not_promoted_to_library_root(tmp_path: Path) -
         "Request",
         (),
         {
-            "workspace_context": {},
+            "workspace_context": {"project_root": str(project)},
             "message": f"{project}\n{second}\n",
         },
     )()

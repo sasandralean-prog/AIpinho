@@ -5763,7 +5763,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 project_roots_from_prompt[0]
                 if project_roots_from_prompt
                 else explicit_roots[0]
-                if explicit_roots
+                if len(explicit_roots) == 1
                 else ""
             )
         )
@@ -5903,10 +5903,32 @@ class ReadonlyAnalysisArtifactRuntimeService:
             for role, defaults in default_markers.items()
         }
         roles: dict[str, str] = {}
+        path_values = [
+            str(getattr(item, "value", "") or "")
+            for item in extracted_roots
+            if str(getattr(item, "value", "") or "")
+        ]
         for item in extracted_roots:
-            prefix = message[max(0, int(getattr(item, "start", 0)) - 120): int(getattr(item, "start", 0))]
-            nearby_lines = [self._normalize_text(line) for line in prefix.splitlines() if line.strip()]
-            nearby = " ".join(nearby_lines[-3:])
+            start = int(getattr(item, "start", 0))
+            prefix = message[:start]
+            lines = prefix.splitlines()
+            candidates: list[str] = []
+            if prefix and not prefix.endswith(("\n", "\r")) and lines:
+                current_prefix = lines[-1].strip()
+                if current_prefix:
+                    candidates.append(current_prefix)
+                previous_lines = lines[:-1]
+            else:
+                previous_lines = lines
+            for line in reversed(previous_lines):
+                stripped = line.strip()
+                if not stripped:
+                    continue
+                if any(path_value and path_value in stripped for path_value in path_values):
+                    break
+                candidates.append(stripped)
+                break
+            nearby = " ".join(self._normalize_text(line) for line in candidates if line.strip())
             for role in ("library_root", "project_root"):
                 if any(marker and re.search(rf"\b{re.escape(marker)}\b", nearby) for marker in markers.get(role, [])):
                     roles[str(getattr(item, "value", "") or "")] = role

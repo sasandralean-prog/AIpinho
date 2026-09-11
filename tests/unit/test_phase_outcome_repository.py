@@ -46,6 +46,7 @@ def _fixture():
         operation_id="operation_phase1",
         session_id="session_a",
         workspace="D:/corpus",
+        status="completed_with_limitations",
         current_phase="phase_1",
         intent_map={},
         bootstrap_context={},
