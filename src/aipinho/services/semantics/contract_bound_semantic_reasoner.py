@@ -21,9 +21,11 @@ class ContractBoundSemanticReasoner:
         *,
         router: ModelRouterService | None = None,
         invocation: ModelInvocationService | None = None,
+        timeout_seconds: int = 45,
     ) -> None:
         self.router = router or ModelRouterService()
         self.invocation = invocation or ModelInvocationService(router=self.router)
+        self.timeout_seconds = max(1, int(timeout_seconds))
 
     def propose_json(
         self,
@@ -78,9 +80,10 @@ class ContractBoundSemanticReasoner:
             metadata={
                 "purpose": "chat",
                 "role_id": role_id,
+                "role_pipeline_controlled_inference": True,
                 "semantic_goal": semantic_goal,
                 "max_stdout_chars": 12000,
-                "timeout_seconds": 45,
+                "timeout_seconds": self.timeout_seconds,
             },
         )
         request.generation_config.max_tokens = max_tokens
@@ -93,14 +96,19 @@ class ContractBoundSemanticReasoner:
                 "response_id": response.response_id,
                 "warnings": list(response.warnings),
             }
-        try:
-            parsed = json.loads(response.content)
-        except (TypeError, ValueError):
+        parsed = self._parse_json_object(
+            response.content,
+            required_fields=required_fields,
+        )
+        if parsed is None:
             return {
                 "status": "invalid",
                 "reason_code": "SEMANTIC_REASONER_INVALID_JSON",
                 "model_id": response.model_id,
                 "response_id": response.response_id,
+                "real_inference": response.real_inference,
+                "evaluation_status": (response.evaluation_result or {}).get("status"),
+                "warnings": list(response.warnings),
             }
         if not isinstance(parsed, dict):
             return {
@@ -128,3 +136,35 @@ class ContractBoundSemanticReasoner:
             "evaluation_status": (response.evaluation_result or {}).get("status"),
             "warnings": list(response.warnings),
         }
+
+    def _parse_json_object(
+        self,
+        content: Any,
+        *,
+        required_fields: list[str],
+    ) -> dict[str, Any] | None:
+        if not isinstance(content, str):
+            return None
+        text = content.strip()
+        if not text:
+            return None
+        try:
+            direct = json.loads(text)
+        except (TypeError, ValueError):
+            direct = None
+        if isinstance(direct, dict) and all(field in direct for field in required_fields):
+            return direct
+
+        decoder = json.JSONDecoder()
+        for index, char in enumerate(text):
+            if char != "{":
+                continue
+            try:
+                candidate, _end = decoder.raw_decode(text[index:])
+            except ValueError:
+                continue
+            if not isinstance(candidate, dict):
+                continue
+            if all(field in candidate for field in required_fields):
+                return candidate
+        return None

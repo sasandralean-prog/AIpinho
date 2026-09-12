@@ -180,7 +180,7 @@ models:
     context_window_tokens: 4096
     max_output_tokens: 1024
     model_path: 'C:\Dev\AI\models\Qwen3-1.7B.Q6_K.gguf'
-    roles: [intent_classifier, speaker, interpreter]
+    roles: [intent_classifier, speaker, interpreter, semantic_interpreter]
 
   qwen3_4b_thinking_distill_q4_k_m:
     provider_id: llama_cpp_text

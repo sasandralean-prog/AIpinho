@@ -6,6 +6,46 @@ from typing import Any
 class ArtifactUseSafetyService:
     """Evaluates artifact use safety across truth, catalog, and planning dimensions."""
 
+    @classmethod
+    def governed_dimensions(cls) -> tuple[str, ...]:
+        """Dimensions emitted by this authority boundary.
+
+        Semantic reasoners may select from these identifiers, but never create
+        new dimensions on behalf of this service.
+        """
+        return tuple(cls.governed_dimension_states())
+
+    @classmethod
+    def governed_dimension_states(cls) -> dict[str, tuple[bool | str, ...]]:
+        """Minimal typed vocabulary for use-safety emitted by this service."""
+        return {
+            "safe_for_truth_claim": (True, False),
+            "safe_for_catalog": (True, False),
+            "safe_for_planning": (True, "true_with_limitations", False),
+            "safe_for_downstream_static_analysis": (
+                True,
+                "true_with_limitations",
+                False,
+            ),
+            "safe_for_destructive_action": (True, False),
+            "safe_for_user_report": (True, "true_with_limitations", False),
+        }
+
+    @classmethod
+    def governed_requirement_states(cls) -> dict[str, tuple[bool | str, ...]]:
+        """States that may satisfy a downstream safety requirement."""
+        return {
+            "safe_for_truth_claim": (True,),
+            "safe_for_catalog": (True,),
+            "safe_for_planning": (True, "true_with_limitations"),
+            "safe_for_downstream_static_analysis": (
+                True,
+                "true_with_limitations",
+            ),
+            "safe_for_destructive_action": (True,),
+            "safe_for_user_report": (True, "true_with_limitations"),
+        }
+
     def evaluate_catalog_artifact(
         self,
         *,

@@ -11,6 +11,42 @@ from aipinho.services.runtime.phase_dependency_evaluation_service import PhaseDe
 from aipinho.services.runtime.phase_semantic_demand_compiler import PhaseSemanticDemandCompiler
 
 
+class _SemanticInterpreter:
+    def __init__(self, accepted_requirements: dict | None = None) -> None:
+        self.accepted_requirements = dict(accepted_requirements or {})
+
+    def interpret(self, *, source_payload: dict, semantic_graph: dict) -> dict:
+        if not semantic_graph.get("knowledge_output"):
+            return {
+                "status": "not_required",
+                "reason_code": None,
+                "accepted_requirements": {},
+                "provenance": {},
+            }
+        return {
+            "status": "accepted",
+            "reason_code": None,
+            "accepted_requirements": {
+                "required_downstream_uses": [],
+                "required_use_safety": {},
+                "required_semantic_properties": {},
+                "base_constraints": [],
+                "risk_constraints": [],
+                **self.accepted_requirements,
+            },
+            "confidence": 0.91,
+            "rationale": "fixture semantic demand",
+            "provenance": {
+                "model_id": "fixture-model",
+                "response_id": "fixture-response",
+                "real_inference": True,
+                "evaluation_status": "accepted",
+                "warnings": [],
+                "authority": "deterministic_semantic_gate",
+            },
+        }
+
+
 def _run(
     *,
     operation_type: str = "workspace_analysis_readonly",
@@ -93,7 +129,15 @@ def test_phase_name_does_not_determine_semantic_requirements() -> None:
 
 
 def test_same_operation_with_different_canonical_intent_compiles_different_demand() -> None:
-    compiler = PhaseSemanticDemandCompiler()
+    compiler = PhaseSemanticDemandCompiler(
+        semantic_interpreter=_SemanticInterpreter(
+            {
+                "required_use_safety": {
+                    "safe_for_truth_claim": [True],
+                }
+            }
+        )
+    )
     planning = compiler.compile_for_run(
         run=_run(semantic_graph=_planning_graph()),
         consumer_phase_id="consumer",
@@ -106,7 +150,58 @@ def test_same_operation_with_different_canonical_intent_compiles_different_deman
     assert planning.requirements is not None
     assert truth_claim.requirements is not None
     assert "safe_for_planning" in planning.requirements.required_use_safety
-    assert "safe_for_truth_claim" in truth_claim.requirements.required_use_safety
+    assert truth_claim.requirements.required_use_safety["safe_for_truth_claim"] == [True]
+    assert truth_claim.semantic_interpretation["status"] == "accepted"
+
+
+def test_knowledge_output_can_compile_without_full_upstream_truth_requirement() -> None:
+    compiler = PhaseSemanticDemandCompiler(
+        semantic_interpreter=_SemanticInterpreter(
+            {
+                "required_use_safety": {
+                    "safe_for_downstream_static_analysis": [
+                        True,
+                        "true_with_limitations",
+                    ],
+                },
+                "base_constraints": ["do_not_promote_upstream_identity_to_truth"],
+            }
+        )
+    )
+
+    compilation = compiler.compile_for_run(
+        run=_run(
+            semantic_graph={
+                "knowledge_output": True,
+                "observational_intent": True,
+                "readonly_contract": True,
+            }
+        ),
+        consumer_phase_id="consumer",
+    )
+
+    assert compilation.status == "compiled"
+    assert compilation.requirements is not None
+    assert compilation.requirements.allowed_dependency_statuses == [
+        "satisfied",
+        "satisfied_with_limitations",
+    ]
+    assert "safe_for_truth_claim" not in compilation.requirements.required_use_safety
+    assert compilation.requirements.required_use_safety[
+        "safe_for_downstream_static_analysis"
+    ] == [True, "true_with_limitations"]
+    assert (
+        "do_not_promote_upstream_identity_to_truth"
+        in compilation.requirements.base_constraints
+    )
+    provenance = {
+        item.requirement: item.source_kind
+        for item in compilation.requirements.requirement_provenance
+    }
+    assert (
+        provenance["required_use_safety:safe_for_downstream_static_analysis"]
+        == "deterministic_semantic_gate"
+    )
 
 
 def test_compiled_requirements_are_frozen_before_upstream_evidence_is_observed() -> None:

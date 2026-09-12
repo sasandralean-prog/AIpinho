@@ -32,6 +32,8 @@ class RequirementProvenance(AIpinhoModel):
         "canonical_execution_plan",
         "canonical_execution_step",
         "semantic_intent_graph",
+        "semantic_reasoner_candidate",
+        "deterministic_semantic_gate",
         "policy_snapshot",
         "system_invariant",
     ]
@@ -79,6 +81,7 @@ class PhaseSemanticDemandCompilation(AIpinhoModel):
     source_execution_id: str | None = None
     source_semantics_sha256: str | None = None
     requirements: DownstreamPhaseRequirements | None = None
+    semantic_interpretation: dict[str, Any] = Field(default_factory=dict)
     reason_codes: list[str] = Field(default_factory=list)
     compiled_at: str = Field(default_factory=utc_now_iso)
     frozen_before_admission: bool = True
@@ -114,7 +117,7 @@ class DependencyRequirementCheck(AIpinhoModel):
 class LimitationAssessment(AIpinhoModel):
     limitation: str
     impact: LimitationCompatibility
-    source: Literal["downstream_contract", "upstream_disclosure", "unclassified"]
+    source: Literal["downstream_contract", "semantic_reasoner", "upstream_disclosure", "unclassified"]
     constraints: list[str] = Field(default_factory=list)
 
 

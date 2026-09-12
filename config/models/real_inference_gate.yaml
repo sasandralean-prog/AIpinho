@@ -34,7 +34,7 @@ routing:
   auto_conversation_roles: [speaker]
   auto_conversation_purposes: [chat]
   allow_auto_role_pipeline_inference: true
-  auto_role_pipeline_roles: [speaker, interpreter, reporter, analyst, planner, supervisor, debugger, coder, patch_planner, code_reviewer, patch_quality_reviewer, memory_curator]
+  auto_role_pipeline_roles: [speaker, interpreter, semantic_interpreter, reporter, analyst, planner, supervisor, debugger, coder, patch_planner, code_reviewer, patch_quality_reviewer, memory_curator]
   auto_role_pipeline_purposes: [chat, project_report, code_analysis, task_preview, validation, debug_trace]
   fallback_to_stub_on_unavailable: true
 

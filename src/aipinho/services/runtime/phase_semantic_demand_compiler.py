@@ -11,6 +11,9 @@ from aipinho.schemas.runtime.phase_dependency_evaluation import (
     RequirementProvenance,
 )
 from aipinho.services.runtime.phase_dependency_contract_registry import PhaseDependencyContractRegistry
+from aipinho.services.semantics.semantic_demand_interpreter_service import (
+    SemanticDemandInterpreterService,
+)
 
 
 class PhaseSemanticDemandCompiler:
@@ -24,8 +27,14 @@ class PhaseSemanticDemandCompiler:
         "INCOMPATIBLE": 4,
     }
 
-    def __init__(self, *, system_invariants: PhaseDependencyContractRegistry | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        system_invariants: PhaseDependencyContractRegistry | None = None,
+        semantic_interpreter: SemanticDemandInterpreterService | None = None,
+    ) -> None:
         self.system_invariants = system_invariants or PhaseDependencyContractRegistry()
+        self.semantic_interpreter = semantic_interpreter or SemanticDemandInterpreterService()
 
     def compile_for_run(
         self,
@@ -92,9 +101,12 @@ class PhaseSemanticDemandCompiler:
             "execution_id": execution_id,
             "semantic_goal": getattr(canonical, "semantic_goal", None),
             "operation_kind": getattr(canonical, "operation_kind", None),
+            "intent_map": dict(getattr(run, "intent_map", {}) or {}),
+            "targets": list(getattr(canonical, "targets", []) or []),
             "artifact_expectations": list(getattr(canonical, "artifact_expectations", []) or []),
             "validation_requirements": list(getattr(canonical, "validation_requirements", []) or []),
             "required_capabilities": list(getattr(canonical, "required_capabilities", []) or []),
+            "requested_deliverables": list(metadata.get("requested_deliverables", []) or []),
             "policy_snapshot": dict(getattr(canonical, "policy_snapshot", {}) or {}),
             "semantic_intent_graph": semantic_graph,
             "steps": [step.model_dump(mode="json") for step in selected_steps],
@@ -110,8 +122,8 @@ class PhaseSemanticDemandCompiler:
             "allowed_dependency_statuses",
             "system_invariant",
             "phase_semantic_demand_compiler:v1",
-            "default_dependency_status",
-            ["satisfied"],
+            "default_evaluable_dependency_statuses",
+            ["satisfied", "satisfied_with_limitations"],
         )
         self._provenance(
             provenance,
@@ -123,11 +135,10 @@ class PhaseSemanticDemandCompiler:
         )
 
         required_use_safety: dict[str, list[Any]] = {}
-        allowed_statuses = ["satisfied"]
+        allowed_statuses = ["satisfied", "satisfied_with_limitations"]
         planning_intent = bool(semantic_graph.get("planning_intent"))
         knowledge_output = bool(semantic_graph.get("knowledge_output"))
         mutation_intent = bool(semantic_graph.get("mutation_intent"))
-        execution_intent = bool(semantic_graph.get("execution_intent"))
         step_side_effect = any(bool(getattr(step, "side_effect", False)) for step in selected_steps)
         destructive_demand = mutation_intent or step_side_effect
 
@@ -141,26 +152,11 @@ class PhaseSemanticDemandCompiler:
                 "planning_intent",
                 True,
             )
-            if not knowledge_output and not destructive_demand and not execution_intent:
-                allowed_statuses.append("satisfied_with_limitations")
-                self._provenance(
-                    provenance,
-                    "allowed_dependency_statuses",
-                    "semantic_intent_graph",
-                    plan_ref,
-                    "planning_intent",
-                    True,
-                )
         if knowledge_output:
-            required_use_safety["safe_for_truth_claim"] = [True]
-            self._provenance(
-                provenance,
-                "required_use_safety:safe_for_truth_claim",
-                "semantic_intent_graph",
-                plan_ref,
-                "knowledge_output",
-                True,
-            )
+            # Knowledge output is semantically ambiguous: producing knowledge does
+            # not imply that every upstream claim domain requires full truth.
+            # Claim-level demand is interpreted below from the frozen canonical plan.
+            pass
         if destructive_demand:
             required_use_safety["safe_for_destructive_action"] = [True]
             source_kind = "semantic_intent_graph" if mutation_intent else "canonical_execution_step"
@@ -219,6 +215,60 @@ class PhaseSemanticDemandCompiler:
                     capability,
                 )
 
+        required_downstream_uses: list[str] = []
+        required_semantic_properties: dict[str, list[Any]] = {}
+        base_constraints: list[str] = []
+        risk_constraints: list[str] = []
+        semantic_interpretation = self.semantic_interpreter.interpret(
+            source_payload=source_payload,
+            semantic_graph=semantic_graph,
+        )
+        if semantic_interpretation.get("status") == "insufficient_evidence":
+            return PhaseSemanticDemandCompilation(
+                status="insufficient_contract_evidence",
+                consumer_phase_id=consumer_phase_id,
+                consumer_operation_type=operation_type,
+                source_plan_id=plan_id,
+                source_execution_id=execution_id,
+                source_semantics_sha256=source_sha256,
+                semantic_interpretation=semantic_interpretation,
+                reason_codes=[
+                    str(
+                        semantic_interpretation.get("reason_code")
+                        or "PHASE_DEPENDENCY_SEMANTIC_DEMAND_INTERPRETATION_REQUIRED"
+                    )
+                ],
+            )
+        if semantic_interpretation.get("status") == "accepted":
+            accepted = dict(semantic_interpretation.get("accepted_requirements") or {})
+            required_downstream_uses = self._unique(
+                list(accepted.get("required_downstream_uses") or [])
+            )
+            required_use_safety, merge_reason = self._merge_required_mapping(
+                required_use_safety,
+                dict(accepted.get("required_use_safety") or {}),
+            )
+            if merge_reason:
+                return self._semantic_conflict(
+                    consumer_phase_id,
+                    operation_type,
+                    plan_id=plan_id,
+                    execution_id=execution_id,
+                    source_sha256=source_sha256,
+                    semantic_interpretation=semantic_interpretation,
+                    reason=merge_reason,
+                )
+            required_semantic_properties = dict(
+                accepted.get("required_semantic_properties") or {}
+            )
+            base_constraints = self._unique(list(accepted.get("base_constraints") or []))
+            risk_constraints = self._unique(list(accepted.get("risk_constraints") or []))
+            self._semantic_requirement_provenance(
+                provenance,
+                semantic_interpretation=semantic_interpretation,
+                accepted_requirements=accepted,
+            )
+
         frozen_at = datetime.now(timezone.utc).isoformat()
         requirements = DownstreamPhaseRequirements(
             contract_id=f"compiled_phase_semantics:{source_sha256[:24]}",
@@ -226,8 +276,12 @@ class PhaseSemanticDemandCompiler:
             operation_type=operation_type,
             authority_source="compiled_task_semantics",
             allowed_dependency_statuses=self._unique(allowed_statuses),
+            required_downstream_uses=required_downstream_uses,
             required_use_safety=required_use_safety,
+            required_semantic_properties=required_semantic_properties,
             required_capabilities=required_capabilities,
+            base_constraints=base_constraints,
+            risk_constraints=risk_constraints,
             prohibited_effects=prohibited_effects,
             evidence_required=True,
             source_plan_id=plan_id,
@@ -247,6 +301,7 @@ class PhaseSemanticDemandCompiler:
                     source_plan_id=plan_id,
                     source_execution_id=execution_id,
                     source_semantics_sha256=source_sha256,
+                    semantic_interpretation=semantic_interpretation,
                     reason_codes=[merge_reason],
                 )
         missing_provenance = self._missing_provenance(requirements)
@@ -258,6 +313,7 @@ class PhaseSemanticDemandCompiler:
                 source_plan_id=plan_id,
                 source_execution_id=execution_id,
                 source_semantics_sha256=source_sha256,
+                semantic_interpretation=semantic_interpretation,
                 reason_codes=["PHASE_DEPENDENCY_REQUIREMENT_PROVENANCE_REQUIRED", *missing_provenance],
             )
         return PhaseSemanticDemandCompilation(
@@ -268,7 +324,101 @@ class PhaseSemanticDemandCompiler:
             source_execution_id=execution_id,
             source_semantics_sha256=source_sha256,
             requirements=requirements,
+            semantic_interpretation=semantic_interpretation,
         )
+
+    def _merge_required_mapping(
+        self,
+        deterministic: dict[str, list[Any]],
+        interpreted: dict[str, list[Any]],
+    ) -> tuple[dict[str, list[Any]], str | None]:
+        merged = {key: list(values) for key, values in deterministic.items()}
+        for name, values in interpreted.items():
+            candidate_values = list(values)
+            if name not in merged:
+                merged[name] = candidate_values
+                continue
+            intersection = [value for value in merged[name] if value in candidate_values]
+            if not intersection:
+                return merged, "PHASE_DEPENDENCY_SEMANTIC_REQUIREMENT_CONFLICT"
+            merged[name] = intersection
+        return merged, None
+
+    def _semantic_conflict(
+        self,
+        phase_id: str,
+        operation_type: str,
+        *,
+        plan_id: str | None,
+        execution_id: str | None,
+        source_sha256: str,
+        semantic_interpretation: dict[str, Any],
+        reason: str,
+    ) -> PhaseSemanticDemandCompilation:
+        return PhaseSemanticDemandCompilation(
+            status="insufficient_contract_evidence",
+            consumer_phase_id=phase_id,
+            consumer_operation_type=operation_type,
+            source_plan_id=plan_id,
+            source_execution_id=execution_id,
+            source_semantics_sha256=source_sha256,
+            semantic_interpretation=semantic_interpretation,
+            reason_codes=[reason],
+        )
+
+    def _semantic_requirement_provenance(
+        self,
+        items: list[RequirementProvenance],
+        *,
+        semantic_interpretation: dict[str, Any],
+        accepted_requirements: dict[str, Any],
+    ) -> None:
+        metadata = dict(semantic_interpretation.get("provenance") or {})
+        source_ref = (
+            f"semantic_reasoner:{metadata.get('model_id') or 'unknown'}:"
+            f"{metadata.get('response_id') or 'unknown'}"
+        )
+        requirement_values: list[tuple[str, str, Any]] = []
+        for value in accepted_requirements.get("required_downstream_uses") or []:
+            requirement_values.append(
+                (f"required_downstream_use:{value}", "required_downstream_uses", value)
+            )
+        for name, values in (accepted_requirements.get("required_use_safety") or {}).items():
+            requirement_values.append(
+                (f"required_use_safety:{name}", f"required_use_safety.{name}", values)
+            )
+        for name, values in (
+            accepted_requirements.get("required_semantic_properties") or {}
+        ).items():
+            requirement_values.append(
+                (
+                    f"required_semantic_property:{name}",
+                    f"required_semantic_properties.{name}",
+                    values,
+                )
+            )
+        for value in accepted_requirements.get("base_constraints") or []:
+            requirement_values.append((f"base_constraint:{value}", "base_constraints", value))
+        for value in accepted_requirements.get("risk_constraints") or []:
+            requirement_values.append((f"risk_constraint:{value}", "risk_constraints", value))
+
+        for requirement, source_field, value in requirement_values:
+            self._provenance(
+                items,
+                requirement,
+                "semantic_reasoner_candidate",
+                source_ref,
+                source_field,
+                value,
+            )
+            self._provenance(
+                items,
+                requirement,
+                "deterministic_semantic_gate",
+                "semantic_demand_interpreter:v1",
+                source_field,
+                value,
+            )
 
     def _strengthen(
         self,

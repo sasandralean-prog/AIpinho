@@ -13,10 +13,22 @@ from aipinho.schemas.runtime.phase_dependency_evaluation import (
     PhaseDependencyEvaluation,
     PhaseDependencySnapshot,
 )
+from aipinho.services.semantics.limitation_compatibility_resolver_service import (
+    LimitationCompatibilityResolverService,
+)
 
 
 class PhaseDependencyEvaluationService:
     """Evaluates and binds upstream evidence before a downstream phase starts."""
+
+    def __init__(
+        self,
+        *,
+        limitation_resolver: LimitationCompatibilityResolverService | None = None,
+    ) -> None:
+        self.limitation_resolver = (
+            limitation_resolver or LimitationCompatibilityResolverService()
+        )
 
     def evaluate(
         self,
@@ -117,15 +129,54 @@ class PhaseDependencyEvaluationService:
                 expected=expected,
             )
 
+        unclassified_limitations = [
+            limitation
+            for limitation in snapshot.limitations
+            if limitation not in requirements.limitation_compatibility
+        ]
+        semantic_limitation_resolution = self.limitation_resolver.resolve(
+            requirements=requirements,
+            snapshot=snapshot,
+            limitations=unclassified_limitations,
+        )
+        if (
+            unclassified_limitations
+            and semantic_limitation_resolution.get("status") == "insufficient_evidence"
+        ):
+            unknown.append(
+                str(
+                    semantic_limitation_resolution.get("reason_code")
+                    or "PHASE_DEPENDENCY_LIMITATION_COMPATIBILITY_UNKNOWN"
+                )
+            )
+        semantic_assessments = dict(
+            semantic_limitation_resolution.get("assessments") or {}
+        )
+
         for limitation in snapshot.limitations:
             impact = requirements.limitation_compatibility.get(limitation)
             source = "downstream_contract"
-            if impact is None:
-                impact = "UNKNOWN"
-                source = "unclassified"
             limitation_constraints: list[str] = []
+            if impact is None:
+                semantic_assessment = semantic_assessments.get(limitation)
+                if isinstance(semantic_assessment, dict):
+                    impact = str(semantic_assessment.get("impact") or "UNKNOWN")
+                    source = "semantic_reasoner"
+                    limitation_constraints = [
+                        str(item)
+                        for item in semantic_assessment.get("constraints") or []
+                        if str(item)
+                    ]
+                else:
+                    impact = "UNKNOWN"
+                    source = "unclassified"
             if impact == "COMPATIBLE_WITH_CONSTRAINT":
-                limitation_constraints.append(f"disclose_limitation:{limitation}")
+                limitation_constraints = self._unique(
+                    [
+                        *limitation_constraints,
+                        f"disclose_limitation:{limitation}",
+                    ]
+                )
                 constraints.extend(limitation_constraints)
             elif impact == "INCOMPATIBLE":
                 blocking.append("PHASE_DEPENDENCY_LIMITATION_INCOMPATIBLE")
@@ -134,8 +185,8 @@ class PhaseDependencyEvaluationService:
             assessments.append(
                 LimitationAssessment(
                     limitation=limitation,
-                    impact=impact,
-                    source=source,
+                    impact=impact,  # type: ignore[arg-type]
+                    source=source,  # type: ignore[arg-type]
                     constraints=limitation_constraints,
                 )
             )

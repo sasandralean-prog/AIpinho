@@ -28,6 +28,7 @@ def _fixture():
         "artifact_safe_for_truth_claim": False,
         "artifact_safe_for_catalog": True,
         "artifact_safe_for_planning": "true_with_limitations",
+        "artifact_safe_for_downstream_static_analysis": "true_with_limitations",
         "artifact_safe_for_destructive_action": False,
         "allowed_downstream_uses": ["catalog_planning_with_limitations"],
         "forbidden_downstream_claims": ["full_truth"],
@@ -87,6 +88,7 @@ def test_phase_outcome_projects_limited_success_without_promoting_truth() -> Non
         "safe_for_truth_claim": False,
         "safe_for_catalog": True,
         "safe_for_planning": "true_with_limitations",
+        "safe_for_downstream_static_analysis": "true_with_limitations",
         "safe_for_destructive_action": False,
     }
     assert outcome.artifact_refs == ["artifact_inventory"]

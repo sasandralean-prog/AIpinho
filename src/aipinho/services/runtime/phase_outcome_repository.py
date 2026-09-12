@@ -79,16 +79,11 @@ class PhaseOutcomeRepository:
             if isinstance(policy.get("use_safety"), dict):
                 use_safety = dict(policy["use_safety"])
         if not use_safety:
-            projection = {
-                "artifact_safe_for_truth_claim": "safe_for_truth_claim",
-                "artifact_safe_for_catalog": "safe_for_catalog",
-                "artifact_safe_for_planning": "safe_for_planning",
-                "artifact_safe_for_destructive_action": "safe_for_destructive_action",
-            }
+            prefix = "artifact_safe_for_"
             use_safety = {
-                target: phase_dependency[source]
-                for source, target in projection.items()
-                if source in phase_dependency
+                f"safe_for_{str(source)[len(prefix):]}": value
+                for source, value in phase_dependency.items()
+                if str(source).startswith(prefix)
             }
 
         artifacts = [dict(item) for item in run.produced_artifacts if isinstance(item, dict)]

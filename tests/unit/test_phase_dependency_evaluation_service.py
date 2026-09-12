@@ -10,6 +10,33 @@ from aipinho.services.runtime.phase_dependency_contract_registry import PhaseDep
 from aipinho.services.runtime.phase_dependency_evaluation_service import PhaseDependencyEvaluationService
 
 
+class _UnknownLimitationResolver:
+    def resolve(self, **kwargs):
+        return {
+            "status": "insufficient_evidence",
+            "reason_code": "PHASE_DEPENDENCY_LIMITATION_COMPATIBILITY_UNKNOWN",
+            "assessments": {},
+            "provenance": {},
+        }
+
+
+class _CompatibleLimitationResolver:
+    def resolve(self, *, limitations, **kwargs):
+        return {
+            "status": "accepted",
+            "assessments": {
+                limitation: {
+                    "impact": "COMPATIBLE_WITH_CONSTRAINT",
+                    "constraints": [f"preserve_scope:{limitation}"],
+                    "rationale": "fixture compatibility",
+                }
+                for limitation in limitations
+            },
+            "confidence": 0.93,
+            "provenance": {"authority": "deterministic_semantic_gate"},
+        }
+
+
 def _requirements(**updates) -> DownstreamPhaseRequirements:
     values = {
         "contract_id": "generic_downstream_readonly_planning",
@@ -152,10 +179,47 @@ def test_unknown_limitation_compatibility_fails_closed() -> None:
         dependency_status="satisfied_with_limitations",
         limitations=["unclassified_upstream_limitation"],
     )
-    _service, _requirements_value, _snapshot_value, evaluation = _evaluate(snapshot=snapshot)
+    service = PhaseDependencyEvaluationService(
+        limitation_resolver=_UnknownLimitationResolver()
+    )
+    requirements = _requirements()
+    evaluation = service.evaluate(
+        snapshot=snapshot,
+        requirements=requirements,
+        consumer_task_run_id="task_run_phase2",
+        consumer_operation_id="operation_phase2",
+        consumer_operation_type=requirements.operation_type,
+    )
 
     assert evaluation.decision == "INSUFFICIENT_EVIDENCE"
     assert "PHASE_DEPENDENCY_LIMITATION_COMPATIBILITY_UNKNOWN" in evaluation.reason_codes
+
+
+def test_semantically_compatible_unclassified_limitation_can_be_admitted_with_constraints() -> None:
+    limitation = "upstream_identity_inferred_not_observed"
+    snapshot = _snapshot(
+        dependency_status="satisfied_with_limitations",
+        limitations=[limitation],
+        required_disclosures=[limitation],
+    )
+    service = PhaseDependencyEvaluationService(
+        limitation_resolver=_CompatibleLimitationResolver()
+    )
+    requirements = _requirements()
+    evaluation = service.evaluate(
+        snapshot=snapshot,
+        requirements=requirements,
+        consumer_task_run_id="task_run_phase2",
+        consumer_operation_id="operation_phase2",
+        consumer_operation_type=requirements.operation_type,
+    )
+
+    assert evaluation.decision == "ADMITTED_WITH_CONSTRAINTS"
+    assessment = evaluation.limitation_assessments[0]
+    assert assessment.source == "semantic_reasoner"
+    assert assessment.impact == "COMPATIBLE_WITH_CONSTRAINT"
+    assert f"preserve_scope:{limitation}" in evaluation.constraints
+    assert f"disclose_limitation:{limitation}" in evaluation.constraints
 
 
 def test_unsatisfied_dependency_is_blocked() -> None:
