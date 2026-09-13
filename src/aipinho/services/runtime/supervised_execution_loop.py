@@ -16,6 +16,9 @@ from aipinho.services.runtime.execution_graph_service import ExecutionGraphServi
 from aipinho.services.runtime.workflow_runtime_service import WorkflowRuntimeService
 from aipinho.services.runtime.workspace_context_service import ExecutionContextService
 from aipinho.services.orchestration.task_completion_resolver import TaskCompletionResolver
+from aipinho.services.semantics.semantic_result_projection_service import (
+    SemanticResultProjectionService,
+)
 
 class SupervisedExecutionLoop:
     def __init__(self, store=None, lifecycle=None, guard=None, events=None, audit=None, executor=None, contexts=None, results=None):
@@ -25,6 +28,7 @@ class SupervisedExecutionLoop:
         self.graphs=ExecutionGraphService()
         self.workflows=WorkflowRuntimeService()
         self.execution_contexts=ExecutionContextService()
+        self.semantic_results=SemanticResultProjectionService()
 
     def run(self, run_id):
         run=self.store.get_run(run_id)
@@ -35,12 +39,12 @@ class SupervisedExecutionLoop:
         if timeline_reasons:
             run.blocked_reasons=list(dict.fromkeys([*run.blocked_reasons,*timeline_reasons])); self.lifecycle.transition(run,"blocked")
             self._record_block(run,"TaskRun blocked because the runtime timeline is incomplete."); self.audit.record(run_id=run_id,action="start",status="blocked",reason=",".join(timeline_reasons))
-            self.store.update_run(run); self.store.save_trace(run_id,run.trace); result=self.results.build(run,self.contexts.build(run),events_count=len(self.events.list(run_id))); self.store.save_result(run_id,result); return run,result
+            self.store.update_run(run); self.store.save_trace(run_id,run.trace); result=self._finalize_result(run,self.contexts.build(run)); return run,result
         initial=self.guard.check_run(run); run.trace.extend(initial.trace)
         if not initial.allowed:
             run.blocked_reasons=list(dict.fromkeys([*run.blocked_reasons,*initial.blocked_reasons])); self.lifecycle.transition(run,"blocked")
             self._record_block(run,"TaskRun blocked by initial guard."); self.audit.record(run_id=run_id,action="start",status="blocked",reason=",".join(initial.blocked_reasons))
-            self.store.update_run(run); self.store.save_trace(run_id,run.trace); result=self.results.build(run,self.contexts.build(run),events_count=len(self.events.list(run_id))); self.store.save_result(run_id,result); return run,result
+            self.store.update_run(run); self.store.save_trace(run_id,run.trace); result=self._finalize_result(run,self.contexts.build(run)); return run,result
         if run.status=="created": self.lifecycle.transition(run,"queued"); self.events.create(run_id,"run_queued","queued","TaskRun queued for explicit synchronous execution.")
         if run.approval_id:
             self.events.create(run_id,"ExecutionPlanApproved","approved","ExecutionPlan approval observed before execution.",metadata={"approval_id":run.approval_id,"execution_id":run.plan.canonical_execution_plan.execution_id if run.plan.canonical_execution_plan else None})
@@ -92,7 +96,25 @@ class SupervisedExecutionLoop:
         else:
             self.events.create(run_id,"SpeakerTruthGenerated",terminal,"Speaker Truth state can be derived from timeline, validation, artifacts and completion.",metadata={"execution_id":run.plan.canonical_execution_plan.execution_id if run.plan.canonical_execution_plan else None,"terminal":terminal}); self.events.create(run_id,final_event,terminal,f"TaskRun finished with status {terminal}.")
         self.audit.record(run_id=run_id,action="finish",status=terminal,reason="supervised_loop_finished")
-        run.current_step_id=None; self.store.update_run(run); self.store.save_trace(run_id,run.trace); result=self.results.build(run,context,events_count=len(self.events.list(run_id))); self.store.save_result(run_id,result); return run,result
+        run.current_step_id=None; self.store.update_run(run); self.store.save_trace(run_id,run.trace); result=self._finalize_result(run,context); return run,result
+
+    def _finalize_result(self, run, context):
+        events_count=len(self.events.list(run.run_id))
+        result=self.results.build(run,context,events_count=events_count)
+        projection=self.semantic_results.project(run=run,result=result)
+        run.trace.append(
+            self.trace_service.item(
+                "semantic_result_projection",
+                "ready" if projection.get("status") == "projected" else "degraded",
+                "semantic_offer_and_compatibility_projected_from_terminal_result",
+                source="services/semantics/semantic_result_projection_service.py",
+                data=projection,
+            )
+        )
+        self.store.update_run(run)
+        self.store.save_trace(run.run_id,run.trace)
+        self.store.save_result(run.run_id,result)
+        return result
 
     def status(self): return {"status":"ok","service":"supervised_execution_loop","background_execution":False,"parallel_runs":False,"write_enabled":False,"patch_enabled":False,"shell_enabled":False}
 

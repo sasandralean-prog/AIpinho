@@ -8,6 +8,10 @@ from aipinho.schemas.runtime.task_run_trace import TaskRunTraceItem
 from aipinho.schemas.semantics.task_semantic_vocabulary import TaskSemanticVocabulary
 from aipinho.schemas.semantics.semantic_execution_graph import SemanticExecutionGraph
 from aipinho.schemas.semantics.edge_semantic_demand import EdgeSemanticDemand
+from aipinho.schemas.semantics.semantic_offer import SemanticOffer
+from aipinho.schemas.semantics.offer_demand_compatibility import (
+    OfferDemandCompatibility,
+)
 
 class TaskRunPlan(AIpinhoModel):
     plan_id: str
@@ -23,3 +27,7 @@ class TaskRunPlan(AIpinhoModel):
     task_semantic_vocabulary: TaskSemanticVocabulary | None = None
     semantic_execution_graph: SemanticExecutionGraph | None = None
     edge_semantic_demands: list[EdgeSemanticDemand] = Field(default_factory=list)
+    semantic_offers: list[SemanticOffer] = Field(default_factory=list)
+    offer_demand_compatibilities: list[OfferDemandCompatibility] = Field(
+        default_factory=list
+    )
