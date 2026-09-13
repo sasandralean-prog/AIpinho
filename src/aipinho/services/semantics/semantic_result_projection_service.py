@@ -12,6 +12,9 @@ from aipinho.services.semantics.offer_demand_compatibility_service import (
 from aipinho.services.semantics.semantic_offer_compiler_service import (
     SemanticOfferCompilerService,
 )
+from aipinho.services.semantics.semantic_nway_projection_service import (
+    SemanticNWayProjectionService,
+)
 
 
 class SemanticResultProjectionService:
@@ -27,6 +30,7 @@ class SemanticResultProjectionService:
         outcomes: ObservedWorkUnitOutcomeProjectionService | None = None,
         offers: SemanticOfferCompilerService | None = None,
         compatibility: OfferDemandCompatibilityService | None = None,
+        nway: SemanticNWayProjectionService | None = None,
     ) -> None:
         self.outcomes = (
             outcomes or ObservedWorkUnitOutcomeProjectionService()
@@ -35,6 +39,7 @@ class SemanticResultProjectionService:
         self.compatibility = (
             compatibility or OfferDemandCompatibilityService()
         )
+        self.nway = nway or SemanticNWayProjectionService()
 
     def project(
         self,
@@ -140,6 +145,7 @@ class SemanticResultProjectionService:
         plan.metadata["offer_demand_compatibility_bindings"] = (
             compatibility_bindings
         )
+        nway_projection = self.nway.project(run=run)
         plan.metadata["semantic_result_projection"] = {
             "observed_work_unit_outcomes": len(observed),
             "offers_compiled": len(plan.semantic_offers),
@@ -148,6 +154,7 @@ class SemanticResultProjectionService:
             ),
             "offer_failures": offer_failures,
             "compatibility_failures": compatibility_failures,
+            "nway_projection": nway_projection,
         }
 
         return {
@@ -159,4 +166,5 @@ class SemanticResultProjectionService:
             ),
             "offer_failures": offer_failures,
             "compatibility_failures": compatibility_failures,
+            "nway_projection": nway_projection,
         }

@@ -12,6 +12,10 @@ from aipinho.schemas.semantics.semantic_offer import SemanticOffer
 from aipinho.schemas.semantics.offer_demand_compatibility import (
     OfferDemandCompatibility,
 )
+from aipinho.schemas.semantics.semantic_nway_topology import (
+    SemanticJoinEvaluation,
+    SemanticTopologyNeighborhood,
+)
 
 class TaskRunPlan(AIpinhoModel):
     plan_id: str
@@ -29,5 +33,11 @@ class TaskRunPlan(AIpinhoModel):
     edge_semantic_demands: list[EdgeSemanticDemand] = Field(default_factory=list)
     semantic_offers: list[SemanticOffer] = Field(default_factory=list)
     offer_demand_compatibilities: list[OfferDemandCompatibility] = Field(
+        default_factory=list
+    )
+    semantic_topology_neighborhoods: list[SemanticTopologyNeighborhood] = Field(
+        default_factory=list
+    )
+    semantic_join_evaluations: list[SemanticJoinEvaluation] = Field(
         default_factory=list
     )
