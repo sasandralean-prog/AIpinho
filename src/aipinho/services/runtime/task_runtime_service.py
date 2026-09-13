@@ -47,6 +47,9 @@ from aipinho.services.runtime.continuous_runtime_service import ContinuousRuntim
 from aipinho.services.runtime.engineering_autopilot_service import EngineeringAutopilotService
 from aipinho.services.runtime.tool_governance_service import ToolGovernanceService
 from aipinho.services.runtime.execution_plan_promotion_service import ExecutionPlanPromotionService
+from aipinho.services.semantics.task_semantic_vocabulary_compiler_service import (
+    TaskSemanticVocabularyCompilerService,
+)
 from aipinho.services.memory.operational_memory_service import OperationalMemoryService
 from aipinho.services.runtime.project_generation_plan_executor import ProjectGenerationPlanExecutor
 from aipinho.utils.yaml_loader import inspect_yaml_file, load_yaml_file
@@ -94,6 +97,7 @@ class TaskRuntimeService:
             root=PATHS.config_root / "runtime",
         )
         self.planner = TaskRunPlanner()
+        self.semantic_vocabularies = TaskSemanticVocabularyCompilerService()
         self.lifecycle = TaskRunLifecycleService()
         self.events = TaskRunEventService(self.store)
         self.trace = TaskRunTraceService()
@@ -424,6 +428,44 @@ class TaskRuntimeService:
                     },
                 )
             )
+        vocabulary_compilation = self.semantic_vocabularies.compile_for_run(run=run)
+        if vocabulary_compilation.status == "compiled" and vocabulary_compilation.vocabulary is not None:
+            vocabulary = vocabulary_compilation.vocabulary
+            run.plan.task_semantic_vocabulary = vocabulary
+            run.plan.metadata["task_semantic_vocabulary_binding"] = (
+                vocabulary.binding().model_dump(mode="json")
+            )
+            run.trace.append(
+                self.trace.item(
+                    "task_semantic_vocabulary_frozen",
+                    "ready",
+                    "task_semantic_vocabulary_compiled_before_execution_graph",
+                    source="services/semantics/task_semantic_vocabulary_compiler_service.py",
+                    data=vocabulary.binding().model_dump(mode="json"),
+                )
+            )
+        else:
+            reason_codes = list(vocabulary_compilation.reason_codes)
+            run.plan.status = "blocked"
+            run.plan.blocked_reasons = list(
+                dict.fromkeys(
+                    [
+                        *run.plan.blocked_reasons,
+                        "task_semantic_vocabulary_required",
+                        *reason_codes,
+                    ]
+                )
+            )
+            run.trace.append(
+                self.trace.item(
+                    "task_semantic_vocabulary_frozen",
+                    "blocked",
+                    "task_semantic_vocabulary_compilation_failed_closed",
+                    source="services/semantics/task_semantic_vocabulary_compiler_service.py",
+                    data={"reason_codes": reason_codes},
+                )
+            )
+
         run.execution_graph = self.execution_graphs.build_from_plan(
             run_id=run.run_id,
             plan=plan,

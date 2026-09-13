@@ -2,8 +2,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from aipinho.services.artifacts.artifact_use_safety_service import (
-    ArtifactUseSafetyService,
+from aipinho.schemas.semantics.task_semantic_vocabulary import TaskSemanticVocabulary
+from aipinho.services.semantics.task_semantic_vocabulary_authority_service import (
+    TaskSemanticVocabularyAuthorityService,
 )
 
 
@@ -22,8 +23,22 @@ class SemanticReasoningPlaybookService:
         "must_",
     )
 
-    def build(self, *, source_payload: dict[str, Any]) -> dict[str, Any]:
-        vocabulary = self._vocabulary(source_payload)
+    def __init__(
+        self,
+        *,
+        vocabulary_authority: TaskSemanticVocabularyAuthorityService | None = None,
+    ) -> None:
+        self.vocabulary_authority = (
+            vocabulary_authority or TaskSemanticVocabularyAuthorityService()
+        )
+
+    def build(
+        self,
+        *,
+        source_payload: dict[str, Any],
+        vocabulary: TaskSemanticVocabulary,
+    ) -> dict[str, Any]:
+        governed_vocabulary = self.vocabulary_authority.governed_view(vocabulary)
         return {
             "playbook_version": "semantic_reasoning_playbook.v1",
             "authority_notice": (
@@ -42,7 +57,8 @@ class SemanticReasoningPlaybookService:
                 "Prefer the minimum semantic requirement sufficient for the requested operation.",
                 "Produce semantic candidates only; never authorize execution or state transitions.",
             ],
-            "governed_vocabulary": vocabulary,
+            "governed_vocabulary": governed_vocabulary,
+            "vocabulary_binding": vocabulary.binding().model_dump(mode="json"),
             "output_construction_rules": [
                 "Governed vocabulary is a selectable lexicon, not an output template.",
                 "Include only identifiers that are actually required by the current downstream task.",
@@ -88,51 +104,6 @@ class SemanticReasoningPlaybookService:
             "generic_examples": self._examples(),
             "generic_counterexamples": self._counterexamples(),
             "current_task_semantics": source_payload,
-        }
-
-    def _vocabulary(self, source_payload: dict[str, Any]) -> dict[str, Any]:
-        observed = self._collect_identifiers(source_payload)
-        safety_states = {
-            name: list(states)
-            for name, states in ArtifactUseSafetyService.governed_dimension_states().items()
-        }
-        safety_requirement_states = {
-            name: list(states)
-            for name, states in ArtifactUseSafetyService.governed_requirement_states().items()
-        }
-        for value in observed:
-            if value.startswith("safe_for_") and value not in safety_states:
-                safety_states[value] = []
-        return {
-            "use_safety_dimensions": sorted(safety_states),
-            "use_safety_allowed_states": safety_states,
-            "use_safety_requirement_states": safety_requirement_states,
-            "downstream_use_identifiers": sorted(
-                self._field_values(
-                    source_payload,
-                    fields=(
-                        "allowed_downstream_uses",
-                        "required_downstream_uses",
-                        "downstream_uses",
-                    ),
-                )
-            ),
-            "semantic_property_identifiers": sorted(
-                self._field_keys(
-                    source_payload,
-                    fields=(
-                        "semantic_properties",
-                        "required_semantic_properties",
-                    ),
-                )
-            ),
-            "capability_identifiers": sorted(
-                self._field_values(
-                    source_payload,
-                    fields=("required_capabilities", "capabilities"),
-                )
-            ),
-            "constraint_families": list(self._CONSTRAINT_FAMILIES),
         }
 
     def _examples(self) -> list[dict[str, Any]]:
@@ -227,50 +198,3 @@ class SemanticReasoningPlaybookService:
                 ),
             },
         ]
-
-    def _collect_identifiers(self, value: Any) -> set[str]:
-        found: set[str] = set()
-        if isinstance(value, dict):
-            for key, item in value.items():
-                found.add(str(key))
-                found.update(self._collect_identifiers(item))
-        elif isinstance(value, list):
-            for item in value:
-                found.update(self._collect_identifiers(item))
-        elif isinstance(value, str):
-            found.add(value)
-        return found
-
-    def _field_values(
-        self,
-        value: Any,
-        *,
-        fields: tuple[str, ...],
-    ) -> set[str]:
-        found: set[str] = set()
-        if isinstance(value, dict):
-            for key, item in value.items():
-                if key in fields and isinstance(item, list):
-                    found.update(str(entry) for entry in item if str(entry).strip())
-                found.update(self._field_values(item, fields=fields))
-        elif isinstance(value, list):
-            for item in value:
-                found.update(self._field_values(item, fields=fields))
-        return found
-
-    def _field_keys(
-        self,
-        value: Any,
-        *,
-        fields: tuple[str, ...],
-    ) -> set[str]:
-        found: set[str] = set()
-        if isinstance(value, dict):
-            for key, item in value.items():
-                if key in fields and isinstance(item, dict):
-                    found.update(str(entry) for entry in item if str(entry).strip())
-                found.update(self._field_keys(item, fields=fields))
-        elif isinstance(value, list):
-            for item in value:
-                found.update(self._field_keys(item, fields=fields))
-        return found

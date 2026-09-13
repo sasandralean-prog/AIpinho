@@ -68,6 +68,10 @@ class DownstreamPhaseRequirements(AIpinhoModel):
     source_plan_id: str | None = None
     source_execution_id: str | None = None
     source_semantics_sha256: str | None = None
+    task_semantic_vocabulary_id: str | None = None
+    task_semantic_vocabulary_sha256: str | None = None
+    task_semantic_vocabulary_revision: int | None = None
+    task_semantic_vocabulary_source_sha256: str | None = None
     frozen_at: str | None = None
     requirement_provenance: list[RequirementProvenance] = Field(default_factory=list)
 

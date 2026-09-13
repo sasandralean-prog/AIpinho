@@ -14,6 +14,9 @@ from aipinho.services.runtime.phase_dependency_contract_registry import PhaseDep
 from aipinho.services.semantics.semantic_demand_interpreter_service import (
     SemanticDemandInterpreterService,
 )
+from aipinho.services.semantics.task_semantic_vocabulary_authority_service import (
+    TaskSemanticVocabularyAuthorityService,
+)
 
 
 class PhaseSemanticDemandCompiler:
@@ -32,9 +35,13 @@ class PhaseSemanticDemandCompiler:
         *,
         system_invariants: PhaseDependencyContractRegistry | None = None,
         semantic_interpreter: SemanticDemandInterpreterService | None = None,
+        vocabulary_authority: TaskSemanticVocabularyAuthorityService | None = None,
     ) -> None:
         self.system_invariants = system_invariants or PhaseDependencyContractRegistry()
         self.semantic_interpreter = semantic_interpreter or SemanticDemandInterpreterService()
+        self.vocabulary_authority = (
+            vocabulary_authority or TaskSemanticVocabularyAuthorityService()
+        )
 
     def compile_for_run(
         self,
@@ -68,6 +75,24 @@ class PhaseSemanticDemandCompiler:
                 plan_id=plan_id,
                 execution_id=execution_id,
                 reason="PHASE_DEPENDENCY_DOWNSTREAM_OPERATION_SEMANTICS_REQUIRED",
+            )
+
+        vocabulary = getattr(plan, "task_semantic_vocabulary", None)
+        if vocabulary is None:
+            return self._insufficient(
+                consumer_phase_id,
+                operation_type,
+                plan_id=plan_id,
+                execution_id=execution_id,
+                reason="PHASE_DEPENDENCY_TASK_SEMANTIC_VOCABULARY_REQUIRED",
+            )
+        if not self.vocabulary_authority.verify(vocabulary):
+            return self._insufficient(
+                consumer_phase_id,
+                operation_type,
+                plan_id=plan_id,
+                execution_id=execution_id,
+                reason="PHASE_DEPENDENCY_TASK_SEMANTIC_VOCABULARY_AUTHORITY_INVALID",
             )
 
         canonical_steps = list(getattr(canonical, "execution_steps", []) or [])
@@ -222,6 +247,7 @@ class PhaseSemanticDemandCompiler:
         semantic_interpretation = self.semantic_interpreter.interpret(
             source_payload=source_payload,
             semantic_graph=semantic_graph,
+            vocabulary=vocabulary,
         )
         if semantic_interpretation.get("status") == "insufficient_evidence":
             return PhaseSemanticDemandCompilation(
@@ -287,6 +313,12 @@ class PhaseSemanticDemandCompiler:
             source_plan_id=plan_id,
             source_execution_id=execution_id,
             source_semantics_sha256=source_sha256,
+            task_semantic_vocabulary_id=vocabulary.vocabulary_id,
+            task_semantic_vocabulary_sha256=vocabulary.authority_sha256,
+            task_semantic_vocabulary_revision=vocabulary.revision,
+            task_semantic_vocabulary_source_sha256=(
+                vocabulary.source_semantics_sha256
+            ),
             frozen_at=frozen_at,
             requirement_provenance=provenance,
         )

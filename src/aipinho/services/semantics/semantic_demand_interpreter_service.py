@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from aipinho.schemas.semantics.task_semantic_vocabulary import TaskSemanticVocabulary
 from aipinho.services.semantics.contract_bound_semantic_reasoner import (
     ContractBoundSemanticReasoner,
 )
@@ -30,6 +31,7 @@ class SemanticDemandInterpreterService:
         *,
         source_payload: dict[str, Any],
         semantic_graph: dict[str, Any],
+        vocabulary: TaskSemanticVocabulary | None = None,
     ) -> dict[str, Any]:
         if not bool(semantic_graph.get("knowledge_output")):
             return {
@@ -39,9 +41,32 @@ class SemanticDemandInterpreterService:
                 "provenance": {},
             }
 
+        if vocabulary is None:
+            return {
+                "status": "insufficient_evidence",
+                "reason_code": "SEMANTIC_DEMAND_TASK_VOCABULARY_REQUIRED",
+                "accepted_requirements": {},
+                "provenance": {},
+            }
+
         reasoner = self.reasoner or ContractBoundSemanticReasoner()
         self.reasoner = reasoner
-        reasoning_context = self.playbook.build(source_payload=source_payload)
+        try:
+            reasoning_context = self.playbook.build(
+                source_payload=source_payload,
+                vocabulary=vocabulary,
+            )
+        except ValueError:
+            return {
+                "status": "insufficient_evidence",
+                "reason_code": "SEMANTIC_DEMAND_TASK_VOCABULARY_AUTHORITY_INVALID",
+                "accepted_requirements": {},
+                "provenance": {
+                    "vocabulary_id": vocabulary.vocabulary_id,
+                    "vocabulary_authority_sha256": vocabulary.authority_sha256,
+                    "authority": "deterministic_semantic_gate",
+                },
+            }
         governed_vocabulary = dict(
             reasoning_context.get("governed_vocabulary") or {}
         )
@@ -238,6 +263,18 @@ class SemanticDemandInterpreterService:
             for key in required_semantic_properties
         ):
             return {}, "SEMANTIC_DEMAND_SEMANTIC_PROPERTY_INVALID"
+        allowed_property_states = governed_vocabulary.get(
+            "semantic_property_requirement_states"
+        )
+        allowed_property_states = (
+            dict(allowed_property_states)
+            if isinstance(allowed_property_states, dict)
+            else {}
+        )
+        for name, values in required_semantic_properties.items():
+            allowed = list(allowed_property_states.get(name) or [])
+            if not allowed or any(value not in allowed for value in values):
+                return {}, "SEMANTIC_DEMAND_SEMANTIC_PROPERTY_STATE_INVALID"
 
         return {
             "truth_claim_required": candidate["truth_claim_required"],

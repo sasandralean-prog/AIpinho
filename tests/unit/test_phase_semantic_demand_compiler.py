@@ -9,13 +9,22 @@ from aipinho.schemas.runtime.task_run_plan import TaskRunPlan
 from aipinho.services.runtime.phase_dependency_contract_registry import PhaseDependencyContractRegistry
 from aipinho.services.runtime.phase_dependency_evaluation_service import PhaseDependencyEvaluationService
 from aipinho.services.runtime.phase_semantic_demand_compiler import PhaseSemanticDemandCompiler
+from aipinho.services.semantics.task_semantic_vocabulary_compiler_service import (
+    TaskSemanticVocabularyCompilerService,
+)
 
 
 class _SemanticInterpreter:
     def __init__(self, accepted_requirements: dict | None = None) -> None:
         self.accepted_requirements = dict(accepted_requirements or {})
 
-    def interpret(self, *, source_payload: dict, semantic_graph: dict) -> dict:
+    def interpret(
+        self,
+        *,
+        source_payload: dict,
+        semantic_graph: dict,
+        vocabulary=None,
+    ) -> dict:
         if not semantic_graph.get("knowledge_output"):
             return {
                 "status": "not_required",
@@ -76,7 +85,19 @@ def _run(
         contract_type="readonly_analysis",
         canonical_execution_plan=canonical,
     )
-    return SimpleNamespace(plan=plan, operation_type=operation_type)
+    run = SimpleNamespace(
+        plan=plan,
+        operation_type=operation_type,
+        run_id="task_run_semantic_demand",
+        task_id="task_semantic_demand",
+        intent_map={},
+        capabilities_required=list(required_capabilities or ["read_workspace"]),
+    )
+    compilation = TaskSemanticVocabularyCompilerService().compile_for_run(run=run)
+    assert compilation.status == "compiled"
+    assert compilation.vocabulary is not None
+    plan.task_semantic_vocabulary = compilation.vocabulary
+    return run
 
 
 def _planning_graph() -> dict:

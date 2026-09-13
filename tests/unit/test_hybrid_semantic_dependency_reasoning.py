@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+from types import SimpleNamespace
+
+from aipinho.schemas.runtime.execution_plan import (
+    CanonicalExecutionPlan,
+    CanonicalExecutionStep,
+)
 from aipinho.schemas.runtime.phase_dependency_evaluation import (
     DownstreamPhaseRequirements,
     PhaseDependencySnapshot,
@@ -12,6 +18,10 @@ from aipinho.services.semantics.semantic_demand_interpreter_service import (
 )
 from aipinho.services.semantics.semantic_reasoning_playbook_service import (
     SemanticReasoningPlaybookService,
+)
+from aipinho.schemas.runtime.task_run_plan import TaskRunPlan
+from aipinho.services.semantics.task_semantic_vocabulary_compiler_service import (
+    TaskSemanticVocabularyCompilerService,
 )
 
 
@@ -53,9 +63,51 @@ def _source_payload() -> dict:
     }
 
 
+def _vocabulary():
+    payload = _source_payload()
+    step = CanonicalExecutionStep(
+        step_id="step1",
+        step_type="analysis",
+        action="project_analysis",
+        side_effect=False,
+        required_capabilities=["read_workspace"],
+    )
+    canonical = CanonicalExecutionPlan(
+        semantic_goal=payload["semantic_goal"],
+        operation_kind=payload["operation_kind"],
+        execution_steps=[step],
+        required_capabilities=["read_workspace"],
+        rollback_strategy={},
+        trace_id="trace_hybrid_semantics",
+        metadata={
+            "semantic_intent_graph": payload["semantic_intent_graph"],
+            "requested_deliverables": payload["requested_deliverables"],
+        },
+    )
+    plan = TaskRunPlan(
+        plan_id="plan_hybrid_semantics",
+        contract_type="readonly_analysis",
+        canonical_execution_plan=canonical,
+    )
+    run = SimpleNamespace(
+        plan=plan,
+        run_id="task_run_hybrid_semantics",
+        task_id="task_hybrid_semantics",
+        intent_map=payload["intent_map"],
+        capabilities_required=["read_workspace"],
+    )
+    compilation = TaskSemanticVocabularyCompilerService().compile_for_run(run=run)
+    assert compilation.status == "compiled"
+    assert compilation.vocabulary is not None
+    return compilation.vocabulary
+
+
 def test_semantic_reasoning_playbook_exposes_governed_vocabulary_without_copying_examples() -> None:
     payload = _source_payload()
-    context = SemanticReasoningPlaybookService().build(source_payload=payload)
+    context = SemanticReasoningPlaybookService().build(
+        source_payload=payload,
+        vocabulary=_vocabulary(),
+    )
     vocabulary = context["governed_vocabulary"]
 
     assert "safe_for_truth_claim" in vocabulary["use_safety_dimensions"]
@@ -101,6 +153,7 @@ def test_semantic_demand_interpreter_accepts_scoped_non_truth_demand() -> None:
     result = service.interpret(
         source_payload=_source_payload(),
         semantic_graph=_source_payload()["semantic_intent_graph"],
+        vocabulary=_vocabulary(),
     )
 
     assert result["status"] == "accepted"
@@ -133,6 +186,7 @@ def test_semantic_demand_interpreter_rejects_deliverable_as_semantic_identifier(
     result = service.interpret(
         source_payload=_source_payload(),
         semantic_graph=_source_payload()["semantic_intent_graph"],
+        vocabulary=_vocabulary(),
     )
 
     assert result["status"] == "insufficient_evidence"
@@ -160,6 +214,7 @@ def test_semantic_demand_interpreter_fails_closed_on_low_confidence() -> None:
     result = service.interpret(
         source_payload=_source_payload(),
         semantic_graph=_source_payload()["semantic_intent_graph"],
+        vocabulary=_vocabulary(),
     )
 
     assert result["status"] == "insufficient_evidence"
@@ -284,6 +339,7 @@ def test_semantic_demand_interpreter_rejects_invalid_use_safety_state() -> None:
     result = service.interpret(
         source_payload=_source_payload(),
         semantic_graph=_source_payload()["semantic_intent_graph"],
+        vocabulary=_vocabulary(),
     )
 
     assert result["status"] == "insufficient_evidence"
@@ -311,6 +367,7 @@ def test_semantic_demand_interpreter_rejects_capability_reclassified_as_constrai
     result = service.interpret(
         source_payload=_source_payload(),
         semantic_graph=_source_payload()["semantic_intent_graph"],
+        vocabulary=_vocabulary(),
     )
 
     assert result["status"] == "insufficient_evidence"
@@ -343,6 +400,7 @@ def test_semantic_demand_interpreter_rejects_false_as_required_safety_state() ->
     result = service.interpret(
         source_payload=_source_payload(),
         semantic_graph=_source_payload()["semantic_intent_graph"],
+        vocabulary=_vocabulary(),
     )
 
     assert result["status"] == "insufficient_evidence"

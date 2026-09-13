@@ -5,6 +5,7 @@ from aipinho.schemas.common.base import AIpinhoModel
 from aipinho.schemas.runtime.execution_plan import CandidatePlan, CanonicalExecutionPlan
 from aipinho.schemas.runtime.task_run_step import TaskRunStep
 from aipinho.schemas.runtime.task_run_trace import TaskRunTraceItem
+from aipinho.schemas.semantics.task_semantic_vocabulary import TaskSemanticVocabulary
 
 class TaskRunPlan(AIpinhoModel):
     plan_id: str
@@ -17,3 +18,4 @@ class TaskRunPlan(AIpinhoModel):
     metadata: dict[str, Any] = Field(default_factory=dict)
     candidate_plan: CandidatePlan | None = None
     canonical_execution_plan: CanonicalExecutionPlan | None = None
+    task_semantic_vocabulary: TaskSemanticVocabulary | None = None

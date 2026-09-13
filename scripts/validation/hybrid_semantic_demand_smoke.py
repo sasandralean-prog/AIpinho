@@ -3,11 +3,17 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
+from aipinho.schemas.runtime.execution_plan import CanonicalExecutionPlan, CanonicalExecutionStep
+from aipinho.schemas.runtime.task_run_plan import TaskRunPlan
 from aipinho.services.models.model_invocation_service import ModelInvocationService
 from aipinho.services.models.model_router_service import ModelRouterService
 from aipinho.services.semantics.contract_bound_semantic_reasoner import ContractBoundSemanticReasoner
 from aipinho.services.semantics.semantic_demand_interpreter_service import SemanticDemandInterpreterService
+from aipinho.services.semantics.task_semantic_vocabulary_compiler_service import (
+    TaskSemanticVocabularyCompilerService,
+)
 
 
 class _PinnedModelRouter(ModelRouterService):
@@ -55,6 +61,47 @@ def _payload() -> dict:
     }
 
 
+def _vocabulary(payload: dict):
+    step = CanonicalExecutionStep(
+        step_id="step1",
+        step_type="analysis",
+        action="project_analysis",
+        side_effect=False,
+        required_capabilities=["read_workspace"],
+    )
+    canonical = CanonicalExecutionPlan(
+        semantic_goal=payload["semantic_goal"],
+        operation_kind=payload["operation_kind"],
+        execution_steps=[step],
+        required_capabilities=["read_workspace"],
+        rollback_strategy={},
+        trace_id="trace_semantic_smoke",
+        metadata={
+            "semantic_intent_graph": payload["semantic_intent_graph"],
+            "requested_deliverables": payload["requested_deliverables"],
+        },
+    )
+    plan = TaskRunPlan(
+        plan_id="plan_semantic_smoke",
+        contract_type="readonly_analysis",
+        canonical_execution_plan=canonical,
+    )
+    run = SimpleNamespace(
+        run_id="task_run_semantic_smoke",
+        task_id="task_semantic_smoke",
+        plan=plan,
+        intent_map=payload["intent_map"],
+        capabilities_required=["read_workspace"],
+    )
+    compilation = TaskSemanticVocabularyCompilerService().compile_for_run(run=run)
+    if compilation.status != "compiled" or compilation.vocabulary is None:
+        raise RuntimeError(
+            "task_semantic_vocabulary_smoke_compilation_failed:"
+            + ",".join(compilation.reason_codes)
+        )
+    return compilation.vocabulary
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument('--model-id', required=True)
@@ -70,9 +117,11 @@ def main() -> int:
     )
     service = SemanticDemandInterpreterService(reasoner=reasoner)
     payload = _payload()
+    vocabulary = _vocabulary(payload)
     result = service.interpret(
         source_payload=payload,
         semantic_graph=payload['semantic_intent_graph'],
+        vocabulary=vocabulary,
     )
     provenance = dict(result.get('provenance') or {})
     real_inference = provenance.get('real_inference')

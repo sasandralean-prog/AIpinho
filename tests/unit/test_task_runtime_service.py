@@ -10,6 +10,9 @@ from aipinho.services.approvals.approval_store import ApprovalStore
 from aipinho.services.memory.operational_memory_service import OperationalMemoryService
 from aipinho.services.runtime.readonly_task_step_runner import TaskStepOutcome
 from aipinho.services.runtime.task_runtime_service import TaskRuntimeService
+from aipinho.services.semantics.task_semantic_vocabulary_authority_service import (
+    TaskSemanticVocabularyAuthorityService,
+)
 from tests.support.runtime_fixtures import allowed_policy, runtime_request
 
 
@@ -59,6 +62,23 @@ def test_service_creates_canonical_execution_plan_for_every_run(task_runtime_ser
     assert plan.required_capabilities == run.capabilities_required
     assert run.plan.metadata["execution_id"] == plan.execution_id
     assert run.plan.candidate_plan is not None
+
+
+def test_service_freezes_task_semantic_vocabulary_before_execution_graph(task_runtime_service):
+    run = task_runtime_service.create_run(runtime_request())
+
+    vocabulary = run.plan.task_semantic_vocabulary
+    assert vocabulary is not None
+    assert vocabulary.task_run_id == run.run_id
+    assert vocabulary.task_id == run.task_id
+    assert vocabulary.source_execution_id == run.plan.canonical_execution_plan.execution_id
+    assert TaskSemanticVocabularyAuthorityService().verify(vocabulary)
+    assert run.plan.metadata["task_semantic_vocabulary_binding"] == (
+        vocabulary.binding().model_dump(mode="json")
+    )
+    stages = [item.stage for item in run.trace]
+    assert "task_semantic_vocabulary_frozen" in stages
+    assert run.execution_graph is not None
 
 
 def test_service_materializes_execution_graph_for_every_run(task_runtime_service):
