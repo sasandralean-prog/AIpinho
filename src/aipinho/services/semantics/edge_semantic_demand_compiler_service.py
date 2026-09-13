@@ -501,11 +501,6 @@ class EdgeSemanticDemandCompilerService:
         steps_by_id = {
             step.step_id: step for step in canonical.execution_steps
         }
-        if any(
-            step_id not in steps_by_id
-            for step_id in consumer.source_step_ids
-        ):
-            return None, "EDGE_SEMANTIC_DEMAND_CONSUMER_SOURCE_STEP_UNKNOWN"
 
         return {
             "run": run,
@@ -540,7 +535,9 @@ class EdgeSemanticDemandCompilerService:
         source_refs: list[str] = []
 
         for step_id in consumer_step_ids:
-            step = context["steps_by_id"][step_id]
+            step = context["steps_by_id"].get(step_id)
+            if step is None:
+                continue
             metadata = dict(step.metadata or {})
             ref = f"canonical_execution_step:{step_id}"
             self._extend_list(

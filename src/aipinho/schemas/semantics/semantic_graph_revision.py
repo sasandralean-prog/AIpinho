@@ -12,6 +12,15 @@ from aipinho.schemas.semantics.semantic_execution_graph import (
     SemanticExecutionGraph,
     SemanticWorkUnitClassificationStatus,
 )
+from aipinho.schemas.semantics.edge_semantic_demand import EdgeSemanticDemand
+from aipinho.schemas.semantics.semantic_offer import SemanticOffer
+from aipinho.schemas.semantics.offer_demand_compatibility import (
+    OfferDemandCompatibility,
+)
+from aipinho.schemas.semantics.semantic_nway_topology import (
+    SemanticJoinEvaluation,
+    SemanticTopologyNeighborhood,
+)
 
 
 class SemanticGraphRevisionWorkUnitAddition(AIpinhoModel):
@@ -90,3 +99,38 @@ class SemanticGraphRevisionApplication(AIpinhoModel):
     child_graph: SemanticExecutionGraph | None = None
     reason_codes: list[str] = Field(default_factory=list)
     applied_at: str = Field(default_factory=utc_now_iso)
+
+
+class SemanticGraphHistorySnapshot(AIpinhoModel):
+    snapshot_id: str
+    revision_id: str | None = None
+    graph: SemanticExecutionGraph
+    edge_semantic_demands: list[EdgeSemanticDemand] = Field(default_factory=list)
+    semantic_offers: list[SemanticOffer] = Field(default_factory=list)
+    offer_demand_compatibilities: list[OfferDemandCompatibility] = Field(
+        default_factory=list
+    )
+    semantic_topology_neighborhoods: list[SemanticTopologyNeighborhood] = Field(
+        default_factory=list
+    )
+    semantic_join_evaluations: list[SemanticJoinEvaluation] = Field(
+        default_factory=list
+    )
+    authority_sha256: str
+    archived_at: str = Field(default_factory=utc_now_iso)
+    schema_version: str = "semantic_graph_history_snapshot.v1"
+
+
+class SemanticGraphActivationResult(AIpinhoModel):
+    activation_id: str = Field(
+        default_factory=lambda: f"semantic_graph_activation_{uuid4().hex}"
+    )
+    status: Literal["activated", "blocked", "insufficient_contract_evidence"]
+    active_revision_id: str | None = None
+    active_graph_id: str | None = None
+    active_graph_authority_sha256: str | None = None
+    snapshot_id: str | None = None
+    demands_recompiled: int = 0
+    partial_demands: int = 0
+    reason_codes: list[str] = Field(default_factory=list)
+    activated_at: str = Field(default_factory=utc_now_iso)

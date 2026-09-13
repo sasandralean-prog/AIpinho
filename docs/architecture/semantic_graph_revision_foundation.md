@@ -102,15 +102,20 @@ Those contracts remain bound to the graph SHA under which they were produced.
 
 ## Demand recompilation boundary
 
-Newly added edges are listed in:
+Every child edge is listed in:
 
 ```text
 edges_requiring_demand_recompile
 ```
 
+The graph authority hash changes across a revision, so even structurally
+unchanged edges cannot reuse parent-bound Demand objects. Activation
+recompiles every child Demand against the child graph.
+
 Sprint 7 does not silently copy a Demand from another edge or parent graph.
-The Sprint 3 demand compiler must create a new edge-local Demand for the child
-graph before downstream compatibility can be evaluated.
+For a newly discovered consumer whose source step did not exist in the
+original canonical plan, deterministic compilation produces an honest partial
+Demand instead of inventing semantic requirements.
 
 ## Source semantics lineage
 
@@ -123,13 +128,40 @@ The child graph receives a new source_semantics_sha256 derived from:
 This preserves lineage without modifying the SemanticExecutionGraph v1 schema
 or invalidating hashes of already persisted historical graphs.
 
-## Current boundary
+## Activation and history
 
-The foundation deliberately does not yet activate the child graph inside a
-TaskRun automatically.
+SemanticGraphActivationService activates a validated child graph
+transactionally.
 
-Runtime activation must preserve a graph history and must not mix historical
-Offers, Demands or Compatibilities from the parent graph into child-graph
-evaluation.
+Before activation it verifies:
 
-That activation/history layer is the next Sprint 7 step.
+- parent, child and revision authorities;
+- exact parent/child revision bindings;
+- monotonic revision number and parent revision chain;
+- authorities and graph bindings of current Demands, Offers,
+  Compatibilities, neighborhoods and joins.
+
+It then recompiles all child-graph Demands in an isolated copy. Only after
+successful recompilation does it:
+
+- archive the complete parent graph and its graph-bound contracts in a
+  SemanticGraphHistorySnapshot;
+- append the canonical revision record;
+- activate the child graph;
+- install child-bound Demands;
+- clear active Offers, Compatibilities and N-way projections so parent
+  contracts cannot leak into child evaluation.
+
+Activation failure leaves the active parent state unchanged.
+
+Revision chains are monotonic and explicit:
+
+```text
+initial graph
+  -> revision 1 / child 1
+  -> revision 2 / child 2
+  -> revision 3 / child 3
+```
+
+Each revision references the immediately preceding revision and graph hash.
+Historical snapshots remain independently authority-bound.

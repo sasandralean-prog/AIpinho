@@ -80,8 +80,29 @@ class SemanticGraphRevisionService:
             != parent.authority_sha256
         ):
             return self._blocked("GRAPH_REVISION_PARENT_BINDING_MISMATCH")
-        if proposal.revision_number < 1:
+        revisions = list(
+            getattr(plan, "semantic_graph_revisions", []) or []
+        )
+        if revisions:
+            last_revision = revisions[-1]
+            expected_revision_number = last_revision.revision_number + 1
+            expected_parent_revision_id = last_revision.revision_id
+            if (
+                getattr(plan, "active_semantic_graph_revision_id", None)
+                != last_revision.revision_id
+            ):
+                return self._blocked(
+                    "GRAPH_REVISION_ACTIVE_HISTORY_MISMATCH"
+                )
+        else:
+            expected_revision_number = 1
+            expected_parent_revision_id = None
+        if proposal.revision_number != expected_revision_number:
             return self._blocked("GRAPH_REVISION_NUMBER_INVALID")
+        if proposal.parent_revision_id != expected_parent_revision_id:
+            return self._blocked(
+                "GRAPH_REVISION_PARENT_REVISION_MISMATCH"
+            )
         if not proposal.reason.strip():
             return self._blocked("GRAPH_REVISION_REASON_REQUIRED")
         if not proposal.provenance:
@@ -483,8 +504,7 @@ class SemanticGraphRevisionService:
             ),
             removed_edge_ids=sorted(context["removed_edge_ids"]),
             edges_requiring_demand_recompile=sorted(
-                edge.edge_id
-                for edge in context["added_edges"].values()
+                edge.edge_id for edge in child.edges
             ),
             authority_sha256="pending",
         )

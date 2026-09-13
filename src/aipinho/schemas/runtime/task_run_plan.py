@@ -16,6 +16,10 @@ from aipinho.schemas.semantics.semantic_nway_topology import (
     SemanticJoinEvaluation,
     SemanticTopologyNeighborhood,
 )
+from aipinho.schemas.semantics.semantic_graph_revision import (
+    SemanticGraphHistorySnapshot,
+    SemanticGraphRevision,
+)
 
 class TaskRunPlan(AIpinhoModel):
     plan_id: str
@@ -41,3 +45,10 @@ class TaskRunPlan(AIpinhoModel):
     semantic_join_evaluations: list[SemanticJoinEvaluation] = Field(
         default_factory=list
     )
+    semantic_graph_revisions: list[SemanticGraphRevision] = Field(
+        default_factory=list
+    )
+    semantic_graph_history: list[SemanticGraphHistorySnapshot] = Field(
+        default_factory=list
+    )
+    active_semantic_graph_revision_id: str | None = None

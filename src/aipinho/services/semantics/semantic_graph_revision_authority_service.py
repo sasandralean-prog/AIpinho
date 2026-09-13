@@ -5,6 +5,7 @@ import json
 from typing import Any
 
 from aipinho.schemas.semantics.semantic_graph_revision import (
+    SemanticGraphHistorySnapshot,
     SemanticGraphRevision,
     SemanticGraphRevisionProposal,
 )
@@ -93,6 +94,67 @@ class SemanticGraphRevisionAuthorityService:
         revision: SemanticGraphRevision,
     ) -> str:
         return self.stable_sha256(self.revision_payload(revision))
+
+    def snapshot_payload(
+        self,
+        snapshot: SemanticGraphHistorySnapshot,
+    ) -> dict[str, Any]:
+        return {
+            "revision_id": snapshot.revision_id,
+            "graph_id": snapshot.graph.semantic_graph_id,
+            "graph_authority_sha256": snapshot.graph.authority_sha256,
+            "edge_semantic_demand_ids": [
+                item.demand_id for item in snapshot.edge_semantic_demands
+            ],
+            "edge_semantic_demand_hashes": [
+                item.authority_sha256 for item in snapshot.edge_semantic_demands
+            ],
+            "semantic_offer_ids": [
+                item.offer_id for item in snapshot.semantic_offers
+            ],
+            "semantic_offer_hashes": [
+                item.authority_sha256 for item in snapshot.semantic_offers
+            ],
+            "compatibility_ids": [
+                item.compatibility_id
+                for item in snapshot.offer_demand_compatibilities
+            ],
+            "compatibility_hashes": [
+                item.authority_sha256
+                for item in snapshot.offer_demand_compatibilities
+            ],
+            "neighborhood_ids": [
+                item.neighborhood_id
+                for item in snapshot.semantic_topology_neighborhoods
+            ],
+            "neighborhood_hashes": [
+                item.authority_sha256
+                for item in snapshot.semantic_topology_neighborhoods
+            ],
+            "join_ids": [
+                item.join_id for item in snapshot.semantic_join_evaluations
+            ],
+            "join_hashes": [
+                item.authority_sha256
+                for item in snapshot.semantic_join_evaluations
+            ],
+            "schema_version": snapshot.schema_version,
+        }
+
+    def compute_snapshot_sha256(
+        self,
+        snapshot: SemanticGraphHistorySnapshot,
+    ) -> str:
+        return self.stable_sha256(self.snapshot_payload(snapshot))
+
+    def verify_snapshot(
+        self,
+        snapshot: SemanticGraphHistorySnapshot,
+    ) -> bool:
+        return (
+            snapshot.authority_sha256
+            == self.compute_snapshot_sha256(snapshot)
+        )
 
     def verify(self, revision: SemanticGraphRevision) -> bool:
         return (
