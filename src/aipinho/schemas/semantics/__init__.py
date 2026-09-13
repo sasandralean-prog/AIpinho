@@ -4,3 +4,4 @@ from aipinho.schemas.semantics.edge_semantic_demand import *  # noqa: F401,F403
 from aipinho.schemas.semantics.semantic_offer import *  # noqa: F401,F403
 from aipinho.schemas.semantics.offer_demand_compatibility import *  # noqa: F401,F403
 from aipinho.schemas.semantics.semantic_nway_topology import *  # noqa: F401,F403
+from aipinho.schemas.semantics.semantic_graph_revision import *  # noqa: F401,F403
