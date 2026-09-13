@@ -140,6 +140,85 @@ class TaskSemanticVocabularyCompilerService:
                         "epistemic_property"
                     ],
                 )
+            for concept_id in self._list_values(
+                container,
+                ("evidence_domains", "required_evidence_domains"),
+            ):
+                self._append_task_concept(
+                    concepts,
+                    seen=seen,
+                    concept_id=concept_id,
+                    concept_type="evidence_domain",
+                    source_kind=(
+                        "semantic_intent_graph"
+                        if container_name == "semantic_intent_graph"
+                        else "intent_map"
+                        if container_name == "intent_map"
+                        else "canonical_execution_plan"
+                    ),
+                    source_ref=plan_ref,
+                    source_field=container_name,
+                    source_sha256=source_sha256,
+                )
+
+        for step in list(getattr(canonical, "execution_steps", []) or []):
+            step_metadata = dict(getattr(step, "metadata", {}) or {})
+            if not step_metadata:
+                continue
+            step_id = str(getattr(step, "step_id", "") or "unknown")
+            step_ref = f"canonical_execution_step:{step_id}"
+            for concept_id in self._list_values(
+                step_metadata,
+                (
+                    "allowed_downstream_uses",
+                    "required_downstream_uses",
+                    "downstream_uses",
+                ),
+            ):
+                self._append_task_concept(
+                    concepts,
+                    seen=seen,
+                    concept_id=concept_id,
+                    concept_type="downstream_use",
+                    source_kind="canonical_execution_step",
+                    source_ref=step_ref,
+                    source_field="required_downstream_uses",
+                    source_sha256=source_sha256,
+                )
+            for concept_id in self._mapping_keys(
+                step_metadata,
+                ("semantic_properties", "required_semantic_properties"),
+            ):
+                self._append_task_concept(
+                    concepts,
+                    seen=seen,
+                    concept_id=concept_id,
+                    concept_type="epistemic_property",
+                    source_kind="canonical_execution_step",
+                    source_ref=step_ref,
+                    source_field="required_semantic_properties",
+                    source_sha256=source_sha256,
+                    allowed_states=self.system_vocabulary.concept_type_state_domains()[
+                        "epistemic_property"
+                    ],
+                    requirement_states=self.system_vocabulary.concept_type_requirement_domains()[
+                        "epistemic_property"
+                    ],
+                )
+            for concept_id in self._list_values(
+                step_metadata,
+                ("evidence_domains", "required_evidence_domains"),
+            ):
+                self._append_task_concept(
+                    concepts,
+                    seen=seen,
+                    concept_id=concept_id,
+                    concept_type="evidence_domain",
+                    source_kind="canonical_execution_step",
+                    source_ref=step_ref,
+                    source_field="required_evidence_domains",
+                    source_sha256=source_sha256,
+                )
 
         concepts = sorted(
             concepts,

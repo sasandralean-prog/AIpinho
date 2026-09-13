@@ -53,6 +53,9 @@ from aipinho.services.semantics.task_semantic_vocabulary_compiler_service import
 from aipinho.services.semantics.semantic_execution_graph_compiler_service import (
     SemanticExecutionGraphCompilerService,
 )
+from aipinho.services.semantics.edge_semantic_demand_compiler_service import (
+    EdgeSemanticDemandCompilerService,
+)
 from aipinho.services.memory.operational_memory_service import OperationalMemoryService
 from aipinho.services.runtime.project_generation_plan_executor import ProjectGenerationPlanExecutor
 from aipinho.utils.yaml_loader import inspect_yaml_file, load_yaml_file
@@ -102,6 +105,7 @@ class TaskRuntimeService:
         self.planner = TaskRunPlanner()
         self.semantic_vocabularies = TaskSemanticVocabularyCompilerService()
         self.semantic_graphs = SemanticExecutionGraphCompilerService()
+        self.edge_semantic_demands = EdgeSemanticDemandCompilerService()
         self.lifecycle = TaskRunLifecycleService()
         self.events = TaskRunEventService(self.store)
         self.trace = TaskRunTraceService()
@@ -499,6 +503,61 @@ class TaskRuntimeService:
                     data=run.plan.metadata["semantic_execution_graph_binding"],
                 )
             )
+
+            demand_bindings: list[dict[str, object]] = []
+            demand_failures: list[str] = []
+            for edge in semantic_graph.edges:
+                compilation = self.edge_semantic_demands.compile_for_edge(
+                    run=run,
+                    edge_id=edge.edge_id,
+                )
+                if compilation.status == "compiled" and compilation.demand is not None:
+                    run.plan.edge_semantic_demands.append(compilation.demand)
+                    demand_bindings.append(
+                        {
+                            "demand_id": compilation.demand.demand_id,
+                            "edge_id": compilation.demand.edge_id,
+                            "authority_sha256": compilation.demand.authority_sha256,
+                            "status": compilation.demand.status,
+                        }
+                    )
+                    continue
+                demand_failures.extend(compilation.reason_codes)
+
+            run.plan.metadata["edge_semantic_demand_bindings"] = demand_bindings
+            if demand_failures:
+                run.plan.status = "blocked"
+                run.plan.blocked_reasons = list(
+                    dict.fromkeys(
+                        [
+                            *run.plan.blocked_reasons,
+                            "edge_semantic_demand_compilation_failed",
+                            *demand_failures,
+                        ]
+                    )
+                )
+                run.trace.append(
+                    self.trace.item(
+                        "edge_semantic_demands_frozen",
+                        "blocked",
+                        "edge_semantic_demand_compilation_failed_closed",
+                        source="services/semantics/edge_semantic_demand_compiler_service.py",
+                        data={"reason_codes": list(dict.fromkeys(demand_failures))},
+                    )
+                )
+            else:
+                run.trace.append(
+                    self.trace.item(
+                        "edge_semantic_demands_frozen",
+                        "ready",
+                        "edge_semantic_demands_compiled_before_operational_execution_graph",
+                        source="services/semantics/edge_semantic_demand_compiler_service.py",
+                        data={
+                            "count": len(run.plan.edge_semantic_demands),
+                            "bindings": demand_bindings,
+                        },
+                    )
+                )
         else:
             reason_code = str(
                 semantic_graph_compilation.reason_code

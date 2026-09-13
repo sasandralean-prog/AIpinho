@@ -110,6 +110,27 @@ def test_service_freezes_semantic_execution_graph_before_operational_graph(task_
     assert run.execution_graph is not None
 
 
+def test_service_freezes_edge_semantic_demands_before_operational_graph(task_runtime_service):
+    run = task_runtime_service.create_run(runtime_request())
+
+    assert run.plan.semantic_execution_graph is not None
+    assert isinstance(run.plan.edge_semantic_demands, list)
+    assert run.plan.metadata["edge_semantic_demand_bindings"] == [
+        {
+            "demand_id": demand.demand_id,
+            "edge_id": demand.edge_id,
+            "authority_sha256": demand.authority_sha256,
+            "status": demand.status,
+        }
+        for demand in run.plan.edge_semantic_demands
+    ]
+    stages = [item.stage for item in run.trace]
+    assert stages.index("semantic_execution_graph_frozen") < stages.index(
+        "edge_semantic_demands_frozen"
+    )
+    assert run.execution_graph is not None
+
+
 def test_service_materializes_execution_graph_for_every_run(task_runtime_service):
     run = task_runtime_service.create_run(runtime_request())
 

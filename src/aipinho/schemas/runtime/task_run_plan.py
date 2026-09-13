@@ -7,6 +7,7 @@ from aipinho.schemas.runtime.task_run_step import TaskRunStep
 from aipinho.schemas.runtime.task_run_trace import TaskRunTraceItem
 from aipinho.schemas.semantics.task_semantic_vocabulary import TaskSemanticVocabulary
 from aipinho.schemas.semantics.semantic_execution_graph import SemanticExecutionGraph
+from aipinho.schemas.semantics.edge_semantic_demand import EdgeSemanticDemand
 
 class TaskRunPlan(AIpinhoModel):
     plan_id: str
@@ -21,3 +22,4 @@ class TaskRunPlan(AIpinhoModel):
     canonical_execution_plan: CanonicalExecutionPlan | None = None
     task_semantic_vocabulary: TaskSemanticVocabulary | None = None
     semantic_execution_graph: SemanticExecutionGraph | None = None
+    edge_semantic_demands: list[EdgeSemanticDemand] = Field(default_factory=list)

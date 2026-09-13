@@ -203,6 +203,25 @@ def test_revision_rejects_state_outside_type_domain() -> None:
     ]
 
 
+def test_step_typed_requirements_extend_task_vocabulary() -> None:
+    run = _run()
+    step = run.plan.canonical_execution_plan.execution_steps[0]
+    step.metadata = {
+        "required_downstream_uses": ["catalog_planning"],
+        "required_semantic_properties": {
+            "content_identity": ["observed"]
+        },
+        "required_evidence_domains": ["identity_evidence"],
+    }
+
+    vocabulary = _compile(run)
+    typed = {(item.concept_type, item.concept_id) for item in vocabulary.concepts}
+
+    assert ("downstream_use", "catalog_planning") in typed
+    assert ("epistemic_property", "content_identity") in typed
+    assert ("evidence_domain", "identity_evidence") in typed
+
+
 def test_tampered_vocabulary_fails_authority_verification() -> None:
     vocabulary = _compile()
     vocabulary.concepts.append(
