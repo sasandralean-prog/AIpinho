@@ -50,6 +50,9 @@ from aipinho.services.runtime.execution_plan_promotion_service import ExecutionP
 from aipinho.services.semantics.task_semantic_vocabulary_compiler_service import (
     TaskSemanticVocabularyCompilerService,
 )
+from aipinho.services.semantics.semantic_execution_graph_compiler_service import (
+    SemanticExecutionGraphCompilerService,
+)
 from aipinho.services.memory.operational_memory_service import OperationalMemoryService
 from aipinho.services.runtime.project_generation_plan_executor import ProjectGenerationPlanExecutor
 from aipinho.utils.yaml_loader import inspect_yaml_file, load_yaml_file
@@ -98,6 +101,7 @@ class TaskRuntimeService:
         )
         self.planner = TaskRunPlanner()
         self.semantic_vocabularies = TaskSemanticVocabularyCompilerService()
+        self.semantic_graphs = SemanticExecutionGraphCompilerService()
         self.lifecycle = TaskRunLifecycleService()
         self.events = TaskRunEventService(self.store)
         self.trace = TaskRunTraceService()
@@ -463,6 +467,60 @@ class TaskRuntimeService:
                     "task_semantic_vocabulary_compilation_failed_closed",
                     source="services/semantics/task_semantic_vocabulary_compiler_service.py",
                     data={"reason_codes": reason_codes},
+                )
+            )
+
+        semantic_graph_compilation = self.semantic_graphs.compile_structural_for_run(
+            run=run
+        )
+        if (
+            semantic_graph_compilation.status == "accepted"
+            and semantic_graph_compilation.graph is not None
+        ):
+            semantic_graph = semantic_graph_compilation.graph
+            run.plan.semantic_execution_graph = semantic_graph
+            run.plan.metadata["semantic_execution_graph_binding"] = {
+                "semantic_graph_id": semantic_graph.semantic_graph_id,
+                "authority_sha256": semantic_graph.authority_sha256,
+                "status": semantic_graph.status,
+                "source_semantics_sha256": semantic_graph.source_semantics_sha256,
+                "vocabulary_id": semantic_graph.vocabulary_binding.vocabulary_id,
+                "vocabulary_authority_sha256": (
+                    semantic_graph.vocabulary_binding.authority_sha256
+                ),
+                "vocabulary_revision": semantic_graph.vocabulary_binding.revision,
+            }
+            run.trace.append(
+                self.trace.item(
+                    "semantic_execution_graph_frozen",
+                    "ready" if semantic_graph.status == "ready" else "partial",
+                    "semantic_execution_graph_compiled_before_operational_execution_graph",
+                    source="services/semantics/semantic_execution_graph_compiler_service.py",
+                    data=run.plan.metadata["semantic_execution_graph_binding"],
+                )
+            )
+        else:
+            reason_code = str(
+                semantic_graph_compilation.reason_code
+                or "SEMANTIC_EXECUTION_GRAPH_REQUIRED"
+            )
+            run.plan.status = "blocked"
+            run.plan.blocked_reasons = list(
+                dict.fromkeys(
+                    [
+                        *run.plan.blocked_reasons,
+                        "semantic_execution_graph_required",
+                        reason_code,
+                    ]
+                )
+            )
+            run.trace.append(
+                self.trace.item(
+                    "semantic_execution_graph_frozen",
+                    "blocked",
+                    "semantic_execution_graph_compilation_failed_closed",
+                    source="services/semantics/semantic_execution_graph_compiler_service.py",
+                    data={"reason_code": reason_code},
                 )
             )
 

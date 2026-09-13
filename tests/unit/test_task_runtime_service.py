@@ -13,6 +13,9 @@ from aipinho.services.runtime.task_runtime_service import TaskRuntimeService
 from aipinho.services.semantics.task_semantic_vocabulary_authority_service import (
     TaskSemanticVocabularyAuthorityService,
 )
+from aipinho.services.semantics.semantic_execution_graph_authority_service import (
+    SemanticExecutionGraphAuthorityService,
+)
 from tests.support.runtime_fixtures import allowed_policy, runtime_request
 
 
@@ -78,6 +81,32 @@ def test_service_freezes_task_semantic_vocabulary_before_execution_graph(task_ru
     )
     stages = [item.stage for item in run.trace]
     assert "task_semantic_vocabulary_frozen" in stages
+    assert run.execution_graph is not None
+
+
+def test_service_freezes_semantic_execution_graph_before_operational_graph(task_runtime_service):
+    run = task_runtime_service.create_run(runtime_request())
+
+    semantic_graph = run.plan.semantic_execution_graph
+    assert semantic_graph is not None
+    assert semantic_graph.task_run_id == run.run_id
+    assert semantic_graph.source_execution_id == (
+        run.plan.canonical_execution_plan.execution_id
+    )
+    assert semantic_graph.vocabulary_binding == (
+        run.plan.task_semantic_vocabulary.binding()
+    )
+    assert SemanticExecutionGraphAuthorityService().verify(semantic_graph)
+    assert len(semantic_graph.work_units) == len(
+        run.plan.canonical_execution_plan.execution_steps
+    )
+    assert run.plan.metadata["semantic_execution_graph_binding"][
+        "semantic_graph_id"
+    ] == semantic_graph.semantic_graph_id
+    stages = [item.stage for item in run.trace]
+    assert stages.index("task_semantic_vocabulary_frozen") < stages.index(
+        "semantic_execution_graph_frozen"
+    )
     assert run.execution_graph is not None
 
 

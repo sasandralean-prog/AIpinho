@@ -6,6 +6,7 @@ from aipinho.schemas.runtime.execution_plan import CandidatePlan, CanonicalExecu
 from aipinho.schemas.runtime.task_run_step import TaskRunStep
 from aipinho.schemas.runtime.task_run_trace import TaskRunTraceItem
 from aipinho.schemas.semantics.task_semantic_vocabulary import TaskSemanticVocabulary
+from aipinho.schemas.semantics.semantic_execution_graph import SemanticExecutionGraph
 
 class TaskRunPlan(AIpinhoModel):
     plan_id: str
@@ -19,3 +20,4 @@ class TaskRunPlan(AIpinhoModel):
     candidate_plan: CandidatePlan | None = None
     canonical_execution_plan: CanonicalExecutionPlan | None = None
     task_semantic_vocabulary: TaskSemanticVocabulary | None = None
+    semantic_execution_graph: SemanticExecutionGraph | None = None
