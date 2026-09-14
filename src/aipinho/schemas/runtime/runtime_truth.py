@@ -28,10 +28,17 @@ class RuntimeTruth(AIpinhoModel):
     completion_status: str | None = None
     validation_status: str | None = None
     timeline_status: str | None = None
+    semantic_truth_status: str | None = None
+    semantic_truth_safe_to_report_success: bool | None = None
+    semantic_truth_reason_codes: list[str] = Field(default_factory=list)
+    semantic_truth_disclosures: list[str] = Field(default_factory=list)
+    semantic_graph_id: str | None = None
+    semantic_graph_authority_sha256: str | None = None
+    semantic_truth_facet_id: str | None = None
+    semantic_truth_facet_authority_sha256: str | None = None
     ui_status: str
     speaker_truth_status: str
     evidence: list[RuntimeTruthEvidence] = Field(default_factory=list)
     contradictions: list[str] = Field(default_factory=list)
     missing_evidence: list[str] = Field(default_factory=list)
     source: str = "runtime_truth_engine"
-
