@@ -6,14 +6,35 @@ from aipinho.schemas.runtime.runtime_timeline import RuntimeTimeline
 from aipinho.schemas.runtime.runtime_truth import RuntimeTruth, RuntimeTruthEvidence
 from aipinho.schemas.runtime.task_run import TaskRun
 from aipinho.schemas.runtime.task_run_result import TaskRunResult
+from aipinho.schemas.semantics.semantic_truth_facet import SemanticTruthFacet
+from aipinho.services.semantics.semantic_completion_truth_service import (
+    SemanticCompletionTruthService,
+)
 
 
 _BLOCKING_STATUSES = {"blocked", "failed", "cancelled", "expired"}
-_VALIDATION_BAD = {"failed", "blocked", "rejected", "needs_review", "degraded", "incomplete", "missing"}
+_VALIDATION_BAD = {
+    "failed",
+    "blocked",
+    "rejected",
+    "needs_review",
+    "degraded",
+    "incomplete",
+    "missing",
+}
 
 
 class RuntimeTruthEngine:
     """Single operational truth resolver for runtime-facing consumers."""
+
+    def __init__(
+        self,
+        *,
+        semantic_truth: SemanticCompletionTruthService | None = None,
+    ) -> None:
+        self.semantic_truth = (
+            semantic_truth or SemanticCompletionTruthService()
+        )
 
     def evaluate(
         self,
@@ -24,12 +45,31 @@ class RuntimeTruthEngine:
     ) -> RuntimeTruth:
         runtime_status = str(run.status)
         workflow_status = str(run.workflow.status) if run.workflow else None
-        completion_status = str(result.completion.status) if result and result.completion else (result.status if result else None)
+        completion_status = (
+            str(result.completion.status)
+            if result and result.completion
+            else (result.status if result else None)
+        )
         validation_status = self._validation_status(result, timeline)
         timeline_status = timeline.completion.status if timeline else None
-        legacy_result_only = self._legacy_result_only(run, result, timeline)
-        evidence = self._evidence(run, result, timeline)
-        missing = self._missing_evidence(run, result, timeline, legacy_result_only=legacy_result_only)
+        legacy_result_only = self._legacy_result_only(
+            run,
+            result,
+            timeline,
+        )
+        semantic = self.semantic_truth.evaluate(run)
+        evidence = self._evidence(
+            run,
+            result,
+            timeline,
+            semantic,
+        )
+        missing = self._missing_evidence(
+            run,
+            result,
+            timeline,
+            legacy_result_only=legacy_result_only,
+        )
         contradictions = self._contradictions(
             runtime_status=runtime_status,
             workflow_status=workflow_status,
@@ -37,6 +77,7 @@ class RuntimeTruthEngine:
             validation_status=validation_status,
             timeline_status=timeline_status,
             timeline=timeline,
+            semantic_status=semantic.status,
             legacy_result_only=legacy_result_only,
         )
         status, reason = self._resolve_status(
@@ -45,6 +86,7 @@ class RuntimeTruthEngine:
             completion_status=completion_status,
             validation_status=validation_status,
             timeline_status=timeline_status,
+            semantic_status=semantic.status,
             contradictions=contradictions,
             missing=missing,
             result=result,
@@ -53,8 +95,19 @@ class RuntimeTruthEngine:
             status == "completed"
             and not contradictions
             and not missing
-            and (bool(timeline and timeline.completion.safe_to_report_success) or legacy_result_only)
-            and (workflow_status not in {"blocked", "failed", "cancelled"} or legacy_result_only)
+            and semantic.safe_to_report_success
+            and (
+                bool(
+                    timeline
+                    and timeline.completion.safe_to_report_success
+                )
+                or legacy_result_only
+            )
+            and (
+                workflow_status
+                not in {"blocked", "failed", "cancelled"}
+                or legacy_result_only
+            )
             and validation_status not in _VALIDATION_BAD
         )
         return RuntimeTruth(
@@ -70,8 +123,28 @@ class RuntimeTruthEngine:
             completion_status=completion_status,
             validation_status=validation_status,
             timeline_status=timeline_status,
+            semantic_truth_status=semantic.status,
+            semantic_truth_safe_to_report_success=(
+                semantic.safe_to_report_success
+            ),
+            semantic_truth_reason_codes=list(
+                semantic.reason_codes
+            ),
+            semantic_truth_disclosures=list(
+                semantic.disclosures
+            ),
+            semantic_graph_id=semantic.semantic_graph_id,
+            semantic_graph_authority_sha256=(
+                semantic.semantic_graph_authority_sha256
+            ),
+            semantic_truth_facet_id=semantic.facet_id,
+            semantic_truth_facet_authority_sha256=(
+                semantic.authority_sha256
+            ),
             ui_status=self._ui_status(status),
-            speaker_truth_status="allowed" if safe else "evidence_required",
+            speaker_truth_status=(
+                "allowed" if safe else "evidence_required"
+            ),
             evidence=evidence,
             contradictions=contradictions,
             missing_evidence=missing,
@@ -85,33 +158,96 @@ class RuntimeTruthEngine:
         completion_status: str | None,
         validation_status: str | None,
         timeline_status: str | None,
+        semantic_status: str,
         contradictions: list[str],
         missing: list[str],
         result: TaskRunResult | None,
     ) -> tuple[str, str]:
         if runtime_status in _BLOCKING_STATUSES:
-            return ("cancelled" if runtime_status == "cancelled" else runtime_status, f"runtime_status:{runtime_status}")
+            return (
+                "cancelled"
+                if runtime_status == "cancelled"
+                else runtime_status,
+                f"runtime_status:{runtime_status}",
+            )
         if workflow_status in {"blocked", "failed", "cancelled"}:
-            return ("blocked" if workflow_status == "blocked" else workflow_status, f"workflow_status:{workflow_status}")
+            return (
+                "blocked"
+                if workflow_status == "blocked"
+                else workflow_status,
+                f"workflow_status:{workflow_status}",
+            )
         if completion_status in {"blocked", "failed", "cancelled"}:
-            return ("blocked" if completion_status == "blocked" else completion_status, f"completion_status:{completion_status}")
+            return (
+                "blocked"
+                if completion_status == "blocked"
+                else completion_status,
+                f"completion_status:{completion_status}",
+            )
         if validation_status in _VALIDATION_BAD:
-            return ("blocked", f"validation_status:{validation_status}")
+            return (
+                "blocked",
+                f"validation_status:{validation_status}",
+            )
+
+        claims_completion = bool(
+            completion_status == "completed"
+            or (result is not None and result.status == "completed")
+        )
+        if claims_completion and semantic_status == "blocked":
+            return ("blocked", "semantic_truth_blocked")
+        if (
+            claims_completion
+            and semantic_status == "insufficient_evidence"
+        ):
+            return (
+                "blocked",
+                "semantic_truth_insufficient_evidence",
+            )
         if contradictions:
             return ("blocked", "runtime_truth_contradiction")
-        if missing and result is not None and result.status == "completed":
-            return ("blocked", "completed_missing_required_evidence")
-        if runtime_status in {"created", "queued", "running", "waiting_input", "waiting_delegation"}:
-            return (runtime_status, f"runtime_status:{runtime_status}")
+        if (
+            missing
+            and result is not None
+            and result.status == "completed"
+        ):
+            return (
+                "blocked",
+                "completed_missing_required_evidence",
+            )
+        if runtime_status in {
+            "created",
+            "queued",
+            "running",
+            "waiting_input",
+            "waiting_delegation",
+        }:
+            return (
+                runtime_status,
+                f"runtime_status:{runtime_status}",
+            )
         if result is None:
             return (runtime_status, "result_not_available")
+        if claims_completion and semantic_status == "constrained":
+            return ("completed", "semantic_truth_constrained")
         if timeline_status:
-            return (timeline_status, f"timeline_status:{timeline_status}")
+            return (
+                timeline_status,
+                f"timeline_status:{timeline_status}",
+            )
         return (result.status, f"result_status:{result.status}")
 
-    def _validation_status(self, result: TaskRunResult | None, timeline: RuntimeTimeline | None) -> str | None:
+    def _validation_status(
+        self,
+        result: TaskRunResult | None,
+        timeline: RuntimeTimeline | None,
+    ) -> str | None:
         if result and isinstance(result.validation, dict):
-            return str(result.validation.get("status") or result.validation.get("validation_status") or "")
+            return str(
+                result.validation.get("status")
+                or result.validation.get("validation_status")
+                or ""
+            )
         if timeline and timeline.validations:
             return timeline.validations[-1].status
         if result is None:
@@ -123,16 +259,44 @@ class RuntimeTruthEngine:
         run: TaskRun,
         result: TaskRunResult | None,
         timeline: RuntimeTimeline | None,
+        semantic: SemanticTruthFacet,
     ) -> list[RuntimeTruthEvidence]:
         rows = [
-            RuntimeTruthEvidence(evidence_type="task_run", evidence_id=run.run_id, status=str(run.status)),
+            RuntimeTruthEvidence(
+                evidence_type="task_run",
+                evidence_id=run.run_id,
+                status=str(run.status),
+            ),
         ]
         if run.task_id:
-            rows.append(RuntimeTruthEvidence(evidence_type="task", evidence_id=run.task_id, status=str(run.status)))
+            rows.append(
+                RuntimeTruthEvidence(
+                    evidence_type="task",
+                    evidence_id=run.task_id,
+                    status=str(run.status),
+                )
+            )
         if run.workflow:
-            rows.append(RuntimeTruthEvidence(evidence_type="workflow", evidence_id=run.workflow.workflow_id, status=run.workflow.status))
+            rows.append(
+                RuntimeTruthEvidence(
+                    evidence_type="workflow",
+                    evidence_id=run.workflow.workflow_id,
+                    status=run.workflow.status,
+                )
+            )
         if timeline:
-            rows.append(RuntimeTruthEvidence(evidence_type="timeline", evidence_id=timeline.timeline_id, status=timeline.status, metadata={"terminal_event_id": timeline.completion.terminal_event_id}))
+            rows.append(
+                RuntimeTruthEvidence(
+                    evidence_type="timeline",
+                    evidence_id=timeline.timeline_id,
+                    status=timeline.status,
+                    metadata={
+                        "terminal_event_id": (
+                            timeline.completion.terminal_event_id
+                        )
+                    },
+                )
+            )
             rows.extend(
                 RuntimeTruthEvidence(
                     evidence_type="artifact",
@@ -143,15 +307,68 @@ class RuntimeTruthEngine:
                         "producer_step": artifact.producer_step,
                         "event_id": artifact.event_id,
                         "orphan": artifact.orphan,
-                        "orphan_reasons": list(artifact.orphan_reasons),
+                        "orphan_reasons": list(
+                            artifact.orphan_reasons
+                        ),
                     },
                 )
                 for artifact in timeline.artifacts
             )
         if result:
-            rows.append(RuntimeTruthEvidence(evidence_type="completion", evidence_id=result.run_id, status=result.status, metadata={"safe_to_display": result.safe_to_display}))
+            rows.append(
+                RuntimeTruthEvidence(
+                    evidence_type="completion",
+                    evidence_id=result.run_id,
+                    status=result.status,
+                    metadata={
+                        "safe_to_display": result.safe_to_display
+                    },
+                )
+            )
             if isinstance(result.validation, dict):
-                rows.append(RuntimeTruthEvidence(evidence_type="validation", evidence_id=str(result.validation.get("validation_id") or ""), status=self._validation_status(result, timeline)))
+                rows.append(
+                    RuntimeTruthEvidence(
+                        evidence_type="validation",
+                        evidence_id=str(
+                            result.validation.get("validation_id")
+                            or ""
+                        ),
+                        status=self._validation_status(
+                            result,
+                            timeline,
+                        ),
+                    )
+                )
+        rows.append(
+            RuntimeTruthEvidence(
+                evidence_type="semantic_truth_facet",
+                evidence_id=semantic.facet_id,
+                status=semantic.status,
+                summary=(
+                    ",".join(semantic.reason_codes)
+                    if semantic.reason_codes
+                    else semantic.status
+                ),
+                metadata={
+                    "safe_to_report_success": (
+                        semantic.safe_to_report_success
+                    ),
+                    "semantic_graph_id": (
+                        semantic.semantic_graph_id
+                    ),
+                    "semantic_graph_authority_sha256": (
+                        semantic.semantic_graph_authority_sha256
+                    ),
+                    "active_revision_id": (
+                        semantic.active_revision_id
+                    ),
+                    "disclosures": list(semantic.disclosures),
+                    "authority_sha256": (
+                        semantic.authority_sha256
+                    ),
+                },
+            )
+        )
         return rows
 
     def _missing_evidence(
@@ -172,12 +389,17 @@ class RuntimeTruthEngine:
             missing.append("workflow")
         if timeline is None:
             missing.append("timeline")
-        elif timeline.completion.status == "completed" and not timeline.completion.terminal_event_id:
+        elif (
+            timeline.completion.status == "completed"
+            and not timeline.completion.terminal_event_id
+        ):
             missing.append("timeline_terminal_event")
         if timeline:
             for artifact in timeline.artifacts:
                 if artifact.orphan:
-                    missing.append(f"artifact:{artifact.artifact_id}:producer_binding")
+                    missing.append(
+                        f"artifact:{artifact.artifact_id}:producer_binding"
+                    )
         if result and result.status == "completed":
             if not result.completion:
                 missing.append("completion_evaluation")
@@ -194,21 +416,64 @@ class RuntimeTruthEngine:
         validation_status: str | None,
         timeline_status: str | None,
         timeline: RuntimeTimeline | None,
+        semantic_status: str,
         legacy_result_only: bool = False,
     ) -> list[str]:
         rows: list[str] = []
-        if completion_status == "completed" and runtime_status in _BLOCKING_STATUSES:
+        if (
+            completion_status == "completed"
+            and runtime_status in _BLOCKING_STATUSES
+        ):
             rows.append("completion_completed_runtime_blocking")
-        if workflow_status in {"blocked", "failed"} and completion_status == "completed":
+        if (
+            workflow_status in {"blocked", "failed"}
+            and completion_status == "completed"
+        ):
             rows.append("completion_completed_workflow_blocking")
-        if validation_status in _VALIDATION_BAD and completion_status == "completed":
-            rows.append("completion_completed_validation_not_passed")
-        if timeline_status in {"blocked", "failed", "cancelled"} and completion_status == "completed":
-            rows.append("completion_completed_timeline_blocking")
-        if timeline and timeline.gaps and completion_status == "completed" and not legacy_result_only:
+        if (
+            validation_status in _VALIDATION_BAD
+            and completion_status == "completed"
+        ):
+            rows.append(
+                "completion_completed_validation_not_passed"
+            )
+        if (
+            timeline_status in {"blocked", "failed", "cancelled"}
+            and completion_status == "completed"
+        ):
+            rows.append(
+                "completion_completed_timeline_blocking"
+            )
+        if (
+            semantic_status == "blocked"
+            and completion_status == "completed"
+        ):
+            rows.append(
+                "completion_completed_semantic_truth_blocked"
+            )
+        if (
+            semantic_status == "insufficient_evidence"
+            and completion_status == "completed"
+        ):
+            rows.append(
+                "completion_completed_semantic_truth_unresolved"
+            )
+        if (
+            timeline
+            and timeline.gaps
+            and completion_status == "completed"
+            and not legacy_result_only
+        ):
             rows.append("completion_completed_timeline_has_gaps")
-        if timeline and timeline.orphan_artifact_ids and completion_status == "completed" and not legacy_result_only:
-            rows.append("completion_completed_artifact_orphans")
+        if (
+            timeline
+            and timeline.orphan_artifact_ids
+            and completion_status == "completed"
+            and not legacy_result_only
+        ):
+            rows.append(
+                "completion_completed_artifact_orphans"
+            )
         return list(dict.fromkeys(rows))
 
     def _legacy_result_only(
@@ -227,7 +492,12 @@ class RuntimeTruthEngine:
             and not timeline.events
         )
 
-    def _phase(self, run: TaskRun, timeline: RuntimeTimeline | None, status: str) -> str:
+    def _phase(
+        self,
+        run: TaskRun,
+        timeline: RuntimeTimeline | None,
+        status: str,
+    ) -> str:
         if run.workflow and run.workflow.current_phase:
             return run.workflow.current_phase
         if timeline and timeline.phase:
@@ -237,8 +507,19 @@ class RuntimeTruthEngine:
     def _ui_status(self, status: str) -> str:
         if status == "completed":
             return "completed"
-        if status in {"blocked", "failed", "cancelled", "expired"}:
+        if status in {
+            "blocked",
+            "failed",
+            "cancelled",
+            "expired",
+        }:
             return status
-        if status in {"created", "queued", "running", "waiting_input", "waiting_delegation"}:
+        if status in {
+            "created",
+            "queued",
+            "running",
+            "waiting_input",
+            "waiting_delegation",
+        }:
             return "active"
         return status or "unknown"
