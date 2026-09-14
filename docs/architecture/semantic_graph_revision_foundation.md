@@ -165,3 +165,43 @@ initial graph
 
 Each revision references the immediately preceding revision and graph hash.
 Historical snapshots remain independently authority-bound.
+
+
+## Sprint 8 handoff — Completion, SpeakerTruth and Doctor
+
+Sprint 8 consumes the immutable semantic history established through Sprints
+0–7.
+
+It may derive completion and user-facing operational truth from:
+
+- the currently active graph and revision;
+- historical graph snapshots;
+- producer SemanticOffers;
+- edge-local SemanticDemands;
+- Offer/Demand Compatibility decisions;
+- N-way join evaluations;
+- unresolved requirements, limitations and missing truth.
+
+Sprint 8 must not rewrite historical graph revisions or reinterpret an old
+Offer under a different graph authority.
+
+The intended boundary is:
+
+```text
+Execution / evidence / semantic history
+        |
+        v
+Completion evaluation
+        |
+        +---- Doctor facets
+        |
+        v
+SpeakerTruth
+        |
+        v
+user-facing operational truth
+```
+
+Control completion and product truth remain separate. A terminal TaskRun or a
+successfully activated graph revision is not sufficient by itself for a
+user-facing success claim.

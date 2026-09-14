@@ -438,6 +438,12 @@ def test_activation_archives_parent_and_recompiles_child_demands() -> None:
     assert run.plan.offer_demand_compatibilities == []
     assert run.plan.semantic_topology_neighborhoods == []
     assert run.plan.semantic_join_evaluations == []
+    assert run.plan.metadata["semantic_result_projection"]["status"] == (
+        "invalidated_by_graph_revision"
+    )
+    assert run.plan.metadata["semantic_nway_projection"]["status"] == (
+        "invalidated_by_graph_revision"
+    )
     assert activation.demands_recompiled == len(
         application.child_graph.edges
     )

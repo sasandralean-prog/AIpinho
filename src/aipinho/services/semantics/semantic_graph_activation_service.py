@@ -202,6 +202,18 @@ class SemanticGraphActivationService:
         plan.metadata["offer_demand_compatibility_bindings"] = []
         plan.metadata["semantic_topology_neighborhood_bindings"] = []
         plan.metadata["semantic_join_evaluation_bindings"] = []
+        plan.metadata["semantic_result_projection"] = {
+            "status": "invalidated_by_graph_revision",
+            "active_graph_id": child.semantic_graph_id,
+            "active_graph_authority_sha256": child.authority_sha256,
+            "revision_id": revision.revision_id,
+        }
+        plan.metadata["semantic_nway_projection"] = {
+            "status": "invalidated_by_graph_revision",
+            "active_graph_id": child.semantic_graph_id,
+            "active_graph_authority_sha256": child.authority_sha256,
+            "revision_id": revision.revision_id,
+        }
 
         return SemanticGraphActivationResult(
             status="activated",
