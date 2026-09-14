@@ -195,6 +195,9 @@ class RuntimeDoctorContractValidator:
         completion_status = self._status(observed.completion)
         truth = observed.speaker_truth
         truth_status = str(truth.get("status") or truth.get("speaker_truth_status") or "")
+        semantic_truth_status = str(truth.get("semantic_truth_status") or "")
+        semantic_truth_safe = truth.get("semantic_truth_safe_to_report_success")
+        semantic_truth_reasons = list(truth.get("semantic_truth_reason_codes") or [])
         canonical = (observed.task_run.get("canonical_state") if isinstance(observed.task_run.get("canonical_state"), dict) else {})
         canonical_status = str(canonical.get("status") or "")
         if completion_status in {"completed", "COMPLETED"} and validation_status in {"blocked", "failed", "incomplete", "missing"}:
@@ -228,6 +231,33 @@ class RuntimeDoctorContractValidator:
             )
         if canonical_status and canonical_status == "COMPLETED" and truth.get("safe_to_report_success") is False:
             rows.append(self._violation("speaker_truth_inconsistent", "Canonical state is completed but Speaker Truth is not safe.", "safe", truth, "speaker_truth"))
+        if truth.get("safe_to_report_success") is True and semantic_truth_safe is False:
+            rows.append(
+                self._violation(
+                    "speaker_truth_semantic_inconsistent",
+                    "Speaker Truth cannot report success when semantic truth is not safe.",
+                    "semantic_truth_safe",
+                    {
+                        "semantic_truth_status": semantic_truth_status,
+                        "semantic_truth_safe_to_report_success": semantic_truth_safe,
+                        "semantic_truth_reason_codes": semantic_truth_reasons,
+                    },
+                    "speaker_truth.semantic_truth",
+                )
+            )
+        if completion_status in {"completed", "COMPLETED"} and semantic_truth_status in {"blocked", "insufficient_evidence"}:
+            rows.append(
+                self._violation(
+                    "completion_semantic_truth_divergence",
+                    "Completion cannot be safely reported while required semantic relations are blocked or unresolved.",
+                    "semantic_truth:ready_or_constrained",
+                    {
+                        "semantic_truth_status": semantic_truth_status,
+                        "semantic_truth_reason_codes": semantic_truth_reasons,
+                    },
+                    "completion.semantic_truth",
+                )
+            )
         if lifecycle_status in {"running", "RUNNING"} and completion_status in {"completed", "COMPLETED"}:
             rows.append(self._violation("lifecycle_completion_divergence", "Lifecycle is running but completion is completed.", lifecycle_status, completion_status, "lifecycle.completion"))
         return rows
@@ -267,6 +297,8 @@ class RuntimeDoctorRootCauseEngine:
         "completion_validation_divergence": ("validation_ordering", ["src/aipinho/services/runtime/runtime_truth_engine.py"], ["evaluate"]),
         "artifact_semantic_validation_incomplete": ("artifact_semantic_validation", ["src/aipinho/services/artifacts/artifact_semantic_contract_service.py"], ["profile", "validate_artifact"]),
         "completion_artifact_semantic_divergence": ("artifact_semantic_validation", ["src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py"], ["_validate_outputs", "_completion"]),
+        "speaker_truth_semantic_inconsistent": ("semantic_speaker_truth", ["src/aipinho/services/runtime/runtime_truth_engine.py", "src/aipinho/services/semantics/semantic_completion_truth_service.py"], ["evaluate"]),
+        "completion_semantic_truth_divergence": ("semantic_speaker_truth", ["src/aipinho/services/runtime/runtime_truth_engine.py", "src/aipinho/services/semantics/semantic_completion_truth_service.py"], ["evaluate"]),
         "ENTITY_NOT_OBSERVED": ("entity_compilation", ["src/aipinho/services/artifacts/observed_entity_compilation_service.py"], ["compile"]),
         "ENTITY_SOURCE_NOT_OBSERVED": ("entity_compilation", ["src/aipinho/services/artifacts/observed_entity_compilation_service.py"], ["compile"]),
         "ENTITY_CARDINALITY_TRUNCATED": ("entity_compilation", ["src/aipinho/services/artifacts/observed_entity_compilation_service.py"], ["compile"]),
