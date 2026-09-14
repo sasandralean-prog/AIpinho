@@ -12,6 +12,9 @@ from aipinho.schemas.runtime.task_completion import TaskCompletionEvaluation
 from aipinho.schemas.runtime.task_run_result import TaskRunResult
 from aipinho.schemas.semantics.semantic_truth_facet import SemanticTruthFacet
 from aipinho.services.runtime.runtime_truth_engine import RuntimeTruthEngine
+from aipinho.services.runtime.canonical_operation_state_service import (
+    CanonicalOperationStateService,
+)
 
 
 class _SemanticTruthStub:
@@ -54,11 +57,19 @@ def _run(*, status: str = "completed"):
         status=status,
         task_id="task_semantic_truth",
         run_id="task_run_semantic_truth",
+        operation_id="operation_semantic_truth",
         workflow=SimpleNamespace(
             status=status,
             workflow_id="workflow_semantic_truth",
             current_phase=None,
         ),
+        required_artifacts=[],
+        produced_artifacts=[],
+        contract_type="semantic_truth_fixture",
+        operation_type="semantic_truth_fixture",
+        runtime_profile="fixture",
+        block_cause=None,
+        blocked_reasons=[],
     )
 
 
@@ -226,3 +237,49 @@ def test_runtime_truth_exposes_semantic_facet_as_evidence() -> None:
     assert row.metadata["semantic_graph_id"] == (
         "semantic_graph_fixture"
     )
+
+
+def test_constrained_semantic_truth_blocks_canonical_completed_state() -> None:
+    run = _run()
+    result = _result()
+    truth = _engine(
+        _facet(
+            "constrained",
+            safe=False,
+            reasons=["SEMANTIC_TRUTH_SUCCESS_REQUIRES_DISCLOSURE"],
+            disclosures=["identity_scope_limited"],
+        )
+    ).evaluate(run, result=result, timeline=_timeline())
+
+    canonical = CanonicalOperationStateService().derive(
+        run,
+        result=result,
+        truth=truth,
+        artifacts=[],
+    )
+
+    assert canonical.status == "BLOCKED"
+    assert canonical.safe_to_report_success is False
+    assert canonical.reason_code == "semantic_truth_constrained"
+
+
+def test_not_applicable_semantic_truth_allows_canonical_completed_state() -> None:
+    run = _run()
+    result = _result()
+    truth = _engine(
+        _facet(
+            "not_applicable",
+            safe=True,
+            reasons=["semantic_graph_not_present"],
+        )
+    ).evaluate(run, result=result, timeline=_timeline())
+
+    canonical = CanonicalOperationStateService().derive(
+        run,
+        result=result,
+        truth=truth,
+        artifacts=[],
+    )
+
+    assert canonical.status == "COMPLETED"
+    assert canonical.safe_to_report_success is True
