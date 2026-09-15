@@ -1,0 +1,464 @@
+{
+  "phase1": {
+    "run_id": "task_run_2f715c82496c495d9f0e12a0ad5f5556",
+    "run_status": "partial",
+    "result_status": "completed_with_limitations",
+    "result_reason": "CATALOG_READY_WITH_INFERRED_AND_UNKNOWN_IDENTITY",
+    "event_count": 317,
+    "min_sequence": 1,
+    "max_sequence": 317,
+    "duplicate_sequences": [],
+    "missing_sequences": [],
+    "terminal_events": [
+      {
+        "sequence": 315,
+        "type": "run_partial",
+        "status": "partial"
+      }
+    ],
+    "last_events": [
+      {
+        "sequence": 310,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_phase_semantic_completion_policy"
+      },
+      {
+        "sequence": 311,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": "CATALOG_READY_WITH_INFERRED_AND_UNKNOWN_IDENTITY",
+        "stage": "after_phase_semantic_completion_policy"
+      },
+      {
+        "sequence": 312,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": "CATALOG_READY_WITH_INFERRED_AND_UNKNOWN_IDENTITY",
+        "stage": "before_taskrun_result_build"
+      },
+      {
+        "sequence": 313,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": "CATALOG_READY_WITH_INFERRED_AND_UNKNOWN_IDENTITY",
+        "stage": "before_taskrun_result_persist"
+      },
+      {
+        "sequence": 314,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": "CATALOG_READY_WITH_INFERRED_AND_UNKNOWN_IDENTITY",
+        "stage": "after_taskrun_result_persist"
+      },
+      {
+        "sequence": 315,
+        "type": "run_partial",
+        "status": "partial",
+        "reason": null,
+        "stage": null
+      },
+      {
+        "sequence": 316,
+        "type": "artifact_creation_terminalization_guard_skipped",
+        "status": "ignored",
+        "reason": null,
+        "stage": null
+      },
+      {
+        "sequence": 317,
+        "type": "phase0_prediction_calibrated",
+        "status": "mismatch",
+        "reason": null,
+        "stage": null
+      }
+    ]
+  },
+  "phase2": {
+    "run_id": "task_run_b974e0941b404c27b87f84e01667780f",
+    "run_status": "completed",
+    "result_status": "completed",
+    "result_reason": null,
+    "event_count": 86,
+    "min_sequence": 1,
+    "max_sequence": 86,
+    "duplicate_sequences": [],
+    "missing_sequences": [],
+    "terminal_events": [
+      {
+        "sequence": 85,
+        "type": "run_completed",
+        "status": "completed"
+      }
+    ],
+    "last_events": [
+      {
+        "sequence": 79,
+        "type": "validation_finished",
+        "status": "passed",
+        "reason": null,
+        "stage": null
+      },
+      {
+        "sequence": 80,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_phase_semantic_completion_policy"
+      },
+      {
+        "sequence": 81,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "after_phase_semantic_completion_policy"
+      },
+      {
+        "sequence": 82,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_taskrun_result_build"
+      },
+      {
+        "sequence": 83,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_taskrun_result_persist"
+      },
+      {
+        "sequence": 84,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "after_taskrun_result_persist"
+      },
+      {
+        "sequence": 85,
+        "type": "run_completed",
+        "status": "completed",
+        "reason": null,
+        "stage": null
+      },
+      {
+        "sequence": 86,
+        "type": "artifact_creation_terminalization_guard_skipped",
+        "status": "ignored",
+        "reason": null,
+        "stage": null
+      }
+    ]
+  },
+  "phase3": {
+    "run_id": "task_run_a9e5db3bc9e7438aaae75dc431c21f8d",
+    "run_status": "completed",
+    "result_status": "completed",
+    "result_reason": null,
+    "event_count": 119,
+    "min_sequence": 1,
+    "max_sequence": 119,
+    "duplicate_sequences": [],
+    "missing_sequences": [],
+    "terminal_events": [
+      {
+        "sequence": 118,
+        "type": "run_completed",
+        "status": "completed"
+      }
+    ],
+    "last_events": [
+      {
+        "sequence": 112,
+        "type": "validation_finished",
+        "status": "passed",
+        "reason": null,
+        "stage": null
+      },
+      {
+        "sequence": 113,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_phase_semantic_completion_policy"
+      },
+      {
+        "sequence": 114,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "after_phase_semantic_completion_policy"
+      },
+      {
+        "sequence": 115,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_taskrun_result_build"
+      },
+      {
+        "sequence": 116,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_taskrun_result_persist"
+      },
+      {
+        "sequence": 117,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "after_taskrun_result_persist"
+      },
+      {
+        "sequence": 118,
+        "type": "run_completed",
+        "status": "completed",
+        "reason": null,
+        "stage": null
+      },
+      {
+        "sequence": 119,
+        "type": "artifact_creation_terminalization_guard_skipped",
+        "status": "ignored",
+        "reason": null,
+        "stage": null
+      }
+    ]
+  },
+  "phase4": {
+    "run_id": "task_run_e349cc6effbb4dd09661b4ccd0357831",
+    "run_status": "completed",
+    "result_status": "completed",
+    "result_reason": null,
+    "event_count": 120,
+    "min_sequence": 1,
+    "max_sequence": 119,
+    "duplicate_sequences": [
+      118
+    ],
+    "missing_sequences": [],
+    "terminal_events": [
+      {
+        "sequence": 119,
+        "type": "run_completed",
+        "status": "completed"
+      }
+    ],
+    "last_events": [
+      {
+        "sequence": 113,
+        "type": "validation_finished",
+        "status": "passed",
+        "reason": null,
+        "stage": null
+      },
+      {
+        "sequence": 114,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_phase_semantic_completion_policy"
+      },
+      {
+        "sequence": 115,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "after_phase_semantic_completion_policy"
+      },
+      {
+        "sequence": 116,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_taskrun_result_build"
+      },
+      {
+        "sequence": 117,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_taskrun_result_persist"
+      },
+      {
+        "sequence": 118,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "after_taskrun_result_persist"
+      },
+      {
+        "sequence": 118,
+        "type": "artifact_creation_terminalization_guard_skipped",
+        "status": "ignored",
+        "reason": null,
+        "stage": null
+      },
+      {
+        "sequence": 119,
+        "type": "run_completed",
+        "status": "completed",
+        "reason": null,
+        "stage": null
+      }
+    ]
+  },
+  "phase5": {
+    "run_id": "task_run_43996dcdad604415888bfba8bc37596e",
+    "run_status": "completed",
+    "result_status": "completed",
+    "result_reason": null,
+    "event_count": 91,
+    "min_sequence": 1,
+    "max_sequence": 91,
+    "duplicate_sequences": [],
+    "missing_sequences": [],
+    "terminal_events": [
+      {
+        "sequence": 89,
+        "type": "run_completed",
+        "status": "completed"
+      }
+    ],
+    "last_events": [
+      {
+        "sequence": 84,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_phase_semantic_completion_policy"
+      },
+      {
+        "sequence": 85,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "after_phase_semantic_completion_policy"
+      },
+      {
+        "sequence": 86,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_taskrun_result_build"
+      },
+      {
+        "sequence": 87,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_taskrun_result_persist"
+      },
+      {
+        "sequence": 88,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "after_taskrun_result_persist"
+      },
+      {
+        "sequence": 89,
+        "type": "run_completed",
+        "status": "completed",
+        "reason": null,
+        "stage": null
+      },
+      {
+        "sequence": 90,
+        "type": "phase0_prediction_calibrated",
+        "status": "mismatch",
+        "reason": null,
+        "stage": null
+      },
+      {
+        "sequence": 91,
+        "type": "artifact_creation_terminalization_guard_skipped",
+        "status": "ignored",
+        "reason": null,
+        "stage": null
+      }
+    ]
+  },
+  "phase6": {
+    "run_id": "task_run_a7f407beab414472b929db89cce7093d",
+    "run_status": "completed",
+    "result_status": "completed",
+    "result_reason": null,
+    "event_count": 124,
+    "min_sequence": 1,
+    "max_sequence": 124,
+    "duplicate_sequences": [
+      122
+    ],
+    "missing_sequences": [
+      123
+    ],
+    "terminal_events": [
+      {
+        "sequence": 122,
+        "type": "run_completed",
+        "status": "completed"
+      }
+    ],
+    "last_events": [
+      {
+        "sequence": 117,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_phase_semantic_completion_policy"
+      },
+      {
+        "sequence": 118,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "after_phase_semantic_completion_policy"
+      },
+      {
+        "sequence": 119,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_taskrun_result_build"
+      },
+      {
+        "sequence": 120,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "before_taskrun_result_persist"
+      },
+      {
+        "sequence": 121,
+        "type": "runtime_finalization_checkpoint",
+        "status": "running",
+        "reason": null,
+        "stage": "after_taskrun_result_persist"
+      },
+      {
+        "sequence": 122,
+        "type": "run_completed",
+        "status": "completed",
+        "reason": null,
+        "stage": null
+      },
+      {
+        "sequence": 122,
+        "type": "artifact_creation_terminalization_guard_skipped",
+        "status": "ignored",
+        "reason": null,
+        "stage": null
+      },
+      {
+        "sequence": 124,
+        "type": "phase0_prediction_calibrated",
+        "status": "mismatch",
+        "reason": null,
+        "stage": null
+      }
+    ]
+  }
+}

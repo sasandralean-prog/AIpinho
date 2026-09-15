@@ -260,3 +260,7 @@ State:
 - next bounded frontier.
 
 A clean verdict is useful only when the evidence deserves it.
+
+## 2026-09-15 operational refresh
+
+The semantic 0?9 sequence is closed. New runtime work starts from the canonical authority chain in `05_RUNTIME_ARCHITECTURE_MAP.md`. For any terminal result, inspect RuntimeTruth/CanonicalOperationState before PhaseOutcome or UI status. A completed producer with blocked canonical truth must be treated as blocked for downstream admission until the propagation gap is fixed.

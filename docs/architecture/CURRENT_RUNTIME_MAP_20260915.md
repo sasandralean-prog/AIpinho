@@ -1,6 +1,4 @@
-# AIpinho Runtime Architecture Map ? 2026-09-15
-
-This context-pack copy is intentionally aligned with `docs/architecture/CURRENT_RUNTIME_MAP_20260915.md`.
+# AIpinho Current Runtime Map ? 2026-09-15
 
 > Verified against production code on `main` at baseline `820288004562f3ff17ebfe8a074987a1ea6f0e6f` and cross-checked against the GitHub default branch. Code and runtime evidence remain authoritative.
 

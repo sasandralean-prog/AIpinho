@@ -127,3 +127,7 @@ clear problem / objective
 ```
 
 Until then, it remains planning context.
+
+## 2026-09-15 planning posture
+
+Horizon H1 remains active, but the 0?9 semantic architecture update is closed. The immediate H1 frontier is runtime consistency: timeline integrity and cross-phase truth propagation discovered by the full FireTest 5 rerun.

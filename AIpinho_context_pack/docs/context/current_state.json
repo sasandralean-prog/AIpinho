@@ -1,218 +1,79 @@
 {
-  "context_pack_version": "0.4.2",
-  "generated_on": "2026-09-07",
-  "project": "AIpinho",
-  "canonical_context_path": "AIpinho_context_pack/docs/context",
-  "authority_note": "Current production code, canonical contracts/config, and validated evidence outrank this context snapshot.",
-  "repository_snapshot": {
-    "observed_before_documentation_refresh": true,
-    "aipinho": {
-      "repository": "sasandralean-prog/AIpinho",
-      "default_branch": "main",
-      "head": "a4253226d5af73ffa8eea6279943cce5915fb507",
-      "role": "runtime_application_truth"
+  "schema_version": "context_state.v2026-09-15",
+  "updated_at": "2026-09-15",
+  "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
+  "repository": {
+    "name": "sasandralean-prog/AIpinho",
+    "branch": "main",
+    "runtime_baseline_sha": "820288004562f3ff17ebfe8a074987a1ea6f0e6f"
+  },
+  "semantic_execution": {
+    "sprints_0_9": "complete",
+    "canonical_regression": {
+      "passed": 189,
+      "failed": 0
     },
-    "control": {
-      "repository": "sasandralean-prog/AIpinho-FireTest-Control",
-      "default_branch": "main",
-      "head": "dacd3e5afde981e077ef212b7c1072bfea80b8a7",
-      "role": "external_auth_replay_governed_engineering_execution_authority"
+    "roadmap_closed": true
+  },
+  "latest_firetest": {
+    "campaign": "firetest5_20260915T054806Z",
+    "verdict": "PARTIAL",
+    "phases_reached": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "final_truth_reason": "runtime_truth_contradiction",
+    "final_contradiction": "completion_completed_timeline_has_gaps",
+    "phase4_sequence": {
+      "duplicates": [
+        118
+      ],
+      "missing": []
     },
-    "envelope_requests": {
-      "repository": "sasandralean-prog/AIpinho-Envelope-Requests",
-      "default_branch": "main",
-      "head": "8ff0632736a01b5faf27e53fcffd12ecbdc3cbca",
-      "role": "unsigned_request_intake_transport"
+    "phase6_sequence": {
+      "duplicates": [
+        122
+      ],
+      "missing": [
+        123
+      ]
+    },
+    "phase4_canonical_state": "BLOCKED",
+    "phase5_canonical_state": "COMPLETED",
+    "phase6_canonical_state": "BLOCKED",
+    "safe_to_report_global_success": false,
+    "integrity": {
+      "workspace_mutations": 0,
+      "corpus_mutations": 0,
+      "final_active_runs": 0,
+      "final_stale_runs": 0
     }
   },
-  "horizon_namespace": {
-    "kind": "strategic_maturity_planning_horizons",
-    "purpose": "categorize objectives and ideas from near-term to long-range; not patches, releases, or specific implementation updates",
-    "H1": "near_term_foundational_reliability_and_evidence_maturation",
-    "H2": "medium_term_tool_intelligence_and_operations",
-    "H3": "medium_to_long_term_agentic_collaboration_and_initiative",
-    "H4": "long_range_exploratory_distributed_or_selective_evolution",
-    "not_equivalent_to": [
-      "CONTROL-H1",
-      "CONTROL-H2",
-      "CONTROL-H3"
-    ],
-    "namespace_rule": "CONTROL-H1/H2/H3 are concrete AIpinho-FireTest-Control/Lucio-Shell implementation and validation tranches; the shared numbers do not imply semantic equivalence."
-  },
-  "historical_runtime_checkpoint": {
-    "h1c0_r2_status": "H1C0_R2_READY_FOR_R3",
-    "h1c0_r3_01_status": "OPEN",
-    "latest_reviewed_slice": "H1C0.R3.01.B3.5",
-    "latest_reviewed_verdict": "R3_01_B3_5_PUBLIC_CANARY_POST_COMPILE_STALL_FORENSICS_READY",
-    "latest_reviewed_branch": "agent/codex/r3-01-b3-5-postcompile-stall-route-boundary",
-    "latest_reviewed_head": "9d5e06c9d2cd8d0a885e53855bd100b4c7a84105",
-    "reason_code": "POST_COMPILE_CAPABILITY_APPLICABILITY_RESOLUTION_STALLED",
-    "current_p0_at_checkpoint": 0,
-    "open_p1_evidence_debt": [
-      "R3_01_B3_5_P1_CAPABILITY_APPLICABILITY_RESOLUTION_CAPACITY_FRONTIER"
-    ],
-    "blocking_p2_at_checkpoint": [],
-    "b3_6_question_remains_relevant": true
-  },
-  "control_plane": {
-    "current_progression": [
-      "G3_BASELINE_VALIDATED",
-      "CONTROL-H1 validated through H1-E",
-      "CONTROL-H2 validated through H2-E",
-      "CONTROL-H3-A through H3-H accepted at defined scopes",
-      "CONTROL-H3-I end-to-end authority compression live accepted and independently reproduced",
-      "CONTROL-H3-J progressive FireTest re-entry started"
-    ],
-    "execution_baseline": {
-      "runner": "aipinho-pc",
-      "windows_account": ".\\aipinho-runner",
-      "execution_mode": "current_session",
-      "process_api": "CreateProcessW",
-      "authentication": "Ed25519 principal lucio",
-      "fresh_replay_protected_authority_required": true,
-      "elevation_default": false,
-      "inherit_secrets_default": false
-    },
-    "h3_j1_live_acceptance": {
-      "date": "2026-09-05",
-      "run_id": 33933759448,
-      "operation_id": "op_h3j_j1_firetest_unit_admission_after_venv_20260905T004300Z",
-      "semantic_capability": "engineering.test.pytest",
-      "target": "aipinho",
-      "test_path": "tests/unit/test_cognitive_validation_laboratory_service.py",
-      "result": "19 passed in 0.51s",
-      "scope": "narrow_unit_firetest_cvl_admission",
-      "broad_firetest_authority_proven": false
-    },
-    "later_unrelated_authority_note": "Control main also contains a manual-only governed Desktop Commander remote-command catalog path; this is unrelated to FireTest authority."
-  },
-  "latest_firetest_product_attempt": {
-    "date": "2026-09-06",
-    "control_run_id": 34059896495,
-    "operation_id": "op_firetest5_b_clean_final_20260906T211500Z",
-    "control_workflow_completed": true,
-    "product_verdict": "BLOCKED_PRE_TASK",
-    "phase1_status": "timeout_blocked",
-    "http_status": 200,
-    "reason_code": "PUBLIC_RUNTIME_CREATE_RUN_NOT_REACHED",
-    "internal_reason": "readonly_or_planning",
-    "task_run_id": null,
-    "runtime_terminal_result": "absent",
-    "terminal_event": "none",
-    "observer_verdict": "CHAT_COMPLETED_WITHOUT_TASK_RUN_ID",
-    "speaker_truth_safe_to_report_success": false,
-    "phases_2_to_6": "skipped_due_to_prior_block"
-  },
-  "live_observer": {
-    "merged_to_aipinho_main": true,
-    "main_head": "a4253226d5af73ffa8eea6279943cce5915fb507",
-    "purpose": "separate chat dispatch from independent TaskRun correlation and multi-endpoint read-only observation"
-  },
-  "reset_checkpoint": {
-    "date": "2026-09-07",
-    "provenance": "operator-supplied Codex governed reset report",
-    "status": "CLEAN",
-    "task_runtime": {
-      "active": 0,
-      "pending": 0,
-      "orphaned": 0,
-      "leases": 0
-    },
-    "chat": {
-      "active": 0,
-      "pending": 0,
-      "orphaned": 0
-    },
-    "active_coordination_locks_or_leases": 0,
-    "hygiene_preview_candidates": 0,
-    "historical_long_running_task": {
-      "task_run_id": "task_run_b81c3ce03ec44212b133b691131a838c",
-      "new_status": "cancelled",
-      "terminal_event_recorded": true,
-      "history_preserved": true
-    },
-    "firetest_observer_2026_09_06": {
-      "new_status": "cancelled",
-      "terminal_event_recorded": true,
-      "history_preserved": true
-    },
-    "historical_session_preserved": "firetest5_capability_observation_20260810",
-    "control": {
-      "in_progress": 0,
-      "pending": 0,
-      "stale_approvals_expired": 20,
-      "orphaned_grants_expired": 4
-    },
-    "processes": {
-      "aipinho_api": "OFFLINE",
-      "port_9088_listener": false,
-      "old_control_runner": "stopped_or_disabled",
-      "envelope_runner": "running",
-      "unrelated_processes_killed": 0
-    },
-    "integrity": {
-      "aipinho_head": "a4253226d5af73ffa8eea6279943cce5915fb507",
-      "aipinho_origin_main": "a4253226d5af73ffa8eea6279943cce5915fb507",
-      "worktree_clean": true,
-      "corpus_ok": true,
-      "corpus_modified_by_reset": false
-    },
-    "new_firetest_round_started": false
-  },
-  "ffmpeg_boundary": {
-    "firetest_2026_09_06_execution_context": {
-      "ffmpeg_visible": false,
-      "ffprobe_visible": false
-    },
-    "reset_2026_09_07_host_observation": {
-      "ffmpeg_present": true,
-      "ffprobe_present": true,
-      "installed_or_modified_by_reset": false
-    },
-    "current_interpretation": "host presence is positive infrastructure evidence but does not prove visibility in the exact governed child/runtime environment, AIpinho capability admission, or semantic media observation",
-    "next_required_proof": "reobserve executable visibility and normal capability admission/applicability in the exact fresh FireTest execution context"
-  },
-  "corpus": {
-    "expected_orientation": "D:\\rafa\\novapinhomusic",
-    "host_presence_observed_in_reset": true,
-    "integrity_observed_in_reset": true,
-    "fixture_format": "adversarial fake .m4a files",
-    "semantic_rule": "path, filename, and extension are locator/routing evidence only; semantic media truth requires governed observation"
-  },
-  "firetest5": {
-    "global_status": "NOT_READY",
-    "progressive_control_reentry": true,
-    "new_campaign_after_reset": "NOT_STARTED",
-    "current_operational_frontier": "fresh governed FireTest campaign from the clean reset baseline; prove runtime creation, exact source, corpus binding, and FFmpeg/FFprobe visibility/admission before Phase 1/conditional Phase 2",
-    "historical_b3_6_evidence_debt_retained": true
-  },
-  "next_campaign_sequence": [
-    "reobserve all repository heads and tracked state",
-    "acquire fresh firetest/runtime coordination locks",
-    "restore required governed Control runner and AIpinho runtime",
-    "prove exact source provenance and healthy port 9088 state",
-    "confirm runtime/chat hygiene remains clean",
-    "bind current corpus observation",
-    "prove FFmpeg/FFprobe visibility in exact governed environment",
-    "prove normal AIpinho capability admission/applicability",
-    "submit a fresh product request with fresh correlation identity",
-    "independently acquire and observe TaskRun",
-    "collect Phase 1 truth",
-    "execute Phase 2 only if Phase 1 permits",
-    "reconcile the result with historical B3.6 applicability/capacity evidence"
+  "current_frontier": [
+    "bind PhaseOutcome/downstream admission to canonical producer RuntimeTruth/CanonicalOperationState",
+    "repair duplicate/missing RuntimeTimeline event sequence allocation",
+    "make Runtime Doctor large-run analysis bounded and responsive"
   ],
-  "agent_taxonomy": {
-    "internal_runtime_agents": "participate IN AIpinho governed runtime",
-    "external_agent_islands": "distinct governed executors/interpreters such as Codex/Gemini",
-    "engineering_agents": "assistants working ON the repositories",
-    "external_control_plane": "separate governed operations and engineering authority layer"
+  "deferred": [
+    "m4a/subprocess encoding issue"
+  ],
+  "branch_hygiene": {
+    "sprints_0_9_retired": true,
+    "quarantine_root": "D:\\AIpinho_quarantine\\sprints_0_9_20260915"
   },
-  "notes": [
-    "RESET_STATUS=CLEAN is an operational hygiene verdict, not FireTest readiness.",
-    "A green Control workflow is not automatically AIpinho product success.",
-    "Installed is not visible; visible is not admitted; admitted is not semantic success.",
-    "Control progress cannot close AIpinho runtime debt without AIpinho runtime evidence.",
-    "Horizon H1/H2/H3/H4 must never be confused with CONTROL-H1/H2/H3.",
-    "Code, canonical contracts/config, and validated evidence win over this context pack when there is conflict."
+  "runtime_map": {
+    "markdown": "docs/architecture/CURRENT_RUNTIME_MAP_20260915.md",
+    "png": "docs/architecture/current_runtime_map_20260915.png"
+  },
+  "invariants": [
+    "MODEL != AUTHORITY",
+    "unknown is fail-closed",
+    "run_completed != safe success",
+    "Doctor diagnoses but does not grant authority",
+    "FireTest is regression evidence, not runtime configuration"
   ]
 }

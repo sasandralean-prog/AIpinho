@@ -186,3 +186,9 @@ Always separate:
 - terminalization vs semantic fulfillment.
 
 Memory is orientation. Evidence remains authority.
+
+## 2026-09-15 canonical refresh
+
+Read current operational material in this order: `CURRENT_STATE.md` at repository root, this file, `05_RUNTIME_ARCHITECTURE_MAP.md`, `06_FIRETEST5.md`, `09_CURRENT_FRONTIER.md`, then `current_state.json`. Semantic Sprints 0?9 are closed; the latest full FireTest reached phases 1?6 and ended PARTIAL because canonical truth detected timeline contradictions and exposed a cross-phase truth-propagation gap.
+
+See `12_REFRESH_20260915.md` for the file-by-file refresh ledger.

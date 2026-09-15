@@ -207,3 +207,10 @@ Current P1:
 ## Current next frontier
 
 `H1C0.R3.01.B3.6 — Capability Applicability Resolution Capacity & Admission Control`
+
+## 2026-09-15 semantic 0?9 closure and FireTest rerun
+
+- Semantic Sprints 0?9: complete, canonical regression `189 passed / 0 failed`.
+- FireTest 5 full rerun: phases 1?6 executed; global verdict `PARTIAL`.
+- New frontier: `RuntimeTruth/CanonicalOperationState -> PhaseOutcome -> downstream admission` coherence plus timeline event-sequence integrity.
+- Evidence: `reports/firetest5_20260915T054806Z/`.

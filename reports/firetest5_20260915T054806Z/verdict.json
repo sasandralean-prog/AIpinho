@@ -1,0 +1,236 @@
+{
+  "campaign_id": "firetest5_live_20260915T054806Z",
+  "campaign_status": "PARTIAL",
+  "reason_code": "FINAL_RUNTIME_TRUTH_CONTRADICTION_AND_UPSTREAM_TRUTH_PROPAGATION_GAP",
+  "safe_to_report_firetest_success": false,
+  "baseline_sha": "820288004562f3ff17ebfe8a074987a1ea6f0e6f",
+  "origin_main_sha": "820288004562f3ff17ebfe8a074987a1ea6f0e6f",
+  "phase0": {
+    "status": "blocked",
+    "decision": "NO_GO_EXPECTED_BLOCK",
+    "safe_to_start_phase1": false,
+    "predicted_reason_code": "PREDICTED_TRUTH_READINESS_GAP",
+    "calibration": "mismatch_observed"
+  },
+  "phases": {
+    "phase_1": {
+      "task_run_id": "task_run_2f715c82496c495d9f0e12a0ad5f5556",
+      "run_status": "partial",
+      "result_status": "completed_with_limitations",
+      "result_reason_code": "CATALOG_READY_WITH_INFERRED_AND_UNKNOWN_IDENTITY",
+      "canonical_state": "CREATED",
+      "speaker_truth_status": "evidence_required",
+      "safe_to_report_success": false,
+      "canonical_reason_code": "timeline_status:partial",
+      "phase_outcome_status": "satisfied_with_limitations",
+      "phase_outcome_authority_sha256": "f13d0df89753a74085ff541aa7d9f236eb1ffb8be3ceda585abec65018c5585f",
+      "event_count": 317,
+      "duplicate_sequences": [],
+      "missing_sequences": []
+    },
+    "phase_2": {
+      "task_run_id": "task_run_b974e0941b404c27b87f84e01667780f",
+      "run_status": "completed",
+      "result_status": "completed",
+      "result_reason_code": null,
+      "canonical_state": "COMPLETED",
+      "speaker_truth_status": "allowed",
+      "safe_to_report_success": true,
+      "canonical_reason_code": "timeline_status:completed",
+      "phase_outcome_status": "satisfied",
+      "phase_outcome_authority_sha256": "8fab3fabb9effb5d93f65f91ff4db74e3992fa3b44a0be82b14ca73af33cceb0",
+      "event_count": 86,
+      "duplicate_sequences": [],
+      "missing_sequences": []
+    },
+    "phase_3": {
+      "task_run_id": "task_run_a9e5db3bc9e7438aaae75dc431c21f8d",
+      "run_status": "completed",
+      "result_status": "completed",
+      "result_reason_code": null,
+      "canonical_state": "COMPLETED",
+      "speaker_truth_status": "allowed",
+      "safe_to_report_success": true,
+      "canonical_reason_code": "timeline_status:completed",
+      "phase_outcome_status": "satisfied",
+      "phase_outcome_authority_sha256": "8c400e797fcafcb2f51540b96702b5b47a8c7c0cee54a0dcd0995f0fa93afc48",
+      "event_count": 119,
+      "duplicate_sequences": [],
+      "missing_sequences": []
+    },
+    "phase_4": {
+      "task_run_id": "task_run_e349cc6effbb4dd09661b4ccd0357831",
+      "run_status": "completed",
+      "result_status": "completed",
+      "result_reason_code": null,
+      "canonical_state": "BLOCKED",
+      "speaker_truth_status": "evidence_required",
+      "safe_to_report_success": false,
+      "canonical_reason_code": "runtime_truth_contradiction",
+      "phase_outcome_status": "satisfied",
+      "phase_outcome_authority_sha256": "b57bc6e57d3a3e005aa0fe1091d2d89e5b7eb89a778922f02c226630395eed60",
+      "event_count": 120,
+      "duplicate_sequences": [
+        118
+      ],
+      "missing_sequences": []
+    },
+    "phase_5": {
+      "task_run_id": "task_run_43996dcdad604415888bfba8bc37596e",
+      "run_status": "completed",
+      "result_status": "completed",
+      "result_reason_code": null,
+      "canonical_state": "COMPLETED",
+      "speaker_truth_status": "allowed",
+      "safe_to_report_success": true,
+      "canonical_reason_code": "timeline_status:completed",
+      "phase_outcome_status": "satisfied",
+      "phase_outcome_authority_sha256": "9bf0fd34ba2714ec17ef672f580cab9375184fd1f17406edc276bea7649a8644",
+      "event_count": 91,
+      "duplicate_sequences": [],
+      "missing_sequences": []
+    },
+    "phase_6": {
+      "task_run_id": "task_run_a7f407beab414472b929db89cce7093d",
+      "run_status": "completed",
+      "result_status": "completed",
+      "result_reason_code": null,
+      "canonical_state": "BLOCKED",
+      "speaker_truth_status": "evidence_required",
+      "safe_to_report_success": false,
+      "canonical_reason_code": "runtime_truth_contradiction",
+      "phase_outcome_status": "satisfied",
+      "phase_outcome_authority_sha256": "16d339d67cd167ee7c9de26c455422fae8d79aab37daa159bc51e3220c1c7340",
+      "event_count": 124,
+      "duplicate_sequences": [
+        122
+      ],
+      "missing_sequences": [
+        123
+      ]
+    }
+  },
+  "phase1_inventory": {
+    "primary_media_files": 84,
+    "physical_probe_count": 84,
+    "ffprobe_attempts": 84,
+    "ffprobe_successes": 83,
+    "mutagen_attempts": 84,
+    "mutagen_successes": 80,
+    "semantic_identity_observed_rows": 0,
+    "reason_code": "MEDIA_PRIMARY_IDENTITY_EVIDENCE_INSUFFICIENT",
+    "catalog_safe": true,
+    "planning_safe": "true_with_limitations",
+    "truth_claim_safe": false
+  },
+  "integrity": {
+    "workspace_files_before": 1458,
+    "workspace_files_after": 1458,
+    "workspace_bytes_before": 544339738,
+    "workspace_bytes_after": 544339738,
+    "workspace_modified_in_campaign": 0,
+    "corpus_files_before": 166,
+    "corpus_files_after": 166,
+    "corpus_bytes_before": 287473867,
+    "corpus_bytes_after": 287473867,
+    "corpus_modified_in_campaign": 0,
+    "repository_head_unchanged": true
+  },
+  "queue_final": {
+    "status": "ok",
+    "active_runs": 0,
+    "queued_runs": 0,
+    "stale_runs": 0,
+    "pending_approvals": 0,
+    "active_sessions": 1,
+    "dispatcher_status": "available",
+    "worker_pool_capacity": 8,
+    "worker_pool_available_slots": 8,
+    "stale_run_ids": [],
+    "backpressure_required": false,
+    "reason_code": null
+  },
+  "teardown": {
+    "started_at": "2026-09-15T06:30:57.8949573Z",
+    "lock_release": {
+      "status": "ok",
+      "lock": {
+        "lock_id": "lock_95c4eef7ca0a4fbcb804c320d97e8d4b",
+        "workspace": "C:\\Dev\\AIpinho",
+        "owner_agent": "lucio_firetest5",
+        "owner_task_id": null,
+        "bridge_task_id": null,
+        "scope": "workspace",
+        "locked_paths": [
+          "C:\\Dev\\AIpinho"
+        ],
+        "reason": "FireTest 5 fresh campaign runtime coordination",
+        "created_at": "2026-09-15T05:50:37.875309+00:00",
+        "expires_at": "2026-09-15T06:20:37.875309+00:00",
+        "released_at": "2026-09-15T06:30:57+00:00",
+        "status": "expired",
+        "metadata_sanitized": {
+          "campaign_dir": "C:\\Dev\\AIpinho\\reports\\firetest5_20260915T054806Z"
+        }
+      }
+    },
+    "stop_output": "AIpinho API stopped (PID 8728).\r\n",
+    "port_9088_listener": null,
+    "finished_at": "2026-09-15T06:30:59.8633430Z"
+  },
+  "findings": [
+    {
+      "id": "PHASE_OUTCOME_CANONICAL_TRUTH_PROPAGATION_GAP",
+      "severity": "high",
+      "summary": "Phase 4 canonical state was BLOCKED/evidence_required/runtime_truth_contradiction, yet its PhaseOutcome projected satisfied and Phase 5/6 dependency evaluation authorized it with constraints.",
+      "evidence": [
+        "phase4 canonical_state=BLOCKED",
+        "phase4 PhaseOutcome phase_dependency.status=satisfied",
+        "phase4->phase5 authorized=true",
+        "phase4->phase6 authorized=true"
+      ]
+    },
+    {
+      "id": "TIMELINE_SEQUENCE_COLLISION",
+      "severity": "high",
+      "summary": "Phase 4 duplicated sequence 118. Phase 6 duplicated sequence 122 and omitted sequence 123; final RuntimeTruth blocked success with completion_completed_timeline_has_gaps.",
+      "evidence": [
+        "sequence_audit.json",
+        "phase6_truth.json"
+      ]
+    },
+    {
+      "id": "SUBPROCESS_CP1252_DECODE_ERROR",
+      "severity": "medium",
+      "summary": "Runtime stderr observed UnicodeDecodeError in subprocess._readerthread using cp1252 for byte 0x81 during Phase 4. No fix was applied in this campaign.",
+      "evidence": [
+        "data/logs/runtime/aipinho_api_9088.err.log observed during campaign"
+      ]
+    },
+    {
+      "id": "RUNTIME_DOCTOR_ANALYSIS_TIMEOUT",
+      "severity": "medium",
+      "summary": "POST /api/v1/runtime/doctor/analyze timed out for Phase 4 and Phase 6 during post-run diagnosis.",
+      "evidence": [
+        "operator observation during campaign"
+      ]
+    },
+    {
+      "id": "ROOT_ROLE_PATH_TOKENIZATION",
+      "severity": "low",
+      "summary": "Phase 6 artifact provenance parsed a prompt root as C:\\Users\\rafae\\Documents\\PinhoabacaxiMusicasDesktop. Executar, although TaskRun workspace remained the correct path.",
+      "evidence": [
+        "phase6 artifact manifests"
+      ]
+    },
+    {
+      "id": "MEDIA_IDENTITY_TRUTH_REMAINS_INCOMPLETE",
+      "severity": "expected_limitation",
+      "summary": "All 84 primary-media rows received physical observation, but governed semantic identity remained 0/84; catalog/planning remained usable only under explicit limitations.",
+      "evidence": [
+        "phase1 artifacts",
+        "phase1 PhaseOutcome"
+      ]
+    }
+  ]
+}

@@ -270,3 +270,7 @@ A Control artifact proves only its bounded operation. A configured route proves 
 ## Point
 
 Continuity should be cheap. Runtime truth should never become cheap.
+
+## 2026-09-15 handoff override
+
+For a new session, treat older FireTest `PUBLIC_RUNTIME_CREATE_RUN_NOT_REACHED` notes as historical. Read `CURRENT_STATE.md`, `05_RUNTIME_ARCHITECTURE_MAP.md`, `06_FIRETEST5.md`, and `09_CURRENT_FRONTIER.md` first. The current product frontier is the post-Sprint-9 full-rerun truth-propagation/timeline defect, not pre-TaskRun creation.

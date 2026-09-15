@@ -80,3 +80,7 @@ Humor/metaphors are welcome when they reinforce the boundary:
 ## Current prompt warning
 
 For the B3.6 frontier, mission orders must not authorize FireTest 5, C, ffprobe installation, budget increases, or corpus filtering before the public canary gate proves applicability-resolution capacity/admission behavior.
+
+## 2026-09-15 prompt warning
+
+Do not write new mission orders around historical B3.6 assumptions. The current concrete frontier is generic: timeline sequence integrity, canonical producer-truth propagation into downstream admission, and Doctor observability. `.m4a` remains deferred.
