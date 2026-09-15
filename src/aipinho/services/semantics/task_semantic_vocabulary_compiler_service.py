@@ -116,6 +116,32 @@ class TaskSemanticVocabularyCompilerService:
                 )
             for concept_id in self._mapping_keys(
                 container,
+                ("use_safety", "required_use_safety"),
+            ):
+                self._append_task_concept(
+                    concepts,
+                    seen=seen,
+                    concept_id=concept_id,
+                    concept_type="use_safety",
+                    source_kind=(
+                        "semantic_intent_graph"
+                        if container_name == "semantic_intent_graph"
+                        else "intent_map"
+                        if container_name == "intent_map"
+                        else "canonical_execution_plan"
+                    ),
+                    source_ref=plan_ref,
+                    source_field=container_name,
+                    source_sha256=source_sha256,
+                    allowed_states=self.system_vocabulary.concept_type_state_domains()[
+                        "use_safety"
+                    ],
+                    requirement_states=self.system_vocabulary.concept_type_requirement_domains()[
+                        "use_safety"
+                    ],
+                )
+            for concept_id in self._mapping_keys(
+                container,
                 ("semantic_properties", "required_semantic_properties"),
             ):
                 self._append_task_concept(
@@ -184,6 +210,26 @@ class TaskSemanticVocabularyCompilerService:
                     source_ref=step_ref,
                     source_field="required_downstream_uses",
                     source_sha256=source_sha256,
+                )
+            for concept_id in self._mapping_keys(
+                step_metadata,
+                ("use_safety", "required_use_safety"),
+            ):
+                self._append_task_concept(
+                    concepts,
+                    seen=seen,
+                    concept_id=concept_id,
+                    concept_type="use_safety",
+                    source_kind="canonical_execution_step",
+                    source_ref=step_ref,
+                    source_field="required_use_safety",
+                    source_sha256=source_sha256,
+                    allowed_states=self.system_vocabulary.concept_type_state_domains()[
+                        "use_safety"
+                    ],
+                    requirement_states=self.system_vocabulary.concept_type_requirement_domains()[
+                        "use_safety"
+                    ],
                 )
             for concept_id in self._mapping_keys(
                 step_metadata,

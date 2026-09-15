@@ -450,7 +450,7 @@ class RuntimeDoctorRootCauseEngine:
         "EVIDENCE_CONFLICT": ("semantic_assertions", ["src/aipinho/schemas/artifacts/contract_perception.py", "src/aipinho/services/artifacts/contract_driven_perception_service.py"], ["semantic_assertions"]),
         "KNOWLEDGE_MISSING": ("knowledge_representation", ["src/aipinho/schemas/artifacts/contract_perception.py", "src/aipinho/services/artifacts/contract_driven_perception_service.py"], ["knowledge_records"]),
         "TRUTH_NOT_READY": ("truth_readiness", ["src/aipinho/schemas/artifacts/contract_perception.py", "src/aipinho/services/artifacts/contract_driven_perception_service.py", "src/aipinho/services/runtime/runtime_truth_engine.py"], ["semantic_coverage_2", "speaker_truth"]),
-        "CVL_PROFILE_MISSING": ("firetest_lab", ["src/aipinho/services/cvl/cognitive_validation_laboratory_service.py"], ["suite"]),
+        "CVL_PROFILE_MISSING": ("cognitive_validation_lab", ["src/aipinho/services/cvl/cognitive_validation_laboratory_service.py"], ["suite"]),
         "PREDICTED_CAPABILITY_MISSING": ("prediction", ["src/aipinho/services/cvl/cognitive_validation_laboratory_service.py"], ["predict"]),
         "PREDICTED_EVIDENCE_AVAILABILITY_GAP": ("evidence_recording", ["src/aipinho/services/cvl/cognitive_validation_laboratory_service.py", "src/aipinho/services/artifacts/contract_driven_perception_service.py"], ["predict", "evidence_set"]),
         "PREDICTED_KNOWLEDGE_AVAILABILITY_GAP": ("knowledge_representation", ["src/aipinho/services/cvl/cognitive_validation_laboratory_service.py", "src/aipinho/services/artifacts/contract_driven_perception_service.py"], ["predict", "knowledge_records"]),

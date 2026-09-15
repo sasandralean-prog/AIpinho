@@ -67,7 +67,7 @@ class SystemSemanticVocabularyService:
     def concept_type_state_domains(self) -> dict[str, list[bool | int | float | str]]:
         epistemic = list(self._EPISTEMIC_STATES)
         return {
-            "use_safety": [],
+            "use_safety": [True, "true_with_limitations", False],
             "epistemic_property": epistemic,
             "behavioral_property": epistemic,
             "structural_property": epistemic,
@@ -85,7 +85,7 @@ class SystemSemanticVocabularyService:
     ) -> dict[str, list[bool | int | float | str]]:
         epistemic = list(self._EPISTEMIC_REQUIREMENT_STATES)
         return {
-            "use_safety": [],
+            "use_safety": [True, "true_with_limitations"],
             "epistemic_property": epistemic,
             "behavioral_property": epistemic,
             "structural_property": epistemic,

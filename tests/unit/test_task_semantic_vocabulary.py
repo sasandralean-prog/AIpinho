@@ -208,6 +208,7 @@ def test_step_typed_requirements_extend_task_vocabulary() -> None:
     step = run.plan.canonical_execution_plan.execution_steps[0]
     step.metadata = {
         "required_downstream_uses": ["catalog_planning"],
+        "required_use_safety": {"safe_for_analysis": [True]},
         "required_semantic_properties": {
             "content_identity": ["observed"]
         },
@@ -218,8 +219,17 @@ def test_step_typed_requirements_extend_task_vocabulary() -> None:
     typed = {(item.concept_type, item.concept_id) for item in vocabulary.concepts}
 
     assert ("downstream_use", "catalog_planning") in typed
+    assert ("use_safety", "safe_for_analysis") in typed
     assert ("epistemic_property", "content_identity") in typed
     assert ("evidence_domain", "identity_evidence") in typed
+    use_safety = next(
+        item
+        for item in vocabulary.concepts
+        if item.concept_type == "use_safety"
+        and item.concept_id == "safe_for_analysis"
+    )
+    assert use_safety.allowed_states == [True, "true_with_limitations", False]
+    assert use_safety.requirement_states == [True, "true_with_limitations"]
 
 
 def test_tampered_vocabulary_fails_authority_verification() -> None:
