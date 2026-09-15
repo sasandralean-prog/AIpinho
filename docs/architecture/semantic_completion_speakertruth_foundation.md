@@ -2,7 +2,7 @@
 
 ## Status
 
-Sprint 8 foundation over the completed Sprint 0-7 semantic authority chain.
+Sprint 8 complete over the completed Sprint 0-7 semantic authority chain.
 
 This layer does not create a second SpeakerTruth authority.
 
@@ -118,14 +118,16 @@ Integration with RuntimeTruthEngine must preserve:
 
 Runtime Doctor should diagnose, not decide independently.
 
-Sprint 8 integration should add explicit violations for cases such as:
+Sprint 8 integration adds explicit violations for cases such as:
 
 - canonical COMPLETED while semantic facet is not safe;
 - SpeakerTruth safe=true while semantic facet is blocked or unresolved;
 - completed lifecycle with semantic projection invalidated by graph revision;
 - invalid semantic authority referenced by current runtime truth.
 
-The Doctor must surface the exact semantic reason codes and graph identity.
+The Doctor surfaces the exact semantic reason codes together with graph id/hash,
+facet id/hash and active revision identity. It also fail-closes on a mismatch
+between RuntimeTruth semantic identity and the governed semantic evidence row.
 
 ## Sprint 9 handoff
 

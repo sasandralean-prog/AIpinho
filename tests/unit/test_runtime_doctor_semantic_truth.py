@@ -28,6 +28,22 @@ def _snapshot(
             "semantic_truth_reason_codes": [
                 f"semantic_truth_{semantic_status}"
             ],
+            "semantic_graph_id": "semantic_graph_current",
+            "semantic_graph_authority_sha256": "graph_sha_current",
+            "semantic_truth_facet_id": "semantic_truth_facet_current",
+            "semantic_truth_facet_authority_sha256": "facet_sha_current",
+            "evidence": [
+                {
+                    "evidence_type": "semantic_truth_facet",
+                    "evidence_id": "semantic_truth_facet_current",
+                    "metadata": {
+                        "semantic_graph_id": "semantic_graph_current",
+                        "semantic_graph_authority_sha256": "graph_sha_current",
+                        "active_revision_id": "semantic_graph_revision_current",
+                        "authority_sha256": "facet_sha_current",
+                    },
+                }
+            ],
         },
     )
 
@@ -61,6 +77,40 @@ def test_doctor_flags_speaker_success_when_semantic_truth_is_unsafe() -> None:
     )
     assert semantic.evidence_path == "speaker_truth.semantic_truth"
     assert semantic.observed["semantic_truth_status"] == "blocked"
+    assert semantic.observed["semantic_graph_id"] == "semantic_graph_current"
+    assert semantic.observed["semantic_graph_authority_sha256"] == "graph_sha_current"
+    assert semantic.observed["semantic_truth_facet_id"] == "semantic_truth_facet_current"
+    assert semantic.observed["active_revision_id"] == "semantic_graph_revision_current"
+
+
+def test_doctor_flags_semantic_truth_evidence_binding_mismatch() -> None:
+    snapshot = _snapshot(
+        semantic_status="ready",
+        semantic_safe=True,
+        speaker_safe=True,
+    )
+    snapshot.speaker_truth["semantic_truth_facet_authority_sha256"] = (
+        "facet_sha_tampered"
+    )
+    snapshot.speaker_truth["semantic_graph_id"] = "semantic_graph_foreign"
+
+    analysis = _analyze(snapshot)
+
+    violation = next(
+        item
+        for item in analysis.violations
+        if item.violation_type == "semantic_truth_evidence_binding_invalid"
+    )
+    assert violation.evidence_path == "speaker_truth.semantic_truth_evidence"
+    mismatches = violation.observed["binding_mismatches"]
+    assert mismatches["semantic_truth_facet_authority_sha256"] == {
+        "runtime_truth": "facet_sha_tampered",
+        "evidence": "facet_sha_current",
+    }
+    assert mismatches["semantic_graph_id"] == {
+        "runtime_truth": "semantic_graph_foreign",
+        "evidence": "semantic_graph_current",
+    }
 
 
 def test_doctor_flags_completed_but_unresolved_semantic_truth() -> None:

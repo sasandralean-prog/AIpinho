@@ -198,8 +198,86 @@ class RuntimeDoctorContractValidator:
         semantic_truth_status = str(truth.get("semantic_truth_status") or "")
         semantic_truth_safe = truth.get("semantic_truth_safe_to_report_success")
         semantic_truth_reasons = list(truth.get("semantic_truth_reason_codes") or [])
+        semantic_graph_id = truth.get("semantic_graph_id")
+        semantic_graph_authority = truth.get("semantic_graph_authority_sha256")
+        semantic_facet_id = truth.get("semantic_truth_facet_id")
+        semantic_facet_authority = truth.get(
+            "semantic_truth_facet_authority_sha256"
+        )
+        semantic_evidence = next(
+            (
+                item
+                for item in (truth.get("evidence") or [])
+                if isinstance(item, dict)
+                and item.get("evidence_type") == "semantic_truth_facet"
+            ),
+            None,
+        )
+        semantic_evidence_metadata = (
+            semantic_evidence.get("metadata")
+            if isinstance(semantic_evidence, dict)
+            and isinstance(semantic_evidence.get("metadata"), dict)
+            else {}
+        )
+        semantic_context = {
+            "semantic_truth_status": semantic_truth_status,
+            "semantic_truth_safe_to_report_success": semantic_truth_safe,
+            "semantic_truth_reason_codes": semantic_truth_reasons,
+            "semantic_graph_id": semantic_graph_id,
+            "semantic_graph_authority_sha256": semantic_graph_authority,
+            "semantic_truth_facet_id": semantic_facet_id,
+            "semantic_truth_facet_authority_sha256": semantic_facet_authority,
+            "active_revision_id": semantic_evidence_metadata.get(
+                "active_revision_id"
+            ),
+        }
         canonical = (observed.task_run.get("canonical_state") if isinstance(observed.task_run.get("canonical_state"), dict) else {})
         canonical_status = str(canonical.get("status") or "")
+        semantic_binding_mismatches: dict[str, dict[str, Any]] = {}
+        if isinstance(semantic_evidence, dict):
+            binding_pairs = {
+                "semantic_truth_facet_id": (
+                    semantic_facet_id,
+                    semantic_evidence.get("evidence_id"),
+                ),
+                "semantic_truth_facet_authority_sha256": (
+                    semantic_facet_authority,
+                    semantic_evidence_metadata.get("authority_sha256"),
+                ),
+                "semantic_graph_id": (
+                    semantic_graph_id,
+                    semantic_evidence_metadata.get("semantic_graph_id"),
+                ),
+                "semantic_graph_authority_sha256": (
+                    semantic_graph_authority,
+                    semantic_evidence_metadata.get(
+                        "semantic_graph_authority_sha256"
+                    ),
+                ),
+            }
+            for field, (runtime_value, evidence_value) in binding_pairs.items():
+                if (
+                    runtime_value is not None
+                    and evidence_value is not None
+                    and runtime_value != evidence_value
+                ):
+                    semantic_binding_mismatches[field] = {
+                        "runtime_truth": runtime_value,
+                        "evidence": evidence_value,
+                    }
+        if semantic_binding_mismatches:
+            rows.append(
+                self._violation(
+                    "semantic_truth_evidence_binding_invalid",
+                    "Runtime semantic truth identity does not match its governed evidence.",
+                    "runtime_truth_semantic_identity_matches_evidence",
+                    {
+                        **semantic_context,
+                        "binding_mismatches": semantic_binding_mismatches,
+                    },
+                    "speaker_truth.semantic_truth_evidence",
+                )
+            )
         if completion_status in {"completed", "COMPLETED"} and validation_status in {"blocked", "failed", "incomplete", "missing"}:
             rows.append(self._violation("completion_validation_divergence", "Completion cannot be completed while validation is not successful.", completion_status, validation_status, "completion.validation"))
         semantic_states = self._artifact_semantic_states(observed.validation, observed.completion)
@@ -237,11 +315,7 @@ class RuntimeDoctorContractValidator:
                     "speaker_truth_semantic_inconsistent",
                     "Speaker Truth cannot report success when semantic truth is not safe.",
                     "semantic_truth_safe",
-                    {
-                        "semantic_truth_status": semantic_truth_status,
-                        "semantic_truth_safe_to_report_success": semantic_truth_safe,
-                        "semantic_truth_reason_codes": semantic_truth_reasons,
-                    },
+                    semantic_context,
                     "speaker_truth.semantic_truth",
                 )
             )
@@ -251,10 +325,7 @@ class RuntimeDoctorContractValidator:
                     "completion_semantic_truth_divergence",
                     "Completion cannot be safely reported while required semantic relations are blocked or unresolved.",
                     "semantic_truth:ready_or_constrained",
-                    {
-                        "semantic_truth_status": semantic_truth_status,
-                        "semantic_truth_reason_codes": semantic_truth_reasons,
-                    },
+                    semantic_context,
                     "completion.semantic_truth",
                 )
             )
@@ -299,6 +370,7 @@ class RuntimeDoctorRootCauseEngine:
         "completion_artifact_semantic_divergence": ("artifact_semantic_validation", ["src/aipinho/services/governance/runtime/readonly_analysis_artifact_runtime_service.py"], ["_validate_outputs", "_completion"]),
         "speaker_truth_semantic_inconsistent": ("semantic_speaker_truth", ["src/aipinho/services/runtime/runtime_truth_engine.py", "src/aipinho/services/semantics/semantic_completion_truth_service.py"], ["evaluate"]),
         "completion_semantic_truth_divergence": ("semantic_speaker_truth", ["src/aipinho/services/runtime/runtime_truth_engine.py", "src/aipinho/services/semantics/semantic_completion_truth_service.py"], ["evaluate"]),
+        "semantic_truth_evidence_binding_invalid": ("semantic_speaker_truth", ["src/aipinho/services/runtime/runtime_truth_engine.py", "src/aipinho/services/semantics/semantic_truth_facet_authority_service.py"], ["evaluate", "compute_authority_sha256"]),
         "ENTITY_NOT_OBSERVED": ("entity_compilation", ["src/aipinho/services/artifacts/observed_entity_compilation_service.py"], ["compile"]),
         "ENTITY_SOURCE_NOT_OBSERVED": ("entity_compilation", ["src/aipinho/services/artifacts/observed_entity_compilation_service.py"], ["compile"]),
         "ENTITY_CARDINALITY_TRUNCATED": ("entity_compilation", ["src/aipinho/services/artifacts/observed_entity_compilation_service.py"], ["compile"]),
