@@ -35,3 +35,13 @@ def test_semantic_propositions_prioritize_mutation_over_build_outputs_when_both_
     assert graph.mutation_intent is True
     assert graph.execution_intent is True
     assert graph.state_effect == "workspace_mutation"
+
+def test_build_directory_exclusion_is_not_build_execution_prohibition():
+    graph = SemanticPropositionNormalizationService().normalize(
+        "Corrija o codigo e execute o build. Nao versione build, caches ou artefatos transitorios.",
+    )
+
+    assert graph.mutation_intent is True
+    assert graph.execution_intent is True
+    assert "build_execution" in graph.requested_effects
+    assert "build_execution" not in graph.prohibited_effects

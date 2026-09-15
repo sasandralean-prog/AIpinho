@@ -1858,6 +1858,12 @@ class CanonicalPublicChatService:
     def _workspace_from_request(self, request: ChatRequest) -> str | None:
         if request.context and request.context.active_workspace:
             return request.context.active_workspace
+        labeled = self._first_path_after_labels(
+            request.message,
+            ("workspace do app", "workspace alvo", "workspace", "projeto alvo", "projeto", "project"),
+        )
+        if labeled:
+            return labeled
         paths = self._extract_paths(request.message)
         return paths[-1] if paths else None
 

@@ -68,6 +68,7 @@ class SemanticPropositionNormalizationService:
     _FILE_WRITE_VERBS = ("criar", "crie", "escrever", "escreva", "salvar", "salve", "gravar", "grave", "alterar", "altere", "modificar", "modifique", "editar", "edite", "mover", "delete", "apagar")
     _MUTATION_VERBS = ("alterar", "altere", "modificar", "modifique", "editar", "edite", "corrigir", "corrija", "consertar", "conserte", "implementar", "implemente", "refatorar", "refatore", "aplicar", "aplique")
     _BUILD_OBJECT_TERMS = ("build", "apk", "package", "pacote", "installer")
+    _BUILD_ACTION_TERMS = ("executar", "execute", "rodar", "rode", "run", "gerar", "gere", "compilar", "compile", "execucao", "buildar")
     _COMMAND_OBJECT_TERMS = ("comando", "shell", "pytest", "npm test", "gradlew", "gradle")
     _COMMAND_ACTION_TERMS = ("executar", "execute", "rodar", "rode", "run", "comando")
     _READONLY_TERMS = (
@@ -260,7 +261,7 @@ class SemanticPropositionNormalizationService:
                 effects.add("workspace_mutation")
             elif self._contains_exact(clause, self._PATCH_PROPOSAL_VERBS):
                 effects.add("proposal_only")
-        if self._contains_exact(clause, self._BUILD_OBJECT_TERMS):
+        if self._contains_exact(clause, self._BUILD_OBJECT_TERMS) and self._contains_exact(clause, self._BUILD_ACTION_TERMS):
             effects.add("build_execution")
         if self._contains_exact(clause, self._COMMAND_OBJECT_TERMS) and self._contains_exact(clause, self._COMMAND_ACTION_TERMS):
             effects.add("runtime_execution")

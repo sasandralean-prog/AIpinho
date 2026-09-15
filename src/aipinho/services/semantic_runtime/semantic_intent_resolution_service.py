@@ -34,6 +34,13 @@ class SemanticIntentResolutionService:
         "permitir",
     )
     _PERMANENT_PERMISSION_TERMS = ("permanente", "sempre", "config", "registry", "registrar")
+
+    _OPERATIONAL_MISSION_PATTERNS = (
+        r"\b(?:corrija|conserte|implemente|aplique|adicione|investigue|valide|compile|teste|refatore)\b",
+        r"\b(?:execute|rode)\s+(?:o\s+|a\s+)?(?:build|gradle|testes?|tests?|comando|aplicativo|app)\b",
+        r"\bgit\s+(?:commit|push)\b",
+        r"\b(?:faca|fa?a)\s+(?:commit|push|mudancas|alteracoes)\b",
+    )
     _PERMISSION_ACTION_PATTERNS = (
         r"\b(?:eu\s+)?dou permissao\b",
         r"\b(?:eu\s+)?concedo\s+permissao\b",
@@ -57,7 +64,7 @@ class SemanticIntentResolutionService:
             return base
 
         normalized = normalize_text(text)
-        if self._is_positive_permission_grant(normalized):
+        if self._is_positive_permission_grant(normalized) and not self._has_operational_mission_directive(normalized):
             permanent = any(term in normalized for term in self._PERMANENT_PERMISSION_TERMS)
             operation_type = "config_permission_grant" if permanent else "session_permission_grant"
             return CanonicalIntentDecision(
@@ -88,3 +95,5 @@ class SemanticIntentResolutionService:
         if not any(term in normalized for term in self._PERMISSION_GRANT_TERMS):
             return False
         return any(re.search(pattern, normalized) for pattern in self._PERMISSION_ACTION_PATTERNS)
+    def _has_operational_mission_directive(self, normalized: str) -> bool:
+        return any(re.search(pattern, normalized) for pattern in self._OPERATIONAL_MISSION_PATTERNS)

@@ -157,13 +157,6 @@ class CanonicalIntentRouter:
         "inicie o projeto",
         "crie projeto",
         "implementar mvp",
-        "implemente",
-        "implementar",
-        "corrija",
-        "corrigir",
-        "conserte",
-        "rebuild",
-        "sprint",
         "crie uma pasta",
         "criar pasta",
         "crie pasta",
@@ -321,7 +314,7 @@ class CanonicalIntentRouter:
                 evidence=["explicit_session_diagnostic"],
                 semantic_intent_graph=semantic_graph,
             )
-        if has_any(normalized, self.FIX_REQUEST_TERMS):
+        if has_any(normalized, self.FIX_REQUEST_TERMS) and not semantic_graph.execution_intent:
             return CanonicalIntentDecision(
                 intent_type="workspace_fix_request",
                 operation_type="workspace_fix_request",

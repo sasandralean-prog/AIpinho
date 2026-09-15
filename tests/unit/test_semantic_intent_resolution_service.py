@@ -160,3 +160,58 @@ def test_proposal_artifacts_with_write_prohibition_do_not_promote_to_patch_reque
     assert decision.readonly is True
     assert decision.side_effect_requested is False
     assert decision.semantic_intent_graph.state_effect == "proposal_only"
+
+def test_embedded_authorization_does_not_replace_operational_patch_intent() -> None:
+    prompt = (
+        "Autorizo nesta missao leitura, diagnostico, edicao de codigo, criacao de testes, "
+        "execucao de Gradle build e git push. "
+        r"WORKSPACE DO APP: C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop. "
+        r"CORPUS SOMENTE LEITURA: D:\rafa\novapinhomusic. "
+        "Nao modifique o corpus. Corrija o pipeline de codec no workspace, edite o codigo, "
+        "adicione testes, execute o build, valide e depois faca commit e push. "
+        "Nao versione build, caches ou artefatos transitorios."
+    )
+
+    decision = SemanticIntentResolutionService().resolve(prompt, source_channel="unit")
+
+    assert decision.intent_type == "patch_or_write_request"
+    assert decision.operation_type == "patch_request"
+    assert decision.requires_task is True
+    assert decision.side_effect_requested is True
+    assert decision.readonly is False
+    assert "positive_permission_grant_signal" not in decision.evidence
+
+
+def test_long_operational_prompt_prefers_labeled_workspace_over_later_corpus_path() -> None:
+    prompt = (
+        r"WORKSPACE DO APP A SER CORRIGIDO: C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop. "
+        r"CORPUS DE MUSICAS PARA TESTES - SOMENTE LEITURA: D:\rafa\novapinhomusic. "
+        "Corrija o player no workspace e nao modifique o corpus."
+    )
+    service = CanonicalPublicChatService()
+    workspace = service._workspace_from_request(ChatRequest(message=prompt, session_id="unit_session"))
+
+    assert workspace == r"C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop"
+
+def test_public_chat_long_authorized_mission_is_not_session_diagnostic() -> None:
+    prompt = (
+        "Autorizo nesta missao leitura, diagnostico, edicao de codigo, criacao de testes, "
+        "execucao de Gradle build e git push. "
+        r"WORKSPACE DO APP A SER CORRIGIDO: C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop. "
+        r"CORPUS DE MUSICAS PARA TESTES - SOMENTE LEITURA: D:\rafa\novapinhomusic. "
+        "Nao modifique o corpus. Investigue e corrija os problemas de codec no workspace. "
+        "Adicione testes, execute o build, valide, faca commit e git push. "
+        "Nao versione build, caches ou artefatos transitorios."
+    )
+
+    response = CanonicalPublicChatService().respond(
+        ChatRequest(message=prompt, session_id="unit_long_mission"),
+        source_channel="mobile_chat",
+    )
+
+    assert response.operation_type == "patch_request"
+    assert response.intent["intent_type"] == "patch_or_write_request"
+    assert response.governance_lifecycle["intent"]["requires_task"] is True
+    assert response.governance_lifecycle["operation_contract"]["workspace_path"] == r"C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop"
+    assert response.governance_lifecycle["operation_contract"]["read_only"] is False
+    assert response.governance_lifecycle["operation_contract"]["workspace_mutation"] is True
