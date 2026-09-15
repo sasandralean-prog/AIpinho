@@ -1,100 +1,100 @@
 {
-  "genome_version": "1.0",
+  "genome_version": "2.0",
   "project_name": "AIpinho",
-  "project_description": "Local modular policy-driven AI runtime foundation",
-  "project_version": "0.1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
-  "generator": "AIpinho Genome Generator v1",
-  "mode": "READ_ONLY",
-  "source_root": "c:\\Dev\\AIpinho",
-  "genome_root": "c:\\Dev\\AIpinho\\genome",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "generator": "scripts/maintenance/regenerate_genome.py",
+  "mode": "READ_ONLY_DERIVED_SNAPSHOT",
+  "source_repository": "sasandralean-prog/AIpinho",
+  "source_branch": "main",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "authority_note": "Generated orientation only; code/config/contracts and validated runtime evidence outrank Genome.",
+  "metadata": {
+    "tracked_files": 18014,
+    "python_modules": 2408,
+    "services": 1214,
+    "schemas": 942,
+    "repositories": 52,
+    "registries": 47,
+    "router_modules": 138,
+    "endpoints": 1086,
+    "test_files": 1018,
+    "test_functions": 3183
+  },
   "structure": {
     "architecture": [
       "architecture_manifest.json",
       "dependency_graph.json",
       "execution_graph.json",
-      "pipeline_graph.json",
-      "module_graph.json"
+      "module_graph.json",
+      "pipeline_graph.json"
     ],
     "runtime": [
+      "runtime_endpoints.json",
+      "runtime_events.json",
       "runtime_manifest.json",
       "runtime_services.json",
-      "runtime_events.json",
-      "runtime_endpoints.json",
       "runtime_state.json"
     ],
     "contracts": [
-      "contracts_manifest.json",
-      "contracts_index.json",
+      "contract_consumers.json",
       "contract_producers.json",
-      "contract_consumers.json"
+      "contracts_index.json",
+      "contracts_manifest.json"
     ],
     "symbols": [
-      "symbol_index.json",
       "class_index.json",
       "function_index.json",
-      "public_api.json"
+      "public_api.json",
+      "symbol_index.json"
     ],
     "roles": [
-      "roles_manifest.json",
       "role_capabilities.json",
-      "role_dependencies.json"
+      "role_dependencies.json",
+      "roles_manifest.json"
     ],
     "models": [
-      "models_manifest.json",
+      "inference_routes.json",
       "model_usage.json",
-      "inference_routes.json"
+      "models_manifest.json"
     ],
     "services": [
-      "services_manifest.json",
+      "service_categories.json",
       "service_dependencies.json",
-      "service_categories.json"
+      "services_manifest.json"
     ],
     "api": [
       "api_manifest.json",
-      "routers.json",
-      "endpoints.json"
+      "endpoints.json",
+      "routers.json"
     ],
     "data": [
-      "repositories.json",
       "registries.json",
+      "repositories.json",
       "stores.json"
     ],
     "tools": [
-      "tools_manifest.json",
+      "skills_manifest.json",
       "tool_calls.json",
-      "skills_manifest.json"
+      "tools_manifest.json"
     ],
     "events": [
-      "events.json",
+      "event_consumers.json",
       "event_producers.json",
-      "event_consumers.json"
+      "events.json"
     ],
     "tests": [
-      "tests_manifest.json",
-      "coverage_map.json"
+      "coverage_map.json",
+      "tests_manifest.json"
     ],
     "reports": [
+      "genome_statistics.md",
       "genome_summary.md",
-      "genome_statistics.md"
+      "github_folder_audit_20260915.md"
     ]
   },
-  "metadata": {
-    "total_modules": 2340,
-    "total_services": 1182,
-    "total_schemas": 910,
-    "total_repositories": 58,
-    "total_registries": 9,
-    "total_routers": 139,
-    "total_tests": 952,
-    "python_version": ">=3.11",
-    "main_dependencies": [
-      "fastapi>=0.100",
-      "uvicorn>=0.23",
-      "pydantic>=1.10",
-      "PyYAML>=6.0",
-      "google-genai>=0.3.0",
-      "openai>=2.0.0"
-    ]
+  "github_remote_scan": {
+    "verified_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+    "recursive_tree_complete": true,
+    "remote_nodes_observed": 18529
   }
 }

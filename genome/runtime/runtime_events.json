@@ -1,177 +1,239 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
-  "runtime_events": [
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "event_types": [
     {
-      "event": "task_created",
-      "who_publishes": ["services.runtime.task_runtime_service"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "task_id": "string",
-        "task_type": "string",
-        "created_at": "datetime"
-      },
-      "type": "domain_event"
+      "event_type": "runtime_finalization_checkpoint",
+      "static_occurrences": 5
     },
     {
-      "event": "task_started",
-      "who_publishes": ["services.runtime.task_runtime_service"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "task_id": "string",
-        "started_at": "datetime"
-      },
-      "type": "domain_event"
+      "event_type": "run_queued",
+      "static_occurrences": 3
     },
     {
-      "event": "task_completed",
-      "who_publishes": ["services.runtime.task_runtime_service"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "task_id": "string",
-        "completed_at": "datetime",
-        "result": "object"
-      },
-      "type": "domain_event"
+      "event_type": "task_blocked",
+      "static_occurrences": 3
     },
     {
-      "event": "task_failed",
-      "who_publishes": ["services.runtime.task_runtime_service"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "task_id": "string",
-        "failed_at": "datetime",
-        "error": "string"
-      },
-      "type": "domain_event"
+      "event_type": "approval_approved",
+      "static_occurrences": 2
     },
     {
-      "event": "execution_step_started",
-      "who_publishes": ["services.runtime.execution_graph_service"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "task_id": "string",
-        "step_id": "string",
-        "started_at": "datetime"
-      },
-      "type": "domain_event"
+      "event_type": "task_resumed_after_approval",
+      "static_occurrences": 2
     },
     {
-      "event": "execution_step_completed",
-      "who_publishes": ["services.runtime.execution_graph_service"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "task_id": "string",
-        "step_id": "string",
-        "completed_at": "datetime",
-        "result": "object"
-      },
-      "type": "domain_event"
+      "event_type": "artifact_late_rejected",
+      "static_occurrences": 2
     },
     {
-      "event": "policy_check",
-      "who_publishes": ["services.policy_kernel.policy_kernel_service"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "policy_id": "string",
-        "check_result": "boolean",
-        "checked_at": "datetime"
-      },
-      "type": "domain_event"
+      "event_type": "artifact_failed",
+      "static_occurrences": 2
     },
     {
-      "event": "capability_check",
-      "who_publishes": ["services.policy_kernel.capability_gate_service"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "capability_id": "string",
-        "check_result": "boolean",
-        "checked_at": "datetime"
-      },
-      "type": "domain_event"
+      "event_type": "run_started",
+      "static_occurrences": 2
     },
     {
-      "event": "tool_invocation",
-      "who_publishes": ["services.tools.governed_tool_execution_service"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "tool_id": "string",
-        "invoked_at": "datetime",
-        "parameters": "object"
-      },
-      "type": "domain_event"
+      "event_type": "policy_decision",
+      "static_occurrences": 2
     },
     {
-      "event": "model_invocation",
-      "who_publishes": ["services.models.llama_cpp_provider"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "model_id": "string",
-        "invoked_at": "datetime",
-        "prompt": "string"
-      },
-      "type": "domain_event"
+      "event_type": "run_blocked",
+      "static_occurrences": 2
     },
     {
-      "event": "validation_check",
-      "who_publishes": ["services.validation.validation_gate_service"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "validation_id": "string",
-        "check_result": "boolean",
-        "checked_at": "datetime"
-      },
-      "type": "domain_event"
+      "event_type": "step_blocked",
+      "static_occurrences": 2
     },
     {
-      "event": "artifact_created",
-      "who_publishes": ["services.artifacts.artifact_generator_service"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "artifact_id": "string",
-        "artifact_type": "string",
-        "created_at": "datetime"
-      },
-      "type": "domain_event"
+      "event_type": "run_waiting_input",
+      "static_occurrences": 2
     },
     {
-      "event": "memory_candidate_created",
-      "who_publishes": ["services.memory.memory_candidate_service"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "candidate_id": "string",
-        "candidate_type": "string",
-        "created_at": "datetime"
-      },
-      "type": "domain_event"
+      "event_type": "run_created",
+      "static_occurrences": 2
     },
     {
-      "event": "retrieval_performed",
-      "who_publishes": ["services.rag.retrieval_service"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "retrieval_id": "string",
-        "query": "string",
-        "retrieved_at": "datetime"
-      },
-      "type": "domain_event"
+      "event_type": "task_bootstrap_created",
+      "static_occurrences": 2
     },
     {
-      "event": "agent_action",
-      "who_publishes": ["services.agents.agent_tool_gateway_service"],
-      "who_consumes": ["services.events.event_publisher_service"],
-      "payload": {
-        "agent_id": "string",
-        "action": "string",
-        "performed_at": "datetime"
-      },
-      "type": "domain_event"
+      "event_type": "node_failed",
+      "static_occurrences": 2
+    },
+    {
+      "event_type": "node_waiting",
+      "static_occurrences": 2
+    },
+    {
+      "event_type": "task_cancelled_after_denial",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "project_analysis_blocked",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "artifact_creation_terminalization_guard_started",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "public_response_accepted_running",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "phase_semantic_demand_compiled",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "phase0_prediction_attached",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "project_analysis_started",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "project_analysis_finished",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "validation_finished",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "phase0_prediction_calibrated",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "artifact_render_checkpoint",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "terminalization_already_applied",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "phase_dependency_evaluated",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "artifact_creation_started",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "phase0_prediction_calibration_unavailable",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "phase0_prediction_calibration_failed",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "project_analysis_partial",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "artifact_creation_exception_captured",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "project_analysis_handoff_reserve_reached",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "apply_run_created",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "apply_started",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "apply_blocked",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "apply_cancelled",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "post_validation_passed",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "task_completion_evaluated",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "step_started",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "step_cancelled",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "approval_denied",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "run_cancel_requested",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "run_cancelled",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "planning_report_created",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "execution_graph_created",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "execution_plan_replanned",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "node_started",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "node_completed",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "graph_completed",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "graph_failed",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "policy_blocked_no_approval_possible",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "approval_preview_created",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "approval_required",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "edge_completed",
+      "static_occurrences": 1
+    },
+    {
+      "event_type": "run_auto_start_requested",
+      "static_occurrences": 1
     }
-  ],
-  "total_events": 14,
-  "event_types": {
-    "domain_event": 14,
-    "system_event": 0,
-    "integration_event": 0
-  }
+  ]
 }

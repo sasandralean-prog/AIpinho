@@ -1,72 +1,12 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
-  "inference_routes": [
-    {
-      "route": "local_llm",
-      "model": "llama_cpp",
-      "provider": "services.models.llama_cpp_provider",
-      "adapter": "adapters.llm_providers",
-      "pipeline": "model_pipeline",
-      "role": "model_invoker",
-      "fallback": "UNKNOWN",
-      "escalation": "UNKNOWN"
-    },
-    {
-      "route": "remote_openai",
-      "model": "openai",
-      "provider": "services.models.model_invocation_service",
-      "adapter": "adapters.llm_providers",
-      "pipeline": "model_pipeline",
-      "role": "model_invoker",
-      "fallback": "UNKNOWN",
-      "escalation": "UNKNOWN"
-    },
-    {
-      "route": "remote_gemini",
-      "model": "gemini",
-      "provider": "services.models.model_invocation_service",
-      "adapter": "adapters.llm_providers",
-      "pipeline": "model_pipeline",
-      "role": "model_invoker",
-      "fallback": "UNKNOWN",
-      "escalation": "UNKNOWN"
-    },
-    {
-      "route": "remote_claude",
-      "model": "claude",
-      "provider": "services.models.model_invocation_service",
-      "adapter": "adapters.llm_providers",
-      "pipeline": "model_pipeline",
-      "role": "model_invoker",
-      "fallback": "UNKNOWN",
-      "escalation": "UNKNOWN"
-    },
-    {
-      "route": "vision_ocr",
-      "model": "ocr_model",
-      "provider": "services.vision.ocr_pipeline_service",
-      "adapter": "adapters.vision",
-      "pipeline": "vision_pipeline",
-      "role": "vision_processor",
-      "fallback": "UNKNOWN",
-      "escalation": "UNKNOWN"
-    },
-    {
-      "route": "vision_multimodal",
-      "model": "multimodal_model",
-      "provider": "services.vision.vision_analysis_service",
-      "adapter": "adapters.vision",
-      "pipeline": "vision_pipeline",
-      "role": "vision_processor",
-      "fallback": "UNKNOWN",
-      "escalation": "UNKNOWN"
-    }
-  ],
-  "total_routes": 6,
-  "route_types": {
-    "local_llm": 1,
-    "remote_llm": 3,
-    "vision": 2
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "role_inference_service": "reachable specialized subsystem",
+  "role_pipeline": "TaskRuntime-bound child",
+  "simple_chat_speaker": "wording only for non-operational conversation",
+  "supervisor": {
+    "policy": "deterministic_only",
+    "real_inference_default": false
   }
 }

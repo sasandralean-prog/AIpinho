@@ -265,7 +265,7 @@ A Control artifact proves only its bounded operation. A configured route proves 
 
 ## Compact bootstrap prompt
 
-> You are joining AIpinho as Lúcio or an engineering collaborator. Read `AGENTS.md`, `DOCUMENT_AUTHORITY.md`, and `AIpinho_context_pack/docs/context/00_START_HERE.md`, then follow the Context Pack and current repository evidence. Treat code/contracts/config and validated evidence as higher authority than memory. Never confuse AIpinho strategic Horizon H1/H2/H3/H4 with CONTROL-H1/H2/H3: Horizons are planning categories from near-term to long-range, while CONTROL-H* labels are concrete external Control Plane implementation tranches. Reobserve AIpinho, Control, and Envelope main before work. FireTest 5 is NOT_READY; the latest 06/09 product attempt blocked before TaskRun creation with `PUBLIC_RUNTIME_CREATE_RUN_NOT_REACHED`, and a 07/09 governed reset left a clean/cold baseline with no new FireTest started. Preserve truth, terminality, evidence, no-hardcode, and no-false-success rules.
+> You are joining AIpinho as Lúcio or an engineering collaborator. Read `AGENTS.md`, `DOCUMENT_AUTHORITY.md`, and `AIpinho_context_pack/docs/context/00_START_HERE.md`, then follow the Context Pack and current repository evidence. Treat code/contracts/config and validated evidence as higher authority than memory. Never confuse AIpinho strategic Horizon H1/H2/H3/H4 with CONTROL-H1/H2/H3: Horizons are planning categories from near-term to long-range, while CONTROL-H* labels are concrete external Control Plane implementation tranches. Reobserve AIpinho, Control, and Envelope main before work. Historical 06/09?07/09 checkpoint: FireTest 5 was NOT_READY and the product attempt blocked before TaskRun creation. This paragraph is retained only as historical handoff evidence; use the consolidated override below for current state. Preserve truth, terminality, evidence, no-hardcode, and no-false-success rules.
 
 ## Point
 
@@ -273,4 +273,14 @@ Continuity should be cheap. Runtime truth should never become cheap.
 
 ## 2026-09-15 handoff override
 
-For a new session, treat older FireTest `PUBLIC_RUNTIME_CREATE_RUN_NOT_REACHED` notes as historical. Read `CURRENT_STATE.md`, `05_RUNTIME_ARCHITECTURE_MAP.md`, `06_FIRETEST5.md`, and `09_CURRENT_FRONTIER.md` first. The current product frontier is the post-Sprint-9 full-rerun truth-propagation/timeline defect, not pre-TaskRun creation.
+For a new session, treat older FireTest `PUBLIC_RUNTIME_CREATE_RUN_NOT_REACHED` notes as historical. Read `CURRENT_STATE.md`, `05_RUNTIME_ARCHITECTURE_MAP.md`, `06_FIRETEST5.md`, and `09_CURRENT_FRONTIER.md` first. That post-Sprint-9 truth-propagation/timeline frontier was subsequently closed by runtime consolidation; use the consolidated handoff override below.
+
+## 2026-09-15 consolidated handoff override
+
+For new sessions, the compact bootstrap prompt above that says `FireTest 5 is NOT_READY` is historical and must not be used as current state.
+
+Current bootstrap:
+
+> Read `AGENTS.md`, `DOCUMENT_AUTHORITY.md`, `CURRENT_STATE.md`, then `00_START_HERE.md`, `05_RUNTIME_ARCHITECTURE_MAP.md`, `06_FIRETEST5.md`, `09_CURRENT_FRONTIER.md`, and `current_state.json`. Runtime implementation baseline is `6126a73a9ddfc054fe527174fe4df16740b9d1e0`. Semantic Sprints 0–9 and runtime/roles consolidation are complete. The fresh FireTest reached all six phases: Phase 1 remains partial/limited-use and cannot claim success; Phases 2–6 completed; timeline gaps/duplicates are 0/0; role pipeline executed in all six TaskRuns; Runtime Doctor completed all phases; focused regression after reboot is 174 passed / 0 failed. Keep the five canonical authorities distinct: Human operator → Trusted dispatcher → Local execution broker → AIpinho runtime → Evidence/result layer. Roles/models are subordinate, not new authorities. Runtime V2 planner/dispatcher/contracts are compatibility/introspection. Reobserve Git and external Control/Envelope state before live work. The cp1252/.m4a reader issue remains deferred.
+
+Historical B3.x, 06/09 `BLOCKED_PRE_TASK`, 07/09 `NOT_READY`, and the first 15/09 PARTIAL campaign remain evidence archaeology unless a task explicitly asks for that history.

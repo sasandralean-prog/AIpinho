@@ -1,87 +1,5448 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
-  "contracts_index": [
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "count": 675,
+  "contracts": [
     {
-      "contract": "ChatRequest",
-      "path": "src/aipinho/schemas/chat/",
-      "file": "UNKNOWN",
-      "module": "schemas.chat"
+      "module": "aipinho.schemas.agents.contracts",
+      "path": "src/aipinho/schemas/agents/contracts.py",
+      "name": "AgentSessionCreateRequest",
+      "methods": [],
+      "line": 52,
+      "classification": "SUPPORTING"
     },
     {
-      "contract": "ChatResponse",
-      "path": "src/aipinho/schemas/chat/",
-      "file": "UNKNOWN",
-      "module": "schemas.chat"
+      "module": "aipinho.schemas.agents.contracts",
+      "path": "src/aipinho/schemas/agents/contracts.py",
+      "name": "AgentSessionUpdateRequest",
+      "methods": [],
+      "line": 59,
+      "classification": "SUPPORTING"
     },
     {
-      "contract": "TaskRequest",
-      "path": "src/aipinho/schemas/tasks/",
-      "file": "UNKNOWN",
-      "module": "schemas.tasks"
+      "module": "aipinho.schemas.agents.contracts",
+      "path": "src/aipinho/schemas/agents/contracts.py",
+      "name": "AgentMessageCreateRequest",
+      "methods": [],
+      "line": 80,
+      "classification": "SUPPORTING"
     },
     {
-      "contract": "TaskResponse",
-      "path": "src/aipinho/schemas/tasks/",
-      "file": "UNKNOWN",
-      "module": "schemas.tasks"
+      "module": "aipinho.schemas.agents.contracts",
+      "path": "src/aipinho/schemas/agents/contracts.py",
+      "name": "AgentRunCreateRequest",
+      "methods": [],
+      "line": 124,
+      "classification": "SUPPORTING"
     },
     {
-      "contract": "ToolRequest",
-      "path": "src/aipinho/schemas/tools/",
-      "file": "UNKNOWN",
-      "module": "schemas.tools"
+      "module": "aipinho.schemas.agents.contracts",
+      "path": "src/aipinho/schemas/agents/contracts.py",
+      "name": "AgentRunUpdateRequest",
+      "methods": [],
+      "line": 146,
+      "classification": "SUPPORTING"
     },
     {
-      "contract": "ToolResponse",
-      "path": "src/aipinho/schemas/tools/",
-      "file": "UNKNOWN",
-      "module": "schemas.tools"
+      "module": "aipinho.schemas.agents.contracts",
+      "path": "src/aipinho/schemas/agents/contracts.py",
+      "name": "AgentEventCreateRequest",
+      "methods": [],
+      "line": 187,
+      "classification": "SUPPORTING"
     },
     {
-      "contract": "ModelRequest",
-      "path": "src/aipinho/schemas/models/",
-      "file": "UNKNOWN",
-      "module": "schemas.models"
+      "module": "aipinho.schemas.agents.contracts",
+      "path": "src/aipinho/schemas/agents/contracts.py",
+      "name": "AgentPollingContract",
+      "methods": [],
+      "line": 254,
+      "classification": "SUPPORTING"
     },
     {
-      "contract": "ModelResponse",
-      "path": "src/aipinho/schemas/models/",
-      "file": "UNKNOWN",
-      "module": "schemas.models"
+      "module": "aipinho.schemas.agents.contracts",
+      "path": "src/aipinho/schemas/agents/contracts.py",
+      "name": "AgentTimelineResponse",
+      "methods": [],
+      "line": 261,
+      "classification": "SUPPORTING"
     },
     {
-      "contract": "ArtifactRequest",
-      "path": "src/aipinho/schemas/artifacts/",
-      "file": "UNKNOWN",
-      "module": "schemas.artifacts"
+      "module": "aipinho.schemas.agents.contracts",
+      "path": "src/aipinho/schemas/agents/contracts.py",
+      "name": "AgentRunEventsResponse",
+      "methods": [],
+      "line": 277,
+      "classification": "SUPPORTING"
     },
     {
-      "contract": "ArtifactResponse",
-      "path": "src/aipinho/schemas/artifacts/",
-      "file": "UNKNOWN",
-      "module": "schemas.artifacts"
+      "module": "aipinho.schemas.agents.contracts",
+      "path": "src/aipinho/schemas/agents/contracts.py",
+      "name": "AgentSessionState",
+      "methods": [],
+      "line": 304,
+      "classification": "SUPPORTING"
     },
     {
-      "contract": "PolicyRequest",
-      "path": "src/aipinho/schemas/policy/",
-      "file": "UNKNOWN",
-      "module": "schemas.policy"
+      "module": "aipinho.schemas.agents.delegation",
+      "path": "src/aipinho/schemas/agents/delegation.py",
+      "name": "DelegationCreateRequest",
+      "methods": [],
+      "line": 30,
+      "classification": "SUPPORTING"
     },
     {
-      "contract": "PolicyResponse",
-      "path": "src/aipinho/schemas/policy/",
-      "file": "UNKNOWN",
-      "module": "schemas.policy"
+      "module": "aipinho.schemas.agents.delegation",
+      "path": "src/aipinho/schemas/agents/delegation.py",
+      "name": "DelegationRequest",
+      "methods": [],
+      "line": 59,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.delegation",
+      "path": "src/aipinho/schemas/agents/delegation.py",
+      "name": "DelegationPolicyDecision",
+      "methods": [],
+      "line": 97,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.delegation",
+      "path": "src/aipinho/schemas/agents/delegation.py",
+      "name": "DelegationResult",
+      "methods": [],
+      "line": 129,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.delegation",
+      "path": "src/aipinho/schemas/agents/delegation.py",
+      "name": "DelegationStatusResponse",
+      "methods": [],
+      "line": 155,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.hybrid_execution",
+      "path": "src/aipinho/schemas/agents/hybrid_execution.py",
+      "name": "CodexModeSelectRequest",
+      "methods": [],
+      "line": 21,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.hybrid_execution",
+      "path": "src/aipinho/schemas/agents/hybrid_execution.py",
+      "name": "CodexModeDecision",
+      "methods": [],
+      "line": 30,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.hybrid_execution",
+      "path": "src/aipinho/schemas/agents/hybrid_execution.py",
+      "name": "CodexDelegationRequest",
+      "methods": [],
+      "line": 40,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.hybrid_execution",
+      "path": "src/aipinho/schemas/agents/hybrid_execution.py",
+      "name": "CodexDiagnosticRequest",
+      "methods": [],
+      "line": 51,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.hybrid_execution",
+      "path": "src/aipinho/schemas/agents/hybrid_execution.py",
+      "name": "CanonicalPromptRequest",
+      "methods": [],
+      "line": 57,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.hybrid_execution",
+      "path": "src/aipinho/schemas/agents/hybrid_execution.py",
+      "name": "CanonicalPromptResult",
+      "methods": [],
+      "line": 68,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.hybrid_execution",
+      "path": "src/aipinho/schemas/agents/hybrid_execution.py",
+      "name": "IslandChatRequest",
+      "methods": [],
+      "line": 76,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.hybrid_execution",
+      "path": "src/aipinho/schemas/agents/hybrid_execution.py",
+      "name": "IslandChatResponse",
+      "methods": [],
+      "line": 89,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.marketplace",
+      "path": "src/aipinho/schemas/agents/marketplace.py",
+      "name": "AgentHealthSnapshot",
+      "methods": [],
+      "line": 71,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.marketplace",
+      "path": "src/aipinho/schemas/agents/marketplace.py",
+      "name": "CapabilityNegotiationResult",
+      "methods": [],
+      "line": 105,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.marketplace",
+      "path": "src/aipinho/schemas/agents/marketplace.py",
+      "name": "AgentMarketplaceSnapshot",
+      "methods": [],
+      "line": 113,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.memory",
+      "path": "src/aipinho/schemas/agents/memory.py",
+      "name": "MemoryWriteRequest",
+      "methods": [],
+      "line": 142,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.memory",
+      "path": "src/aipinho/schemas/agents/memory.py",
+      "name": "MemoryCandidateCreateRequest",
+      "methods": [],
+      "line": 164,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.memory",
+      "path": "src/aipinho/schemas/agents/memory.py",
+      "name": "MemorySearchRequest",
+      "methods": [],
+      "line": 180,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.memory",
+      "path": "src/aipinho/schemas/agents/memory.py",
+      "name": "MemoryPolicyEvaluation",
+      "methods": [],
+      "line": 196,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.memory",
+      "path": "src/aipinho/schemas/agents/memory.py",
+      "name": "MemoryWriteResult",
+      "methods": [],
+      "line": 204,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.memory",
+      "path": "src/aipinho/schemas/agents/memory.py",
+      "name": "MemorySearchResult",
+      "methods": [],
+      "line": 212,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.memory",
+      "path": "src/aipinho/schemas/agents/memory.py",
+      "name": "MemoryContextLoadRequest",
+      "methods": [],
+      "line": 220,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.memory",
+      "path": "src/aipinho/schemas/agents/memory.py",
+      "name": "MemoryContextLoadResult",
+      "methods": [],
+      "line": 231,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.memory",
+      "path": "src/aipinho/schemas/agents/memory.py",
+      "name": "MemoryCandidateReviewRequest",
+      "methods": [],
+      "line": 241,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.memory",
+      "path": "src/aipinho/schemas/agents/memory.py",
+      "name": "MemorySupersedeRequest",
+      "methods": [],
+      "line": 248,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.ownership",
+      "path": "src/aipinho/schemas/agents/ownership.py",
+      "name": "WorkspaceLockCreateRequest",
+      "methods": [],
+      "line": 32,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.ownership",
+      "path": "src/aipinho/schemas/agents/ownership.py",
+      "name": "WorkspaceLockReleaseRequest",
+      "methods": [],
+      "line": 44,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.ownership",
+      "path": "src/aipinho/schemas/agents/ownership.py",
+      "name": "WorkspaceLockOverrideRequest",
+      "methods": [],
+      "line": 49,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.ownership",
+      "path": "src/aipinho/schemas/agents/ownership.py",
+      "name": "WriteConflictCheckRequest",
+      "methods": [],
+      "line": 54,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.ownership",
+      "path": "src/aipinho/schemas/agents/ownership.py",
+      "name": "WriteConflictDecision",
+      "methods": [],
+      "line": 63,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.ownership",
+      "path": "src/aipinho/schemas/agents/ownership.py",
+      "name": "AgentHopCheckRequest",
+      "methods": [],
+      "line": 86,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.ownership",
+      "path": "src/aipinho/schemas/agents/ownership.py",
+      "name": "AgentHopDecision",
+      "methods": [],
+      "line": 94,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.policy_kernel",
+      "path": "src/aipinho/schemas/agents/policy_kernel.py",
+      "name": "AutoApprovalDecision",
+      "methods": [],
+      "line": 12,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.policy_kernel",
+      "path": "src/aipinho/schemas/agents/policy_kernel.py",
+      "name": "AgentPolicyProfile",
+      "methods": [],
+      "line": 51,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.policy_kernel",
+      "path": "src/aipinho/schemas/agents/policy_kernel.py",
+      "name": "PolicyKernelStatus",
+      "methods": [],
+      "line": 82,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.tool_gateway",
+      "path": "src/aipinho/schemas/agents/tool_gateway.py",
+      "name": "PolicyDecision",
+      "methods": [],
+      "line": 69,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.tool_gateway",
+      "path": "src/aipinho/schemas/agents/tool_gateway.py",
+      "name": "ValidationResult",
+      "methods": [],
+      "line": 102,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.tool_gateway",
+      "path": "src/aipinho/schemas/agents/tool_gateway.py",
+      "name": "ToolInvocationCreateRequest",
+      "methods": [],
+      "line": 135,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.tool_gateway",
+      "path": "src/aipinho/schemas/agents/tool_gateway.py",
+      "name": "ToolInvocationResult",
+      "methods": [],
+      "line": 199,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.agents.tool_gateway",
+      "path": "src/aipinho/schemas/agents/tool_gateway.py",
+      "name": "ArtifactUploadRequest",
+      "methods": [],
+      "line": 211,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.analysis.file_selection",
+      "path": "src/aipinho/schemas/analysis/file_selection.py",
+      "name": "FileSelectionRequest",
+      "methods": [],
+      "line": 13,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.analysis.file_selection",
+      "path": "src/aipinho/schemas/analysis/file_selection.py",
+      "name": "FileSelectionResult",
+      "methods": [],
+      "line": 39,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.analysis.project_analysis_cooperation",
+      "path": "src/aipinho/schemas/analysis/project_analysis_cooperation.py",
+      "name": "ProjectAnalysisBudgetCooperationPolicy",
+      "methods": [
+        "from_environment",
+        "as_dict"
+      ],
+      "line": 15,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.analysis.project_analysis_cooperation",
+      "path": "src/aipinho/schemas/analysis/project_analysis_cooperation.py",
+      "name": "FileSelectionPlan",
+      "methods": [],
+      "line": 97,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.analysis.project_analysis_cooperation",
+      "path": "src/aipinho/schemas/analysis/project_analysis_cooperation.py",
+      "name": "FileReadPlan",
+      "methods": [],
+      "line": 122,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.analysis.project_analysis_request",
+      "path": "src/aipinho/schemas/analysis/project_analysis_request.py",
+      "name": "ProjectAnalysisRequest",
+      "methods": [],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.analysis.project_analysis_result",
+      "path": "src/aipinho/schemas/analysis/project_analysis_result.py",
+      "name": "ProjectAnalysisResult",
+      "methods": [],
+      "line": 17,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.approvals.approval_decision",
+      "path": "src/aipinho/schemas/approvals/approval_decision.py",
+      "name": "ApprovalDecision",
+      "methods": [],
+      "line": 11,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.approvals.approval_policy_snapshot",
+      "path": "src/aipinho/schemas/approvals/approval_policy_snapshot.py",
+      "name": "ApprovalPolicySnapshot",
+      "methods": [],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.approvals.approval_request",
+      "path": "src/aipinho/schemas/approvals/approval_request.py",
+      "name": "ApprovalRequest",
+      "methods": [],
+      "line": 12,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.approvals.universal_approver",
+      "path": "src/aipinho/schemas/approvals/universal_approver.py",
+      "name": "UniversalApprovalTextRequest",
+      "methods": [],
+      "line": 54,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.approvals.universal_approver",
+      "path": "src/aipinho/schemas/approvals/universal_approver.py",
+      "name": "UniversalApprovalDecisionResult",
+      "methods": [],
+      "line": 64,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.approvals.universal_approver",
+      "path": "src/aipinho/schemas/approvals/universal_approver.py",
+      "name": "UniversalApproverUpsertRequest",
+      "methods": [],
+      "line": 79,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_draft",
+      "path": "src/aipinho/schemas/artifacts/artifact_draft.py",
+      "name": "ArtifactDraftRequest",
+      "methods": [],
+      "line": 13,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_generation",
+      "path": "src/aipinho/schemas/artifacts/artifact_generation.py",
+      "name": "ArtifactRequest",
+      "methods": [],
+      "line": 28,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_generation",
+      "path": "src/aipinho/schemas/artifacts/artifact_generation.py",
+      "name": "ArtifactGenerationResult",
+      "methods": [],
+      "line": 48,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_interaction_contracts",
+      "path": "src/aipinho/schemas/artifacts/artifact_interaction_contracts.py",
+      "name": "ArtifactUploadRequest",
+      "methods": [],
+      "line": 12,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_interaction_contracts",
+      "path": "src/aipinho/schemas/artifacts/artifact_interaction_contracts.py",
+      "name": "ArtifactUploadResponse",
+      "methods": [],
+      "line": 60,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_interaction_contracts",
+      "path": "src/aipinho/schemas/artifacts/artifact_interaction_contracts.py",
+      "name": "UniversalArtifactCreateRequest",
+      "methods": [],
+      "line": 72,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_interaction_contracts",
+      "path": "src/aipinho/schemas/artifacts/artifact_interaction_contracts.py",
+      "name": "UniversalArtifactResponse",
+      "methods": [],
+      "line": 97,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_interaction_contracts",
+      "path": "src/aipinho/schemas/artifacts/artifact_interaction_contracts.py",
+      "name": "ArtifactZipRequest",
+      "methods": [],
+      "line": 104,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_interaction_contracts",
+      "path": "src/aipinho/schemas/artifacts/artifact_interaction_contracts.py",
+      "name": "ArtifactZipResponse",
+      "methods": [],
+      "line": 109,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_interaction_contracts",
+      "path": "src/aipinho/schemas/artifacts/artifact_interaction_contracts.py",
+      "name": "ArtifactPathArchiveRequest",
+      "methods": [],
+      "line": 115,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_interaction_contracts",
+      "path": "src/aipinho/schemas/artifacts/artifact_interaction_contracts.py",
+      "name": "ArtifactPathArchiveResponse",
+      "methods": [],
+      "line": 127,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_interaction_contracts",
+      "path": "src/aipinho/schemas/artifacts/artifact_interaction_contracts.py",
+      "name": "TaskRunArtifactExportRequest",
+      "methods": [],
+      "line": 135,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_interaction_contracts",
+      "path": "src/aipinho/schemas/artifacts/artifact_interaction_contracts.py",
+      "name": "TaskRunArtifactExportResponse",
+      "methods": [],
+      "line": 140,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_library",
+      "path": "src/aipinho/schemas/artifacts/artifact_library.py",
+      "name": "ArtifactSearchResult",
+      "methods": [],
+      "line": 82,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_library",
+      "path": "src/aipinho/schemas/artifacts/artifact_library.py",
+      "name": "ArtifactPreviewRequest",
+      "methods": [],
+      "line": 89,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_library",
+      "path": "src/aipinho/schemas/artifacts/artifact_library.py",
+      "name": "ArtifactPreviewResult",
+      "methods": [],
+      "line": 97,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_library",
+      "path": "src/aipinho/schemas/artifacts/artifact_library.py",
+      "name": "ArtifactContextUseRequest",
+      "methods": [],
+      "line": 112,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_library",
+      "path": "src/aipinho/schemas/artifacts/artifact_library.py",
+      "name": "ArtifactContextUseResult",
+      "methods": [],
+      "line": 122,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_library",
+      "path": "src/aipinho/schemas/artifacts/artifact_library.py",
+      "name": "ArtifactBundleRequest",
+      "methods": [],
+      "line": 132,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_library",
+      "path": "src/aipinho/schemas/artifacts/artifact_library.py",
+      "name": "ArtifactBundleResult",
+      "methods": [],
+      "line": 144,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_preview",
+      "path": "src/aipinho/schemas/artifacts/artifact_preview.py",
+      "name": "ArtifactPreviewRequest",
+      "methods": [],
+      "line": 18,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_runtime",
+      "path": "src/aipinho/schemas/artifacts/artifact_runtime.py",
+      "name": "ArtifactRuntimeCreateRequest",
+      "methods": [],
+      "line": 11,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_runtime",
+      "path": "src/aipinho/schemas/artifacts/artifact_runtime.py",
+      "name": "ArtifactRuntimeValidationResult",
+      "methods": [],
+      "line": 30,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_runtime",
+      "path": "src/aipinho/schemas/artifacts/artifact_runtime.py",
+      "name": "ArtifactRuntimeLookupResult",
+      "methods": [],
+      "line": 44,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_write_policy",
+      "path": "src/aipinho/schemas/artifacts/artifact_write_policy.py",
+      "name": "ArtifactWritePolicyStatus",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_write_request",
+      "path": "src/aipinho/schemas/artifacts/artifact_write_request.py",
+      "name": "ArtifactWriteRequest",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_write_result",
+      "path": "src/aipinho/schemas/artifacts/artifact_write_result.py",
+      "name": "ArtifactWriteResult",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.contract_perception",
+      "path": "src/aipinho/schemas/artifacts/contract_perception.py",
+      "name": "ContractObservationPlan",
+      "methods": [],
+      "line": 127,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.contract_perception",
+      "path": "src/aipinho/schemas/artifacts/contract_perception.py",
+      "name": "CapabilityDecision",
+      "methods": [],
+      "line": 381,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.contract_perception",
+      "path": "src/aipinho/schemas/artifacts/contract_perception.py",
+      "name": "ObservationExecutionPolicy",
+      "methods": [],
+      "line": 450,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.contract_perception",
+      "path": "src/aipinho/schemas/artifacts/contract_perception.py",
+      "name": "ObservationExecutionResult",
+      "methods": [],
+      "line": 485,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.contract_perception",
+      "path": "src/aipinho/schemas/artifacts/contract_perception.py",
+      "name": "ObservationPlan",
+      "methods": [],
+      "line": 558,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.contract_perception",
+      "path": "src/aipinho/schemas/artifacts/contract_perception.py",
+      "name": "ContractPerceptionResult",
+      "methods": [],
+      "line": 722,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.observed_entity",
+      "path": "src/aipinho/schemas/artifacts/observed_entity.py",
+      "name": "RootRoleDecision",
+      "methods": [],
+      "line": 65,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.observed_entity",
+      "path": "src/aipinho/schemas/artifacts/observed_entity.py",
+      "name": "RootBindingPolicyDecision",
+      "methods": [],
+      "line": 107,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.relationship",
+      "path": "src/aipinho/schemas/artifacts/relationship.py",
+      "name": "RelationshipValidationPolicy",
+      "methods": [],
+      "line": 213,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.relationship",
+      "path": "src/aipinho/schemas/artifacts/relationship.py",
+      "name": "RelationshipValidationResult",
+      "methods": [],
+      "line": 228,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.semantic_artifact_intent",
+      "path": "src/aipinho/schemas/artifacts/semantic_artifact_intent.py",
+      "name": "ArtifactIntentPlan",
+      "methods": [],
+      "line": 11,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.semantic_artifact_intent",
+      "path": "src/aipinho/schemas/artifacts/semantic_artifact_intent.py",
+      "name": "SemanticEntitySelectionResult",
+      "methods": [],
+      "line": 33,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.workspace_evidence_bundle",
+      "path": "src/aipinho/schemas/artifacts/workspace_evidence_bundle.py",
+      "name": "WorkspaceEvidenceBundleRequest",
+      "methods": [],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.workspace_evidence_bundle",
+      "path": "src/aipinho/schemas/artifacts/workspace_evidence_bundle.py",
+      "name": "WorkspaceEvidenceBundleResult",
+      "methods": [],
+      "line": 23,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.workspace_readonly_audit_report",
+      "path": "src/aipinho/schemas/artifacts/workspace_readonly_audit_report.py",
+      "name": "WorkspaceReadonlyAuditReportRequest",
+      "methods": [],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.workspace_readonly_audit_report",
+      "path": "src/aipinho/schemas/artifacts/workspace_readonly_audit_report.py",
+      "name": "WorkspaceReadonlyAuditReportResult",
+      "methods": [],
+      "line": 21,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.workspace_static_reachability_report",
+      "path": "src/aipinho/schemas/artifacts/workspace_static_reachability_report.py",
+      "name": "WorkspaceStaticReachabilityReportRequest",
+      "methods": [],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.artifacts.workspace_static_reachability_report",
+      "path": "src/aipinho/schemas/artifacts/workspace_static_reachability_report.py",
+      "name": "WorkspaceStaticReachabilityReportResult",
+      "methods": [],
+      "line": 21,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.chat.chat_evaluation_metadata",
+      "path": "src/aipinho/schemas/chat/chat_evaluation_metadata.py",
+      "name": "ChatEvaluationMetadata",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.chat.chat_request",
+      "path": "src/aipinho/schemas/chat/chat_request.py",
+      "name": "ChatRequest",
+      "methods": [],
+      "line": 21,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.chat.chat_response",
+      "path": "src/aipinho/schemas/chat/chat_response.py",
+      "name": "ChatPolicyBlock",
+      "methods": [],
+      "line": 53,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.chat.chat_response",
+      "path": "src/aipinho/schemas/chat/chat_response.py",
+      "name": "ChatResponse",
+      "methods": [],
+      "line": 81,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.chat.manual_chat_inference_request",
+      "path": "src/aipinho/schemas/chat/manual_chat_inference_request.py",
+      "name": "ManualChatInferenceRequest",
+      "methods": [
+        "_message_required"
+      ],
+      "line": 13,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.chat.manual_chat_inference_response",
+      "path": "src/aipinho/schemas/chat/manual_chat_inference_response.py",
+      "name": "ManualChatInferenceResponse",
+      "methods": [],
+      "line": 17,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.chat.session_state",
+      "path": "src/aipinho/schemas/chat/session_state.py",
+      "name": "SessionState",
+      "methods": [],
+      "line": 11,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.codex_agent",
+      "path": "src/aipinho/schemas/codex_agent.py",
+      "name": "CodexToolRequest",
+      "methods": [],
+      "line": 79,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.codex_agent",
+      "path": "src/aipinho/schemas/codex_agent.py",
+      "name": "CodexAgentRequest",
+      "methods": [],
+      "line": 88,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.codex_agent",
+      "path": "src/aipinho/schemas/codex_agent.py",
+      "name": "CodexAgentResponse",
+      "methods": [],
+      "line": 102,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.codex_agent",
+      "path": "src/aipinho/schemas/codex_agent.py",
+      "name": "CodexAutoApprovalDecision",
+      "methods": [],
+      "line": 178,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.codex_governed_execution",
+      "path": "src/aipinho/schemas/codex_governed_execution.py",
+      "name": "CodexGovernedActionRequest",
+      "methods": [
+        "validate_payload"
+      ],
+      "line": 27,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.codex_governed_execution",
+      "path": "src/aipinho/schemas/codex_governed_execution.py",
+      "name": "CodexGovernedContractRequest",
+      "methods": [],
+      "line": 54,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.codex_governed_execution",
+      "path": "src/aipinho/schemas/codex_governed_execution.py",
+      "name": "CodexGovernedProposalRequest",
+      "methods": [],
+      "line": 65,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.codex_governed_execution",
+      "path": "src/aipinho/schemas/codex_governed_execution.py",
+      "name": "CodexGovernedContract",
+      "methods": [],
+      "line": 99,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.codex_governed_execution",
+      "path": "src/aipinho/schemas/codex_governed_execution.py",
+      "name": "CodexGovernedContractDecision",
+      "methods": [],
+      "line": 125,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "CognitivePolicy",
+      "methods": [],
+      "line": 19,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "CapabilityPolicy",
+      "methods": [],
+      "line": 36,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "InferencePolicy",
+      "methods": [],
+      "line": 40,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "ReasoningPolicy",
+      "methods": [],
+      "line": 44,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "ModelPolicy",
+      "methods": [],
+      "line": 48,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "RiskPolicy",
+      "methods": [],
+      "line": 52,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "CognitiveEvaluationRequest",
+      "methods": [],
+      "line": 56,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "CognitivePolicyDecision",
+      "methods": [],
+      "line": 68,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "CognitivePolicyList",
+      "methods": [],
+      "line": 84,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "CognitiveRoutingRequest",
+      "methods": [],
+      "line": 92,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "RoutingDecision",
+      "methods": [],
+      "line": 107,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "EscalationPolicy",
+      "methods": [],
+      "line": 132,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "CognitiveEscalationRequest",
+      "methods": [],
+      "line": 146,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "EscalationDecision",
+      "methods": [],
+      "line": 155,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "CognitiveGovernanceRequest",
+      "methods": [],
+      "line": 183,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cognitive_governance",
+      "path": "src/aipinho/schemas/cognitive_governance.py",
+      "name": "GovernanceDecision",
+      "methods": [],
+      "line": 230,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.common.errors",
+      "path": "src/aipinho/schemas/common/errors.py",
+      "name": "ErrorResponse",
+      "methods": [],
+      "line": 6,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.config_governance.config_change",
+      "path": "src/aipinho/schemas/config_governance/config_change.py",
+      "name": "ConfigChangeRequest",
+      "methods": [],
+      "line": 30,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.config_governance.config_change",
+      "path": "src/aipinho/schemas/config_governance/config_change.py",
+      "name": "ConfigApplyResult",
+      "methods": [],
+      "line": 62,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.config_governance.workspace_permission",
+      "path": "src/aipinho/schemas/config_governance/workspace_permission.py",
+      "name": "WorkspacePreviewRequest",
+      "methods": [],
+      "line": 56,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.config_governance.workspace_permission",
+      "path": "src/aipinho/schemas/config_governance/workspace_permission.py",
+      "name": "WorkspacePermissionDecision",
+      "methods": [],
+      "line": 63,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.context.contracts",
+      "path": "src/aipinho/schemas/context/contracts.py",
+      "name": "ContextBudgetResult",
+      "methods": [],
+      "line": 75,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.context.contracts",
+      "path": "src/aipinho/schemas/context/contracts.py",
+      "name": "ContextBudgetPolicyResult",
+      "methods": [],
+      "line": 83,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.context.contracts",
+      "path": "src/aipinho/schemas/context/contracts.py",
+      "name": "ContextAdmissionDecision",
+      "methods": [],
+      "line": 104,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.context.contracts",
+      "path": "src/aipinho/schemas/context/contracts.py",
+      "name": "ContextCompressionResult",
+      "methods": [],
+      "line": 249,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.context.contracts",
+      "path": "src/aipinho/schemas/context/contracts.py",
+      "name": "ContextInjectionPlan",
+      "methods": [],
+      "line": 256,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.context.contracts",
+      "path": "src/aipinho/schemas/context/contracts.py",
+      "name": "ContextRequest",
+      "methods": [],
+      "line": 268,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.context.contracts",
+      "path": "src/aipinho/schemas/context/contracts.py",
+      "name": "ContextPreviewRequest",
+      "methods": [],
+      "line": 280,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.context.contracts",
+      "path": "src/aipinho/schemas/context/contracts.py",
+      "name": "ContextBuildRequest",
+      "methods": [],
+      "line": 284,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.context.contracts",
+      "path": "src/aipinho/schemas/context/contracts.py",
+      "name": "ContextPreviewResult",
+      "methods": [],
+      "line": 288,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.context.contracts",
+      "path": "src/aipinho/schemas/context/contracts.py",
+      "name": "ContextBuildResult",
+      "methods": [],
+      "line": 294,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.context.contracts",
+      "path": "src/aipinho/schemas/context/contracts.py",
+      "name": "ContextExplainResult",
+      "methods": [],
+      "line": 299,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cvl.cognitive_readiness",
+      "path": "src/aipinho/schemas/cvl/cognitive_readiness.py",
+      "name": "CognitiveReadinessDecision",
+      "methods": [],
+      "line": 28,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cvl.cognitive_readiness",
+      "path": "src/aipinho/schemas/cvl/cognitive_readiness.py",
+      "name": "CognitiveSimulationResult",
+      "methods": [],
+      "line": 87,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cvl.cognitive_readiness",
+      "path": "src/aipinho/schemas/cvl/cognitive_readiness.py",
+      "name": "CognitiveReadinessResult",
+      "methods": [
+        "_phase0_invariants"
+      ],
+      "line": 118,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cvl.cognitive_readiness",
+      "path": "src/aipinho/schemas/cvl/cognitive_readiness.py",
+      "name": "CognitivePredictionCalibrationResult",
+      "methods": [],
+      "line": 169,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cvl.cognitive_validation_laboratory",
+      "path": "src/aipinho/schemas/cvl/cognitive_validation_laboratory.py",
+      "name": "SimulationRequest",
+      "methods": [],
+      "line": 107,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cvl.cognitive_validation_laboratory",
+      "path": "src/aipinho/schemas/cvl/cognitive_validation_laboratory.py",
+      "name": "SimulationResult",
+      "methods": [],
+      "line": 143,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.cvl.cognitive_validation_laboratory",
+      "path": "src/aipinho/schemas/cvl/cognitive_validation_laboratory.py",
+      "name": "CognitiveValidationLaboratoryResult",
+      "methods": [],
+      "line": 155,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.debugger.contracts",
+      "path": "src/aipinho/schemas/debugger/contracts.py",
+      "name": "DebuggerSanitizationResult",
+      "methods": [],
+      "line": 40,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.debugger.contracts",
+      "path": "src/aipinho/schemas/debugger/contracts.py",
+      "name": "DebuggerInspectionRequest",
+      "methods": [],
+      "line": 83,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.debugger.contracts",
+      "path": "src/aipinho/schemas/debugger/contracts.py",
+      "name": "DebuggerInspectionResult",
+      "methods": [],
+      "line": 98,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.debugger.contracts",
+      "path": "src/aipinho/schemas/debugger/contracts.py",
+      "name": "ContextPlanInspection",
+      "methods": [],
+      "line": 146,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.debugger.contracts",
+      "path": "src/aipinho/schemas/debugger/contracts.py",
+      "name": "OutputEvaluationInspection",
+      "methods": [],
+      "line": 170,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.debugger.model_decision_trace",
+      "path": "src/aipinho/schemas/debugger/model_decision_trace.py",
+      "name": "ModelDecisionTrace",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.debugger.multi_island_trace",
+      "path": "src/aipinho/schemas/debugger/multi_island_trace.py",
+      "name": "TraceExportRequest",
+      "methods": [],
+      "line": 55,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evals.contracts",
+      "path": "src/aipinho/schemas/evals/contracts.py",
+      "name": "EvalRequest",
+      "methods": [],
+      "line": 32,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evals.contracts",
+      "path": "src/aipinho/schemas/evals/contracts.py",
+      "name": "EvalResult",
+      "methods": [],
+      "line": 38,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evals.contracts",
+      "path": "src/aipinho/schemas/evals/contracts.py",
+      "name": "ModelEvalRequest",
+      "methods": [],
+      "line": 55,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evals.contracts",
+      "path": "src/aipinho/schemas/evals/contracts.py",
+      "name": "ModelEvalResult",
+      "methods": [],
+      "line": 59,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evals.contracts",
+      "path": "src/aipinho/schemas/evals/contracts.py",
+      "name": "RoleEvalRequest",
+      "methods": [],
+      "line": 63,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evals.contracts",
+      "path": "src/aipinho/schemas/evals/contracts.py",
+      "name": "RoleEvalResult",
+      "methods": [],
+      "line": 67,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evals.contracts",
+      "path": "src/aipinho/schemas/evals/contracts.py",
+      "name": "RAGEvalRequest",
+      "methods": [],
+      "line": 71,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evals.contracts",
+      "path": "src/aipinho/schemas/evals/contracts.py",
+      "name": "RAGEvalResult",
+      "methods": [],
+      "line": 75,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evals.contracts",
+      "path": "src/aipinho/schemas/evals/contracts.py",
+      "name": "FallbackAnalysisResult",
+      "methods": [],
+      "line": 95,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evals.contracts",
+      "path": "src/aipinho/schemas/evals/contracts.py",
+      "name": "VisionOCREvalResult",
+      "methods": [],
+      "line": 99,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evals.contracts",
+      "path": "src/aipinho/schemas/evals/contracts.py",
+      "name": "EndToEndEvalResult",
+      "methods": [],
+      "line": 103,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evaluation.contract_validation_result",
+      "path": "src/aipinho/schemas/evaluation/contract_validation_result.py",
+      "name": "ContractValidationResult",
+      "methods": [],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evaluation.evaluation_finding",
+      "path": "src/aipinho/schemas/evaluation/evaluation_finding.py",
+      "name": "EvaluationFinding",
+      "methods": [],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evaluation.evaluation_request",
+      "path": "src/aipinho/schemas/evaluation/evaluation_request.py",
+      "name": "EvaluationRequest",
+      "methods": [
+        "_model_response_required"
+      ],
+      "line": 13,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evaluation.evaluation_result",
+      "path": "src/aipinho/schemas/evaluation/evaluation_result.py",
+      "name": "EvaluationResult",
+      "methods": [],
+      "line": 16,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evaluation.evaluation_trace",
+      "path": "src/aipinho/schemas/evaluation/evaluation_trace.py",
+      "name": "EvaluationTraceItem",
+      "methods": [],
+      "line": 12,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evaluation.evidence_validation",
+      "path": "src/aipinho/schemas/evaluation/evidence_validation.py",
+      "name": "EvidenceValidationResult",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evaluation.fallback_decision",
+      "path": "src/aipinho/schemas/evaluation/fallback_decision.py",
+      "name": "FallbackDecision",
+      "methods": [],
+      "line": 6,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evaluation.model_response_evaluation",
+      "path": "src/aipinho/schemas/evaluation/model_response_evaluation.py",
+      "name": "ModelResponseEvaluation",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.evaluation.retry_decision",
+      "path": "src/aipinho/schemas/evaluation/retry_decision.py",
+      "name": "RetryDecision",
+      "methods": [],
+      "line": 6,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.events.contracts",
+      "path": "src/aipinho/schemas/events/contracts.py",
+      "name": "EventContractDefinition",
+      "methods": [],
+      "line": 21,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.events.contracts",
+      "path": "src/aipinho/schemas/events/contracts.py",
+      "name": "EventContractRegistryStatus",
+      "methods": [],
+      "line": 32,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.events.contracts",
+      "path": "src/aipinho/schemas/events/contracts.py",
+      "name": "EventPublishRequest",
+      "methods": [],
+      "line": 39,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.events.contracts",
+      "path": "src/aipinho/schemas/events/contracts.py",
+      "name": "EventValidationResult",
+      "methods": [],
+      "line": 53,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.events.contracts",
+      "path": "src/aipinho/schemas/events/contracts.py",
+      "name": "EventCopyResponse",
+      "methods": [],
+      "line": 95,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.events.event_render_decision",
+      "path": "src/aipinho/schemas/events/event_render_decision.py",
+      "name": "EventRenderDecision",
+      "methods": [],
+      "line": 7,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.events.event_search_request",
+      "path": "src/aipinho/schemas/events/event_search_request.py",
+      "name": "EventSearchRequest",
+      "methods": [],
+      "line": 7,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.events.event_search_result",
+      "path": "src/aipinho/schemas/events/event_search_result.py",
+      "name": "EventSearchResult",
+      "methods": [],
+      "line": 7,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "SuccessContractCreateRequest",
+      "methods": [],
+      "line": 12,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "SuccessContract",
+      "methods": [],
+      "line": 23,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "ExternalTaskCreateRequest",
+      "methods": [],
+      "line": 39,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "ExternalTaskContract",
+      "methods": [],
+      "line": 57,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "ExternalReviewCreateRequest",
+      "methods": [],
+      "line": 83,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "ExternalReviewContract",
+      "methods": [],
+      "line": 98,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "ExternalConversationCreateRequest",
+      "methods": [],
+      "line": 119,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "ExternalAdapterReviewRequest",
+      "methods": [],
+      "line": 141,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "SuccessEvaluationCreateRequest",
+      "methods": [],
+      "line": 159,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "SuccessEvaluation",
+      "methods": [],
+      "line": 176,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "SuccessContractRuntime",
+      "methods": [],
+      "line": 197,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "ContinuousCollaborationStartRequest",
+      "methods": [],
+      "line": 219,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "ContinuousCollaborationPollResponse",
+      "methods": [],
+      "line": 254,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "ExternalAdapterEvaluationRequest",
+      "methods": [],
+      "line": 262,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "name": "ExternalAdapterEvaluationOutput",
+      "methods": [],
+      "line": 272,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_connector",
+      "path": "src/aipinho/schemas/external_connector.py",
+      "name": "ConnectorContract",
+      "methods": [],
+      "line": 28,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_connector",
+      "path": "src/aipinho/schemas/external_connector.py",
+      "name": "ConnectorRegisterRequest",
+      "methods": [],
+      "line": 68,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_gateway",
+      "path": "src/aipinho/schemas/external_gateway.py",
+      "name": "GatewayPolicy",
+      "methods": [],
+      "line": 16,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_gateway",
+      "path": "src/aipinho/schemas/external_gateway.py",
+      "name": "GatewaySessionRequest",
+      "methods": [],
+      "line": 55,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_gateway",
+      "path": "src/aipinho/schemas/external_gateway.py",
+      "name": "GatewayRequest",
+      "methods": [],
+      "line": 62,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_gateway",
+      "path": "src/aipinho/schemas/external_gateway.py",
+      "name": "GatewayResponse",
+      "methods": [],
+      "line": 73,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_workspace",
+      "path": "src/aipinho/schemas/external_workspace.py",
+      "name": "WorkspaceRegistrationRequest",
+      "methods": [],
+      "line": 33,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_workspace",
+      "path": "src/aipinho/schemas/external_workspace.py",
+      "name": "WorkspaceRegistrationResult",
+      "methods": [],
+      "line": 42,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_workspace",
+      "path": "src/aipinho/schemas/external_workspace.py",
+      "name": "WorkspaceOnboardingRequest",
+      "methods": [],
+      "line": 59,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_workspace",
+      "path": "src/aipinho/schemas/external_workspace.py",
+      "name": "WorkspaceImportRequest",
+      "methods": [],
+      "line": 69,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_workspace",
+      "path": "src/aipinho/schemas/external_workspace.py",
+      "name": "WorkspaceImportPlan",
+      "methods": [],
+      "line": 81,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_workspace",
+      "path": "src/aipinho/schemas/external_workspace.py",
+      "name": "WorkspaceImportResult",
+      "methods": [],
+      "line": 115,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.external_workspace",
+      "path": "src/aipinho/schemas/external_workspace.py",
+      "name": "WorkspaceOnboardingResult",
+      "methods": [],
+      "line": 135,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.gemini_executor",
+      "path": "src/aipinho/schemas/gemini_executor.py",
+      "name": "GeminiExecutorRequest",
+      "methods": [],
+      "line": 60,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.gemini_executor",
+      "path": "src/aipinho/schemas/gemini_executor.py",
+      "name": "GeminiExecutorResponse",
+      "methods": [],
+      "line": 86,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.capability_truth",
+      "path": "src/aipinho/schemas/governance/capability_truth.py",
+      "name": "CapabilityTruthSnapshot",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.capability_truth",
+      "path": "src/aipinho/schemas/governance/capability_truth.py",
+      "name": "CapabilityAnswerPolicy",
+      "methods": [],
+      "line": 20,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.context",
+      "path": "src/aipinho/schemas/governance/context.py",
+      "name": "DiscoverySnapshotRef",
+      "methods": [],
+      "line": 17,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.discovery",
+      "path": "src/aipinho/schemas/governance/discovery.py",
+      "name": "WorkspaceDiscoverySnapshot",
+      "methods": [],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.lifecycle",
+      "path": "src/aipinho/schemas/governance/lifecycle.py",
+      "name": "GovernanceLifecycleState",
+      "methods": [],
+      "line": 13,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.lifecycle",
+      "path": "src/aipinho/schemas/governance/lifecycle.py",
+      "name": "CanonicalIntentDecision",
+      "methods": [],
+      "line": 78,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.lifecycle",
+      "path": "src/aipinho/schemas/governance/lifecycle.py",
+      "name": "CanonicalOperationContract",
+      "methods": [],
+      "line": 91,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.lifecycle",
+      "path": "src/aipinho/schemas/governance/lifecycle.py",
+      "name": "CanonicalPolicyDecision",
+      "methods": [],
+      "line": 110,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.lifecycle",
+      "path": "src/aipinho/schemas/governance/lifecycle.py",
+      "name": "CanonicalExecutionPlan",
+      "methods": [],
+      "line": 122,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.lifecycle",
+      "path": "src/aipinho/schemas/governance/lifecycle.py",
+      "name": "ContextGateDecision",
+      "methods": [],
+      "line": 133,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.lifecycle",
+      "path": "src/aipinho/schemas/governance/lifecycle.py",
+      "name": "PreviewQualityDecision",
+      "methods": [],
+      "line": 146,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.lifecycle",
+      "path": "src/aipinho/schemas/governance/lifecycle.py",
+      "name": "CanonicalSpeakerTruth",
+      "methods": [],
+      "line": 182,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.lifecycle",
+      "path": "src/aipinho/schemas/governance/lifecycle.py",
+      "name": "GovernanceLifecycleSnapshot",
+      "methods": [
+        "status"
+      ],
+      "line": 190,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.operation_contract",
+      "path": "src/aipinho/schemas/governance/operation_contract.py",
+      "name": "OperationPermissionDecision",
+      "methods": [],
+      "line": 13,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governance.operation_contract",
+      "path": "src/aipinho/schemas/governance/operation_contract.py",
+      "name": "OperationContract",
+      "methods": [],
+      "line": 24,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governed_write",
+      "path": "src/aipinho/schemas/governed_write.py",
+      "name": "GovernedWriteRequest",
+      "methods": [],
+      "line": 13,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.governed_write",
+      "path": "src/aipinho/schemas/governed_write.py",
+      "name": "GovernedWriteOutcome",
+      "methods": [],
+      "line": 32,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.intent.ambiguity",
+      "path": "src/aipinho/schemas/intent/ambiguity.py",
+      "name": "AmbiguityResult",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.intent.prompt_analysis_request",
+      "path": "src/aipinho/schemas/intent/prompt_analysis_request.py",
+      "name": "PromptAnalysisRequest",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.intent.prompt_analysis_response",
+      "path": "src/aipinho/schemas/intent/prompt_analysis_response.py",
+      "name": "PromptAnalysisResponse",
+      "methods": [],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.intent.prompt_analysis_response",
+      "path": "src/aipinho/schemas/intent/prompt_analysis_response.py",
+      "name": "PromptContractPreviewResponse",
+      "methods": [],
+      "line": 16,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.intent.risk",
+      "path": "src/aipinho/schemas/intent/risk.py",
+      "name": "RiskResult",
+      "methods": [],
+      "line": 12,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.interaction.contracts",
+      "path": "src/aipinho/schemas/interaction/contracts.py",
+      "name": "ChatSessionCreateRequest",
+      "methods": [],
+      "line": 15,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.interaction.contracts",
+      "path": "src/aipinho/schemas/interaction/contracts.py",
+      "name": "ChatSessionRenameRequest",
+      "methods": [],
+      "line": 21,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.interaction.contracts",
+      "path": "src/aipinho/schemas/interaction/contracts.py",
+      "name": "ChatMessageCreateRequest",
+      "methods": [],
+      "line": 36,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.interaction.contracts",
+      "path": "src/aipinho/schemas/interaction/contracts.py",
+      "name": "RawPayloadResponse",
+      "methods": [],
+      "line": 74,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.interaction.contracts",
+      "path": "src/aipinho/schemas/interaction/contracts.py",
+      "name": "FeedbackRequest",
+      "methods": [],
+      "line": 80,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.interaction.contracts",
+      "path": "src/aipinho/schemas/interaction/contracts.py",
+      "name": "SpeakerTruthRequest",
+      "methods": [],
+      "line": 101,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.interaction.contracts",
+      "path": "src/aipinho/schemas/interaction/contracts.py",
+      "name": "SpeakerTruthResult",
+      "methods": [],
+      "line": 106,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.interaction.raw_copy_result",
+      "path": "src/aipinho/schemas/interaction/raw_copy_result.py",
+      "name": "RawCopyResult",
+      "methods": [],
+      "line": 7,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.interaction.raw_search_result",
+      "path": "src/aipinho/schemas/interaction/raw_search_result.py",
+      "name": "RawSearchResult",
+      "methods": [],
+      "line": 7,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.interaction.raw_viewer_request",
+      "path": "src/aipinho/schemas/interaction/raw_viewer_request.py",
+      "name": "RawViewerRequest",
+      "methods": [],
+      "line": 7,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.interaction.raw_viewer_result",
+      "path": "src/aipinho/schemas/interaction/raw_viewer_result.py",
+      "name": "RawViewerResult",
+      "methods": [],
+      "line": 7,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.interaction.session_grant",
+      "path": "src/aipinho/schemas/interaction/session_grant.py",
+      "name": "SessionGrantDecision",
+      "methods": [],
+      "line": 35,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.legacy_rag.contracts",
+      "path": "src/aipinho/schemas/legacy_rag/contracts.py",
+      "name": "LegacyReviewDecision",
+      "methods": [],
+      "line": 58,
+      "classification": "LEGACY"
+    },
+    {
+      "module": "aipinho.schemas.legacy_rag.contracts",
+      "path": "src/aipinho/schemas/legacy_rag/contracts.py",
+      "name": "LegacyImportStageResult",
+      "methods": [],
+      "line": 67,
+      "classification": "LEGACY"
+    },
+    {
+      "module": "aipinho.schemas.lucio_agent",
+      "path": "src/aipinho/schemas/lucio_agent.py",
+      "name": "LucioAgentRequest",
+      "methods": [],
+      "line": 45,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.lucio_agent",
+      "path": "src/aipinho/schemas/lucio_agent.py",
+      "name": "LucioRouteDecision",
+      "methods": [],
+      "line": 93,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.lucio_agent",
+      "path": "src/aipinho/schemas/lucio_agent.py",
+      "name": "LucioAgentResponse",
+      "methods": [],
+      "line": 114,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "MaintenanceRequest",
+      "methods": [],
+      "line": 52,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "DiagnosisRequest",
+      "methods": [],
+      "line": 62,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "InvariantCheckRequest",
+      "methods": [],
+      "line": 91,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "InvariantCheckResult",
+      "methods": [],
+      "line": 98,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "DiagnosisResult",
+      "methods": [],
+      "line": 136,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "MaintenanceResult",
+      "methods": [],
+      "line": 175,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "RepairValidationPlan",
+      "methods": [],
+      "line": 213,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "RepairPlan",
+      "methods": [],
+      "line": 219,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "RepairProposalRequest",
+      "methods": [],
+      "line": 225,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "MaintenanceRollbackPlan",
+      "methods": [],
+      "line": 279,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "RepairApprovalRequest",
+      "methods": [],
+      "line": 286,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "MaintenanceLessonCandidateRequest",
+      "methods": [],
+      "line": 322,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "PolicyConflictSignal",
+      "methods": [],
+      "line": 360,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "SpeakerTruthViolationSignal",
+      "methods": [],
+      "line": 376,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.maintenance.contracts",
+      "path": "src/aipinho/schemas/maintenance/contracts.py",
+      "name": "EventContractViolationSignal",
+      "methods": [],
+      "line": 384,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.curated_memory",
+      "path": "src/aipinho/schemas/memory/curated_memory.py",
+      "name": "CuratedMemoryRequest",
+      "methods": [],
+      "line": 87,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.curated_memory",
+      "path": "src/aipinho/schemas/memory/curated_memory.py",
+      "name": "CuratedMemoryResult",
+      "methods": [],
+      "line": 96,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.curated_memory",
+      "path": "src/aipinho/schemas/memory/curated_memory.py",
+      "name": "MemoryApprovalRequest",
+      "methods": [],
+      "line": 107,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.curated_memory",
+      "path": "src/aipinho/schemas/memory/curated_memory.py",
+      "name": "MemoryApprovalResult",
+      "methods": [],
+      "line": 113,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.curated_memory",
+      "path": "src/aipinho/schemas/memory/curated_memory.py",
+      "name": "MemorySupersedeRequest",
+      "methods": [],
+      "line": 133,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.curated_memory",
+      "path": "src/aipinho/schemas/memory/curated_memory.py",
+      "name": "MemoryExpirationRequest",
+      "methods": [],
+      "line": 140,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.curated_memory",
+      "path": "src/aipinho/schemas/memory/curated_memory.py",
+      "name": "MemorySearchRequest",
+      "methods": [],
+      "line": 144,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.curated_memory",
+      "path": "src/aipinho/schemas/memory/curated_memory.py",
+      "name": "MemorySearchResult",
+      "methods": [],
+      "line": 157,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.learning",
+      "path": "src/aipinho/schemas/memory/learning.py",
+      "name": "LearningExtractionRequest",
+      "methods": [],
+      "line": 33,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.learning",
+      "path": "src/aipinho/schemas/memory/learning.py",
+      "name": "MemoryReviewRequest",
+      "methods": [],
+      "line": 216,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.learning",
+      "path": "src/aipinho/schemas/memory/learning.py",
+      "name": "LearningExtractionResult",
+      "methods": [],
+      "line": 221,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.memory_candidate",
+      "path": "src/aipinho/schemas/memory/memory_candidate.py",
+      "name": "MemoryCandidateRequest",
+      "methods": [],
+      "line": 114,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.memory_candidate",
+      "path": "src/aipinho/schemas/memory/memory_candidate.py",
+      "name": "MemoryCandidateResult",
+      "methods": [],
+      "line": 146,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.memory_candidate",
+      "path": "src/aipinho/schemas/memory/memory_candidate.py",
+      "name": "MemoryExtractionResult",
+      "methods": [],
+      "line": 156,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.operational_memory",
+      "path": "src/aipinho/schemas/memory/operational_memory.py",
+      "name": "DecisionMemory",
+      "methods": [],
+      "line": 57,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.memory.operational_memory",
+      "path": "src/aipinho/schemas/memory/operational_memory.py",
+      "name": "OperationalMemorySnapshot",
+      "methods": [],
+      "line": 87,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.mobile_view_models.contracts",
+      "path": "src/aipinho/schemas/mobile_view_models/contracts.py",
+      "name": "SafetyState",
+      "methods": [],
+      "line": 53,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.mobile_view_models.contracts",
+      "path": "src/aipinho/schemas/mobile_view_models/contracts.py",
+      "name": "MobileScreenState",
+      "methods": [],
+      "line": 130,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.models.manual_inference_request",
+      "path": "src/aipinho/schemas/models/manual_inference_request.py",
+      "name": "ManualInferenceRequester",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.models.manual_inference_request",
+      "path": "src/aipinho/schemas/models/manual_inference_request.py",
+      "name": "ManualInferenceRequest",
+      "methods": [],
+      "line": 13,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.models.manual_inference_result",
+      "path": "src/aipinho/schemas/models/manual_inference_result.py",
+      "name": "ManualInferenceResult",
+      "methods": [],
+      "line": 20,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.models.model_doctor_request",
+      "path": "src/aipinho/schemas/models/model_doctor_request.py",
+      "name": "ModelDoctorRequest",
+      "methods": [],
+      "line": 6,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.models.model_doctor_result",
+      "path": "src/aipinho/schemas/models/model_doctor_result.py",
+      "name": "ModelDoctorResult",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.models.model_fallback_result",
+      "path": "src/aipinho/schemas/models/model_fallback_result.py",
+      "name": "ModelFallbackResult",
+      "methods": [],
+      "line": 6,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.models.model_probe_result",
+      "path": "src/aipinho/schemas/models/model_probe_result.py",
+      "name": "ModelProbeResult",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.models.model_registry",
+      "path": "src/aipinho/schemas/models/model_registry.py",
+      "name": "ModelRegistrySnapshot",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.models.model_request",
+      "path": "src/aipinho/schemas/models/model_request.py",
+      "name": "ModelRequest",
+      "methods": [
+        "_messages_required"
+      ],
+      "line": 13,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.models.model_response",
+      "path": "src/aipinho/schemas/models/model_response.py",
+      "name": "ModelResponse",
+      "methods": [],
+      "line": 21,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.models.model_runtime_policy",
+      "path": "src/aipinho/schemas/models/model_runtime_policy.py",
+      "name": "ModelRuntimePolicy",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.models.real_inference_gate",
+      "path": "src/aipinho/schemas/models/real_inference_gate.py",
+      "name": "RealInferenceGateDecision",
+      "methods": [],
+      "line": 22,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.multi_agent_observability",
+      "path": "src/aipinho/schemas/multi_agent_observability.py",
+      "name": "DebuggerEventsResponse",
+      "methods": [],
+      "line": 77,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.multi_agent_observability",
+      "path": "src/aipinho/schemas/multi_agent_observability.py",
+      "name": "TraceGraphResponse",
+      "methods": [],
+      "line": 101,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.multi_agent_observability",
+      "path": "src/aipinho/schemas/multi_agent_observability.py",
+      "name": "StateConsistencyIssue",
+      "methods": [],
+      "line": 110,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.multi_agent_observability",
+      "path": "src/aipinho/schemas/multi_agent_observability.py",
+      "name": "StateConsistencyReport",
+      "methods": [],
+      "line": 121,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.multi_agent_observability",
+      "path": "src/aipinho/schemas/multi_agent_observability.py",
+      "name": "DebugBundleExportRequest",
+      "methods": [],
+      "line": 129,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.multi_agent_observability",
+      "path": "src/aipinho/schemas/multi_agent_observability.py",
+      "name": "DebugBundleExportResponse",
+      "methods": [],
+      "line": 139,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patch_intelligence",
+      "path": "src/aipinho/schemas/patch_intelligence.py",
+      "name": "PatchKnowledgeQueryResult",
+      "methods": [],
+      "line": 127,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patch_intelligence",
+      "path": "src/aipinho/schemas/patch_intelligence.py",
+      "name": "PatchPatternRecognitionRequest",
+      "methods": [
+        "validate_pattern_limit"
+      ],
+      "line": 150,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patch_intelligence",
+      "path": "src/aipinho/schemas/patch_intelligence.py",
+      "name": "PatchPatternRecognitionResult",
+      "methods": [],
+      "line": 165,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patch_intelligence",
+      "path": "src/aipinho/schemas/patch_intelligence.py",
+      "name": "IntelligentPatchProposalRequest",
+      "methods": [],
+      "line": 201,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patch_intelligence",
+      "path": "src/aipinho/schemas/patch_intelligence.py",
+      "name": "IntelligentPatchProposalResult",
+      "methods": [],
+      "line": 208,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.apply.hunk_apply_result",
+      "path": "src/aipinho/schemas/patching/apply/hunk_apply_result.py",
+      "name": "HunkApplyResult",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.apply.patch_apply_file_result",
+      "path": "src/aipinho/schemas/patching/apply/patch_apply_file_result.py",
+      "name": "PatchApplyFileResult",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.apply.patch_apply_guard",
+      "path": "src/aipinho/schemas/patching/apply/patch_apply_guard.py",
+      "name": "PatchApplyGuardResult",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.apply.patch_apply_policy",
+      "path": "src/aipinho/schemas/patching/apply/patch_apply_policy.py",
+      "name": "PatchApplyPolicy",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.apply.patch_apply_request",
+      "path": "src/aipinho/schemas/patching/apply/patch_apply_request.py",
+      "name": "PatchApplyRequest",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.apply.patch_apply_result",
+      "path": "src/aipinho/schemas/patching/apply/patch_apply_result.py",
+      "name": "PatchApplyResult",
+      "methods": [],
+      "line": 11,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.apply.rollback_result",
+      "path": "src/aipinho/schemas/patching/apply/rollback_result.py",
+      "name": "RollbackResult",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.execution_intent_artifact",
+      "path": "src/aipinho/schemas/patching/execution_intent_artifact.py",
+      "name": "ExecutablePlanArtifact",
+      "methods": [],
+      "line": 51,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.model_patch_proposal",
+      "path": "src/aipinho/schemas/patching/model_patch_proposal.py",
+      "name": "ModelAssistedPatchPlanRequest",
+      "methods": [],
+      "line": 30,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.model_patch_proposal",
+      "path": "src/aipinho/schemas/patching/model_patch_proposal.py",
+      "name": "ModelPatchPlanningResult",
+      "methods": [],
+      "line": 38,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.patch_plan",
+      "path": "src/aipinho/schemas/patching/patch_plan.py",
+      "name": "PatchPlan",
+      "methods": [],
+      "line": 19,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.patch_plan_request",
+      "path": "src/aipinho/schemas/patching/patch_plan_request.py",
+      "name": "PatchPlanRequest",
+      "methods": [],
+      "line": 11,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.patch_plan_result",
+      "path": "src/aipinho/schemas/patching/patch_plan_result.py",
+      "name": "PatchPlanResult",
+      "methods": [],
+      "line": 7,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.patch_status",
+      "path": "src/aipinho/schemas/patching/patch_status.py",
+      "name": "PatchPlanningStatus",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.patch_validation",
+      "path": "src/aipinho/schemas/patching/patch_validation.py",
+      "name": "PatchValidationResult",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.quality.diff_parse_result",
+      "path": "src/aipinho/schemas/patching/quality/diff_parse_result.py",
+      "name": "DiffParseResult",
+      "methods": [],
+      "line": 21,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.quality.hardcode_detection_result",
+      "path": "src/aipinho/schemas/patching/quality/hardcode_detection_result.py",
+      "name": "HardcodeDetectionResult",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.quality.hunk_validation_result",
+      "path": "src/aipinho/schemas/patching/quality/hunk_validation_result.py",
+      "name": "HunkValidationResult",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.quality.import_impact_result",
+      "path": "src/aipinho/schemas/patching/quality/import_impact_result.py",
+      "name": "ImportImpactResult",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.quality.patch_quality_gate_request",
+      "path": "src/aipinho/schemas/patching/quality/patch_quality_gate_request.py",
+      "name": "PatchQualityGateRequest",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.quality.patch_quality_gate_result",
+      "path": "src/aipinho/schemas/patching/quality/patch_quality_gate_result.py",
+      "name": "PatchQualityGateResult",
+      "methods": [],
+      "line": 22,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.quality.policy_bypass_detection_result",
+      "path": "src/aipinho/schemas/patching/quality/policy_bypass_detection_result.py",
+      "name": "PolicyBypassDetectionResult",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.quality.rollback_validation_result",
+      "path": "src/aipinho/schemas/patching/quality/rollback_validation_result.py",
+      "name": "RollbackValidationResult",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.quality.schema_api_impact_result",
+      "path": "src/aipinho/schemas/patching/quality/schema_api_impact_result.py",
+      "name": "SchemaApiImpactResult",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.quality.security_regression_result",
+      "path": "src/aipinho/schemas/patching/quality/security_regression_result.py",
+      "name": "SecurityRegressionResult",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.quality.static_validation_result",
+      "path": "src/aipinho/schemas/patching/quality/static_validation_result.py",
+      "name": "StaticValidationResult",
+      "methods": [],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.quality.syntax_validation_result",
+      "path": "src/aipinho/schemas/patching/quality/syntax_validation_result.py",
+      "name": "SyntaxValidationResult",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.quality.target_snapshot_validation",
+      "path": "src/aipinho/schemas/patching/quality/target_snapshot_validation.py",
+      "name": "TargetSnapshotValidation",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.patching.quality.test_plan_validation_result",
+      "path": "src/aipinho/schemas/patching/quality/test_plan_validation_result.py",
+      "name": "TestPlanValidationResult",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.android_workbench",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/android_workbench.py",
+      "name": "PinhoForgeAndroidWorkbenchRequest",
+      "methods": [],
+      "line": 20,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.android_workbench",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/android_workbench.py",
+      "name": "PinhoForgeGradleExecutionResult",
+      "methods": [],
+      "line": 60,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.android_workbench",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/android_workbench.py",
+      "name": "PinhoForgeAndroidWorkbenchResult",
+      "methods": [],
+      "line": 75,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.command_catalog",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/command_catalog.py",
+      "name": "PinhoForgeCommandPreviewRequest",
+      "methods": [],
+      "line": 23,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.command_catalog",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/command_catalog.py",
+      "name": "PinhoForgeCommandCatalogResult",
+      "methods": [],
+      "line": 29,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.contracts",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/contracts.py",
+      "name": "PinhoForgeBridgePolicyDecision",
+      "methods": [],
+      "line": 72,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.contracts",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/contracts.py",
+      "name": "PinhoForgeBridgeRequest",
+      "methods": [],
+      "line": 82,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.contracts",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/contracts.py",
+      "name": "PinhoForgeBridgeResponse",
+      "methods": [],
+      "line": 89,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.conversion",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/conversion.py",
+      "name": "PinhoForgeConversionRequest",
+      "methods": [],
+      "line": 19,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.conversion",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/conversion.py",
+      "name": "PinhoForgeConversionResult",
+      "methods": [],
+      "line": 45,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.governed_terminal",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/governed_terminal.py",
+      "name": "PinhoForgeTerminalPreviewRequest",
+      "methods": [],
+      "line": 24,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.governed_terminal",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/governed_terminal.py",
+      "name": "PinhoForgeTerminalPreviewResult",
+      "methods": [],
+      "line": 39,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.governed_terminal",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/governed_terminal.py",
+      "name": "PinhoForgeTerminalExecuteRequest",
+      "methods": [],
+      "line": 63,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.governed_terminal",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/governed_terminal.py",
+      "name": "PinhoForgeTerminalExecuteResult",
+      "methods": [],
+      "line": 74,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.governed_terminal",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/governed_terminal.py",
+      "name": "PinhoForgeTerminalCancelRequest",
+      "methods": [],
+      "line": 99,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.hardware_profiler",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/hardware_profiler.py",
+      "name": "PinhoForgeHardwareProfilerRequest",
+      "methods": [],
+      "line": 20,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.hardware_profiler",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/hardware_profiler.py",
+      "name": "PinhoForgeHardwareProfilerResult",
+      "methods": [],
+      "line": 72,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.media_3d",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/media_3d.py",
+      "name": "PinhoForgeImageRequest",
+      "methods": [],
+      "line": 40,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.media_3d",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/media_3d.py",
+      "name": "PinhoForgeImageResult",
+      "methods": [],
+      "line": 59,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.media_3d",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/media_3d.py",
+      "name": "PinhoForge3DRequest",
+      "methods": [],
+      "line": 95,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.media_3d",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/media_3d.py",
+      "name": "PinhoForge3DResult",
+      "methods": [],
+      "line": 115,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.policy.approval",
+      "path": "src/aipinho/schemas/policy/approval.py",
+      "name": "ApprovalPolicyConfig",
+      "methods": [],
+      "line": 16,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.policy.capability",
+      "path": "src/aipinho/schemas/policy/capability.py",
+      "name": "CapabilityDecision",
+      "methods": [],
+      "line": 19,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.policy.decision_ownership",
+      "path": "src/aipinho/schemas/policy/decision_ownership.py",
+      "name": "DecisionOwner",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.policy.decision_ownership",
+      "path": "src/aipinho/schemas/policy/decision_ownership.py",
+      "name": "DecisionOwnershipMatrix",
+      "methods": [],
+      "line": 15,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.policy.effective_policy",
+      "path": "src/aipinho/schemas/policy/effective_policy.py",
+      "name": "EffectivePolicy",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.policy.policy_decision",
+      "path": "src/aipinho/schemas/policy/policy_decision.py",
+      "name": "PolicyResolveRequest",
+      "methods": [],
+      "line": 29,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.policy.policy_decision",
+      "path": "src/aipinho/schemas/policy/policy_decision.py",
+      "name": "PolicyDecision",
+      "methods": [],
+      "line": 38,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.policy.policy_trace",
+      "path": "src/aipinho/schemas/policy/policy_trace.py",
+      "name": "PolicyPrecedenceConfig",
+      "methods": [],
+      "line": 13,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.policy.policy_trace",
+      "path": "src/aipinho/schemas/policy/policy_trace.py",
+      "name": "PolicyTraceItem",
+      "methods": [],
+      "line": 19,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.policy.policy_trace",
+      "path": "src/aipinho/schemas/policy/policy_trace.py",
+      "name": "PolicyTrace",
+      "methods": [],
+      "line": 29,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.policy.policy_violation",
+      "path": "src/aipinho/schemas/policy/policy_violation.py",
+      "name": "PolicyViolation",
+      "methods": [],
+      "line": 7,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.policy.workspace_role_contract",
+      "path": "src/aipinho/schemas/policy/workspace_role_contract.py",
+      "name": "WorkspaceRoleContract",
+      "methods": [],
+      "line": 22,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.policy.workspace_role_contract",
+      "path": "src/aipinho/schemas/policy/workspace_role_contract.py",
+      "name": "WorkspaceRoleDecision",
+      "methods": [],
+      "line": 41,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.project_generation",
+      "path": "src/aipinho/schemas/project_generation.py",
+      "name": "ProjectGenerationRequest",
+      "methods": [],
+      "line": 41,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.project_generation",
+      "path": "src/aipinho/schemas/project_generation.py",
+      "name": "ProjectGenerationResult",
+      "methods": [],
+      "line": 63,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.project_generation",
+      "path": "src/aipinho/schemas/project_generation.py",
+      "name": "ProjectGenerationRouteDecision",
+      "methods": [],
+      "line": 89,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.projects.project_profile",
+      "path": "src/aipinho/schemas/projects/project_profile.py",
+      "name": "ProjectProfileCreateRequest",
+      "methods": [],
+      "line": 150,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.projects.project_profile",
+      "path": "src/aipinho/schemas/projects/project_profile.py",
+      "name": "ProjectProfileUpdateRequest",
+      "methods": [],
+      "line": 155,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.projects.project_profile",
+      "path": "src/aipinho/schemas/projects/project_profile.py",
+      "name": "ProjectProfileDetectionRequest",
+      "methods": [],
+      "line": 164,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.projects.project_profile",
+      "path": "src/aipinho/schemas/projects/project_profile.py",
+      "name": "ProjectProfileSelectionRequest",
+      "methods": [],
+      "line": 170,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.projects.project_profile",
+      "path": "src/aipinho/schemas/projects/project_profile.py",
+      "name": "ProjectProfileValidationResult",
+      "methods": [],
+      "line": 176,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.projects.project_rebuild_preview",
+      "path": "src/aipinho/schemas/projects/project_rebuild_preview.py",
+      "name": "ProjectRebuildPreviewRequest",
+      "methods": [],
+      "line": 19,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.projects.project_rebuild_preview",
+      "path": "src/aipinho/schemas/projects/project_rebuild_preview.py",
+      "name": "ProjectRebuildPreviewResult",
+      "methods": [],
+      "line": 29,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.promotion",
+      "path": "src/aipinho/schemas/promotion.py",
+      "name": "PromotionPlanRequest",
+      "methods": [],
+      "line": 16,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.promotion",
+      "path": "src/aipinho/schemas/promotion.py",
+      "name": "RollbackPlan",
+      "methods": [],
+      "line": 38,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.promotion",
+      "path": "src/aipinho/schemas/promotion.py",
+      "name": "PromotionPlan",
+      "methods": [],
+      "line": 46,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.promotion",
+      "path": "src/aipinho/schemas/promotion.py",
+      "name": "PromotionApprovalRequest",
+      "methods": [],
+      "line": 81,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.promotion",
+      "path": "src/aipinho/schemas/promotion.py",
+      "name": "PromotionApprovalResult",
+      "methods": [],
+      "line": 87,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.promotion",
+      "path": "src/aipinho/schemas/promotion.py",
+      "name": "PromotionApplyRequest",
+      "methods": [],
+      "line": 96,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.promotion",
+      "path": "src/aipinho/schemas/promotion.py",
+      "name": "PromotionValidationResult",
+      "methods": [],
+      "line": 102,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.promotion",
+      "path": "src/aipinho/schemas/promotion.py",
+      "name": "PromotionApplyResult",
+      "methods": [],
+      "line": 112,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.prompts.output_contract",
+      "path": "src/aipinho/schemas/prompts/output_contract.py",
+      "name": "OutputContract",
+      "methods": [],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.prompts.prompt_assembly",
+      "path": "src/aipinho/schemas/prompts/prompt_assembly.py",
+      "name": "PromptAssemblyRequest",
+      "methods": [],
+      "line": 19,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.public_runtime_api",
+      "path": "src/aipinho/schemas/public_runtime_api.py",
+      "name": "PublicContract",
+      "methods": [],
+      "line": 16,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.public_runtime_api",
+      "path": "src/aipinho/schemas/public_runtime_api.py",
+      "name": "PublicRuntimeRequest",
+      "methods": [],
+      "line": 27,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.public_runtime_api",
+      "path": "src/aipinho/schemas/public_runtime_api.py",
+      "name": "PublicRuntimeResponse",
+      "methods": [],
+      "line": 37,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.public_runtime_api",
+      "path": "src/aipinho/schemas/public_runtime_api.py",
+      "name": "PublicContractRegistry",
+      "methods": [],
+      "line": 61,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.integration.contracts",
+      "path": "src/aipinho/schemas/rag/integration/contracts.py",
+      "name": "RAGMemoryPolicyRequest",
+      "methods": [],
+      "line": 45,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.integration.contracts",
+      "path": "src/aipinho/schemas/rag/integration/contracts.py",
+      "name": "RAGMemoryPolicyDecision",
+      "methods": [],
+      "line": 58,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.integration.contracts",
+      "path": "src/aipinho/schemas/rag/integration/contracts.py",
+      "name": "ContextBudgetResult",
+      "methods": [],
+      "line": 127,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.integration.contracts",
+      "path": "src/aipinho/schemas/rag/integration/contracts.py",
+      "name": "ContextAdmissionRequest",
+      "methods": [],
+      "line": 149,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.integration.contracts",
+      "path": "src/aipinho/schemas/rag/integration/contracts.py",
+      "name": "ContextAdmissionDecision",
+      "methods": [],
+      "line": 161,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.integration.contracts",
+      "path": "src/aipinho/schemas/rag/integration/contracts.py",
+      "name": "ContextInjectionPlan",
+      "methods": [],
+      "line": 178,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.retrieval_request",
+      "path": "src/aipinho/schemas/rag/retrieval_request.py",
+      "name": "RetrievalSourcePolicy",
+      "methods": [],
+      "line": 104,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.retrieval_request",
+      "path": "src/aipinho/schemas/rag/retrieval_request.py",
+      "name": "RetrievalRequest",
+      "methods": [],
+      "line": 151,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.retrieval_request",
+      "path": "src/aipinho/schemas/rag/retrieval_request.py",
+      "name": "RetrievalResult",
+      "methods": [],
+      "line": 169,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.vector.contracts",
+      "path": "src/aipinho/schemas/rag/vector/contracts.py",
+      "name": "VectorNamespacePolicy",
+      "methods": [],
+      "line": 52,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.vector.contracts",
+      "path": "src/aipinho/schemas/rag/vector/contracts.py",
+      "name": "EmbeddingRequest",
+      "methods": [],
+      "line": 84,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.vector.contracts",
+      "path": "src/aipinho/schemas/rag/vector/contracts.py",
+      "name": "EmbeddingResult",
+      "methods": [],
+      "line": 91,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.vector.contracts",
+      "path": "src/aipinho/schemas/rag/vector/contracts.py",
+      "name": "RerankRequest",
+      "methods": [],
+      "line": 112,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.vector.contracts",
+      "path": "src/aipinho/schemas/rag/vector/contracts.py",
+      "name": "RerankResult",
+      "methods": [],
+      "line": 120,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.vector.contracts",
+      "path": "src/aipinho/schemas/rag/vector/contracts.py",
+      "name": "RAGIngestionRequest",
+      "methods": [],
+      "line": 131,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.vector.contracts",
+      "path": "src/aipinho/schemas/rag/vector/contracts.py",
+      "name": "RAGIngestionResult",
+      "methods": [],
+      "line": 161,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.vector.contracts",
+      "path": "src/aipinho/schemas/rag/vector/contracts.py",
+      "name": "RAGQueryRequest",
+      "methods": [],
+      "line": 176,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.vector.contracts",
+      "path": "src/aipinho/schemas/rag/vector/contracts.py",
+      "name": "RAGQueryResult",
+      "methods": [],
+      "line": 189,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.vector.contracts",
+      "path": "src/aipinho/schemas/rag/vector/contracts.py",
+      "name": "RoleRAGPolicy",
+      "methods": [],
+      "line": 201,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.rag.workspace_index",
+      "path": "src/aipinho/schemas/rag/workspace_index.py",
+      "name": "WorkspaceIndexRequest",
+      "methods": [],
+      "line": 22,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.realtime.contracts",
+      "path": "src/aipinho/schemas/realtime/contracts.py",
+      "name": "SyncSnapshot",
+      "methods": [],
+      "line": 29,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.regression.contracts",
+      "path": "src/aipinho/schemas/regression/contracts.py",
+      "name": "ExpectationResult",
+      "methods": [],
+      "line": 25,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.regression.contracts",
+      "path": "src/aipinho/schemas/regression/contracts.py",
+      "name": "RegressionPromotionRequest",
+      "methods": [],
+      "line": 72,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.regression.contracts",
+      "path": "src/aipinho/schemas/regression/contracts.py",
+      "name": "RegressionPromotionResult",
+      "methods": [],
+      "line": 79,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.regression.contracts",
+      "path": "src/aipinho/schemas/regression/contracts.py",
+      "name": "RegressionRunResult",
+      "methods": [],
+      "line": 102,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.replay.contracts",
+      "path": "src/aipinho/schemas/replay/contracts.py",
+      "name": "ReplaySnapshotMetadata",
+      "methods": [],
+      "line": 20,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.replay.contracts",
+      "path": "src/aipinho/schemas/replay/contracts.py",
+      "name": "ReplayDecisionBundle",
+      "methods": [],
+      "line": 41,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.replay.contracts",
+      "path": "src/aipinho/schemas/replay/contracts.py",
+      "name": "ReplayRagResultRef",
+      "methods": [],
+      "line": 65,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.replay.contracts",
+      "path": "src/aipinho/schemas/replay/contracts.py",
+      "name": "ReplaySanitizationResult",
+      "methods": [],
+      "line": 100,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.replay.contracts",
+      "path": "src/aipinho/schemas/replay/contracts.py",
+      "name": "ReplaySnapshot",
+      "methods": [],
+      "line": 107,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.replay.contracts",
+      "path": "src/aipinho/schemas/replay/contracts.py",
+      "name": "ReplayCaptureRequest",
+      "methods": [],
+      "line": 124,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.replay.contracts",
+      "path": "src/aipinho/schemas/replay/contracts.py",
+      "name": "ReplayCaptureResult",
+      "methods": [],
+      "line": 136,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.replay.contracts",
+      "path": "src/aipinho/schemas/replay/contracts.py",
+      "name": "ReplayRunResult",
+      "methods": [],
+      "line": 171,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.reports.report_artifact",
+      "path": "src/aipinho/schemas/reports/report_artifact.py",
+      "name": "ReportArtifactPreviewRequest",
+      "methods": [],
+      "line": 13,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.reports.report_request",
+      "path": "src/aipinho/schemas/reports/report_request.py",
+      "name": "ProjectReportRequest",
+      "methods": [],
+      "line": 28,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.reports.report_request",
+      "path": "src/aipinho/schemas/reports/report_request.py",
+      "name": "ReportFromAnalysisRequest",
+      "methods": [],
+      "line": 41,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.reports.report_response",
+      "path": "src/aipinho/schemas/reports/report_response.py",
+      "name": "ProjectReportResponse",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.roles.effective_role_policy",
+      "path": "src/aipinho/schemas/roles/effective_role_policy.py",
+      "name": "EffectiveRolePolicy",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.roles.role_contracts",
+      "path": "src/aipinho/schemas/roles/role_contracts.py",
+      "name": "RoleExecutionPolicy",
+      "methods": [],
+      "line": 47,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.roles.role_contracts",
+      "path": "src/aipinho/schemas/roles/role_contracts.py",
+      "name": "RoleContract",
+      "methods": [],
+      "line": 54,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.roles.role_model_binding",
+      "path": "src/aipinho/schemas/roles/role_model_binding.py",
+      "name": "RoleModelGateDecisionV2",
+      "methods": [],
+      "line": 43,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.roles.role_model_binding",
+      "path": "src/aipinho/schemas/roles/role_model_binding.py",
+      "name": "RoleInferenceRequest",
+      "methods": [],
+      "line": 84,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.roles.role_model_binding",
+      "path": "src/aipinho/schemas/roles/role_model_binding.py",
+      "name": "RolePromptContract",
+      "methods": [],
+      "line": 100,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.roles.role_model_binding",
+      "path": "src/aipinho/schemas/roles/role_model_binding.py",
+      "name": "RoleOutputEvaluation",
+      "methods": [],
+      "line": 111,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.roles.role_model_binding",
+      "path": "src/aipinho/schemas/roles/role_model_binding.py",
+      "name": "RoleInferenceResult",
+      "methods": [],
+      "line": 135,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.roles.role_model_gate",
+      "path": "src/aipinho/schemas/roles/role_model_gate.py",
+      "name": "RoleModelGateRequest",
+      "methods": [],
+      "line": 12,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.roles.role_model_gate",
+      "path": "src/aipinho/schemas/roles/role_model_gate.py",
+      "name": "RoleModelGateDecision",
+      "methods": [],
+      "line": 24,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.roles.role_model_policy",
+      "path": "src/aipinho/schemas/roles/role_model_policy.py",
+      "name": "RoleModelPolicy",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.roles.role_output_contract",
+      "path": "src/aipinho/schemas/roles/role_output_contract.py",
+      "name": "RoleOutputContract",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.roles.role_pipeline_run",
+      "path": "src/aipinho/schemas/roles/role_pipeline_run.py",
+      "name": "RolePipelineRunRequest",
+      "methods": [],
+      "line": 16,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.roles.role_policy",
+      "path": "src/aipinho/schemas/roles/role_policy.py",
+      "name": "RolePolicyRequest",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.canonical_operation_state",
+      "path": "src/aipinho/schemas/runtime/canonical_operation_state.py",
+      "name": "CanonicalOperationState",
+      "methods": [],
+      "line": 23,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.delegation_contract",
+      "path": "src/aipinho/schemas/runtime/delegation_contract.py",
+      "name": "DelegationDecisionResult",
+      "methods": [],
+      "line": 32,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.delegation_contract",
+      "path": "src/aipinho/schemas/runtime/delegation_contract.py",
+      "name": "DelegationCreateRequest",
+      "methods": [],
+      "line": 45,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.delegation_contract",
+      "path": "src/aipinho/schemas/runtime/delegation_contract.py",
+      "name": "DelegationContract",
+      "methods": [],
+      "line": 59,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.delegation_contract",
+      "path": "src/aipinho/schemas/runtime/delegation_contract.py",
+      "name": "DelegationTruthValidation",
+      "methods": [],
+      "line": 80,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.engineering_autopilot",
+      "path": "src/aipinho/schemas/runtime/engineering_autopilot.py",
+      "name": "DecisionLogEntry",
+      "methods": [],
+      "line": 83,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.evidence_engine",
+      "path": "src/aipinho/schemas/runtime/evidence_engine.py",
+      "name": "EvidenceBackedDecision",
+      "methods": [],
+      "line": 69,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.evidence_engine",
+      "path": "src/aipinho/schemas/runtime/evidence_engine.py",
+      "name": "DecisionAudit",
+      "methods": [],
+      "line": 81,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.execution_graph",
+      "path": "src/aipinho/schemas/runtime/execution_graph.py",
+      "name": "ExecutionResult",
+      "methods": [],
+      "line": 68,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.execution_plan",
+      "path": "src/aipinho/schemas/runtime/execution_plan.py",
+      "name": "CandidatePlan",
+      "methods": [],
+      "line": 29,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.execution_plan",
+      "path": "src/aipinho/schemas/runtime/execution_plan.py",
+      "name": "CanonicalExecutionPlan",
+      "methods": [],
+      "line": 48,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.execution_plan",
+      "path": "src/aipinho/schemas/runtime/execution_plan.py",
+      "name": "ExecutionPlanPromotionDecision",
+      "methods": [],
+      "line": 75,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.execution_plan",
+      "path": "src/aipinho/schemas/runtime/execution_plan.py",
+      "name": "CanonicalExecutionPlanSerializer",
+      "methods": [
+        "to_json",
+        "from_json"
+      ],
+      "line": 84,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.intelligent_planner",
+      "path": "src/aipinho/schemas/runtime/intelligent_planner.py",
+      "name": "PlannerIntent",
+      "methods": [],
+      "line": 26,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.intelligent_planner",
+      "path": "src/aipinho/schemas/runtime/intelligent_planner.py",
+      "name": "PlannerTask",
+      "methods": [],
+      "line": 37,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.intelligent_planner",
+      "path": "src/aipinho/schemas/runtime/intelligent_planner.py",
+      "name": "PlanningEvidence",
+      "methods": [],
+      "line": 56,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.intelligent_planner",
+      "path": "src/aipinho/schemas/runtime/intelligent_planner.py",
+      "name": "PlannerReasoning",
+      "methods": [],
+      "line": 64,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.intelligent_planner",
+      "path": "src/aipinho/schemas/runtime/intelligent_planner.py",
+      "name": "PlannerNode",
+      "methods": [],
+      "line": 71,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.intelligent_planner",
+      "path": "src/aipinho/schemas/runtime/intelligent_planner.py",
+      "name": "PlanningReport",
+      "methods": [],
+      "line": 100,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.phase_dependency_evaluation",
+      "path": "src/aipinho/schemas/runtime/phase_dependency_evaluation.py",
+      "name": "PhaseDependencySnapshot",
+      "methods": [],
+      "line": 94,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.phase_dependency_evaluation",
+      "path": "src/aipinho/schemas/runtime/phase_dependency_evaluation.py",
+      "name": "PhaseDependencyEvaluation",
+      "methods": [],
+      "line": 128,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.phase_outcome",
+      "path": "src/aipinho/schemas/runtime/phase_outcome.py",
+      "name": "PhaseOutcome",
+      "methods": [],
+      "line": 12,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.phase_progression",
+      "path": "src/aipinho/schemas/runtime/phase_progression.py",
+      "name": "FireTestPhaseProgressionState",
+      "methods": [],
+      "line": 26,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.planner_v2",
+      "path": "src/aipinho/schemas/runtime/planner_v2.py",
+      "name": "ExecutionPlanTrace",
+      "methods": [],
+      "line": 25,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.planner_v2",
+      "path": "src/aipinho/schemas/runtime/planner_v2.py",
+      "name": "ExecutionPlan",
+      "methods": [],
+      "line": 31,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.planner_v2",
+      "path": "src/aipinho/schemas/runtime/planner_v2.py",
+      "name": "ExecutionPlanSerializer",
+      "methods": [
+        "to_json",
+        "from_json"
+      ],
+      "line": 45,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_contracts_v2",
+      "path": "src/aipinho/schemas/runtime/runtime_contracts_v2.py",
+      "name": "ContractVersion",
+      "methods": [],
+      "line": 16,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_contracts_v2",
+      "path": "src/aipinho/schemas/runtime/runtime_contracts_v2.py",
+      "name": "ExecutionContract",
+      "methods": [],
+      "line": 23,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_contracts_v2",
+      "path": "src/aipinho/schemas/runtime/runtime_contracts_v2.py",
+      "name": "WorkspaceContract",
+      "methods": [],
+      "line": 37,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_contracts_v2",
+      "path": "src/aipinho/schemas/runtime/runtime_contracts_v2.py",
+      "name": "ApprovalContract",
+      "methods": [],
+      "line": 48,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_contracts_v2",
+      "path": "src/aipinho/schemas/runtime/runtime_contracts_v2.py",
+      "name": "ArtifactContract",
+      "methods": [],
+      "line": 58,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_contracts_v2",
+      "path": "src/aipinho/schemas/runtime/runtime_contracts_v2.py",
+      "name": "ValidationContract",
+      "methods": [],
+      "line": 68,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_contracts_v2",
+      "path": "src/aipinho/schemas/runtime/runtime_contracts_v2.py",
+      "name": "RoleContract",
+      "methods": [],
+      "line": 77,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_contracts_v2",
+      "path": "src/aipinho/schemas/runtime/runtime_contracts_v2.py",
+      "name": "ToolContract",
+      "methods": [],
+      "line": 88,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_contracts_v2",
+      "path": "src/aipinho/schemas/runtime/runtime_contracts_v2.py",
+      "name": "SkillContract",
+      "methods": [],
+      "line": 97,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_contracts_v2",
+      "path": "src/aipinho/schemas/runtime/runtime_contracts_v2.py",
+      "name": "RuntimeContractBundle",
+      "methods": [],
+      "line": 107,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_contracts_v2",
+      "path": "src/aipinho/schemas/runtime/runtime_contracts_v2.py",
+      "name": "RuntimeContractValidationResult",
+      "methods": [],
+      "line": 127,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_contracts_v2",
+      "path": "src/aipinho/schemas/runtime/runtime_contracts_v2.py",
+      "name": "ContractSerializer",
+      "methods": [
+        "to_dict",
+        "to_json",
+        "from_dict",
+        "from_json"
+      ],
+      "line": 133,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_dispatcher_v2",
+      "path": "src/aipinho/schemas/runtime/runtime_dispatcher_v2.py",
+      "name": "DispatchDecision",
+      "methods": [],
+      "line": 31,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_doctor",
+      "path": "src/aipinho/schemas/runtime/runtime_doctor.py",
+      "name": "ExpectedRuntimeContract",
+      "methods": [],
+      "line": 15,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_operator",
+      "path": "src/aipinho/schemas/runtime/runtime_operator.py",
+      "name": "RuntimeSnapshot",
+      "methods": [],
+      "line": 53,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_operator",
+      "path": "src/aipinho/schemas/runtime/runtime_operator.py",
+      "name": "ExpectedRuntimeContract",
+      "methods": [],
+      "line": 83,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_operator",
+      "path": "src/aipinho/schemas/runtime/runtime_operator.py",
+      "name": "RuntimeOperatorSnapshotRequest",
+      "methods": [],
+      "line": 105,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_operator",
+      "path": "src/aipinho/schemas/runtime/runtime_operator.py",
+      "name": "RuntimeDoctorAnalyzeRequest",
+      "methods": [],
+      "line": 110,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_operator",
+      "path": "src/aipinho/schemas/runtime/runtime_operator.py",
+      "name": "RuntimeDoctorExplainRequest",
+      "methods": [],
+      "line": 216,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_operator",
+      "path": "src/aipinho/schemas/runtime/runtime_operator.py",
+      "name": "PatchPlanItem",
+      "methods": [],
+      "line": 221,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_operator",
+      "path": "src/aipinho/schemas/runtime/runtime_operator.py",
+      "name": "RuntimePatchPlan",
+      "methods": [],
+      "line": 230,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_operator",
+      "path": "src/aipinho/schemas/runtime/runtime_operator.py",
+      "name": "RuntimeDoctorPatchPlanRequest",
+      "methods": [],
+      "line": 247,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_operator",
+      "path": "src/aipinho/schemas/runtime/runtime_operator.py",
+      "name": "FireTestDoctorAnalyzeRequest",
+      "methods": [],
+      "line": 253,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_operator",
+      "path": "src/aipinho/schemas/runtime/runtime_operator.py",
+      "name": "FireTestDoctorResult",
+      "methods": [],
+      "line": 259,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_truth",
+      "path": "src/aipinho/schemas/runtime/runtime_truth.py",
+      "name": "RuntimeTruthEvidence",
+      "methods": [],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.runtime_truth",
+      "path": "src/aipinho/schemas/runtime/runtime_truth.py",
+      "name": "RuntimeTruth",
+      "methods": [],
+      "line": 18,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.task_bootstrap",
+      "path": "src/aipinho/schemas/runtime/task_bootstrap.py",
+      "name": "TaskBootstrapRequest",
+      "methods": [],
+      "line": 31,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.task_bootstrap",
+      "path": "src/aipinho/schemas/runtime/task_bootstrap.py",
+      "name": "TaskBootstrapResult",
+      "methods": [],
+      "line": 48,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.task_cancellation",
+      "path": "src/aipinho/schemas/runtime/task_cancellation.py",
+      "name": "TaskCancellationRequest",
+      "methods": [],
+      "line": 5,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.task_cancellation",
+      "path": "src/aipinho/schemas/runtime/task_cancellation.py",
+      "name": "TaskCancellationResult",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.task_completion",
+      "path": "src/aipinho/schemas/runtime/task_completion.py",
+      "name": "TaskCompletionEvaluation",
+      "methods": [],
+      "line": 23,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.task_queue",
+      "path": "src/aipinho/schemas/runtime/task_queue.py",
+      "name": "TaskQueueSnapshot",
+      "methods": [],
+      "line": 22,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.task_queue",
+      "path": "src/aipinho/schemas/runtime/task_queue.py",
+      "name": "TaskQueueReconciliationResult",
+      "methods": [],
+      "line": 36,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.task_run_plan",
+      "path": "src/aipinho/schemas/runtime/task_run_plan.py",
+      "name": "TaskRunPlan",
+      "methods": [],
+      "line": 24,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.task_run_request",
+      "path": "src/aipinho/schemas/runtime/task_run_request.py",
+      "name": "TaskRunRequest",
+      "methods": [],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.task_run_result",
+      "path": "src/aipinho/schemas/runtime/task_run_result.py",
+      "name": "TaskRunResult",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.task_runtime_policy",
+      "path": "src/aipinho/schemas/runtime/task_runtime_policy.py",
+      "name": "TaskRuntimePolicy",
+      "methods": [],
+      "line": 6,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.universal_task_session",
+      "path": "src/aipinho/schemas/runtime/universal_task_session.py",
+      "name": "UniversalTaskApprovalState",
+      "methods": [],
+      "line": 33,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.universal_task_session",
+      "path": "src/aipinho/schemas/runtime/universal_task_session.py",
+      "name": "UniversalTaskValidationState",
+      "methods": [],
+      "line": 43,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.universal_task_session",
+      "path": "src/aipinho/schemas/runtime/universal_task_session.py",
+      "name": "UniversalTaskArtifactState",
+      "methods": [],
+      "line": 52,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.universal_task_session",
+      "path": "src/aipinho/schemas/runtime/universal_task_session.py",
+      "name": "UniversalTaskResultState",
+      "methods": [],
+      "line": 62,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.worker_contract",
+      "path": "src/aipinho/schemas/runtime/worker_contract.py",
+      "name": "WorkerContract",
+      "methods": [],
+      "line": 15,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.worker_contract",
+      "path": "src/aipinho/schemas/runtime/worker_contract.py",
+      "name": "WorkerRouteDecision",
+      "methods": [],
+      "line": 28,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime.worker_contract",
+      "path": "src/aipinho/schemas/runtime/worker_contract.py",
+      "name": "WorkerRegistrySnapshot",
+      "methods": [],
+      "line": 42,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime_doctor",
+      "path": "src/aipinho/schemas/runtime_doctor.py",
+      "name": "RuntimeDoctorExpectedContract",
+      "methods": [],
+      "line": 19,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime_doctor",
+      "path": "src/aipinho/schemas/runtime_doctor.py",
+      "name": "RuntimeDoctorTestRequest",
+      "methods": [],
+      "line": 45,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime_doctor",
+      "path": "src/aipinho/schemas/runtime_doctor.py",
+      "name": "RuntimeDoctorRawSnapshot",
+      "methods": [],
+      "line": 55,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime_doctor",
+      "path": "src/aipinho/schemas/runtime_doctor.py",
+      "name": "RuntimeDoctorPatchPlan",
+      "methods": [],
+      "line": 108,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.runtime_doctor",
+      "path": "src/aipinho/schemas/runtime_doctor.py",
+      "name": "RuntimeDoctorRunResult",
+      "methods": [],
+      "line": 159,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.sandbox",
+      "path": "src/aipinho/schemas/sandbox.py",
+      "name": "SandboxPolicyDecision",
+      "methods": [],
+      "line": 62,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.sandbox",
+      "path": "src/aipinho/schemas/sandbox.py",
+      "name": "SandboxValidationResult",
+      "methods": [],
+      "line": 148,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.sandbox",
+      "path": "src/aipinho/schemas/sandbox.py",
+      "name": "SandboxFileRequest",
+      "methods": [],
+      "line": 173,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.sandbox",
+      "path": "src/aipinho/schemas/sandbox.py",
+      "name": "SandboxShellRequest",
+      "methods": [],
+      "line": 184,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.sandbox",
+      "path": "src/aipinho/schemas/sandbox.py",
+      "name": "SandboxArtifactExportRequest",
+      "methods": [],
+      "line": 193,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.sandbox",
+      "path": "src/aipinho/schemas/sandbox.py",
+      "name": "SandboxCleanupPreviewRequest",
+      "methods": [],
+      "line": 202,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.sandbox_autopilot",
+      "path": "src/aipinho/schemas/sandbox_autopilot.py",
+      "name": "SandboxAutopilotRequest",
+      "methods": [],
+      "line": 24,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.sandbox_autopilot",
+      "path": "src/aipinho/schemas/sandbox_autopilot.py",
+      "name": "SandboxAutopilotRouteDecision",
+      "methods": [],
+      "line": 41,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.sandbox_autopilot",
+      "path": "src/aipinho/schemas/sandbox_autopilot.py",
+      "name": "SandboxAutopilotResult",
+      "methods": [],
+      "line": 57,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.sandbox_writer",
+      "path": "src/aipinho/schemas/sandbox_writer.py",
+      "name": "SandboxWriteResult",
+      "methods": [],
+      "line": 20,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.security.path_policy",
+      "path": "src/aipinho/schemas/security/path_policy.py",
+      "name": "PathPolicy",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.security.sandbox_decision",
+      "path": "src/aipinho/schemas/security/sandbox_decision.py",
+      "name": "SandboxDecision",
+      "methods": [],
+      "line": 12,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.self_healing",
+      "path": "src/aipinho/schemas/self_healing.py",
+      "name": "SelfHealingScanRequest",
+      "methods": [],
+      "line": 64,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.self_healing",
+      "path": "src/aipinho/schemas/self_healing.py",
+      "name": "SelfHealingTriageRequest",
+      "methods": [],
+      "line": 69,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.self_healing",
+      "path": "src/aipinho/schemas/self_healing.py",
+      "name": "SelfHealingApplyRequest",
+      "methods": [],
+      "line": 74,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.self_healing",
+      "path": "src/aipinho/schemas/self_healing.py",
+      "name": "SelfHealingRejectRequest",
+      "methods": [],
+      "line": 80,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.self_healing",
+      "path": "src/aipinho/schemas/self_healing.py",
+      "name": "SelfHealingExportReportRequest",
+      "methods": [],
+      "line": 94,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_learning",
+      "path": "src/aipinho/schemas/semantic_learning.py",
+      "name": "SemanticKnowledgeQueryResult",
+      "methods": [],
+      "line": 128,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_learning",
+      "path": "src/aipinho/schemas/semantic_learning.py",
+      "name": "SemanticPatternRecognitionRequest",
+      "methods": [
+        "validate_pattern_limit"
+      ],
+      "line": 160,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_learning",
+      "path": "src/aipinho/schemas/semantic_learning.py",
+      "name": "SemanticPatternRecognitionResult",
+      "methods": [],
+      "line": 176,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_learning",
+      "path": "src/aipinho/schemas/semantic_learning.py",
+      "name": "SemanticRecommendationRequest",
+      "methods": [
+        "validate_recommendation_limit"
+      ],
+      "line": 203,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_learning",
+      "path": "src/aipinho/schemas/semantic_learning.py",
+      "name": "SemanticRecommendationResult",
+      "methods": [],
+      "line": 220,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_learning",
+      "path": "src/aipinho/schemas/semantic_learning.py",
+      "name": "SemanticCurriculumReviewRequest",
+      "methods": [],
+      "line": 307,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_learning",
+      "path": "src/aipinho/schemas/semantic_learning.py",
+      "name": "SemanticCurriculumPromoteRequest",
+      "methods": [],
+      "line": 314,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_learning",
+      "path": "src/aipinho/schemas/semantic_learning.py",
+      "name": "SemanticCurriculumResult",
+      "methods": [],
+      "line": 320,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.capability_registry",
+      "path": "src/aipinho/schemas/semantic_runtime/capability_registry.py",
+      "name": "CapabilityContract",
+      "methods": [],
+      "line": 13,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.contracts",
+      "path": "src/aipinho/schemas/semantic_runtime/contracts.py",
+      "name": "ContractVersioning",
+      "methods": [],
+      "line": 15,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.contracts",
+      "path": "src/aipinho/schemas/semantic_runtime/contracts.py",
+      "name": "ExecutionContract",
+      "methods": [],
+      "line": 20,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.contracts",
+      "path": "src/aipinho/schemas/semantic_runtime/contracts.py",
+      "name": "WorkspaceContract",
+      "methods": [],
+      "line": 34,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.contracts",
+      "path": "src/aipinho/schemas/semantic_runtime/contracts.py",
+      "name": "ApprovalContract",
+      "methods": [],
+      "line": 44,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.contracts",
+      "path": "src/aipinho/schemas/semantic_runtime/contracts.py",
+      "name": "ArtifactContract",
+      "methods": [],
+      "line": 54,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.contracts",
+      "path": "src/aipinho/schemas/semantic_runtime/contracts.py",
+      "name": "ValidationContract",
+      "methods": [],
+      "line": 63,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.contracts",
+      "path": "src/aipinho/schemas/semantic_runtime/contracts.py",
+      "name": "RoleContract",
+      "methods": [],
+      "line": 72,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.contracts",
+      "path": "src/aipinho/schemas/semantic_runtime/contracts.py",
+      "name": "CanonicalRuntimeContracts",
+      "methods": [],
+      "line": 83,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.contracts",
+      "path": "src/aipinho/schemas/semantic_runtime/contracts.py",
+      "name": "ContractValidationResult",
+      "methods": [],
+      "line": 101,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.isr",
+      "path": "src/aipinho/schemas/semantic_runtime/isr.py",
+      "name": "ISRValidationResult",
+      "methods": [],
+      "line": 135,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.semantic_ingress",
+      "path": "src/aipinho/schemas/semantic_runtime/semantic_ingress.py",
+      "name": "StateEffect",
+      "methods": [],
+      "line": 37,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.semantic_ingress",
+      "path": "src/aipinho/schemas/semantic_runtime/semantic_ingress.py",
+      "name": "IntentDecision",
+      "methods": [],
+      "line": 55,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.semantic_ingress",
+      "path": "src/aipinho/schemas/semantic_runtime/semantic_ingress.py",
+      "name": "OperationContractCandidate",
+      "methods": [],
+      "line": 67,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.semantic_ingress",
+      "path": "src/aipinho/schemas/semantic_runtime/semantic_ingress.py",
+      "name": "OperationContractDecision",
+      "methods": [],
+      "line": 77,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.semantic_interpreter",
+      "path": "src/aipinho/schemas/semantic_runtime/semantic_interpreter.py",
+      "name": "SemanticInterpreterContract",
+      "methods": [],
+      "line": 18,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.semantic_interpreter",
+      "path": "src/aipinho/schemas/semantic_runtime/semantic_interpreter.py",
+      "name": "SemanticInterpreterPipelineResult",
+      "methods": [],
+      "line": 43,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantics.offer_demand_compatibility",
+      "path": "src/aipinho/schemas/semantics/offer_demand_compatibility.py",
+      "name": "OfferDemandCompatibilityEvaluation",
+      "methods": [],
+      "line": 44,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantics.semantic_execution_graph",
+      "path": "src/aipinho/schemas/semantics/semantic_execution_graph.py",
+      "name": "SemanticWorkUnitContract",
+      "methods": [],
+      "line": 26,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantics.semantic_execution_graph",
+      "path": "src/aipinho/schemas/semantics/semantic_execution_graph.py",
+      "name": "SemanticWorkDecompositionResult",
+      "methods": [],
+      "line": 92,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantics.semantic_graph_revision",
+      "path": "src/aipinho/schemas/semantics/semantic_graph_revision.py",
+      "name": "SemanticGraphHistorySnapshot",
+      "methods": [],
+      "line": 104,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantics.semantic_graph_revision",
+      "path": "src/aipinho/schemas/semantics/semantic_graph_revision.py",
+      "name": "SemanticGraphActivationResult",
+      "methods": [],
+      "line": 124,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantics.semantic_nway_topology",
+      "path": "src/aipinho/schemas/semantics/semantic_nway_topology.py",
+      "name": "SemanticTopologyEdgeState",
+      "methods": [],
+      "line": 20,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantics.semantic_nway_topology",
+      "path": "src/aipinho/schemas/semantics/semantic_nway_topology.py",
+      "name": "SemanticJoinEvaluation",
+      "methods": [],
+      "line": 51,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantics.semantic_nway_topology",
+      "path": "src/aipinho/schemas/semantics/semantic_nway_topology.py",
+      "name": "SemanticJoinEvaluationResult",
+      "methods": [],
+      "line": 73,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantics.semantic_offer",
+      "path": "src/aipinho/schemas/semantics/semantic_offer.py",
+      "name": "ObservedWorkUnitSemanticOutcome",
+      "methods": [],
+      "line": 19,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantics.semantic_truth_facet",
+      "path": "src/aipinho/schemas/semantics/semantic_truth_facet.py",
+      "name": "SemanticTruthFacet",
+      "methods": [],
+      "line": 20,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantics.task_semantic_vocabulary",
+      "path": "src/aipinho/schemas/semantics/task_semantic_vocabulary.py",
+      "name": "TaskSemanticVocabularyRevisionRequest",
+      "methods": [],
+      "line": 97,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.semantics.task_semantic_vocabulary",
+      "path": "src/aipinho/schemas/semantics/task_semantic_vocabulary.py",
+      "name": "TaskSemanticVocabularyRevisionResult",
+      "methods": [],
+      "line": 108,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillInputContract",
+      "methods": [],
+      "line": 69,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillOutputContract",
+      "methods": [],
+      "line": 76,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillContract",
+      "methods": [
+        "validate_contract_boundaries"
+      ],
+      "line": 112,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillRouteRequest",
+      "methods": [],
+      "line": 169,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillRouteResult",
+      "methods": [],
+      "line": 189,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillPreviewRequest",
+      "methods": [],
+      "line": 210,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillPreviewResult",
+      "methods": [],
+      "line": 220,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillDryRunRequest",
+      "methods": [],
+      "line": 235,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillDryRunResult",
+      "methods": [],
+      "line": 239,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillExecutionResult",
+      "methods": [],
+      "line": 253,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillCompositionPlan",
+      "methods": [],
+      "line": 276,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillCompositionResult",
+      "methods": [],
+      "line": 286,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillOutputValidationResult",
+      "methods": [],
+      "line": 292,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillInstallRequest",
+      "methods": [],
+      "line": 301,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillInstallResult",
+      "methods": [],
+      "line": 320,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillManifestValidationResult",
+      "methods": [],
+      "line": 392,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.contracts",
+      "path": "src/aipinho/schemas/skills/contracts.py",
+      "name": "SkillExecutionRequest",
+      "methods": [],
+      "line": 412,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.skill_packs",
+      "path": "src/aipinho/schemas/skills/skill_packs.py",
+      "name": "SkillPackValidationResult",
+      "methods": [],
+      "line": 104,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.skill_packs",
+      "path": "src/aipinho/schemas/skills/skill_packs.py",
+      "name": "SkillPackSelectionRequest",
+      "methods": [],
+      "line": 135,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.skill_packs",
+      "path": "src/aipinho/schemas/skills/skill_packs.py",
+      "name": "SkillPackSelectionResult",
+      "methods": [],
+      "line": 153,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.skill_packs",
+      "path": "src/aipinho/schemas/skills/skill_packs.py",
+      "name": "SkillPackExecutionRequest",
+      "methods": [],
+      "line": 160,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.skills.skill_packs",
+      "path": "src/aipinho/schemas/skills/skill_packs.py",
+      "name": "SkillPackExecutionResult",
+      "methods": [],
+      "line": 181,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.supervisor.contracts",
+      "path": "src/aipinho/schemas/supervisor/contracts.py",
+      "name": "ServiceRestartRequest",
+      "methods": [],
+      "line": 65,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.supervisor.contracts",
+      "path": "src/aipinho/schemas/supervisor/contracts.py",
+      "name": "ServiceRestartResult",
+      "methods": [],
+      "line": 73,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.supervisor.contracts",
+      "path": "src/aipinho/schemas/supervisor/contracts.py",
+      "name": "BackendControlRestartResult",
+      "methods": [],
+      "line": 101,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.supervisor.contracts",
+      "path": "src/aipinho/schemas/supervisor/contracts.py",
+      "name": "BootstrapControlRestartResult",
+      "methods": [],
+      "line": 129,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.supervisor.contracts",
+      "path": "src/aipinho/schemas/supervisor/contracts.py",
+      "name": "ResourceSnapshot",
+      "methods": [],
+      "line": 144,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.supervisor.contracts",
+      "path": "src/aipinho/schemas/supervisor/contracts.py",
+      "name": "ConnectionTestRequest",
+      "methods": [],
+      "line": 172,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.supervisor.contracts",
+      "path": "src/aipinho/schemas/supervisor/contracts.py",
+      "name": "ConnectionTestResult",
+      "methods": [],
+      "line": 178,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.supervisor.contracts",
+      "path": "src/aipinho/schemas/supervisor/contracts.py",
+      "name": "MobilePairingRequest",
+      "methods": [],
+      "line": 185,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.supervisor.contracts",
+      "path": "src/aipinho/schemas/supervisor/contracts.py",
+      "name": "MobilePairingResult",
+      "methods": [],
+      "line": 190,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.tasks.task_contract",
+      "path": "src/aipinho/schemas/tasks/task_contract.py",
+      "name": "TaskContractInput",
+      "methods": [],
+      "line": 30,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.tasks.task_contract",
+      "path": "src/aipinho/schemas/tasks/task_contract.py",
+      "name": "TaskContract",
+      "methods": [],
+      "line": 50,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.tasks.task_contract",
+      "path": "src/aipinho/schemas/tasks/task_contract.py",
+      "name": "TaskContractPreview",
+      "methods": [],
+      "line": 71,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.tasks.task_contract_draft",
+      "path": "src/aipinho/schemas/tasks/task_contract_draft.py",
+      "name": "TaskContractDraft",
+      "methods": [],
+      "line": 16,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.telemetry.dashboard",
+      "path": "src/aipinho/schemas/telemetry/dashboard.py",
+      "name": "DashboardSnapshot",
+      "methods": [],
+      "line": 30,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.telemetry.event",
+      "path": "src/aipinho/schemas/telemetry/event.py",
+      "name": "TelemetryRecordRequest",
+      "methods": [],
+      "line": 62,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.telemetry.metric",
+      "path": "src/aipinho/schemas/telemetry/metric.py",
+      "name": "MetricsSnapshot",
+      "methods": [],
+      "line": 37,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.templates",
+      "path": "src/aipinho/schemas/templates.py",
+      "name": "TemplateExecutionRequest",
+      "methods": [],
+      "line": 78,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.templates",
+      "path": "src/aipinho/schemas/templates.py",
+      "name": "TemplateExecutionResult",
+      "methods": [],
+      "line": 114,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.tools.contracts_v2",
+      "path": "src/aipinho/schemas/tools/contracts_v2.py",
+      "name": "ToolContract",
+      "methods": [
+        "validate_boundaries"
+      ],
+      "line": 20,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.tools.contracts_v2",
+      "path": "src/aipinho/schemas/tools/contracts_v2.py",
+      "name": "ToolInvocationResult",
+      "methods": [],
+      "line": 86,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.tools.tool_dry_run",
+      "path": "src/aipinho/schemas/tools/tool_dry_run.py",
+      "name": "ToolDryRunPlan",
+      "methods": [],
+      "line": 16,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.tools.tool_dry_run",
+      "path": "src/aipinho/schemas/tools/tool_dry_run.py",
+      "name": "ToolDryRunResult",
+      "methods": [],
+      "line": 31,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.tools.tool_execution",
+      "path": "src/aipinho/schemas/tools/tool_execution.py",
+      "name": "ToolExecutionRequest",
+      "methods": [],
+      "line": 14,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.tools.tool_execution_result",
+      "path": "src/aipinho/schemas/tools/tool_execution_result.py",
+      "name": "ToolExecutionResult",
+      "methods": [],
+      "line": 12,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.tools.tool_result",
+      "path": "src/aipinho/schemas/tools/tool_result.py",
+      "name": "ToolDryRunResultItem",
+      "methods": [],
+      "line": 13,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.tools.tool_safety",
+      "path": "src/aipinho/schemas/tools/tool_safety.py",
+      "name": "ToolInputValidationResult",
+      "methods": [],
+      "line": 14,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.tools.tool_safety",
+      "path": "src/aipinho/schemas/tools/tool_safety.py",
+      "name": "ToolSafetyDecision",
+      "methods": [],
+      "line": 22,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.tools.write_capability_envelope",
+      "path": "src/aipinho/schemas/tools/write_capability_envelope.py",
+      "name": "WriteCapabilityEnvelopeDecision",
+      "methods": [],
+      "line": 49,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.transfers.transfer_integrity_result",
+      "path": "src/aipinho/schemas/transfers/transfer_integrity_result.py",
+      "name": "TransferIntegrityResult",
+      "methods": [],
+      "line": 7,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.ux.ux_action_state",
+      "path": "src/aipinho/schemas/ux/ux_action_state.py",
+      "name": "UXActionState",
+      "methods": [],
+      "line": 7,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.ux.ux_degraded_state",
+      "path": "src/aipinho/schemas/ux/ux_degraded_state.py",
+      "name": "UXDegradedState",
+      "methods": [],
+      "line": 7,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.ux.ux_filter_state",
+      "path": "src/aipinho/schemas/ux/ux_filter_state.py",
+      "name": "UXFilterState",
+      "methods": [],
+      "line": 7,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.ux.ux_search_result",
+      "path": "src/aipinho/schemas/ux/ux_search_result.py",
+      "name": "UXSearchResult",
+      "methods": [],
+      "line": 7,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.validation.contract_compliance",
+      "path": "src/aipinho/schemas/validation/contract_compliance.py",
+      "name": "ContractCompliance",
+      "methods": [],
+      "line": 5,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.validation.gate_policy_snapshot",
+      "path": "src/aipinho/schemas/validation/gate_policy_snapshot.py",
+      "name": "GatePolicySnapshot",
+      "methods": [],
+      "line": 6,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.validation.report_quality_result",
+      "path": "src/aipinho/schemas/validation/report_quality_result.py",
+      "name": "ReportQualityResult",
+      "methods": [],
+      "line": 6,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.validation.validation_gate_decision",
+      "path": "src/aipinho/schemas/validation/validation_gate_decision.py",
+      "name": "ValidationGateDecision",
+      "methods": [],
+      "line": 5,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.validation.validation_gate_result",
+      "path": "src/aipinho/schemas/validation/validation_gate_result.py",
+      "name": "ValidationGateResult",
+      "methods": [
+        "summary"
+      ],
+      "line": 9,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.validation.validation_request",
+      "path": "src/aipinho/schemas/validation/validation_request.py",
+      "name": "ValidationRequest",
+      "methods": [],
+      "line": 8,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.vision.contracts",
+      "path": "src/aipinho/schemas/vision/contracts.py",
+      "name": "VisionAnalysisRequest",
+      "methods": [],
+      "line": 95,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.vision.contracts",
+      "path": "src/aipinho/schemas/vision/contracts.py",
+      "name": "VisionAnalysisResult",
+      "methods": [],
+      "line": 113,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.vision.contracts",
+      "path": "src/aipinho/schemas/vision/contracts.py",
+      "name": "UIInspectionRequest",
+      "methods": [],
+      "line": 132,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.vision.contracts",
+      "path": "src/aipinho/schemas/vision/contracts.py",
+      "name": "UIInspectionResult",
+      "methods": [],
+      "line": 136,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.vision.contracts",
+      "path": "src/aipinho/schemas/vision/contracts.py",
+      "name": "DiagramAnalysisResult",
+      "methods": [],
+      "line": 140,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.vision.contracts",
+      "path": "src/aipinho/schemas/vision/contracts.py",
+      "name": "OCRRequest",
+      "methods": [],
+      "line": 177,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.vision.contracts",
+      "path": "src/aipinho/schemas/vision/contracts.py",
+      "name": "OCRResult",
+      "methods": [],
+      "line": 185,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.vision.contracts",
+      "path": "src/aipinho/schemas/vision/contracts.py",
+      "name": "DocumentReadRequest",
+      "methods": [],
+      "line": 201,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.vision.contracts",
+      "path": "src/aipinho/schemas/vision/contracts.py",
+      "name": "DocumentReadResult",
+      "methods": [],
+      "line": 205,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.vision.contracts",
+      "path": "src/aipinho/schemas/vision/contracts.py",
+      "name": "MMProjValidationResult",
+      "methods": [],
+      "line": 237,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.vision.contracts",
+      "path": "src/aipinho/schemas/vision/contracts.py",
+      "name": "VisionRAGIngestionRequest",
+      "methods": [],
+      "line": 259,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.vision.contracts",
+      "path": "src/aipinho/schemas/vision/contracts.py",
+      "name": "VisionRAGQueryRequest",
+      "methods": [],
+      "line": 265,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.web_search",
+      "path": "src/aipinho/schemas/web_search.py",
+      "name": "WebSearchResult",
+      "methods": [],
+      "line": 23,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.workflows",
+      "path": "src/aipinho/schemas/workflows.py",
+      "name": "WorkflowStepResult",
+      "methods": [],
+      "line": 165,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.workflows",
+      "path": "src/aipinho/schemas/workflows.py",
+      "name": "WorkflowPlan",
+      "methods": [
+        "_sync_identity"
+      ],
+      "line": 207,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.workflows",
+      "path": "src/aipinho/schemas/workflows.py",
+      "name": "WorkflowPlanCreateRequest",
+      "methods": [],
+      "line": 255,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.workflows",
+      "path": "src/aipinho/schemas/workflows.py",
+      "name": "WorkflowRunCreateRequest",
+      "methods": [],
+      "line": 317,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.workflows",
+      "path": "src/aipinho/schemas/workflows.py",
+      "name": "WorkflowResumeRequest",
+      "methods": [],
+      "line": 348,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.workflows",
+      "path": "src/aipinho/schemas/workflows.py",
+      "name": "WorkflowCancelRequest",
+      "methods": [],
+      "line": 354,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.workflows",
+      "path": "src/aipinho/schemas/workflows.py",
+      "name": "WorkflowRecoveryPlan",
+      "methods": [],
+      "line": 360,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.workspace_flows.workspace_flow",
+      "path": "src/aipinho/schemas/workspace_flows/workspace_flow.py",
+      "name": "WorkspaceFlowPlan",
+      "methods": [],
+      "line": 62,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.workspace_flows.workspace_flow",
+      "path": "src/aipinho/schemas/workspace_flows/workspace_flow.py",
+      "name": "WorkspaceFlowPlanRequest",
+      "methods": [],
+      "line": 80,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.schemas.workspace_flows.workspace_flow",
+      "path": "src/aipinho/schemas/workspace_flows/workspace_flow.py",
+      "name": "WorkspaceFlowExecutionResult",
+      "methods": [],
+      "line": 93,
+      "classification": "SUPPORTING"
     }
-  ],
-  "total_contracts": 12,
-  "modules": {
-    "schemas.chat": 2,
-    "schemas.tasks": 2,
-    "schemas.tools": 2,
-    "schemas.models": 2,
-    "schemas.artifacts": 2,
-    "schemas.policy": 2
-  }
+  ]
 }

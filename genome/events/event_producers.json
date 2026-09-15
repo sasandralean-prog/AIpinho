@@ -1,36 +1,1196 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
-  "event_producers": {
-    "task_created": ["services.runtime.task_runtime_service"],
-    "task_started": ["services.runtime.task_runtime_service"],
-    "task_completed": ["services.runtime.task_runtime_service"],
-    "task_failed": ["services.runtime.task_runtime_service"],
-    "execution_step_started": ["services.runtime.execution_graph_service"],
-    "execution_step_completed": ["services.runtime.execution_graph_service"],
-    "policy_check": ["services.policy_kernel.policy_kernel_service"],
-    "capability_check": ["services.policy_kernel.capability_gate_service"],
-    "tool_invocation": ["services.tools.governed_tool_execution_service"],
-    "model_invocation": ["services.models.llama_cpp_provider"],
-    "validation_check": ["services.validation.validation_gate_service"],
-    "artifact_created": ["services.artifacts.artifact_generator_service"],
-    "memory_candidate_created": ["services.memory.memory_candidate_service"],
-    "retrieval_performed": ["services.rag.retrieval_service"],
-    "agent_action": ["services.agents.agent_tool_gateway_service"]
-  },
-  "total_events": 14,
-  "total_producers": 14,
-  "producer_services": {
-    "services.runtime.task_runtime_service": 4,
-    "services.runtime.execution_graph_service": 2,
-    "services.policy_kernel.policy_kernel_service": 1,
-    "services.policy_kernel.capability_gate_service": 1,
-    "services.tools.governed_tool_execution_service": 1,
-    "services.models.llama_cpp_provider": 1,
-    "services.validation.validation_gate_service": 1,
-    "services.artifacts.artifact_generator_service": 1,
-    "services.memory.memory_candidate_service": 1,
-    "services.rag.retrieval_service": 1,
-    "services.agents.agent_tool_gateway_service": 1
-  }
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "modules": [
+    {
+      "module": "aipinho.api.routers.event_contract_router",
+      "path": "src/aipinho/api/routers/event_contract_router.py",
+      "package": "api",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [
+        "event_status",
+        "event_contracts",
+        "validate_event",
+        "event_contract"
+      ],
+      "imports": [
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.api.routers.event_router",
+      "path": "src/aipinho/api/routers/event_router.py",
+      "package": "api",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [
+        "publish_event",
+        "list_events",
+        "copy_event",
+        "trace_event",
+        "get_event",
+        "get_event_raw"
+      ],
+      "imports": [
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.events.event_core",
+        "aipinho.services.security.local_token_service"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.api.routers.event_search_router",
+      "path": "src/aipinho/api/routers/event_search_router.py",
+      "package": "api",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [
+        "search_events",
+        "filter_events",
+        "event_view_model"
+      ],
+      "imports": [
+        "aipinho.schemas.events.event_filter",
+        "aipinho.schemas.events.event_search_request",
+        "aipinho.services.events.event_filter_service",
+        "aipinho.services.events.event_search_service",
+        "aipinho.services.events.event_view_model_service"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.events.event_contract_repository",
+      "path": "src/aipinho/repositories/events/event_contract_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.events.event_store_repository",
+      "path": "src/aipinho/repositories/events/event_store_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.realtime.realtime_event_repository",
+      "path": "src/aipinho/repositories/realtime/realtime_event_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.realtime.realtime_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.approvals.approval_event",
+      "path": "src/aipinho/schemas/approvals/approval_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ApprovalEvent"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_write_event",
+      "path": "src/aipinho/schemas/artifacts/artifact_write_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ArtifactWriteEvent"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.schemas.chat.chat_stream_event",
+      "path": "src/aipinho/schemas/chat/chat_stream_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ChatStreamEvent"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.chat.session_event",
+      "path": "src/aipinho/schemas/chat/session_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SessionEvent"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.schemas.debugger.debug_trace_event",
+      "path": "src/aipinho/schemas/debugger/debug_trace_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "DebugTraceEvent"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.schemas.debugger.debugger_timeline_event",
+      "path": "src/aipinho/schemas/debugger/debugger_timeline_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.debugger.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_audit",
+      "path": "src/aipinho/schemas/events/event_audit.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_contract",
+      "path": "src/aipinho/schemas/events/event_contract.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_contract_registry",
+      "path": "src/aipinho/schemas/events/event_contract_registry.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_copy_policy",
+      "path": "src/aipinho/schemas/events/event_copy_policy.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_envelope",
+      "path": "src/aipinho/schemas/events/event_envelope.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_filter",
+      "path": "src/aipinho/schemas/events/event_filter.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EventFilter"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.schemas.events.event_payload",
+      "path": "src/aipinho/schemas/events/event_payload.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_public_payload",
+      "path": "src/aipinho/schemas/events/event_public_payload.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_raw_ref",
+      "path": "src/aipinho/schemas/events/event_raw_ref.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_render_decision",
+      "path": "src/aipinho/schemas/events/event_render_decision.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EventRenderDecision"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.schemas.events.event_schema_definition",
+      "path": "src/aipinho/schemas/events/event_schema_definition.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_search_request",
+      "path": "src/aipinho/schemas/events/event_search_request.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EventSearchRequest"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.schemas.events.event_search_result",
+      "path": "src/aipinho/schemas/events/event_search_result.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EventSearchResult"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.schemas.events.event_severity",
+      "path": "src/aipinho/schemas/events/event_severity.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_source",
+      "path": "src/aipinho/schemas/events/event_source.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_source_ref",
+      "path": "src/aipinho/schemas/events/event_source_ref.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_status",
+      "path": "src/aipinho/schemas/events/event_status.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_trace",
+      "path": "src/aipinho/schemas/events/event_trace.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_type_definition",
+      "path": "src/aipinho/schemas/events/event_type_definition.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_validation_result",
+      "path": "src/aipinho/schemas/events/event_validation_result.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.events.event_view_model",
+      "path": "src/aipinho/schemas/events/event_view_model.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EventViewModel"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.schemas.events.event_visibility",
+      "path": "src/aipinho/schemas/events/event_visibility.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.interaction.feedback_event",
+      "path": "src/aipinho/schemas/interaction/feedback_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.interaction.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.interaction.pipeline_sync_event",
+      "path": "src/aipinho/schemas/interaction/pipeline_sync_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.interaction.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.interaction.speaker_event_source",
+      "path": "src/aipinho/schemas/interaction/speaker_event_source.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.interaction.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.interaction.task_timeline_event",
+      "path": "src/aipinho/schemas/interaction/task_timeline_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.interaction.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.maintenance.event_contract_violation_signal",
+      "path": "src/aipinho/schemas/maintenance/event_contract_violation_signal.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.maintenance.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.maintenance.maintenance_event",
+      "path": "src/aipinho/schemas/maintenance/maintenance_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.maintenance.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.memory.curated_memory_event",
+      "path": "src/aipinho/schemas/memory/curated_memory_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.memory.curated_memory"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.memory.memory_candidate_event",
+      "path": "src/aipinho/schemas/memory/memory_candidate_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.memory.memory_candidate"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.patching.apply.patch_apply_event",
+      "path": "src/aipinho/schemas/patching/apply/patch_apply_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "PatchApplyEvent"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.schemas.realtime.realtime_event",
+      "path": "src/aipinho/schemas/realtime/realtime_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.realtime.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.regression.event_contract_expectation",
+      "path": "src/aipinho/schemas/regression/event_contract_expectation.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.regression.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.replay.replay_event_timeline",
+      "path": "src/aipinho/schemas/replay/replay_event_timeline.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.replay.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.runtime.task_run_event",
+      "path": "src/aipinho/schemas/runtime/task_run_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TaskRunEvent"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 6
+    },
+    {
+      "module": "aipinho.schemas.supervisor.monitor_event",
+      "path": "src/aipinho/schemas/supervisor/monitor_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.supervisor.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.tasks.task_draft_event",
+      "path": "src/aipinho/schemas/tasks/task_draft_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TaskDraftEvent"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.schemas.tasks.task_event",
+      "path": "src/aipinho/schemas/tasks/task_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.tasks.task_preview_event",
+      "path": "src/aipinho/schemas/tasks/task_preview_event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TaskPreviewEvent"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.schemas.telemetry.event",
+      "path": "src/aipinho/schemas/telemetry/event.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TelemetryEvent",
+        "TelemetrySession",
+        "TelemetryRecordRequest",
+        "TelemetryQuery",
+        "TelemetryEventList",
+        "TelemetrySessionView"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 5
+    },
+    {
+      "module": "aipinho.services.agents.agent_event_bus",
+      "path": "src/aipinho/services/agents/agent_event_bus.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "MultiAgentEventBus"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.agents.contracts",
+        "aipinho.services.agents.agent_session_store",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.artifacts.artifact_write_event_service",
+      "path": "src/aipinho/services/artifacts/artifact_write_event_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ArtifactWriteEventService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.artifacts.artifact_write_event",
+        "aipinho.services.session.session_store"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.context.adapters.event_context_adapter",
+      "path": "src/aipinho/services/context/adapters/event_context_adapter.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.context.context_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.events.event_audit_service",
+      "path": "src/aipinho/services/events/event_audit_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.events.event_contract_loader",
+      "path": "src/aipinho/services/events/event_contract_loader.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.events.event_contract_registry_service",
+      "path": "src/aipinho/services/events/event_contract_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.events.event_contract_validator",
+      "path": "src/aipinho/services/events/event_contract_validator.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.events.event_copy_policy_service",
+      "path": "src/aipinho/services/events/event_copy_policy_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.events.event_core",
+      "path": "src/aipinho/services/events/event_core.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EventContractRegistryService",
+        "EventContractValidator",
+        "EventRawPayloadStore",
+        "EventStoreRepository",
+        "EventAuditService",
+        "EventPublicPayloadBuilder",
+        "EventPublisherService",
+        "EventCopyPolicyService",
+        "EventTraceService",
+        "EventStatusService"
+      ],
+      "functions": [
+        "_dump_model",
+        "_redact_text",
+        "redact_payload",
+        "contains_secret",
+        "_is_sensitive_key"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.events.contracts",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 69
+    },
+    {
+      "module": "aipinho.services.events.event_filter_service",
+      "path": "src/aipinho/services/events/event_filter_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EventFilterService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.event_filter",
+        "aipinho.services.events.event_core",
+        "aipinho.services.events.event_render_policy_service"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.events.event_public_payload_builder",
+      "path": "src/aipinho/services/events/event_public_payload_builder.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.events.event_publisher_service",
+      "path": "src/aipinho/services/events/event_publisher_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.events.event_render_policy_service",
+      "path": "src/aipinho/services/events/event_render_policy_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EventRenderPolicyService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.event_render_decision",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.events.event_schema_validator",
+      "path": "src/aipinho/services/events/event_schema_validator.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.events.event_search_service",
+      "path": "src/aipinho/services/events/event_search_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EventSearchService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.event_filter",
+        "aipinho.schemas.events.event_search_request",
+        "aipinho.schemas.events.event_search_result",
+        "aipinho.services.events.event_filter_service"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.events.event_severity_service",
+      "path": "src/aipinho/services/events/event_severity_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.events.event_status_service",
+      "path": "src/aipinho/services/events/event_status_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.events.event_trace_service",
+      "path": "src/aipinho/services/events/event_trace_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.events.event_view_model_service",
+      "path": "src/aipinho/services/events/event_view_model_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EventViewModelService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.event_view_model",
+        "aipinho.services.events.event_core",
+        "aipinho.services.events.event_render_policy_service"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.events.event_visibility_service",
+      "path": "src/aipinho/services/events/event_visibility_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.interaction.speaker_event_service",
+      "path": "src/aipinho/services/interaction/speaker_event_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.interaction.interaction_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.maintenance.maintenance_event_emitter",
+      "path": "src/aipinho/services/maintenance/maintenance_event_emitter.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.maintenance.maintenance_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.maintenance.signal_collectors.event_signal_collector",
+      "path": "src/aipinho/services/maintenance/signal_collectors/event_signal_collector.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.maintenance.signal_collectors.collectors"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.memory.curated_memory_event_service",
+      "path": "src/aipinho/services/memory/curated_memory_event_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "CuratedMemoryEventService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.services.memory.curated_memory_store"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.memory.memory_candidate_event_service",
+      "path": "src/aipinho/services/memory/memory_candidate_event_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "MemoryCandidateEventService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.services.memory.memory_candidate_store"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.mobile_view_models.adapters.events_debugger_adapter",
+      "path": "src/aipinho/services/mobile_view_models/adapters/events_debugger_adapter.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EventsDebuggerAdapter"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.services.mobile_view_models.adapters.base"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.patching.apply.patch_apply_event_service",
+      "path": "src/aipinho/services/patching/apply/patch_apply_event_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "PatchApplyEventService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.patching.apply.patch_apply_event",
+        "aipinho.services.session.session_store"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.realtime.event_stream_service",
+      "path": "src/aipinho/services/realtime/event_stream_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EventStreamService"
+      ],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.realtime.realtime_event_bus",
+      "path": "src/aipinho/services/realtime/realtime_event_bus.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.realtime.realtime_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.realtime.realtime_event_store",
+      "path": "src/aipinho/services/realtime/realtime_event_store.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.realtime.realtime_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.regression.evaluators.event_contract_expectation_evaluator",
+      "path": "src/aipinho/services/regression/evaluators/event_contract_expectation_evaluator.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EventContractExpectationEvaluator"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.services.regression.regression_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.replay.collectors.event_timeline_snapshot_collector",
+      "path": "src/aipinho/services/replay/collectors/event_timeline_snapshot_collector.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EventTimelineSnapshotCollector"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.services.replay.collectors.collectors"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.runtime.task_run_event_service",
+      "path": "src/aipinho/services/runtime/task_run_event_service.py",
+      "package": "services",
+      "classification": "CANONICAL",
+      "classes": [
+        "TaskRunEventService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.runtime.task_run_event",
+        "aipinho.services.runtime.task_run_store",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.services.session.session_event_service",
+      "path": "src/aipinho/services/session/session_event_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SessionEventService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.chat.session_event",
+        "aipinho.services.session.session_store"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.skills.skill_event_emitter",
+      "path": "src/aipinho/services/skills/skill_event_emitter.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.skills.skill_runtime_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.supervisor.monitor_event_service",
+      "path": "src/aipinho/services/supervisor/monitor_event_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.supervisor.supervisor_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.validation.task_event_consistency_validator",
+      "path": "src/aipinho/services/validation/task_event_consistency_validator.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TaskEventConsistencyValidator"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.services.validation.validation_common"
+      ],
+      "imported_by_count": 2
+    }
+  ]
 }

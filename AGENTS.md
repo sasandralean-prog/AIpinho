@@ -42,17 +42,24 @@ override current code, configs, tests, or validated evidence.
 
 ## Current Truth
 
-At this infrastructure baseline:
+At the current consolidated runtime baseline:
 
 ```text
-H1C0.R2 = H1C0_R2_READY_FOR_R3
-FireTest 5 = NOT_READY
-current runtime blocker = MEDIA_IDENTITY_EVIDENCE_INSUFFICIENT
-next runtime frontier = H1C0.R3.01
+runtime implementation baseline = 6126a73a9ddfc054fe527174fe4df16740b9d1e0
+Semantic Sprints 0-9 = integrated
+runtime + roles consolidation = COMPLETE / VALIDATED
+FireTest 5 consolidation gates = PASS
+Phase 1 = partial / limited-use / no success claim
+Phases 2-6 = completed
+RuntimeTimeline gaps/duplicates = 0/0
+role pipeline executed = 6/6 TaskRuns
+Runtime Doctor = completed all six phases
+focused regression after reboot = 174 passed / 0 failed
+open P0/P1 from consolidation wave = none
+deferred = Windows subprocess cp1252/.m4a reader issue
 ```
 
-This infrastructure mission does not implement R3.01 and does not change
-FireTest runtime truth.
+Current state details live in `CURRENT_STATE.md`; code/config/contracts and validated evidence remain higher authority.
 
 ## Non-Negotiable Principles
 

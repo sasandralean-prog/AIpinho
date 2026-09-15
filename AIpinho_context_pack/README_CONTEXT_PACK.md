@@ -1,149 +1,77 @@
-# AIpinho Context Pack v0.4.2
+# AIpinho Context Pack v0.5 — consolidated runtime checkpoint
 
-A structured continuity layer for AIpinho.
+A structured continuity layer for AIpinho. Start at `docs/context/00_START_HERE.md`.
 
-Start at:
+## Current checkpoint — 2026-09-15
 
-```text
-docs/context/00_START_HERE.md
-```
-
-This pack separates philosophy, Rafa + Lúcio working style, engineering workflow, runtime architecture, FireTest rules, **strategic maturity Horizons**, wave history, current frontier, idea lab, handoff protocol, machine-readable state, and the separate external Control/Envelope repositories.
-
-## v0.4.2 continuity checkpoint
-
-Generated on **2026-09-07** to reconcile the repository documentation before the next FireTest campaign.
-
-Observed `main` heads before this documentation refresh:
+AIpinho runtime implementation baseline: `6126a73a9ddfc054fe527174fe4df16740b9d1e0`.
 
 ```text
-AIpinho                       a4253226d5af73ffa8eea6279943cce5915fb507
-AIpinho-FireTest-Control      dacd3e5afde981e077ef212b7c1072bfea80b8a7
-AIpinho-Envelope-Requests     8ff0632736a01b5faf27e53fcffd12ecbdc3cbca
+Semantic Sprints 0–9 = integrated
+runtime + roles consolidation = COMPLETE / VALIDATED
+FireTest consolidation = all six phases reached
+Phase 1 = partial / limited-use / no success claim
+Phases 2–6 = completed
+timeline gaps/duplicates = 0/0
+role pipeline = executed in 6/6 TaskRuns
+Runtime Doctor = completed all six phases
+focused regression after reboot = 174 passed / 0 failed
+workspace/corpus mutations = 0/0
 ```
 
-Reobserve them before live work; these are continuity anchors, not permanent authority.
+The older 06/09 `BLOCKED_PRE_TASK`, 07/09 `NOT_READY`, and first 15/09 `PARTIAL` checkpoints remain historical evidence, not the current runtime state.
 
-## Important terminology correction
+## Five canonical authorities
 
-`H1`, `H2`, `H3`, and `H4` in `docs/context/07_H1_TO_H4_ROADMAP.md` are **AIpinho strategic maturity horizons**. They categorize objectives and ideas by planning distance:
+1. Human operator.
+2. Trusted dispatcher.
+3. Local execution broker.
+4. AIpinho runtime.
+5. Evidence/result layer.
 
-```text
-Horizon H1 -> near-term foundational maturation
-Horizon H2 -> medium-term tool/operations maturation
-Horizon H3 -> medium-to-long-term agentic collaboration/initiative
-Horizon H4 -> long-range exploratory evolution
-```
+Dispatcher/broker logic validates and routes fixed capabilities; it does not interpret user meaning or become a second AIpinho runtime.
 
-They are not patches, releases, specific corrective waves, or claims of implementation.
+## Current runtime rule
 
-Do not confuse them with:
+One canonical product execution line owns TaskRun lifecycle and final truth. Roles/models are subordinate TaskRuntime children. Runtime Doctor is diagnostic. Runtime V2 planner/dispatcher/contracts are compatibility/introspection.
 
-```text
-CONTROL-H1
-CONTROL-H2
-CONTROL-H3
-```
+## Genome v2
 
-Those labels belong to the separate `AIpinho-FireTest-Control` implementation/validation lineage for Lúcio Shell, account/delegated-agent authority, and engineering governance. The numbers are not semantically mapped.
+`genome/` was regenerated from the GitHub `main` recursive tree and matching local Git object at the consolidated baseline.
 
-## Current cross-repository checkpoint
+Key entrypoints:
 
-### AIpinho
+- `genome/00_manifest.json`
+- `genome/reports/genome_summary.md`
+- `genome/reports/github_folder_audit_20260915.md`
+- `docs/context/05_RUNTIME_ARCHITECTURE_MAP.md`
 
-- current pre-refresh `main`: `a4253226...`;
-- live multi-endpoint FireTest observer is merged;
-- FireTest 5 global state remains `NOT_READY`;
-- historical B3.5/B3.6 applicability-capacity evidence remains relevant.
+Genome is generated orientation, not runtime authority.
 
-### AIpinho-FireTest-Control
+## Strategic horizon terminology
 
-Current progression is far beyond the old B1.0-D/E snapshot:
+`Horizon H1/H2/H3/H4` are AIpinho strategic maturity horizons. `CONTROL-H1/H2/H3` are separate external Control Plane implementation/validation tranches. Their numbers are not semantically mapped.
 
-```text
-G3_BASELINE_VALIDATED
-CONTROL-H1 through H1-E validated
-CONTROL-H2 through H2-E validated
-CONTROL-H3-A through H3-H accepted at defined scopes
-CONTROL-H3-I end-to-end authority compression live accepted and independently reproduced
-CONTROL-H3-J progressive FireTest re-entry started
-```
+## Cross-repository rule
 
-H3-J1 has fresh live narrow unit proof: Control run `33933759448`, operation `op_h3j_j1_firetest_unit_admission_after_venv_20260905T004300Z`, `19 passed in 0.51s`.
+AIpinho runtime truth comes from AIpinho code/config/contracts and validated AIpinho evidence. The external Control Plane proves only the bounded operations it authenticates/executes/observes/packages. Envelope/request repositories are transport/intake unless their own authenticated boundary proves more.
 
-Later Control growth, including a manual-only governed Desktop Commander remote-command catalog path, is unrelated to FireTest authority.
+Reobserve external repository heads before live work; this pack intentionally does not freeze their SHA as permanent current truth.
 
-### AIpinho-Envelope-Requests
+## Current frontier
 
-Unsigned request/intake transport only. The local broker remains the authority that observes trusted provenance, allocates sequence, signs locally, and publishes create-only signed Control envelopes. Request text/GitHub is not signing authority.
+There is no open P0/P1 carried forward from the runtime/roles consolidation FireTest wave.
 
-## Latest product FireTest evidence
+Near-term engineering should:
 
-The 2026-09-06 FireTest B product attempt did not succeed:
+- evolve only through the single canonical TaskRuntime;
+- keep roles/models contract-bound and non-authoritative;
+- clean up compatibility surfaces only with evidence-backed migration;
+- preserve edge-local semantic admission and RuntimeTruth-bound public claims;
+- refresh Genome/current-state docs after architecture-changing waves.
 
-```text
-Control run: 34059896495
-operation: op_firetest5_b_clean_final_20260906T211500Z
-product verdict: BLOCKED_PRE_TASK
-reason: PUBLIC_RUNTIME_CREATE_RUN_NOT_REACHED
-task_run_id: null
-SpeakerTruth.safe_to_report_success: false
-Phases 2-6: skipped_due_to_prior_block
-```
+Deferred: Windows subprocess `cp1252/.m4a` media-probe reader issue.
 
-The Control workflow completed truthfully; that is not the same thing as product success.
+## Historical baselines
 
-## Reset checkpoint
-
-A governed reset/cleanup reported on 2026-09-07:
-
-```text
-RESET_STATUS=CLEAN
-runtime/chat active=0, pending=0, orphaned=0
-active locks/leases=0
-hygiene candidates=0
-historical long-running task and 06/09 observer -> cancelled with terminal events
-history preserved
-AIpinho API/9088 -> offline / no listener
-old Control runner -> stopped/disabled
-Envelope runner -> kept running
-AIpinho tracked HEAD == origin/main == a4253226...
-worktree clean
-corpus present and unmodified
-FFmpeg/FFprobe present on host
-new FireTest round -> not started
-```
-
-This is a **clean operational baseline**, not `READY`.
-
-## FFmpeg evidence boundary
-
-The 06/09 FireTest execution context observed FFmpeg/FFprobe unavailable, while the 07/09 reset observed both binaries present on the host.
-
-Therefore the next campaign must reprove:
-
-```text
-host presence
-→ exact governed execution visibility
-→ AIpinho capability admission/applicability
-→ governed observation
-→ semantic evidence
-```
-
-Do not collapse those stages.
-
-## Historical baselines retained
-
-- v0.4/v0.4.1: Control and FireTest-C re-entry orientation from late August/early September;
-- v0.3: B3.5 forensic/report-correction runtime checkpoint;
-- v0.2: R2.18/pre-R3 baseline.
-
-Historical material remains useful for rationale and evidence provenance, but current code/config/live evidence wins.
-
-## Canonical path
-
-```text
-AIpinho_context_pack/docs/context/
-```
-
-Do not recreate the previous uppercase `docs/CONTEXT/` path.
+Older Context Pack versions remain useful for rationale, Control progression and FireTest archaeology. Current code/config/live evidence always wins over those snapshots.

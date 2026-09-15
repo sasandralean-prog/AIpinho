@@ -264,3 +264,11 @@ A clean verdict is useful only when the evidence deserves it.
 ## 2026-09-15 operational refresh
 
 The semantic 0?9 sequence is closed. New runtime work starts from the canonical authority chain in `05_RUNTIME_ARCHITECTURE_MAP.md`. For any terminal result, inspect RuntimeTruth/CanonicalOperationState before PhaseOutcome or UI status. A completed producer with blocked canonical truth must be treated as blocked for downstream admission until the propagation gap is fixed.
+
+## 2026-09-15 consolidated runtime workflow override
+
+The current baseline no longer requires a pre-FireTest B3.6 gate before ordinary runtime engineering. The runtime/roles consolidation and fresh FireTest closed the timeline, downstream truth-propagation, Doctor, role-step-bypass and duplicate readonly-runtime defects.
+
+For new runtime work: branch from synchronized `main`; preserve the single TaskRuntime path; bind roles as subordinate children; validate semantic/operational truth separately; run focused regression appropriate to the changed boundary; and refresh current-state/Genome material when architecture changes.
+
+Do not reintroduce a parallel planner/dispatcher/runtime merely because compatibility V2 services still exist.

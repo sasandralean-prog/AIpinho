@@ -1,99 +1,428 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
-  "tools": [
-    {
-      "tool": "filesystem_read",
-      "path": "config/tools/",
-      "service": "services.tools.filesystem_read_service",
-      "critical": true
-    },
-    {
-      "tool": "filesystem_write",
-      "path": "config/tools/",
-      "service": "services.tools.filesystem_tool_service",
-      "critical": true
-    },
-    {
-      "tool": "shell_command",
-      "path": "config/tools/",
-      "service": "services.tools.shell_tool_service",
-      "critical": true
-    },
-    {
-      "tool": "git_command",
-      "path": "config/tools/",
-      "service": "services.tools.git_tool_service",
-      "critical": true
-    },
-    {
-      "tool": "browser_tool",
-      "path": "config/tools/",
-      "service": "services.tools.browser_tool_service",
-      "critical": false
-    },
-    {
-      "tool": "android_tool",
-      "path": "config/tools/",
-      "service": "services.tools.android_tool_service",
-      "critical": false
-    },
-    {
-      "tool": "read_only_execution",
-      "path": "config/tools/",
-      "service": "services.tools.read_only_execution_service",
-      "critical": true
-    },
-    {
-      "tool": "tool_preview",
-      "path": "config/tools/",
-      "service": "services.tools.tool_preview_service",
-      "critical": false
-    },
-    {
-      "tool": "tool_invocation_preview",
-      "path": "config/tools/",
-      "service": "services.tools.tool_invocation_preview_service",
-      "critical": false
-    },
-    {
-      "tool": "tool_trace",
-      "path": "config/tools/",
-      "service": "services.tools.tool_trace_service",
-      "critical": false
-    },
-    {
-      "tool": "tool_safety",
-      "path": "config/tools/",
-      "service": "services.tools.tool_safety_service",
-      "critical": true
-    },
-    {
-      "tool": "tool_permission",
-      "path": "config/tools/",
-      "service": "services.tools.tool_permission_service",
-      "critical": true
-    },
-    {
-      "tool": "tool_availability",
-      "path": "config/tools/",
-      "service": "services.tools.tool_availability_service",
-      "critical": false
-    },
-    {
-      "tool": "tool_input_validator",
-      "path": "config/tools/",
-      "service": "services.tools.tool_input_validator",
-      "critical": true
-    },
-    {
-      "tool": "tool_result_sanitizer",
-      "path": "config/tools/",
-      "service": "services.tools.tool_result_sanitizer",
-      "critical": true
-    }
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "tool_config_files": [
+    "config/tools/android_tools.yaml",
+    "config/tools/browser_tools.yaml",
+    "config/tools/filesystem_tools.yaml",
+    "config/tools/git_tools.yaml",
+    "config/tools/shell_tools.yaml",
+    "config/tools/tool_availability_policy.yaml",
+    "config/tools/tool_permission_policy.yaml",
+    "config/tools/tool_policy.yaml",
+    "config/tools/tool_provider_policy.yaml",
+    "config/tools/tool_registry.yaml",
+    "config/tools/tool_risk_policy.yaml",
+    "config/tools/web_tools.yaml"
   ],
-  "total_tools": 15,
-  "critical_tools": 9,
-  "non_critical_tools": 6
+  "service_modules": [
+    {
+      "module": "aipinho.services.tools.__init__",
+      "path": "src/aipinho/services/tools/__init__.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.tools.execution_audit_service",
+      "path": "src/aipinho/services/tools/execution_audit_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ExecutionAuditService"
+      ],
+      "functions": [
+        "_dump_model"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.tools.execution_audit",
+        "aipinho.schemas.tools.tool_execution_result",
+        "aipinho.services.session.session_store",
+        "aipinho.utils.safe_paths",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.tools.filesystem_read_service",
+      "path": "src/aipinho/services/tools/filesystem_read_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "FilesystemReadService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.tools.tool_execution",
+        "aipinho.schemas.tools.tool_execution_result",
+        "aipinho.services.security.content_safety_service",
+        "aipinho.services.security.path_guard_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.tools.governed_tool_execution_service",
+      "path": "src/aipinho/services/tools/governed_tool_execution_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "GovernedToolExecutionService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.approvals.approval_policy_snapshot",
+        "aipinho.schemas.approvals.approval_request",
+        "aipinho.schemas.common.actor",
+        "aipinho.schemas.tools.tool_definition",
+        "aipinho.schemas.tools.tool_execution",
+        "aipinho.schemas.tools.tool_execution_result",
+        "aipinho.services.approvals.approval_service",
+        "aipinho.services.session.session_store",
+        "aipinho.services.tools.execution_audit_service",
+        "aipinho.services.tools.shell_command_policy_service",
+        "aipinho.services.tools.tool_registry_service",
+        "aipinho.services.tools.write_capability_envelope_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.tools.read_only_execution_service",
+      "path": "src/aipinho/services/tools/read_only_execution_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ReadOnlyExecutionService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.tools.read_only_execution",
+        "aipinho.schemas.tools.tool_execution",
+        "aipinho.schemas.tools.tool_execution_result",
+        "aipinho.services.orchestration.task_draft_store",
+        "aipinho.services.orchestration.task_preview_service",
+        "aipinho.services.tools.execution_audit_service",
+        "aipinho.services.tools.filesystem_read_service",
+        "aipinho.services.tools.tool_execution_guard",
+        "aipinho.services.tools.tool_preview_service"
+      ],
+      "imported_by_count": 8
+    },
+    {
+      "module": "aipinho.services.tools.shell_command_policy_service",
+      "path": "src/aipinho/services/tools/shell_command_policy_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ShellCommandPolicyService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.tools.shell_command_policy",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.tools.tool_availability_service",
+      "path": "src/aipinho/services/tools/tool_availability_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.tools.tool_contract_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.tools.tool_contract_core",
+      "path": "src/aipinho/services/tools/tool_contract_core.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolResultSanitizer",
+        "ToolContractLoader",
+        "ToolContractValidator",
+        "GovernedToolRegistryService",
+        "ToolAvailabilityService",
+        "ToolPermissionService",
+        "ToolInvocationPreviewService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.repositories.tools.tool_registry_repository",
+        "aipinho.schemas.tools.contracts_v2",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 9
+    },
+    {
+      "module": "aipinho.services.tools.tool_contract_loader",
+      "path": "src/aipinho/services/tools/tool_contract_loader.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.tools.tool_contract_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.tools.tool_contract_validator",
+      "path": "src/aipinho/services/tools/tool_contract_validator.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.tools.tool_contract_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.tools.tool_dry_run_executor",
+      "path": "src/aipinho/services/tools/tool_dry_run_executor.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolDryRunExecutor"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.adapters.android.android_tool_adapter",
+        "aipinho.adapters.filesystem.filesystem_tool_adapter",
+        "aipinho.adapters.git.git_tool_adapter",
+        "aipinho.adapters.shell.shell_tool_adapter",
+        "aipinho.adapters.web.web_tool_adapter",
+        "aipinho.schemas.tools.tool_dry_run",
+        "aipinho.schemas.tools.tool_result",
+        "aipinho.services.tools.tool_safety_service",
+        "aipinho.services.tools.tool_trace_service"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.tools.tool_execution_guard",
+      "path": "src/aipinho/services/tools/tool_execution_guard.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolExecutionGuard"
+      ],
+      "functions": [
+        "_dump_model"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.policy.policy_decision",
+        "aipinho.schemas.security.sandbox_decision",
+        "aipinho.schemas.tools.tool_definition",
+        "aipinho.schemas.tools.tool_execution",
+        "aipinho.services.governance.policy.effective_policy_decision_service",
+        "aipinho.services.security.path_guard_service",
+        "aipinho.services.security.sandbox_policy_service",
+        "aipinho.services.tools.tool_registry_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.tools.tool_execution_service",
+      "path": "src/aipinho/services/tools/tool_execution_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolExecutionService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.tools.tool_execution",
+        "aipinho.services.tools.governed_tool_execution_service",
+        "aipinho.services.tools.read_only_execution_service"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.tools.tool_input_validator",
+      "path": "src/aipinho/services/tools/tool_input_validator.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolInputValidator"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.tools.tool_call",
+        "aipinho.schemas.tools.tool_definition",
+        "aipinho.schemas.tools.tool_safety",
+        "aipinho.services.policy_kernel.workspace_policy_service",
+        "aipinho.services.tools.tool_trace_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.tools.tool_invocation_preview_service",
+      "path": "src/aipinho/services/tools/tool_invocation_preview_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.tools.tool_contract_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.tools.tool_permission_service",
+      "path": "src/aipinho/services/tools/tool_permission_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.tools.tool_contract_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.tools.tool_preview_service",
+      "path": "src/aipinho/services/tools/tool_preview_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolPreviewService"
+      ],
+      "functions": [
+        "_dump_model"
+      ],
+      "imports": [
+        "aipinho.schemas.tools.tool_call",
+        "aipinho.schemas.tools.tool_dry_run",
+        "aipinho.services.approvals.approval_service",
+        "aipinho.services.orchestration.task_draft_store",
+        "aipinho.services.orchestration.task_preview_service",
+        "aipinho.services.tools.tool_router",
+        "aipinho.services.tools.tool_trace_service"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.tools.tool_registry_service",
+      "path": "src/aipinho/services/tools/tool_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolRegistryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.exceptions",
+        "aipinho.core.paths",
+        "aipinho.schemas.tools.tool_definition",
+        "aipinho.services.policy_kernel.action_registry_service",
+        "aipinho.services.policy_kernel.capability_gate_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 7
+    },
+    {
+      "module": "aipinho.services.tools.tool_result_sanitizer",
+      "path": "src/aipinho/services/tools/tool_result_sanitizer.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.tools.tool_contract_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.tools.tool_router",
+      "path": "src/aipinho/services/tools/tool_router.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolRouter"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.tools.tool_definition",
+        "aipinho.services.tools.tool_registry_service"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.tools.tool_safety_service",
+      "path": "src/aipinho/services/tools/tool_safety_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolSafetyService"
+      ],
+      "functions": [
+        "_dump_model"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.policy.policy_decision",
+        "aipinho.schemas.tools.tool_call",
+        "aipinho.schemas.tools.tool_definition",
+        "aipinho.schemas.tools.tool_safety",
+        "aipinho.services.approvals.approval_service",
+        "aipinho.services.governance.policy.effective_policy_decision_service",
+        "aipinho.services.security.path_guard_service",
+        "aipinho.services.tools.tool_input_validator",
+        "aipinho.services.tools.tool_registry_service",
+        "aipinho.services.tools.tool_trace_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.tools.tool_trace_service",
+      "path": "src/aipinho/services/tools/tool_trace_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolTraceService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.tools.tool_trace"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.services.tools.write_capability_envelope_service",
+      "path": "src/aipinho/services/tools/write_capability_envelope_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "WriteCapabilityEnvelopeService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.tools.write_capability_envelope",
+        "aipinho.services.policy_kernel.workspace_role_contract_service",
+        "aipinho.services.session.session_store",
+        "aipinho.utils.safe_paths"
+      ],
+      "imported_by_count": 2
+    }
+  ]
 }

@@ -1,39 +1,63 @@
-# FireTest 5 ? 2026-09-15
+# FireTest 5 — consolidated revalidation — 2026-09-15
 
 ## Purpose
 
-FireTest 5 is adversarial product/runtime evidence. It must never become runtime configuration or justify FireTest/media/phase-specific truth rules.
+FireTest 5 is adversarial product/runtime evidence. It must never become runtime configuration or justify phase-, corpus-, extension- or fixture-specific truth rules.
 
-## Latest canonical campaign
+## Current canonical campaign
 
-Campaign directory: `reports/firetest5_20260915T054806Z/`.
+Consolidation campaign: `firetest5_runtime_consolidation_20260915T152207Z`.
 
-Global verdict: **PARTIAL**. The product progression reached phases 1?6 for the first time in this update.
+Canonical reports:
 
-- Phase 0: `NO_GO_EXPECTED_BLOCK`; later calibration events marked the prediction as mismatch.
-- Phase 1: `completed_with_limitations`, catalog/planning limited by semantic identity evidence.
-- Phase 2: canonical success.
-- Phase 3: canonical success.
-- Phase 4: operationally completed, but canonical state `BLOCKED` by RuntimeTruth contradiction.
-- Phase 5: canonical success; historically this phase had timed out before TaskRun creation.
-- Phase 6: operationally completed with all final artifacts validated, but canonical state `BLOCKED`; SpeakerTruth refused success.
+- `reports/runtime_consolidation/runtime_consolidation_final_validation_20260915.md`
+- `reports/runtime_consolidation/runtime_consolidation_firetest5_20260915.json`
 
-Final contradiction: `completion_completed_timeline_has_gaps`. Phase 6 had duplicate event sequence `122` and no sequence `123`. Phase 4 had duplicate sequence `118`.
+## Current result
 
-## Current architectural finding
+```text
+phase_1 = completed_with_limitations
+          RuntimeTruth = partial
+          PhaseOutcome = satisfied_with_limitations
+          safe_to_report_success = false
+phase_2 = completed
+phase_3 = completed
+phase_4 = completed
+phase_5 = completed
+phase_6 = completed
+```
 
-Phase 4 exposed an authority propagation gap: CanonicalOperationState was blocked while projected PhaseOutcome remained `satisfied`; Phase 5/6 admitted that dependency. The next correction must bind cross-phase admission to canonical producer truth.
+All six TaskRuns had contiguous, unique RuntimeTimeline sequences. Duplicate sequences: `0`. Missing sequences: `0`.
 
-## Media boundary
+The old Phase 4/6 `runtime_truth_contradiction` did not recur. The old PhaseOutcome bug is closed: blocked/contradictory RuntimeTruth now propagates fail-closed into downstream dependency admission.
 
-Physical media evidence was collected, but governed semantic identity remained insufficient for a full truth claim. Catalog use is allowed; planning is allowed with limitations; full truth is not. The `.m4a`/subprocess encoding issue is intentionally deferred.
+## Phase 1 limited-use semantics
+
+`CanonicalOperationState=BLOCKED` prevents Phase 1 from being represented as successful. `RuntimeTruth=partial` preserves bounded evidence. Downstream use may be admitted only as `satisfied_with_limitations` when frozen demand and explicit `use_safety` are compatible.
+
+This distinction is intentional and is not the old cross-phase authority contradiction.
+
+## Roles
+
+`run_role_pipeline` executed in all six TaskRuns. Persisted role runs included deterministic `supervisor_consistency=completed` with `real_inference=false`.
+
+## Doctor
+
+Runtime Doctor completed all six phases, including the former Phase 4/6 large-run cases. Observed campaign latency was approximately 0.4–1.2 seconds.
 
 ## Integrity
 
-Latest campaign mutated neither the target workspace nor corpus. Final runtime queue was clean and the campaign API was stopped after teardown.
+- target workspace files and bytes unchanged;
+- corpus files and bytes unchanged;
+- workspace mutations: `0`;
+- corpus mutations: `0`;
+- repository HEAD unchanged during campaign;
+- final queue clean.
 
-## Evidence
+## Deferred
 
-- `reports/firetest5_20260915T054806Z/campaign.md`
-- `reports/firetest5_20260915T054806Z/verdict.json`
-- `reports/firetest5_20260915T054806Z/sequence_audit.json`
+The Windows subprocess `cp1252` decoding error surfaced again during media probing. Per project scope it remains deferred and must not be papered over with media-specific core truth logic.
+
+## Historical campaigns
+
+The earlier `firetest5_20260915T054806Z` PARTIAL campaign remains useful root-cause evidence but is superseded for current-state orientation by the consolidation revalidation above.

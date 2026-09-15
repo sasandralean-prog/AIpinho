@@ -1,131 +1,37 @@
 # AIpinho Genome Summary
 
-Generated: 2026-07-30T20:01:00Z
+Generated: 2026-09-15T21:50:50.419424Z
+Source main SHA: 6126a73a9ddfc054fe527174fe4df16740b9d1e0
+Genome version: 2.0
 
-## Architecture
+Generated orientation only. Code, canonical config/contracts and validated runtime evidence outrank this Genome.
 
-**Architecture Type**: Config-first, contract-first modular architecture
+## Current architecture
 
-**Number of Layers**: 5
-- entrypoint
-- core
-- utils
-- services
-- api
-- repositories
-- registries
-- adapters
-- schemas
+Canonical path: public chat ingress -> CanonicalPublicChatService -> semantic intent/governance -> durable TaskRun -> TaskRunPlanner -> semantic vocabulary/graph/demand -> SupervisedExecutionLoop -> governed steps and TaskRuntime-bound role children -> evidence/validation -> semantic offer/compatibility -> completion -> RuntimeTruth -> CanonicalOperationState -> SpeakerTruth.
 
-**Number of Pipelines**: 8
-- chat_pipeline
-- task_pipeline
-- tool_pipeline
-- model_pipeline
-- validation_pipeline
-- approval_pipeline
-- artifact_pipeline
-- memory_pipeline
-- rag_pipeline
+Genome v2 separates canonical authority from compatibility/inventory, specialized child execution, diagnostics, legacy code, evidence and test-only surfaces. RuntimeDispatcherV2 and PlannerV2 are not a second runtime.
 
-## Main Modules
+## Validated baseline
 
-**Core Modules**:
-- core.bootstrap
-- core.dependency_container
-- core.local_environment
-- core.paths
-- core.exceptions
-- core.result
+- FireTest consolidation: Phase 1 partial/limited-use; Phases 2-6 completed.
+- Timeline gaps/duplicates: 0/0 across all six phases.
+- Runtime Doctor passed all six phases.
+- Consolidated regression after reboot: 174 passed / 0 failed.
+- Workspace/corpus mutations: 0 / 0.
+- Deferred: Windows subprocess cp1252/.m4a media probe reader issue.
 
-**Service Modules**:
-- services.policy_kernel.policy_kernel_service
-- services.runtime.task_runtime_service
-- services.chat.chat_service
-- services.agents.agent_tool_gateway_service
-- services.models.llama_cpp_provider
-- services.tools.governed_tool_execution_service
-- services.validation.validation_gate_service
+## Inventory
 
-**API Modules**:
-- api.routers.chat_router
-- api.routers.task_runtime_router
-- api.routers.tool_router
-- api.routers.model_router
-- api.routers.artifact_router
-- api.routers.agent_router
-- api.routers.policy_router
-
-## Observable Bottlenecks
-
-**Hub Dependencies**:
-- services.policy_kernel.policy_kernel_service (dependents: services.runtime, services.chat, services.agents, services.tools)
-- services.runtime.task_runtime_service (dependents: services.chat, services.agents, services.tools)
-- core (dependents: all service layers)
-
-**Critical Path**: entrypoint → core → services.policy_kernel → services.runtime → services.chat → api
-
-## Areas with Higher Coupling
-
-**High Coupling Areas**:
-- services.policy_kernel (depends on: core, registries, schemas.policy)
-- services.chat (depends on: core, schemas.chat, services.runtime, services.policy_kernel, services.memory, services.models, services.tools)
-- services.agents.agent_tool_gateway_service (depends on: core, schemas.agents, services.runtime, services.policy_kernel, services.tools, services.workspaces)
-
-## Highly Cohesive Areas
-
-**High Cohesion Areas**:
-- services.policy_kernel (3 services focused on governance)
-- services.runtime (3 services focused on task execution)
-- services.chat (2 services focused on chat operations)
-- services.tools (28 services focused on tool execution)
-
-## Consolidation Candidates
-
-**Potential Consolidation**:
-- services.tools.tool_* services (28 services could be consolidated)
-- api.routers.* routers (139 routers could be consolidated)
-- schemas.* (910 schemas could be consolidated)
-
-## Critical Areas
-
-**Critical Services**:
-- services.policy_kernel.policy_kernel_service
-- services.runtime.task_runtime_service
-- services.chat.chat_service
-- services.tools.governed_tool_execution_service
-- services.validation.validation_gate_service
-
-**Critical Endpoints**:
-- POST /chat
-- POST /tasks
-- POST /tools/execute
-- POST /models/invoke
-- POST /artifacts
-- POST /agents/delegate
-- POST /policy/check
-
-## Experimental Areas
-
-**Experimental Areas**:
-- services.vision.* (vision processing services)
-- services.agents.agent_* (agent-related services)
-- services.patch.* (patch-related services)
-- services.evaluation.* (evaluation services)
-
-## Legacy Areas
-
-**Legacy Areas**:
-- core.clock (empty stub)
-- core.lifecycle (empty stub)
-- core.ids (empty stub)
-- services.runtime.runtime_doctor_service (diagnostics service)
-- services.runtime.runtime_state_hygiene_service (state management service)
-
-## Unknown Areas
-
-**Unknown Areas**:
-- roles capabilities (all marked as UNKNOWN)
-- role dependencies (all marked as UNKNOWN)
-- runtime state values (all marked as UNKNOWN)
-- execution graph steps (some marked as UNKNOWN)
+{
+  "tracked_files": 18014,
+  "python_modules": 2408,
+  "services": 1214,
+  "schemas": 942,
+  "repositories": 52,
+  "registries": 47,
+  "router_modules": 138,
+  "endpoints": 1086,
+  "test_files": 1018,
+  "test_functions": 3183
+}

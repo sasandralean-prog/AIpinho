@@ -1,80 +1,196 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
-  "role_capabilities": {
-    "admin": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "roles": [
+    {
+      "role_id": "planner",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
     },
-    "user": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "analyst",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
     },
-    "agent": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "reporter",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
     },
-    "tool_executor": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "interpreter",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
     },
-    "model_invoker": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "speaker",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
     },
-    "artifact_generator": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "supervisor",
+      "enabled": true,
+      "can_call_model": false,
+      "model_policy": null,
+      "capabilities": []
     },
-    "memory_curator": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "debugger",
+      "enabled": true,
+      "can_call_model": false,
+      "model_policy": null,
+      "capabilities": []
     },
-    "rag_retriever": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "artifact_writer",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
     },
-    "validator": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "executor",
+      "enabled": false,
+      "can_call_model": false,
+      "model_policy": null,
+      "capabilities": []
     },
-    "supervisor": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "observer",
+      "enabled": true,
+      "can_call_model": false,
+      "model_policy": null,
+      "capabilities": []
     },
-    "debugger": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "reviewer",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
     },
-    "runtime_doctor": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "validator",
+      "enabled": true,
+      "can_call_model": false,
+      "model_policy": null,
+      "capabilities": []
     },
-    "patch_planner": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "retriever",
+      "enabled": false,
+      "can_call_model": false,
+      "model_policy": null,
+      "capabilities": []
     },
-    "skill_executor": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "reranker",
+      "enabled": false,
+      "can_call_model": false,
+      "model_policy": null,
+      "capabilities": []
     },
-    "workspace_manager": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "memory_curator",
+      "enabled": false,
+      "can_call_model": false,
+      "model_policy": null,
+      "capabilities": []
     },
-    "approval_authority": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "patch_reviewer",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
     },
-    "speaker": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "intent_classifier",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
     },
-    "listener": {
-      "capabilities": ["UNKNOWN"],
-      "source": "config/roles/"
+    {
+      "role_id": "semantic_interpreter",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
+    },
+    {
+      "role_id": "small_code_assistant",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
+    },
+    {
+      "role_id": "coder",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
+    },
+    {
+      "role_id": "patch_planner",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
+    },
+    {
+      "role_id": "code_reviewer",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
+    },
+    {
+      "role_id": "patch_quality_reviewer",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
+    },
+    {
+      "role_id": "security_guard",
+      "enabled": true,
+      "can_call_model": false,
+      "model_policy": null,
+      "capabilities": []
+    },
+    {
+      "role_id": "vision_analyst",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
+    },
+    {
+      "role_id": "ocr_specialist",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
+    },
+    {
+      "role_id": "document_reader",
+      "enabled": true,
+      "can_call_model": true,
+      "model_policy": null,
+      "capabilities": []
     }
-  },
-  "total_roles": 18,
-  "unknown_capabilities": 18
+  ]
 }

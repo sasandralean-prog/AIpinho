@@ -84,3 +84,9 @@ For the B3.6 frontier, mission orders must not authorize FireTest 5, C, ffprobe 
 ## 2026-09-15 prompt warning
 
 Do not write new mission orders around historical B3.6 assumptions. The current concrete frontier is generic: timeline sequence integrity, canonical producer-truth propagation into downstream admission, and Doctor observability. `.m4a` remains deferred.
+
+## 2026-09-15 prompt-style override
+
+Older B3.6/FireTest-readiness wording in this file is historical. Current mission orders should target the consolidated runtime baseline and must not treat the previously fixed timeline/PhaseOutcome/Doctor/role-bypass defects as open unless new evidence reproduces them.
+
+Keep prompts generic and architecture-bound: no phase-number, corpus, extension or FireTest-specific production exceptions; roles/models may propose or phrase but cannot expand authority; dispatcher/broker prompts must stay fixed-capability and non-semantic.

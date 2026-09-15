@@ -1,26 +1,3521 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
-  "event_consumers": {
-    "task_created": ["services.events.event_publisher_service"],
-    "task_started": ["services.events.event_publisher_service"],
-    "task_completed": ["services.events.event_publisher_service"],
-    "task_failed": ["services.events.event_publisher_service"],
-    "execution_step_started": ["services.events.event_publisher_service"],
-    "execution_step_completed": ["services.events.event_publisher_service"],
-    "policy_check": ["services.events.event_publisher_service"],
-    "capability_check": ["services.events.event_publisher_service"],
-    "tool_invocation": ["services.events.event_publisher_service"],
-    "model_invocation": ["services.events.event_publisher_service"],
-    "validation_check": ["services.events.event_publisher_service"],
-    "artifact_created": ["services.events.event_publisher_service"],
-    "memory_candidate_created": ["services.events.event_publisher_service"],
-    "retrieval_performed": ["services.events.event_publisher_service"],
-    "agent_action": ["services.events.event_publisher_service"]
-  },
-  "total_events": 14,
-  "total_consumers": 14,
-  "consumer_services": {
-    "services.events.event_publisher_service": 14
-  }
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "modules": [
+    {
+      "module": "aipinho.api.routers.agent_bridge_router",
+      "path": "src/aipinho/api/routers/agent_bridge_router.py",
+      "package": "api",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [
+        "_delegation_summary",
+        "bridge_status",
+        "bridge_active",
+        "bridge_task_details",
+        "bridge_task_cancel"
+      ],
+      "imports": [
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.agents.agent_delegation_service",
+        "aipinho.services.agents.agent_profile_registry_service",
+        "aipinho.services.agents.agent_session_store",
+        "aipinho.services.agents.workspace_lock_service",
+        "aipinho.services.approvals.approval_service",
+        "aipinho.services.artifacts.artifact_runtime_service"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.api.routers.health_router",
+      "path": "src/aipinho/api/routers/health_router.py",
+      "package": "api",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [
+        "_safe_status",
+        "_identity",
+        "get_health",
+        "get_status",
+        "get_health_semantics"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.registries.role_registry",
+        "aipinho.registries.route_registry",
+        "aipinho.services.analysis.project_analysis_service",
+        "aipinho.services.approvals.approval_service",
+        "aipinho.services.artifacts.artifact_interaction_core",
+        "aipinho.services.artifacts.artifact_write_execution_service",
+        "aipinho.services.artifacts.artifact_writer_preview_service",
+        "aipinho.services.chat.chat_manual_inference_service",
+        "aipinho.services.chat.chat_model_policy_service",
+        "aipinho.services.chat.chat_service",
+        "aipinho.services.context.context_core",
+        "aipinho.services.debugger.debugger_status_service",
+        "aipinho.services.evals.evaluation_workbench_service",
+        "aipinho.services.evaluation.model_response_evaluator",
+        "aipinho.services.events.event_core",
+        "aipinho.services.interaction.interaction_core",
+        "aipinho.services.interpreter.interpreter_service",
+        "aipinho.services.memory.curated_memory_service",
+        "aipinho.services.memory.memory_candidate_service",
+        "aipinho.services.models.llama_cpp_status_service",
+        "aipinho.services.models.manual_inference_status_service",
+        "aipinho.services.models.model_invocation_service",
+        "aipinho.services.models.model_registry_service",
+        "aipinho.services.models.model_router_service",
+        "aipinho.services.models.model_status_service",
+        "aipinho.services.models.provider_registry_service",
+        "aipinho.services.models.real_inference_gate_service",
+        "aipinho.services.orchestration.task_contract_draft_service",
+        "aipinho.services.orchestration.task_preview_service",
+        "aipinho.services.patching.apply.patch_apply_service",
+        "aipinho.services.patching.patch_planning_service",
+        "aipinho.services.patching.quality.patch_quality_gate_service",
+        "aipinho.services.policy.decision_ownership_service",
+        "aipinho.services.policy_kernel.action_registry_service",
+        "aipinho.services.policy_kernel.capability_gate_service",
+        "aipinho.services.policy_kernel.policy_precedence_service",
+        "aipinho.services.prompts.prompt_assembly_service",
+        "aipinho.services.rag.integration.rag_memory_status_service",
+        "aipinho.services.rag.retrieval_status_service",
+        "aipinho.services.rag.vector.vector_rag_status_service",
+        "aipinho.services.realtime.realtime_core",
+        "aipinho.services.reports.project_report_service",
+        "aipinho.services.roles.role_model_status_service",
+        "aipinho.services.roles.role_pipeline_service",
+        "aipinho.services.roles.role_registry_service",
+        "aipinho.services.runtime.health_semantics_service",
+        "aipinho.services.runtime.task_runtime_service",
+        "aipinho.services.security.local_token_service",
+        "aipinho.services.session.session_service",
+        "aipinho.services.speaker.speaker_service",
+        "aipinho.services.supervisor.service_manifest_service",
+        "aipinho.services.supervisor.supervisor_core",
+        "aipinho.services.tools.read_only_execution_service",
+        "aipinho.services.tools.tool_dry_run_executor",
+        "aipinho.services.tools.tool_registry_service",
+        "aipinho.services.validation.validation_gate_service",
+        "aipinho.services.vision.vision_status_service",
+        "aipinho.utils.diagnostics",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.api.routers.realtime_router",
+      "path": "src/aipinho/api/routers/realtime_router.py",
+      "package": "api",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [
+        "realtime_status",
+        "realtime_heartbeat",
+        "realtime_events_since",
+        "realtime_events_stream"
+      ],
+      "imports": [
+        "aipinho.services.realtime.event_stream_service",
+        "aipinho.services.realtime.realtime_core",
+        "aipinho.services.realtime.realtime_status_service",
+        "aipinho.services.realtime.sync_heartbeat_service"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.api.routers.telemetry_router",
+      "path": "src/aipinho/api/routers/telemetry_router.py",
+      "package": "api",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [
+        "_service",
+        "get_runtime_telemetry",
+        "record_runtime_telemetry_event",
+        "get_runtime_telemetry_session",
+        "query_runtime_telemetry",
+        "runtime_telemetry_status",
+        "get_legacy_telemetry_events"
+      ],
+      "imports": [
+        "aipinho.schemas.telemetry.event",
+        "aipinho.services.telemetry.runtime_telemetry_service"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.agents.contracts",
+      "path": "src/aipinho/schemas/agents/contracts.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "AgentProfile",
+        "AgentRegistryStatus",
+        "AgentSessionCreateRequest",
+        "AgentSessionUpdateRequest",
+        "AgentSession",
+        "AgentMessageCreateRequest",
+        "AgentMessage",
+        "AgentMessagePublic",
+        "AgentRunCreateRequest",
+        "AgentRunUpdateRequest",
+        "AgentRun",
+        "AgentEventCreateRequest",
+        "AgentEvent",
+        "AgentTimelineItem",
+        "AgentPollingContract",
+        "AgentTimelineResponse",
+        "AgentRunEventsResponse",
+        "MobileAgentViewModel",
+        "AgentSessionState"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 27
+    },
+    {
+      "module": "aipinho.schemas.agents.delegation",
+      "path": "src/aipinho/schemas/agents/delegation.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "DelegationCreateRequest",
+        "DelegationRequest",
+        "DelegationPolicyDecision",
+        "DelegationResult",
+        "DelegationStatusResponse"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 10
+    },
+    {
+      "module": "aipinho.schemas.agents.memory",
+      "path": "src/aipinho/schemas/agents/memory.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "MemoryRecord",
+        "MemoryCandidate",
+        "MemoryAccessLog",
+        "MemoryNamespaceInfo",
+        "MemoryWriteRequest",
+        "MemoryCandidateCreateRequest",
+        "MemorySearchRequest",
+        "MemoryPolicyEvaluation",
+        "MemoryWriteResult",
+        "MemorySearchResult",
+        "MemoryContextLoadRequest",
+        "MemoryContextLoadResult",
+        "MemoryCandidateReviewRequest",
+        "MemorySupersedeRequest"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 7
+    },
+    {
+      "module": "aipinho.schemas.agents.ownership",
+      "path": "src/aipinho/schemas/agents/ownership.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "WorkspaceLock",
+        "WorkspaceLockCreateRequest",
+        "WorkspaceLockReleaseRequest",
+        "WorkspaceLockOverrideRequest",
+        "WriteConflictCheckRequest",
+        "WriteConflictDecision",
+        "TaskOwnership",
+        "AgentHopCheckRequest",
+        "AgentHopDecision"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.schemas.agents.policy_kernel",
+      "path": "src/aipinho/schemas/agents/policy_kernel.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "AutoApprovalDecision",
+        "SafeAction",
+        "AgentPolicyProfile",
+        "BlockReasonDefinition",
+        "PolicyKernelStatus"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.schemas.agents.tool_gateway",
+      "path": "src/aipinho/schemas/agents/tool_gateway.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolDefinition",
+        "ToolRegistryStatus",
+        "WorkspaceResolution",
+        "PolicyDecision",
+        "ValidationStep",
+        "ValidationResult",
+        "ToolArtifactRecord",
+        "ToolInvocationCreateRequest",
+        "ToolInvocation",
+        "ToolInvocationResult",
+        "ArtifactUploadRequest"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 22
+    },
+    {
+      "module": "aipinho.schemas.artifacts.__init__",
+      "path": "src/aipinho/schemas/artifacts/__init__.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.artifacts.artifact_content",
+        "aipinho.schemas.artifacts.artifact_diff_preview",
+        "aipinho.schemas.artifacts.artifact_draft",
+        "aipinho.schemas.artifacts.artifact_lifecycle",
+        "aipinho.schemas.artifacts.artifact_post_write_validation",
+        "aipinho.schemas.artifacts.artifact_preview",
+        "aipinho.schemas.artifacts.artifact_risk",
+        "aipinho.schemas.artifacts.artifact_semantic_profile",
+        "aipinho.schemas.artifacts.artifact_source",
+        "aipinho.schemas.artifacts.artifact_status",
+        "aipinho.schemas.artifacts.artifact_target",
+        "aipinho.schemas.artifacts.artifact_trace",
+        "aipinho.schemas.artifacts.artifact_validation",
+        "aipinho.schemas.artifacts.artifact_write_backup",
+        "aipinho.schemas.artifacts.artifact_write_event",
+        "aipinho.schemas.artifacts.artifact_write_guard",
+        "aipinho.schemas.artifacts.artifact_write_policy",
+        "aipinho.schemas.artifacts.artifact_write_request",
+        "aipinho.schemas.artifacts.artifact_write_result",
+        "aipinho.schemas.artifacts.artifact_write_run",
+        "aipinho.schemas.artifacts.artifact_write_validation",
+        "aipinho.schemas.artifacts.contract_perception",
+        "aipinho.schemas.artifacts.observed_entity",
+        "aipinho.schemas.artifacts.relationship"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_generation",
+      "path": "src/aipinho/schemas/artifacts/artifact_generation.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ArtifactRequest",
+        "ArtifactGenerationResult"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_interaction_contracts",
+      "path": "src/aipinho/schemas/artifacts/artifact_interaction_contracts.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ArtifactUploadRequest",
+        "ArtifactRecord",
+        "ArtifactUploadResponse",
+        "ArtifactDownloadLink",
+        "UniversalArtifactCreateRequest",
+        "UniversalArtifactResponse",
+        "ArtifactZipRequest",
+        "ArtifactZipResponse",
+        "ArtifactPathArchiveRequest",
+        "ArtifactPathArchiveSkippedPath",
+        "ArtifactPathArchiveResponse",
+        "TaskRunArtifactExportRequest",
+        "TaskRunArtifactExportResponse"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 18
+    },
+    {
+      "module": "aipinho.schemas.artifacts.artifact_library",
+      "path": "src/aipinho/schemas/artifacts/artifact_library.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ArtifactRecordV2",
+        "ArtifactQuery",
+        "ArtifactSearchResult",
+        "ArtifactPreviewRequest",
+        "ArtifactPreviewResult",
+        "ArtifactContextUseRequest",
+        "ArtifactContextUseResult",
+        "ArtifactBundleRequest",
+        "ArtifactBundleResult",
+        "ArtifactCleanupPreview"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.schemas.codex_agent",
+      "path": "src/aipinho/schemas/codex_agent.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "CodexAgentConfigStatus",
+        "CodexChatSession",
+        "CodexChatMessage",
+        "CodexToolRequest",
+        "CodexAgentRequest",
+        "CodexAgentResponse",
+        "CodexRun",
+        "CodexRunEvent",
+        "CodexArtifact",
+        "CodexAutoApprovalDecision"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 5
+    },
+    {
+      "module": "aipinho.schemas.codex_governed_execution",
+      "path": "src/aipinho/schemas/codex_governed_execution.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "CodexGovernedActionRequest",
+        "CodexGovernedContractRequest",
+        "CodexGovernedProposalRequest",
+        "CodexGovernedAction",
+        "CodexGovernedContract",
+        "CodexGovernedContractDecision"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.schemas.debugger.multi_island_trace",
+      "path": "src/aipinho/schemas/debugger/multi_island_trace.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TraceEvent",
+        "MultiIslandTrace",
+        "TraceExportRequest"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.schemas.external_collaboration",
+      "path": "src/aipinho/schemas/external_collaboration.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SuccessContractCreateRequest",
+        "SuccessContract",
+        "ExternalTaskCreateRequest",
+        "ExternalTaskContract",
+        "ExternalReviewFinding",
+        "ExternalReviewCreateRequest",
+        "ExternalReviewContract",
+        "ExternalConversationCreateRequest",
+        "ExternalConversationRecord",
+        "ExternalAdapterReviewRequest",
+        "ExternalAdapterOutput",
+        "SuccessEvaluationCreateRequest",
+        "SuccessEvaluation",
+        "SuccessContractRuntime",
+        "CollaborationMemory",
+        "ContinuousCollaborationStartRequest",
+        "ContinuousCollaborationSession",
+        "ContinuousCollaborationPollResponse",
+        "ExternalAdapterEvaluationRequest",
+        "ExternalAdapterEvaluationOutput"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.schemas.external_workspace",
+      "path": "src/aipinho/schemas/external_workspace.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ExternalPathCandidate",
+        "WorkspaceRegistrationRequest",
+        "WorkspaceRegistrationResult",
+        "WorkspaceOnboardingRequest",
+        "WorkspaceImportRequest",
+        "WorkspaceImportPlan",
+        "WorkspaceBridgeManifest",
+        "WorkspaceImportResult",
+        "WorkspaceOnboardingResult"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.projects.project_profile"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.schemas.gemini_executor",
+      "path": "src/aipinho/schemas/gemini_executor.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "GeminiExecutorConfigStatus",
+        "GeminiExecutorSession",
+        "GeminiExecutorMessage",
+        "GeminiExecutorRequest",
+        "GeminiStructuredAction",
+        "GeminiExecutorResponse"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 5
+    },
+    {
+      "module": "aipinho.schemas.interaction.contracts",
+      "path": "src/aipinho/schemas/interaction/contracts.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ChatSessionCreateRequest",
+        "ChatSessionRenameRequest",
+        "ChatSessionRecord",
+        "ChatMessageCreateRequest",
+        "ChatMessageRecord",
+        "ChatTimeline",
+        "CopyPayload",
+        "RawPayloadResponse",
+        "FeedbackRequest",
+        "FeedbackRecord",
+        "SpeakerTruthRequest",
+        "SpeakerTruthResult",
+        "TaskCard",
+        "PipelineStageCard",
+        "PipelineCard"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 43
+    },
+    {
+      "module": "aipinho.schemas.lucio_agent",
+      "path": "src/aipinho/schemas/lucio_agent.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "LucioArtifactInput",
+        "LucioAgentRequest",
+        "LucioVisualArtifact",
+        "LucioMultimodalMessage",
+        "LucioRouteDecision",
+        "LucioAgentResponse",
+        "LucioConfigStatus"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 6
+    },
+    {
+      "module": "aipinho.schemas.memory.learning",
+      "path": "src/aipinho/schemas/memory/learning.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "LearningExtractionRequest",
+        "RunLearningSummary",
+        "MemoryCandidateV2",
+        "MemoryRecord",
+        "CommandLearningRecord",
+        "FailurePatternRecord",
+        "TemplateLearningRecord",
+        "ArtifactLearningRecord",
+        "ProjectLearningProfile",
+        "SkillPackLearningProfile",
+        "TemplateLearningProfile",
+        "MemoryReviewQueue",
+        "MemoryQuery",
+        "MemoryReviewRequest",
+        "LearningExtractionResult",
+        "LearningStatus"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.schemas.memory.operational_memory",
+      "path": "src/aipinho/schemas/memory/operational_memory.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "OperationalMemoryEvidence",
+        "OperationalMemoryRecord",
+        "DecisionMemory",
+        "ExecutionMemory",
+        "FailureMemory",
+        "RecoveryMemory",
+        "StrategyMemory",
+        "LearningMemory",
+        "OperationalMemorySnapshot"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.schemas.multi_agent_observability",
+      "path": "src/aipinho/schemas/multi_agent_observability.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ObservabilityCard",
+        "MultiAgentStatusItem",
+        "MultiAgentDashboard",
+        "DebuggerEventView",
+        "DebuggerEventsResponse",
+        "TraceGraphNode",
+        "TraceGraphEdge",
+        "TraceGraphResponse",
+        "StateConsistencyIssue",
+        "StateConsistencyReport",
+        "DebugBundleExportRequest",
+        "DebugBundleExportResponse"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.schemas.patching.apply.__init__",
+      "path": "src/aipinho/schemas/patching/apply/__init__.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.patching.apply.hunk_apply_result",
+        "aipinho.schemas.patching.apply.patch_apply_backup",
+        "aipinho.schemas.patching.apply.patch_apply_event",
+        "aipinho.schemas.patching.apply.patch_apply_file_result",
+        "aipinho.schemas.patching.apply.patch_apply_guard",
+        "aipinho.schemas.patching.apply.patch_apply_policy",
+        "aipinho.schemas.patching.apply.patch_apply_request",
+        "aipinho.schemas.patching.apply.patch_apply_result",
+        "aipinho.schemas.patching.apply.patch_apply_run",
+        "aipinho.schemas.patching.apply.patch_apply_status",
+        "aipinho.schemas.patching.apply.patch_apply_trace",
+        "aipinho.schemas.patching.apply.post_apply_validation",
+        "aipinho.schemas.patching.apply.rollback_result"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.pinhoforge_bridge.contracts",
+      "path": "src/aipinho/schemas/pinhoforge_bridge/contracts.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "PinhoForgeBridgeCapability",
+        "PinhoForgeBridgeModule",
+        "PinhoForgeBridgeManifest",
+        "PinhoForgeProviderStatus",
+        "PinhoForgeBridgePolicyDecision",
+        "PinhoForgeBridgeRequest",
+        "PinhoForgeBridgeResponse"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.schemas.project_generation",
+      "path": "src/aipinho/schemas/project_generation.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ProjectGenerationRequest",
+        "ProjectGenerationResult",
+        "ProjectGenerationRouteDecision"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.schemas.projects.project_profile",
+      "path": "src/aipinho/schemas/projects/project_profile.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "WorkspaceProfile",
+        "CommandProfile",
+        "ValidationProfile",
+        "ProjectProfile",
+        "ProjectProfileCandidate",
+        "ProjectProfileCreateRequest",
+        "ProjectProfileUpdateRequest",
+        "ProjectProfileDetectionRequest",
+        "ProjectProfileSelectionRequest",
+        "ProjectProfileValidationResult"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.schemas.promotion",
+      "path": "src/aipinho/schemas/promotion.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "PromotionPlanRequest",
+        "PromotionDiffItem",
+        "RollbackPlan",
+        "PromotionPlan",
+        "PromotionPreview",
+        "PromotionApprovalRequest",
+        "PromotionApprovalResult",
+        "PromotionApplyRequest",
+        "PromotionValidationResult",
+        "PromotionApplyResult",
+        "PromotionReport"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.schemas.realtime.contracts",
+      "path": "src/aipinho/schemas/realtime/contracts.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "RealtimeEvent",
+        "SyncCursor",
+        "SyncChange",
+        "SyncSnapshot",
+        "ClientPresence"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 6
+    },
+    {
+      "module": "aipinho.schemas.runtime.__init__",
+      "path": "src/aipinho/schemas/runtime/__init__.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.runtime.canonical_operation_state",
+        "aipinho.schemas.runtime.phase_dependency_evaluation",
+        "aipinho.schemas.runtime.runtime_contracts_v2",
+        "aipinho.schemas.runtime.runtime_doctor",
+        "aipinho.schemas.runtime.runtime_timeline",
+        "aipinho.schemas.runtime.runtime_truth",
+        "aipinho.schemas.runtime.task_bootstrap",
+        "aipinho.schemas.runtime.task_cancellation",
+        "aipinho.schemas.runtime.task_run",
+        "aipinho.schemas.runtime.task_run_context",
+        "aipinho.schemas.runtime.task_run_event",
+        "aipinho.schemas.runtime.task_run_plan",
+        "aipinho.schemas.runtime.task_run_request",
+        "aipinho.schemas.runtime.task_run_result",
+        "aipinho.schemas.runtime.task_run_step",
+        "aipinho.schemas.runtime.task_run_trace",
+        "aipinho.schemas.runtime.task_runtime_status",
+        "aipinho.schemas.runtime.workflow_runtime",
+        "aipinho.schemas.runtime.workspace_context"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.runtime.continuous_runtime",
+      "path": "src/aipinho/schemas/runtime/continuous_runtime.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ContinuousRuntimeCheckpoint",
+        "ContinuousRuntimeCycle",
+        "ContinuousRuntimeResume"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.schemas.runtime.delegation_contract",
+      "path": "src/aipinho/schemas/runtime/delegation_contract.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "DelegationDecisionResult",
+        "DelegationCreateRequest",
+        "DelegationContract",
+        "DelegationTruthValidation"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 6
+    },
+    {
+      "module": "aipinho.schemas.runtime.engineering_autopilot",
+      "path": "src/aipinho/schemas/runtime/engineering_autopilot.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "MissionCheckpoint",
+        "MissionLifecycle",
+        "MissionApproval",
+        "MissionReview",
+        "MissionResume",
+        "MissionReport",
+        "MissionDashboard",
+        "DecisionLogEntry",
+        "EngineeringMission"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.schemas.runtime.evidence_engine",
+      "path": "src/aipinho/schemas/runtime/evidence_engine.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EvidenceItem",
+        "EvidenceIndex",
+        "EvidenceScore",
+        "EvidenceReasoning",
+        "EvidenceBackedDecision",
+        "DecisionAudit"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.schemas.runtime.phase_dependency_evaluation",
+      "path": "src/aipinho/schemas/runtime/phase_dependency_evaluation.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "RequirementProvenance",
+        "DownstreamPhaseRequirements",
+        "PhaseSemanticDemandCompilation",
+        "PhaseDependencySnapshot",
+        "DependencyRequirementCheck",
+        "LimitationAssessment",
+        "PhaseDependencyEvaluation",
+        "PhaseDependencyAdmission"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 8
+    },
+    {
+      "module": "aipinho.schemas.runtime.phase_outcome",
+      "path": "src/aipinho/schemas/runtime/phase_outcome.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "PhaseOutcome"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.schemas.runtime.task_bootstrap",
+      "path": "src/aipinho/schemas/runtime/task_bootstrap.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "UniversalTask",
+        "TaskBootstrapRequest",
+        "TaskBootstrapResult"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.schemas.runtime.tool_governance",
+      "path": "src/aipinho/schemas/runtime/tool_governance.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolGovernanceCheckpoint",
+        "ToolGovernanceTrail",
+        "ToolGovernanceAudit"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.schemas.runtime.worker_contract",
+      "path": "src/aipinho/schemas/runtime/worker_contract.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "WorkerContract",
+        "WorkerRouteDecision",
+        "WorkerRegistrySnapshot"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.schemas.runtime.workflow_runtime",
+      "path": "src/aipinho/schemas/runtime/workflow_runtime.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "WorkflowCheckpoint",
+        "WorkflowPhaseDependency",
+        "WorkflowPhase",
+        "WorkflowRuntimeInstance",
+        "WorkflowResumePoint"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.runtime.phase_dependency_evaluation"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.schemas.runtime.workspace_context",
+      "path": "src/aipinho/schemas/runtime/workspace_context.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "WorkspaceContext",
+        "RetrievalContext",
+        "ExecutionContext"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.schemas.runtime_doctor",
+      "path": "src/aipinho/schemas/runtime_doctor.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "RuntimeDoctorExpectedContract",
+        "RuntimeDoctorTestRequest",
+        "RuntimeDoctorRawSnapshot",
+        "RuntimeDoctorViolation",
+        "RuntimeDoctorAnalysis",
+        "RuntimeDoctorRootCause",
+        "RuntimeDoctorPatchPlan",
+        "RuntimeDoctorPatchExecution",
+        "RuntimeDoctorDiff",
+        "RuntimeDoctorIteration",
+        "RuntimeDoctorRunResult"
+      ],
+      "functions": [
+        "runtime_doctor_id"
+      ],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.schemas.sandbox",
+      "path": "src/aipinho/schemas/sandbox.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SandboxWorkspace",
+        "SandboxTask",
+        "SandboxPolicyDecision",
+        "SandboxPathResolution",
+        "SandboxFileOperation",
+        "SandboxShellCommand",
+        "SandboxArtifactExport",
+        "SandboxValidationResult",
+        "SandboxStatus",
+        "SandboxFileRequest",
+        "SandboxShellRequest",
+        "SandboxArtifactExportRequest",
+        "SandboxCleanupPreviewRequest",
+        "SandboxCleanupPreview"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 11
+    },
+    {
+      "module": "aipinho.schemas.sandbox_autopilot",
+      "path": "src/aipinho/schemas/sandbox_autopilot.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SandboxAutopilotRequest",
+        "SandboxAutopilotRouteDecision",
+        "SandboxAutopilotResult"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.project_generation"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.schemas.self_healing",
+      "path": "src/aipinho/schemas/self_healing.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SelfHealingAction",
+        "SelfHealingCandidate",
+        "SelfHealingRun",
+        "SelfHealingScanRequest",
+        "SelfHealingTriageRequest",
+        "SelfHealingApplyRequest",
+        "SelfHealingRejectRequest",
+        "SelfHealingStatus",
+        "SelfHealingExportReportRequest"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.schemas.semantics.edge_semantic_demand",
+      "path": "src/aipinho/schemas/semantics/edge_semantic_demand.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "EdgeSemanticDemand",
+        "EdgeSemanticDemandCompilation",
+        "EdgeSemanticDemandCandidate"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.semantics.task_semantic_vocabulary"
+      ],
+      "imported_by_count": 7
+    },
+    {
+      "module": "aipinho.schemas.semantics.offer_demand_compatibility",
+      "path": "src/aipinho/schemas/semantics/offer_demand_compatibility.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "OfferDemandCompatibility",
+        "OfferDemandCompatibilityEvaluation"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 5
+    },
+    {
+      "module": "aipinho.schemas.semantics.semantic_execution_graph",
+      "path": "src/aipinho/schemas/semantics/semantic_execution_graph.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SemanticWorkUnitContract",
+        "SemanticDependencyEdge",
+        "SemanticExecutionGraph",
+        "SemanticWorkUnitCandidate",
+        "SemanticDependencyEdgeCandidate",
+        "SemanticWorkDecompositionCandidate",
+        "SemanticWorkDecompositionResult"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.semantics.task_semantic_vocabulary"
+      ],
+      "imported_by_count": 7
+    },
+    {
+      "module": "aipinho.schemas.semantics.semantic_graph_revision",
+      "path": "src/aipinho/schemas/semantics/semantic_graph_revision.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SemanticGraphRevisionWorkUnitAddition",
+        "SemanticGraphRevisionEdgeAddition",
+        "SemanticGraphRevisionProposal",
+        "SemanticGraphRevision",
+        "SemanticGraphRevisionApplication",
+        "SemanticGraphHistorySnapshot",
+        "SemanticGraphActivationResult"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.semantics.edge_semantic_demand",
+        "aipinho.schemas.semantics.offer_demand_compatibility",
+        "aipinho.schemas.semantics.semantic_execution_graph",
+        "aipinho.schemas.semantics.semantic_nway_topology",
+        "aipinho.schemas.semantics.semantic_offer"
+      ],
+      "imported_by_count": 5
+    },
+    {
+      "module": "aipinho.schemas.semantics.semantic_nway_topology",
+      "path": "src/aipinho/schemas/semantics/semantic_nway_topology.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SemanticTopologyEdgeState",
+        "SemanticTopologyNeighborhood",
+        "SemanticJoinEvaluation",
+        "SemanticJoinEvaluationResult"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 5
+    },
+    {
+      "module": "aipinho.schemas.semantics.semantic_offer",
+      "path": "src/aipinho/schemas/semantics/semantic_offer.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ObservedWorkUnitSemanticOutcome",
+        "SemanticOffer",
+        "SemanticOfferCompilation"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.semantics.task_semantic_vocabulary"
+      ],
+      "imported_by_count": 7
+    },
+    {
+      "module": "aipinho.schemas.semantics.semantic_truth_facet",
+      "path": "src/aipinho/schemas/semantics/semantic_truth_facet.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SemanticTruthFacet"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.schemas.semantics.task_semantic_vocabulary",
+      "path": "src/aipinho/schemas/semantics/task_semantic_vocabulary.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SemanticConceptProvenance",
+        "SemanticConceptDefinition",
+        "TaskSemanticVocabularyBinding",
+        "TaskSemanticVocabulary",
+        "TaskSemanticVocabularyCompilation",
+        "TaskSemanticVocabularyRevisionRequest",
+        "TaskSemanticVocabularyRevisionResult"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 12
+    },
+    {
+      "module": "aipinho.schemas.templates",
+      "path": "src/aipinho/schemas/templates.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TemplateManifest",
+        "TemplateRegistryStatus",
+        "TemplateExecutionRequest",
+        "AssetManifest",
+        "TemplateExecutionResult",
+        "TemplateExecutionBundle"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 5
+    },
+    {
+      "module": "aipinho.schemas.workflows",
+      "path": "src/aipinho/schemas/workflows.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "WorkflowWorkspaceContext",
+        "WorkflowStopCondition",
+        "WorkflowStep",
+        "WorkflowStepResult",
+        "WorkflowPhase",
+        "WorkflowPlan",
+        "WorkflowPlanCreateRequest",
+        "WorkflowRun",
+        "WorkflowRunCreateRequest",
+        "WorkflowCheckpoint",
+        "WorkflowResumeRequest",
+        "WorkflowCancelRequest",
+        "WorkflowRecoveryPlan",
+        "WorkflowReplayRecord",
+        "WorkflowFinalReport",
+        "WorkflowApproval"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.agents.agent_delegation_service",
+      "path": "src/aipinho/services/agents/agent_delegation_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "AgentDelegationService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.agents.contracts",
+        "aipinho.schemas.agents.delegation",
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.agents.agent_delegation_adapters",
+        "aipinho.services.agents.agent_delegation_policy_service",
+        "aipinho.services.agents.agent_delegation_store",
+        "aipinho.services.agents.agent_session_kernel_service",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 6
+    },
+    {
+      "module": "aipinho.services.agents.agent_delegation_store",
+      "path": "src/aipinho/services/agents/agent_delegation_store.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "AgentDelegationStore"
+      ],
+      "functions": [
+        "_dump"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.delegation",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.services.agents.agent_memory_gateway_service",
+      "path": "src/aipinho/services/agents/agent_memory_gateway_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "AgentMemoryGatewayService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.agents.contracts",
+        "aipinho.schemas.agents.memory",
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.agents.agent_memory_gateway_store",
+        "aipinho.services.agents.agent_memory_policy_service",
+        "aipinho.services.agents.agent_session_kernel_service",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.services.agents.agent_memory_gateway_store",
+      "path": "src/aipinho/services/agents/agent_memory_gateway_store.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "AgentMemoryGatewayStore"
+      ],
+      "functions": [
+        "_dump",
+        "_read_json",
+        "_write_json"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.memory",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.agents.agent_memory_policy_service",
+      "path": "src/aipinho/services/agents/agent_memory_policy_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "AgentMemoryPolicyService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.memory",
+        "aipinho.services.events.event_core",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.agents.agent_session_kernel_service",
+      "path": "src/aipinho/services/agents/agent_session_kernel_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "AgentSessionKernelService"
+      ],
+      "functions": [
+        "_public_message"
+      ],
+      "imports": [
+        "aipinho.schemas.agents.contracts",
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.agents.agent_event_bus",
+        "aipinho.services.agents.agent_profile_registry_service",
+        "aipinho.services.agents.agent_session_store",
+        "aipinho.services.agents.agent_timeline_mapper",
+        "aipinho.services.codex_agent.codex_agent_store",
+        "aipinho.services.events.event_core",
+        "aipinho.services.gemini_executor.gemini_executor_session_store",
+        "aipinho.services.interaction.interaction_core"
+      ],
+      "imported_by_count": 17
+    },
+    {
+      "module": "aipinho.services.agents.agent_session_store",
+      "path": "src/aipinho/services/agents/agent_session_store.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "AgentSessionStore"
+      ],
+      "functions": [
+        "_dump_model",
+        "_json_read",
+        "_json_write"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.contracts",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 7
+    },
+    {
+      "module": "aipinho.services.agents.agent_timeline_mapper",
+      "path": "src/aipinho/services/agents/agent_timeline_mapper.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "AgentEventTimelineMapper"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.agents.contracts",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.agents.agent_tool_gateway_service",
+      "path": "src/aipinho/services/agents/agent_tool_gateway_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ShellRunner",
+        "SubprocessShellRunner",
+        "AgentToolGatewayService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.agents.contracts",
+        "aipinho.schemas.agents.tool_gateway",
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.agents.agent_event_bus",
+        "aipinho.services.agents.agent_session_kernel_service",
+        "aipinho.services.agents.agent_session_store",
+        "aipinho.services.agents.agent_tool_invocation_store",
+        "aipinho.services.agents.agent_tool_policy_service",
+        "aipinho.services.agents.agent_tool_registry_service",
+        "aipinho.services.agents.agent_tool_workspace_resolver",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 19
+    },
+    {
+      "module": "aipinho.services.agents.canonical_prompt_builder_service",
+      "path": "src/aipinho/services/agents/canonical_prompt_builder_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "CanonicalPromptBuilderService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.agents.hybrid_execution",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.agents.delegation_log_summary_service",
+      "path": "src/aipinho/services/agents/delegation_log_summary_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "DelegationLogSummaryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.agents.hybrid_execution",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.agents.multi_agent_observability_service",
+      "path": "src/aipinho/services/agents/multi_agent_observability_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "MultiAgentObservabilityService"
+      ],
+      "functions": [
+        "_dump"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.contracts",
+        "aipinho.schemas.artifacts.artifact_interaction_contracts",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.multi_agent_observability",
+        "aipinho.services.agents.agent_delegation_store",
+        "aipinho.services.agents.agent_profile_registry_service",
+        "aipinho.services.agents.agent_session_store",
+        "aipinho.services.agents.agent_tool_invocation_store",
+        "aipinho.services.agents.agent_tool_registry_service",
+        "aipinho.services.agents.multi_agent_policy_audit_store",
+        "aipinho.services.artifacts.artifact_interaction_core",
+        "aipinho.services.events.event_core",
+        "aipinho.services.supervisor.backend_control_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 8
+    },
+    {
+      "module": "aipinho.services.agents.multi_agent_policy_kernel_service",
+      "path": "src/aipinho/services/agents/multi_agent_policy_kernel_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "MultiAgentPolicyKernelService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.policy_kernel",
+        "aipinho.schemas.agents.tool_gateway",
+        "aipinho.services.agents.multi_agent_policy_audit_store",
+        "aipinho.services.events.event_core",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.agents.workspace_lock_service",
+      "path": "src/aipinho/services/agents/workspace_lock_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "WorkspaceLockStore",
+        "WorkspaceLockService"
+      ],
+      "functions": [
+        "_dump",
+        "_parse_lock",
+        "_canonical_path",
+        "_path_overlaps"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.ownership",
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.events.event_core",
+        "aipinho.utils.safe_paths"
+      ],
+      "imported_by_count": 5
+    },
+    {
+      "module": "aipinho.services.approvals.approval_service",
+      "path": "src/aipinho/services/approvals/approval_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ApprovalService"
+      ],
+      "functions": [
+        "_dump_model",
+        "snapshot_hash"
+      ],
+      "imports": [
+        "aipinho.schemas.approvals.approval_decision",
+        "aipinho.schemas.approvals.approval_event",
+        "aipinho.schemas.approvals.approval_request",
+        "aipinho.schemas.approvals.universal_approver",
+        "aipinho.schemas.common.actor",
+        "aipinho.services.approvals.approval_lifecycle_service",
+        "aipinho.services.approvals.approval_policy",
+        "aipinho.services.approvals.approval_store",
+        "aipinho.services.approvals.approval_trace",
+        "aipinho.services.orchestration.executable_plan_service",
+        "aipinho.services.orchestration.task_draft_store",
+        "aipinho.services.orchestration.task_preview_service",
+        "aipinho.services.session.session_store"
+      ],
+      "imported_by_count": 32
+    },
+    {
+      "module": "aipinho.services.approvals.approval_store",
+      "path": "src/aipinho/services/approvals/approval_store.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ApprovalStore"
+      ],
+      "functions": [
+        "_dump_model",
+        "_parse_request",
+        "_parse_event"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.approvals.approval_event",
+        "aipinho.schemas.approvals.approval_request",
+        "aipinho.utils.safe_paths"
+      ],
+      "imported_by_count": 5
+    },
+    {
+      "module": "aipinho.services.approvals.approval_task_continuation_service",
+      "path": "src/aipinho/services/approvals/approval_task_continuation_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ApprovalTaskContinuationService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.approvals.approval_request",
+        "aipinho.schemas.common.actor",
+        "aipinho.schemas.runtime.task_cancellation",
+        "aipinho.services.approvals.approval_service",
+        "aipinho.services.orchestration.executable_plan_service",
+        "aipinho.services.runtime.task_run_cancellation_service",
+        "aipinho.services.runtime.task_run_event_service",
+        "aipinho.services.runtime.task_run_lifecycle_service",
+        "aipinho.services.runtime.task_run_store",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.services.artifacts.artifact_approval_bridge",
+      "path": "src/aipinho/services/artifacts/artifact_approval_bridge.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ArtifactApprovalBridge"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.approvals.approval_event",
+        "aipinho.schemas.approvals.approval_policy_snapshot",
+        "aipinho.schemas.approvals.approval_request",
+        "aipinho.schemas.common.actor",
+        "aipinho.services.approvals.approval_store",
+        "aipinho.services.artifacts.artifact_preview_store",
+        "aipinho.services.artifacts.artifact_trace_service",
+        "aipinho.services.session.session_store"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.artifacts.artifact_generator_service",
+      "path": "src/aipinho/services/artifacts/artifact_generator_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ArtifactGeneratorService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.artifacts.artifact_generation",
+        "aipinho.schemas.artifacts.artifact_interaction_contracts",
+        "aipinho.services.artifacts.artifact_interaction_core",
+        "aipinho.services.artifacts.universal_artifact_registry_service",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.artifacts.artifact_interaction_core",
+      "path": "src/aipinho/services/artifacts/artifact_interaction_core.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ArtifactRegistryRepository",
+        "ArtifactUploadService",
+        "ArtifactDownloadService",
+        "ArtifactZipService",
+        "ArtifactMessageLinkService",
+        "ArtifactManifestService",
+        "ArtifactInteractionStatusService"
+      ],
+      "functions": [
+        "_dump_model",
+        "_safe_filename"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.artifacts.artifact_interaction_contracts",
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 23
+    },
+    {
+      "module": "aipinho.services.artifacts.artifact_library_service",
+      "path": "src/aipinho/services/artifacts/artifact_library_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ArtifactLibraryService"
+      ],
+      "functions": [
+        "_json_read",
+        "_json_write"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.tool_gateway",
+        "aipinho.schemas.artifacts.artifact_interaction_contracts",
+        "aipinho.schemas.artifacts.artifact_library",
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.agents.agent_tool_gateway_service",
+        "aipinho.services.agents.agent_tool_invocation_store",
+        "aipinho.services.artifacts.artifact_interaction_core",
+        "aipinho.services.artifacts.artifact_secret_scanner",
+        "aipinho.services.events.event_core",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.artifacts.artifact_path_archive_service",
+      "path": "src/aipinho/services/artifacts/artifact_path_archive_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ArtifactPathArchiveService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.artifacts.artifact_interaction_contracts",
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.artifacts.artifact_interaction_core",
+        "aipinho.services.events.event_core",
+        "aipinho.services.policy_kernel.workspace_policy_service",
+        "aipinho.services.security.secret_guard_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.artifacts.artifact_write_execution_service",
+      "path": "src/aipinho/services/artifacts/artifact_write_execution_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ArtifactWriteExecutionService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.artifacts.artifact_write_policy",
+        "aipinho.schemas.artifacts.artifact_write_request",
+        "aipinho.schemas.artifacts.artifact_write_result",
+        "aipinho.schemas.artifacts.artifact_write_run",
+        "aipinho.services.approvals.approval_store",
+        "aipinho.services.artifacts.artifact_atomic_write_service",
+        "aipinho.services.artifacts.artifact_backup_service",
+        "aipinho.services.artifacts.artifact_path_guard_service",
+        "aipinho.services.artifacts.artifact_post_write_validator",
+        "aipinho.services.artifacts.artifact_preview_store",
+        "aipinho.services.artifacts.artifact_target_policy_service",
+        "aipinho.services.artifacts.artifact_write_event_service",
+        "aipinho.services.artifacts.artifact_write_guard_service",
+        "aipinho.services.artifacts.artifact_write_lifecycle_service",
+        "aipinho.services.artifacts.artifact_write_store",
+        "aipinho.services.session.session_store",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.artifacts.artifact_write_store",
+      "path": "src/aipinho/services/artifacts/artifact_write_store.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ArtifactWriteStore"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.artifacts.artifact_write_event",
+        "aipinho.schemas.artifacts.artifact_write_result",
+        "aipinho.schemas.artifacts.artifact_write_run",
+        "aipinho.services.artifacts.artifact_secret_scanner",
+        "aipinho.utils.safe_paths",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.artifacts.universal_artifact_registry_service",
+      "path": "src/aipinho/services/artifacts/universal_artifact_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "UniversalArtifactRegistryService"
+      ],
+      "functions": [
+        "_dump_model"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.tool_gateway",
+        "aipinho.schemas.artifacts.artifact_interaction_contracts",
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.agents.agent_tool_invocation_store",
+        "aipinho.services.artifacts.artifact_interaction_core",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 5
+    },
+    {
+      "module": "aipinho.services.autopilot.workflow_v2_service",
+      "path": "src/aipinho/services/autopilot/workflow_v2_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "WorkflowStore",
+        "WorkflowStateMachine",
+        "WorkflowCheckpointManager",
+        "WorkflowRecoveryManager",
+        "WorkflowPlanner",
+        "WorkflowExecutor"
+      ],
+      "functions": [
+        "_dump",
+        "_read_json",
+        "_write_json"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.contracts",
+        "aipinho.schemas.agents.tool_gateway",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.memory.learning",
+        "aipinho.schemas.sandbox_autopilot",
+        "aipinho.schemas.skills.skill_packs",
+        "aipinho.schemas.workflows",
+        "aipinho.services.agents.agent_session_kernel_service",
+        "aipinho.services.agents.agent_tool_gateway_service",
+        "aipinho.services.events.event_core",
+        "aipinho.services.memory.learning_memory_service",
+        "aipinho.services.pinhoforge_bridge.pinhoforge_workflow_provider_registry",
+        "aipinho.services.sandbox.sandbox_autopilot_service",
+        "aipinho.services.skills.skill_pack_registry_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.chat.chat_attachment_context_service",
+      "path": "src/aipinho/services/chat/chat_attachment_context_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ChatAttachmentContext",
+        "ChatAttachmentContextService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.services.artifacts.artifact_interaction_core",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.codex_agent.codex_agent_service",
+      "path": "src/aipinho/services/codex_agent/codex_agent_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "CodexAgentService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.agents.contracts",
+        "aipinho.schemas.agents.memory",
+        "aipinho.schemas.agents.ownership",
+        "aipinho.schemas.agents.tool_gateway",
+        "aipinho.schemas.artifacts.artifact_interaction_contracts",
+        "aipinho.schemas.codex_agent",
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.agents.agent_local_action_planner",
+        "aipinho.services.agents.agent_memory_gateway_service",
+        "aipinho.services.agents.agent_session_kernel_service",
+        "aipinho.services.agents.agent_tool_gateway_service",
+        "aipinho.services.agents.hybrid_execution_policy_service",
+        "aipinho.services.agents.workspace_lock_service",
+        "aipinho.services.artifacts.artifact_interaction_core",
+        "aipinho.services.codex_agent.codex_agent_config_service",
+        "aipinho.services.codex_agent.codex_agent_policy_service",
+        "aipinho.services.codex_agent.codex_agent_store",
+        "aipinho.services.codex_agent.codex_cli_adapter",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.codex_agent.codex_agent_store",
+      "path": "src/aipinho/services/codex_agent/codex_agent_store.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "CodexAgentStore"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.codex_agent",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.codex_agent.codex_governed_contract_store",
+      "path": "src/aipinho/services/codex_agent/codex_governed_contract_store.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "CodexGovernedContractStore"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.codex_governed_execution",
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.codex_agent.codex_governed_execution_service",
+      "path": "src/aipinho/services/codex_agent/codex_governed_execution_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "CodexGovernedExecutionService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.approvals.approval_policy_snapshot",
+        "aipinho.schemas.approvals.approval_request",
+        "aipinho.schemas.codex_agent",
+        "aipinho.schemas.codex_governed_execution",
+        "aipinho.schemas.common.actor",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.tools.tool_execution",
+        "aipinho.services.approvals.approval_service",
+        "aipinho.services.codex_agent.codex_agent_config_service",
+        "aipinho.services.codex_agent.codex_agent_store",
+        "aipinho.services.codex_agent.codex_cli_adapter",
+        "aipinho.services.codex_agent.codex_governed_contract_store",
+        "aipinho.services.events.event_core",
+        "aipinho.services.patching.apply.atomic_patch_write_service",
+        "aipinho.services.patching.apply.patch_apply_backup_service",
+        "aipinho.services.patching.apply.patch_apply_hashing",
+        "aipinho.services.policy_kernel.workspace_role_contract_service",
+        "aipinho.services.security.secret_guard_service",
+        "aipinho.services.tools.governed_tool_execution_service",
+        "aipinho.services.tools.write_capability_envelope_service",
+        "aipinho.utils.safe_paths",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.context.context_core",
+      "path": "src/aipinho/services/context/context_core.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ContextPurposePolicyService",
+        "ContextLayerResolver",
+        "ContextRequestBuilder",
+        "ContextScopeResolver",
+        "ContextCandidateCollector",
+        "ContextFreshnessService",
+        "ContextSensitivityFilter",
+        "ContextPromptInjectionGuard",
+        "ContextSourceTrustService",
+        "ContextEvidenceValidator",
+        "CitationMapBuilder",
+        "ChunkHashService",
+        "ChunkDedupeService",
+        "ContextBudgetManager",
+        "ContextSourceAdmissionService",
+        "ContextAdmissionServiceV2",
+        "ContextBundleRepository",
+        "ContextTraceRepository",
+        "ContextCacheRepository",
+        "ContextCacheKeyBuilder",
+        "ContextCacheService",
+        "ContextBundleBuilder",
+        "ContextBundleStore",
+        "ContextExplainService",
+        "ContextTraceService",
+        "ContextAuditService",
+        "SmartChunker",
+        "ChunkClassifier",
+        "ContextCompressionService",
+        "ContextConflictDetector",
+        "ContextRawPolicyService",
+        "ContextKernelService",
+        "ChatContextAdapter",
+        "TaskContextAdapter",
+        "PipelineContextAdapter",
+        "MemoryContextAdapter",
+        "RAGContextAdapter",
+        "ArtifactContextAdapter",
+        "DebuggerContextAdapter",
+        "VisionOCRContextAdapter",
+        "EventContextAdapter"
+      ],
+      "functions": [
+        "dump",
+        "h",
+        "read_json",
+        "write_json",
+        "source_key"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.context.contracts",
+        "aipinho.services.events.event_core",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 49
+    },
+    {
+      "module": "aipinho.services.debugger.debug_trace_service",
+      "path": "src/aipinho/services/debugger/debug_trace_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "DebugTraceService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.debugger.debug_trace_event",
+        "aipinho.services.debugger.debug_sanitizer"
+      ],
+      "imported_by_count": 8
+    },
+    {
+      "module": "aipinho.services.debugger.multi_island_trace_service",
+      "path": "src/aipinho/services/debugger/multi_island_trace_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "MultiIslandTraceService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.artifacts.artifact_generation",
+        "aipinho.schemas.debugger.multi_island_trace",
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.agents.agent_delegation_store",
+        "aipinho.services.agents.agent_session_store",
+        "aipinho.services.agents.agent_tool_invocation_store",
+        "aipinho.services.agents.workspace_lock_service",
+        "aipinho.services.artifacts.artifact_generator_service",
+        "aipinho.services.artifacts.artifact_runtime_service",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.external_collaboration_service",
+      "path": "src/aipinho/services/external_collaboration_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ExternalCollaborationService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.external_collaboration",
+        "aipinho.schemas.runtime.delegation_contract",
+        "aipinho.schemas.runtime.task_run_request",
+        "aipinho.services.external_adapter_registry",
+        "aipinho.services.external_collaboration_store",
+        "aipinho.services.runtime.delegation_decision_engine",
+        "aipinho.services.runtime.delegation_polling_service",
+        "aipinho.services.runtime.delegation_truth_validator",
+        "aipinho.services.runtime.task_runtime_service",
+        "aipinho.services.runtime.universal_task_session_service"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.gemini_executor.gemini_executor_service",
+      "path": "src/aipinho/services/gemini_executor/gemini_executor_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "GeminiExecutorService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.contracts",
+        "aipinho.schemas.agents.delegation",
+        "aipinho.schemas.agents.memory",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.gemini_executor",
+        "aipinho.services.agents.agent_delegation_service",
+        "aipinho.services.agents.agent_local_action_planner",
+        "aipinho.services.agents.agent_memory_gateway_service",
+        "aipinho.services.agents.agent_request_enrichment_service",
+        "aipinho.services.agents.agent_session_kernel_service",
+        "aipinho.services.agents.agent_tool_gateway_service",
+        "aipinho.services.events.event_core",
+        "aipinho.services.gemini_executor.gemini_executor_client",
+        "aipinho.services.gemini_executor.gemini_executor_config_service",
+        "aipinho.services.gemini_executor.gemini_executor_policy_service",
+        "aipinho.services.gemini_executor.gemini_executor_session_store",
+        "aipinho.services.policy_kernel.capability_gate_service"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.gemini_executor.gemini_executor_session_store",
+      "path": "src/aipinho/services/gemini_executor/gemini_executor_session_store.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "GeminiExecutorSessionStore"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.gemini_executor"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.interaction.interaction_core",
+      "path": "src/aipinho/services/interaction/interaction_core.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ResponseChunkService",
+        "ChatSessionService",
+        "ChatMessageService",
+        "ChatTimelineService",
+        "SanitizedRawService",
+        "CopyActionService",
+        "SpeakerTruthService",
+        "SpeakerMessageService",
+        "FeedbackService",
+        "TaskSyncService",
+        "PipelineSyncService",
+        "InteractionCockpitStatusService"
+      ],
+      "functions": [
+        "_dump_model",
+        "_json_read",
+        "_json_write"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.interaction.contracts",
+        "aipinho.services.events.event_core",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 30
+    },
+    {
+      "module": "aipinho.services.interaction.raw_copy_service",
+      "path": "src/aipinho/services/interaction/raw_copy_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "RawCopyService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.interaction.raw_copy_result",
+        "aipinho.services.events.event_core",
+        "aipinho.services.interaction.raw_viewer_service"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.interaction.raw_viewer_service",
+      "path": "src/aipinho/services/interaction/raw_viewer_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "RawViewerService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.interaction.raw_viewer_result",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.lucio_agent.lucio_agent_service",
+      "path": "src/aipinho/services/lucio_agent/lucio_agent_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "LucioAgentService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.agents.contracts",
+        "aipinho.schemas.agents.delegation",
+        "aipinho.schemas.agents.memory",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.lucio_agent",
+        "aipinho.services.agents.agent_delegation_service",
+        "aipinho.services.agents.agent_local_action_planner",
+        "aipinho.services.agents.agent_memory_gateway_service",
+        "aipinho.services.agents.agent_request_enrichment_service",
+        "aipinho.services.agents.agent_session_kernel_service",
+        "aipinho.services.agents.agent_tool_gateway_service",
+        "aipinho.services.events.event_core",
+        "aipinho.services.lucio_agent.lucio_agent_config_service",
+        "aipinho.services.lucio_agent.lucio_multimodal_service",
+        "aipinho.services.lucio_agent.lucio_openai_client",
+        "aipinho.services.lucio_agent.lucio_route_policy_service",
+        "aipinho.services.lucio_agent.lucio_safe_fallback_service"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.lucio_agent.lucio_multimodal_service",
+      "path": "src/aipinho/services/lucio_agent/lucio_multimodal_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "LucioMultimodalContext",
+        "LucioMultimodalService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.lucio_agent",
+        "aipinho.schemas.vision.contracts",
+        "aipinho.services.agents.agent_tool_gateway_service",
+        "aipinho.services.events.event_core",
+        "aipinho.services.vision.vision_analysis_service"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.maintenance.maintenance_core",
+      "path": "src/aipinho/services/maintenance/maintenance_core.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "MaintenanceRequestService",
+        "MaintenanceScopeResolver",
+        "MaintenanceAuditService",
+        "MaintenanceEventEmitter",
+        "MaintenanceTraceService",
+        "MaintenanceRunService",
+        "InvariantLoader",
+        "InvariantRegistryService",
+        "InvariantViolationClassifier",
+        "InvariantResultBuilder",
+        "InvariantChecker",
+        "DiagnosisEvidenceCollector",
+        "AnomalyDetector",
+        "ConfidenceEstimator",
+        "RootCauseAnalyzer",
+        "DiagnosisReportBuilder",
+        "DiagnosisService",
+        "RepairRiskService",
+        "RepairValidationPlanService",
+        "RepairPlannerService",
+        "RepairProposalService",
+        "ProposalLookup",
+        "MaintenancePatchPreviewService",
+        "MaintenanceConfigChangePreviewService",
+        "MaintenanceValidationRecommendationService",
+        "MaintenanceRollbackPlanner",
+        "RepairHandoffService",
+        "MaintenanceLessonCandidateService",
+        "RepairRejectionService",
+        "MaintenancePlaneService"
+      ],
+      "functions": [
+        "persist_preview"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.repositories.maintenance.repositories",
+        "aipinho.schemas.context.contracts",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.maintenance.contracts",
+        "aipinho.services.context.context_core",
+        "aipinho.services.events.event_core",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 36
+    },
+    {
+      "module": "aipinho.services.maintenance.signal_collectors.collectors",
+      "path": "src/aipinho/services/maintenance/signal_collectors/collectors.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "StructuredSignalCollector",
+        "EventSignalCollector",
+        "DebuggerSignalCollector",
+        "ContextSignalCollector",
+        "SkillSignalCollector",
+        "PolicySignalCollector",
+        "RagSignalCollector",
+        "SpeakerSignalCollector",
+        "ModelSignalCollector",
+        "SupervisorSignalCollector"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.maintenance.contracts",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 10
+    },
+    {
+      "module": "aipinho.services.memory.learning_memory_service",
+      "path": "src/aipinho/services/memory/learning_memory_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "LearningMemoryService"
+      ],
+      "functions": [
+        "_dump",
+        "_read_json",
+        "_write_json"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.memory.learning",
+        "aipinho.services.events.event_core",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.orchestration.task_contract_draft_service",
+      "path": "src/aipinho/services/orchestration/task_contract_draft_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TaskContractDraftService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.intent.prompt_analysis_request",
+        "aipinho.schemas.tasks.task_draft_event",
+        "aipinho.services.governance.policy.effective_policy_decision_service",
+        "aipinho.services.orchestration.task_contract_builder",
+        "aipinho.services.orchestration.task_draft_policy_service",
+        "aipinho.services.orchestration.task_draft_store",
+        "aipinho.services.prompt_intelligence.prompt_intelligence_service",
+        "aipinho.services.session.session_store"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.services.orchestration.task_draft_store",
+      "path": "src/aipinho/services/orchestration/task_draft_store.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TaskDraftStore"
+      ],
+      "functions": [
+        "_dump_model",
+        "_parse_draft",
+        "_parse_event"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.tasks.task_contract_draft",
+        "aipinho.schemas.tasks.task_draft_event",
+        "aipinho.utils.safe_paths"
+      ],
+      "imported_by_count": 10
+    },
+    {
+      "module": "aipinho.services.orchestration.task_preview_service",
+      "path": "src/aipinho/services/orchestration/task_preview_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TaskPreviewService"
+      ],
+      "functions": [
+        "_dump_model"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.approvals.approval_policy_snapshot",
+        "aipinho.schemas.tasks.task_contract_draft",
+        "aipinho.schemas.tasks.task_preview",
+        "aipinho.schemas.tasks.task_preview_event",
+        "aipinho.services.orchestration.executable_plan_service",
+        "aipinho.services.orchestration.task_draft_store",
+        "aipinho.services.orchestration.task_lifecycle_service",
+        "aipinho.services.orchestration.task_preview_store",
+        "aipinho.services.session.session_store",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 11
+    },
+    {
+      "module": "aipinho.services.orchestration.task_preview_store",
+      "path": "src/aipinho/services/orchestration/task_preview_store.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TaskPreviewStore"
+      ],
+      "functions": [
+        "_dump_model",
+        "_parse_preview",
+        "_parse_event"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.tasks.task_preview",
+        "aipinho.schemas.tasks.task_preview_event",
+        "aipinho.utils.safe_paths"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.patching.apply.patch_apply_approval_bridge",
+      "path": "src/aipinho/services/patching/apply/patch_apply_approval_bridge.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "PatchApplyApprovalBridge"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.approvals.approval_event",
+        "aipinho.schemas.approvals.approval_policy_snapshot",
+        "aipinho.schemas.approvals.approval_request",
+        "aipinho.schemas.common.actor",
+        "aipinho.services.approvals.approval_store",
+        "aipinho.services.patching.apply.patch_apply_hashing",
+        "aipinho.services.patching.patch_plan_store",
+        "aipinho.services.patching.quality.patch_quality_gate_service",
+        "aipinho.services.session.session_store"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.patching.apply.patch_apply_service",
+      "path": "src/aipinho/services/patching/apply/patch_apply_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "PatchApplyService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.patching.apply.patch_apply_request",
+        "aipinho.schemas.patching.apply.patch_apply_result",
+        "aipinho.schemas.patching.apply.patch_apply_run",
+        "aipinho.schemas.patching.apply.patch_apply_status",
+        "aipinho.services.approvals.approval_service",
+        "aipinho.services.patching.apply.patch_apply_approval_bridge",
+        "aipinho.services.patching.apply.patch_apply_audit_service",
+        "aipinho.services.patching.apply.patch_apply_engine",
+        "aipinho.services.patching.apply.patch_apply_event_service",
+        "aipinho.services.patching.apply.patch_apply_guard_service",
+        "aipinho.services.patching.apply.patch_apply_lifecycle_service",
+        "aipinho.services.patching.apply.patch_apply_store",
+        "aipinho.services.patching.apply.patch_apply_trace_service",
+        "aipinho.services.patching.apply.patch_rollback_service",
+        "aipinho.services.patching.apply.post_apply_validator",
+        "aipinho.services.patching.apply.workspace_mutation_tracker",
+        "aipinho.services.patching.patch_plan_store",
+        "aipinho.services.patching.quality.patch_quality_gate_service",
+        "aipinho.services.session.session_store",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 7
+    },
+    {
+      "module": "aipinho.services.patching.apply.patch_apply_store",
+      "path": "src/aipinho/services/patching/apply/patch_apply_store.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "PatchApplyStore"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.patching.apply.patch_apply_event",
+        "aipinho.schemas.patching.apply.patch_apply_result",
+        "aipinho.schemas.patching.apply.patch_apply_run",
+        "aipinho.schemas.patching.apply.patch_apply_trace",
+        "aipinho.services.security.secret_guard_service",
+        "aipinho.utils.safe_paths",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.pinhoforge_bridge.pinhoforge_manifest_reader",
+      "path": "src/aipinho/services/pinhoforge_bridge/pinhoforge_manifest_reader.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "PinhoForgeManifestReader"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.pinhoforge_bridge",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.projects.project_profile_registry_service",
+      "path": "src/aipinho/services/projects/project_profile_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ProjectProfileRegistryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.projects",
+        "aipinho.services.projects.project_profile_detector",
+        "aipinho.services.projects.project_profile_secret_scanner"
+      ],
+      "imported_by_count": 6
+    },
+    {
+      "module": "aipinho.services.public_runtime_api_service",
+      "path": "src/aipinho/services/public_runtime_api_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ApiVersionManager",
+        "PublicContractRegistryService",
+        "ApiCompatibilityLayer",
+        "PublicRuntimeExecutionBridge",
+        "PublicRuntimeAPI"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.approvals.approval_policy_snapshot",
+        "aipinho.schemas.approvals.approval_request",
+        "aipinho.schemas.common.actor",
+        "aipinho.schemas.external_gateway",
+        "aipinho.schemas.public_runtime_api",
+        "aipinho.schemas.runtime.task_run_request",
+        "aipinho.schemas.telemetry.event",
+        "aipinho.services.approvals.approval_service",
+        "aipinho.services.external_gateway_service",
+        "aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_service",
+        "aipinho.services.runtime.runtime_kernel_service",
+        "aipinho.services.runtime.task_runtime_service",
+        "aipinho.services.telemetry.runtime_telemetry_service"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.realtime.realtime_core",
+      "path": "src/aipinho/services/realtime/realtime_core.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "RealtimeEventStore",
+        "RealtimeEventBus",
+        "SyncSnapshotService",
+        "SyncCursorService",
+        "ClientPresenceService",
+        "SSEStreamService"
+      ],
+      "functions": [
+        "_dump_model"
+      ],
+      "imports": [
+        "aipinho.schemas.realtime.contracts",
+        "aipinho.services.events.event_core",
+        "aipinho.services.interaction.interaction_core"
+      ],
+      "imported_by_count": 11
+    },
+    {
+      "module": "aipinho.services.regression.operational_trust_candidate_service",
+      "path": "src/aipinho/services/regression/operational_trust_candidate_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "OperationalTrustCandidateService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.regression.contracts",
+        "aipinho.services.events.event_core",
+        "aipinho.services.regression.regression_core"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.regression.regression_core",
+      "path": "src/aipinho/services/regression/regression_core.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "RegressionEventEmitter",
+        "GoldenExpectationService",
+        "ExpectationEvaluator",
+        "RegressionComparator",
+        "RegressionReportBuilder",
+        "RegressionCaseService",
+        "RegressionCandidateService",
+        "RegressionPromotionService",
+        "RegressionSuiteService",
+        "RegressionRunnerService",
+        "RegressionHarnessService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.repositories.regression.repositories",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.regression.contracts",
+        "aipinho.services.events.event_core",
+        "aipinho.services.replay.replay_core",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 31
+    },
+    {
+      "module": "aipinho.services.replay.collectors.collectors",
+      "path": "src/aipinho/services/replay/collectors/collectors.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SnapshotCollector"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 17
+    },
+    {
+      "module": "aipinho.services.replay.replay_core",
+      "path": "src/aipinho/services/replay/replay_core.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ReplayAuditService",
+        "ReplayEventEmitter",
+        "ReplaySnapshotSanitizer",
+        "ReplaySnapshotBuilder",
+        "ReplayStoreService",
+        "ReplayTraceService",
+        "ReplayCaptureService",
+        "ReplayCaseService",
+        "ReplayDiffService",
+        "ReplayRunnerService",
+        "ReplayExportService",
+        "ReplayImportService",
+        "ReplayHarnessService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.repositories.replay.repositories",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.replay.contracts",
+        "aipinho.services.events.event_core",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 15
+    },
+    {
+      "module": "aipinho.services.runtime.delegation_polling_service",
+      "path": "src/aipinho/services/runtime/delegation_polling_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "DelegationPollingService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.runtime.delegation_contract",
+        "aipinho.schemas.runtime.task_run_event",
+        "aipinho.services.external_collaboration_store",
+        "aipinho.services.runtime.task_run_store",
+        "aipinho.services.runtime.universal_task_session_service"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.runtime.runtime_state_hygiene_service",
+      "path": "src/aipinho/services/runtime/runtime_state_hygiene_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "RuntimeStateHygieneService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.contracts",
+        "aipinho.schemas.agents.delegation",
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.agents.agent_delegation_store",
+        "aipinho.services.agents.agent_event_bus",
+        "aipinho.services.agents.agent_session_kernel_service",
+        "aipinho.services.agents.agent_session_store"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.runtime.runtime_timeline_service",
+      "path": "src/aipinho/services/runtime/runtime_timeline_service.py",
+      "package": "services",
+      "classification": "CANONICAL",
+      "classes": [
+        "RuntimeTimelineService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.runtime.runtime_timeline",
+        "aipinho.schemas.runtime.task_run",
+        "aipinho.schemas.runtime.task_run_event",
+        "aipinho.schemas.runtime.task_run_result",
+        "aipinho.services.artifacts.artifact_runtime_service",
+        "aipinho.services.runtime.task_run_store"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.services.runtime.supervised_execution_loop",
+      "path": "src/aipinho/services/runtime/supervised_execution_loop.py",
+      "package": "services",
+      "classification": "CANONICAL",
+      "classes": [
+        "SupervisedExecutionLoop"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.services.orchestration.task_completion_resolver",
+        "aipinho.services.runtime.execution_graph_service",
+        "aipinho.services.runtime.task_block_cause_service",
+        "aipinho.services.runtime.task_run_audit_service",
+        "aipinho.services.runtime.task_run_context_service",
+        "aipinho.services.runtime.task_run_event_service",
+        "aipinho.services.runtime.task_run_executor",
+        "aipinho.services.runtime.task_run_guard",
+        "aipinho.services.runtime.task_run_lifecycle_service",
+        "aipinho.services.runtime.task_run_result_service",
+        "aipinho.services.runtime.task_run_store",
+        "aipinho.services.runtime.task_run_trace_service",
+        "aipinho.services.runtime.workflow_runtime_service",
+        "aipinho.services.runtime.workspace_context_service",
+        "aipinho.services.semantics.semantic_result_projection_service",
+        "aipinho.services.session.session_store"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.runtime.task_run_cancellation_service",
+      "path": "src/aipinho/services/runtime/task_run_cancellation_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TaskRunCancellationService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.runtime.task_cancellation",
+        "aipinho.services.runtime.task_run_event_service",
+        "aipinho.services.runtime.task_run_lifecycle_service",
+        "aipinho.services.runtime.task_run_store"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.runtime.task_run_chat_result_publisher_service",
+      "path": "src/aipinho/services/runtime/task_run_chat_result_publisher_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TaskRunChatResultPublisherService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.chat.chat_response",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.interaction.contracts",
+        "aipinho.schemas.runtime.task_run",
+        "aipinho.schemas.runtime.task_run_result",
+        "aipinho.services.chat.chat_result_index_service",
+        "aipinho.services.events.event_core",
+        "aipinho.services.interaction.interaction_core"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.runtime.task_run_store",
+      "path": "src/aipinho/services/runtime/task_run_store.py",
+      "package": "services",
+      "classification": "CANONICAL",
+      "classes": [
+        "TaskRunStore"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.runtime.task_completion",
+        "aipinho.schemas.runtime.task_run",
+        "aipinho.schemas.runtime.task_run_event",
+        "aipinho.schemas.runtime.task_run_result",
+        "aipinho.schemas.runtime.task_run_trace",
+        "aipinho.services.runtime.phase_semantic_result_finalizer",
+        "aipinho.services.runtime.runtime_payload_ref_store",
+        "aipinho.utils.safe_paths",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 21
+    },
+    {
+      "module": "aipinho.services.runtime.task_runtime_service",
+      "path": "src/aipinho/services/runtime/task_runtime_service.py",
+      "package": "services",
+      "classification": "CANONICAL",
+      "classes": [
+        "TaskRuntimeService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.common.actor",
+        "aipinho.schemas.runtime.task_bootstrap",
+        "aipinho.schemas.runtime.task_cancellation",
+        "aipinho.schemas.runtime.task_queue",
+        "aipinho.schemas.runtime.task_run",
+        "aipinho.schemas.runtime.task_run_plan",
+        "aipinho.schemas.runtime.task_run_request",
+        "aipinho.schemas.runtime.task_runtime_status",
+        "aipinho.services.approvals.approval_service",
+        "aipinho.services.memory.operational_memory_service",
+        "aipinho.services.orchestration.task_contract_draft_service",
+        "aipinho.services.orchestration.task_preview_service",
+        "aipinho.services.policy_kernel.workspace_policy_service",
+        "aipinho.services.rag.integration.context_injection_planner",
+        "aipinho.services.rag.integration.context_usage_validator",
+        "aipinho.services.roles.role_pipeline_service",
+        "aipinho.services.runtime.canonical_operation_state_service",
+        "aipinho.services.runtime.continuous_runtime_service",
+        "aipinho.services.runtime.engineering_autopilot_service",
+        "aipinho.services.runtime.evidence_engine_service",
+        "aipinho.services.runtime.execution_graph_service",
+        "aipinho.services.runtime.execution_plan_promotion_service",
+        "aipinho.services.runtime.governed_task_step_runner",
+        "aipinho.services.runtime.intelligent_planner_service",
+        "aipinho.services.runtime.project_generation_plan_executor",
+        "aipinho.services.runtime.runtime_timeline_service",
+        "aipinho.services.runtime.runtime_truth_engine",
+        "aipinho.services.runtime.supervised_execution_loop",
+        "aipinho.services.runtime.task_block_cause_service",
+        "aipinho.services.runtime.task_bootstrap_runtime_service",
+        "aipinho.services.runtime.task_queue_service",
+        "aipinho.services.runtime.task_run_audit_service",
+        "aipinho.services.runtime.task_run_cancellation_service",
+        "aipinho.services.runtime.task_run_chat_result_publisher_service",
+        "aipinho.services.runtime.task_run_event_service",
+        "aipinho.services.runtime.task_run_executor",
+        "aipinho.services.runtime.task_run_guard",
+        "aipinho.services.runtime.task_run_lifecycle_service",
+        "aipinho.services.runtime.task_run_planner",
+        "aipinho.services.runtime.task_run_store",
+        "aipinho.services.runtime.task_run_trace_service",
+        "aipinho.services.runtime.tool_governance_service",
+        "aipinho.services.runtime.workflow_runtime_service",
+        "aipinho.services.runtime.workspace_context_service",
+        "aipinho.services.semantics.edge_semantic_demand_compiler_service",
+        "aipinho.services.semantics.semantic_execution_graph_compiler_service",
+        "aipinho.services.semantics.task_semantic_vocabulary_compiler_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 14
+    },
+    {
+      "module": "aipinho.services.runtime.universal_task_session_service",
+      "path": "src/aipinho/services/runtime/universal_task_session_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "UniversalTaskSessionService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.capabilities.media_metadata.descriptor",
+        "aipinho.schemas.runtime.canonical_operation_state",
+        "aipinho.schemas.runtime.task_run",
+        "aipinho.schemas.runtime.task_run_event",
+        "aipinho.schemas.runtime.task_run_result",
+        "aipinho.schemas.runtime.universal_task_session",
+        "aipinho.services.approvals.approval_service",
+        "aipinho.services.artifacts.artifact_runtime_service",
+        "aipinho.services.cvl.cognitive_readiness_service",
+        "aipinho.services.runtime.canonical_operation_state_service",
+        "aipinho.services.runtime.runtime_timeline_service",
+        "aipinho.services.runtime.runtime_truth_engine",
+        "aipinho.services.runtime.task_run_store"
+      ],
+      "imported_by_count": 5
+    },
+    {
+      "module": "aipinho.services.runtime.workflow_runtime_service",
+      "path": "src/aipinho/services/runtime/workflow_runtime_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "WorkflowRuntimeService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.runtime.phase_dependency_evaluation",
+        "aipinho.schemas.runtime.workflow_runtime",
+        "aipinho.services.runtime.phase_dependency_evaluation_service",
+        "aipinho.services.runtime.phase_semantic_demand_compiler"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.runtime_doctor.runtime_doctor_service",
+      "path": "src/aipinho/services/runtime_doctor/runtime_doctor_service.py",
+      "package": "services",
+      "classification": "DIAGNOSTIC",
+      "classes": [
+        "RuntimeDoctorEndpointClient",
+        "RuntimeDoctorRawCollector",
+        "RuntimeDoctorContractValidator",
+        "RuntimeDoctorRootCauseEngine",
+        "RuntimeDoctorPatchPlanner",
+        "RuntimeDoctorPatchExecutor",
+        "RuntimeDoctorRegressionRunner",
+        "RuntimeDoctorReportWriter",
+        "RuntimeDoctorService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.artifacts.artifact_runtime",
+        "aipinho.schemas.chat.chat_request",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.runtime_doctor",
+        "aipinho.services.artifacts.artifact_runtime_service",
+        "aipinho.services.governance.lifecycle.canonical_public_chat_service",
+        "aipinho.services.runtime.task_run_store",
+        "aipinho.services.runtime.universal_task_session_service"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.sandbox.project_templates.project_manifest",
+      "path": "src/aipinho/services/sandbox/project_templates/project_manifest.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [
+        "project_manifest_json"
+      ],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.sandbox.sandbox_artifact_service",
+      "path": "src/aipinho/services/sandbox/sandbox_artifact_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SandboxArtifactService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.agents.tool_gateway",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.sandbox",
+        "aipinho.services.agents.agent_tool_gateway_service",
+        "aipinho.services.sandbox.sandbox_file_service",
+        "aipinho.services.sandbox.sandbox_policy_service",
+        "aipinho.services.sandbox.sandbox_store_service",
+        "aipinho.services.sandbox.sandbox_workspace_service"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.sandbox.sandbox_autopilot_service",
+      "path": "src/aipinho/services/sandbox/sandbox_autopilot_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SandboxAutopilotService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.project_generation",
+        "aipinho.schemas.sandbox_autopilot",
+        "aipinho.schemas.skills.skill_packs",
+        "aipinho.services.sandbox.sandbox_project_factory",
+        "aipinho.services.skills.skill_pack_registry_service",
+        "aipinho.services.workspaces.external_workspace_service"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.sandbox.sandbox_file_service",
+      "path": "src/aipinho/services/sandbox/sandbox_file_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SandboxFileService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.sandbox",
+        "aipinho.services.events.event_core",
+        "aipinho.services.sandbox.sandbox_paths",
+        "aipinho.services.sandbox.sandbox_policy_service",
+        "aipinho.services.sandbox.sandbox_store_service",
+        "aipinho.services.sandbox.sandbox_workspace_service"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.sandbox.sandbox_project_factory",
+      "path": "src/aipinho/services/sandbox/sandbox_project_factory.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SandboxProjectFactory"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.agents.contracts",
+        "aipinho.schemas.agents.tool_gateway",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.project_generation",
+        "aipinho.schemas.sandbox",
+        "aipinho.schemas.templates",
+        "aipinho.services.agents.agent_session_kernel_service",
+        "aipinho.services.agents.agent_tool_gateway_service",
+        "aipinho.services.events.event_core",
+        "aipinho.services.sandbox.project_templates",
+        "aipinho.services.sandbox.project_templates.project_manifest",
+        "aipinho.services.sandbox.sandbox_store_service",
+        "aipinho.services.sandbox.sandbox_workspace_service",
+        "aipinho.services.templates.template_execution_service",
+        "aipinho.services.templates.template_registry_service"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.sandbox.sandbox_shell_service",
+      "path": "src/aipinho/services/sandbox/sandbox_shell_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SandboxShellService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.sandbox",
+        "aipinho.services.events.event_core",
+        "aipinho.services.sandbox.sandbox_policy_service",
+        "aipinho.services.sandbox.sandbox_store_service",
+        "aipinho.services.sandbox.sandbox_workspace_service"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.sandbox.sandbox_workspace_service",
+      "path": "src/aipinho/services/sandbox/sandbox_workspace_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SandboxWorkspaceService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.sandbox",
+        "aipinho.services.sandbox.sandbox_paths",
+        "aipinho.services.sandbox.sandbox_policy_service",
+        "aipinho.services.sandbox.sandbox_store_service"
+      ],
+      "imported_by_count": 10
+    },
+    {
+      "module": "aipinho.services.self_healing.self_healing_service",
+      "path": "src/aipinho/services/self_healing/self_healing_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SelfHealingDetector",
+        "StateConsistencyDetector",
+        "DashboardDebuggerConsistencyDetector",
+        "SelfHealingStore",
+        "SelfHealingService"
+      ],
+      "functions": [
+        "_dump"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.artifacts.artifact_interaction_contracts",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.self_healing",
+        "aipinho.services.agents.multi_agent_observability_service",
+        "aipinho.services.artifacts.artifact_interaction_core",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.session.session_service",
+      "path": "src/aipinho/services/session/session_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SessionService"
+      ],
+      "functions": [
+        "_dump_model"
+      ],
+      "imports": [
+        "aipinho.schemas.chat.chat_message",
+        "aipinho.schemas.chat.chat_request",
+        "aipinho.schemas.chat.session_event",
+        "aipinho.schemas.chat.session_state",
+        "aipinho.services.session.session_event_service",
+        "aipinho.services.session.session_policy_service",
+        "aipinho.services.session.session_redaction_service",
+        "aipinho.services.session.session_state_reconciliation_service",
+        "aipinho.services.session.session_store"
+      ],
+      "imported_by_count": 5
+    },
+    {
+      "module": "aipinho.services.session.session_store",
+      "path": "src/aipinho/services/session/session_store.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SessionStore"
+      ],
+      "functions": [
+        "utc_now",
+        "_dump_model",
+        "_parse_state",
+        "_parse_event"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.chat.session_event",
+        "aipinho.schemas.chat.session_state",
+        "aipinho.utils.safe_paths"
+      ],
+      "imported_by_count": 48
+    },
+    {
+      "module": "aipinho.services.skills.skill_execution_service",
+      "path": "src/aipinho/services/skills/skill_execution_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SkillExecutionService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.contracts",
+        "aipinho.schemas.agents.tool_gateway",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.skills.contracts",
+        "aipinho.services.agents.agent_session_kernel_service",
+        "aipinho.services.agents.agent_tool_gateway_service",
+        "aipinho.services.events.event_core",
+        "aipinho.services.skills.skill_manifest_registry_service"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.skills.skill_manifest_registry_service",
+      "path": "src/aipinho/services/skills/skill_manifest_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SkillManifestValidatorV2",
+        "SkillManifestRegistryService"
+      ],
+      "functions": [
+        "_base_policy",
+        "_artifact_policy",
+        "_validation_policy",
+        "_seed_manifests"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.skills.contracts",
+        "aipinho.services.agents.agent_tool_registry_service",
+        "aipinho.services.events.event_core",
+        "aipinho.services.projects.project_profile_registry_service",
+        "aipinho.services.projects.project_profile_secret_scanner"
+      ],
+      "imported_by_count": 7
+    },
+    {
+      "module": "aipinho.services.skills.skill_pack_registry_service",
+      "path": "src/aipinho/services/skills/skill_pack_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SkillPackValidator",
+        "SkillPackRegistry",
+        "SkillPackExecutionService"
+      ],
+      "functions": [
+        "_tokens",
+        "_search_text"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.skills.contracts",
+        "aipinho.schemas.skills.skill_packs",
+        "aipinho.services.events.event_core",
+        "aipinho.services.projects.project_profile_secret_scanner",
+        "aipinho.services.skills.skill_execution_service",
+        "aipinho.services.skills.skill_manifest_registry_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.skills.skill_runtime_core",
+      "path": "src/aipinho/services/skills/skill_runtime_core.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SkillContractLoader",
+        "SkillContractValidator",
+        "SkillRegistryService",
+        "SkillCatalogService",
+        "SkillAntiTriggerService",
+        "SkillCapabilityResolver",
+        "SkillContextRequirementService",
+        "SkillToolPolicyService",
+        "SkillRiskService",
+        "SkillFallbackService",
+        "SkillTraceService",
+        "SkillAuditService",
+        "SkillEventEmitter",
+        "SkillRoutingPolicyService",
+        "SkillRouterService",
+        "SkillExecutionEnvelopeBuilder",
+        "SkillPreviewService",
+        "SkillOutputValidator",
+        "SkillDryRunService",
+        "SkillComposerService",
+        "SkillRuntimeService",
+        "SkillManifestValidator",
+        "SkillDependencyPolicyService",
+        "SkillInstallPreviewService",
+        "SkillInstallerService",
+        "SkillCreatorService"
+      ],
+      "functions": [
+        "_tokens"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.repositories.skills.skill_repositories",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.skills.contracts",
+        "aipinho.services.context.context_core",
+        "aipinho.services.events.event_core",
+        "aipinho.services.tools.tool_contract_core",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 34
+    },
+    {
+      "module": "aipinho.services.telemetry.runtime_dashboard_service",
+      "path": "src/aipinho/services/telemetry/runtime_dashboard_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "RuntimeDashboardService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.telemetry.dashboard",
+        "aipinho.schemas.telemetry.event",
+        "aipinho.services.telemetry.runtime_metrics_service",
+        "aipinho.services.telemetry.runtime_telemetry_service"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.telemetry.runtime_metrics_service",
+      "path": "src/aipinho/services/telemetry/runtime_metrics_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "MetricsCollector",
+        "MetricsAggregator",
+        "RuntimeMetricsService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.telemetry.event",
+        "aipinho.schemas.telemetry.metric",
+        "aipinho.services.telemetry.runtime_telemetry_service"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.telemetry.runtime_telemetry_service",
+      "path": "src/aipinho/services/telemetry/runtime_telemetry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TelemetryRepository",
+        "TelemetryCollector",
+        "TelemetrySerializer",
+        "RuntimeTelemetryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.telemetry.event"
+      ],
+      "imported_by_count": 4
+    },
+    {
+      "module": "aipinho.services.templates.template_execution_service",
+      "path": "src/aipinho/services/templates/template_execution_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TemplateExecutionService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.templates",
+        "aipinho.services.sandbox.project_templates",
+        "aipinho.services.templates.asset_placeholder_generator",
+        "aipinho.services.templates.template_registry_service"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.ux.ux_copy_service",
+      "path": "src/aipinho/services/ux/ux_copy_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "UXCopyService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.ux.ux_copy_payload",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.ux.ux_notification_service",
+      "path": "src/aipinho/services/ux/ux_notification_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "UXNotificationService"
+      ],
+      "functions": [
+        "_now"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.ux.ux_notification",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.validation.__init__",
+      "path": "src/aipinho/services/validation/__init__.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.validation.contract_compliance_validator",
+        "aipinho.services.validation.evidence_compliance_validator",
+        "aipinho.services.validation.policy_compliance_validator",
+        "aipinho.services.validation.report_quality_gate_service",
+        "aipinho.services.validation.side_effect_validator",
+        "aipinho.services.validation.task_event_consistency_validator",
+        "aipinho.services.validation.task_result_validator",
+        "aipinho.services.validation.task_run_validator",
+        "aipinho.services.validation.task_status_consistency_validator",
+        "aipinho.services.validation.validation_gate_service",
+        "aipinho.services.validation.validation_score_service",
+        "aipinho.services.validation.workspace_access_validator"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.validation.task_run_validator",
+      "path": "src/aipinho/services/validation/task_run_validator.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TaskRunValidator"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.services.validation.contract_compliance_validator",
+        "aipinho.services.validation.policy_compliance_validator",
+        "aipinho.services.validation.side_effect_validator",
+        "aipinho.services.validation.task_event_consistency_validator",
+        "aipinho.services.validation.task_result_validator",
+        "aipinho.services.validation.task_status_consistency_validator",
+        "aipinho.services.validation.validation_common",
+        "aipinho.services.validation.workspace_access_validator"
+      ],
+      "imported_by_count": 2
+    }
+  ]
 }

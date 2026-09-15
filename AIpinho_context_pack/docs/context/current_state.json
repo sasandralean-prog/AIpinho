@@ -1,78 +1,115 @@
 {
-  "schema_version": "context_state.v2026-09-15",
+  "schema_version": "context_state.v2026-09-15-consolidated",
   "updated_at": "2026-09-15",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
     "name": "sasandralean-prog/AIpinho",
     "branch": "main",
-    "runtime_baseline_sha": "820288004562f3ff17ebfe8a074987a1ea6f0e6f"
+    "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0"
   },
+  "authorities": [
+    "Human operator",
+    "Trusted dispatcher",
+    "Local execution broker",
+    "AIpinho runtime",
+    "Evidence/result layer"
+  ],
   "semantic_execution": {
-    "sprints_0_9": "complete",
-    "canonical_regression": {
-      "passed": 189,
+    "sprints_0_9": "complete_and_integrated",
+    "runtime_roles_consolidation": "complete_validated",
+    "post_reboot_regression": {
+      "passed": 174,
       "failed": 0
-    },
-    "roadmap_closed": true
+    }
   },
   "latest_firetest": {
-    "campaign": "firetest5_20260915T054806Z",
-    "verdict": "PARTIAL",
-    "phases_reached": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6
-    ],
-    "final_truth_reason": "runtime_truth_contradiction",
-    "final_contradiction": "completion_completed_timeline_has_gaps",
-    "phase4_sequence": {
-      "duplicates": [
-        118
-      ],
-      "missing": []
+    "campaign": "firetest5_runtime_consolidation_20260915T152207Z",
+    "status": "CONSOLIDATION_GATES_PASS",
+    "phases": {
+      "phase_1": {
+        "run_status": "completed_with_limitations",
+        "runtime_truth": "partial",
+        "phase_outcome": "satisfied_with_limitations",
+        "safe_to_report_success": false
+      },
+      "phase_2": {
+        "runtime_truth": "completed"
+      },
+      "phase_3": {
+        "runtime_truth": "completed"
+      },
+      "phase_4": {
+        "runtime_truth": "completed"
+      },
+      "phase_5": {
+        "runtime_truth": "completed"
+      },
+      "phase_6": {
+        "runtime_truth": "completed"
+      }
     },
-    "phase6_sequence": {
-      "duplicates": [
-        122
-      ],
-      "missing": [
-        123
-      ]
+    "timeline": {
+      "duplicate_sequences": 0,
+      "missing_sequences": 0
     },
-    "phase4_canonical_state": "BLOCKED",
-    "phase5_canonical_state": "COMPLETED",
-    "phase6_canonical_state": "BLOCKED",
-    "safe_to_report_global_success": false,
+    "roles": {
+      "run_role_pipeline_executed_taskruns": 6,
+      "supervisor_consistency": "completed",
+      "supervisor_real_inference": false
+    },
+    "doctor": {
+      "completed_phases": 6,
+      "observed_latency_seconds": "~0.4-1.2"
+    },
     "integrity": {
       "workspace_mutations": 0,
       "corpus_mutations": 0,
-      "final_active_runs": 0,
-      "final_stale_runs": 0
+      "repository_head_unchanged_during_campaign": true,
+      "final_queue_clean": true
     }
   },
+  "closed_frontier": [
+    "RuntimeTimeline atomic event sequence allocation",
+    "RuntimeTruth to PhaseOutcome/downstream fail-closed propagation",
+    "Runtime Doctor bounded large-run analysis",
+    "readonly artifact duplicate lifecycle/result/Truth path",
+    "role step plan/execution bypass",
+    "role pipeline runtime binding and deterministic supervisor consistency",
+    "root-role provenance tokenization suffix"
+  ],
   "current_frontier": [
-    "bind PhaseOutcome/downstream admission to canonical producer RuntimeTruth/CanonicalOperationState",
-    "repair duplicate/missing RuntimeTimeline event sequence allocation",
-    "make Runtime Doctor large-run analysis bounded and responsive"
+    "evolve capabilities through the single canonical TaskRuntime",
+    "keep roles/models subordinate and contract-bound",
+    "retire or absorb compatibility surfaces only with evidence-backed migration",
+    "keep Genome/current-state documentation synchronized after architecture-changing waves"
+  ],
+  "compatibility_surfaces": [
+    "RuntimeContractsV2Service",
+    "PlannerV2",
+    "RuntimeDispatcherV2",
+    "IntelligentPlannerService",
+    "ExecutionGraphService",
+    "ContinuousRuntimeService"
   ],
   "deferred": [
-    "m4a/subprocess encoding issue"
+    "Windows subprocess cp1252/.m4a media probe reader issue"
   ],
-  "branch_hygiene": {
-    "sprints_0_9_retired": true,
-    "quarantine_root": "D:\\AIpinho_quarantine\\sprints_0_9_20260915"
+  "genome": {
+    "version": "2.0",
+    "manifest": "genome/00_manifest.json",
+    "folder_audit": "genome/reports/github_folder_audit_20260915.md",
+    "github_recursive_tree_nodes": 18529
   },
   "runtime_map": {
     "markdown": "docs/architecture/CURRENT_RUNTIME_MAP_20260915.md",
-    "png": "docs/architecture/current_runtime_map_20260915.png"
+    "context_mirror": "AIpinho_context_pack/docs/context/05_RUNTIME_ARCHITECTURE_MAP.md"
   },
   "invariants": [
     "MODEL != AUTHORITY",
     "unknown is fail-closed",
-    "run_completed != safe success",
+    "execution completion != semantic admission",
+    "producer completion does not authorize consumer usage",
+    "roles are not authorities",
     "Doctor diagnoses but does not grant authority",
     "FireTest is regression evidence, not runtime configuration"
   ]

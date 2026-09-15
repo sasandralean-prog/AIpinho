@@ -131,3 +131,11 @@ Until then, it remains planning context.
 ## 2026-09-15 planning posture
 
 Horizon H1 remains active, but the 0?9 semantic architecture update is closed. The immediate H1 frontier is runtime consistency: timeline integrity and cross-phase truth propagation discovered by the full FireTest 5 rerun.
+
+## 2026-09-15 post-consolidation planning override
+
+The earlier same-day statement that timeline integrity and cross-phase truth propagation were the immediate H1 frontier is now historical. Those defects were corrected and revalidated in runtime consolidation commit `6126a73a9ddfc054fe527174fe4df16740b9d1e0`.
+
+Current Horizon-H1 posture is no longer emergency FireTest consistency repair. It is continued maturation of the **single canonical TaskRuntime**: capability growth, evidence-backed simplification of compatibility surfaces, role/model governance, semantic admission quality, and maintained Genome/current-state synchronization.
+
+The Windows subprocess `cp1252/.m4a` media-probe reader issue remains deferred and does not by itself redefine the strategic horizon.

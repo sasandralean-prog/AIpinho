@@ -211,6 +211,27 @@ Current P1:
 ## 2026-09-15 semantic 0?9 closure and FireTest rerun
 
 - Semantic Sprints 0?9: complete, canonical regression `189 passed / 0 failed`.
-- FireTest 5 full rerun: phases 1?6 executed; global verdict `PARTIAL`.
+- Historical first 2026-09-15 FireTest 5 full rerun: phases 1?6 executed; campaign verdict was `PARTIAL` before the consolidation corrections below.
 - New frontier: `RuntimeTruth/CanonicalOperationState -> PhaseOutcome -> downstream admission` coherence plus timeline event-sequence integrity.
 - Evidence: `reports/firetest5_20260915T054806Z/`.
+
+## 2026-09-15 runtime + roles consolidation closure
+
+Implementation baseline: `6126a73a9ddfc054fe527174fe4df16740b9d1e0`.
+
+- Semantic Sprints 0–9 preserved inside the canonical TaskRuntime authority chain.
+- readonly artifact specialized execution no longer owns a parallel lifecycle/result/RuntimeTruth path.
+- planned `run_role_pipeline` became real TaskRun execution evidence in all six FireTest phases.
+- roles remain subordinate TaskRuntime cognitive components; supervisor consistency is deterministic-only.
+- RuntimeTimeline event sequence allocation is atomic at the store boundary.
+- blocked/contradictory RuntimeTruth constrains `PhaseOutcome` and downstream dependency admission fail-closed.
+- explicit Phase 1 limited-use safety supports constrained downstream static analysis without manufacturing a success claim.
+- Runtime Doctor completed former large-run problem phases.
+- root-role provenance tokenization suffix corrected.
+- fresh FireTest: Phase 1 limited/partial; Phases 2–6 completed; sequence gaps/duplicates `0/0`.
+- post-reboot focused regression: `174 passed / 0 failed`.
+- workspace/corpus mutations: `0/0`.
+
+Current consolidation-wave P0/P1: **none open**.
+
+Deferred: Windows subprocess `cp1252/.m4a` reader issue.

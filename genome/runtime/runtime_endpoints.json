@@ -1,175 +1,1105 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
   "endpoints": [
     {
-      "endpoint": "/health",
+      "router": "aipinho.api.routers.cognitive_governance_router",
+      "path": "src/aipinho/api/routers/cognitive_governance_router.py",
+      "function": "status",
       "method": "GET",
-      "type": "HTTP",
-      "input": {
-        "type": "query_params",
-        "schema": "UNKNOWN"
-      },
-      "output": {
-        "type": "json",
-        "schema": "UNKNOWN"
-      },
-      "contract": "UNKNOWN",
-      "service": "services.health.health_router",
-      "critical": true
+      "route": "/status",
+      "full_route": "/api/v1/runtime/cognitive/status",
+      "line": 13
     },
     {
-      "endpoint": "/chat",
-      "method": "POST",
-      "type": "HTTP",
-      "input": {
-        "type": "json_body",
-        "schema": "schemas.chat.ChatRequest"
-      },
-      "output": {
-        "type": "json",
-        "schema": "schemas.chat.ChatResponse"
-      },
-      "contract": "UNKNOWN",
-      "service": "services.chat.chat_router",
-      "critical": true
-    },
-    {
-      "endpoint": "/tasks",
-      "method": "POST",
-      "type": "HTTP",
-      "input": {
-        "type": "json_body",
-        "schema": "schemas.tasks.TaskRequest"
-      },
-      "output": {
-        "type": "json",
-        "schema": "schemas.tasks.TaskResponse"
-      },
-      "contract": "UNKNOWN",
-      "service": "api.routers.task_runtime_router",
-      "critical": true
-    },
-    {
-      "endpoint": "/tasks/{task_id}",
+      "router": "aipinho.api.routers.cognitive_governance_router",
+      "path": "src/aipinho/api/routers/cognitive_governance_router.py",
+      "function": "list_policies",
       "method": "GET",
-      "type": "HTTP",
-      "input": {
-        "type": "path_params",
-        "schema": "UNKNOWN"
-      },
-      "output": {
-        "type": "json",
-        "schema": "schemas.tasks.TaskStatus"
-      },
-      "contract": "UNKNOWN",
-      "service": "api.routers.task_runtime_router",
-      "critical": true
+      "route": "/policies",
+      "full_route": "/api/v1/runtime/cognitive/policies",
+      "line": 18
     },
     {
-      "endpoint": "/tools/execute",
-      "method": "POST",
-      "type": "HTTP",
-      "input": {
-        "type": "json_body",
-        "schema": "schemas.tools.ToolRequest"
-      },
-      "output": {
-        "type": "json",
-        "schema": "schemas.tools.ToolResponse"
-      },
-      "contract": "UNKNOWN",
-      "service": "api.routers.tool_router",
-      "critical": true
-    },
-    {
-      "endpoint": "/models/invoke",
-      "method": "POST",
-      "type": "HTTP",
-      "input": {
-        "type": "json_body",
-        "schema": "schemas.models.ModelRequest"
-      },
-      "output": {
-        "type": "json",
-        "schema": "schemas.models.ModelResponse"
-      },
-      "contract": "UNKNOWN",
-      "service": "api.routers.model_router",
-      "critical": true
-    },
-    {
-      "endpoint": "/artifacts",
-      "method": "POST",
-      "type": "HTTP",
-      "input": {
-        "type": "json_body",
-        "schema": "schemas.artifacts.ArtifactRequest"
-      },
-      "output": {
-        "type": "json",
-        "schema": "schemas.artifacts.ArtifactResponse"
-      },
-      "contract": "UNKNOWN",
-      "service": "api.routers.artifact_router",
-      "critical": true
-    },
-    {
-      "endpoint": "/agents/delegate",
-      "method": "POST",
-      "type": "HTTP",
-      "input": {
-        "type": "json_body",
-        "schema": "schemas.agents.AgentRequest"
-      },
-      "output": {
-        "type": "json",
-        "schema": "schemas.agents.AgentResponse"
-      },
-      "contract": "UNKNOWN",
-      "service": "api.routers.agent_router",
-      "critical": true
-    },
-    {
-      "endpoint": "/policy/check",
-      "method": "POST",
-      "type": "HTTP",
-      "input": {
-        "type": "json_body",
-        "schema": "schemas.policy.PolicyRequest"
-      },
-      "output": {
-        "type": "json",
-        "schema": "schemas.policy.PolicyResponse"
-      },
-      "contract": "UNKNOWN",
-      "service": "api.routers.policy_router",
-      "critical": true
-    },
-    {
-      "endpoint": "/config",
+      "router": "aipinho.api.routers.cognitive_governance_router",
+      "path": "src/aipinho/api/routers/cognitive_governance_router.py",
+      "function": "get_policy",
       "method": "GET",
-      "type": "HTTP",
-      "input": {
-        "type": "query_params",
-        "schema": "UNKNOWN"
-      },
-      "output": {
-        "type": "json",
-        "schema": "UNKNOWN"
-      },
-      "contract": "UNKNOWN",
-      "service": "api.routers.config_router",
-      "critical": false
+      "route": "/policies/{policy_id}",
+      "full_route": "/api/v1/runtime/cognitive/policies/{policy_id}",
+      "line": 23
+    },
+    {
+      "router": "aipinho.api.routers.cognitive_governance_router",
+      "path": "src/aipinho/api/routers/cognitive_governance_router.py",
+      "function": "evaluate",
+      "method": "POST",
+      "route": "/evaluate",
+      "full_route": "/api/v1/runtime/cognitive/evaluate",
+      "line": 31
+    },
+    {
+      "router": "aipinho.api.routers.cognitive_governance_router",
+      "path": "src/aipinho/api/routers/cognitive_governance_router.py",
+      "function": "route",
+      "method": "POST",
+      "route": "/router",
+      "full_route": "/api/v1/runtime/cognitive/router",
+      "line": 36
+    },
+    {
+      "router": "aipinho.api.routers.cognitive_governance_router",
+      "path": "src/aipinho/api/routers/cognitive_governance_router.py",
+      "function": "routes",
+      "method": "GET",
+      "route": "/routes",
+      "full_route": "/api/v1/runtime/cognitive/routes",
+      "line": 41
+    },
+    {
+      "router": "aipinho.api.routers.cognitive_governance_router",
+      "path": "src/aipinho/api/routers/cognitive_governance_router.py",
+      "function": "escalate",
+      "method": "POST",
+      "route": "/escalate",
+      "full_route": "/api/v1/runtime/cognitive/escalate",
+      "line": 46
+    },
+    {
+      "router": "aipinho.api.routers.cognitive_governance_router",
+      "path": "src/aipinho/api/routers/cognitive_governance_router.py",
+      "function": "escalation_history",
+      "method": "GET",
+      "route": "/escalation-history",
+      "full_route": "/api/v1/runtime/cognitive/escalation-history",
+      "line": 51
+    },
+    {
+      "router": "aipinho.api.routers.cognitive_governance_router",
+      "path": "src/aipinho/api/routers/cognitive_governance_router.py",
+      "function": "governance_status",
+      "method": "GET",
+      "route": "/governance",
+      "full_route": "/api/v1/runtime/cognitive/governance",
+      "line": 56
+    },
+    {
+      "router": "aipinho.api.routers.cognitive_governance_router",
+      "path": "src/aipinho/api/routers/cognitive_governance_router.py",
+      "function": "governance_evaluate",
+      "method": "POST",
+      "route": "/governance/evaluate",
+      "full_route": "/api/v1/runtime/cognitive/governance/evaluate",
+      "line": 61
+    },
+    {
+      "router": "aipinho.api.routers.cognitive_governance_router",
+      "path": "src/aipinho/api/routers/cognitive_governance_router.py",
+      "function": "governance_history",
+      "method": "GET",
+      "route": "/governance/history",
+      "full_route": "/api/v1/runtime/cognitive/governance/history",
+      "line": 66
+    },
+    {
+      "router": "aipinho.api.routers.patch_intelligence_router",
+      "path": "src/aipinho/api/routers/patch_intelligence_router.py",
+      "function": "status",
+      "method": "GET",
+      "route": "/status",
+      "full_route": "/api/v1/runtime/patch-intelligence/status",
+      "line": 13
+    },
+    {
+      "router": "aipinho.api.routers.patch_intelligence_router",
+      "path": "src/aipinho/api/routers/patch_intelligence_router.py",
+      "function": "list_knowledge",
+      "method": "GET",
+      "route": "/knowledge",
+      "full_route": "/api/v1/runtime/patch-intelligence/knowledge",
+      "line": 18
+    },
+    {
+      "router": "aipinho.api.routers.patch_intelligence_router",
+      "path": "src/aipinho/api/routers/patch_intelligence_router.py",
+      "function": "get_knowledge",
+      "method": "GET",
+      "route": "/knowledge/{entry_id}",
+      "full_route": "/api/v1/runtime/patch-intelligence/knowledge/{entry_id}",
+      "line": 23
+    },
+    {
+      "router": "aipinho.api.routers.patch_intelligence_router",
+      "path": "src/aipinho/api/routers/patch_intelligence_router.py",
+      "function": "query_knowledge",
+      "method": "POST",
+      "route": "/query",
+      "full_route": "/api/v1/runtime/patch-intelligence/query",
+      "line": 31
+    },
+    {
+      "router": "aipinho.api.routers.patch_intelligence_router",
+      "path": "src/aipinho/api/routers/patch_intelligence_router.py",
+      "function": "patterns_status",
+      "method": "GET",
+      "route": "/patterns",
+      "full_route": "/api/v1/runtime/patch-intelligence/patterns",
+      "line": 36
+    },
+    {
+      "router": "aipinho.api.routers.patch_intelligence_router",
+      "path": "src/aipinho/api/routers/patch_intelligence_router.py",
+      "function": "recognize_patterns",
+      "method": "POST",
+      "route": "/patterns",
+      "full_route": "/api/v1/runtime/patch-intelligence/patterns",
+      "line": 47
+    },
+    {
+      "router": "aipinho.api.routers.patch_intelligence_router",
+      "path": "src/aipinho/api/routers/patch_intelligence_router.py",
+      "function": "create_proposal",
+      "method": "POST",
+      "route": "/proposal",
+      "full_route": "/api/v1/runtime/patch-intelligence/proposal",
+      "line": 52
+    },
+    {
+      "router": "aipinho.api.routers.patch_intelligence_router",
+      "path": "src/aipinho/api/routers/patch_intelligence_router.py",
+      "function": "get_proposal",
+      "method": "GET",
+      "route": "/proposal/{proposal_id}",
+      "full_route": "/api/v1/runtime/patch-intelligence/proposal/{proposal_id}",
+      "line": 57
+    },
+    {
+      "router": "aipinho.api.routers.public_runtime_api_router",
+      "path": "src/aipinho/api/routers/public_runtime_api_router.py",
+      "function": "public_runtime_chat",
+      "method": "POST",
+      "route": "/runtime/chat",
+      "full_route": "/api/v1/runtime/chat",
+      "line": 25
+    },
+    {
+      "router": "aipinho.api.routers.public_runtime_api_router",
+      "path": "src/aipinho/api/routers/public_runtime_api_router.py",
+      "function": "public_execute",
+      "method": "POST",
+      "route": "/execute",
+      "full_route": "/api/v1/execute",
+      "line": 30
+    },
+    {
+      "router": "aipinho.api.routers.public_runtime_api_router",
+      "path": "src/aipinho/api/routers/public_runtime_api_router.py",
+      "function": "public_analyze",
+      "method": "POST",
+      "route": "/analyze",
+      "full_route": "/api/v1/analyze",
+      "line": 35
+    },
+    {
+      "router": "aipinho.api.routers.public_runtime_api_router",
+      "path": "src/aipinho/api/routers/public_runtime_api_router.py",
+      "function": "public_doctor",
+      "method": "POST",
+      "route": "/doctor",
+      "full_route": "/api/v1/doctor",
+      "line": 40
+    },
+    {
+      "router": "aipinho.api.routers.public_runtime_api_router",
+      "path": "src/aipinho/api/routers/public_runtime_api_router.py",
+      "function": "public_validate",
+      "method": "POST",
+      "route": "/validate",
+      "full_route": "/api/v1/validate",
+      "line": 45
+    },
+    {
+      "router": "aipinho.api.routers.public_runtime_api_router",
+      "path": "src/aipinho/api/routers/public_runtime_api_router.py",
+      "function": "public_artifacts",
+      "method": "POST",
+      "route": "/artifacts",
+      "full_route": "/api/v1/artifacts",
+      "line": 50
+    },
+    {
+      "router": "aipinho.api.routers.public_runtime_api_router",
+      "path": "src/aipinho/api/routers/public_runtime_api_router.py",
+      "function": "public_runtime",
+      "method": "GET",
+      "route": "/runtime",
+      "full_route": "/api/v1/runtime",
+      "line": 59
+    },
+    {
+      "router": "aipinho.api.routers.public_runtime_api_router",
+      "path": "src/aipinho/api/routers/public_runtime_api_router.py",
+      "function": "public_modules",
+      "method": "GET",
+      "route": "/modules",
+      "full_route": "/api/v1/modules",
+      "line": 64
+    },
+    {
+      "router": "aipinho.api.routers.public_runtime_api_router",
+      "path": "src/aipinho/api/routers/public_runtime_api_router.py",
+      "function": "public_contracts",
+      "method": "GET",
+      "route": "/contracts",
+      "full_route": "/api/v1/contracts",
+      "line": 69
+    },
+    {
+      "router": "aipinho.api.routers.public_runtime_api_router",
+      "path": "src/aipinho/api/routers/public_runtime_api_router.py",
+      "function": "public_version",
+      "method": "GET",
+      "route": "/version",
+      "full_route": "/api/v1/version",
+      "line": 74
+    },
+    {
+      "router": "aipinho.api.routers.runtime_dashboard_router",
+      "path": "src/aipinho/api/routers/runtime_dashboard_router.py",
+      "function": "runtime_dashboard",
+      "method": "GET",
+      "route": "",
+      "full_route": "/api/v1/runtime/dashboard",
+      "line": 17
+    },
+    {
+      "router": "aipinho.api.routers.runtime_dashboard_router",
+      "path": "src/aipinho/api/routers/runtime_dashboard_router.py",
+      "function": "runtime_dashboard_history",
+      "method": "GET",
+      "route": "/history",
+      "full_route": "/api/v1/runtime/dashboard/history",
+      "line": 22
+    },
+    {
+      "router": "aipinho.api.routers.runtime_dashboard_router",
+      "path": "src/aipinho/api/routers/runtime_dashboard_router.py",
+      "function": "runtime_dashboard_export",
+      "method": "GET",
+      "route": "/export",
+      "full_route": "/api/v1/runtime/dashboard/export",
+      "line": 27
+    },
+    {
+      "router": "aipinho.api.routers.runtime_doctor_router",
+      "path": "src/aipinho/api/routers/runtime_doctor_router.py",
+      "function": "status",
+      "method": "GET",
+      "route": "/status",
+      "full_route": "/api/v1/runtime-doctor/status",
+      "line": 13
+    },
+    {
+      "router": "aipinho.api.routers.runtime_doctor_router",
+      "path": "src/aipinho/api/routers/runtime_doctor_router.py",
+      "function": "run",
+      "method": "POST",
+      "route": "/run",
+      "full_route": "/api/v1/runtime-doctor/run",
+      "line": 18
+    },
+    {
+      "router": "aipinho.api.routers.runtime_hygiene_router",
+      "path": "src/aipinho/api/routers/runtime_hygiene_router.py",
+      "function": "runtime_hygiene_status",
+      "method": "GET",
+      "route": "/status",
+      "full_route": "/api/v1/runtime/hygiene/status",
+      "line": 11
+    },
+    {
+      "router": "aipinho.api.routers.runtime_hygiene_router",
+      "path": "src/aipinho/api/routers/runtime_hygiene_router.py",
+      "function": "runtime_hygiene_queue_health",
+      "method": "GET",
+      "route": "/queue-health",
+      "full_route": "/api/v1/runtime/hygiene/queue-health",
+      "line": 16
+    },
+    {
+      "router": "aipinho.api.routers.runtime_hygiene_router",
+      "path": "src/aipinho/api/routers/runtime_hygiene_router.py",
+      "function": "runtime_hygiene_preview",
+      "method": "POST",
+      "route": "/preview",
+      "full_route": "/api/v1/runtime/hygiene/preview",
+      "line": 24
+    },
+    {
+      "router": "aipinho.api.routers.runtime_hygiene_router",
+      "path": "src/aipinho/api/routers/runtime_hygiene_router.py",
+      "function": "runtime_hygiene_apply",
+      "method": "POST",
+      "route": "/apply/{preview_id}",
+      "full_route": "/api/v1/runtime/hygiene/apply/{preview_id}",
+      "line": 37
+    },
+    {
+      "router": "aipinho.api.routers.runtime_metrics_router",
+      "path": "src/aipinho/api/routers/runtime_metrics_router.py",
+      "function": "runtime_metrics",
+      "method": "GET",
+      "route": "/metrics",
+      "full_route": "/api/v1/runtime/metrics",
+      "line": 16
+    },
+    {
+      "router": "aipinho.api.routers.runtime_metrics_router",
+      "path": "src/aipinho/api/routers/runtime_metrics_router.py",
+      "function": "runtime_metrics_history",
+      "method": "GET",
+      "route": "/metrics/history",
+      "full_route": "/api/v1/runtime/metrics/history",
+      "line": 21
+    },
+    {
+      "router": "aipinho.api.routers.runtime_metrics_router",
+      "path": "src/aipinho/api/routers/runtime_metrics_router.py",
+      "function": "runtime_health",
+      "method": "GET",
+      "route": "/health",
+      "full_route": "/api/v1/runtime/health",
+      "line": 26
+    },
+    {
+      "router": "aipinho.api.routers.runtime_operator_router",
+      "path": "src/aipinho/api/routers/runtime_operator_router.py",
+      "function": "status",
+      "method": "GET",
+      "route": "/operator/status",
+      "full_route": "/api/v1/runtime/operator/status",
+      "line": 20
+    },
+    {
+      "router": "aipinho.api.routers.runtime_operator_router",
+      "path": "src/aipinho/api/routers/runtime_operator_router.py",
+      "function": "doctor_status",
+      "method": "GET",
+      "route": "/doctor",
+      "full_route": "/api/v1/runtime/doctor",
+      "line": 25
+    },
+    {
+      "router": "aipinho.api.routers.runtime_operator_router",
+      "path": "src/aipinho/api/routers/runtime_operator_router.py",
+      "function": "snapshot",
+      "method": "GET",
+      "route": "/operator/snapshot",
+      "full_route": "/api/v1/runtime/operator/snapshot",
+      "line": 59
+    },
+    {
+      "router": "aipinho.api.routers.runtime_operator_router",
+      "path": "src/aipinho/api/routers/runtime_operator_router.py",
+      "function": "snapshot_from_payload",
+      "method": "POST",
+      "route": "/operator/snapshot",
+      "full_route": "/api/v1/runtime/operator/snapshot",
+      "line": 64
+    },
+    {
+      "router": "aipinho.api.routers.runtime_operator_router",
+      "path": "src/aipinho/api/routers/runtime_operator_router.py",
+      "function": "analyze",
+      "method": "POST",
+      "route": "/doctor/analyze",
+      "full_route": "/api/v1/runtime/doctor/analyze",
+      "line": 69
+    },
+    {
+      "router": "aipinho.api.routers.runtime_operator_router",
+      "path": "src/aipinho/api/routers/runtime_operator_router.py",
+      "function": "explain",
+      "method": "POST",
+      "route": "/doctor/explain",
+      "full_route": "/api/v1/runtime/doctor/explain",
+      "line": 75
+    },
+    {
+      "router": "aipinho.api.routers.runtime_operator_router",
+      "path": "src/aipinho/api/routers/runtime_operator_router.py",
+      "function": "patch_plan",
+      "method": "POST",
+      "route": "/doctor/patch-plan",
+      "full_route": "/api/v1/runtime/doctor/patch-plan",
+      "line": 80
+    },
+    {
+      "router": "aipinho.api.routers.runtime_operator_router",
+      "path": "src/aipinho/api/routers/runtime_operator_router.py",
+      "function": "analyze_firetest",
+      "method": "POST",
+      "route": "/firetest/analyze",
+      "full_route": "/api/v1/runtime/firetest/analyze",
+      "line": 85
+    },
+    {
+      "router": "aipinho.api.routers.semantic_learning_router",
+      "path": "src/aipinho/api/routers/semantic_learning_router.py",
+      "function": "status",
+      "method": "GET",
+      "route": "/status",
+      "full_route": "/api/v1/runtime/semantic-learning/status",
+      "line": 14
+    },
+    {
+      "router": "aipinho.api.routers.semantic_learning_router",
+      "path": "src/aipinho/api/routers/semantic_learning_router.py",
+      "function": "list_knowledge",
+      "method": "GET",
+      "route": "/knowledge",
+      "full_route": "/api/v1/runtime/semantic-learning/knowledge",
+      "line": 19
+    },
+    {
+      "router": "aipinho.api.routers.semantic_learning_router",
+      "path": "src/aipinho/api/routers/semantic_learning_router.py",
+      "function": "query_knowledge",
+      "method": "POST",
+      "route": "/query",
+      "full_route": "/api/v1/runtime/semantic-learning/query",
+      "line": 24
+    },
+    {
+      "router": "aipinho.api.routers.semantic_learning_router",
+      "path": "src/aipinho/api/routers/semantic_learning_router.py",
+      "function": "list_concepts",
+      "method": "GET",
+      "route": "/concepts",
+      "full_route": "/api/v1/runtime/semantic-learning/concepts",
+      "line": 29
+    },
+    {
+      "router": "aipinho.api.routers.semantic_learning_router",
+      "path": "src/aipinho/api/routers/semantic_learning_router.py",
+      "function": "patterns_status",
+      "method": "GET",
+      "route": "/patterns",
+      "full_route": "/api/v1/runtime/semantic-learning/patterns",
+      "line": 34
+    },
+    {
+      "router": "aipinho.api.routers.semantic_learning_router",
+      "path": "src/aipinho/api/routers/semantic_learning_router.py",
+      "function": "recognize_patterns",
+      "method": "POST",
+      "route": "/patterns",
+      "full_route": "/api/v1/runtime/semantic-learning/patterns",
+      "line": 45
+    },
+    {
+      "router": "aipinho.api.routers.semantic_learning_router",
+      "path": "src/aipinho/api/routers/semantic_learning_router.py",
+      "function": "create_recommendations",
+      "method": "POST",
+      "route": "/recommendations",
+      "full_route": "/api/v1/runtime/semantic-learning/recommendations",
+      "line": 50
+    },
+    {
+      "router": "aipinho.api.routers.semantic_learning_router",
+      "path": "src/aipinho/api/routers/semantic_learning_router.py",
+      "function": "list_recommendations",
+      "method": "GET",
+      "route": "/recommendations",
+      "full_route": "/api/v1/runtime/semantic-learning/recommendations",
+      "line": 55
+    },
+    {
+      "router": "aipinho.api.routers.semantic_learning_router",
+      "path": "src/aipinho/api/routers/semantic_learning_router.py",
+      "function": "get_recommendation",
+      "method": "GET",
+      "route": "/recommendations/{recommendation_id}",
+      "full_route": "/api/v1/runtime/semantic-learning/recommendations/{recommendation_id}",
+      "line": 60
+    },
+    {
+      "router": "aipinho.api.routers.semantic_learning_router",
+      "path": "src/aipinho/api/routers/semantic_learning_router.py",
+      "function": "get_curriculum",
+      "method": "GET",
+      "route": "/curriculum",
+      "full_route": "/api/v1/runtime/semantic-learning/curriculum",
+      "line": 68
+    },
+    {
+      "router": "aipinho.api.routers.semantic_learning_router",
+      "path": "src/aipinho/api/routers/semantic_learning_router.py",
+      "function": "get_curriculum_entry",
+      "method": "GET",
+      "route": "/curriculum/{entry_id}",
+      "full_route": "/api/v1/runtime/semantic-learning/curriculum/{entry_id}",
+      "line": 73
+    },
+    {
+      "router": "aipinho.api.routers.semantic_learning_router",
+      "path": "src/aipinho/api/routers/semantic_learning_router.py",
+      "function": "promote_curriculum",
+      "method": "POST",
+      "route": "/curriculum/promote",
+      "full_route": "/api/v1/runtime/semantic-learning/curriculum/promote",
+      "line": 81
+    },
+    {
+      "router": "aipinho.api.routers.semantic_learning_router",
+      "path": "src/aipinho/api/routers/semantic_learning_router.py",
+      "function": "review_curriculum",
+      "method": "POST",
+      "route": "/curriculum/review",
+      "full_route": "/api/v1/runtime/semantic-learning/curriculum/review",
+      "line": 89
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "list_skill_manifests",
+      "method": "GET",
+      "route": "",
+      "full_route": "/api/v1/skills",
+      "line": 22
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "skill_health",
+      "method": "GET",
+      "route": "/health",
+      "full_route": "/api/v1/skills/health",
+      "line": 44
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "skill_categories",
+      "method": "GET",
+      "route": "/categories",
+      "full_route": "/api/v1/skills/categories",
+      "line": 49
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "reload_skill_registry",
+      "method": "POST",
+      "route": "/registry/reload",
+      "full_route": "/api/v1/skills/registry/reload",
+      "line": 54
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "enable_skill",
+      "method": "POST",
+      "route": "/{skill_id}/enable",
+      "full_route": "/api/v1/skills/{skill_id}/enable",
+      "line": 60
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "disable_skill",
+      "method": "POST",
+      "route": "/{skill_id}/disable",
+      "full_route": "/api/v1/skills/{skill_id}/disable",
+      "line": 68
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "execute_skill",
+      "method": "POST",
+      "route": "/{skill_id}/execute",
+      "full_route": "/api/v1/skills/{skill_id}/execute",
+      "line": 76
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "get_skill_execution",
+      "method": "GET",
+      "route": "/executions/{skill_execution_id}",
+      "full_route": "/api/v1/skills/executions/{skill_execution_id}",
+      "line": 83
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "get_skill_execution_trace",
+      "method": "GET",
+      "route": "/executions/{skill_execution_id}/trace",
+      "full_route": "/api/v1/skills/executions/{skill_execution_id}/trace",
+      "line": 91
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "validate_skill",
+      "method": "POST",
+      "route": "/validate",
+      "full_route": "/api/v1/skills/validate",
+      "line": 99
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "route_skill",
+      "method": "POST",
+      "route": "/route",
+      "full_route": "/api/v1/skills/route",
+      "line": 104
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "preview_skill",
+      "method": "POST",
+      "route": "/preview",
+      "full_route": "/api/v1/skills/preview",
+      "line": 109
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "dry_run_skill",
+      "method": "POST",
+      "route": "/dry-run",
+      "full_route": "/api/v1/skills/dry-run",
+      "line": 114
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "compose_skills",
+      "method": "POST",
+      "route": "/compose",
+      "full_route": "/api/v1/skills/compose",
+      "line": 119
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "validate_skill_output",
+      "method": "POST",
+      "route": "/output/validate",
+      "full_route": "/api/v1/skills/output/validate",
+      "line": 124
+    },
+    {
+      "router": "aipinho.api.routers.skill_runtime_router",
+      "path": "src/aipinho/api/routers/skill_runtime_router.py",
+      "function": "get_skill_trace",
+      "method": "GET",
+      "route": "/traces/{trace_id}",
+      "full_route": "/api/v1/skills/traces/{trace_id}",
+      "line": 129
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "runtime_status",
+      "method": "GET",
+      "route": "/task-runtime/status",
+      "full_route": "/api/v1/task-runtime/status",
+      "line": 55
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "runtime_queue",
+      "method": "GET",
+      "route": "/task-runtime/queue",
+      "full_route": "/api/v1/task-runtime/queue",
+      "line": 58
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "create_run",
+      "method": "POST",
+      "route": "/task-runs",
+      "full_route": "/api/v1/task-runs",
+      "line": 61
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "create_from_draft",
+      "method": "POST",
+      "route": "/task-runs/from-draft/{draft_id}",
+      "full_route": "/api/v1/task-runs/from-draft/{draft_id}",
+      "line": 64
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "create_from_preview",
+      "method": "POST",
+      "route": "/task-runs/from-preview/{preview_id}",
+      "full_route": "/api/v1/task-runs/from-preview/{preview_id}",
+      "line": 70
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "start_run",
+      "method": "POST",
+      "route": "/task-runs/{run_id}/start",
+      "full_route": "/api/v1/task-runs/{run_id}/start",
+      "line": 76
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "cancel_run",
+      "method": "POST",
+      "route": "/task-runs/{run_id}/cancel",
+      "full_route": "/api/v1/task-runs/{run_id}/cancel",
+      "line": 82
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_run",
+      "method": "GET",
+      "route": "/task-runs/{run_id}",
+      "full_route": "/api/v1/task-runs/{run_id}",
+      "line": 87
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_events",
+      "method": "GET",
+      "route": "/task-runs/{run_id}/events",
+      "full_route": "/api/v1/task-runs/{run_id}/events",
+      "line": 90
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_timeline",
+      "method": "GET",
+      "route": "/task_runs/{run_id}/timeline",
+      "full_route": "/api/v1/task_runs/{run_id}/timeline",
+      "line": 97
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_timeline",
+      "method": "GET",
+      "route": "/task-runs/{run_id}/timeline",
+      "full_route": "/api/v1/task-runs/{run_id}/timeline",
+      "line": 97
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_runtime_truth",
+      "method": "GET",
+      "route": "/task_runs/{run_id}/truth",
+      "full_route": "/api/v1/task_runs/{run_id}/truth",
+      "line": 106
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_runtime_truth",
+      "method": "GET",
+      "route": "/task-runs/{run_id}/truth",
+      "full_route": "/api/v1/task-runs/{run_id}/truth",
+      "line": 106
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_universal_task_session",
+      "method": "GET",
+      "route": "/task_runs/{run_id}",
+      "full_route": "/api/v1/task_runs/{run_id}",
+      "line": 115
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_universal_task_session",
+      "method": "GET",
+      "route": "/task-runs/{run_id}/session",
+      "full_route": "/api/v1/task-runs/{run_id}/session",
+      "line": 115
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_universal_task_events",
+      "method": "GET",
+      "route": "/task_runs/{run_id}/events",
+      "full_route": "/api/v1/task_runs/{run_id}/events",
+      "line": 123
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_universal_task_artifacts",
+      "method": "GET",
+      "route": "/task_runs/{run_id}/artifacts",
+      "full_route": "/api/v1/task_runs/{run_id}/artifacts",
+      "line": 136
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_universal_task_artifacts",
+      "method": "GET",
+      "route": "/task-runs/{run_id}/artifacts",
+      "full_route": "/api/v1/task-runs/{run_id}/artifacts",
+      "line": 136
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_universal_task_summary",
+      "method": "GET",
+      "route": "/task_runs/{run_id}/summary",
+      "full_route": "/api/v1/task_runs/{run_id}/summary",
+      "line": 145
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_universal_task_summary",
+      "method": "GET",
+      "route": "/task-runs/{run_id}/summary",
+      "full_route": "/api/v1/task-runs/{run_id}/summary",
+      "line": 145
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "list_universal_task_sessions",
+      "method": "GET",
+      "route": "/task_runs",
+      "full_route": "/api/v1/task_runs",
+      "line": 153
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_task_approvals",
+      "method": "GET",
+      "route": "/tasks/{task_id}/approvals",
+      "full_route": "/api/v1/tasks/{task_id}/approvals",
+      "line": 174
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "approve_task_safe_batch",
+      "method": "POST",
+      "route": "/tasks/{task_id}/approvals/approve-safe-batch",
+      "full_route": "/api/v1/tasks/{task_id}/approvals/approve-safe-batch",
+      "line": 180
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "deny_task_safe_batch",
+      "method": "POST",
+      "route": "/tasks/{task_id}/approvals/deny-safe-batch",
+      "full_route": "/api/v1/tasks/{task_id}/approvals/deny-safe-batch",
+      "line": 192
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_speaker_updates",
+      "method": "GET",
+      "route": "/task-runs/{run_id}/speaker/updates",
+      "full_route": "/api/v1/task-runs/{run_id}/speaker/updates",
+      "line": 225
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_trace",
+      "method": "GET",
+      "route": "/task-runs/{run_id}/trace",
+      "full_route": "/api/v1/task-runs/{run_id}/trace",
+      "line": 232
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_execution_graph",
+      "method": "GET",
+      "route": "/task-runs/{run_id}/execution-graph",
+      "full_route": "/api/v1/task-runs/{run_id}/execution-graph",
+      "line": 237
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_planning_report",
+      "method": "GET",
+      "route": "/task-runs/{run_id}/planning/report",
+      "full_route": "/api/v1/task-runs/{run_id}/planning/report",
+      "line": 246
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "replan_execution_graph_node",
+      "method": "POST",
+      "route": "/task-runs/{run_id}/planning/nodes/{node_id}/replan",
+      "full_route": "/api/v1/task-runs/{run_id}/planning/nodes/{node_id}/replan",
+      "line": 255
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "create_cooperative_execution_graph",
+      "method": "POST",
+      "route": "/task-runs/{run_id}/execution-graph/cooperative",
+      "full_route": "/api/v1/task-runs/{run_id}/execution-graph/cooperative",
+      "line": 264
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "poll_execution_graph",
+      "method": "GET",
+      "route": "/task-runs/{run_id}/execution-graph/poll",
+      "full_route": "/api/v1/task-runs/{run_id}/execution-graph/poll",
+      "line": 278
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "start_execution_graph_node",
+      "method": "POST",
+      "route": "/task-runs/{run_id}/execution-graph/nodes/{node_id}/start",
+      "full_route": "/api/v1/task-runs/{run_id}/execution-graph/nodes/{node_id}/start",
+      "line": 288
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "complete_execution_graph_node",
+      "method": "POST",
+      "route": "/task-runs/{run_id}/execution-graph/nodes/{node_id}/complete",
+      "full_route": "/api/v1/task-runs/{run_id}/execution-graph/nodes/{node_id}/complete",
+      "line": 298
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "fail_execution_graph_node",
+      "method": "POST",
+      "route": "/task-runs/{run_id}/execution-graph/nodes/{node_id}/fail",
+      "full_route": "/api/v1/task-runs/{run_id}/execution-graph/nodes/{node_id}/fail",
+      "line": 318
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "retry_execution_graph_node",
+      "method": "POST",
+      "route": "/task-runs/{run_id}/execution-graph/nodes/{node_id}/retry",
+      "full_route": "/api/v1/task-runs/{run_id}/execution-graph/nodes/{node_id}/retry",
+      "line": 328
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "cancel_execution_graph_node",
+      "method": "POST",
+      "route": "/task-runs/{run_id}/execution-graph/nodes/{node_id}/cancel",
+      "full_route": "/api/v1/task-runs/{run_id}/execution-graph/nodes/{node_id}/cancel",
+      "line": 338
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "get_result",
+      "method": "GET",
+      "route": "/task-runs/{run_id}/result",
+      "full_route": "/api/v1/task-runs/{run_id}/result",
+      "line": 347
+    },
+    {
+      "router": "aipinho.api.routers.task_runtime_router",
+      "path": "src/aipinho/api/routers/task_runtime_router.py",
+      "function": "list_runs",
+      "method": "GET",
+      "route": "/task-runs",
+      "full_route": "/api/v1/task-runs",
+      "line": 350
+    },
+    {
+      "router": "aipinho.api.routers.telemetry_router",
+      "path": "src/aipinho/api/routers/telemetry_router.py",
+      "function": "get_runtime_telemetry",
+      "method": "GET",
+      "route": "",
+      "full_route": "/api/v1/runtime/telemetry",
+      "line": 18
+    },
+    {
+      "router": "aipinho.api.routers.telemetry_router",
+      "path": "src/aipinho/api/routers/telemetry_router.py",
+      "function": "record_runtime_telemetry_event",
+      "method": "POST",
+      "route": "/events",
+      "full_route": "/api/v1/runtime/telemetry/events",
+      "line": 23
+    },
+    {
+      "router": "aipinho.api.routers.telemetry_router",
+      "path": "src/aipinho/api/routers/telemetry_router.py",
+      "function": "get_runtime_telemetry_session",
+      "method": "GET",
+      "route": "/session/{session_id}",
+      "full_route": "/api/v1/runtime/telemetry/session/{session_id}",
+      "line": 28
+    },
+    {
+      "router": "aipinho.api.routers.telemetry_router",
+      "path": "src/aipinho/api/routers/telemetry_router.py",
+      "function": "query_runtime_telemetry",
+      "method": "POST",
+      "route": "/query",
+      "full_route": "/api/v1/runtime/telemetry/query",
+      "line": 36
+    },
+    {
+      "router": "aipinho.api.routers.telemetry_router",
+      "path": "src/aipinho/api/routers/telemetry_router.py",
+      "function": "runtime_telemetry_status",
+      "method": "GET",
+      "route": "/status",
+      "full_route": "/api/v1/runtime/telemetry/status",
+      "line": 41
+    },
+    {
+      "router": "aipinho.api.routers.telemetry_router",
+      "path": "src/aipinho/api/routers/telemetry_router.py",
+      "function": "get_legacy_telemetry_events",
+      "method": "GET",
+      "route": "/events",
+      "full_route": "/api/v1/runtime/telemetry/events",
+      "line": 46
     }
-  ],
-  "total_endpoints": 10,
-  "endpoint_types": {
-    "HTTP": 10,
-    "IPC": 0,
-    "CLI": 0,
-    "internal": 0
-  },
-  "critical_endpoints": 9,
-  "non_critical_endpoints": 1
+  ]
 }

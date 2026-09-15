@@ -2,11 +2,11 @@
 
 Status: `CURRENT_AUTHORITY_INDEX`
 
-Baseline inspected: AIpinho `main` through `6d3d3966e2f21b93632ff0a7ca5a6dbfdb0ff732`
+Baseline inspected: AIpinho runtime consolidation through `6126a73a9ddfc054fe527174fe4df16740b9d1e0`
 
 External Control baseline inspected: `sasandralean-prog/AIpinho-FireTest-Control` `main` at `fe9daa384ff83c0c417677f07d4bb317301f812e`
 
-Updated: 2026-08-25
+Updated: 2026-09-15
 
 ## Purpose
 
@@ -66,7 +66,7 @@ Validated public/live evidence proves bounded observations at the recorded scope
 | Issue registers tied to the active wave | Problem/evidence/resolution state | Keep evidence status separate from resolution status. |
 | Tests tied to an implemented boundary | Unit/regression proof | Unit proof is not automatically public/live proof. |
 
-The Context Pack currently retains the B3.5 runtime checkpoint as continuity context. That recorded pointer must not be assumed current without re-reading Git/code/reports.
+The Context Pack now points to the 2026-09-15 consolidated runtime checkpoint. Historical B3.x and earlier FireTest states remain continuity evidence only and must not be mistaken for current truth.
 
 ## Class C — Current orientation and continuity
 
@@ -218,7 +218,7 @@ These preserve why decisions were made. They are valuable but not current runtim
 |---|---|
 | `AIpinho_Architecture_Audit.md` | Historical large audit corpus. |
 | `AIpinho_Architecture_Audit_Consolidated_Report.md` | Historical audit consolidation. |
-| `genome/` | Generated architecture snapshot/design DNA. |
+| `genome/` | Generated architecture snapshot/design DNA (Genome v2 regenerated 2026-09-15 from the consolidated baseline). |
 | `archaeology/` | Historical project archaeology. |
 | `RELEASE_NOTES_RC*.md` | Historical release snapshots. |
 | timestamped `docs/architecture/*` inventories | Date-bounded snapshots unless separately revalidated. |

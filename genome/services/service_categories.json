@@ -1,86 +1,82 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
-  "service_categories": {
-    "governance": {
-      "services": [
-        "policy_kernel_service",
-        "capability_gate_service",
-        "workspace_role_contract_service"
-      ],
-      "count": 3,
-      "critical": true
-    },
-    "runtime": {
-      "services": [
-        "task_runtime_service",
-        "execution_graph_service",
-        "intelligent_planner_service"
-      ],
-      "count": 3,
-      "critical": true
-    },
-    "chat": {
-      "services": [
-        "chat_service",
-        "chat_operation_router_service"
-      ],
-      "count": 2,
-      "critical": true
-    },
-    "agents": {
-      "services": [
-        "agent_tool_gateway_service",
-        "agent_local_action_planner"
-      ],
-      "count": 2,
-      "critical": true
-    },
-    "models": {
-      "services": [
-        "llama_cpp_provider"
-      ],
-      "count": 1,
-      "critical": true
-    },
-    "tools": {
-      "services": [
-        "governed_tool_execution_service"
-      ],
-      "count": 1,
-      "critical": true
-    },
-    "validation": {
-      "services": [
-        "validation_gate_service"
-      ],
-      "count": 1,
-      "critical": true
-    },
-    "rag": {
-      "services": [
-        "retrieval_service"
-      ],
-      "count": 1,
-      "critical": false
-    },
-    "memory": {
-      "services": [
-        "memory_candidate_service"
-      ],
-      "count": 1,
-      "critical": false
-    },
-    "artifacts": {
-      "services": [
-        "artifact_generator_service"
-      ],
-      "count": 1,
-      "critical": false
-    }
-  },
-  "total_categories": 10,
-  "total_services": 15,
-  "critical_categories": 7,
-  "non_critical_categories": 3
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "categories": {
+    "__init__.py": 1,
+    "agents": 31,
+    "analysis": 13,
+    "approvals": 8,
+    "artifacts": 67,
+    "autopilot": 1,
+    "chat": 31,
+    "codex_agent": 8,
+    "cognitive_policy_engine_service.py": 1,
+    "config_governance": 3,
+    "context": 42,
+    "cvl": 3,
+    "debugger": 28,
+    "evals": 17,
+    "evaluation": 15,
+    "events": 18,
+    "external_adapter_registry.py": 1,
+    "external_collaboration_service.py": 1,
+    "external_collaboration_store.py": 1,
+    "external_connector_service.py": 1,
+    "external_gateway_service.py": 1,
+    "external_speaker_truth_auditor.py": 1,
+    "gemini_executor": 6,
+    "governance": 26,
+    "interaction": 18,
+    "interpreter": 3,
+    "legacy_rag": 18,
+    "lucio_agent": 7,
+    "maintenance": 42,
+    "memory": 39,
+    "mobile": 2,
+    "mobile_view_models": 42,
+    "models": 47,
+    "orchestration": 10,
+    "patch_intelligence_service.py": 1,
+    "patching": 78,
+    "pinhoforge_bridge": 13,
+    "policy": 3,
+    "policy_kernel": 15,
+    "projects": 7,
+    "promotion": 2,
+    "prompt_intelligence": 15,
+    "prompts": 9,
+    "providers": 4,
+    "public_runtime_api_service.py": 1,
+    "rag": 79,
+    "realtime": 12,
+    "regression": 30,
+    "replay": 32,
+    "reports": 12,
+    "roles": 28,
+    "runtime": 64,
+    "runtime_doctor": 2,
+    "sandbox": 20,
+    "sandbox_file_writer_service.py": 1,
+    "security": 7,
+    "self_healing": 2,
+    "semantic_learning_service.py": 1,
+    "semantic_runtime": 10,
+    "semantics": 30,
+    "session": 8,
+    "skills": 35,
+    "speaker": 6,
+    "supervisor": 24,
+    "telemetry": 3,
+    "templates": 5,
+    "tools": 23,
+    "transfers": 7,
+    "ux": 11,
+    "validation": 26,
+    "vision": 29,
+    "web_search_provider_service.py": 1,
+    "web_search_summary_service.py": 1,
+    "workspace_flows": 2,
+    "workspaces": 2
+  }
 }

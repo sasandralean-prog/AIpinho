@@ -1,72 +1,36 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
-  "models": [
-    {
-      "model": "llama_cpp",
-      "who_uses": ["services.models.llama_cpp_provider"],
-      "pipeline": "model_pipeline",
-      "role": "model_invoker",
-      "fallback": "UNKNOWN",
-      "escalation": "UNKNOWN",
-      "path": "config/models/",
-      "file": "UNKNOWN"
-    },
-    {
-      "model": "openai",
-      "who_uses": ["services.models.model_invocation_service"],
-      "pipeline": "model_pipeline",
-      "role": "model_invoker",
-      "fallback": "UNKNOWN",
-      "escalation": "UNKNOWN",
-      "path": "config/models/",
-      "file": "UNKNOWN"
-    },
-    {
-      "model": "gemini",
-      "who_uses": ["services.models.model_invocation_service"],
-      "pipeline": "model_pipeline",
-      "role": "model_invoker",
-      "fallback": "UNKNOWN",
-      "escalation": "UNKNOWN",
-      "path": "config/models/",
-      "file": "UNKNOWN"
-    },
-    {
-      "model": "claude",
-      "who_uses": ["services.models.model_invocation_service"],
-      "pipeline": "model_pipeline",
-      "role": "model_invoker",
-      "fallback": "UNKNOWN",
-      "escalation": "UNKNOWN",
-      "path": "config/models/",
-      "file": "UNKNOWN"
-    },
-    {
-      "model": "ocr_model",
-      "who_uses": ["services.vision.ocr_pipeline_service"],
-      "pipeline": "vision_pipeline",
-      "role": "vision_processor",
-      "fallback": "UNKNOWN",
-      "escalation": "UNKNOWN",
-      "path": "config/vision/",
-      "file": "UNKNOWN"
-    },
-    {
-      "model": "multimodal_model",
-      "who_uses": ["services.vision.vision_analysis_service"],
-      "pipeline": "vision_pipeline",
-      "role": "vision_processor",
-      "fallback": "UNKNOWN",
-      "escalation": "UNKNOWN",
-      "path": "config/vision/",
-      "file": "UNKNOWN"
-    }
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "config_files": [
+    "config/models/capability_router.yaml",
+    "config/models/fallbacks.yaml",
+    "config/models/generation_defaults.yaml",
+    "config/models/inference_limits.yaml",
+    "config/models/llama_cpp_policy.yaml",
+    "config/models/llama_smoke_test_policy.yaml",
+    "config/models/local_model_paths.yaml",
+    "config/models/local_provider_policy.yaml",
+    "config/models/manual_inference_gate.yaml",
+    "config/models/manual_inference_profiles.yaml",
+    "config/models/manual_model_escalation_policy.yaml",
+    "config/models/modality_registry.yaml",
+    "config/models/model_capabilities.yaml",
+    "config/models/model_doctor_policy.yaml",
+    "config/models/model_hardware_policy.yaml",
+    "config/models/model_latency_policy.yaml",
+    "config/models/model_probe_policy.yaml",
+    "config/models/model_profiles.yaml",
+    "config/models/model_provider_registry.yaml",
+    "config/models/model_registry.yaml",
+    "config/models/model_routing.yaml",
+    "config/models/model_routing_policy.yaml",
+    "config/models/model_runtime_policy.yaml",
+    "config/models/model_runtime_profiles.yaml",
+    "config/models/model_security_policy.yaml",
+    "config/models/provider_registry.yaml",
+    "config/models/real_inference_gate.yaml",
+    "config/models/role_model_candidates.yaml"
   ],
-  "total_models": 6,
-  "model_types": {
-    "llm": 4,
-    "vision": 2
-  },
-  "model_source": "config/models/, config/vision/"
+  "role_model_bindings": "config/roles/role_model_bindings.yaml"
 }

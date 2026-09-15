@@ -1,80 +1,197 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
-  "role_dependencies": {
-    "admin": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "user": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "agent": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "tool_executor": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "model_invoker": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "artifact_generator": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "memory_curator": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "rag_retriever": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "validator": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "supervisor": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "debugger": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "runtime_doctor": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "patch_planner": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "skill_executor": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "workspace_manager": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "approval_authority": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "speaker": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    },
-    "listener": {
-      "dependencies": ["UNKNOWN"],
-      "source": "config/roles/"
-    }
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "pipeline_passes": {
+    "chat_basic": [
+      {
+        "pass_id": "interpret_state",
+        "role_id": "interpreter",
+        "required": false
+      },
+      {
+        "pass_id": "supervisor_consistency",
+        "role_id": "supervisor",
+        "required": true
+      },
+      {
+        "pass_id": "final_speaker",
+        "role_id": "speaker",
+        "required": true
+      }
+    ],
+    "readonly_project_report": [
+      {
+        "pass_id": "supervisor_consistency",
+        "role_id": "supervisor",
+        "required": true
+      }
+    ],
+    "task_preview": [
+      {
+        "pass_id": "semantic_candidate",
+        "role_id": "semantic_interpreter",
+        "required": false
+      },
+      {
+        "pass_id": "planner_preview",
+        "role_id": "planner",
+        "required": false
+      },
+      {
+        "pass_id": "interpreter_policy",
+        "role_id": "interpreter",
+        "required": false
+      },
+      {
+        "pass_id": "supervisor_consistency",
+        "role_id": "supervisor",
+        "required": true
+      },
+      {
+        "pass_id": "final_speaker",
+        "role_id": "speaker",
+        "required": false
+      }
+    ],
+    "patch_planning": [
+      {
+        "pass_id": "semantic_candidate",
+        "role_id": "semantic_interpreter",
+        "required": false
+      },
+      {
+        "pass_id": "planner_patch",
+        "role_id": "planner",
+        "required": false
+      },
+      {
+        "pass_id": "coder_proposal",
+        "role_id": "coder",
+        "required": false
+      },
+      {
+        "pass_id": "code_review",
+        "role_id": "code_reviewer",
+        "required": false
+      },
+      {
+        "pass_id": "patch_quality_review",
+        "role_id": "patch_quality_reviewer",
+        "required": false
+      },
+      {
+        "pass_id": "supervisor_consistency",
+        "role_id": "supervisor",
+        "required": true
+      },
+      {
+        "pass_id": "final_speaker",
+        "role_id": "speaker",
+        "required": false
+      }
+    ],
+    "project_generation_review": [
+      {
+        "pass_id": "semantic_candidate",
+        "role_id": "semantic_interpreter",
+        "required": false
+      },
+      {
+        "pass_id": "planner_generation",
+        "role_id": "planner",
+        "required": false
+      },
+      {
+        "pass_id": "coder_reasoning",
+        "role_id": "coder",
+        "required": false
+      },
+      {
+        "pass_id": "code_review",
+        "role_id": "code_reviewer",
+        "required": false
+      },
+      {
+        "pass_id": "supervisor_consistency",
+        "role_id": "supervisor",
+        "required": true
+      },
+      {
+        "pass_id": "final_speaker",
+        "role_id": "speaker",
+        "required": false
+      }
+    ],
+    "validation_review": [
+      {
+        "pass_id": "reviewer_evidence",
+        "role_id": "reviewer",
+        "required": false
+      },
+      {
+        "pass_id": "supervisor_validation",
+        "role_id": "supervisor",
+        "required": true
+      },
+      {
+        "pass_id": "interpreter_validation",
+        "role_id": "interpreter",
+        "required": false
+      },
+      {
+        "pass_id": "final_speaker",
+        "role_id": "speaker",
+        "required": false
+      }
+    ],
+    "debug_review": [
+      {
+        "pass_id": "debugger_trace",
+        "role_id": "debugger",
+        "required": false
+      },
+      {
+        "pass_id": "supervisor_consistency",
+        "role_id": "supervisor",
+        "required": true
+      },
+      {
+        "pass_id": "interpreter_explanation",
+        "role_id": "interpreter",
+        "required": false
+      },
+      {
+        "pass_id": "final_speaker",
+        "role_id": "speaker",
+        "required": false
+      }
+    ],
+    "artifact_review": [
+      {
+        "pass_id": "planner_artifact",
+        "role_id": "planner",
+        "required": false
+      },
+      {
+        "pass_id": "artifact_reporter",
+        "role_id": "artifact_writer",
+        "required": false
+      },
+      {
+        "pass_id": "supervisor_consistency",
+        "role_id": "supervisor",
+        "required": true
+      },
+      {
+        "pass_id": "final_speaker",
+        "role_id": "speaker",
+        "required": false
+      }
+    ]
   },
-  "total_roles": 18,
-  "unknown_dependencies": 18
+  "notes": [
+    "readonly pipeline retains deterministic supervisor without duplicating semantic analysis/rendering",
+    "speaker model wording is distinct from CanonicalSpeakerTruth authority"
+  ]
 }

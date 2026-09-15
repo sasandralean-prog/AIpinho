@@ -1,79 +1,817 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "count": 40,
   "stores": [
     {
-      "store": "task_store",
-      "path": "src/aipinho/stores/task_store.py",
-      "type": "store",
-      "data_source": "UNKNOWN",
-      "critical": true
+      "module": "aipinho.schemas.events.contracts",
+      "path": "src/aipinho/schemas/events/contracts.py",
+      "name": "StoredEvent",
+      "methods": [],
+      "line": 60,
+      "classification": "SUPPORTING"
     },
     {
-      "store": "artifact_store",
-      "path": "src/aipinho/stores/artifact_store.py",
-      "type": "store",
-      "data_source": "UNKNOWN",
-      "critical": true
+      "module": "aipinho.services.agents.agent_delegation_store",
+      "path": "src/aipinho/services/agents/agent_delegation_store.py",
+      "name": "AgentDelegationStore",
+      "methods": [
+        "__init__",
+        "save_request",
+        "get_request",
+        "list_requests",
+        "save_policy_decision",
+        "get_policy_decision",
+        "save_result",
+        "get_result"
+      ],
+      "line": 19,
+      "classification": "SUPPORTING"
     },
     {
-      "store": "memory_store",
-      "path": "src/aipinho/stores/memory_store.py",
-      "type": "store",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.services.agents.agent_memory_gateway_store",
+      "path": "src/aipinho/services/agents/agent_memory_gateway_store.py",
+      "name": "AgentMemoryGatewayStore",
+      "methods": [
+        "__init__",
+        "ensure_namespaces",
+        "list_namespaces",
+        "get_namespace",
+        "save_record",
+        "get_record",
+        "list_records",
+        "save_candidate",
+        "get_candidate",
+        "list_candidates",
+        "append_access",
+        "list_access"
+      ],
+      "line": 30,
+      "classification": "SUPPORTING"
     },
     {
-      "store": "event_store",
-      "path": "src/aipinho/stores/event_store.py",
-      "type": "store",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.services.agents.agent_session_store",
+      "path": "src/aipinho/services/agents/agent_session_store.py",
+      "name": "AgentSessionStore",
+      "methods": [
+        "__init__",
+        "create_session",
+        "list_sessions",
+        "get_session",
+        "update_session",
+        "soft_delete_session",
+        "add_message",
+        "list_messages",
+        "save_run",
+        "get_run",
+        "list_runs",
+        "add_event",
+        "list_events",
+        "list_events_by_session",
+        "touch_session",
+        "_write_sessions",
+        "_next_session_sequence",
+        "_messages_path",
+        "_events_path",
+        "_session_sequence_path"
+      ],
+      "line": 33,
+      "classification": "SUPPORTING"
     },
     {
-      "store": "validation_store",
-      "path": "src/aipinho/stores/validation_store.py",
-      "type": "store",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.services.agents.agent_tool_invocation_store",
+      "path": "src/aipinho/services/agents/agent_tool_invocation_store.py",
+      "name": "AgentToolInvocationStore",
+      "methods": [
+        "__init__",
+        "save_invocation",
+        "get_invocation",
+        "list_invocations",
+        "save_artifact",
+        "list_artifacts",
+        "get_artifact",
+        "artifact_content_path"
+      ],
+      "line": 29,
+      "classification": "SUPPORTING"
     },
     {
-      "store": "rag_store",
-      "path": "src/aipinho/stores/rag_store.py",
-      "type": "store",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.services.agents.multi_agent_policy_audit_store",
+      "path": "src/aipinho/services/agents/multi_agent_policy_audit_store.py",
+      "name": "MultiAgentPolicyAuditStore",
+      "methods": [
+        "__init__",
+        "save_policy_decision",
+        "get_policy_decision",
+        "list_policy_decisions",
+        "save_auto_approval",
+        "get_auto_approval",
+        "list_auto_approvals"
+      ],
+      "line": 19,
+      "classification": "SUPPORTING"
     },
     {
-      "store": "workspace_store",
-      "path": "src/aipinho/stores/workspace_store.py",
-      "type": "store",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.services.agents.workspace_lock_service",
+      "path": "src/aipinho/services/agents/workspace_lock_service.py",
+      "name": "WorkspaceLockStore",
+      "methods": [
+        "__init__",
+        "_path",
+        "save",
+        "get",
+        "list"
+      ],
+      "line": 48,
+      "classification": "SUPPORTING"
     },
     {
-      "store": "tool_store",
-      "path": "src/aipinho/stores/tool_store.py",
-      "type": "store",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.services.approvals.approval_store",
+      "path": "src/aipinho/services/approvals/approval_store.py",
+      "name": "ApprovalStore",
+      "methods": [
+        "__init__",
+        "_path",
+        "_events_path",
+        "save",
+        "get",
+        "list",
+        "append_event",
+        "list_events",
+        "status"
+      ],
+      "line": 28,
+      "classification": "SUPPORTING"
     },
     {
-      "store": "model_store",
-      "path": "src/aipinho/stores/model_store.py",
-      "type": "store",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.services.artifacts.artifact_preview_store",
+      "path": "src/aipinho/services/artifacts/artifact_preview_store.py",
+      "name": "ArtifactPreviewStore",
+      "methods": [
+        "__init__",
+        "save_draft",
+        "get_draft",
+        "save_preview",
+        "get_preview",
+        "list_previews",
+        "save_trace",
+        "get_trace",
+        "update_preview_status",
+        "sanitize",
+        "_omit_source_content",
+        "_draft_path",
+        "_preview_path",
+        "_trace_path",
+        "_write",
+        "_read",
+        "status"
+      ],
+      "line": 19,
+      "classification": "SUPPORTING"
     },
     {
-      "store": "transfer_store",
-      "path": "src/aipinho/stores/transfer_store.py",
-      "type": "store",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.services.artifacts.artifact_write_store",
+      "path": "src/aipinho/services/artifacts/artifact_write_store.py",
+      "name": "ArtifactWriteStore",
+      "methods": [
+        "__init__",
+        "create_run",
+        "update_run",
+        "get_run",
+        "list_runs",
+        "append_event",
+        "get_events",
+        "save_result",
+        "get_result",
+        "save_trace",
+        "get_trace",
+        "sanitize",
+        "_run_path",
+        "_events_path",
+        "_result_path",
+        "_trace_path",
+        "_validate_id",
+        "_write",
+        "_read",
+        "status"
+      ],
+      "line": 17,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.artifacts.observation_evidence_checkpoint_service",
+      "path": "src/aipinho/services/artifacts/observation_evidence_checkpoint_service.py",
+      "name": "RuntimeObservationEvidenceCheckpointStore",
+      "methods": [
+        "write_checkpoint",
+        "resolve_checkpoint"
+      ],
+      "line": 40,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.autopilot.workflow_v2_service",
+      "path": "src/aipinho/services/autopilot/workflow_v2_service.py",
+      "name": "WorkflowStore",
+      "methods": [
+        "__init__",
+        "save_plan",
+        "get_plan",
+        "list_plans",
+        "save_run",
+        "get_run",
+        "list_runs",
+        "save_checkpoint",
+        "get_checkpoint",
+        "list_checkpoints",
+        "save_recovery",
+        "get_recovery",
+        "list_recoveries",
+        "save_approval",
+        "get_approval",
+        "list_approvals",
+        "save_step_result",
+        "get_step_result",
+        "list_step_results",
+        "save_replay",
+        "list_replays",
+        "save_report",
+        "list_reports"
+      ],
+      "line": 62,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.codex_agent.codex_agent_store",
+      "path": "src/aipinho/services/codex_agent/codex_agent_store.py",
+      "name": "CodexAgentStore",
+      "methods": [
+        "__init__",
+        "create",
+        "list",
+        "get",
+        "rename",
+        "delete",
+        "add_message",
+        "messages",
+        "create_run",
+        "save_run",
+        "get_run",
+        "list_runs",
+        "latest_run",
+        "update_run",
+        "add_event",
+        "events",
+        "add_artifact",
+        "artifacts",
+        "get_artifact",
+        "touch",
+        "_write_sessions"
+      ],
+      "line": 12,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.codex_agent.codex_governed_contract_store",
+      "path": "src/aipinho/services/codex_agent/codex_governed_contract_store.py",
+      "name": "CodexGovernedContractStore",
+      "methods": [
+        "__init__",
+        "save",
+        "get",
+        "list",
+        "_path"
+      ],
+      "line": 11,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.context.context_core",
+      "path": "src/aipinho/services/context/context_core.py",
+      "name": "ContextBundleStore",
+      "methods": [
+        "save"
+      ],
+      "line": 188,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.debugger.debugger_trace_store",
+      "path": "src/aipinho/services/debugger/debugger_trace_store.py",
+      "name": "DebuggerTraceStore",
+      "methods": [
+        "__init__",
+        "get",
+        "list_recent",
+        "status"
+      ],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.evals.eval_run_store",
+      "path": "src/aipinho/services/evals/eval_run_store.py",
+      "name": "EvalRunStore",
+      "methods": [
+        "__init__",
+        "save",
+        "get",
+        "list"
+      ],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.events.event_core",
+      "path": "src/aipinho/services/events/event_core.py",
+      "name": "EventRawPayloadStore",
+      "methods": [
+        "__init__",
+        "store",
+        "read"
+      ],
+      "line": 145,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.events.event_core",
+      "path": "src/aipinho/services/events/event_core.py",
+      "name": "EventStoreRepository",
+      "methods": [
+        "__init__",
+        "append",
+        "list",
+        "cursor",
+        "get"
+      ],
+      "line": 166,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.external_collaboration_store",
+      "path": "src/aipinho/services/external_collaboration_store.py",
+      "name": "ExternalCollaborationStore",
+      "methods": [
+        "__init__",
+        "save_success_contract",
+        "get_success_contract",
+        "save_task",
+        "get_task",
+        "save_review",
+        "get_review",
+        "list_reviews",
+        "save_evaluation",
+        "get_evaluation",
+        "list_evaluations",
+        "save_conversation",
+        "get_conversation",
+        "save_collaboration_session",
+        "get_collaboration_session",
+        "list_collaboration_sessions",
+        "save_delegation",
+        "get_delegation",
+        "list_delegations",
+        "_save",
+        "_get",
+        "_list",
+        "_path",
+        "_sanitize"
+      ],
+      "line": 26,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.gemini_executor.gemini_executor_session_store",
+      "path": "src/aipinho/services/gemini_executor/gemini_executor_session_store.py",
+      "name": "GeminiExecutorSessionStore",
+      "methods": [
+        "__init__",
+        "create",
+        "list",
+        "get",
+        "rename",
+        "delete",
+        "touch",
+        "add_message",
+        "messages",
+        "_write_sessions"
+      ],
+      "line": 12,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.memory.curated_memory_store",
+      "path": "src/aipinho/services/memory/curated_memory_store.py",
+      "name": "CuratedMemoryStore",
+      "methods": [
+        "__init__",
+        "_path",
+        "_events_path",
+        "_trace_path",
+        "_versions_path",
+        "save_memory",
+        "get_memory",
+        "list_memories",
+        "append_event",
+        "get_events",
+        "save_trace",
+        "get_trace",
+        "save_versions",
+        "get_versions",
+        "status",
+        "_hash",
+        "_sanitize"
+      ],
+      "line": 24,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.memory.memory_candidate_store",
+      "path": "src/aipinho/services/memory/memory_candidate_store.py",
+      "name": "MemoryCandidateStore",
+      "methods": [
+        "__init__",
+        "_path",
+        "_events_path",
+        "_trace_path",
+        "save_candidate",
+        "get_candidate",
+        "list_candidates",
+        "update_candidate_status",
+        "append_event",
+        "get_events",
+        "save_trace",
+        "get_trace",
+        "status",
+        "_sanitize"
+      ],
+      "line": 23,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.models.real_inference_run_store",
+      "path": "src/aipinho/services/models/real_inference_run_store.py",
+      "name": "RealInferenceRunStore",
+      "methods": [
+        "__init__",
+        "save_run",
+        "get_run",
+        "append_event",
+        "list_events",
+        "status"
+      ],
+      "line": 13,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.orchestration.task_draft_store",
+      "path": "src/aipinho/services/orchestration/task_draft_store.py",
+      "name": "TaskDraftStore",
+      "methods": [
+        "__init__",
+        "_path",
+        "_events_path",
+        "save",
+        "get",
+        "delete",
+        "append_event",
+        "list_events",
+        "status"
+      ],
+      "line": 28,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.orchestration.task_preview_store",
+      "path": "src/aipinho/services/orchestration/task_preview_store.py",
+      "name": "TaskPreviewStore",
+      "methods": [
+        "__init__",
+        "_path",
+        "_events_path",
+        "save",
+        "get",
+        "append_event",
+        "list_events",
+        "status"
+      ],
+      "line": 28,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.patching.apply.patch_apply_store",
+      "path": "src/aipinho/services/patching/apply/patch_apply_store.py",
+      "name": "PatchApplyStore",
+      "methods": [
+        "__init__",
+        "save_run",
+        "get_run",
+        "list_runs",
+        "append_event",
+        "get_events",
+        "save_result",
+        "get_result",
+        "save_trace",
+        "get_trace",
+        "sanitize",
+        "_run_path",
+        "_events_path",
+        "_result_path",
+        "_trace_path",
+        "_validate_id",
+        "_write",
+        "_read",
+        "status"
+      ],
+      "line": 18,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.patching.patch_plan_store",
+      "path": "src/aipinho/services/patching/patch_plan_store.py",
+      "name": "PatchPlanStore",
+      "methods": [
+        "__init__",
+        "save_plan",
+        "get_plan",
+        "list_plans",
+        "save_diff",
+        "get_diff",
+        "save_evidence",
+        "get_evidence",
+        "save_risk",
+        "get_risk",
+        "save_trace",
+        "get_trace",
+        "sanitize",
+        "_plan_path",
+        "_diff_path",
+        "_evidence_path",
+        "_risk_path",
+        "_trace_path",
+        "_validate_id",
+        "_write",
+        "_read",
+        "status"
+      ],
+      "line": 18,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.patching.quality.patch_quality_store",
+      "path": "src/aipinho/services/patching/quality/patch_quality_store.py",
+      "name": "PatchQualityStore",
+      "methods": [
+        "__init__",
+        "save_result",
+        "get_result",
+        "get_trace",
+        "get_latest_for_plan",
+        "list_results",
+        "sanitize",
+        "_result_path",
+        "_trace_path",
+        "_latest_for_plan_path",
+        "_validate_quality_id",
+        "_validate_plan_id",
+        "_write",
+        "_read",
+        "status"
+      ],
+      "line": 15,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.rag.vector.vector_index_store",
+      "path": "src/aipinho/services/rag/vector/vector_index_store.py",
+      "name": "VectorIndexStore",
+      "methods": [
+        "__init__",
+        "namespace_path",
+        "index",
+        "load_chunks",
+        "save_chunks",
+        "_read_json",
+        "status"
+      ],
+      "line": 11,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.realtime.realtime_core",
+      "path": "src/aipinho/services/realtime/realtime_core.py",
+      "name": "RealtimeEventStore",
+      "methods": [
+        "list"
+      ],
+      "line": 16,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.replay.replay_core",
+      "path": "src/aipinho/services/replay/replay_core.py",
+      "name": "ReplayStoreService",
+      "methods": [
+        "__init__"
+      ],
+      "line": 97,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.roles.role_model_run_store",
+      "path": "src/aipinho/services/roles/role_model_run_store.py",
+      "name": "RoleModelRunStore",
+      "methods": [
+        "__init__",
+        "save",
+        "get",
+        "list_runs",
+        "status"
+      ],
+      "line": 10,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.runtime.runtime_payload_ref_store",
+      "path": "src/aipinho/services/runtime/runtime_payload_ref_store.py",
+      "name": "RuntimePayloadRefStore",
+      "methods": [
+        "__init__",
+        "write_payload_ref",
+        "serialize_payload",
+        "write_serialized_payload_ref",
+        "read_payload_ref",
+        "_resolve_ref",
+        "payload_summary",
+        "light_row"
+      ],
+      "line": 12,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.runtime.task_run_store",
+      "path": "src/aipinho/services/runtime/task_run_store.py",
+      "name": "TaskRunStore",
+      "methods": [
+        "__init__",
+        "create_run",
+        "update_run",
+        "get_run",
+        "get_run_lightweight",
+        "get_run_index",
+        "get_run_by_task_id",
+        "list_runs",
+        "_run_index_matches",
+        "_run_index_payload",
+        "list_queue_runs",
+        "compact_run_storage",
+        "rebuild_run_index",
+        "append_event",
+        "get_events",
+        "save_result",
+        "get_result",
+        "_read_result_model",
+        "ensure_terminal_result",
+        "terminalize_if_runtime_budget_exceeded",
+        "terminalize_if_artifact_creation_stalled",
+        "_terminal_event_types",
+        "_terminal_statuses",
+        "_terminal_event_type_for_result",
+        "_artifact_creation_in_progress",
+        "_artifact_stall_reason_code",
+        "_last_artifact_render_checkpoint",
+        "_has_artifact_terminal_after",
+        "_event_elapsed_seconds",
+        "_stalled_artifact_row",
+        "_has_artifact_for_logical_path",
+        "_try_semantic_terminal_result",
+        "_terminal_reason_code",
+        "_terminal_event_reason_code",
+        "_terminal_artifact_state",
+        "_first_terminal_event",
+        "_append_terminalization_ignored",
+        "save_trace",
+        "get_trace",
+        "sanitize",
+        "light_summary",
+        "_run_dir",
+        "_write_run_index",
+        "_write_run_index_from_data",
+        "_write",
+        "_read",
+        "_read_task_run",
+        "_hydrate_payload_refs",
+        "_project_payload_refs_for_model",
+        "_is_spilled_payload_ref",
+        "_read_payload_ref",
+        "_cohere_terminal_result",
+        "_runtime_started_at",
+        "_lighten_for_inline",
+        "_should_spill",
+        "_spill_or_summary",
+        "_payload_summary",
+        "_light_row",
+        "status"
+      ],
+      "line": 180,
+      "classification": "CANONICAL"
+    },
+    {
+      "module": "aipinho.services.sandbox.sandbox_store_service",
+      "path": "src/aipinho/services/sandbox/sandbox_store_service.py",
+      "name": "SandboxStoreService",
+      "methods": [
+        "__init__",
+        "save_workspace",
+        "list_workspaces",
+        "get_workspace",
+        "save_task",
+        "list_tasks",
+        "get_task",
+        "append_trace",
+        "list_trace",
+        "save_file_operation",
+        "save_shell_command",
+        "save_artifact_export",
+        "list_artifact_exports",
+        "get_artifact_export",
+        "save_cleanup_preview",
+        "get_cleanup_preview",
+        "_dir",
+        "_save",
+        "_get",
+        "_list"
+      ],
+      "line": 21,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.self_healing.self_healing_service",
+      "path": "src/aipinho/services/self_healing/self_healing_service.py",
+      "name": "SelfHealingStore",
+      "methods": [
+        "__init__",
+        "list_candidates",
+        "save_candidate",
+        "get_candidate",
+        "list_runs",
+        "save_run",
+        "get_run",
+        "_read",
+        "_write"
+      ],
+      "line": 111,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.session.session_store",
+      "path": "src/aipinho/services/session/session_store.py",
+      "name": "SessionStore",
+      "methods": [
+        "__init__",
+        "_path",
+        "_events_path",
+        "save",
+        "get",
+        "delete",
+        "append_event",
+        "list_events",
+        "status"
+      ],
+      "line": 33,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.transfers.transfer_store",
+      "path": "src/aipinho/services/transfers/transfer_store.py",
+      "name": "TransferStore",
+      "methods": [
+        "__init__",
+        "save",
+        "get"
+      ],
+      "line": 4,
+      "classification": "SUPPORTING"
+    },
+    {
+      "module": "aipinho.services.validation.validation_store",
+      "path": "src/aipinho/services/validation/validation_store.py",
+      "name": "ValidationStore",
+      "methods": [
+        "__init__",
+        "save_result",
+        "get_result",
+        "save_trace",
+        "get_trace",
+        "list_results",
+        "_dir",
+        "_write",
+        "_read",
+        "status"
+      ],
+      "line": 14,
+      "classification": "SUPPORTING"
     }
-  ],
-  "total_stores": 10,
-  "critical_stores": 2,
-  "non_critical_stores": 8
+  ]
 }

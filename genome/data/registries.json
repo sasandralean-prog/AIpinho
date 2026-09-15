@@ -1,72 +1,711 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "count": 47,
   "registries": [
     {
-      "registry": "role_registry",
-      "path": "src/aipinho/registries/role_registry.py",
-      "type": "registry",
-      "data_source": "config/roles/",
-      "critical": true
+      "module": "aipinho.api.routers.route_registry_router",
+      "path": "src/aipinho/api/routers/route_registry_router.py",
+      "package": "api",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [
+        "list_routes"
+      ],
+      "imports": [
+        "aipinho.registries.route_registry"
+      ],
+      "imported_by_count": 0
     },
     {
-      "registry": "route_registry",
-      "path": "src/aipinho/registries/route_registry.py",
-      "type": "registry",
-      "data_source": "config/routes/",
-      "critical": true
+      "module": "aipinho.api.routers.tool_registry_router",
+      "path": "src/aipinho/api/routers/tool_registry_router.py",
+      "package": "api",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [
+        "governed_tool_status",
+        "tool_catalog",
+        "tool_permission_preview",
+        "tool_invocation_preview",
+        "governed_tool_detail"
+      ],
+      "imports": [
+        "aipinho.services.tools.tool_contract_core",
+        "aipinho.services.tools.tool_registry_service"
+      ],
+      "imported_by_count": 0
     },
     {
-      "registry": "action_registry",
+      "module": "aipinho.registries.__init__",
+      "path": "src/aipinho/registries/__init__.py",
+      "package": "registries",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.registries.action_registry",
       "path": "src/aipinho/registries/action_registry.py",
-      "type": "registry",
-      "data_source": "config/policies/",
-      "critical": true
+      "package": "registries",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.policy_kernel.action_registry_service"
+      ],
+      "imported_by_count": 0
     },
     {
-      "registry": "capability_registry",
+      "module": "aipinho.registries.capability_registry",
       "path": "src/aipinho/registries/capability_registry.py",
-      "type": "registry",
-      "data_source": "config/policies/",
-      "critical": true
+      "package": "registries",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.policy_kernel.capability_gate_service"
+      ],
+      "imported_by_count": 0
     },
     {
-      "registry": "tool_registry",
-      "path": "src/aipinho/registries/tool_registry.py",
-      "type": "registry",
-      "data_source": "config/tools/",
-      "critical": true
-    },
-    {
-      "registry": "model_registry",
+      "module": "aipinho.registries.model_registry",
       "path": "src/aipinho/registries/model_registry.py",
-      "type": "registry",
-      "data_source": "config/models/",
-      "critical": true
+      "package": "registries",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 0
     },
     {
-      "registry": "skill_registry",
+      "module": "aipinho.registries.provider_registry",
+      "path": "src/aipinho/registries/provider_registry.py",
+      "package": "registries",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.registries.role_registry",
+      "path": "src/aipinho/registries/role_registry.py",
+      "package": "registries",
+      "classification": "SUPPORTING",
+      "classes": [
+        "RoleRegistry"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.exceptions",
+        "aipinho.core.paths",
+        "aipinho.schemas.roles.role_definition",
+        "aipinho.services.policy_kernel.action_registry_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.registries.route_registry",
+      "path": "src/aipinho/registries/route_registry.py",
+      "package": "registries",
+      "classification": "SUPPORTING",
+      "classes": [
+        "RouteRegistry"
+      ],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.registries.skill_registry",
       "path": "src/aipinho/registries/skill_registry.py",
-      "type": "registry",
-      "data_source": "config/skills/",
-      "critical": false
+      "package": "registries",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 0
     },
     {
-      "registry": "template_registry",
-      "path": "src/aipinho/registries/template_registry.py",
-      "type": "registry",
-      "data_source": "config/templates/",
-      "critical": false
+      "module": "aipinho.registries.tool_registry",
+      "path": "src/aipinho/registries/tool_registry.py",
+      "package": "registries",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 0
     },
     {
-      "registry": "policy_registry",
-      "path": "src/aipinho/registries/policy_registry.py",
-      "type": "registry",
-      "data_source": "config/policies/",
-      "critical": true
+      "module": "aipinho.repositories.skills.skill_registry_repository",
+      "path": "src/aipinho/repositories/skills/skill_registry_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.skills.skill_repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.tools.tool_registry_repository",
+      "path": "src/aipinho/repositories/tools/tool_registry_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolRegistryRepository"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.schemas.events.event_contract_registry",
+      "path": "src/aipinho/schemas/events/event_contract_registry.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.events.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.models.model_registry",
+      "path": "src/aipinho/schemas/models/model_registry.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ModelRegistrySnapshot"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base",
+        "aipinho.schemas.models.model_definition"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.semantic_runtime.capability_registry",
+      "path": "src/aipinho/schemas/semantic_runtime/capability_registry.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "CapabilityContract",
+        "CapabilityModelBinding",
+        "CapabilitySelection"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.schemas.skills.skill_registry_entry",
+      "path": "src/aipinho/schemas/skills/skill_registry_entry.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.skills.contracts"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.tools.tool_registry_entry",
+      "path": "src/aipinho/schemas/tools/tool_registry_entry.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.tools.contracts_v2"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.schemas.tools.tool_registry_status",
+      "path": "src/aipinho/schemas/tools/tool_registry_status.py",
+      "package": "schemas",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolRegistryStatus"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.common.base"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.agents.agent_profile_registry_service",
+      "path": "src/aipinho/services/agents/agent_profile_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "AgentProfileRegistryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.contracts",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.agents.agent_tool_registry_service",
+      "path": "src/aipinho/services/agents/agent_tool_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "AgentToolRegistryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.tool_gateway",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.artifacts.artifact_registry_repository",
+      "path": "src/aipinho/services/artifacts/artifact_registry_repository.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.artifacts.artifact_interaction_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.artifacts.universal_artifact_registry_service",
+      "path": "src/aipinho/services/artifacts/universal_artifact_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "UniversalArtifactRegistryService"
+      ],
+      "functions": [
+        "_dump_model"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.agents.tool_gateway",
+        "aipinho.schemas.artifacts.artifact_interaction_contracts",
+        "aipinho.schemas.events.contracts",
+        "aipinho.services.agents.agent_tool_invocation_store",
+        "aipinho.services.artifacts.artifact_interaction_core",
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 5
+    },
+    {
+      "module": "aipinho.services.events.event_contract_registry_service",
+      "path": "src/aipinho/services/events/event_contract_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.external_adapter_registry",
+      "path": "src/aipinho/services/external_adapter_registry.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ExternalAdapter",
+        "GeminiExternalAdapter",
+        "ExternalAdapterRegistry"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.external_collaboration",
+        "aipinho.services.external_speaker_truth_auditor",
+        "aipinho.services.runtime.delegation_truth_validator"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.maintenance.invariant_registry_service",
+      "path": "src/aipinho/services/maintenance/invariant_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.maintenance.maintenance_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.models.model_provider_registry_service",
+      "path": "src/aipinho/services/models/model_provider_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ModelProviderRegistryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.services.models.provider_registry_service"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.models.model_registry_service",
+      "path": "src/aipinho/services/models/model_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ModelRegistryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.models.model_definition",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 24
+    },
+    {
+      "module": "aipinho.services.models.provider_registry_service",
+      "path": "src/aipinho/services/models/provider_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ProviderRegistryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.models.model_provider",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 19
+    },
+    {
+      "module": "aipinho.services.pinhoforge_bridge.pinhoforge_workflow_provider_registry",
+      "path": "src/aipinho/services/pinhoforge_bridge/pinhoforge_workflow_provider_registry.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "BridgeWorkflowRecipe",
+        "PinhoForgeWorkflowProviderRegistry"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.services.pinhoforge_bridge.pinhoforge_android_workbench_provider",
+        "aipinho.services.pinhoforge_bridge.pinhoforge_conversion_provider",
+        "aipinho.services.pinhoforge_bridge.pinhoforge_hardware_profiler_provider",
+        "aipinho.services.pinhoforge_bridge.pinhoforge_media_3d_provider",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.policy_kernel.action_registry_service",
+      "path": "src/aipinho/services/policy_kernel/action_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ActionRegistryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.exceptions",
+        "aipinho.core.paths",
+        "aipinho.schemas.policy.action",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 13
+    },
+    {
+      "module": "aipinho.services.projects.project_profile_registry_service",
+      "path": "src/aipinho/services/projects/project_profile_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ProjectProfileRegistryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.projects",
+        "aipinho.services.projects.project_profile_detector",
+        "aipinho.services.projects.project_profile_secret_scanner"
+      ],
+      "imported_by_count": 6
+    },
+    {
+      "module": "aipinho.services.providers.provider_registry_service",
+      "path": "src/aipinho/services/providers/provider_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.rag.retrieval_source_registry",
+      "path": "src/aipinho/services/rag/retrieval_source_registry.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "RetrievalSourceRegistry"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.rag.retrieval_request",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 7
+    },
+    {
+      "module": "aipinho.services.rag.source_registry_service",
+      "path": "src/aipinho/services/rag/source_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SourceRegistryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.services.rag.retrieval_source_registry"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.rag.vector.vector_index_registry",
+      "path": "src/aipinho/services/rag/vector/vector_index_registry.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "VectorIndexRegistry"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.rag.vector.contracts",
+        "aipinho.services.rag.vector.config"
+      ],
+      "imported_by_count": 10
+    },
+    {
+      "module": "aipinho.services.roles.role_registry_service",
+      "path": "src/aipinho/services/roles/role_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "RoleRegistryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.roles.role_definition",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 6
+    },
+    {
+      "module": "aipinho.services.runtime.phase_dependency_contract_registry",
+      "path": "src/aipinho/services/runtime/phase_dependency_contract_registry.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "PhaseDependencyContractRegistry"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.runtime.phase_dependency_evaluation"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.runtime.worker_registry_service",
+      "path": "src/aipinho/services/runtime/worker_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "WorkerRegistryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.runtime.task_run_step",
+        "aipinho.schemas.runtime.worker_contract",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 1
+    },
+    {
+      "module": "aipinho.services.semantic_runtime.semantic_capability_registry",
+      "path": "src/aipinho/services/semantic_runtime/semantic_capability_registry.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SemanticCapabilityRegistry"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.roles.role_model_binding",
+        "aipinho.schemas.semantic_runtime.capability_registry",
+        "aipinho.services.roles.role_model_binding_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 2
+    },
+    {
+      "module": "aipinho.services.skills.skill_manifest_registry_service",
+      "path": "src/aipinho/services/skills/skill_manifest_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SkillManifestValidatorV2",
+        "SkillManifestRegistryService"
+      ],
+      "functions": [
+        "_base_policy",
+        "_artifact_policy",
+        "_validation_policy",
+        "_seed_manifests"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.skills.contracts",
+        "aipinho.services.agents.agent_tool_registry_service",
+        "aipinho.services.events.event_core",
+        "aipinho.services.projects.project_profile_registry_service",
+        "aipinho.services.projects.project_profile_secret_scanner"
+      ],
+      "imported_by_count": 7
+    },
+    {
+      "module": "aipinho.services.skills.skill_pack_registry_service",
+      "path": "src/aipinho/services/skills/skill_pack_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SkillPackValidator",
+        "SkillPackRegistry",
+        "SkillPackExecutionService"
+      ],
+      "functions": [
+        "_tokens",
+        "_search_text"
+      ],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.events.contracts",
+        "aipinho.schemas.skills.contracts",
+        "aipinho.schemas.skills.skill_packs",
+        "aipinho.services.events.event_core",
+        "aipinho.services.projects.project_profile_secret_scanner",
+        "aipinho.services.skills.skill_execution_service",
+        "aipinho.services.skills.skill_manifest_registry_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.skills.skill_registry_service",
+      "path": "src/aipinho/services/skills/skill_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.skills.skill_runtime_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.supervisor.service_registry_service",
+      "path": "src/aipinho/services/supervisor/service_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.supervisor.supervisor_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.services.templates.template_registry_service",
+      "path": "src/aipinho/services/templates/template_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "TemplateRegistryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.templates",
+        "aipinho.services.templates.template_validator",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 3
+    },
+    {
+      "module": "aipinho.services.tools.tool_registry_service",
+      "path": "src/aipinho/services/tools/tool_registry_service.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolRegistryService"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.exceptions",
+        "aipinho.core.paths",
+        "aipinho.schemas.tools.tool_definition",
+        "aipinho.services.policy_kernel.action_registry_service",
+        "aipinho.services.policy_kernel.capability_gate_service",
+        "aipinho.utils.yaml_loader"
+      ],
+      "imported_by_count": 7
+    },
+    {
+      "module": "aipinho.services.vision.vision_model_registry",
+      "path": "src/aipinho/services/vision/vision_model_registry.py",
+      "package": "services",
+      "classification": "SUPPORTING",
+      "classes": [
+        "VisionModelRegistry"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.schemas.vision.contracts",
+        "aipinho.services.models.model_registry_service",
+        "aipinho.services.vision.config"
+      ],
+      "imported_by_count": 4
     }
-  ],
-  "total_registries": 9,
-  "critical_registries": 7,
-  "non_critical_registries": 2
+  ]
 }

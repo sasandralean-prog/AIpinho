@@ -1,79 +1,657 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "count": 52,
   "repositories": [
     {
-      "repository": "task_repository",
-      "path": "src/aipinho/repositories/task_repository.py",
-      "type": "repository",
-      "data_source": "UNKNOWN",
-      "critical": true
+      "module": "aipinho.repositories.__init__",
+      "path": "src/aipinho/repositories/__init__.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 0
     },
     {
-      "repository": "artifact_repository",
-      "path": "src/aipinho/repositories/artifact_repository.py",
-      "type": "repository",
-      "data_source": "UNKNOWN",
-      "critical": true
+      "module": "aipinho.repositories.artifacts.artifact_repository",
+      "path": "src/aipinho/repositories/artifacts/artifact_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.artifacts.artifact_interaction_core"
+      ],
+      "imported_by_count": 0
     },
     {
-      "repository": "approval_repository",
-      "path": "src/aipinho/repositories/approval_repository.py",
-      "type": "repository",
-      "data_source": "UNKNOWN",
-      "critical": true
+      "module": "aipinho.repositories.context.__init__",
+      "path": "src/aipinho/repositories/context/__init__.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 0
     },
     {
-      "repository": "memory_repository",
-      "path": "src/aipinho/repositories/memory_repository.py",
-      "type": "repository",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.repositories.context.context_bundle_repository",
+      "path": "src/aipinho/repositories/context/context_bundle_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.context.context_core"
+      ],
+      "imported_by_count": 0
     },
     {
-      "repository": "event_repository",
-      "path": "src/aipinho/repositories/event_repository.py",
-      "type": "repository",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.repositories.context.context_cache_repository",
+      "path": "src/aipinho/repositories/context/context_cache_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.context.context_core"
+      ],
+      "imported_by_count": 0
     },
     {
-      "repository": "validation_repository",
-      "path": "src/aipinho/repositories/validation_repository.py",
-      "type": "repository",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.repositories.context.context_trace_repository",
+      "path": "src/aipinho/repositories/context/context_trace_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.context.context_core"
+      ],
+      "imported_by_count": 0
     },
     {
-      "repository": "rag_repository",
-      "path": "src/aipinho/repositories/rag_repository.py",
-      "type": "repository",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.repositories.context.smart_chunk_repository",
+      "path": "src/aipinho/repositories/context/smart_chunk_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.context.context_core"
+      ],
+      "imported_by_count": 0
     },
     {
-      "repository": "workspace_repository",
-      "path": "src/aipinho/repositories/workspace_repository.py",
-      "type": "repository",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.repositories.events.event_contract_repository",
+      "path": "src/aipinho/repositories/events/event_contract_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
     },
     {
-      "repository": "tool_repository",
-      "path": "src/aipinho/repositories/tool_repository.py",
-      "type": "repository",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.repositories.events.event_store_repository",
+      "path": "src/aipinho/repositories/events/event_store_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.events.event_core"
+      ],
+      "imported_by_count": 0
     },
     {
-      "repository": "model_repository",
-      "path": "src/aipinho/repositories/model_repository.py",
-      "type": "repository",
-      "data_source": "UNKNOWN",
-      "critical": false
+      "module": "aipinho.repositories.interaction.chat_message_repository",
+      "path": "src/aipinho/repositories/interaction/chat_message_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.interaction.interaction_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.interaction.chat_session_repository",
+      "path": "src/aipinho/repositories/interaction/chat_session_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.interaction.interaction_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.interaction.chat_timeline_repository",
+      "path": "src/aipinho/repositories/interaction/chat_timeline_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.interaction.interaction_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.interaction.feedback_repository",
+      "path": "src/aipinho/repositories/interaction/feedback_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.interaction.interaction_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.interaction.raw_payload_repository",
+      "path": "src/aipinho/repositories/interaction/raw_payload_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.interaction.interaction_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.legacy_rag.__init__",
+      "path": "src/aipinho/repositories/legacy_rag/__init__.py",
+      "package": "repositories",
+      "classification": "LEGACY",
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.legacy_rag.legacy_rag_audit_repository",
+      "path": "src/aipinho/repositories/legacy_rag/legacy_rag_audit_repository.py",
+      "package": "repositories",
+      "classification": "LEGACY",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.legacy_rag.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.legacy_rag.legacy_rag_chunk_repository",
+      "path": "src/aipinho/repositories/legacy_rag/legacy_rag_chunk_repository.py",
+      "package": "repositories",
+      "classification": "LEGACY",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.legacy_rag.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.legacy_rag.legacy_rag_conflict_repository",
+      "path": "src/aipinho/repositories/legacy_rag/legacy_rag_conflict_repository.py",
+      "package": "repositories",
+      "classification": "LEGACY",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.legacy_rag.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.legacy_rag.legacy_rag_inventory_repository",
+      "path": "src/aipinho/repositories/legacy_rag/legacy_rag_inventory_repository.py",
+      "package": "repositories",
+      "classification": "LEGACY",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.legacy_rag.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.legacy_rag.legacy_rag_namespace_repository",
+      "path": "src/aipinho/repositories/legacy_rag/legacy_rag_namespace_repository.py",
+      "package": "repositories",
+      "classification": "LEGACY",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.legacy_rag.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.legacy_rag.legacy_rag_review_repository",
+      "path": "src/aipinho/repositories/legacy_rag/legacy_rag_review_repository.py",
+      "package": "repositories",
+      "classification": "LEGACY",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.legacy_rag.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.legacy_rag.repositories",
+      "path": "src/aipinho/repositories/legacy_rag/repositories.py",
+      "package": "repositories",
+      "classification": "LEGACY",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.legacy_rag.legacy_core"
+      ],
+      "imported_by_count": 6
+    },
+    {
+      "module": "aipinho.repositories.maintenance.__init__",
+      "path": "src/aipinho/repositories/maintenance/__init__.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.maintenance.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.maintenance.invariant_repository",
+      "path": "src/aipinho/repositories/maintenance/invariant_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.maintenance.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.maintenance.lesson_candidate_repository",
+      "path": "src/aipinho/repositories/maintenance/lesson_candidate_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.maintenance.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.maintenance.maintenance_audit_repository",
+      "path": "src/aipinho/repositories/maintenance/maintenance_audit_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.maintenance.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.maintenance.maintenance_run_repository",
+      "path": "src/aipinho/repositories/maintenance/maintenance_run_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.maintenance.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.maintenance.maintenance_trace_repository",
+      "path": "src/aipinho/repositories/maintenance/maintenance_trace_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.maintenance.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.maintenance.repair_proposal_repository",
+      "path": "src/aipinho/repositories/maintenance/repair_proposal_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.maintenance.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.maintenance.repositories",
+      "path": "src/aipinho/repositories/maintenance/repositories.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [
+        "JsonModelRepository",
+        "MaintenanceRunRepository",
+        "MaintenanceTraceRepository",
+        "RepairProposalRepository",
+        "LessonCandidateRepository",
+        "MaintenanceAuditRepository",
+        "InvariantRepository"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.maintenance.contracts"
+      ],
+      "imported_by_count": 8
+    },
+    {
+      "module": "aipinho.repositories.realtime.realtime_event_repository",
+      "path": "src/aipinho/repositories/realtime/realtime_event_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.realtime.realtime_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.realtime.sync_cursor_repository",
+      "path": "src/aipinho/repositories/realtime/sync_cursor_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.services.realtime.realtime_core"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.regression.__init__",
+      "path": "src/aipinho/repositories/regression/__init__.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.regression.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.regression.regression_case_repository",
+      "path": "src/aipinho/repositories/regression/regression_case_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.regression.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.regression.regression_report_repository",
+      "path": "src/aipinho/repositories/regression/regression_report_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.regression.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.regression.regression_run_repository",
+      "path": "src/aipinho/repositories/regression/regression_run_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.regression.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.regression.regression_suite_repository",
+      "path": "src/aipinho/repositories/regression/regression_suite_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.regression.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.regression.repositories",
+      "path": "src/aipinho/repositories/regression/repositories.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [
+        "JsonRepository",
+        "RegressionCaseRepository",
+        "RegressionCandidateRepository",
+        "RegressionSuiteRepository",
+        "RegressionRunRepository",
+        "RegressionReportRepository"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.regression.contracts"
+      ],
+      "imported_by_count": 7
+    },
+    {
+      "module": "aipinho.repositories.replay.__init__",
+      "path": "src/aipinho/repositories/replay/__init__.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.replay.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.replay.replay_case_repository",
+      "path": "src/aipinho/repositories/replay/replay_case_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.replay.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.replay.replay_run_repository",
+      "path": "src/aipinho/repositories/replay/replay_run_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.replay.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.replay.replay_snapshot_repository",
+      "path": "src/aipinho/repositories/replay/replay_snapshot_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.replay.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.replay.replay_trace_repository",
+      "path": "src/aipinho/repositories/replay/replay_trace_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.replay.repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.replay.repositories",
+      "path": "src/aipinho/repositories/replay/repositories.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [
+        "JsonRepository",
+        "ReplaySnapshotRepository",
+        "ReplayCaseRepository",
+        "ReplayRunRepository",
+        "ReplayTraceRepository",
+        "ReplayDiffRepository"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths",
+        "aipinho.schemas.replay.contracts"
+      ],
+      "imported_by_count": 6
+    },
+    {
+      "module": "aipinho.repositories.skills.__init__",
+      "path": "src/aipinho/repositories/skills/__init__.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.skills.skill_audit_repository",
+      "path": "src/aipinho/repositories/skills/skill_audit_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.skills.skill_repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.skills.skill_catalog_repository",
+      "path": "src/aipinho/repositories/skills/skill_catalog_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.skills.skill_repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.skills.skill_registry_repository",
+      "path": "src/aipinho/repositories/skills/skill_registry_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.skills.skill_repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.skills.skill_repositories",
+      "path": "src/aipinho/repositories/skills/skill_repositories.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [
+        "SkillRegistryRepository",
+        "SkillCatalogRepository",
+        "SkillTraceRepository",
+        "SkillAuditRepository"
+      ],
+      "functions": [
+        "_read",
+        "_write"
+      ],
+      "imports": [
+        "aipinho.core.paths"
+      ],
+      "imported_by_count": 5
+    },
+    {
+      "module": "aipinho.repositories.skills.skill_trace_repository",
+      "path": "src/aipinho/repositories/skills/skill_trace_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [
+        "aipinho.repositories.skills.skill_repositories"
+      ],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.tools.__init__",
+      "path": "src/aipinho/repositories/tools/__init__.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [],
+      "functions": [],
+      "imports": [],
+      "imported_by_count": 0
+    },
+    {
+      "module": "aipinho.repositories.tools.tool_registry_repository",
+      "path": "src/aipinho/repositories/tools/tool_registry_repository.py",
+      "package": "repositories",
+      "classification": "SUPPORTING",
+      "classes": [
+        "ToolRegistryRepository"
+      ],
+      "functions": [],
+      "imports": [
+        "aipinho.core.paths"
+      ],
+      "imported_by_count": 1
     }
-  ],
-  "total_repositories": 10,
-  "critical_repositories": 3,
-  "non_critical_repositories": 7
+  ]
 }

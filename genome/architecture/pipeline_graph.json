@@ -1,283 +1,554 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-07-30T20:01:00Z",
-  "pipelines": [
+  "version": "2.0",
+  "generated_at": "2026-09-15T21:50:50.419424Z",
+  "source_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+  "runtime_profiles": [
     {
-      "name": "chat_pipeline",
-      "description": "Chat processing pipeline",
+      "id": "artifact_generation",
+      "path": "config/runtime/profiles/artifact_generation.yaml",
+      "operation_types": [
+        "artifact_generation",
+        "artifact_zip_generate",
+        "artifact_validate"
+      ],
       "steps": [
-        {
-          "step": 1,
-          "component": "services.chat.chat_service",
-          "path": "src/aipinho/services/chat/chat_service.py",
-          "operation": "process_chat_request"
-        },
-        {
-          "step": 2,
-          "component": "services.chat.chat_operation_router_service",
-          "path": "src/aipinho/services/chat/chat_operation_router_service.py",
-          "operation": "route_operation"
-        },
-        {
-          "step": 3,
-          "component": "services.runtime.task_runtime_service",
-          "path": "src/aipinho/services/runtime/task_runtime_service.py",
-          "operation": "execute_task"
-        },
-        {
-          "step": 4,
-          "component": "services.policy_kernel.policy_kernel_service",
-          "path": "src/aipinho/services/policy_kernel/policy_kernel_service.py",
-          "operation": "enforce_policy"
-        },
-        {
-          "step": 5,
-          "component": "services.validation.validation_gate_service",
-          "path": "src/aipinho/services/validation/validation_gate_service.py",
-          "operation": "validate_result"
-        }
+        "validate_runtime",
+        "generate_artifact",
+        "validate_artifact",
+        "run_role_pipeline",
+        "compose_final_result"
+      ],
+      "allowed_actions": [
+        "artifact_generate"
+      ],
+      "side_effects": [
+        "artifact_write"
       ]
     },
     {
-      "name": "task_pipeline",
-      "description": "Task execution pipeline",
+      "id": "conversation",
+      "path": "config/runtime/profiles/conversation.yaml",
+      "operation_types": [
+        "conversation"
+      ],
       "steps": [
-        {
-          "step": 1,
-          "component": "services.runtime.task_runtime_service",
-          "path": "src/aipinho/services/runtime/task_runtime_service.py",
-          "operation": "create_task"
-        },
-        {
-          "step": 2,
-          "component": "services.runtime.intelligent_planner_service",
-          "path": "src/aipinho/services/runtime/intelligent_planner_service.py",
-          "operation": "plan_execution"
-        },
-        {
-          "step": 3,
-          "component": "services.runtime.execution_graph_service",
-          "path": "src/aipinho/services/runtime/execution_graph_service.py",
-          "operation": "build_execution_graph"
-        },
-        {
-          "step": 4,
-          "component": "services.policy_kernel.capability_gate_service",
-          "path": "src/aipinho/services/policy_kernel/capability_gate_service.py",
-          "operation": "check_capabilities"
-        },
-        {
-          "step": 5,
-          "component": "services.runtime.task_runtime_service",
-          "path": "src/aipinho/services/runtime/task_runtime_service.py",
-          "operation": "execute_steps"
-        }
+        "validate_runtime",
+        "run_role_pipeline",
+        "compose_final_result"
+      ],
+      "allowed_actions": [],
+      "side_effects": []
+    },
+    {
+      "id": "delegation_parent",
+      "path": "config/runtime/profiles/delegation_parent.yaml",
+      "operation_types": [
+        "external_delegation",
+        "delegation_request"
+      ],
+      "steps": [
+        "validate_runtime",
+        "compose_final_result"
+      ],
+      "allowed_actions": [],
+      "side_effects": []
+    },
+    {
+      "id": "patch",
+      "path": "config/runtime/profiles/patch.yaml",
+      "operation_types": [
+        "patch_preview",
+        "patch_apply"
+      ],
+      "steps": [
+        "validate_runtime",
+        "validate_workspace",
+        "run_role_pipeline",
+        "execute_patch_pipeline",
+        "validate_patch_result",
+        "compose_final_result"
+      ],
+      "allowed_actions": [
+        "patch_preview",
+        "apply_patch",
+        "write_files"
+      ],
+      "side_effects": [
+        "patch_apply",
+        "workspace_write"
       ]
     },
     {
-      "name": "tool_pipeline",
-      "description": "Tool execution pipeline",
+      "id": "project_bootstrap",
+      "path": "config/runtime/profiles/project_bootstrap.yaml",
+      "operation_types": [
+        "project_bootstrap",
+        "governed_project_planning"
+      ],
       "steps": [
-        {
-          "step": 1,
-          "component": "services.agents.agent_tool_gateway_service",
-          "path": "src/aipinho/services/agents/agent_tool_gateway_service.py",
-          "operation": "route_tool_call"
-        },
-        {
-          "step": 2,
-          "component": "services.tools.tool_input_validator",
-          "path": "src/aipinho/services/tools/tool_input_validator.py",
-          "operation": "validate_input"
-        },
-        {
-          "step": 3,
-          "component": "services.policy_kernel.capability_gate_service",
-          "path": "src/aipinho/services/policy_kernel/capability_gate_service.py",
-          "operation": "check_capability"
-        },
-        {
-          "step": 4,
-          "component": "services.tools.governed_tool_execution_service",
-          "path": "src/aipinho/services/tools/governed_tool_execution_service.py",
-          "operation": "execute_tool"
-        },
-        {
-          "step": 5,
-          "component": "services.tools.tool_result_sanitizer",
-          "path": "src/aipinho/services/tools/tool_result_sanitizer.py",
-          "operation": "sanitize_result"
-        }
+        "validate_runtime",
+        "resolve_workspace",
+        "inspect_workspace_readonly",
+        "create_blueprint_or_plan",
+        "create_task_preview",
+        "create_approval_request",
+        "wait_for_approval"
+      ],
+      "allowed_actions": [
+        "read_workspace_metadata",
+        "inspect_workspace",
+        "create_task_preview",
+        "create_approval_request",
+        "write_files",
+        "apply_patch"
+      ],
+      "side_effects": []
+    },
+    {
+      "id": "project_generation",
+      "path": "config/runtime/profiles/project_generation.yaml",
+      "operation_types": [
+        "project_generation",
+        "android_project_create",
+        "android_apk_build"
+      ],
+      "steps": [
+        "validate_runtime",
+        "validate_workspace",
+        "run_role_pipeline",
+        "execute_project_generation",
+        "validate_project_result",
+        "compose_final_result"
+      ],
+      "allowed_actions": [
+        "write_files",
+        "run_command",
+        "run_tests"
+      ],
+      "side_effects": [
+        "filesystem_write",
+        "shell"
       ]
     },
     {
-      "name": "model_pipeline",
-      "description": "Model inference pipeline",
+      "id": "readonly_analysis",
+      "path": "config/runtime/profiles/readonly_analysis.yaml",
+      "operation_types": [
+        "analysis_readonly",
+        "readonly_analysis",
+        "project_analysis",
+        "report_generation"
+      ],
       "steps": [
-        {
-          "step": 1,
-          "component": "services.models.llama_cpp_provider",
-          "path": "src/aipinho/services/models/llama_cpp_provider.py",
-          "operation": "select_model"
-        },
-        {
-          "step": 2,
-          "component": "adapters.llm_providers",
-          "path": "src/aipinho/adapters/llm_providers/__init__.py",
-          "operation": "call_model"
-        },
-        {
-          "step": 3,
-          "component": "services.models.model_invocation_service",
-          "path": "src/aipinho/services/models/model_invocation_service.py",
-          "operation": "process_response"
-        }
+        "validate_runtime",
+        "validate_workspace",
+        "build_project_tree",
+        "build_file_context",
+        "run_project_analysis",
+        "generate_project_report",
+        "run_role_pipeline",
+        "compose_final_result"
+      ],
+      "allowed_actions": [
+        "read_files"
+      ],
+      "side_effects": []
+    },
+    {
+      "id": "readonly_artifact_analysis",
+      "path": "config/runtime/profiles/readonly_artifact_analysis.yaml",
+      "operation_types": [
+        "workspace_analysis_readonly",
+        "readonly_analysis_with_artifact_output"
+      ],
+      "steps": [
+        "validate_runtime",
+        "validate_workspace",
+        "execute_readonly_artifact_analysis",
+        "run_role_pipeline",
+        "compose_final_result"
+      ],
+      "allowed_actions": [
+        "read_files",
+        "project_analysis"
+      ],
+      "side_effects": []
+    },
+    {
+      "id": "shell",
+      "path": "config/runtime/profiles/shell.yaml",
+      "operation_types": [
+        "shell_preview",
+        "shell_execute",
+        "test_run",
+        "build_run"
+      ],
+      "steps": [
+        "validate_runtime",
+        "validate_workspace",
+        "execute_governed_shell",
+        "validate_shell_result",
+        "compose_final_result"
+      ],
+      "allowed_actions": [
+        "run_command",
+        "run_tests"
+      ],
+      "side_effects": [
+        "shell"
       ]
     },
     {
-      "name": "validation_pipeline",
-      "description": "Validation pipeline",
+      "id": "validation",
+      "path": "config/runtime/profiles/validation.yaml",
+      "operation_types": [
+        "validation",
+        "evidence_check"
+      ],
       "steps": [
-        {
-          "step": 1,
-          "component": "services.validation.validation_gate_service",
-          "path": "src/aipinho/services/validation/validation_gate_service.py",
-          "operation": "check_gate"
-        },
-        {
-          "step": 2,
-          "component": "services.validation.contract_compliance_validator",
-          "path": "src/aipinho/services/validation/contract_compliance_validator.py",
-          "operation": "validate_contract"
-        },
-        {
-          "step": 3,
-          "component": "services.validation.side_effect_validator",
-          "path": "src/aipinho/services/validation/side_effect_validator.py",
-          "operation": "validate_side_effects"
-        },
-        {
-          "step": 4,
-          "component": "services.validation.task_result_validator",
-          "path": "src/aipinho/services/validation/task_result_validator.py",
-          "operation": "validate_result"
-        }
+        "validate_runtime",
+        "validate_workspace",
+        "execute_validation",
+        "run_role_pipeline",
+        "compose_final_result"
+      ],
+      "allowed_actions": [
+        "validate_runtime",
+        "run_tests"
+      ],
+      "side_effects": [
+        "shell"
       ]
     },
     {
-      "name": "approval_pipeline",
-      "description": "Approval workflow pipeline",
+      "id": "web_search",
+      "path": "config/runtime/profiles/web_search.yaml",
+      "operation_types": [
+        "public_fact_query",
+        "web_search_required"
+      ],
       "steps": [
-        {
-          "step": 1,
-          "component": "services.chat.chat_approval_command_service",
-          "path": "src/aipinho/services/chat/chat_approval_command_service.py",
-          "operation": "request_approval"
-        },
-        {
-          "step": 2,
-          "component": "services.policy_kernel.approval_policy_service",
-          "path": "src/aipinho/services/policy_kernel/approval_policy_service.py",
-          "operation": "check_approval_policy"
-        },
-        {
-          "step": 3,
-          "component": "repositories.approval_repository",
-          "path": "src/aipinho/repositories/approval_repository.py",
-          "operation": "store_approval"
-        }
+        "validate_runtime",
+        "execute_web_search",
+        "run_role_pipeline",
+        "compose_final_result"
+      ],
+      "allowed_actions": [
+        "web_request"
+      ],
+      "side_effects": [
+        "network_read"
       ]
     },
     {
-      "name": "artifact_pipeline",
-      "description": "Artifact generation pipeline",
+      "id": "write_file",
+      "path": "config/runtime/profiles/write_file.yaml",
+      "operation_types": [
+        "filesystem_create_directory",
+        "filesystem_write_file",
+        "filesystem_append_file",
+        "filesystem_modify_file",
+        "filesystem_read_file"
+      ],
       "steps": [
-        {
-          "step": 1,
-          "component": "services.artifacts.artifact_generator_service",
-          "path": "src/aipinho/services/artifacts/artifact_generator_service.py",
-          "operation": "generate_artifact"
-        },
-        {
-          "step": 2,
-          "component": "services.validation.artifact_content_validator",
-          "path": "src/aipinho/services/validation/artifact_content_validator.py",
-          "operation": "validate_content"
-        },
-        {
-          "step": 3,
-          "component": "services.artifacts.artifact_write_execution_service",
-          "path": "src/aipinho/services/artifacts/artifact_write_execution_service.py",
-          "operation": "write_artifact"
-        },
-        {
-          "step": 4,
-          "component": "services.artifacts.artifact_library_service",
-          "path": "src/aipinho/services/artifacts/artifact_library_service.py",
-          "operation": "register_artifact"
-        }
-      ]
-    },
-    {
-      "name": "memory_pipeline",
-      "description": "Memory curation pipeline",
-      "steps": [
-        {
-          "step": 1,
-          "component": "services.memory.memory_candidate_service",
-          "path": "src/aipinho/services/memory/memory_candidate_service.py",
-          "operation": "extract_candidates"
-        },
-        {
-          "step": 2,
-          "component": "services.memory.memory_candidate_validator",
-          "path": "src/aipinho/services/memory/memory_candidate_validator.py",
-          "operation": "validate_candidates"
-        },
-        {
-          "step": 3,
-          "component": "services.memory.curated_memory_service",
-          "path": "src/aipinho/services/memory/curated_memory_service.py",
-          "operation": "curate_memory"
-        },
-        {
-          "step": 4,
-          "component": "services.memory.curated_memory_persistence_service",
-          "path": "src/aipinho/services/memory/curated_memory_persistence_service.py",
-          "operation": "persist_memory"
-        }
-      ]
-    },
-    {
-      "name": "rag_pipeline",
-      "description": "RAG retrieval pipeline",
-      "steps": [
-        {
-          "step": 1,
-          "component": "services.rag.retrieval_service",
-          "path": "src/aipinho/services/rag/retrieval_service.py",
-          "operation": "retrieve_context"
-        },
-        {
-          "step": 2,
-          "component": "services.rag.retrieval_scope_service",
-          "path": "src/aipinho/services/rag/retrieval_scope_service.py",
-          "operation": "apply_scope"
-        },
-        {
-          "step": 3,
-          "component": "services.rag.retrieval_source_policy_service",
-          "path": "src/aipinho/services/rag/retrieval_source_policy_service.py",
-          "operation": "apply_source_policy"
-        },
-        {
-          "step": 4,
-          "component": "services.rag.retrieval_audit_service",
-          "path": "src/aipinho/services/rag/retrieval_audit_service.py",
-          "operation": "audit_retrieval"
-        }
+        "validate_runtime",
+        "validate_workspace",
+        "execute_filesystem_operation",
+        "validate_filesystem_result",
+        "compose_final_result"
+      ],
+      "allowed_actions": [
+        "write_files"
+      ],
+      "side_effects": [
+        "filesystem_write"
       ]
     }
   ],
-  "total_pipelines": 8
+  "role_pipelines": {
+    "chat_basic": {
+      "enabled": true,
+      "description": "Pipeline conversacional interno ao TaskRuntime; wording only, never truth authority.",
+      "allowed_intents": [
+        "conversation",
+        "capability_explanation"
+      ],
+      "passes": [
+        {
+          "pass_id": "interpret_state",
+          "role_id": "interpreter",
+          "required": false
+        },
+        {
+          "pass_id": "supervisor_consistency",
+          "role_id": "supervisor",
+          "required": true
+        },
+        {
+          "pass_id": "final_speaker",
+          "role_id": "speaker",
+          "required": true
+        }
+      ]
+    },
+    "readonly_project_report": {
+      "enabled": true,
+      "description": "Read-only consistency role bound to governed TaskRun evidence. Semantic interpretation, analysis, rendering and SpeakerTruth remain canonical runtime stages, not duplicated role passes.",
+      "allowed_intents": [
+        "readonly_analysis",
+        "workspace_analysis_readonly",
+        "readonly_analysis_with_artifact_output",
+        "project_analysis",
+        "report_generation",
+        "in_chat_final_report"
+      ],
+      "required_inputs": [
+        "file_context_bundle_or_project_report"
+      ],
+      "passes": [
+        {
+          "pass_id": "supervisor_consistency",
+          "role_id": "supervisor",
+          "required": true
+        }
+      ]
+    },
+    "task_preview": {
+      "enabled": true,
+      "description": "Pipeline de planejamento conceitual; cannot promote or execute plans.",
+      "allowed_intents": [
+        "task_preview",
+        "governed_project_planning",
+        "product_planning_readonly"
+      ],
+      "passes": [
+        {
+          "pass_id": "semantic_candidate",
+          "role_id": "semantic_interpreter",
+          "required": false
+        },
+        {
+          "pass_id": "planner_preview",
+          "role_id": "planner",
+          "required": false
+        },
+        {
+          "pass_id": "interpreter_policy",
+          "role_id": "interpreter",
+          "required": false
+        },
+        {
+          "pass_id": "supervisor_consistency",
+          "role_id": "supervisor",
+          "required": true
+        },
+        {
+          "pass_id": "final_speaker",
+          "role_id": "speaker",
+          "required": false
+        }
+      ]
+    },
+    "patch_planning": {
+      "enabled": true,
+      "description": "Patch cognition inside the active TaskRun; apply authority remains with governed executor.",
+      "allowed_intents": [
+        "patch_request",
+        "patch_preview",
+        "patch_apply"
+      ],
+      "passes": [
+        {
+          "pass_id": "semantic_candidate",
+          "role_id": "semantic_interpreter",
+          "required": false
+        },
+        {
+          "pass_id": "planner_patch",
+          "role_id": "planner",
+          "required": false
+        },
+        {
+          "pass_id": "coder_proposal",
+          "role_id": "coder",
+          "required": false
+        },
+        {
+          "pass_id": "code_review",
+          "role_id": "code_reviewer",
+          "required": false
+        },
+        {
+          "pass_id": "patch_quality_review",
+          "role_id": "patch_quality_reviewer",
+          "required": false
+        },
+        {
+          "pass_id": "supervisor_consistency",
+          "role_id": "supervisor",
+          "required": true
+        },
+        {
+          "pass_id": "final_speaker",
+          "role_id": "speaker",
+          "required": false
+        }
+      ]
+    },
+    "project_generation_review": {
+      "enabled": true,
+      "description": "Planning/review roles around governed project generation; no role writes files.",
+      "allowed_intents": [
+        "project_generation",
+        "android_project_create",
+        "android_apk_build"
+      ],
+      "passes": [
+        {
+          "pass_id": "semantic_candidate",
+          "role_id": "semantic_interpreter",
+          "required": false
+        },
+        {
+          "pass_id": "planner_generation",
+          "role_id": "planner",
+          "required": false
+        },
+        {
+          "pass_id": "coder_reasoning",
+          "role_id": "coder",
+          "required": false
+        },
+        {
+          "pass_id": "code_review",
+          "role_id": "code_reviewer",
+          "required": false
+        },
+        {
+          "pass_id": "supervisor_consistency",
+          "role_id": "supervisor",
+          "required": true
+        },
+        {
+          "pass_id": "final_speaker",
+          "role_id": "speaker",
+          "required": false
+        }
+      ]
+    },
+    "validation_review": {
+      "enabled": true,
+      "description": "Validation explanation/review only; Validation Authority remains deterministic evidence/tests.",
+      "allowed_intents": [
+        "validation",
+        "validation_request",
+        "evidence_check"
+      ],
+      "passes": [
+        {
+          "pass_id": "reviewer_evidence",
+          "role_id": "reviewer",
+          "required": false
+        },
+        {
+          "pass_id": "supervisor_validation",
+          "role_id": "supervisor",
+          "required": true
+        },
+        {
+          "pass_id": "interpreter_validation",
+          "role_id": "interpreter",
+          "required": false
+        },
+        {
+          "pass_id": "final_speaker",
+          "role_id": "speaker",
+          "required": false
+        }
+      ]
+    },
+    "debug_review": {
+      "enabled": true,
+      "description": "Sanitized diagnostics inside a TaskRun; Doctor/Truth remain separate authority ceilings.",
+      "allowed_intents": [
+        "self_analysis",
+        "debug_trace",
+        "runtime_diagnostic"
+      ],
+      "passes": [
+        {
+          "pass_id": "debugger_trace",
+          "role_id": "debugger",
+          "required": false
+        },
+        {
+          "pass_id": "supervisor_consistency",
+          "role_id": "supervisor",
+          "required": true
+        },
+        {
+          "pass_id": "interpreter_explanation",
+          "role_id": "interpreter",
+          "required": false
+        },
+        {
+          "pass_id": "final_speaker",
+          "role_id": "speaker",
+          "required": false
+        }
+      ]
+    },
+    "artifact_review": {
+      "enabled": true,
+      "description": "Artifact planning/reporting roles; artifact persistence remains governed by ArtifactRuntime.",
+      "allowed_intents": [
+        "artifact_generation",
+        "artifact_zip_generate",
+        "artifact_validate"
+      ],
+      "passes": [
+        {
+          "pass_id": "planner_artifact",
+          "role_id": "planner",
+          "required": false
+        },
+        {
+          "pass_id": "artifact_reporter",
+          "role_id": "artifact_writer",
+          "required": false
+        },
+        {
+          "pass_id": "supervisor_consistency",
+          "role_id": "supervisor",
+          "required": true
+        },
+        {
+          "pass_id": "final_speaker",
+          "role_id": "speaker",
+          "required": false
+        }
+      ]
+    }
+  },
+  "semantic_chain": [
+    "meaning",
+    "intent",
+    "contract",
+    "entities/goals",
+    "capability matching",
+    "TaskSemanticVocabulary",
+    "SemanticExecutionGraph",
+    "EdgeSemanticDemand",
+    "governed execution",
+    "evidence",
+    "SemanticOffer",
+    "Offer/Demand compatibility",
+    "N-way semantics",
+    "graph revision",
+    "validation/completion",
+    "SemanticTruthFacet",
+    "RuntimeTruth",
+    "CanonicalOperationState",
+    "SpeakerTruth"
+  ]
 }

@@ -1,64 +1,119 @@
-# AIpinho Current State ? 2026-09-15
+# AIpinho Current State — 2026-09-15
 
-## Authority
+## Authority note
 
 This file is an orientation snapshot. Current production code, canonical configuration/contracts and validated runtime evidence remain authoritative.
 
-## Repository
+## Repository baseline
 
 - Repository: `sasandralean-prog/AIpinho`
 - Branch: `main`
-- Runtime baseline SHA entering this refresh: `820288004562f3ff17ebfe8a074987a1ea6f0e6f`
-- Semantic Sprints 0?9: `COMPLETE`
-- Canonical Sprint 0?9 regression: `189 passed / 0 failed`
-- Dedicated Sprint branches/worktrees: retired after merge; evidence quarantined on `D:`.
+- Runtime consolidation implementation commit: `6126a73a9ddfc054fe527174fe4df16740b9d1e0`
+- Semantic Sprints 0–9: `COMPLETE` and integrated into the canonical runtime.
+- Runtime + roles consolidation: `COMPLETE / VALIDATED`.
+- Canonical post-consolidation focused regression: `174 passed / 0 failed` after reboot.
+- Sprint 0–9 dedicated branches/worktrees: retired after merge; residual evidence remains quarantined outside the tracked repository.
 
-## Latest product evidence
+## Five canonical authorities
 
-FireTest 5 full rerun: `reports/firetest5_20260915T054806Z/`.
+1. **Human operator** — grants authority, approvals and scope.
+2. **Trusted dispatcher** — validates identity/operation/arguments/scope and invokes fixed capabilities.
+3. **Local execution broker** — routes already-authorized operations to Git/tests/build/FireTest/AIpinho.
+4. **AIpinho runtime** — owns meaning, intent, contract, planning, governed execution, evidence binding, validation, RuntimeTruth and SpeakerTruth ceiling.
+5. **Evidence/result layer** — provides auditable outputs, diagnostics and validation evidence without inventing success.
 
-Global verdict: `PARTIAL`.
+The dispatcher/broker may not become a second semantic planner or orchestration runtime.
+
+## Canonical runtime
 
 ```text
-phase_0 = NO_GO_EXPECTED_BLOCK (prediction; later calibrated mismatch)
-phase_1 = partial / completed_with_limitations
-phase_2 = completed / canonical success
-phase_3 = completed / canonical success
-phase_4 = runtime completed / canonical BLOCKED
-phase_5 = completed / canonical success
-phase_6 = runtime completed / canonical BLOCKED
+public ingress
+  → CanonicalPublicChatService
+  → SemanticIntentResolution / GovernanceLifecycle
+  → OperationContract / Policy / Approval
+  → TaskBootstrap + durable TaskRun
+  → TaskRunPlanner / ExecutionPlanPromotion
+  → TaskSemanticVocabulary
+  → SemanticExecutionGraph
+  → EdgeSemanticDemand
+  → SupervisedExecutionLoop
+  → TaskRunExecutor / GovernedTaskStepRunner
+  → domain executors + TaskRuntime-bound RolePipeline children
+  → RuntimeTimeline / artifacts / validation / TaskRunResult
+  → SemanticOffer / Offer-Demand compatibility
+  → N-way semantics / governed graph revision
+  → SemanticCompletionTruth / SemanticTruthFacet
+  → RuntimeTruthEngine
+  → CanonicalOperationState
+  → CanonicalSpeakerTruth
+  → client output
 ```
 
-Final RuntimeTruth reason: `runtime_truth_contradiction` with `completion_completed_timeline_has_gaps`.
+Roles/models are subordinate components inside this runtime. `RuntimeContractsV2`, `PlannerV2`, and `RuntimeDispatcherV2` are compatibility/introspection, not a second execution plane.
 
-## Current P0/P1 frontier
+## Latest FireTest 5 revalidation
 
-### P0 ? cross-phase truth propagation
+Canonical summary: `reports/runtime_consolidation/runtime_consolidation_final_validation_20260915.md`.
 
-Phase 4 exposed a canonical mismatch: `CanonicalOperationState=BLOCKED` while projected `PhaseOutcome.phase_dependency.status=satisfied`. Phase 5 and Phase 6 admitted that outcome with constraints. Downstream admission must consume canonical producer truth, not completion semantics alone.
+```text
+phase_1 = completed_with_limitations / RuntimeTruth partial
+          PhaseOutcome satisfied_with_limitations
+          safe_to_report_success = false
+phase_2 = completed / RuntimeTruth completed
+phase_3 = completed / RuntimeTruth completed
+phase_4 = completed / RuntimeTruth completed
+phase_5 = completed / RuntimeTruth completed
+phase_6 = completed / RuntimeTruth completed
+```
 
-### P1 ? timeline sequencing
+Across all six phases:
 
-Phase 4 persisted duplicate sequence `118`. Phase 6 persisted duplicate sequence `122` and no sequence `123`. RuntimeTruth correctly blocked success, but event allocation/terminalization must be repaired.
+- RuntimeTimeline sequence gaps: `0`
+- duplicate sequences: `0`
+- `run_role_pipeline` executed: `6/6 TaskRuns`
+- persisted supervisor consistency pass: `completed`, deterministic, `real_inference=false`
+- Runtime Doctor: completed all phases, including former Phase 4/6 problem cases
+- workspace mutations: `0`
+- corpus mutations: `0`
+- final runtime queue: clean
 
-### P1 ? Doctor observability
+Phase 1 is intentionally not a success claim. `CanonicalOperationState=BLOCKED` prevents success/UI claims while `RuntimeTruth=partial`; edge-local downstream use may still be admitted only as `satisfied_with_limitations` when explicit use-safety is compatible.
 
-`POST /api/v1/runtime/doctor/analyze` timed out on the large Phase 4/6 snapshots during the latest campaign. Doctor remains diagnostic only; this is an observability/performance defect, not permission to bypass Truth.
+## Bugs closed by the consolidation
 
-### Deferred media boundary
+- RuntimeTimeline event sequence allocation race / duplicate-gap failure.
+- blocked/contradictory RuntimeTruth failing to constrain `PhaseOutcome` and downstream admission.
+- large-run Runtime Doctor evidence rehydration/timeout path.
+- specialized readonly artifact service owning a duplicate lifecycle/result/Truth path.
+- planned `run_role_pipeline` appearing in the plan without executing in specialized artifact flows.
+- role pipeline binding/authority ambiguity and deterministic supervisor inconsistency.
+- root-role provenance tokenization suffix issue.
 
-Physical media observation succeeded sufficiently for catalog/planning-with-limitations, but semantic identity remained insufficient for full truth. The `.m4a`/subprocess encoding issue remains deliberately deferred.
+## Deferred
 
-## Integrity of latest campaign
+- Windows subprocess `cp1252` decoding failure observed in `.m4a`/media probing remains explicitly deferred.
 
-- Workspace mutations during FireTest window: `0`
-- Corpus mutations during FireTest window: `0`
-- Final queue: `active=0, queued=0, stale=0, pending_approvals=0`
-- Runtime API started for the campaign was stopped after teardown.
+## Genome / runtime map
 
-## Canonical architecture documents
+- Genome: `genome/00_manifest.json` — version `2.0`, regenerated from the consolidated runtime.
+- GitHub folder audit: `genome/reports/github_folder_audit_20260915.md`.
+- Runtime map: `docs/architecture/CURRENT_RUNTIME_MAP_20260915.md`.
+- Context map: `AIpinho_context_pack/docs/context/05_RUNTIME_ARCHITECTURE_MAP.md`.
 
-- `docs/architecture/semantic_execution_sprints_0_9_closure.md`
-- `docs/architecture/CURRENT_RUNTIME_MAP_20260915.md`
-- `AIpinho_context_pack/docs/context/05_RUNTIME_ARCHITECTURE_MAP.md`
-- `AIpinho_context_pack/docs/context/09_CURRENT_FRONTIER.md`
+## Current engineering frontier
+
+There is no open P0/P1 from the FireTest 5 consolidation wave. New work should extend the single canonical runtime rather than introduce parallel planners, dispatchers, role runtimes or truth authorities.
+
+Near-term priorities are evidence-backed cleanup/evolution of compatibility surfaces, continued semantic/runtime capability growth, documentation/Genome synchronization, and explicitly scoped treatment of the deferred media-reader encoding issue if/when it becomes relevant.
+
+## Invariants
+
+- `MODEL != AUTHORITY`.
+- Unknown is fail-closed.
+- Execution completion != semantic admission.
+- Producer completion does not authorize consumer usage.
+- Demand is edge-local; Offer/Demand compatibility is evaluated per edge.
+- Historical graph truth cannot authorize a revised active graph.
+- `run_completed != safe success`.
+- Doctor diagnoses; RuntimeTruth governs safe operational claims.
+- FireTest is regression evidence, not runtime configuration.
