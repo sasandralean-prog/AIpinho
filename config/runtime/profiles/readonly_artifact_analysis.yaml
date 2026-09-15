@@ -1,0 +1,15 @@
+schema_version: 1
+profile:
+  id: readonly_artifact_analysis
+  operation_types: [workspace_analysis_readonly, readonly_analysis_with_artifact_output]
+  allowed_step_types: [validate_runtime, validate_workspace, execute_readonly_artifact_analysis, run_role_pipeline, compose_final_result]
+  steps: [validate_runtime, validate_workspace, execute_readonly_artifact_analysis, run_role_pipeline, compose_final_result]
+  allowed_actions: [read_files, project_analysis]
+  allowed_side_effects: []
+  required_capabilities: [read_workspace]
+  approval_scope: null
+  workspace_requirements: {required: true, allowed_roles: [source_readonly, target_mutable, system_mutable]}
+  max_duration_seconds: 600
+  output_validation_required: true
+  artifact_registration_required: true
+  default_safe_to_execute_policy: policy_allowed

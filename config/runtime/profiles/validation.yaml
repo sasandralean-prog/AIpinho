@@ -2,8 +2,8 @@ schema_version: 1
 profile:
   id: validation
   operation_types: [validation, evidence_check]
-  allowed_step_types: [validate_runtime, validate_workspace, execute_validation, compose_final_result]
-  steps: [validate_runtime, validate_workspace, execute_validation, compose_final_result]
+  allowed_step_types: [validate_runtime, validate_workspace, execute_validation, run_role_pipeline, compose_final_result]
+  steps: [validate_runtime, validate_workspace, execute_validation, run_role_pipeline, compose_final_result]
   allowed_actions: [validate_runtime, run_tests]
   allowed_side_effects: [shell]
   required_capabilities: [validation]

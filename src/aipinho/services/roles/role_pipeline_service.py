@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import json
 from datetime import datetime, timezone
@@ -18,12 +18,20 @@ from aipinho.services.roles.role_pipeline_planner import RolePipelinePlanner
 from aipinho.services.roles.role_pipeline_trace_service import RolePipelineTraceService
 from aipinho.services.roles.role_model_binding_service import RoleModelBindingService
 from aipinho.services.semantic_runtime.capability_resolver import CapabilityResolver
+from aipinho.services.runtime.task_run_store import TaskRunStore
 from aipinho.utils.safe_paths import resolve_within_root
 from aipinho.utils.yaml_loader import load_yaml_file
 
 
 class RolePipelineService:
-    def __init__(self, config_service: RolePipelineConfigService | None = None, runner: RolePassRunner | None = None, audit: RolePipelineAuditService | None = None, trace: RolePipelineTraceService | None = None) -> None:
+    def __init__(
+        self,
+        config_service: RolePipelineConfigService | None = None,
+        runner: RolePassRunner | None = None,
+        audit: RolePipelineAuditService | None = None,
+        trace: RolePipelineTraceService | None = None,
+        task_runs: TaskRunStore | None = None,
+    ) -> None:
         self.config_service = config_service or RolePipelineConfigService()
         self.planner = RolePipelinePlanner(self.config_service)
         self.runner = runner or RolePassRunner()
@@ -35,6 +43,7 @@ class RolePipelineService:
         self.context_validator = ContextUsageValidator()
         self.model_bindings = RoleModelBindingService()
         self.capability_resolver = CapabilityResolver(role_binding_service=self.model_bindings)
+        self.task_runs = task_runs or TaskRunStore()
 
     def list_pipelines(self) -> dict[str, object]:
         return {pid: pipeline.model_dump() for pid, pipeline in self.config_service.list_pipelines().items()}
@@ -46,7 +55,15 @@ class RolePipelineService:
     def preview_pipeline(self, request: RolePipelineRunRequest) -> RolePipelineRun:
         pipeline_id = self.planner.choose_pipeline(request)
         pipeline = self.config_service.get_pipeline(pipeline_id)
-        run = RolePipelineRun(pipeline_id=pipeline_id, status="preview", input_summary=self._summary(request))
+        run = RolePipelineRun(
+            pipeline_id=pipeline_id,
+            status="preview",
+            input_summary=self._summary(request),
+            parent_task_run_id=request.parent_task_run_id,
+            parent_operation_id=request.parent_operation_id,
+            parent_execution_id=request.parent_execution_id,
+            authority_mode="preview_only",
+        )
         if pipeline is None or not pipeline.enabled:
             run.warnings.append("pipeline_disabled_or_unknown")
             run.finish("failed")
@@ -72,7 +89,29 @@ class RolePipelineService:
     def run_pipeline(self, request: RolePipelineRunRequest) -> RolePipelineRun:
         pipeline_id = self.planner.choose_pipeline(request)
         pipeline = self.config_service.get_pipeline(pipeline_id)
-        run = RolePipelineRun(pipeline_id=pipeline_id, status="degraded", input_summary=self._summary(request))
+        run = RolePipelineRun(
+            pipeline_id=pipeline_id,
+            status="degraded",
+            input_summary=self._summary(request),
+            parent_task_run_id=request.parent_task_run_id,
+            parent_operation_id=request.parent_operation_id,
+            parent_execution_id=request.parent_execution_id,
+            authority_mode="task_runtime_child" if request.parent_task_run_id else "preview_only",
+        )
+        binding_reason = self._runtime_binding_reason(request)
+        if binding_reason is not None:
+            run.warnings.append(binding_reason)
+            run.final_output = {
+                "source": "runtime_binding_gate",
+                "side_effects": False,
+                "real_inference": False,
+                "tools": False,
+                "write": False,
+                "patch": False,
+                "reason_code": binding_reason,
+            }
+            run.finish("rejected")
+            return self._save(run)
         if pipeline is None or not pipeline.enabled:
             run.warnings.append("pipeline_disabled_or_unknown")
             run.finish("failed")
@@ -102,7 +141,9 @@ class RolePipelineService:
             if (not role_pass.required) and role_pass.status in {"failed", "rejected"} and continue_optional:
                 run.warnings.append(f"optional_pass_failed:{definition.pass_id}")
         completed = [p for p in run.passes if p.status == "completed"]
-        rejected_required = [p for p in run.passes if p.required and p.status in {"failed", "rejected"}]
+        required_passes = [p for p in run.passes if p.required]
+        rejected_required = [p for p in required_passes if p.status in {"failed", "rejected"}]
+        required_completed = all(p.status == "completed" for p in required_passes)
         last_output = completed[-1].output if completed and completed[-1].output else None
         real_inference = any(bool(item.model_gate and item.model_gate.real_inference) for item in run.passes)
         run.final_output = {
@@ -117,7 +158,7 @@ class RolePipelineService:
         }
         if rejected_required:
             run.finish("rejected")
-        elif len(completed) == len(run.passes):
+        elif required_completed and completed:
             run.finish("completed")
         elif completed:
             run.finish("partial")
@@ -157,7 +198,25 @@ class RolePipelineService:
             "curated_memory_context_enabled": False,
             "role_model_bindings": self.model_bindings.status(),
             "silent_stub_fallback": False,
+            "runtime_binding_required_for_run": True,
+            "authority_mode": "task_runtime_child_only",
         }
+
+
+    def _runtime_binding_reason(self, request: RolePipelineRunRequest) -> str | None:
+        if not request.parent_task_run_id:
+            return "ROLE_PIPELINE_TASKRUN_BINDING_REQUIRED"
+        parent = self.task_runs.get_run_lightweight(str(request.parent_task_run_id))
+        if parent is None:
+            return "ROLE_PIPELINE_PARENT_TASKRUN_NOT_FOUND"
+        if request.parent_operation_id and str(parent.operation_id or "") != str(request.parent_operation_id):
+            return "ROLE_PIPELINE_PARENT_OPERATION_MISMATCH"
+        execution = parent.plan.canonical_execution_plan if parent.plan else None
+        if request.parent_execution_id and (execution is None or execution.execution_id != request.parent_execution_id):
+            return "ROLE_PIPELINE_PARENT_EXECUTION_MISMATCH"
+        if str(parent.status) not in {"created", "queued", "running"}:
+            return "ROLE_PIPELINE_PARENT_TASKRUN_NOT_ACTIVE"
+        return None
 
     def _role_input(self, definition: Any, request: RolePipelineRunRequest, *, mode: str) -> RolePassInput:
         binding = self.model_bindings.resolve_binding(definition.role_id)
@@ -180,16 +239,29 @@ class RolePipelineService:
         return RolePassInput(pass_id=definition.pass_id, role_id=definition.role_id, required=definition.required, user_message=request.user_message, purpose=self._purpose_for_role(definition.role_id, request), intent_map=request.intent_map, policy_decision=request.policy_decision, task_contract=request.task_draft, project_report=request.project_report, file_context_bundle=request.file_context_bundle, context_injection_plan_id=request.context_injection_plan_id, context_injection_plan=request.context_injection_plan, evidence=request.evidence or self._evidence_from_report(request.project_report), session_id=request.session_id, mode=mode, model_mode=model_mode, requested_model_id=model_id, allow_real_inference=real_requested, operator_confirmed=bool(request.operator_confirmed or (real_requested and real_auto)), include_trace=request.include_trace)
 
     def _purpose_for_role(self, role_id: str, request: RolePipelineRunRequest) -> str:
-        if role_id == "analyst":
+        intent = str(request.intent_map.get("intent_type") or "") if isinstance(request.intent_map, dict) else ""
+        if role_id in {"analyst", "small_code_assistant"}:
             return "code_analysis"
-        if role_id == "reporter":
+        if role_id in {"reporter", "artifact_writer"}:
             return "project_report"
         if role_id == "planner":
-            return "task_preview"
-        if role_id in {"supervisor", "validator"}:
+            return "patch_planning" if intent in {"patch_request", "patch_preview", "patch_apply"} else "task_preview"
+        if role_id in {"supervisor", "validator", "reviewer", "patch_reviewer", "patch_quality_reviewer"}:
             return "validation"
+        if role_id == "code_reviewer":
+            return "code_review"
+        if role_id == "coder":
+            return "patch_planning" if intent in {"patch_request", "patch_preview", "patch_apply"} else "code_analysis"
+        if role_id == "semantic_interpreter":
+            return "semantic_understanding"
+        if role_id == "intent_classifier":
+            return "classification"
         if role_id == "debugger":
             return "debug_trace"
+        if role_id == "speaker":
+            return "final_response"
+        if role_id == "interpreter":
+            return "policy_explanation" if intent in {"validation", "validation_request", "patch_request", "patch_apply"} else "chat"
         return "chat"
 
     def _missing_inputs(self, pipeline: Any, request: RolePipelineRunRequest) -> list[str]:
@@ -200,7 +272,18 @@ class RolePipelineService:
         return missing
 
     def _summary(self, request: RolePipelineRunRequest) -> dict[str, object]:
-        return {"intent_type": request.intent_map.get("intent_type") if isinstance(request.intent_map, dict) else None, "mode": request.mode, "model_mode": request.model_mode, "has_project_report": bool(request.project_report), "has_file_context_bundle": bool(request.file_context_bundle), "context_injection_plan_id": request.context_injection_plan_id or request.context_injection_plan.get("plan_id"), "evidence_items": len(request.evidence)}
+        return {
+            "intent_type": request.intent_map.get("intent_type") if isinstance(request.intent_map, dict) else None,
+            "mode": request.mode,
+            "model_mode": request.model_mode,
+            "has_project_report": bool(request.project_report),
+            "has_file_context_bundle": bool(request.file_context_bundle),
+            "context_injection_plan_id": request.context_injection_plan_id or request.context_injection_plan.get("plan_id"),
+            "evidence_items": len(request.evidence),
+            "parent_task_run_id": request.parent_task_run_id,
+            "parent_operation_id": request.parent_operation_id,
+            "parent_execution_id": request.parent_execution_id,
+        }
 
     def _context_plan_warnings(self, request: RolePipelineRunRequest) -> list[str]:
         if not request.context_injection_plan and not request.context_injection_plan_id:
@@ -243,9 +326,10 @@ class RolePipelineService:
                 from aipinho.services.validation.validation_gate_service import ValidationGateService
                 validation = ValidationGateService().validate_role_pipeline_object(run)
                 run.validation_summary = validation.summary()
-                if run.status == "completed" and validation.status in {"failed", "rejected"}:
+                blocking = list(getattr(validation, "blocking_findings", []) or [])
+                if run.status == "completed" and validation.status in {"failed", "rejected"} and blocking:
                     run.finish("rejected")
-                elif run.status == "completed" and validation.status in {"degraded", "needs_review"}:
+                elif run.status == "completed" and validation.status in {"degraded", "needs_review"} and blocking:
                     run.finish("degraded")
                 if validation.status in {"failed", "rejected", "degraded", "needs_review"}:
                     run.warnings = list(dict.fromkeys([*run.warnings, f"validation_status:{validation.status}"]))

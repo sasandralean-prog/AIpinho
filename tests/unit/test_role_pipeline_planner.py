@@ -11,4 +11,4 @@ def test_role_pipeline_planner_choose_readonly_project_report():
 
 
 def test_role_pipeline_planner_choose_task_preview():
-    assert RolePipelinePlanner().choose_pipeline(RolePipelineRunRequest(intent_map={"intent_type": "patch_request"})) == "task_preview"
+    assert RolePipelinePlanner().choose_pipeline(RolePipelineRunRequest(intent_map={"intent_type": "patch_request"})) == "patch_planning"

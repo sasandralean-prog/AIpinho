@@ -361,16 +361,32 @@ class RuntimeTimelineService:
             return []
         ids: list[str] = []
 
-        def visit(value: Any) -> None:
+        def visit(value: Any, *, key_hint: str = "") -> None:
             if isinstance(value, dict):
                 for key, item in value.items():
-                    if str(key).endswith("artifact_id") and item:
-                        ids.append(str(item))
-                    visit(item)
+                    key_text = str(key)
+                    if (
+                        key_text.endswith("artifact_id")
+                        and isinstance(item, str)
+                        and re.fullmatch(r"artifact_[a-f0-9]{8,}", item)
+                    ):
+                        ids.append(item)
+                    visit(item, key_hint=key_text)
             elif isinstance(value, list):
                 for item in value:
-                    visit(item)
-            elif isinstance(value, str) and re.fullmatch(r"artifact_[a-f0-9]{8,}", value):
+                    if (
+                        isinstance(item, str)
+                        and "artifact" in key_hint.casefold()
+                        and re.fullmatch(r"artifact_[a-f0-9]{8,}", item)
+                    ):
+                        ids.append(item)
+                    else:
+                        visit(item, key_hint=key_hint)
+            elif (
+                isinstance(value, str)
+                and "artifact" in key_hint.casefold()
+                and re.fullmatch(r"artifact_[a-f0-9]{8,}", value)
+            ):
                 ids.append(value)
 
         visit(result.outputs)

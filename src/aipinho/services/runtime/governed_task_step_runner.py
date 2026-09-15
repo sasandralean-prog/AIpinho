@@ -29,6 +29,7 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
         no_change_evidence: TaskNoChangeEvidenceService | None = None,
         model_patch_planner: ModelAssistedPatchPlannerService | None = None,
         project_generation_executor: ProjectGenerationPlanExecutor | None = None,
+        readonly_artifact_runtime: Any | None = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
@@ -36,6 +37,7 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
         self.no_change_evidence = no_change_evidence or TaskNoChangeEvidenceService()
         self.model_patch_planner = model_patch_planner or ModelAssistedPatchPlannerService()
         self.project_generation_executor = project_generation_executor or ProjectGenerationPlanExecutor()
+        self.readonly_artifact_runtime = readonly_artifact_runtime
         self.patch_plans = PatchPlanStore()
         self.hunk_engine = HunkApplyEngine()
 
@@ -340,6 +342,25 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
                 limitations=["no_targetable_project_generation_action"],
             )
         return self._tool_outcome(result, context, "project_generation")
+
+    def _execute_readonly_artifact_analysis(self, run: TaskRun, context: TaskRunContext) -> TaskStepOutcome:
+        if self.readonly_artifact_runtime is None:
+            return TaskStepOutcome(
+                status="blocked",
+                violations=["readonly_artifact_runtime_not_bound"],
+                limitations=["specialized_executor_must_be_bound_by_task_runtime_owner"],
+            )
+        payload = self.readonly_artifact_runtime.execute_bound_step(run=run, context=context)
+        if not isinstance(payload, dict):
+            return TaskStepOutcome(status="failed", violations=["readonly_artifact_step_invalid_outcome"])
+        return TaskStepOutcome(
+            status=str(payload.get("status") or "failed"),
+            summary=dict(payload.get("summary") or {}),
+            warnings=[str(item) for item in payload.get("warnings") or []],
+            violations=[str(item) for item in payload.get("violations") or []],
+            limitations=[str(item) for item in payload.get("limitations") or []],
+            blocked_items=[str(item) for item in payload.get("blocked_items") or []],
+        )
 
     def _generate_artifact(self, run: TaskRun, context: TaskRunContext) -> TaskStepOutcome:
         return TaskStepOutcome(

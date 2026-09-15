@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 import json
 import re
 import hashlib
@@ -403,6 +403,9 @@ class TaskRunStore:
         return {"run_id": run_id, "status": "indexed", "index_written": (run_dir / "run_index.json").exists()}
 
     def append_event(self, run_id: str, event: TaskRunEvent) -> TaskRunEvent:
+        # Event ordering is an authority-bearing runtime invariant. Sequence
+        # allocation therefore belongs inside the same store lock that persists
+        # the append; callers may race and must never pre-allocate authority.
         with self._terminal_event_lock:
             if event.type in self._terminal_event_types():
                 terminal = self._first_terminal_event(run_id)
@@ -423,6 +426,9 @@ class TaskRunStore:
                     ]
                     return ignored[-1] if ignored else terminal
             events = self.get_events(run_id)
+            next_sequence = max((item.sequence for item in events), default=0) + 1
+            if event.sequence != next_sequence:
+                event = event.model_copy(update={"sequence": next_sequence})
             events.append(event)
             self._write(self._run_dir(run_id) / "events.json", [item.model_dump() for item in events])
             return event

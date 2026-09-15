@@ -161,7 +161,7 @@ class PhaseDependencyEvaluationService:
                 semantic_assessment = semantic_assessments.get(limitation)
                 if isinstance(semantic_assessment, dict):
                     impact = str(semantic_assessment.get("impact") or "UNKNOWN")
-                    source = "semantic_reasoner"
+                    source = str(semantic_assessment.get("source") or "semantic_reasoner")
                     limitation_constraints = [
                         str(item)
                         for item in semantic_assessment.get("constraints") or []

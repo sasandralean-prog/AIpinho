@@ -205,13 +205,17 @@ class RuntimeOperatorService:
                 "runtime_truth_engine:observed",
             ],
         }
-        hydrated.update(data)
-        hydrated["source_refs"] = source_refs + [
+        # External/public runtime_data may enrich missing observations but must
+        # never override canonical persisted TaskRun/Timeline/Truth state.
+        merged = dict(data)
+        merged.update(hydrated)
+        merged["source_refs"] = list(dict.fromkeys([
+            *source_refs,
             "task_run_store:observed",
             "runtime_timeline_service:observed" if timeline else "runtime_timeline_service:missing",
             "runtime_truth_engine:observed",
-        ]
-        return hydrated
+        ]))
+        return merged
 
     def _service_refs(self) -> list[str]:
         refs: list[str] = []

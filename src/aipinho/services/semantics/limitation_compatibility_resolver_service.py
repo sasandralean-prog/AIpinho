@@ -43,6 +43,14 @@ class LimitationCompatibilityResolverService:
         if not targets:
             return {"status": "not_required", "assessments": {}, "provenance": {}}
 
+        deterministic = self._resolve_from_governed_use_safety(
+            requirements=requirements,
+            snapshot=snapshot,
+            limitations=targets,
+        )
+        if deterministic is not None:
+            return deterministic
+
         reasoner = self.reasoner or ContractBoundSemanticReasoner()
         self.reasoner = reasoner
         proposal = reasoner.propose_json(
@@ -151,6 +159,65 @@ class LimitationCompatibilityResolverService:
             "confidence": confidence,
             "rationale": str(candidate.get("rationale") or ""),
             "provenance": self._provenance(proposal),
+        }
+
+    def _resolve_from_governed_use_safety(
+        self,
+        *,
+        requirements: DownstreamPhaseRequirements,
+        snapshot: PhaseDependencySnapshot,
+        limitations: list[str],
+    ) -> dict[str, Any] | None:
+        """Use explicit producer safety for a matching generic consumer class.
+
+        This is not inference and grants no authority. It only interprets an
+        already-governed upstream safety statement against frozen downstream
+        requirements. Missing safety still falls through to fail-closed
+        semantic interpretation.
+        """
+        prohibited = set(requirements.prohibited_effects)
+        capabilities = set(requirements.required_capabilities)
+        readonly_analysis = (
+            "read_workspace" in capabilities
+            and "workspace_mutation" in prohibited
+            and "destructive_action" in prohibited
+        )
+        if not readonly_analysis:
+            return None
+        safety = snapshot.use_safety.get("safe_for_downstream_static_analysis")
+        if safety not in {True, False, "true_with_limitations"}:
+            return None
+        if safety is False:
+            impact = "INCOMPATIBLE"
+            constraints: list[str] = []
+            rationale = "Producer explicitly marks downstream static analysis unsafe."
+        elif safety == "true_with_limitations":
+            impact = "COMPATIBLE_WITH_CONSTRAINT"
+            constraints = []
+            rationale = "Producer explicitly allows downstream static analysis with disclosed limitations."
+        else:
+            impact = "COMPATIBLE"
+            constraints = []
+            rationale = "Producer explicitly allows downstream static analysis."
+        return {
+            "status": "accepted",
+            "assessments": {
+                limitation: {
+                    "impact": impact,
+                    "constraints": list(constraints),
+                    "rationale": rationale,
+                    "source": "upstream_disclosure",
+                }
+                for limitation in limitations
+            },
+            "confidence": 1.0,
+            "rationale": rationale,
+            "provenance": {
+                "authority": "deterministic_semantic_gate",
+                "source": "producer_use_safety",
+                "use_safety_key": "safe_for_downstream_static_analysis",
+                "observed_value": safety,
+            },
         }
 
     def _invalid(self, proposal: dict[str, Any], reason: str) -> dict[str, Any]:

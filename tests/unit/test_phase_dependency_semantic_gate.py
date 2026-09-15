@@ -7,7 +7,8 @@ from typing import Any
 from aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_service import (
     ReadonlyAnalysisArtifactRuntimeService,
 )
-from aipinho.schemas.runtime.phase_dependency_evaluation import DownstreamPhaseRequirements
+from aipinho.schemas.runtime.phase_dependency_evaluation import DownstreamPhaseRequirements, PhaseDependencySnapshot
+from aipinho.services.runtime.phase_dependency_evaluation_service import PhaseDependencyEvaluationService
 from aipinho.services.runtime.phase_dependency_contract_registry import PhaseDependencyContractRegistry
 
 from tests.unit.test_artifact_semantic_contract_music_inventory import _rich_inventory_content
@@ -242,3 +243,74 @@ def test_phase_dependency_does_not_fall_back_to_another_session(tmp_path: Path) 
     assert result["status"] == "blocked"
     assert result["missing"] == ["phase:phase_1"]
     assert result["dependency_evaluations"] == []
+
+
+
+def _direct_partial_snapshot(*, static_analysis_safety):
+    return PhaseDependencySnapshot(
+        dependency_id="dependency_phase1_phase2",
+        producer_task_run_id="task_run_phase1",
+        producer_operation_id="operation_phase1",
+        producer_phase_id="phase_1",
+        upstream_result_ref="task_run_result:task_run_phase1",
+        dependency_status="satisfied_with_limitations",
+        evidence_refs=["artifact:artifact_phase1"],
+        limitations=[
+            "observed_identity_truth_claim_insufficient",
+            "catalog_representation_safe_for_planning_with_limitations",
+        ],
+        required_disclosures=["observed_identity_truth_claim_insufficient"],
+        forbidden_claims=["full_truth"],
+        use_safety={
+            "safe_for_truth_claim": False,
+            "safe_for_downstream_static_analysis": static_analysis_safety,
+            "safe_for_destructive_action": False,
+        },
+    )
+
+
+def _readonly_analysis_requirements():
+    return DownstreamPhaseRequirements(
+        contract_id="readonly_static_analysis",
+        consumer_phase_id="phase_2",
+        operation_type="workspace_analysis_readonly",
+        allowed_dependency_statuses=["satisfied", "satisfied_with_limitations"],
+        required_capabilities=["read_workspace"],
+        prohibited_effects=["workspace_mutation", "destructive_action"],
+        evidence_required=True,
+    )
+
+
+def test_readonly_analysis_uses_governed_upstream_static_analysis_safety_for_partial_limitations() -> None:
+    evaluation = PhaseDependencyEvaluationService().evaluate(
+        snapshot=_direct_partial_snapshot(static_analysis_safety="true_with_limitations"),
+        requirements=_readonly_analysis_requirements(),
+        consumer_task_run_id="task_run_phase2",
+        consumer_operation_id="operation_phase2",
+        consumer_operation_type="workspace_analysis_readonly",
+    )
+
+    assert evaluation.evaluation_status == "completed"
+    assert evaluation.decision == "ADMITTED_WITH_CONSTRAINTS"
+    assert evaluation.limitation_assessments
+    assert all(item.impact == "COMPATIBLE_WITH_CONSTRAINT" for item in evaluation.limitation_assessments)
+    assert all(item.source == "upstream_disclosure" for item in evaluation.limitation_assessments)
+    assert all(
+        f"disclose_limitation:{item.limitation}" in evaluation.constraints
+        for item in evaluation.limitation_assessments
+    )
+
+
+def test_readonly_analysis_blocks_when_upstream_explicitly_marks_static_analysis_unsafe() -> None:
+    evaluation = PhaseDependencyEvaluationService().evaluate(
+        snapshot=_direct_partial_snapshot(static_analysis_safety=False),
+        requirements=_readonly_analysis_requirements(),
+        consumer_task_run_id="task_run_phase2",
+        consumer_operation_id="operation_phase2",
+        consumer_operation_type="workspace_analysis_readonly",
+    )
+
+    assert evaluation.evaluation_status == "completed"
+    assert evaluation.decision == "BLOCKED"
+    assert any(item.impact == "INCOMPATIBLE" for item in evaluation.limitation_assessments)
+    assert "PHASE_DEPENDENCY_LIMITATION_INCOMPATIBLE" in evaluation.reason_codes

@@ -28,13 +28,30 @@ class RolePipelineValidator:
         reject_real = self._reject_real_inference()
         for item in data.get("passes", []) or []:
             role_pass = as_dict(item)
-            if role_pass.get("required", True) and role_pass.get("status") not in {"completed"}:
+            required = bool(role_pass.get("required", True))
+            if required and role_pass.get("status") not in {"completed"}:
                 findings.append(finding("required_role_pass_not_completed", "Required role pass did not complete", "Required RolePass must complete for a trusted completed pipeline.", severity="error", validator="role_pipeline", evidence=[str(role_pass.get("pass_id"))], blocking=True))
             if not role_pass.get("evaluation_result"):
-                findings.append(finding("missing_evaluation", "Role pass missing evaluation", "RolePass requires evaluation_result before output can be trusted.", severity="error", validator="role_pipeline", evidence=[str(role_pass.get("pass_id"))], blocking=True))
+                findings.append(finding(
+                    "missing_evaluation" if required else "optional_role_pass_missing_evaluation",
+                    "Role pass missing evaluation",
+                    "Required RolePass requires evaluation_result before output can be trusted." if required else "Optional RolePass produced no trusted evaluation and is ignored as authority.",
+                    severity="error" if required else "warning",
+                    validator="role_pipeline",
+                    evidence=[str(role_pass.get("pass_id"))],
+                    blocking=required,
+                ))
             eval_status = role_pass.get("evaluation_result", {}).get("status") if isinstance(role_pass.get("evaluation_result"), dict) else None
             if eval_status in {"rejected", "needs_retry", "degraded"}:
-                findings.append(finding("role_pass_evaluation_failed", "Role pass evaluation failed", "RolePass evaluation status is not accepted.", severity="error", validator="role_pipeline", evidence=[str(eval_status)], blocking=True))
+                findings.append(finding(
+                    "role_pass_evaluation_failed" if required else "optional_role_pass_evaluation_not_accepted",
+                    "Role pass evaluation not accepted",
+                    "Required RolePass evaluation status is not accepted." if required else "Optional RolePass evaluation is retained as warning evidence and cannot veto the TaskRun.",
+                    severity="error" if required else "warning",
+                    validator="role_pipeline",
+                    evidence=[str(eval_status)],
+                    blocking=required,
+                ))
             if reject_real and role_pass.get("model_response", {}).get("real_inference") is True:
                 findings.append(finding("real_inference_auto_use", "Real inference signal", "RolePipelineRun cannot auto-use real inference under current policy.", severity="critical", validator="role_pipeline", blocking=True))
 

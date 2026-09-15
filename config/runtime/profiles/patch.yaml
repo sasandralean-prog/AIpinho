@@ -2,8 +2,8 @@ schema_version: 1
 profile:
   id: patch
   operation_types: [patch_preview, patch_apply]
-  allowed_step_types: [validate_runtime, validate_workspace, execute_patch_pipeline, validate_patch_result, compose_final_result]
-  steps: [validate_runtime, validate_workspace, execute_patch_pipeline, validate_patch_result, compose_final_result]
+  allowed_step_types: [validate_runtime, validate_workspace, run_role_pipeline, execute_patch_pipeline, validate_patch_result, compose_final_result]
+  steps: [validate_runtime, validate_workspace, run_role_pipeline, execute_patch_pipeline, validate_patch_result, compose_final_result]
   allowed_actions: [patch_preview, apply_patch, write_files]
   allowed_side_effects: [patch_apply, workspace_write]
   required_capabilities: [patch_apply, write_workspace]

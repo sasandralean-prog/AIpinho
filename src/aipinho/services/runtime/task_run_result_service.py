@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 from typing import Any
 from aipinho.core.paths import PATHS
 from aipinho.schemas.runtime.task_run_result import TaskRunResult
@@ -17,6 +17,7 @@ class TaskRunResultService:
             "build_project_tree": "project_tree_summary",
             "build_file_context": "file_context_summary",
             "run_project_analysis": "project_analysis_report",
+            "execute_readonly_artifact_analysis": "readonly_artifact_analysis",
             "generate_project_report": "project_report",
             "run_role_pipeline": "role_pipeline_run",
             "execute_patch_pipeline": "patch_result",
@@ -29,6 +30,21 @@ class TaskRunResultService:
         for step_type, target in mapping.items():
             item = next((entry for entry in step_summaries if entry["step_type"] == step_type), None)
             if item and item["status"] in {"completed", "partial"}: outputs[target] = item["output_summary"]
+        specialized = context.outputs.get("_phase_semantic_completion_decision")
+        if isinstance(specialized, dict):
+            outputs["phase_semantic_completion_decision"] = self.store.sanitize(specialized)
+        dependency = context.outputs.get("_phase_dependency_result")
+        if isinstance(dependency, dict):
+            outputs["phase_dependency_result"] = self.store.sanitize(dependency)
+        validation_output = context.outputs.get("_validation_result")
+        if isinstance(validation_output, dict):
+            outputs["validation_result"] = self.store.sanitize(validation_output)
+        artifact_records = context.outputs.get("_artifact_records")
+        if isinstance(artifact_records, list):
+            outputs["artifact_records"] = self.store.sanitize(artifact_records)
+        project_analysis = context.outputs.get("_project_analysis")
+        if project_analysis is not None:
+            outputs["project_analysis_report"] = self.store.sanitize(project_analysis)
         limitations = list(dict.fromkeys([*context.limitations, *[warning for step in run.plan.steps if step.status == "partial" for warning in step.warnings]]))
         blocked_values = [*context.blocked_items, *[violation for step in run.plan.steps if step.status == "blocked" for violation in step.violations]]
         blocked = list(dict.fromkeys(str(getattr(item, "path", item)) for item in blocked_values))

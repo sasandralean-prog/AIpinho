@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 from aipinho.schemas.analysis.file_selection import FileSelectionRequest
@@ -107,7 +107,24 @@ class ReadOnlyTaskStepRunner:
             "semantic_goal": execution_plan.semantic_goal if execution_plan else run.contract_type,
             "required_capabilities": list(execution_plan.required_capabilities if execution_plan else run.capabilities_required),
         }
-        role_run = self.roles.run_pipeline(RolePipelineRunRequest(pipeline_id="readonly_project_report", intent_map=role_intent, policy_decision=run.policy_snapshot, task_draft={"contract_type": run.contract_type, "requested_actions": run.requested_actions}, project_report=report_dict if isinstance(report_dict, dict) else {}, file_context_bundle=bundle_dict if isinstance(bundle_dict, dict) else {}, context_injection_plan_id=run.context_injection_plan_id, context_injection_plan=context.outputs.get("context_injection_plan") or {}, session_id=run.session_id, mode="run", model_mode="deterministic", allow_real_inference=False, operator_confirmed=False))
+        role_run = self.roles.run_pipeline(RolePipelineRunRequest(
+            pipeline_id=None,
+            intent_map=role_intent,
+            policy_decision=run.policy_snapshot,
+            task_draft={"contract_type": run.contract_type, "requested_actions": run.requested_actions},
+            project_report=report_dict if isinstance(report_dict, dict) else {},
+            file_context_bundle=bundle_dict if isinstance(bundle_dict, dict) else {},
+            context_injection_plan_id=run.context_injection_plan_id,
+            context_injection_plan=context.outputs.get("context_injection_plan") or {},
+            session_id=run.session_id,
+            mode="run",
+            model_mode="deterministic",
+            allow_real_inference=False,
+            operator_confirmed=False,
+            parent_task_run_id=run.run_id,
+            parent_operation_id=run.operation_id,
+            parent_execution_id=execution_plan.execution_id if execution_plan else None,
+        ))
         context.outputs["_role_pipeline"] = role_run
         summary = {"run_id": role_run.run_id, "pipeline_id": role_run.pipeline_id, "status": role_run.status, "passes": [{"role_id": item.role_id, "status": item.status} for item in role_run.passes], "final_output": role_run.final_output}
         status = "completed" if role_run.status == "completed" else ("partial" if role_run.status in {"partial", "degraded"} else "failed")

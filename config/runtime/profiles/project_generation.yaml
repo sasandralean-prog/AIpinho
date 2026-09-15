@@ -2,8 +2,8 @@ schema_version: 1
 profile:
   id: project_generation
   operation_types: [project_generation, android_project_create, android_apk_build]
-  allowed_step_types: [validate_runtime, validate_workspace, execute_project_generation, validate_project_result, compose_final_result]
-  steps: [validate_runtime, validate_workspace, execute_project_generation, validate_project_result, compose_final_result]
+  allowed_step_types: [validate_runtime, validate_workspace, run_role_pipeline, execute_project_generation, validate_project_result, compose_final_result]
+  steps: [validate_runtime, validate_workspace, run_role_pipeline, execute_project_generation, validate_project_result, compose_final_result]
   allowed_actions: [write_files, run_command, run_tests]
   allowed_side_effects: [filesystem_write, shell]
   required_capabilities: [write_workspace]

@@ -1,0 +1,235 @@
+{
+  "campaign_id": "firetest5_runtime_consolidation_20260915T152207Z",
+  "baseline_sha": "88885796255c1597c5e3658b393101d86be1f112",
+  "integrity": {
+    "workspace_files_before": 1458,
+    "workspace_files_after": 1458,
+    "workspace_bytes_before": 544339738,
+    "workspace_bytes_after": 544339738,
+    "workspace_changed_count": 0,
+    "workspace_changed_sample": [],
+    "corpus_files_before": 166,
+    "corpus_files_after": 166,
+    "corpus_bytes_before": 287473867,
+    "corpus_bytes_after": 287473867,
+    "corpus_changed_count": 0,
+    "corpus_changed_sample": [],
+    "repository_head_unchanged": true
+  },
+  "queue_final": {
+    "status": "ok",
+    "cancelled_run_ids": [],
+    "cancelled_approval_ids": [],
+    "warnings": [],
+    "snapshot": {
+      "status": "ok",
+      "enabled": true,
+      "max_pending_tasks": 25,
+      "max_wait_seconds": 86400,
+      "active_count": 0,
+      "pending_count": 1,
+      "requires_decision_count": 1,
+      "total_visible": 1,
+      "items": [
+        {
+          "run_id": "task_run_138a34684a8a4603bbe8c86cae29f121",
+          "session_id": "public_shell_test_session",
+          "status": "waiting_input",
+          "priority": 1,
+          "created_at": "2026-09-15T14:22:43.424918+00:00",
+          "age_seconds": 4232,
+          "approval_id": "approval_d198228f3b394403927d1ffcc6439236",
+          "approval_status": "pending",
+          "auto_run_requested": false,
+          "requires_decision": true,
+          "expired_by_policy": false
+        }
+      ],
+      "last_reconciled_at": "2026-09-15T15:33:15.645866+00:00",
+      "warnings": []
+    }
+  },
+  "phases": [
+    {
+      "phase": "phase_1",
+      "run_id": "task_run_5ffbb2400fe44a48bdf5650bda0f3146",
+      "run_status": "partial",
+      "result_status": "partial",
+      "canonical_state": "BLOCKED",
+      "truth_status": "partial",
+      "truth_safe_to_report_success": false,
+      "phase_outcome_status": "satisfied_with_limitations",
+      "role_step_status": "completed",
+      "role_pipeline_runs": [
+        {
+          "run_id": "role_pipeline_run_6e30ad5ab45a47e09cb7e4410c050fe9",
+          "pipeline_id": "readonly_project_report",
+          "status": "completed",
+          "passes": [
+            {
+              "pass_id": "supervisor_consistency",
+              "role_id": "supervisor",
+              "status": "completed",
+              "real_inference": null
+            }
+          ]
+        }
+      ],
+      "event_count": 330,
+      "duplicate_sequences": [],
+      "missing_sequences": []
+    },
+    {
+      "phase": "phase_2",
+      "run_id": "task_run_adfaae43f020407983b0aab22663d94b",
+      "run_status": "completed",
+      "result_status": "completed",
+      "canonical_state": "COMPLETED",
+      "truth_status": "completed",
+      "truth_safe_to_report_success": true,
+      "phase_outcome_status": "satisfied",
+      "role_step_status": "completed",
+      "role_pipeline_runs": [
+        {
+          "run_id": "role_pipeline_run_f8c8a626eab2481f852c94c0cf27e856",
+          "pipeline_id": "readonly_project_report",
+          "status": "completed",
+          "passes": [
+            {
+              "pass_id": "supervisor_consistency",
+              "role_id": "supervisor",
+              "status": "completed",
+              "real_inference": null
+            }
+          ]
+        }
+      ],
+      "event_count": 112,
+      "duplicate_sequences": [],
+      "missing_sequences": []
+    },
+    {
+      "phase": "phase_3",
+      "run_id": "task_run_3747214532024e1cb444026c1d6d30b4",
+      "run_status": "completed",
+      "result_status": "completed",
+      "canonical_state": "COMPLETED",
+      "truth_status": "completed",
+      "truth_safe_to_report_success": true,
+      "phase_outcome_status": "satisfied",
+      "role_step_status": "completed",
+      "role_pipeline_runs": [
+        {
+          "run_id": "role_pipeline_run_b6ba105c6fa14cbbbd000e580c04811a",
+          "pipeline_id": "readonly_project_report",
+          "status": "completed",
+          "passes": [
+            {
+              "pass_id": "supervisor_consistency",
+              "role_id": "supervisor",
+              "status": "completed",
+              "real_inference": null
+            }
+          ]
+        }
+      ],
+      "event_count": 146,
+      "duplicate_sequences": [],
+      "missing_sequences": []
+    },
+    {
+      "phase": "phase_4",
+      "run_id": "task_run_344afe5b85ff4c85b86de701b59f4915",
+      "run_status": "completed",
+      "result_status": "completed",
+      "canonical_state": "COMPLETED",
+      "truth_status": "completed",
+      "truth_safe_to_report_success": true,
+      "phase_outcome_status": "satisfied",
+      "role_step_status": "completed",
+      "role_pipeline_runs": [
+        {
+          "run_id": "role_pipeline_run_4e30d59daf2a42d58fa8a925d475a971",
+          "pipeline_id": "readonly_project_report",
+          "status": "completed",
+          "passes": [
+            {
+              "pass_id": "supervisor_consistency",
+              "role_id": "supervisor",
+              "status": "completed",
+              "real_inference": null
+            }
+          ]
+        }
+      ],
+      "event_count": 147,
+      "duplicate_sequences": [],
+      "missing_sequences": []
+    },
+    {
+      "phase": "phase_5",
+      "run_id": "task_run_d7821cc97b4349ecb4e0f02b74e106b3",
+      "run_status": "completed",
+      "result_status": "completed",
+      "canonical_state": "COMPLETED",
+      "truth_status": "completed",
+      "truth_safe_to_report_success": true,
+      "phase_outcome_status": "satisfied",
+      "role_step_status": "completed",
+      "role_pipeline_runs": [
+        {
+          "run_id": "role_pipeline_run_eb0f4f54fda743e4a90ed7183610ddd3",
+          "pipeline_id": "readonly_project_report",
+          "status": "completed",
+          "passes": [
+            {
+              "pass_id": "supervisor_consistency",
+              "role_id": "supervisor",
+              "status": "completed",
+              "real_inference": null
+            }
+          ]
+        }
+      ],
+      "event_count": 115,
+      "duplicate_sequences": [],
+      "missing_sequences": []
+    },
+    {
+      "phase": "phase_6",
+      "run_id": "task_run_a6dc9481ba6043c18e62746e9edfd825",
+      "run_status": "completed",
+      "result_status": "completed",
+      "canonical_state": "COMPLETED",
+      "truth_status": "completed",
+      "truth_safe_to_report_success": true,
+      "phase_outcome_status": "satisfied",
+      "role_step_status": "completed",
+      "role_pipeline_runs": [
+        {
+          "run_id": "role_pipeline_run_09817fe0b3374e4382f518cbd2894dde",
+          "pipeline_id": "readonly_project_report",
+          "status": "completed",
+          "passes": [
+            {
+              "pass_id": "supervisor_consistency",
+              "role_id": "supervisor",
+              "status": "completed",
+              "real_inference": null
+            }
+          ]
+        }
+      ],
+      "event_count": 149,
+      "duplicate_sequences": [],
+      "missing_sequences": []
+    }
+  ],
+  "known_out_of_scope": [
+    "SUBPROCESS_CP1252_DECODE_ERROR (.m4a/media probe reader); intentionally not fixed in this wave"
+  ],
+  "validation_notes": [
+    "RuntimeTruth blocked/contradictory overrides prior PhaseOutcome. RuntimeTruth partial may expose satisfied_with_limitations when explicit governed use-safety admits the downstream use.",
+    "CanonicalOperationState BLOCKED for phase_1 prevents success/UI claim; it does not by itself erase limited semantic evidence while RuntimeTruth remains partial."
+  ]
+}

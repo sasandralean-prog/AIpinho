@@ -3,43 +3,83 @@ schema_version: 1
 pipelines:
   chat_basic:
     enabled: true
-    description: "Pipeline simples de chat seguro."
-    allowed_intents: [conversation, self_analysis, capability_explanation]
+    description: "Pipeline conversacional interno ao TaskRuntime; wording only, never truth authority."
+    allowed_intents: [conversation, capability_explanation]
     passes:
-      - pass_id: interpret_state
-        role_id: interpreter
-        required: false
-      - pass_id: final_speaker
-        role_id: speaker
-        required: true
+      - {pass_id: interpret_state, role_id: interpreter, required: false}
+      - {pass_id: supervisor_consistency, role_id: supervisor, required: true}
+      - {pass_id: final_speaker, role_id: speaker, required: true}
 
   readonly_project_report:
     enabled: true
-    description: "Pipeline cognitivo para relatorio read-only baseado em contexto existente."
-    allowed_intents: [readonly_analysis, in_chat_final_report]
+    description: "Read-only consistency role bound to governed TaskRun evidence. Semantic interpretation, analysis, rendering and SpeakerTruth remain canonical runtime stages, not duplicated role passes."
+    allowed_intents: [readonly_analysis, workspace_analysis_readonly, readonly_analysis_with_artifact_output, project_analysis, report_generation, in_chat_final_report]
     required_inputs: [file_context_bundle_or_project_report]
     passes:
-      - pass_id: analyst_findings
-        role_id: analyst
-        required: true
-      - pass_id: reporter_markdown
-        role_id: reporter
-        required: true
-      - pass_id: final_speaker
-        role_id: speaker
-        required: false
+      - {pass_id: supervisor_consistency, role_id: supervisor, required: true}
 
   task_preview:
     enabled: true
-    description: "Pipeline para explicar preview de task."
-    allowed_intents: [artifact_generation, patch_request, validation_request]
+    description: "Pipeline de planejamento conceitual; cannot promote or execute plans."
+    allowed_intents: [task_preview, governed_project_planning, product_planning_readonly]
     passes:
-      - pass_id: planner_preview
-        role_id: planner
-        required: true
-      - pass_id: interpreter_policy
-        role_id: interpreter
-        required: true
-      - pass_id: final_speaker
-        role_id: speaker
-        required: true
+      - {pass_id: semantic_candidate, role_id: semantic_interpreter, required: false}
+      - {pass_id: planner_preview, role_id: planner, required: false}
+      - {pass_id: interpreter_policy, role_id: interpreter, required: false}
+      - {pass_id: supervisor_consistency, role_id: supervisor, required: true}
+      - {pass_id: final_speaker, role_id: speaker, required: false}
+
+  patch_planning:
+    enabled: true
+    description: "Patch cognition inside the active TaskRun; apply authority remains with governed executor."
+    allowed_intents: [patch_request, patch_preview, patch_apply]
+    passes:
+      - {pass_id: semantic_candidate, role_id: semantic_interpreter, required: false}
+      - {pass_id: planner_patch, role_id: planner, required: false}
+      - {pass_id: coder_proposal, role_id: coder, required: false}
+      - {pass_id: code_review, role_id: code_reviewer, required: false}
+      - {pass_id: patch_quality_review, role_id: patch_quality_reviewer, required: false}
+      - {pass_id: supervisor_consistency, role_id: supervisor, required: true}
+      - {pass_id: final_speaker, role_id: speaker, required: false}
+
+  project_generation_review:
+    enabled: true
+    description: "Planning/review roles around governed project generation; no role writes files."
+    allowed_intents: [project_generation, android_project_create, android_apk_build]
+    passes:
+      - {pass_id: semantic_candidate, role_id: semantic_interpreter, required: false}
+      - {pass_id: planner_generation, role_id: planner, required: false}
+      - {pass_id: coder_reasoning, role_id: coder, required: false}
+      - {pass_id: code_review, role_id: code_reviewer, required: false}
+      - {pass_id: supervisor_consistency, role_id: supervisor, required: true}
+      - {pass_id: final_speaker, role_id: speaker, required: false}
+
+  validation_review:
+    enabled: true
+    description: "Validation explanation/review only; Validation Authority remains deterministic evidence/tests."
+    allowed_intents: [validation, validation_request, evidence_check]
+    passes:
+      - {pass_id: reviewer_evidence, role_id: reviewer, required: false}
+      - {pass_id: supervisor_validation, role_id: supervisor, required: true}
+      - {pass_id: interpreter_validation, role_id: interpreter, required: false}
+      - {pass_id: final_speaker, role_id: speaker, required: false}
+
+  debug_review:
+    enabled: true
+    description: "Sanitized diagnostics inside a TaskRun; Doctor/Truth remain separate authority ceilings."
+    allowed_intents: [self_analysis, debug_trace, runtime_diagnostic]
+    passes:
+      - {pass_id: debugger_trace, role_id: debugger, required: false}
+      - {pass_id: supervisor_consistency, role_id: supervisor, required: true}
+      - {pass_id: interpreter_explanation, role_id: interpreter, required: false}
+      - {pass_id: final_speaker, role_id: speaker, required: false}
+
+  artifact_review:
+    enabled: true
+    description: "Artifact planning/reporting roles; artifact persistence remains governed by ArtifactRuntime."
+    allowed_intents: [artifact_generation, artifact_zip_generate, artifact_validate]
+    passes:
+      - {pass_id: planner_artifact, role_id: planner, required: false}
+      - {pass_id: artifact_reporter, role_id: artifact_writer, required: false}
+      - {pass_id: supervisor_consistency, role_id: supervisor, required: true}
+      - {pass_id: final_speaker, role_id: speaker, required: false}

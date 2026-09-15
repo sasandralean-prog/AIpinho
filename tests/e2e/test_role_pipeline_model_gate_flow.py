@@ -1,3 +1,4 @@
+from types import SimpleNamespace
 from aipinho.schemas.roles.role_model_gate import RoleModelGateRequest
 from aipinho.schemas.roles.role_pass_input import RolePassInput
 from aipinho.schemas.roles.role_pipeline_run import RolePipelineRunRequest
@@ -6,6 +7,32 @@ from aipinho.services.roles.effective_role_policy_service import EffectiveRolePo
 from aipinho.services.roles.role_model_gate_service import RoleModelGateService
 from aipinho.services.roles.role_pass_runner import RolePassRunner
 from aipinho.services.roles.role_pipeline_service import RolePipelineService
+
+
+class _BoundTaskRuns:
+    def __init__(self):
+        self.run = SimpleNamespace(
+            run_id="task_run_" + "b" * 32,
+            operation_id="op_e2e_role",
+            status="running",
+            plan=SimpleNamespace(canonical_execution_plan=SimpleNamespace(execution_id="exec_e2e_role")),
+        )
+
+    def get_run_lightweight(self, run_id):
+        return self.run if run_id == self.run.run_id else None
+
+
+def _service():
+    return RolePipelineService(task_runs=_BoundTaskRuns())
+
+
+def _bound_request(**kwargs):
+    return RolePipelineRunRequest(
+        parent_task_run_id="task_run_" + "b" * 32,
+        parent_operation_id="op_e2e_role",
+        parent_execution_id="exec_e2e_role",
+        **kwargs,
+    )
 
 
 def test_e2e_20_required_role_pipeline_cases():
@@ -42,14 +69,14 @@ def test_e2e_20_required_role_pipeline_cases():
     preview = RolePipelineService().preview_pipeline(RolePipelineRunRequest(pipeline_id="chat_basic", intent_map={"intent_type": "conversation"}, policy_decision={"status": "allowed"}))
     assert preview.status == "preview" and preview.final_output["model_invoked"] is False
 
-    chat_run = RolePipelineService().run_pipeline(RolePipelineRunRequest(pipeline_id="chat_basic", user_message="Ola", intent_map={"intent_type": "conversation"}, policy_decision={"status": "allowed"}, model_mode="deterministic"))
+    chat_run = _service().run_pipeline(_bound_request(pipeline_id="chat_basic", user_message="Ola", intent_map={"intent_type": "conversation"}, policy_decision={"status": "allowed"}, model_mode="deterministic"))
     assert chat_run.status == "completed" and chat_run.final_output["real_inference"] is False
 
     missing = RolePipelineService().preview_pipeline(RolePipelineRunRequest(pipeline_id="readonly_project_report", intent_map={"intent_type": "readonly_analysis"}, policy_decision={"status": "allowed"}))
     assert missing.status == "needs_input"
 
     report = {"evidence": [{"evidence_id": "ev1", "path": "README.md"}]}
-    readonly = RolePipelineService().run_pipeline(RolePipelineRunRequest(pipeline_id="readonly_project_report", intent_map={"intent_type": "readonly_analysis"}, policy_decision={"status": "allowed"}, project_report=report, evidence=[{"evidence_id": "ev1", "path": "README.md"}]))
+    readonly = _service().run_pipeline(_bound_request(pipeline_id="readonly_project_report", intent_map={"intent_type": "readonly_analysis"}, policy_decision={"status": "allowed"}, project_report=report, evidence=[{"evidence_id": "ev1", "path": "README.md"}]))
     assert readonly.status in {"completed", "partial", "rejected"}
     assert readonly.final_output.get("write") is False
 

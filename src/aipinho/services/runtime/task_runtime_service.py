@@ -40,6 +40,7 @@ from aipinho.services.runtime.task_run_trace_service import TaskRunTraceService
 from aipinho.services.runtime.task_block_cause_service import TaskBlockCauseService
 from aipinho.services.runtime.task_run_executor import TaskRunExecutor
 from aipinho.services.runtime.governed_task_step_runner import GovernedTaskStepRunner
+from aipinho.services.roles.role_pipeline_service import RolePipelineService
 from aipinho.services.runtime.execution_graph_service import ExecutionGraphService
 from aipinho.services.runtime.intelligent_planner_service import IntelligentPlannerService
 from aipinho.services.runtime.evidence_engine_service import EvidenceEngineService
@@ -122,7 +123,9 @@ class TaskRuntimeService:
             project_generation_executor=ProjectGenerationPlanExecutor(
                 draft_store=draft_store,
             ),
+            roles=RolePipelineService(task_runs=self.store),
         )
+        self.step_runner = runner
         self.loop = SupervisedExecutionLoop(
             store=self.store,
             lifecycle=self.lifecycle,
@@ -883,9 +886,26 @@ class TaskRuntimeService:
 
     def start(self, run_id):
         run, result = self.loop.run(run_id)
+        timeline = self.timeline.build(run.run_id) if result is not None else None
+        truth = self.truth.evaluate(run, result=result, timeline=timeline)
+        run.canonical_state = self.canonical_states.derive(
+            run,
+            result=result,
+            truth=truth,
+            artifacts=[dict(item) for item in run.produced_artifacts if isinstance(item, dict)],
+        )
+        self.store.update_run(run)
         self._publish_terminal_result(run, result)
         self.operational_memory.capture_task_run(run, trigger="task_run_finished")
         return run, result
+
+    def bind_readonly_artifact_runtime(self, service) -> None:
+        """Bind a specialized read-only artifact executor into the canonical step runner.
+
+        The bound service contributes domain execution only. Task identity, lifecycle,
+        events, completion and Truth remain owned by this TaskRuntimeService.
+        """
+        self.step_runner.readonly_artifact_runtime = service
 
     def cancel(
         self,

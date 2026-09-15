@@ -5,6 +5,8 @@ import json
 from typing import Any
 
 from aipinho.schemas.runtime.phase_outcome import PhaseOutcome
+from aipinho.services.runtime.runtime_timeline_service import RuntimeTimelineService
+from aipinho.services.runtime.runtime_truth_engine import RuntimeTruthEngine
 from aipinho.services.runtime.task_run_store import TaskRunStore
 
 
@@ -15,8 +17,16 @@ class PhaseOutcomeRepository:
     rebuilt from TaskRun + TaskRunResult + canonical artifact bindings.
     """
 
-    def __init__(self, store: TaskRunStore | None = None) -> None:
+    def __init__(
+        self,
+        store: TaskRunStore | None = None,
+        *,
+        timelines: RuntimeTimelineService | None = None,
+        truth: RuntimeTruthEngine | None = None,
+    ) -> None:
         self.store = store or TaskRunStore()
+        self.timelines = timelines or RuntimeTimelineService(store=self.store)
+        self.truth = truth or RuntimeTruthEngine()
 
     def resolve(self, *, session_id: str | None, phase_id: str) -> PhaseOutcome | None:
         candidates = self.store.list_runs(session_id=session_id, limit=1000)
@@ -68,6 +78,25 @@ class PhaseOutcomeRepository:
             if isinstance(semantic.get("phase_dependency"), dict)
             else dict(completion_meta.get("phase_dependency") or {})
         )
+        timeline = self.timelines.build(run_id)
+        runtime_truth = self.truth.evaluate(run, result=result, timeline=timeline)
+        runtime_truth_payload = runtime_truth.model_dump(mode="json")
+        truth_blocks_dependency = runtime_truth.status in {
+            "blocked",
+            "failed",
+            "cancelled",
+            "expired",
+        }
+        if truth_blocks_dependency:
+            previous_dependency_status = phase_dependency.get("status")
+            phase_dependency = {
+                **phase_dependency,
+                "status": "blocked",
+                "reason_code": runtime_truth.reason_code or "UPSTREAM_RUNTIME_TRUTH_BLOCKED",
+                "runtime_truth_status": runtime_truth.status,
+                "runtime_truth_safe_to_report_success": runtime_truth.safe_to_report_success,
+                "runtime_truth_previous_dependency_status": previous_dependency_status,
+            }
         semantic_metadata = semantic.get("metadata") if isinstance(semantic.get("metadata"), dict) else {}
         use_safety = (
             dict(semantic.get("use_safety"))
@@ -112,12 +141,19 @@ class PhaseOutcomeRepository:
             [
                 *list(semantic.get("required_disclosures") or []),
                 *list(completion_meta.get("required_disclosures") or []),
+                *(
+                    [f"runtime_truth_blocked:{runtime_truth.reason_code}"]
+                    if truth_blocks_dependency and runtime_truth.reason_code
+                    else []
+                ),
             ]
         )
         missing_truth = self._unique(
             [
                 *list(semantic.get("missing_truth") or []),
                 *list(completion_meta.get("missing_truth") or []),
+                *list(runtime_truth.contradictions if truth_blocks_dependency else []),
+                *list(runtime_truth.missing_evidence if truth_blocks_dependency else []),
             ]
         )
         risk_constraints = self._unique(
@@ -131,6 +167,10 @@ class PhaseOutcomeRepository:
             "artifact_sufficiency_status": semantic.get("artifact_sufficiency_status"),
             "safe_for_limited_discovery": semantic.get("safe_for_limited_discovery"),
             "partial_artifact_accepted": semantic.get("partial_artifact_accepted"),
+            "runtime_truth_status": runtime_truth.status,
+            "runtime_truth_reason_code": runtime_truth.reason_code,
+            "runtime_truth_safe_to_report_success": runtime_truth.safe_to_report_success,
+            "speaker_truth_status": runtime_truth.speaker_truth_status,
             "truth_status": (
                 run.canonical_state.truth_status
                 if run.canonical_state is not None and hasattr(run.canonical_state, "truth_status")
@@ -147,6 +187,7 @@ class PhaseOutcomeRepository:
             "reason_code": result.reason_code,
             "semantic_completion": semantic,
             "phase_dependency": phase_dependency,
+            "runtime_truth": runtime_truth_payload,
             "artifact_refs": artifact_refs,
             "evidence_refs": evidence_refs,
         }
@@ -166,7 +207,11 @@ class PhaseOutcomeRepository:
             workspace=run.workspace,
             runtime_status=str(run.status),
             result_status=str(result.status),
-            reason_code=result.reason_code,
+            reason_code=(
+                runtime_truth.reason_code
+                if truth_blocks_dependency
+                else result.reason_code
+            ),
             semantic_completion=semantic,
             phase_dependency=phase_dependency,
             use_safety=use_safety,
@@ -182,6 +227,7 @@ class PhaseOutcomeRepository:
             authority_refs=[
                 f"task_run:{run.run_id}",
                 f"task_run_result:{run.run_id}",
+                f"runtime_truth:{runtime_truth.truth_id}",
             ],
             authority_sha256=authority_sha256,
         )

@@ -6,6 +6,7 @@ step_types:
   build_project_tree: {enabled: true, action: project_tree, side_effect: false, required: true}
   build_file_context: {enabled: true, action: project_context, side_effect: false, required: true}
   run_project_analysis: {enabled: true, action: project_analysis, side_effect: false, required: true}
+  execute_readonly_artifact_analysis: {enabled: true, action: project_analysis, side_effect: false, required: true}
   generate_project_report: {enabled: true, action: project_report, side_effect: false, required: false}
   run_role_pipeline: {enabled: true, action: role_pipeline_run, side_effect: false, required: false}
   execute_web_search: {enabled: true, action: web_request, side_effect: true, required: true}

@@ -117,6 +117,11 @@ class WorkflowRuntimeService:
         producer: WorkflowPhase | None,
         dependency: WorkflowPhaseDependency,
     ) -> str | None:
+        # Optional phases may contribute cognition/evidence but are never
+        # authority-bearing prerequisites for the next phase. Once terminal,
+        # their failure/degradation cannot block a required downstream phase.
+        if producer is not None and not producer.required and producer.status in _TERMINAL_STATUSES:
+            return None
         if not dependency.evaluation_required:
             return None
         if dependency.demand_compilation is None:

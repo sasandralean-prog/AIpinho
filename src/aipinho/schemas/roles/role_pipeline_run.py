@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from datetime import datetime, timezone
 from typing import Any, Literal
@@ -30,6 +30,9 @@ class RolePipelineRunRequest(AIpinhoModel):
     model_mode: Literal["deterministic", "stub", "manual_real"] = "stub"
     allow_real_inference: bool = False
     operator_confirmed: bool = False
+    parent_task_run_id: str | None = None
+    parent_operation_id: str | None = None
+    parent_execution_id: str | None = None
 
 
 class RolePipelineRun(AIpinhoModel):
@@ -44,6 +47,10 @@ class RolePipelineRun(AIpinhoModel):
     started_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     finished_at: str | None = None
     validation_summary: dict[str, Any] | None = None
+    parent_task_run_id: str | None = None
+    parent_operation_id: str | None = None
+    parent_execution_id: str | None = None
+    authority_mode: Literal["preview_only", "task_runtime_child"] = "preview_only"
 
     def finish(self, status: RolePipelineRunStatus) -> None:
         self.status = status

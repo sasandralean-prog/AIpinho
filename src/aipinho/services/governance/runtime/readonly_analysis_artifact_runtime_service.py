@@ -11,10 +11,11 @@ import time
 import traceback
 import unicodedata
 import zipfile
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from threading import Thread
+from types import SimpleNamespace
 from typing import Any
 from uuid import uuid4
 
@@ -534,6 +535,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
         self.phase_outcomes = phase_outcomes or PhaseOutcomeRepository(store=self.runtime.store)
         self.root_role_resolver = root_role_resolver or RootRoleResolverService()
         self._artifact_checkpoint_emitted: dict[tuple[str, str, str], float] = {}
+        self.runtime.bind_readonly_artifact_runtime(self)
 
     def requested_artifact_paths(self, text: str) -> list[str]:
         if not self._artifact_generation_requested(text):
@@ -1328,7 +1330,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
             is_final_answer=False,
             grounded=True,
             grounding_required=False,
-            model_used="readonly_analysis_artifact_runtime",
+            model_used="task_runtime+governed_roles",
             real_inference=False,
             governance_lifecycle={
                 "public_response_boundary": {
@@ -1389,7 +1391,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
             grounded=False,
             grounding_required=True,
             grounding_missing_reason=reason_code,
-            model_used="readonly_analysis_artifact_runtime",
+            model_used="task_runtime+governed_roles",
             real_inference=False,
         )
 
@@ -1485,7 +1487,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
             workspace=workspace,
             contract_type="analysis_readonly",
             operation_type="workspace_analysis_readonly",
-            runtime_profile="readonly_analysis",
+            runtime_profile="readonly_artifact_analysis",
             capabilities_required=["read_workspace", "artifact_generate"],
             intent_map={
                 "intent_type": "workspace_analysis_readonly",
@@ -1539,6 +1541,171 @@ class ReadonlyAnalysisArtifactRuntimeService:
         _prepared: dict[str, Any] | None = None,
         _run_request: TaskRunRequest | None = None,
     ) -> ReadonlyArtifactExecution:
+        """Execute through the single canonical TaskRuntime path.
+
+        Domain-specific artifact/perception work is delegated back into this
+        service only as a governed TaskRun step. This public method never owns
+        lifecycle, terminalization, completion or Truth.
+        """
+        prepared = _prepared or self._prepare_public_execution(
+            request=request,
+            workspace=workspace,
+            operation_id=operation_id,
+        )
+        blocked = prepared.get("blocked_execution")
+        if isinstance(blocked, ReadonlyArtifactExecution):
+            return blocked
+        run_request = _run_request or self._task_run_request(
+            request=request,
+            workspace=workspace,
+            operation_id=operation_id,
+            prepared=prepared,
+        )
+        run = self.runtime.create_run(run_request)
+        run, result = self.runtime.start(run.run_id)
+        return self._execution_from_canonical_taskrun(
+            request=request,
+            workspace=workspace,
+            label=label,
+            run=run,
+            result=result,
+        )
+
+    def execute_bound_step(self, *, run, context) -> dict[str, Any]:
+        """Execute specialized readonly artifact work inside an existing TaskRun."""
+        intent = run.intent_map if isinstance(run.intent_map, dict) else {}
+        prompt = str(intent.get("raw_prompt") or "")
+        if not prompt and run.plan and run.plan.canonical_execution_plan is not None:
+            prompt = str(run.plan.canonical_execution_plan.semantic_goal or "")
+        logical_paths = [str(item) for item in intent.get("requested_artifact_paths") or intent.get("requested_deliverables") or [] if str(item)]
+        phase_id = str(intent.get("phase_id") or run.current_phase or "phase_unknown")
+        dependency_phase_ids = [str(item) for item in intent.get("dependency_phase_ids") or [] if str(item)]
+        cognitive = intent.get("cognitive_readiness") if isinstance(intent.get("cognitive_readiness"), dict) else {}
+        request_context = {
+            "external_roots": list(intent.get("external_roots") or []),
+            "library_roots": list(intent.get("library_roots") or []),
+            "readonly_flags": dict(intent.get("readonly_flags") or {}),
+            "workspace_ids": list(intent.get("workspace_ids") or []),
+            "phase_dependency_admissions": list(intent.get("phase_dependency_admissions") or []),
+        }
+        request = SimpleNamespace(
+            message=prompt,
+            session_id=run.session_id,
+            context=SimpleNamespace(**cognitive),
+        )
+        prepared = {
+            "request_context": request_context,
+            "logical_paths": logical_paths,
+            "phase_id": phase_id,
+            "dependency_phase_ids": dependency_phase_ids,
+            "dependency_preflight": {
+                "status": "passed",
+                "reason_code": None,
+                "missing": [],
+                "dependency_evaluations": [],
+            },
+        }
+        return self._execute_legacy_core(
+            request=request,
+            workspace=str(run.workspace or ""),
+            operation_id=run.operation_id,
+            _prepared=prepared,
+            _bound_run=run,
+            _runtime_managed=True,
+            _task_context=context,
+        )
+
+    def _execution_from_canonical_taskrun(self, *, request, workspace: str, label: str, run, result) -> ReadonlyArtifactExecution:
+        outputs = result.outputs if result is not None and isinstance(result.outputs, dict) else {}
+        summary = outputs.get("readonly_artifact_analysis") if isinstance(outputs.get("readonly_artifact_analysis"), dict) else {}
+        if not summary:
+            specialized_step = next(
+                (
+                    step
+                    for step in (run.plan.steps if run.plan else [])
+                    if step.step_type == "execute_readonly_artifact_analysis"
+                    and isinstance(step.output_summary, dict)
+                    and step.output_summary
+                ),
+                None,
+            )
+            if specialized_step is not None:
+                summary = dict(specialized_step.output_summary)
+        validation = (
+            summary.get("validation_result")
+            if isinstance(summary.get("validation_result"), dict)
+            else (result.validation if result is not None and isinstance(result.validation, dict) else {"status": "blocked"})
+        )
+        dependency_check = summary.get("phase_dependency_result") if isinstance(summary.get("phase_dependency_result"), dict) else {"status": "passed"}
+        logical_paths = [str(item) for item in summary.get("logical_paths") or (run.intent_map or {}).get("requested_artifact_paths") or []]
+        artifacts = [dict(item) for item in run.produced_artifacts if isinstance(item, dict)]
+        completion = result.completion if result is not None and result.completion is not None else TaskCompletionEvaluation(status="blocked", safe_to_report_success=False)
+        truth = self.runtime.get_runtime_truth(run.run_id)
+        safe = bool(truth and truth.safe_to_report_success)
+        public_status = "completed" if safe else "blocked"
+        self._finalize_bound_phase_projection(run=run, result=result, summary=summary, validation=validation, artifacts=artifacts, logical_paths=logical_paths)
+        response = self._response(
+            request,
+            workspace=workspace,
+            label=label,
+            task_id=run.task_id,
+            run_id=run.run_id,
+            operation_id=run.operation_id,
+            logical_paths=logical_paths,
+            artifacts=artifacts,
+            validation=validation,
+            completion=completion,
+            dependency_check=dependency_check,
+            status=public_status,
+        )
+        return ReadonlyArtifactExecution(
+            response=response,
+            run_id=run.run_id,
+            created_artifacts=artifacts,
+            validation=validation,
+        )
+
+    def _finalize_bound_phase_projection(self, *, run, result, summary: dict[str, Any], validation: dict[str, Any], artifacts: list[dict[str, Any]], logical_paths: list[str]) -> None:
+        # Compatibility projection only. Canonical phase authority is rebuilt from
+        # TaskRun + TaskRunResult + RuntimeTruth by PhaseOutcomeRepository.
+        decision_payload = summary.get("phase_semantic_completion_decision") if isinstance(summary.get("phase_semantic_completion_decision"), dict) else {}
+        try:
+            decision = PhaseCompletionDecision(**decision_payload) if decision_payload else None
+        except Exception:
+            decision = None
+        truth = self.runtime.get_runtime_truth(run.run_id)
+        if truth is None or truth.status in {"blocked", "failed", "cancelled", "expired"}:
+            return
+        if decision is not None and decision.phase_dependency.get("status") == "blocked":
+            return
+        self._record_phase(
+            session_id=run.session_id,
+            phase_id=str((run.intent_map or {}).get("phase_id") or run.current_phase or "phase_unknown"),
+            run_id=run.run_id,
+            workspace=str(run.workspace or ""),
+            artifacts=artifacts,
+            logical_paths=logical_paths,
+            patch_plan_id=self._patch_plan_id(summary.get("project_analysis_report") or {}),
+            operation_id=run.operation_id,
+            phase_completion_decision=decision,
+            validation=validation,
+        )
+        cognitive = (run.intent_map or {}).get("cognitive_readiness") if isinstance((run.intent_map or {}).get("cognitive_readiness"), dict) else {}
+        self._calibrate_phase0_prediction(run.run_id, cognitive)
+
+    def _execute_legacy_core(
+        self,
+        *,
+        request,
+        workspace: str,
+        label: str = "WORKSPACE_ANALYSIS_ARTIFACTS_READY",
+        operation_id: str | None = None,
+        _prepared: dict[str, Any] | None = None,
+        _run_request: TaskRunRequest | None = None,
+        _bound_run=None,
+        _runtime_managed: bool = False,
+        _task_context=None,
+    ):
         prepared = _prepared or self._prepare_public_execution(
             request=request,
             workspace=workspace,
@@ -1558,7 +1725,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
             operation_id=operation_id,
             prepared=prepared,
         )
-        run = self.runtime.create_run(run_request)
+        run = _bound_run or self.runtime.create_run(run_request)
 
         demand_compilation: PhaseSemanticDemandCompilation | None = None
         if dependency_phase_ids:
@@ -1607,11 +1774,12 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 metadata=phase0_ref,
             )
 
-        self._transition(run, "queued")
-        self.runtime.events.create(run.run_id, "run_queued", "queued", "Read-only artifact analysis queued.")
-        self._transition(run, "running")
-        self.runtime.events.create(run.run_id, "run_started", "running", "Read-only artifact analysis started.")
-        self.runtime.store.update_run(run)
+        if not _runtime_managed:
+            self._transition(run, "queued")
+            self.runtime.events.create(run.run_id, "run_queued", "queued", "Read-only artifact analysis queued.")
+            self._transition(run, "running")
+            self.runtime.events.create(run.run_id, "run_started", "running", "Read-only artifact analysis started.")
+            self.runtime.store.update_run(run)
 
         created_artifacts: list[dict[str, Any]] = []
         analysis_payload: dict[str, Any] | None = None
@@ -1897,13 +2065,14 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 "artifacts_created": len(created_artifacts),
                 "artifact_index_exercised": bool(created_artifacts),
             }
-            self._emit_terminal_event(
-                run.run_id,
-                "run_cancelled" if status == "cancelled" else "run_blocked",
-                status,
-                str(exc),
-                metadata={"reason_code": effective_reason_code, **exc.details},
-            )
+            if not _runtime_managed:
+                self._emit_terminal_event(
+                    run.run_id,
+                    "run_cancelled" if status == "cancelled" else "run_blocked",
+                    status,
+                    str(exc),
+                    metadata={"reason_code": effective_reason_code, **exc.details},
+                )
         except Exception as exc:
             status = "blocked"
             artifact_event = self._artifact_creation_in_progress(run.run_id)
@@ -1975,13 +2144,14 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 if artifact_event is not None
                 else "READONLY_ARTIFACT_EXECUTION",
             }
-            self._emit_terminal_event(
-                run.run_id,
-                "run_failed",
-                "blocked",
-                "Read-only artifact analysis failed before completion.",
-                metadata=validation,
-            )
+            if not _runtime_managed:
+                self._emit_terminal_event(
+                    run.run_id,
+                    "run_failed",
+                    "blocked",
+                    "Read-only artifact analysis failed before completion.",
+                    metadata=validation,
+                )
 
         final_artifacts = self._terminal_artifact_summaries(created_artifacts)
         self.runtime.events.create(
@@ -2034,6 +2204,72 @@ class ReadonlyAnalysisArtifactRuntimeService:
             if status == "failed"
             else "blocked"
         )
+        if _runtime_managed:
+            run.produced_artifacts = final_artifacts
+            self.runtime.store.update_run(run)
+            evidence = [
+                {
+                    "evidence_id": str(item.get("artifact_id")),
+                    "source": str((item.get("metadata") or {}).get("logical_path") or item.get("filename") or item.get("artifact_id")),
+                    "artifact_id": str(item.get("artifact_id")),
+                }
+                for item in final_artifacts
+                if item.get("artifact_id")
+            ]
+            project_report = {
+                "status": status,
+                "report": analysis_payload or {},
+                "evidence": evidence,
+                "requested_deliverables": logical_paths,
+                "fulfilled_deliverables": [
+                    str((item.get("metadata") or {}).get("logical_path") or item.get("logical_path") or "")
+                    for item in final_artifacts
+                    if str(item.get("status") or "") in {"ready", "partial"}
+                ],
+                "missing_deliverables": list(validation.get("missing_outputs") or []),
+            }
+            if _task_context is not None:
+                _task_context.outputs["_project_analysis"] = analysis_payload or {}
+                _task_context.outputs["_project_report"] = project_report
+                _task_context.outputs["_artifact_records"] = final_artifacts
+                if analysis_payload and isinstance(analysis_payload, dict) and analysis_payload.get("file_context"):
+                    _task_context.outputs["_file_context"] = analysis_payload.get("file_context")
+                _task_context.outputs["_validation_result"] = validation
+                _task_context.outputs["_phase_dependency_result"] = dependency_check
+                _task_context.outputs["_phase_semantic_completion_decision"] = asdict(phase_completion_decision)
+            step_status = (
+                "completed" if result_status == "completed"
+                else "partial" if result_status == "completed_with_limitations"
+                else "cancelled" if result_status == "cancelled"
+                else "failed" if result_status == "failed"
+                else "blocked"
+            )
+            step_summary = {
+                "status": step_status,
+                "logical_paths": logical_paths,
+                "project_analysis_report": analysis_payload or {},
+                "artifact_result": {
+                    "artifact_ids": [item.get("artifact_id") for item in final_artifacts if item.get("artifact_id")],
+                    "logical_paths": logical_paths,
+                    "artifacts": final_artifacts,
+                    "artifact_state": self._artifact_state(final_artifacts, validation),
+                },
+                "validation_result": validation,
+                "phase_dependency_result": dependency_check,
+                "phase_semantic_completion_decision": asdict(phase_completion_decision),
+                "completion_preview": completion.model_dump(mode="json"),
+            }
+            return {
+                "status": step_status,
+                "summary": step_summary,
+                "warnings": list(dict.fromkeys([
+                    *([] if step_status == "completed" else ["readonly_artifact_step_limited"]),
+                    *list(phase_completion_decision.limitations),
+                ])),
+                "violations": list(phase_completion_decision.blocking_findings),
+                "limitations": list(phase_completion_decision.limitations),
+                "blocked_items": list(validation.get("blocking_findings") or validation.get("missing_outputs") or []),
+            }
         self.runtime.events.create(
             run.run_id,
             "runtime_finalization_checkpoint",
@@ -6313,7 +6549,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
             },
             contract_preview={
                 "contract_type": "analysis_readonly",
-                "runtime_profile": "readonly_analysis",
+                "runtime_profile": "readonly_artifact_analysis",
                 "workspace": workspace,
                 "task_run_id": run_id,
                 "executable_plan_ref": run_id,
@@ -6333,7 +6569,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
             ],
             grounded=completion.safe_to_report_success,
             is_final_answer=status == "completed",
-            model_used="readonly_analysis_artifact_runtime",
+            model_used="task_runtime+governed_roles",
             real_inference=False,
             fallback_used=False,
         )
@@ -6386,7 +6622,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
             grounded=False,
             grounding_required=True,
             grounding_missing_reason=reason_code,
-            model_used="readonly_analysis_artifact_runtime",
+            model_used="task_runtime+governed_roles",
             real_inference=False,
         )
 

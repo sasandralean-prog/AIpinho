@@ -133,8 +133,14 @@ class TaskCompletionResolver:
                 )
                 for item in requested
             ]
-        fulfilled = set(getattr(report, "fulfilled_deliverables", []) or [])
-        missing = set(getattr(report, "missing_deliverables", []) or [])
+        if isinstance(report, dict):
+            fulfilled = set(str(item) for item in report.get("fulfilled_deliverables", []) or [])
+            missing = set(str(item) for item in report.get("missing_deliverables", []) or [])
+            report_ref = str(report.get("report_id") or report.get("result_id") or "project_report")
+        else:
+            fulfilled = set(getattr(report, "fulfilled_deliverables", []) or [])
+            missing = set(getattr(report, "missing_deliverables", []) or [])
+            report_ref = str(getattr(report, "report_id", "project_report"))
         criteria: list[TaskCompletionCriterion] = []
         for item in requested:
             ok = item in fulfilled and item not in missing
@@ -148,9 +154,7 @@ class TaskCompletionResolver:
                         if ok
                         else f"Requested deliverable {item} is missing from the report."
                     ),
-                    evidence_refs=[getattr(report, "report_id", "project_report")]
-                    if ok
-                    else [],
+                    evidence_refs=[report_ref] if ok else [],
                     metadata={"deliverable_id": item},
                 )
             )

@@ -111,7 +111,7 @@ def test_readonly_analysis_artifacts_create_taskrun_without_workspace_mutation()
     assert run is not None and run.status == "completed"
     assert run.task_id == response.task_id
     assert run.contract_type == "analysis_readonly"
-    assert run.runtime_profile == "readonly_analysis"
+    assert run.runtime_profile == "readonly_artifact_analysis"
     assert run.requested_actions == ["read_files"]
     assert run.policy_snapshot["approval_required_for"] == []
     assert run.intent_map["workspace_mutation"] is False

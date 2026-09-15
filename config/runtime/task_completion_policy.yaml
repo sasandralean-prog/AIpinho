@@ -11,6 +11,12 @@ contracts:
     requested_deliverables:
       enabled: true
       require_project_report: true
+  analysis_readonly:
+    required_outputs:
+      - project_analysis_report
+    requested_deliverables:
+      enabled: true
+      require_project_report: true
   in_chat_final_report:
     required_outputs:
       - role_pipeline_run

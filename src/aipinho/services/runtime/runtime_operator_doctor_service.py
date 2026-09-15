@@ -105,8 +105,8 @@ class RuntimeOperatorDoctorService:
                 DoctorEvidence(
                     domain=category,
                     source=observation.source or snapshot_field,
-                    observed=actual_value,
-                    expected=expected_value,
+                    observed=self._bounded_evidence(actual_value),
+                    expected=self._bounded_evidence(expected_value),
                     refs=[snapshot.snapshot_id],
                 )
             )
@@ -232,6 +232,11 @@ class RuntimeOperatorDoctorService:
         if isinstance(expected, list):
             if not isinstance(actual, list):
                 return False
+            if not expected:
+                return True
+            if all(not isinstance(item, (dict, list)) for item in expected):
+                actual_scalars = {repr(item) for item in actual if not isinstance(item, (dict, list))}
+                return all(repr(item) in actual_scalars for item in expected)
             unmatched = list(actual)
             for expected_item in expected:
                 match_index = next(
@@ -247,6 +252,28 @@ class RuntimeOperatorDoctorService:
                 unmatched.pop(match_index)
             return True
         return False
+
+    def _bounded_evidence(self, value: Any, *, depth: int = 0) -> Any:
+        """Bound Doctor report payloads without changing the observed snapshot."""
+        if depth >= 5:
+            return "<doctor_evidence_depth_limit>"
+        if isinstance(value, str):
+            return value if len(value) <= 2000 else value[:2000] + "...<truncated>"
+        if isinstance(value, list):
+            limit = 100
+            rows = [self._bounded_evidence(item, depth=depth + 1) for item in value[:limit]]
+            if len(value) > limit:
+                rows.append({"_doctor_truncated_items": len(value) - limit, "_doctor_total_items": len(value)})
+            return rows
+        if isinstance(value, dict):
+            limit = 100
+            items = list(value.items())
+            bounded = {str(key): self._bounded_evidence(item, depth=depth + 1) for key, item in items[:limit]}
+            if len(items) > limit:
+                bounded["_doctor_truncated_keys"] = len(items) - limit
+                bounded["_doctor_total_keys"] = len(items)
+            return bounded
+        return value
 
     def _matches_list_summary(self, actual: list[Any], expected: dict[str, Any]) -> bool:
         supported_keys = {"count", "required", "items"}

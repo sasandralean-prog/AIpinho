@@ -5,6 +5,24 @@ from types import SimpleNamespace
 from aipinho.services.runtime.phase_outcome_repository import PhaseOutcomeRepository
 
 
+
+
+class _FakeTimelines:
+    def __init__(self, timeline=None) -> None:
+        self.timeline = timeline
+
+    def build(self, run_id):
+        return self.timeline
+
+
+class _FakeTruthEngine:
+    def __init__(self, truth) -> None:
+        self.truth = truth
+
+    def evaluate(self, run, *, result=None, timeline=None):
+        return self.truth
+
+
 class _FakeStore:
     def __init__(self, run, result) -> None:
         self.run = run
@@ -20,6 +38,27 @@ class _FakeStore:
 
     def get_result(self, run_id):
         return self.result if run_id == self.run.run_id else None
+
+
+def _truth(*, status="completed", reason_code="timeline_status:completed", safe=True):
+    return SimpleNamespace(
+        truth_id="runtime_truth_task_run_phase1",
+        status=status,
+        reason_code=reason_code,
+        safe_to_report_success=safe,
+        speaker_truth_status="allowed" if safe else "evidence_required",
+        contradictions=[],
+        missing_evidence=[],
+        model_dump=lambda mode="json": {
+            "truth_id": "runtime_truth_task_run_phase1",
+            "status": status,
+            "reason_code": reason_code,
+            "safe_to_report_success": safe,
+            "speaker_truth_status": "allowed" if safe else "evidence_required",
+            "contradictions": [],
+            "missing_evidence": [],
+        },
+    )
 
 
 def _fixture():
@@ -77,7 +116,11 @@ def _fixture():
 
 def test_phase_outcome_projects_limited_success_without_promoting_truth() -> None:
     run, result = _fixture()
-    repository = PhaseOutcomeRepository(store=_FakeStore(run, result))  # type: ignore[arg-type]
+    repository = PhaseOutcomeRepository(
+        store=_FakeStore(run, result),  # type: ignore[arg-type]
+        timelines=_FakeTimelines(),  # type: ignore[arg-type]
+        truth=_FakeTruthEngine(_truth()),  # type: ignore[arg-type]
+    )
 
     outcome = repository.project(run_id=run.run_id)
 
@@ -99,8 +142,49 @@ def test_phase_outcome_projects_limited_success_without_promoting_truth() -> Non
 
 def test_phase_outcome_resolve_is_session_and_phase_bound() -> None:
     run, result = _fixture()
-    repository = PhaseOutcomeRepository(store=_FakeStore(run, result))  # type: ignore[arg-type]
+    repository = PhaseOutcomeRepository(
+        store=_FakeStore(run, result),  # type: ignore[arg-type]
+        timelines=_FakeTimelines(),  # type: ignore[arg-type]
+        truth=_FakeTruthEngine(_truth()),  # type: ignore[arg-type]
+    )
 
     assert repository.resolve(session_id="session_a", phase_id="phase_1") is not None
     assert repository.resolve(session_id="session_b", phase_id="phase_1") is None
     assert repository.resolve(session_id="session_a", phase_id="phase_2") is None
+
+
+def test_phase_outcome_blocks_dependency_when_canonical_runtime_truth_blocks() -> None:
+    run, result = _fixture()
+    blocked_truth = _truth(
+        status="blocked",
+        reason_code="runtime_truth_contradiction",
+        safe=False,
+    )
+    blocked_truth.contradictions = ["completion_completed_timeline_has_gaps"]
+    blocked_truth.model_dump = lambda mode="json": {
+        "truth_id": blocked_truth.truth_id,
+        "status": blocked_truth.status,
+        "reason_code": blocked_truth.reason_code,
+        "safe_to_report_success": blocked_truth.safe_to_report_success,
+        "speaker_truth_status": blocked_truth.speaker_truth_status,
+        "contradictions": blocked_truth.contradictions,
+        "missing_evidence": [],
+    }
+    repository = PhaseOutcomeRepository(
+        store=_FakeStore(run, result),  # type: ignore[arg-type]
+        timelines=_FakeTimelines(),  # type: ignore[arg-type]
+        truth=_FakeTruthEngine(blocked_truth),  # type: ignore[arg-type]
+    )
+
+    outcome = repository.project(run_id=run.run_id)
+
+    assert outcome is not None
+    assert outcome.phase_dependency["status"] == "blocked"
+    assert outcome.phase_dependency["reason_code"] == "runtime_truth_contradiction"
+    assert outcome.phase_dependency["runtime_truth_previous_dependency_status"] == "satisfied_with_limitations"
+    assert outcome.reason_code == "runtime_truth_contradiction"
+    assert outcome.semantic_properties["runtime_truth_status"] == "blocked"
+    assert outcome.semantic_properties["runtime_truth_safe_to_report_success"] is False
+    assert "completion_completed_timeline_has_gaps" in outcome.missing_truth
+    assert "runtime_truth_blocked:runtime_truth_contradiction" in outcome.required_disclosures
+    assert f"runtime_truth:{blocked_truth.truth_id}" in outcome.authority_refs
