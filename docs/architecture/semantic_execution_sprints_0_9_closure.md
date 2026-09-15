@@ -137,13 +137,21 @@ Consolidated Sprint 0→9 worktree regression:
 EXIT=0
 ```
 
-The deselected approval test depends on the canonical registered workspace and
-is validated after promotion in `C:\Dev\AIpinho`.
+Canonical registered-workspace validation after promotion:
+
+```text
+189 passed
+0 failed
+EXIT=0
+```
+
+The approval test excluded from the temporary worktree regression passes in
+`C:\Dev\AIpinho`, where workspace policy is canonically registered.
 
 ## Closure boundary
 
-The 0–9 semantic execution roadmap is closed after canonical-workspace
-validation and main/origin synchronization.
+The 0–9 semantic execution roadmap is closed with canonical-workspace
+validation complete. Final synchronization is recorded by the closing commit.
 
 Any subsequent semantic work should start from this authority chain rather than
 adding domain-specific exceptions to it.
