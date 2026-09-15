@@ -1,5 +1,10 @@
 # Semantic Execution Roadmap — Sprints 0–9
 
+## Completion status
+
+Sprints 0–9 are complete. The authority chain described below is implemented,
+regression-tested and closed as one architectural update.
+
 ## Architectural invariants
 
 The sprint sequence is cumulative. Later sprints must extend earlier contracts
@@ -82,9 +87,12 @@ does not grant authority.
 
 ### Sprint 9 — Anti-FireTest generalization
 
-Prove the architecture across unrelated domains and topologies. FireTest 5
-becomes one regression among many rather than the architecture's implicit
-workflow.
+Complete. The architecture is proven across unrelated domains and linear,
+fan-in and fan-out topologies. Task-local `safe_for_*` dimensions are compiled
+into the frozen vocabulary with governed state domains rather than requiring a
+system whitelist. User-facing truth is invariant to domain naming, and missing
+evidence remains fail-closed. FireTest 5 is one regression among many rather
+than the architecture's implicit workflow.
 
 ## Cross-sprint authority chain
 

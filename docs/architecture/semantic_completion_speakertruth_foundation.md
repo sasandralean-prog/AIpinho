@@ -129,8 +129,9 @@ The Doctor surfaces the exact semantic reason codes together with graph id/hash,
 facet id/hash and active revision identity. It also fail-closes on a mismatch
 between RuntimeTruth semantic identity and the governed semantic evidence row.
 
-## Sprint 9 handoff
+## Sprint 9 closure
 
-Sprint 9 should use this foundation in cross-domain synthetic workflows to
-prove that no FireTest-, media-, phase-number- or domain-specific rule is
-required for final truth.
+Sprint 9 proves this foundation with cross-domain synthetic workflows covering
+linear, fan-in and fan-out topology. No FireTest-, media-, phase-number- or
+domain-specific rule is required for final semantic truth. FireTest remains a
+regression workload, not semantic authority.
