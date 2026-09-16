@@ -34,6 +34,7 @@ PermissionName = Literal[
     "shell_test",
     "script_execution",
     "network_download",
+    "git_write",
     "git_commit",
     "git_push",
 ]
