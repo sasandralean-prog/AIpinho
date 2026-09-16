@@ -31,12 +31,25 @@ class FakeShellRunner:
 def _write_config(tmp_path: Path, source: Path, target: Path, protected: Path):
     config_root = tmp_path / "config"
     (config_root / "agents").mkdir(parents=True)
+    (config_root / "policies").mkdir(parents=True)
     (config_root / "agents" / "tool_gateway_registry.yaml").write_text(
         (Path("config/agents/tool_gateway_registry.yaml").read_text(encoding="utf-8")),
         encoding="utf-8",
     )
     (config_root / "agents" / "tool_gateway_policy.yaml").write_text(
         (Path("config/agents/tool_gateway_policy.yaml").read_text(encoding="utf-8")),
+        encoding="utf-8",
+    )
+    (config_root / "agents" / "agent_policy_profiles.yaml").write_text(
+        Path("config/agents/agent_policy_profiles.yaml").read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
+    (config_root / "policies" / "multi_agent_autoapproval_policy.yaml").write_text(
+        Path("config/policies/multi_agent_autoapproval_policy.yaml").read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
+    (config_root / "policies" / "block_reason_codes.yaml").write_text(
+        Path("config/policies/block_reason_codes.yaml").read_text(encoding="utf-8"),
         encoding="utf-8",
     )
     (config_root / "agents" / "tool_gateway_workspaces.yaml").write_text(
