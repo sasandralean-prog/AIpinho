@@ -35,6 +35,7 @@ ALL_PERMISSIONS: tuple[PermissionName, ...] = (
     "shell_test",
     "script_execution",
     "network_download",
+    "git_write",
     "git_commit",
     "git_push",
 )
@@ -59,7 +60,9 @@ ROLE_DEFAULTS: dict[WorkspaceRegistryRole, dict[PermissionName, PermissionValue]
         "list_files": "allowed",
         "copy_from": "allowed",
         "delete_file": "ask",
-        "git_push": "denied",
+        "git_write": "ask",
+        "git_commit": "ask",
+        "git_push": "ask",
     },
     "external_inbox": {
         **_all("denied"),
@@ -82,7 +85,9 @@ ROLE_DEFAULTS: dict[WorkspaceRegistryRole, dict[PermissionName, PermissionValue]
         "read_file": "allowed",
         "list_files": "allowed",
         "copy_from": "allowed",
-        "git_push": "denied",
+        "git_write": "ask",
+        "git_commit": "ask",
+        "git_push": "ask",
     },
     "protected": {
         **_all("denied"),
@@ -97,7 +102,9 @@ ROLE_DEFAULTS: dict[WorkspaceRegistryRole, dict[PermissionName, PermissionValue]
         "read_file": "allowed",
         "list_files": "allowed",
         "copy_from": "allowed",
-        "git_push": "denied",
+        "git_write": "ask",
+        "git_commit": "ask",
+        "git_push": "ask",
     },
     "forbidden": _all("denied"),
 }
@@ -137,6 +144,9 @@ ACTION_PERMISSION_ALIASES: dict[str, PermissionName] = {
     "shell": "script_execution",
     "network_download": "network_download",
     "web_request": "network_download",
+    "run_shell_network": "network_download",
+    "git_write": "git_write",
+    "run_shell_git_write": "git_write",
     "git_commit": "git_commit",
     "git_push": "git_push",
 }
