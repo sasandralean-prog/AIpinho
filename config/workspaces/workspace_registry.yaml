@@ -97,14 +97,6 @@ workspaces:
   approval_required: true
   evidence:
   - operator_authorized_governed_execution
-- workspace_id: pinhoabacaxi_musicas_desktop
-  root_path: C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop
-  role: target_mutable
-  human_label: Pinhoabacaxi Musicas Desktop workspace
-  reason: Authorized workspace for governed execution.
-  approval_required: true
-  evidence:
-  - operator_authorized_governed_execution
 - workspace_id: testes_ia_local
   root_path: C:\Users\rafae\Documents\TestesIALocal
   role: target_mutable
