@@ -130,6 +130,10 @@ shell:
     - gradle.bat
     - gradlew
     - gradlew.bat
+    - git
+    - git.exe
+    - curl
+    - curl.exe
   denied_executables:
     - powershell
     - powershell.exe
@@ -141,14 +145,10 @@ shell:
     - bash.exe
     - sh
     - sh.exe
-    - git
-    - git.exe
     - ssh
     - ssh.exe
     - scp
     - scp.exe
-    - curl
-    - curl.exe
   denied_tokens:
     - "|"
     - "&&"
