@@ -50,7 +50,24 @@ class ShellCommandPolicyService:
     def _category(self, normalized: str, executable: str) -> tuple[str, list[str]]:
         shell_policy = self.policy.get("shell", {}) if isinstance(self.policy, dict) else {}
         categories = shell_policy.get("categories", {}) if isinstance(shell_policy.get("categories"), dict) else {}
-        lowered = normalized.lower()
+        lowered = normalized.lower().strip()
+        if executable in {"git", "git.exe"}:
+            readonly_prefixes = (
+                "git status",
+                "git diff",
+                "git log",
+                "git show",
+                "git rev-parse",
+                "git ls-files",
+                "git ls-remote",
+                "git remote -v",
+                "git branch --show-current",
+            )
+            if any(lowered == item or lowered.startswith(item + " ") for item in readonly_prefixes):
+                return "git_read_shell", ["git_read_subcommand"]
+            return "git_write_shell", ["git_governed_write_or_network_subcommand"]
+        if executable in {"curl", "curl.exe", "wget", "wget.exe"}:
+            return "network_shell", [f"network_executable:{executable}"]
         for category, rules in categories.items():
             if not isinstance(rules, dict):
                 continue
@@ -70,9 +87,9 @@ class ShellCommandPolicyService:
     def _risk(self, category: str) -> str:
         if category in {"readonly_shell", "git_read_shell"}:
             return "low"
-        if category in {"test_shell", "build_shell", "package_shell", "network_shell", "process_control_shell"}:
+        if category in {"test_shell", "build_shell", "package_shell", "process_control_shell"}:
             return "medium"
-        if category in {"write_shell", "unknown_shell"}:
+        if category in {"write_shell", "network_shell", "git_write_shell", "unknown_shell"}:
             return "high"
         return "critical"
 
