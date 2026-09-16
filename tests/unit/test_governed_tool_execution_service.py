@@ -13,6 +13,19 @@ class _Completed:
     stderr = ""
 
 
+class _WebResponse:
+    status = 200
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_args):
+        return False
+
+    def read(self, _limit):
+        return b"network-ok"
+
+
 def _runner(argv, **kwargs):
     assert kwargs["shell"] is False
     assert argv[0].lower() in {"python", "python.exe", "py", "py.exe"}
@@ -75,6 +88,60 @@ def test_governed_shell_blocks_free_shell_and_control_operators(tmp_path):
     assert result.status == "blocked"
     assert "shell_category_blocked:unknown_shell" in result.violations or "shell_metacharacter_denied" in result.violations
 
+
+
+def test_governed_git_and_network_shell_are_approval_gated_not_denied(tmp_path):
+    service = _service(tmp_path)
+
+    git_request = ToolExecutionRequest(
+        tool_id="shell.run_command",
+        mode="governed",
+        input={
+            "workspace": r"C:\Dev\AIpinho",
+            "argv": ["git", "push", "origin", "main"],
+        },
+    )
+    network_request = ToolExecutionRequest(
+        tool_id="shell.run_command",
+        mode="governed",
+        input={
+            "workspace": r"C:\Dev\AIpinho",
+            "argv": ["curl", "https://example.com"],
+        },
+    )
+
+    git_response = service.request_approval(git_request)
+    network_response = service.request_approval(network_request)
+
+    assert git_response["status"] == "approval_required"
+    assert git_response["approval"].status == "pending"
+    assert network_response["status"] == "approval_required"
+    assert network_response["approval"].status == "pending"
+
+
+def test_governed_web_get_executes_after_approval(tmp_path):
+    def opener(request, timeout):
+        assert request.full_url == "https://example.com/health"
+        assert request.method == "GET"
+        assert timeout > 0
+        return _WebResponse()
+
+    service = _service(tmp_path, opener=opener)
+    request = ToolExecutionRequest(
+        tool_id="web.request",
+        mode="governed",
+        input={"url": "https://example.com/health", "method": "GET"},
+    )
+    approval = service.request_approval(request)["approval"]
+    service.approvals.approve(approval.approval_id)
+
+    result = service.execute(
+        request.model_copy(update={"approval_id": approval.approval_id})
+    )
+
+    assert result.status == "executed_governed"
+    assert result.content == "network-ok"
+    assert result.metadata["http_status"] == 200
 
 def test_governed_web_blocks_disallowed_scheme_after_approval(tmp_path):
     service = _service(tmp_path)
