@@ -228,7 +228,7 @@ class GovernedToolExecutionService:
         elif classification.policy_decision == "approval_required":
             warnings.append(f"shell_category_requires_approval:{classification.category}")
         envelope_decision = None
-        operation_type = self._operation_type_for_shell_category(classification.category)
+        operation_type = self._operation_type_for_shell_classification(classification)
         if operation_type:
             envelope_decision = self.write_envelopes.create(
                 task_id=request.draft_id or request.tool_execution_request_id,
@@ -279,7 +279,8 @@ class GovernedToolExecutionService:
         }
 
     @staticmethod
-    def _operation_type_for_shell_category(category: str) -> str | None:
+    def _operation_type_for_shell_classification(classification) -> str | None:
+        category = str(classification.category)
         return {
             "readonly_shell": "run_shell_readonly",
             "git_read_shell": "run_shell_readonly",
@@ -287,6 +288,8 @@ class GovernedToolExecutionService:
             "build_shell": "run_shell_build",
             "package_shell": "run_shell_build",
             "write_shell": "run_shell_write",
+            "git_write_shell": "run_shell_git_write",
+            "network_shell": "run_shell_network",
         }.get(category)
 
     def _approval_error(self, request: ToolExecutionRequest, decision: dict[str, Any]) -> str | None:
