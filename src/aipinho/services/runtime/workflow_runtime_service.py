@@ -226,7 +226,12 @@ class WorkflowRuntimeService:
         phase.produced_artifacts = list(dict.fromkeys([*phase.produced_artifacts, *(artifacts or [])]))
         if validation_ref:
             phase.validation_refs = list(dict.fromkeys([*phase.validation_refs, validation_ref]))
-        phase.validation_status = "passed" if status in _SUCCESS_STATUSES and not violations else "failed"
+        if status == "partial":
+            phase.validation_status = "passed_with_limitations"
+        elif status in _SUCCESS_STATUSES and not violations:
+            phase.validation_status = "passed"
+        else:
+            phase.validation_status = "failed"
         self._checkpoint(
             workflow,
             phase,
@@ -235,7 +240,18 @@ class WorkflowRuntimeService:
             event_id=event_id,
             metadata={"violations": violations or [], "validation_ref": validation_ref},
         )
-        if phase.validation_status != "passed":
+        if status == "partial":
+            phase.status = "partial"
+            phase.progress = 100
+            self._checkpoint(
+                workflow,
+                phase,
+                "FINISH",
+                phase.status,
+                event_id=event_id,
+                metadata={"limitations": violations or []},
+            )
+        elif phase.validation_status != "passed":
             phase.status = "blocked" if status == "blocked" else "failed"
             phase.blocked_reasons = list(dict.fromkeys([*phase.blocked_reasons, *(violations or []), "phase_validation_failed"]))
             phase.progress = max(phase.progress, 75)
