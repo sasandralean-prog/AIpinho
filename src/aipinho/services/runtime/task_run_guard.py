@@ -9,6 +9,7 @@ from aipinho.schemas.runtime.task_run_step import TaskRunStep
 from aipinho.schemas.runtime.task_run_trace import TaskRunTraceItem
 from aipinho.services.approvals.approval_service import ApprovalService
 from aipinho.services.config_governance.workspace_permission_matrix_service import WorkspacePermissionMatrixService
+from aipinho.services.orchestration.intent_workspace_scope_service import IntentWorkspaceScopeService
 from aipinho.services.policy_kernel.workspace_policy_service import WorkspacePolicyService
 from aipinho.services.policy_kernel.workspace_role_contract_service import WorkspaceRoleContractService
 from aipinho.services.runtime.runtime_profile_service import RuntimeProfileService
@@ -24,13 +25,16 @@ class TaskRunGuardDecision(AIpinhoModel):
     trace: list[TaskRunTraceItem] = Field(default_factory=list)
 
 class TaskRunGuard:
-    def __init__(self, workspace_policy: WorkspacePolicyService | None = None, approvals: ApprovalService | None = None, lifecycle: TaskRunLifecycleService | None = None, workspace_roles: WorkspaceRoleContractService | None = None, profiles: RuntimeProfileService | None = None, permission_matrix: WorkspacePermissionMatrixService | None = None) -> None:
+    _REGISTRY_RESTRICTIVE_ROLES = {"protected", "forbidden", "source_readonly", "external_inbox"}
+
+    def __init__(self, workspace_policy: WorkspacePolicyService | None = None, approvals: ApprovalService | None = None, lifecycle: TaskRunLifecycleService | None = None, workspace_roles: WorkspaceRoleContractService | None = None, profiles: RuntimeProfileService | None = None, permission_matrix: WorkspacePermissionMatrixService | None = None, intent_scopes: IntentWorkspaceScopeService | None = None) -> None:
         self.policy = load_yaml_file(PATHS.config_root / "runtime" / "task_runtime_policy.yaml", critical=True, root=PATHS.config_root / "runtime")
         self.steps = load_yaml_file(PATHS.config_root / "runtime" / "governed_task_steps.yaml", critical=True, root=PATHS.config_root / "runtime")
         self.limits = load_yaml_file(PATHS.config_root / "runtime" / "task_runtime_limits.yaml", critical=True, root=PATHS.config_root / "runtime")
         self.workspace_policy = workspace_policy or WorkspacePolicyService().load()
         self.workspace_roles = workspace_roles or WorkspaceRoleContractService().load()
         self.permission_matrix = permission_matrix or WorkspacePermissionMatrixService().load()
+        self.intent_scopes = intent_scopes or IntentWorkspaceScopeService()
         self.profiles = profiles or RuntimeProfileService().load()
         self.approvals = approvals or ApprovalService()
         self.lifecycle = lifecycle or TaskRunLifecycleService()
@@ -76,6 +80,17 @@ class TaskRunGuard:
             if execution_plan.status == "blocked":
                 reasons.extend(execution_plan.blocked_reasons or ["execution_plan_blocked"])
         readonly_unregistered_allowed = self._readonly_unregistered_allowed(run, profile)
+        scope_contract = (
+            dict(run.intent_map.get("workspace_scope_contract") or {})
+            if isinstance(run.intent_map, dict)
+            and isinstance(run.intent_map.get("workspace_scope_contract"), dict)
+            else {}
+        )
+        scope_read = self.intent_scopes.decide(
+            contract=scope_contract,
+            path=run.workspace,
+            permission="read_file",
+        )
         requirements = profile.get("workspace_requirements", {}) if isinstance(profile.get("workspace_requirements", {}), dict) else {}
         workspace_required = bool(requirements.get("required", False))
         if workspace_required and not run.workspace: reasons.append("workspace_required")
@@ -83,17 +98,46 @@ class TaskRunGuard:
         if workspace.blocked: reasons.append("forbidden_root")
         if workspace.needs_clarification: reasons.append("workspace_needs_clarification")
         role_decision = self.workspace_roles.resolve(run.workspace, required=workspace_required)
-        if role_decision.status == "denied" and not (readonly_unregistered_allowed and role_decision.reason == "workspace_not_registered"):
+        registry_role = (
+            role_decision.contract.role
+            if role_decision.contract is not None
+            else None
+        )
+        scope_can_replace_registry = (
+            scope_read.matched
+            and scope_read.status != "denied"
+            and role_decision.reason == "workspace_not_registered"
+        )
+        if role_decision.status == "denied" and not (
+            scope_can_replace_registry
+            or (
+                readonly_unregistered_allowed
+                and role_decision.reason == "workspace_not_registered"
+            )
+        ):
             reasons.append(role_decision.reason)
         if role_decision.status == "needs_clarification": reasons.append(role_decision.reason)
+        effective_role = registry_role
+        if scope_read.matched and (
+            registry_role is None
+            or role_decision.reason == "workspace_not_registered"
+            or (
+                scope_read.workspace_role == "source_readonly"
+                and registry_role not in {"protected", "forbidden"}
+            )
+        ):
+            effective_role = scope_read.workspace_role
         allowed_roles = set(requirements.get("allowed_roles", []) or [])
         if (
-            role_decision.contract is not None
+            effective_role is not None
             and allowed_roles
-            and role_decision.contract.role not in allowed_roles
-            and not (readonly_unregistered_allowed and role_decision.reason == "workspace_not_registered")
+            and effective_role not in allowed_roles
+            and not (
+                readonly_unregistered_allowed
+                and role_decision.reason == "workspace_not_registered"
+            )
         ):
-            reasons.append(f"workspace_role_not_allowed:{role_decision.contract.role}")
+            reasons.append(f"workspace_role_not_allowed:{effective_role}")
         allowed = set(self.policy.get("allowed_actions", []) or [])
         blocked = set(self.policy.get("blocked_actions", []) or [])
         policy_allowed = set(run.policy_snapshot.get("allowed_actions", []) or [])
@@ -110,7 +154,26 @@ class TaskRunGuard:
         for action in run.requested_actions:
             if not run.workspace:
                 continue
-            matrix_decision = self.permission_matrix.decide(path=run.workspace, permission=action)
+            scope_decision = self.intent_scopes.decide(
+                contract=scope_contract,
+                path=run.workspace,
+                permission=action,
+            )
+            matrix_decision = self.permission_matrix.decide(
+                path=run.workspace,
+                permission=action,
+            )
+            registry_is_restrictive = (
+                matrix_decision.workspace_role in self._REGISTRY_RESTRICTIVE_ROLES
+                and matrix_decision.reason_code != "workspace_not_registered"
+            )
+            if scope_decision.matched and not registry_is_restrictive:
+                if scope_decision.status == "denied":
+                    reasons.append(f"{scope_decision.reason_code}:{action}")
+                elif scope_decision.status == "approval_required" and not approval_is_approved:
+                    matrix_approval_required = True
+                    reasons.append(f"{scope_decision.reason_code}:{action}")
+                continue
             if matrix_decision.status == "denied":
                 if readonly_unregistered_allowed and self._readonly_action_allowed_for_unregistered(action, matrix_decision.reason_code):
                     continue
