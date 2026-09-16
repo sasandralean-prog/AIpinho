@@ -18,5 +18,6 @@ class PatchPlanRequest(AIpinhoModel):
     patch_candidates: list[PatchCandidateArtifact] = Field(default_factory=list)
     evidence: list[PatchEvidence] = Field(default_factory=list)
     replacements: dict[str, str] = Field(default_factory=dict)
+    workspace_scope_contract: dict[str, object] = Field(default_factory=dict)
     model_assisted: bool = False
     include_trace: bool = False
