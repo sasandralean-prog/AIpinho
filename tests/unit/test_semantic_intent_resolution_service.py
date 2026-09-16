@@ -1,9 +1,33 @@
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 from aipinho.schemas.chat.chat_request import ChatRequest
 from aipinho.services.governance.lifecycle.canonical_public_chat_service import CanonicalPublicChatService
 from aipinho.services.semantic_runtime.semantic_intent_resolution_service import SemanticIntentResolutionService
 
+
+
+
+class _FakeWorkspaceFixMissionService:
+    def start_discovery(self, *, operation_id=None, **_kwargs):
+        return SimpleNamespace(
+            mission_id="engineering_mission_test",
+            mission_status="running",
+            run=SimpleNamespace(
+                task_id="task_fix_discovery",
+                run_id="task_run_fix_discovery",
+                operation_id=operation_id or "op_fix_discovery",
+                runtime_profile="readonly_analysis",
+                status="queued",
+            ),
+        )
+
+
+def _fix_mission_chat_service() -> CanonicalPublicChatService:
+    return CanonicalPublicChatService(
+        workspace_fix_missions=_FakeWorkspaceFixMissionService()
+    )
 
 def test_readonly_constraints_override_write_patch_and_shell_signals() -> None:
     decision = SemanticIntentResolutionService().resolve(
@@ -222,7 +246,7 @@ def test_public_chat_long_authorized_mission_is_not_session_diagnostic() -> None
         "Nao versione build, caches ou artefatos transitorios."
     )
 
-    response = CanonicalPublicChatService().respond(
+    response = _fix_mission_chat_service().respond(
         ChatRequest(message=prompt, session_id="unit_long_mission"),
         source_channel="mobile_chat",
     )
@@ -237,7 +261,9 @@ def test_public_chat_long_authorized_mission_is_not_session_diagnostic() -> None
     assert "future_side_effect_intent_deferred_until_discovery" in response.governance_lifecycle["intent"]["evidence"]
     assert response.approval_id is None
     assert response.task_draft_id is None
-    assert "WORKSPACE_DISCOVERY_REQUIRED" in response.message
+    assert response.task_run_id == "task_run_fix_discovery"
+    assert response.status == "accepted_running"
+    assert "WORKSPACE_DISCOVERY_STARTED" in response.message
 
 def test_subdirectory_word_does_not_convert_patch_mission_to_create_directory() -> None:
     prompt = (
@@ -248,7 +274,7 @@ def test_subdirectory_word_does_not_convert_patch_mission_to_create_directory() 
         "Nao modifique o corpus. Investigue e corrija os problemas de codec no workspace. "
         "Execute o build, valide, faca commit e git push."
     )
-    service = CanonicalPublicChatService()
+    service = _fix_mission_chat_service()
     response = service.respond(ChatRequest(message=prompt, session_id="unit_subdir_patch"), source_channel="mobile_chat")
 
     assert response.operation_type == "workspace_fix_request"
