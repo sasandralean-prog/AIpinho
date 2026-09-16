@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from aipinho.schemas.tools.write_capability_envelope import WriteCapabilityEnvelope, WriteCapabilityEnvelopeDecision
+from aipinho.services.governance.intent_workspace_scope_service import IntentWorkspaceScopeService
 from aipinho.services.policy_kernel.workspace_role_contract_service import WorkspaceRoleContractService
 from aipinho.services.session.session_store import utc_now
 from aipinho.utils.safe_paths import resolve_within_root
@@ -25,11 +26,19 @@ class WriteCapabilityEnvelopeService:
         "run_shell_readonly": "shell",
     }
 
-    def __init__(self, workspace_roles: WorkspaceRoleContractService | None = None) -> None:
+    def __init__(
+        self,
+        workspace_roles: WorkspaceRoleContractService | None = None,
+        intent_scopes: IntentWorkspaceScopeService | None = None,
+    ) -> None:
         self.workspace_roles = workspace_roles or WorkspaceRoleContractService().load()
+        self.intent_scopes = intent_scopes or IntentWorkspaceScopeService()
 
-    def create(self, *, workspace_path: str, operation_type: str, target_path: str | None = None, task_id: str | None = None, session_id: str | None = None, preview_id: str | None = None, approval_id: str | None = None, policy_decision_id: str | None = None, actor: str = "system", expected_side_effects: list[str] | None = None, risk_score: str = "medium") -> WriteCapabilityEnvelopeDecision:
-        workspace = self.workspace_roles.resolve(workspace_path)
+    def create(self, *, workspace_path: str, operation_type: str, target_path: str | None = None, task_id: str | None = None, session_id: str | None = None, preview_id: str | None = None, approval_id: str | None = None, policy_decision_id: str | None = None, actor: str = "system", expected_side_effects: list[str] | None = None, risk_score: str = "medium", workspace_scope_contract: dict[str, Any] | None = None) -> WriteCapabilityEnvelopeDecision:
+        workspace = self.workspace_roles.resolve_with_scope(
+            workspace_path,
+            workspace_scope_contract=workspace_scope_contract,
+        )
         blocking: list[str] = []
         warnings: list[str] = []
         trace: list[dict[str, object]] = list(workspace.trace)
@@ -42,6 +51,28 @@ class WriteCapabilityEnvelopeService:
         capability = self.CAPABILITY_BY_OPERATION.get(operation_type, "unknown")
         if capability == "unknown":
             blocking.append("unknown_write_operation")
+        if isinstance(workspace_scope_contract, dict) and workspace_scope_contract:
+            scope_decision = self.intent_scopes.decide(
+                contract=workspace_scope_contract,
+                path=workspace_path,
+                permission=operation_type,
+            )
+            trace.append(
+                {
+                    "stage": "intent_workspace_scope",
+                    "decision": scope_decision.status,
+                    "reason": scope_decision.reason_code,
+                    "data": {
+                        "permission": scope_decision.permission,
+                        "workspace_role": scope_decision.workspace_role,
+                        "root_path": scope_decision.root_path,
+                    },
+                }
+            )
+            if not scope_decision.matched:
+                blocking.append("intent_workspace_scope_not_matched")
+            elif scope_decision.status == "denied":
+                blocking.append(scope_decision.reason_code)
         if contract is not None:
             allowed, reason = self.workspace_roles.operation_allowed(contract, operation_type)
             trace.append({"stage": "write_capability_envelope", "decision": "allowed" if allowed else "denied", "reason": reason, "data": {"operation_type": operation_type, "workspace_id": contract.workspace_id}})
