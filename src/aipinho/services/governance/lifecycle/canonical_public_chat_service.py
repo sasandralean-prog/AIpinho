@@ -1060,7 +1060,7 @@ class CanonicalPublicChatService:
 
         normalized = text.casefold()
         semantic_graph = self.semantic_propositions.normalize(text)
-        if any(token in normalized for token in ("pasta", "diretorio", "diretório")) and primary_target:
+        if self._explicit_directory_create_request(normalized) and primary_target:
             op_type = "filesystem_create_directory"
             actions = ["create_directory"]
             contract_type = "filesystem_write"
@@ -1634,6 +1634,16 @@ class CanonicalPublicChatService:
             "```text\n"
             f"{prompt_excerpt}\n"
             "```\n"
+        )
+
+    @staticmethod
+    def _explicit_directory_create_request(normalized: str) -> bool:
+        return bool(
+            re.search(
+                r"\b(?:crie|criar|create|mkdir)\s+(?:uma?\s+|um\s+)?(?:pasta|diretorio)\b",
+                normalized or "",
+                re.IGNORECASE,
+            )
         )
 
     def _patch_plan(self, target: str | None, text: str) -> dict[str, Any]:

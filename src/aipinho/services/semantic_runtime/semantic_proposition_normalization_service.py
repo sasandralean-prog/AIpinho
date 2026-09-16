@@ -86,6 +86,12 @@ class SemanticPropositionNormalizationService:
         "taskpreview",
         "task preview",
     )
+
+    _KNOWLEDGE_ACTION_TERMS = ("gerar", "gere", "produzir", "produza", "criar", "crie", "escrever", "escreva", "salvar", "salve", "responder", "responda")
+    _PLANNING_ACTION_TERMS = ("planejar", "planeje", "propor", "proponha", "preparar", "prepare", "gerar", "gere")
+    _SCOPED_NEGATIVE_TERMS = ("corpus", "biblioteca", "library", "cache", "caches", "secret", "secrets", "artefatos transitorios", "artefatos transit?rios")
+    _WINDOWS_PATH_RE = re.compile(r"(?i)\b[A-Z]:\\[^\r\n.;]+")
+
     _EXPLANATORY_REPAIR_TERMS = (
         "como corrigir",
         "como consertar",
@@ -125,12 +131,21 @@ class SemanticPropositionNormalizationService:
             clause_effects = self._effects_for_clause(clause)
             if not clause_effects:
                 continue
-            if self._NEGATIVE_RE.search(clause):
-                prohibited_effects.update(clause_effects)
-                evidence.extend(f"negative:{effect}" for effect in clause_effects)
-            else:
-                requested_effects.update(clause_effects)
-                evidence.extend(f"positive:{effect}" for effect in clause_effects)
+            has_negative_language = bool(self._NEGATIVE_RE.search(clause))
+            for effect in clause_effects:
+                negated = has_negative_language and self._effect_is_negated(clause, effect)
+                if negated and self._negative_effect_is_scoped(clause, effect):
+                    evidence.append(f"scoped_negative:{effect}")
+                    continue
+                if negated:
+                    prohibited_effects.add(effect)
+                    evidence.append(f"negative:{effect}")
+                    continue
+                if has_negative_language and not self._effect_has_positive_directive(clause, effect):
+                    evidence.append(f"incidental_under_negation:{effect}")
+                    continue
+                requested_effects.add(effect)
+                evidence.append(f"positive:{effect}")
 
         has_analysis = self.concept_matcher.has_type(matches, "operation_analysis") or self._contains_any(normalized, self._OBSERVATION_TERMS)
         has_info = self.concept_matcher.has_type(matches, "operation_information")
@@ -250,6 +265,55 @@ class SemanticPropositionNormalizationService:
             requested_effects=sorted(requested_effects),
             evidence=list(dict.fromkeys(evidence)),
         )
+
+
+    def _effect_is_negated(self, clause: str, effect: str) -> bool:
+        action_terms = self._effect_action_terms(effect)
+        if not action_terms:
+            return False
+        actions = "|".join(re.escape(item) for item in sorted(action_terms, key=len, reverse=True))
+        return bool(
+            re.search(rf"\b(?:nao|nunca)\b(?:\s+[0-9a-z_-]+){{0,3}}\s+(?:{actions})\b", clause)
+            or re.search(rf"\bsem\b(?:\s+[0-9a-z_-]+){{0,2}}\s+(?:{actions})\b", clause)
+        )
+
+    def _effect_has_positive_directive(self, clause: str, effect: str) -> bool:
+        action_terms = self._effect_action_terms(effect)
+        if not action_terms:
+            return False
+        for action in action_terms:
+            if not self._contains_term(clause, action):
+                continue
+            action_re = re.compile(rf"(?<![0-9A-Za-z]){re.escape(action)}(?![0-9A-Za-z])")
+            match = action_re.search(clause)
+            if match is None:
+                continue
+            prefix = clause[max(0, match.start() - 28):match.start()]
+            if not self._NEGATIVE_RE.search(prefix):
+                return True
+        return False
+
+    def _negative_effect_is_scoped(self, clause: str, effect: str) -> bool:
+        if effect != "workspace_mutation":
+            return False
+        if self._WINDOWS_PATH_RE.search(clause):
+            return True
+        return self._contains_any(clause, self._SCOPED_NEGATIVE_TERMS)
+
+    def _effect_action_terms(self, effect: str) -> tuple[str, ...]:
+        if effect == "workspace_mutation":
+            return tuple(dict.fromkeys((*self._MUTATION_VERBS, *self._FILE_WRITE_VERBS, *self._PATCH_EXECUTION_VERBS)))
+        if effect == "build_execution":
+            return self._BUILD_ACTION_TERMS
+        if effect == "runtime_execution":
+            return self._COMMAND_ACTION_TERMS
+        if effect == "proposal_only":
+            return self._PATCH_PROPOSAL_VERBS
+        if effect == "knowledge_only":
+            return self._KNOWLEDGE_ACTION_TERMS
+        if effect == "planning_only":
+            return self._PLANNING_ACTION_TERMS
+        return ()
 
     def _effects_for_clause(self, clause: str) -> set[str]:
         effects: set[str] = set()

@@ -45,3 +45,22 @@ def test_build_directory_exclusion_is_not_build_execution_prohibition():
     assert graph.execution_intent is True
     assert "build_execution" in graph.requested_effects
     assert "build_execution" not in graph.prohibited_effects
+
+def test_long_mission_scopes_corpus_write_prohibition_without_blocking_workspace_or_build():
+    graph = SemanticPropositionNormalizationService().normalize(
+        "Autorizo edicao de codigo, execucao de Gradle/build/test e git push, desde que nao masque falhas. "
+        r"WORKSPACE DO APP: C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop. "
+        r"CORPUS SOMENTE LEITURA: D:\rafa\novapinhomusic. "
+        "Nao modifique o corpus. Investigue e corrija o codec no workspace. "
+        "Execute o build e valide. Nao versione build, caches, secrets ou artefatos transitorios."
+    )
+
+    assert graph.mutation_intent is True
+    assert graph.execution_intent is True
+    assert "workspace_mutation" in graph.requested_effects
+    assert "build_execution" in graph.requested_effects
+    assert "workspace_mutation" not in graph.prohibited_effects
+    assert "build_execution" not in graph.prohibited_effects
+    assert graph.filesystem_effect == "mutable"
+    assert graph.runtime_effect != "prohibited"
+    assert "scoped_negative:workspace_mutation" in graph.evidence

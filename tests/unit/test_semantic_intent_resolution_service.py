@@ -215,3 +215,21 @@ def test_public_chat_long_authorized_mission_is_not_session_diagnostic() -> None
     assert response.governance_lifecycle["operation_contract"]["workspace_path"] == r"C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop"
     assert response.governance_lifecycle["operation_contract"]["read_only"] is False
     assert response.governance_lifecycle["operation_contract"]["workspace_mutation"] is True
+
+def test_subdirectory_word_does_not_convert_patch_mission_to_create_directory() -> None:
+    prompt = (
+        "Autorizo edicao de codigo, testes, build e git push. "
+        r"WORKSPACE DO APP A SER CORRIGIDO: C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop. "
+        "O workspace local corresponde ao subdiretorio PinhoabacaxiMusicasDesktop/ do repositorio canonico. "
+        r"CORPUS SOMENTE LEITURA: D:\rafa\novapinhomusic. "
+        "Nao modifique o corpus. Investigue e corrija os problemas de codec no workspace. "
+        "Execute o build, valide, faca commit e git push."
+    )
+    service = CanonicalPublicChatService()
+    response = service.respond(ChatRequest(message=prompt, session_id="unit_subdir_patch"), source_channel="mobile_chat")
+
+    assert response.operation_type == "patch_request"
+    assert response.governance_lifecycle["operation_contract"]["operation_type"] == "patch_request"
+    assert response.governance_lifecycle["operation_contract"]["requested_actions"] == ["apply_patch"]
+    assert response.governance_lifecycle["intent"]["negative_constraints"].get("write_forbidden") is not True
+    assert response.governance_lifecycle["intent"]["negative_constraints"].get("shell_forbidden") is not True
