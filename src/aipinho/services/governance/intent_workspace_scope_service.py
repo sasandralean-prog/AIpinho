@@ -237,7 +237,14 @@ class IntentWorkspaceScopeService:
                 graph.get("requested_effects", []) or []
             ):
                 permissions.update(self.EXECUTION_PERMISSIONS)
-            git_context = "git " in normalized_prompt or " git" in normalized_prompt
+            git_context = (
+                "git " in normalized_prompt
+                or " git" in normalized_prompt
+                or "commit" in normalized_prompt
+                or "push" in normalized_prompt
+            )
+            if git_context:
+                permissions.add("git_write")
             if "git commit" in normalized_prompt or (
                 "commit" in normalized_prompt and git_context
             ):
@@ -246,6 +253,23 @@ class IntentWorkspaceScopeService:
                 "push" in normalized_prompt and git_context
             ):
                 permissions.add("git_push")
+            if any(
+                term in normalized_prompt
+                for term in (
+                    "network",
+                    "rede",
+                    "http://",
+                    "https://",
+                    "download",
+                    "baixar",
+                    "curl ",
+                    "wget ",
+                    "git fetch",
+                    "git pull",
+                    "git push",
+                )
+            ):
+                permissions.add("network_download")
         digest = hashlib.sha256(
             f"{self._norm_path(path)}|{role}".encode("utf-8")
         ).hexdigest()[:16]
