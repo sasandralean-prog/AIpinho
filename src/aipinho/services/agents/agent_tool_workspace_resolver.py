@@ -6,13 +6,24 @@ from typing import Any
 
 from aipinho.core.paths import PATHS
 from aipinho.schemas.agents.tool_gateway import WorkspaceResolution
+from aipinho.services.governance.intent_workspace_scope_service import IntentWorkspaceScopeService
+from aipinho.services.policy_kernel.workspace_policy_service import WorkspacePolicyService
 from aipinho.utils.yaml_loader import load_yaml_file
 
 
 class AgentToolWorkspaceResolver:
-    def __init__(self, path: Path | None = None, *, root: Path | None = None) -> None:
+    def __init__(
+        self,
+        path: Path | None = None,
+        *,
+        root: Path | None = None,
+        intent_scopes: IntentWorkspaceScopeService | None = None,
+        workspace_policy: WorkspacePolicyService | None = None,
+    ) -> None:
         self.path = path or PATHS.config_root / "agents" / "tool_gateway_workspaces.yaml"
         self.root = root or PATHS.config_root
+        self.intent_scopes = intent_scopes or IntentWorkspaceScopeService()
+        self.workspace_policy = workspace_policy or WorkspacePolicyService().load()
 
     def _data(self) -> dict[str, Any]:
         return load_yaml_file(self.path, critical=False, root=self.root)
@@ -42,8 +53,18 @@ class AgentToolWorkspaceResolver:
         path_ref: str | None = None,
         relative_path: str | None = None,
         access: str = "read",
+        workspace_scope_contract: dict[str, Any] | None = None,
     ) -> WorkspaceResolution:
         entries = self._entries()
+        dynamic = self._resolve_intent_scope(
+            entries=entries,
+            workspace_scope_contract=workspace_scope_contract,
+            path_ref=path_ref,
+            relative_path=relative_path,
+            access=access,
+        )
+        if dynamic is not None:
+            return dynamic
         selected: dict[str, Any] | None = None
         if workspace_id:
             selected = next((entry for entry in entries if str(entry.get("workspace_id")) == workspace_id), None)
@@ -93,6 +114,112 @@ class AgentToolWorkspaceResolver:
             reason_code=reason,
             evidence_refs=[f"workspace:{selected.get('workspace_id')}"],
         )
+
+    def _resolve_intent_scope(
+        self,
+        *,
+        entries: list[dict[str, Any]],
+        workspace_scope_contract: dict[str, Any] | None,
+        path_ref: str | None,
+        relative_path: str | None,
+        access: str,
+    ) -> WorkspaceResolution | None:
+        if not isinstance(workspace_scope_contract, dict) or not workspace_scope_contract:
+            return None
+        candidate_text = path_ref or relative_path
+        if not candidate_text:
+            candidate_text = str(
+                workspace_scope_contract.get("primary_workspace") or ""
+            )
+        if not candidate_text:
+            return None
+        scope = self.intent_scopes.scope_for_path(
+            contract=workspace_scope_contract,
+            path=candidate_text,
+        )
+        if scope is None:
+            return WorkspaceResolution(
+                allowed=False,
+                reason_code="intent_workspace_scope_not_matched",
+            )
+        root_path = Path(str(scope.get("path") or "")).expanduser().resolve()
+        resolved_path = self._resolve_child(
+            root_path,
+            path_ref=path_ref,
+            relative_path=relative_path,
+        )
+        if resolved_path is None:
+            return WorkspaceResolution(
+                workspace_id=str(scope.get("scope_id") or ""),
+                workspace_role=str(scope.get("role") or "unknown"),
+                root_path_sanitized=str(root_path),
+                allowed=False,
+                reason_code="path_traversal_or_outside_workspace",
+            )
+        deny_match = self._deny_override(entries, resolved_path)
+        if deny_match is not None:
+            return WorkspaceResolution(
+                workspace_id=str(deny_match.get("workspace_id")),
+                workspace_role=str(deny_match.get("role", "forbidden")),
+                root_path_sanitized=str(deny_match["resolved_root"]),
+                resolved_path_sanitized=str(resolved_path),
+                allowed=False,
+                reason_code="workspace_deny_override",
+                evidence_refs=[f"workspace:{deny_match.get('workspace_id')}"],
+            )
+        restrictive = self._restrictive_static_match(entries, resolved_path)
+        if restrictive is not None and access in {"write", "shell"}:
+            return WorkspaceResolution(
+                workspace_id=str(restrictive.get("workspace_id")),
+                workspace_role=str(restrictive.get("role", "source_readonly")),
+                root_path_sanitized=str(restrictive["resolved_root"]),
+                resolved_path_sanitized=str(resolved_path),
+                allowed=False,
+                reason_code="registered_readonly_scope_overrides_prompt_mutation",
+                evidence_refs=[f"workspace:{restrictive.get('workspace_id')}"],
+            )
+        policy = self.workspace_policy.evaluate(
+            workspace_path=str(root_path),
+            requires_workspace=True,
+        )
+        if policy.blocked:
+            return WorkspaceResolution(
+                workspace_id=str(scope.get("scope_id") or ""),
+                workspace_role=str(scope.get("role") or "unknown"),
+                root_path_sanitized=str(root_path),
+                resolved_path_sanitized=str(resolved_path),
+                allowed=False,
+                reason_code="workspace_protected_root",
+            )
+        role = str(scope.get("role") or "unknown")
+        allowed = self._role_allows(role, access)
+        return WorkspaceResolution(
+            workspace_id=str(scope.get("scope_id") or ""),
+            workspace_role=role,
+            root_path_sanitized=str(root_path),
+            resolved_path_sanitized=str(resolved_path),
+            allowed=allowed,
+            reason_code=(
+                "workspace_allowed_by_intent_scope"
+                if allowed
+                else f"{role}_does_not_allow_{access}"
+            ),
+            evidence_refs=[f"intent_scope:{scope.get('scope_id')}"],
+        )
+
+    def _restrictive_static_match(
+        self,
+        entries: list[dict[str, Any]],
+        path: Path,
+    ) -> dict[str, Any] | None:
+        matches = [
+            entry
+            for entry in entries
+            if str(entry.get("role")) in {"source_readonly", "external_inbox"}
+            and self._is_relative_to(path, entry["resolved_root"])
+        ]
+        matches.sort(key=lambda entry: len(str(entry["resolved_root"])), reverse=True)
+        return matches[0] if matches else None
 
     def _resolve_child(self, root_path: Path, *, path_ref: str | None, relative_path: str | None) -> Path | None:
         try:
