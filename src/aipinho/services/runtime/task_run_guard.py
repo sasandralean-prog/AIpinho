@@ -9,7 +9,7 @@ from aipinho.schemas.runtime.task_run_step import TaskRunStep
 from aipinho.schemas.runtime.task_run_trace import TaskRunTraceItem
 from aipinho.services.approvals.approval_service import ApprovalService
 from aipinho.services.config_governance.workspace_permission_matrix_service import WorkspacePermissionMatrixService
-from aipinho.services.orchestration.intent_workspace_scope_service import IntentWorkspaceScopeService
+from aipinho.services.governance.intent_workspace_scope_service import IntentWorkspaceScopeService
 from aipinho.services.policy_kernel.workspace_policy_service import WorkspacePolicyService
 from aipinho.services.policy_kernel.workspace_role_contract_service import WorkspaceRoleContractService
 from aipinho.services.runtime.runtime_profile_service import RuntimeProfileService
