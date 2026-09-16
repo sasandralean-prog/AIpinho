@@ -5,6 +5,8 @@ from pathlib import Path
 
 from aipinho.core.paths import PATHS
 from aipinho.schemas.patching.affected_file import AffectedFile
+from aipinho.services.governance.intent_workspace_scope_service import IntentWorkspaceScopeService
+from aipinho.services.policy_kernel.workspace_policy_service import WorkspacePolicyService
 from aipinho.services.security.path_guard_service import PathGuardService
 from aipinho.utils.yaml_loader import load_yaml_file
 
@@ -13,8 +15,16 @@ class PatchTargetGuard:
     def __init__(self) -> None:
         self.policy = load_yaml_file(PATHS.config_root / "patching" / "patch_target_policy.yaml", critical=True, root=PATHS.config_root / "patching")
         self.path_guard = PathGuardService()
+        self.intent_scopes = IntentWorkspaceScopeService()
+        self.workspace_policy = WorkspacePolicyService().load()
 
-    def validate(self, workspace: str, path: str) -> AffectedFile:
+    def validate(
+        self,
+        workspace: str,
+        path: str,
+        *,
+        workspace_scope_contract: dict[str, object] | None = None,
+    ) -> AffectedFile:
         decision = self.path_guard.validate_read_target(workspace, path)
         blocked = list(decision.violations)
         warnings = list(decision.warnings)
@@ -29,10 +39,31 @@ class PatchTargetGuard:
         allowed_roots = [str(item) for item in targets.get("allowed_roots", []) or []]
         forbidden_roots = [str(item) for item in targets.get("forbidden_roots", []) or []]
         rel_lower = rel.replace("\\", "/").lower().strip("/")
-        if allowed_roots and not self._is_under_any(workspace, allowed_roots):
-            blocked.append("workspace_root_not_allowed")
-        if allowed_roots and not self._is_under_any(normalized, allowed_roots):
-            blocked.append("target_root_not_allowed")
+        scope_contract = (
+            dict(workspace_scope_contract)
+            if isinstance(workspace_scope_contract, dict)
+            else {}
+        )
+        if scope_contract:
+            scope = self.intent_scopes.scope_for_path(
+                contract=scope_contract,
+                path=workspace,
+            )
+            if scope is None:
+                blocked.append("workspace_not_declared_by_intent_scope")
+            elif str(scope.get("role") or "") != "target_mutable":
+                blocked.append("workspace_not_mutable_by_intent_scope")
+        else:
+            if allowed_roots and not self._is_under_any(workspace, allowed_roots):
+                blocked.append("workspace_root_not_allowed")
+            if allowed_roots and not self._is_under_any(normalized, allowed_roots):
+                blocked.append("target_root_not_allowed")
+        workspace_policy = self.workspace_policy.evaluate(
+            workspace_path=workspace,
+            requires_workspace=True,
+        )
+        if workspace_policy.blocked:
+            blocked.append("workspace_protected_root")
         if forbidden_roots and self._is_under_any(normalized, forbidden_roots):
             blocked.append("target_forbidden_root")
         if suffix in blocked_exts:
