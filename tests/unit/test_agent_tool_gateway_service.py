@@ -128,17 +128,79 @@ def test_workspace_resolution_blocks_traversal_and_deny_override(tmp_path):
     assert denied_child.tool_invocation.block_reason_code == "workspace_forbidden"
 
 
-def test_shell_safe_category_runs_and_dangerous_categories_block(tmp_path):
+def test_shell_category_is_derived_from_actual_command(tmp_path):
     gateway, kernel, _, run, *_ = _service(tmp_path)
-    safe = gateway.invoke("aipinho", run.run_id, "run_shell", ToolInvocationCreateRequest(workspace_id="target", input={"argv": ["echo", "ok"], "shell_category": "readonly_shell"}))
-    dangerous = gateway.invoke("aipinho", run.run_id, "run_shell", ToolInvocationCreateRequest(workspace_id="target", input={"argv": ["echo", "bad"], "shell_category": "destructive_shell"}))
+    safe = gateway.invoke(
+        "aipinho",
+        run.run_id,
+        "run_shell",
+        ToolInvocationCreateRequest(
+            workspace_id="target",
+            input={
+                "argv": ["python", "-c", "print('ok')"],
+                "shell_category": "destructive_shell",
+            },
+        ),
+    )
+    dangerous = gateway.invoke(
+        "aipinho",
+        run.run_id,
+        "run_shell",
+        ToolInvocationCreateRequest(
+            workspace_id="target",
+            input={
+                "command": "powershell -Command Remove-Item victim.txt",
+                "shell_category": "readonly_shell",
+            },
+        ),
+    )
 
     assert safe.status == "succeeded"
     assert safe.output["exit_code"] == 0
     assert dangerous.status == "blocked"
     assert dangerous.tool_invocation.block_reason_code == "destructive_shell_blocked"
-    assert "shell_stdout" in {event.event_type for event in kernel.list_run_events(run.run_id, include_hidden=True)}
+    event_types = {
+        event.event_type
+        for event in kernel.list_run_events(run.run_id, include_hidden=True)
+    }
+    assert "shell_category_corrected" in event_types
+    assert "shell_stdout" in event_types
 
+
+
+def test_aipinho_git_and_network_require_real_approval(tmp_path):
+    gateway, _, _, run, *_ = _service(tmp_path)
+
+    git_request = ToolInvocationCreateRequest(
+        workspace_id="target",
+        input={
+            "argv": ["git", "push", "origin", "main"],
+            "shell_category": "readonly_shell",
+        },
+    )
+    network_request = ToolInvocationCreateRequest(
+        workspace_id="target",
+        input={
+            "argv": ["curl", "https://example.com"],
+            "shell_category": "readonly_shell",
+        },
+    )
+
+    git_pending = gateway.invoke("aipinho", run.run_id, "run_shell", git_request)
+    network_pending = gateway.invoke("aipinho", run.run_id, "run_shell", network_request)
+    forged = gateway.invoke(
+        "aipinho",
+        run.run_id,
+        "run_shell",
+        git_request.model_copy(update={"approval_id": "approval_fake"}),
+    )
+
+    assert git_pending.status == "approval_required"
+    assert git_pending.policy_decision is not None
+    assert git_pending.policy_decision.risk_level == "high"
+    assert network_pending.status == "approval_required"
+    assert forged.status == "blocked"
+    assert forged.tool_invocation.block_reason_code == "approval_not_found"
 
 def test_shell_absolute_cwd_inside_workspace_is_allowed(tmp_path):
     gateway, _, _, run, _, target, _ = _service(tmp_path)
