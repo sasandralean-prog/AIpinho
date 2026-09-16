@@ -40,8 +40,8 @@ class WorkspaceRoleContractService:
             "shell_allowed": True,
             "patch_allowed": True,
             "approval_required": True,
-            "allowed_operations": ["read_workspace", "create_file", "modify_file", "apply_patch", "run_shell_readonly", "run_shell_test", "run_shell_build"],
-            "forbidden_operations": ["delete_file", "move_file", "git_write_shell", "destructive_shell"],
+            "allowed_operations": ["read_workspace", "create_file", "modify_file", "apply_patch", "run_shell_readonly", "run_shell_test", "run_shell_build", "run_shell_git_write", "run_shell_network"],
+            "forbidden_operations": ["delete_file", "move_file", "destructive_shell"],
             "max_risk_without_approval": "low",
         },
         "external_inbox": {
@@ -80,8 +80,8 @@ class WorkspaceRoleContractService:
             "shell_allowed": True,
             "patch_allowed": True,
             "approval_required": True,
-            "allowed_operations": ["read_workspace", "create_file", "modify_file", "apply_patch", "run_shell_readonly", "run_shell_test", "run_shell_build", "process_control_shell"],
-            "forbidden_operations": ["delete_file", "move_file", "git_write_shell", "destructive_shell"],
+            "allowed_operations": ["read_workspace", "create_file", "modify_file", "apply_patch", "run_shell_readonly", "run_shell_test", "run_shell_build", "run_shell_git_write", "run_shell_network", "process_control_shell"],
+            "forbidden_operations": ["delete_file", "move_file", "destructive_shell"],
             "max_risk_without_approval": "low",
         },
         "protected": {
