@@ -1,18 +1,32 @@
 schema_version: 1
-context_window_chars: 160
+context_window_chars: 220
 
 roles:
   source_readonly:
     aliases:
       - fonte legada read-only
       - fonte read-only
+      - fonte somente leitura
+      - fonte apenas leitura
       - source read-only
       - projeto legado
       - source workspace
+      - corpus somente leitura
+      - corpus read-only
+      - biblioteca somente leitura
+      - library read-only
+      - dataset read-only
+      - dados de teste somente leitura
   target_mutable:
     aliases:
       - workspace alvo mutavel
       - workspace alvo
+      - workspace mutavel
+      - workspace do app a ser corrigido
+      - workspace a ser corrigido
       - target mutable
       - target workspace
       - destino de implementacao
+      - projeto alvo mutavel
+      - projeto a ser corrigido
+      - codigo a ser alterado
