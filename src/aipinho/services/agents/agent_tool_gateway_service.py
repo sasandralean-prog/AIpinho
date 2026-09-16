@@ -34,6 +34,7 @@ from aipinho.services.agents.agent_tool_policy_service import AgentToolPolicyDec
 from aipinho.services.agents.agent_tool_registry_service import AgentToolRegistryService
 from aipinho.services.agents.agent_tool_workspace_resolver import AgentToolWorkspaceResolver
 from aipinho.services.events.event_core import contains_secret, redact_payload
+from aipinho.services.tools.shell_command_policy_service import ShellCommandPolicyService
 
 
 class ShellRunner(Protocol):
@@ -57,6 +58,7 @@ class AgentToolGatewayService:
         store: AgentToolInvocationStore | None = None,
         event_bus: MultiAgentEventBus | None = None,
         shell_runner: ShellRunner | None = None,
+        shell_policy: ShellCommandPolicyService | None = None,
     ) -> None:
         shared_store = AgentSessionStore()
         self.kernel = kernel or AgentSessionKernelService(store=shared_store)
@@ -66,6 +68,7 @@ class AgentToolGatewayService:
         self.policy = policy or AgentToolPolicyDecisionService()
         self.store = store or AgentToolInvocationStore()
         self.shell_runner = shell_runner or SubprocessShellRunner()
+        self.shell_policy = shell_policy or ShellCommandPolicyService()
 
     def list_tools(self, *, enabled: bool | None = None) -> list[ToolDefinition]:
         return self.registry.list_tools(enabled=enabled)
@@ -132,6 +135,40 @@ class AgentToolGatewayService:
         event_ids.append(self._event(run, "tool_invocation_created", "Invocacao de ferramenta criada.", invocation, {"tool_name": tool.tool_name}))
         event_ids.append(self._event(run, "tool_policy_check_started", "Verificando politica da ferramenta.", invocation, {"capability": tool.capability}))
         event_ids.append(self._event(run, "policy_check_started", "Policy Kernel avaliando a acao.", invocation, {"capability": tool.capability}))
+        derived_shell_category = None
+        if tool.can_run_shell:
+            raw_argv = request.input.get("argv")
+            normalized_argv = (
+                [str(item) for item in raw_argv]
+                if isinstance(raw_argv, list)
+                else None
+            )
+            classification = self.shell_policy.classify(
+                argv=normalized_argv,
+                command=str(request.input.get("command") or ""),
+                working_dir=(
+                    workspace.resolved_path_sanitized
+                    if workspace is not None
+                    else str(request.input.get("cwd") or "")
+                ),
+            )
+            derived_shell_category = classification.category
+            claimed = str(request.input.get("shell_category") or "").strip()
+            if claimed and claimed != derived_shell_category:
+                event_ids.append(
+                    self._event(
+                        run,
+                        "shell_category_corrected",
+                        "A categoria do shell foi derivada do comando real.",
+                        invocation,
+                        {
+                            "claimed_category": claimed,
+                            "derived_category": derived_shell_category,
+                        },
+                        severity="warning",
+                        visible=False,
+                    )
+                )
         policy = self.policy.evaluate_tool_invocation(
             agent_id=run.agent_id,
             session_id=run.session_id,
@@ -139,7 +176,7 @@ class AgentToolGatewayService:
             tool=tool,
             workspace=workspace,
             input_summary_sanitized=summary,
-            shell_category=str(request.input.get("shell_category", "unknown_shell")) if tool.can_run_shell else None,
+            shell_category=derived_shell_category,
             tool_invocation_id=invocation.tool_invocation_id,
             operation_type=invocation.operation_type,
             execution_mode=str(request.metadata_sanitized.get("execution_mode")) if request.metadata_sanitized.get("execution_mode") else None,
