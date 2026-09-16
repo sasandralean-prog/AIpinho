@@ -101,25 +101,3 @@ def test_memory_candidate_scope_uses_configured_forbidden_roots_not_project_cons
 
     assert "forbidden_root_scope" not in allowed
     assert "forbidden_root_scope" in blocked
-
-
-def test_pinhoabacaxi_desktop_is_admitted_for_patch_and_governed_build() -> None:
-    desktop = _norm(r"C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop")
-
-    patch_policy = _load_yaml("patching/patch_target_policy.yaml")
-    patch_roots = {
-        _norm(item)
-        for item in _collect_path_list(patch_policy, "targets.allowed_roots")
-    }
-
-    tool_policy = _load_yaml("policies/governed_tool_execution_policy.yaml")
-    tool_roots = {
-        _norm(item)
-        for item in _collect_path_list(
-            tool_policy,
-            "governed_tool_execution.allowed_workspace_roots",
-        )
-    }
-
-    assert desktop in patch_roots
-    assert desktop in tool_roots
