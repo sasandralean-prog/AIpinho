@@ -6,7 +6,7 @@ from typing import Any
 from aipinho.schemas.chat.chat_request import ChatRequest
 from aipinho.schemas.runtime.task_run import TaskRun
 from aipinho.schemas.runtime.task_run_request import TaskRunRequest
-from aipinho.services.orchestration.intent_workspace_scope_service import (
+from aipinho.services.governance.intent_workspace_scope_service import (
     IntentWorkspaceScopeService,
 )
 from aipinho.services.orchestration.mission_execution_strategy_service import (
