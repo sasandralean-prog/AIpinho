@@ -311,6 +311,7 @@ class AgentToolGatewayService:
             path_ref=request.path_ref or request.input.get("path_ref"),
             relative_path=request.input.get("relative_path") or request.input.get("cwd"),
             access=access,
+            workspace_scope_contract=request.workspace_scope_contract,
         )
 
     def _execute(
