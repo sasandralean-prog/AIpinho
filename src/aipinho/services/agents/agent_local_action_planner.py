@@ -29,6 +29,7 @@ class AgentLocalActionPlanner:
         approval_id: str | None = None,
         execution_mode: str = "governed_autorun",
         metadata_sanitized: dict[str, Any] | None = None,
+        workspace_scope_contract: dict[str, Any] | None = None,
     ) -> ToolInvocationResult | None:
         if "create_file" not in set(requested_capabilities or []):
             return None
@@ -45,7 +46,7 @@ class AgentLocalActionPlanner:
             "create_file",
             ToolInvocationCreateRequest(
                 operation_type="create_file",
-                workspace_id=self.infer_workspace_id(workspace_context),
+                workspace_scope_contract=dict(workspace_scope_contract or {}),
                 path_ref=target_path,
                 approval_id=approval_id,
                 input={
@@ -72,6 +73,7 @@ class AgentLocalActionPlanner:
         approval_id: str | None = None,
         execution_mode: str = "governed_autorun",
         metadata_sanitized: dict[str, Any] | None = None,
+        workspace_scope_contract: dict[str, Any] | None = None,
     ) -> ToolInvocationResult | None:
         if "modify_file" not in set(requested_capabilities or []):
             return None
@@ -94,7 +96,7 @@ class AgentLocalActionPlanner:
             "modify_file",
             ToolInvocationCreateRequest(
                 operation_type="modify_file",
-                workspace_id=self.infer_workspace_id(workspace_context),
+                workspace_scope_contract=dict(workspace_scope_contract or {}),
                 path_ref=str(target_path),
                 approval_id=approval_id,
                 input={
@@ -122,6 +124,7 @@ class AgentLocalActionPlanner:
         approval_id: str | None = None,
         execution_mode: str = "governed_autorun",
         metadata_sanitized: dict[str, Any] | None = None,
+        workspace_scope_contract: dict[str, Any] | None = None,
     ) -> ToolInvocationResult | None:
         if "modify_file" not in set(requested_capabilities or []):
             return None
@@ -144,7 +147,7 @@ class AgentLocalActionPlanner:
             "modify_file",
             ToolInvocationCreateRequest(
                 operation_type="modify_file",
-                workspace_id=self.infer_workspace_id(workspace_context),
+                workspace_scope_contract=dict(workspace_scope_contract or {}),
                 path_ref=str(target_path),
                 approval_id=approval_id,
                 input={
