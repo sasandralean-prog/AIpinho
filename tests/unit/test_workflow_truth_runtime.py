@@ -98,6 +98,43 @@ def test_r5_missing_artifact_dependency_blocks_phase(task_runtime_service):
     assert any("artifact_missing:artifact_required_for_phase_2" in reason for reason in reasons)
 
 
+
+def test_r5_partial_phase_with_nonfatal_violations_remains_partial(task_runtime_service):
+    run = task_runtime_service.create_run(runtime_request())
+    workflow = run.workflow
+    assert workflow is not None and len(workflow.phases) >= 2
+    first = workflow.phases[0]
+    second = workflow.phases[1]
+    service = WorkflowRuntimeService()
+
+    service.start_phase_for_step(workflow, first.source_step_id)
+    service.finish_phase_for_step(
+        workflow,
+        first.source_step_id,
+        status="partial",
+        validation_ref="validation_partial",
+        violations=["file_selection_partial"],
+    )
+
+    assert first.status == "partial"
+    assert first.validation_status == "passed_with_limitations"
+    assert "phase_validation_failed" not in first.blocked_reasons
+
+    allowed, reasons = service.can_start_phase(workflow, second.source_step_id)
+
+    assert allowed is True
+    assert reasons == []
+    dependency = next(
+        item
+        for item in workflow.dependencies
+        if item.consumer_phase_id == second.phase_id
+    )
+    assert dependency.evaluation is not None
+    assert dependency.evaluation.dependency_status == "satisfied_with_limitations"
+    assert dependency.admission is not None
+    assert dependency.admission.authorized is True
+
+
 def test_r5_resume_point_is_deterministic(task_runtime_service):
     run = task_runtime_service.create_run(runtime_request())
     workflow = run.workflow
