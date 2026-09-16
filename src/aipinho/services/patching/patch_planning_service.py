@@ -81,7 +81,14 @@ class PatchPlanningService:
         candidates = self._build_patch_candidates(diagnoses)
         evidence_valid, evidence_blocked = self.evidence_service.validate(evidence)
         scope = self.scope_service.build(request.workspace, paths)
-        affected = [self.target_guard.validate(request.workspace, path) for path in scope.affected_paths]
+        affected = [
+            self.target_guard.validate(
+                request.workspace,
+                path,
+                workspace_scope_contract=request.workspace_scope_contract,
+            )
+            for path in scope.affected_paths
+        ]
         file_contents: dict[str, str] = {}
         for index, file in enumerate(list(affected)):
             checked, content = self.file_reader.read(file)
