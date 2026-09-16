@@ -169,8 +169,26 @@ class MultiAgentPolicyKernelService:
             }.get(shell_category, "risk_too_high")
             return self._decision("deny", reason, agent_id, session_id, run_id, tool, workspace, "critical", mode, tool_invocation_id, operation_type)
         if shell_category in EXTERNAL_OR_GIT_SHELL_CATEGORIES:
-            if mode == "power_user":
-                return self._decision("require_approval", "approval_required", agent_id, session_id, run_id, tool, workspace, "high", mode, tool_invocation_id, operation_type)
+            profile = self._profile(agent_id)
+            profile_allows = (
+                bool(profile.get("allow_network_shell", False))
+                if shell_category == "network_shell"
+                else bool(profile.get("allow_git_write_shell", False))
+            )
+            if profile_allows or mode == "power_user":
+                return self._decision(
+                    "require_approval",
+                    "approval_required",
+                    agent_id,
+                    session_id,
+                    run_id,
+                    tool,
+                    workspace,
+                    "high",
+                    mode,
+                    tool_invocation_id,
+                    operation_type,
+                )
             reason = "network_shell_blocked" if shell_category == "network_shell" else "git_write_blocked"
             return self._decision("deny", reason, agent_id, session_id, run_id, tool, workspace, "high", mode, tool_invocation_id, operation_type)
         if shell_category in SAFE_SHELL_CATEGORIES:
