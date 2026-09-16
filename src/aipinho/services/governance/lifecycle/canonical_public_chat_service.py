@@ -108,8 +108,14 @@ class CanonicalPublicChatService:
         self.followup_recall = followup_recall or FollowupResultRecallService()
         self.followup_review = followup_review or FollowupResultReviewService()
         self.session_diagnostic = session_diagnostic or SessionDiagnosticService()
-        self.workspace_fix_missions = workspace_fix_missions or WorkspaceFixMissionService()
+        self._workspace_fix_missions = workspace_fix_missions
         self.semantic_propositions = SemanticPropositionNormalizationService()
+
+    @property
+    def workspace_fix_missions(self) -> WorkspaceFixMissionService:
+        if self._workspace_fix_missions is None:
+            self._workspace_fix_missions = WorkspaceFixMissionService()
+        return self._workspace_fix_missions
 
     @property
     def artifact_fulfillment(self) -> ChatArtifactFulfillmentService:
@@ -791,11 +797,11 @@ class CanonicalPublicChatService:
                     "result_url": f"/api/v1/task-runs/{run.run_id}/result",
                 },
             },
-            task_id=run.task_id,
-            task_run_id=run.run_id,
             requires_user_action=False,
         ).model_copy(
             update={
+                "task_id": run.task_id,
+                "task_run_id": run.run_id,
                 "is_final_answer": False,
                 "grounded": True,
                 "grounding_required": False,
