@@ -6,6 +6,7 @@ from typing import Any
 
 from aipinho.core.paths import PATHS
 from aipinho.schemas.policy.workspace_role_contract import WorkspaceRoleContract, WorkspaceRoleDecision
+from aipinho.services.governance.intent_workspace_scope_service import IntentWorkspaceScopeService
 from aipinho.utils.yaml_loader import load_yaml_file
 
 
@@ -105,9 +106,14 @@ class WorkspaceRoleContractService:
         },
     }
 
-    def __init__(self, config_path: Path | None = None) -> None:
+    def __init__(
+        self,
+        config_path: Path | None = None,
+        intent_scopes: IntentWorkspaceScopeService | None = None,
+    ) -> None:
         self.config_path = config_path or PATHS.config_root / "workspaces" / "workspace_registry.yaml"
         self._config: dict[str, Any] | None = None
+        self.intent_scopes = intent_scopes or IntentWorkspaceScopeService()
 
     def load(self) -> "WorkspaceRoleContractService":
         if self.config_path.exists() and self.config_path.stat().st_size > 0:
@@ -200,6 +206,65 @@ class WorkspaceRoleContractService:
                         "candidates": candidates,
                     },
                 )
+            ],
+        )
+
+    def resolve_with_scope(
+        self,
+        path: str | None,
+        *,
+        workspace_scope_contract: dict[str, Any] | None = None,
+        required: bool = True,
+    ) -> WorkspaceRoleDecision:
+        base = self.resolve(path, required=required)
+        if not path or not isinstance(workspace_scope_contract, dict) or not workspace_scope_contract:
+            return base
+        scope = self.intent_scopes.scope_for_path(
+            contract=workspace_scope_contract,
+            path=path,
+        )
+        if scope is None:
+            return base
+        base_role = base.contract.role if base.contract is not None else None
+        if (
+            base.reason != "workspace_not_registered"
+            and base_role in {"forbidden", "protected", "source_readonly", "external_inbox"}
+        ):
+            return base
+        role = str(scope.get("role") or "source_readonly")
+        if role not in {"source_readonly", "target_mutable"}:
+            role = "source_readonly"
+        contract = self._contract_from_entry(
+            {
+                "workspace_id": str(scope.get("scope_id") or self._workspace_id(path, role)),
+                "root_path": str(scope.get("path") or path),
+                "role": role,
+                "human_label": f"Prompt-scoped {role} workspace",
+                "reason": "workspace_role_from_prompt_intent_scope",
+                "evidence": [
+                    *[str(item) for item in scope.get("evidence", []) or []],
+                    "workspace_scope_contract",
+                ],
+            },
+            matched_root=str(scope.get("path") or path),
+            path_within_workspace=True,
+        )
+        return WorkspaceRoleDecision(
+            status="allowed",
+            contract=contract,
+            reason="workspace_role_from_prompt_intent_scope",
+            trace=[
+                *list(base.trace),
+                self._trace(
+                    "workspace_role_contract",
+                    "allowed",
+                    "workspace_role_from_prompt_intent_scope",
+                    {
+                        "workspace_id": contract.workspace_id,
+                        "role": contract.role,
+                        "source": "workspace_scope_contract",
+                    },
+                ),
             ],
         )
 
