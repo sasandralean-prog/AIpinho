@@ -18,6 +18,8 @@ WriteOperationType = Literal[
     "run_shell_write",
     "run_shell_test",
     "run_shell_build",
+    "run_shell_git_write",
+    "run_shell_network",
     "run_shell_readonly",
 ]
 
