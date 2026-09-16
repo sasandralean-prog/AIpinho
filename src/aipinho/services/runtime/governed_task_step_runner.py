@@ -108,6 +108,7 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
             requested_capabilities=["modify_file"],
             approval_id=run.approval_id,
             metadata_sanitized=self._metadata(run, context, "execute_patch_pipeline"),
+            workspace_scope_contract=self._workspace_scope_contract(run),
         )
         if result is None:
             result = self.local_actions.run_inferred_ui_text_update(
@@ -118,6 +119,7 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
                 requested_capabilities=["modify_file"],
                 approval_id=run.approval_id,
                 metadata_sanitized=self._metadata(run, context, "execute_patch_pipeline"),
+                workspace_scope_contract=self._workspace_scope_contract(run),
             )
         if result is None:
             planned = self.model_patch_planner.create_plan(
@@ -254,8 +256,8 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
                 tool_name,
                 ToolInvocationCreateRequest(
                     operation_type=tool_name,
-                    workspace_id=self.local_actions.infer_workspace_id(str(workspace)),
                     path_ref=str(path),
+                    workspace_scope_contract=self._workspace_scope_contract(run),
                     approval_id=run.approval_id,
                     input=tool_input,
                     metadata_sanitized={
@@ -303,6 +305,7 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
                 "no_change_reason_code": no_change.reason_code,
                 "no_change_report_path": no_change.report_path,
             },
+            workspace_scope_contract=self._workspace_scope_contract(run),
         )
         if report_result is not None and report_result.status != "succeeded":
             return self._tool_outcome(report_result, context, "patch_result")
@@ -339,6 +342,7 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
             requested_capabilities=["create_file"],
             approval_id=run.approval_id,
             metadata_sanitized=self._metadata(run, context, "execute_project_generation"),
+            workspace_scope_contract=self._workspace_scope_contract(run),
         )
         if result is None:
             return TaskStepOutcome(
@@ -397,7 +401,8 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
             "run_shell",
             ToolInvocationCreateRequest(
                 operation_type="run_command",
-                workspace_id=self.local_actions.infer_workspace_id(run.workspace) if run.workspace else None,
+                path_ref=run.workspace,
+                workspace_scope_contract=self._workspace_scope_contract(run),
                 approval_id=run.approval_id,
                 input={
                     "command": command,
@@ -503,6 +508,12 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
             "task_stage": stage,
             "context_outputs": sorted(context.outputs.keys()),
         }
+
+    def _workspace_scope_contract(self, run: TaskRun) -> dict[str, Any]:
+        if not isinstance(run.intent_map, dict):
+            return {}
+        value = run.intent_map.get("workspace_scope_contract")
+        return dict(value) if isinstance(value, dict) else {}
 
     def _tool_outcome(self, result: ToolInvocationResult, context: TaskRunContext, output_key: str) -> TaskStepOutcome:
         summary = self._tool_summary(result)
