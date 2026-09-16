@@ -95,7 +95,10 @@ def test_workspace_fix_discovery_creates_readonly_autorun_and_defers_future_effe
     assert phase_graph["readonly_contract"] is True
     assert phase_graph["mutation_intent"] is False
     assert phase_graph["execution_intent"] is False
-    assert phase_graph["workspace_effect"] == "immutable"
+    assert phase_graph["knowledge_output"] is False
+    assert phase_graph["state_effect"] == "planning_only"
+    assert phase_graph["workspace_effect"] == "planning_only"
+    assert phase_graph["filesystem_effect"] == "prohibited"
     assert phase_graph["runtime_effect"] == "none"
 
     assert request.intent_map["mission_semantic_intent_graph"] == original_graph
