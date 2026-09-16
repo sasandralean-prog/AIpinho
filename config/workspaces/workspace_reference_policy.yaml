@@ -4,6 +4,10 @@ context_window_chars: 220
 roles:
   source_readonly:
     aliases:
+      - somente leitura
+      - apenas leitura
+      - read-only
+      - readonly
       - fonte legada read-only
       - fonte read-only
       - fonte somente leitura
@@ -19,6 +23,9 @@ roles:
       - dados de teste somente leitura
   target_mutable:
     aliases:
+      - mutavel
+      - a ser corrigido
+      - a ser alterado
       - workspace alvo mutavel
       - workspace alvo
       - workspace mutavel
