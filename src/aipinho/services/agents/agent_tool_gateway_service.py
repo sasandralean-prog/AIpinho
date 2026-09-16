@@ -33,6 +33,7 @@ from aipinho.services.agents.agent_tool_invocation_store import AgentToolInvocat
 from aipinho.services.agents.agent_tool_policy_service import AgentToolPolicyDecisionService
 from aipinho.services.agents.agent_tool_registry_service import AgentToolRegistryService
 from aipinho.services.agents.agent_tool_workspace_resolver import AgentToolWorkspaceResolver
+from aipinho.services.approvals.approval_service import ApprovalService
 from aipinho.services.events.event_core import contains_secret, redact_payload
 from aipinho.services.tools.shell_command_policy_service import ShellCommandPolicyService
 
@@ -59,6 +60,7 @@ class AgentToolGatewayService:
         event_bus: MultiAgentEventBus | None = None,
         shell_runner: ShellRunner | None = None,
         shell_policy: ShellCommandPolicyService | None = None,
+        approvals: ApprovalService | None = None,
     ) -> None:
         shared_store = AgentSessionStore()
         self.kernel = kernel or AgentSessionKernelService(store=shared_store)
@@ -69,6 +71,7 @@ class AgentToolGatewayService:
         self.store = store or AgentToolInvocationStore()
         self.shell_runner = shell_runner or SubprocessShellRunner()
         self.shell_policy = shell_policy or ShellCommandPolicyService()
+        self.approvals = approvals or ApprovalService()
 
     def list_tools(self, *, enabled: bool | None = None) -> list[ToolDefinition]:
         return self.registry.list_tools(enabled=enabled)
@@ -203,16 +206,48 @@ class AgentToolGatewayService:
             if policy.safe_alternative:
                 event_ids.append(self._event(run, "safe_alternative_available", policy.safe_alternative, invocation, {"reason_code": policy.reason_code}, severity="info"))
             return ToolInvocationResult(status="blocked", tool_invocation=invocation, policy_decision=policy, workspace_resolution=workspace, events_emitted=event_ids)
-        if policy.decision == "require_approval" and not (request.approval_id or request.auto_approval_id):
-            invocation = invocation.model_copy(update={
-                "status": "approval_required",
-                "completed_at": utc_now_iso(),
-                "block_reason_code": policy.reason_code,
-                "output_summary_sanitized": policy.human_reason,
-            })
-            self.store.save_invocation(invocation)
-            event_ids.append(self._event(run, "tool_approval_required", policy.human_reason, invocation, {"reason_code": policy.reason_code, "safe_actions": policy.safe_actions}, severity="warning"))
-            return ToolInvocationResult(status="approval_required", tool_invocation=invocation, policy_decision=policy, workspace_resolution=workspace, events_emitted=event_ids)
+        if policy.decision == "require_approval":
+            if not request.approval_id:
+                invocation = invocation.model_copy(update={
+                    "status": "approval_required",
+                    "completed_at": utc_now_iso(),
+                    "block_reason_code": policy.reason_code,
+                    "output_summary_sanitized": policy.human_reason,
+                })
+                self.store.save_invocation(invocation)
+                event_ids.append(self._event(run, "tool_approval_required", policy.human_reason, invocation, {"reason_code": policy.reason_code, "safe_actions": policy.safe_actions}, severity="warning"))
+                return ToolInvocationResult(status="approval_required", tool_invocation=invocation, policy_decision=policy, workspace_resolution=workspace, events_emitted=event_ids)
+            approval_error = self._approval_error(
+                approval_id=request.approval_id,
+                invocation=invocation,
+                tool=tool,
+                workspace=workspace,
+            )
+            if approval_error:
+                invocation = invocation.model_copy(update={
+                    "status": "blocked",
+                    "completed_at": utc_now_iso(),
+                    "block_reason_code": approval_error,
+                    "output_summary_sanitized": approval_error,
+                })
+                self.store.save_invocation(invocation)
+                event_ids.append(
+                    self._event(
+                        run,
+                        "tool_blocked",
+                        "Approval invalido para esta invocacao governada.",
+                        invocation,
+                        {"reason_code": approval_error},
+                        severity="warning",
+                    )
+                )
+                return ToolInvocationResult(
+                    status="blocked",
+                    tool_invocation=invocation,
+                    policy_decision=policy,
+                    workspace_resolution=workspace,
+                    events_emitted=event_ids,
+                )
         if policy.decision == "auto_approve":
             invocation = invocation.model_copy(update={"status": "auto_approved"})
             self.store.save_invocation(invocation)
@@ -254,6 +289,46 @@ class AgentToolGatewayService:
             self.store.save_invocation(invocation)
             event_ids.append(self._event(run, "tool_failed", "Ferramenta falhou de forma controlada.", invocation, {"error_code": invocation.error_code}, severity="error"))
             return ToolInvocationResult(status="failed", tool_invocation=invocation, policy_decision=policy, workspace_resolution=workspace, events_emitted=event_ids)
+
+    def _approval_error(
+        self,
+        *,
+        approval_id: str,
+        invocation: ToolInvocation,
+        tool: ToolDefinition,
+        workspace: WorkspaceResolution | None,
+    ) -> str | None:
+        approval = self.approvals.get_approval(approval_id)
+        if approval is None:
+            return "approval_not_found"
+        if approval.status != "approved":
+            return f"approval_not_approved:{approval.status}"
+        allowed_actions = {
+            str(invocation.operation_type or ""),
+            str(tool.tool_name or ""),
+        }
+        if tool.can_run_shell:
+            allowed_actions.add("run_command")
+        if tool.can_modify_filesystem:
+            allowed_actions.update({"write_files", "create_file", "modify_file", "apply_patch"})
+        requested = {str(item) for item in approval.actions_requested or []}
+        if requested and not requested.intersection(allowed_actions):
+            return "approval_action_mismatch"
+        approval_workspace = str(approval.workspace_path or "").strip()
+        workspace_root = (
+            str(workspace.root_path_sanitized or "").strip()
+            if workspace is not None
+            else ""
+        )
+        if approval_workspace and workspace_root:
+            try:
+                if os.path.normcase(str(Path(approval_workspace).resolve(strict=False))) != os.path.normcase(
+                    str(Path(workspace_root).resolve(strict=False))
+                ):
+                    return "approval_workspace_mismatch"
+            except OSError:
+                return "approval_workspace_mismatch"
+        return None
 
     def list_invocations(self, *, run_id: str | None = None) -> list[ToolInvocation]:
         return self.store.list_invocations(run_id=run_id)
