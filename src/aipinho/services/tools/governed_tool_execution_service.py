@@ -21,6 +21,8 @@ from aipinho.schemas.tools.tool_definition import ToolDefinition
 from aipinho.schemas.tools.tool_execution import ToolExecutionRequest
 from aipinho.schemas.tools.tool_execution_result import ToolExecutionResult
 from aipinho.services.approvals.approval_service import ApprovalService
+from aipinho.services.governance.intent_workspace_scope_service import IntentWorkspaceScopeService
+from aipinho.services.policy_kernel.workspace_policy_service import WorkspacePolicyService
 from aipinho.services.session.session_store import utc_now
 from aipinho.services.tools.execution_audit_service import ExecutionAuditService
 from aipinho.services.tools.shell_command_policy_service import ShellCommandPolicyService
@@ -40,6 +42,8 @@ class GovernedToolExecutionService:
         opener=urlopen,
         shell_policy: ShellCommandPolicyService | None = None,
         write_envelopes: WriteCapabilityEnvelopeService | None = None,
+        intent_scopes: IntentWorkspaceScopeService | None = None,
+        workspace_policy: WorkspacePolicyService | None = None,
     ) -> None:
         self.registry = registry or ToolRegistryService().load()
         self.approvals = approvals or ApprovalService()
@@ -50,6 +54,8 @@ class GovernedToolExecutionService:
         self.opener = opener
         self.shell_policy = shell_policy or ShellCommandPolicyService(policy_path=self.policy_path)
         self.write_envelopes = write_envelopes or WriteCapabilityEnvelopeService()
+        self.intent_scopes = intent_scopes or IntentWorkspaceScopeService()
+        self.workspace_policy = workspace_policy or WorkspacePolicyService().load()
 
     def request_approval(self, request: ToolExecutionRequest) -> dict[str, object]:
         decision = self._decision(request)
@@ -178,7 +184,10 @@ class GovernedToolExecutionService:
         if tool.capability in set(config.get("denied_capabilities", []) or []):
             violations.append("capability_denied_for_governed_execution")
         if tool.action in set(config.get("workspace_required_for", []) or []):
-            workspace_error = self._workspace_error(str(request.input.get("workspace") or ""))
+            workspace_error = self._workspace_error(
+                str(request.input.get("workspace") or ""),
+                request.input.get("workspace_scope_contract"),
+            )
             if workspace_error:
                 violations.append(workspace_error)
         shell_decision: dict[str, Any] | None = None
@@ -232,6 +241,11 @@ class GovernedToolExecutionService:
                 expected_side_effects=classification.expected_side_effects,
                 risk_score=classification.risk_score,
                 actor="governed_tool_execution",
+                workspace_scope_contract=(
+                    dict(request.input.get("workspace_scope_contract") or {})
+                    if isinstance(request.input.get("workspace_scope_contract"), dict)
+                    else {}
+                ),
             )
             if not envelope_decision.allowed:
                 violations.append(f"write_envelope:{envelope_decision.reason}")
@@ -507,10 +521,28 @@ class GovernedToolExecutionService:
             return "network_localhost_denied"
         return None
 
-    def _workspace_error(self, workspace: str) -> str | None:
+    def _workspace_error(
+        self,
+        workspace: str,
+        workspace_scope_contract: object = None,
+    ) -> str | None:
         if not workspace:
             return "workspace_required"
         workspace_path = Path(workspace).resolve(strict=False)
+        policy = self.workspace_policy.evaluate(
+            workspace_path=str(workspace_path),
+            requires_workspace=True,
+        )
+        if policy.blocked:
+            return "workspace_protected_root"
+        if isinstance(workspace_scope_contract, dict) and workspace_scope_contract:
+            scope = self.intent_scopes.scope_for_path(
+                contract=workspace_scope_contract,
+                path=str(workspace_path),
+            )
+            if scope is None:
+                return "intent_workspace_scope_not_matched"
+            return None
         allowed = [
             Path(str(item)).resolve(strict=False)
             for item in (self.policy.get("governed_tool_execution", {}) or {}).get("allowed_workspace_roots", []) or []
