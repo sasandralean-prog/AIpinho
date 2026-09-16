@@ -49,6 +49,7 @@ def test_executable_preview_draft_preserves_canonical_semantic_intent_graph() ->
         "primary_target_path": r"C:\\Work\\App\\player.kt",
         "target_paths": [r"C:\\Work\\App\\player.kt"],
         "requested_actions": ["apply_patch"],
+        "operation_type": "patch_request",
         "concrete_file_operations": [
             {"action": "apply_patch", "target_path": r"C:\\Work\\App\\player.kt"}
         ],
