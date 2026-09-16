@@ -17,15 +17,13 @@ governed_tool_execution:
   denied_actions:
     - delete_files
     - move_files
-    - git_commit
-    - git_push
     - write_memory
   allowed_capabilities:
     - shell
     - network
     - write_workspace
-  denied_capabilities:
     - git
+  denied_capabilities:
     - memory_write
   workspace_required_for:
     - run_command
@@ -44,7 +42,6 @@ shell:
   category_policy:
     blocked_categories:
       - destructive_shell
-      - git_write_shell
       - unknown_shell
     approval_required_categories:
       - test_shell
@@ -52,6 +49,7 @@ shell:
       - package_shell
       - write_shell
       - network_shell
+      - git_write_shell
       - process_control_shell
   categories:
     destructive_shell:
