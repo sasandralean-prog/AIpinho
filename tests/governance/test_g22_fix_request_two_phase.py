@@ -1,9 +1,29 @@
+from types import SimpleNamespace
+
 from aipinho.schemas.chat.chat_request import ChatContext, ChatRequest
 from aipinho.services.governance.lifecycle.canonical_public_chat_service import CanonicalPublicChatService
 
 
+
+
+class _FakeWorkspaceFixMissionService:
+    def start_discovery(self, *, operation_id=None, **_kwargs):
+        return SimpleNamespace(
+            mission_id="engineering_mission_g22",
+            mission_status="running",
+            run=SimpleNamespace(
+                task_id="task_g22",
+                run_id="task_run_g22",
+                operation_id=operation_id or "op_g22",
+                runtime_profile="readonly_analysis",
+                status="queued",
+            ),
+        )
+
 def test_fix_request_runs_discovery_first() -> None:
-    response = CanonicalPublicChatService().respond(
+    response = CanonicalPublicChatService(
+        workspace_fix_missions=_FakeWorkspaceFixMissionService()
+    ).respond(
         ChatRequest(
             message=r"Analise e corrija os problemas no projeto em C:\Users\rafae\Documents\AIpinhoTestes\App.",
             context=ChatContext(surface="api"),
@@ -14,8 +34,11 @@ def test_fix_request_runs_discovery_first() -> None:
     assert response.operation_type == "workspace_fix_request"
     assert response.approval_id is None
     assert response.task_draft_id is None
-    assert "WORKSPACE_DISCOVERY_REQUIRED" in response.message
+    assert response.task_run_id == "task_run_g22"
+    assert response.status == "accepted_running"
+    assert "WORKSPACE_DISCOVERY_STARTED" in response.message
     assert response.policy["write_approval_created"] is False
+    assert response.contract_preview["phase"] == "discovery_running"
 
 
 def test_diagnostic_write_requires_analysis_ref_when_approval_requested() -> None:
