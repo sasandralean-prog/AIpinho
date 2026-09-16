@@ -9,7 +9,7 @@ from aipinho.schemas.runtime.task_run import TaskRun
 from aipinho.schemas.runtime.task_run_request import TaskRunRequest
 from aipinho.schemas.runtime.workspace_context import ExecutionContext, RetrievalContext, WorkspaceContext
 from aipinho.services.config_governance.workspace_permission_matrix_service import WorkspacePermissionMatrixService
-from aipinho.services.orchestration.intent_workspace_scope_service import IntentWorkspaceScopeService
+from aipinho.services.governance.intent_workspace_scope_service import IntentWorkspaceScopeService
 from aipinho.services.session.session_store import utc_now
 
 
