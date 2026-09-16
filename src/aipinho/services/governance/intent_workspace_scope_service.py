@@ -55,7 +55,7 @@ class IntentWorkspaceScopeService:
         seen: set[str] = set()
 
         for ref in refs:
-            path = str(ref.path).rstrip("\/")
+            path = str(ref.path).rstrip("\\").rstrip("/")
             key = self._norm_path(path)
             if key in seen:
                 continue
