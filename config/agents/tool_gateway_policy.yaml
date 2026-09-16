@@ -32,8 +32,8 @@ approval:
     - workspace_write
 block:
   destructive_shell: true
-  network_shell: true
-  git_write_shell: true
+  network_shell: false
+  git_write_shell: false
   process_control_shell: true
   unknown_shell: true
 limits:
