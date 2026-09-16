@@ -58,15 +58,15 @@ class WorkspaceFixMissionService:
         ]
         phase_graph = {
             "observational_intent": True,
-            "planning_intent": True,
+            "planning_intent": False,
             "mutation_intent": False,
             "execution_intent": False,
             "approval_intent": False,
             "knowledge_output": False,
             "artifact_output": False,
             "readonly_contract": True,
-            "state_effect": "planning_only",
-            "workspace_effect": "planning_only",
+            "state_effect": "knowledge_only",
+            "workspace_effect": "knowledge_only",
             "filesystem_effect": "prohibited",
             "runtime_effect": "none",
             "prohibited_effects": [
@@ -75,7 +75,7 @@ class WorkspaceFixMissionService:
                 "runtime_execution",
                 "approval_command",
             ],
-            "requested_effects": ["planning_only"],
+            "requested_effects": ["knowledge_only"],
             "evidence": [
                 "workspace_fix_discovery_phase",
                 "future_side_effects_deferred",
