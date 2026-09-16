@@ -226,7 +226,7 @@ def test_shell_absolute_cwd_inside_workspace_is_allowed(tmp_path):
         "run_shell",
         ToolInvocationCreateRequest(
             workspace_id="target",
-            input={"argv": ["echo", "ok"], "cwd": str(child), "shell_category": "readonly_shell"},
+            input={"argv": ["python", "-c", "print('ok')"], "cwd": str(child), "shell_category": "readonly_shell"},
         ),
     )
 
