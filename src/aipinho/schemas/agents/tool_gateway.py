@@ -148,6 +148,7 @@ class ToolInvocationCreateRequest(AIpinhoModel):
     operation_scope: str | None = None
     requesting_agent_id: str | None = None
     path_ref: str | None = None
+    workspace_scope_contract: dict[str, Any] = Field(default_factory=dict)
     input: dict[str, Any] = Field(default_factory=dict)
     approval_id: str | None = None
     auto_approval_id: str | None = None
