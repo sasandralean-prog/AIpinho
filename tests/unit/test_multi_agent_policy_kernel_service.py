@@ -78,13 +78,17 @@ def test_shell_policy_blocks_dangerous_and_autoapproves_safe(tmp_path):
     build = service.evaluate_tool_invocation(agent_id="aipinho", session_id="s", run_id="r", tool=shell, workspace=_workspace("target_mutable"), input_summary_sanitized="build", shell_category="build_shell")
     destructive = service.evaluate_tool_invocation(agent_id="aipinho", session_id="s", run_id="r", tool=shell, workspace=_workspace("target_mutable"), input_summary_sanitized="delete", shell_category="destructive_shell")
     network = service.evaluate_tool_invocation(agent_id="aipinho", session_id="s", run_id="r", tool=shell, workspace=_workspace("target_mutable"), input_summary_sanitized="curl", shell_category="network_shell")
+    git_write = service.evaluate_tool_invocation(agent_id="aipinho", session_id="s", run_id="r", tool=shell, workspace=_workspace("target_mutable"), input_summary_sanitized="git push", shell_category="git_write_shell")
+    codex_git = service.evaluate_tool_invocation(agent_id="codex", session_id="s", run_id="r", tool=shell, workspace=_workspace("target_mutable"), input_summary_sanitized="git push", shell_category="git_write_shell")
 
     assert readonly.decision == "auto_approve"
     assert build.decision == "auto_approve"
     assert destructive.decision == "deny"
     assert destructive.reason_code == "destructive_shell_blocked"
-    assert network.decision == "deny"
-    assert network.reason_code == "network_shell_blocked"
+    assert network.decision == "require_approval"
+    assert git_write.decision == "require_approval"
+    assert codex_git.decision == "deny"
+    assert codex_git.reason_code == "git_write_blocked"
 
 
 def test_secret_risk_blocks_and_audits_decision(tmp_path):
