@@ -13,6 +13,8 @@ agent_policy_profiles:
     autoapprove_readonly_shell: true
     autoapprove_test_shell: true
     autoapprove_build_shell: true
+    allow_git_write_shell: true
+    allow_network_shell: true
     block_destructive_shell: true
     block_secret_access: true
     block_source_readonly_write: true
