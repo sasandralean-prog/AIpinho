@@ -96,8 +96,9 @@ def test_workspace_fix_discovery_creates_readonly_autorun_and_defers_future_effe
     assert phase_graph["mutation_intent"] is False
     assert phase_graph["execution_intent"] is False
     assert phase_graph["knowledge_output"] is False
-    assert phase_graph["state_effect"] == "planning_only"
-    assert phase_graph["workspace_effect"] == "planning_only"
+    assert phase_graph["planning_intent"] is False
+    assert phase_graph["state_effect"] == "knowledge_only"
+    assert phase_graph["workspace_effect"] == "knowledge_only"
     assert phase_graph["filesystem_effect"] == "prohibited"
     assert phase_graph["runtime_effect"] == "none"
 
@@ -107,3 +108,8 @@ def test_workspace_fix_discovery_creates_readonly_autorun_and_defers_future_effe
         "runtime_execution",
     ]
     assert request.intent_map["mission_id"] == "engineering_mission_discovery"
+    assert request.intent_map["mission_execution_strategy"]["mode"] == "end_to_end_governed"
+    assert request.intent_map["mission_continuation_policy"]["auto_continue"] is True
+    assert request.intent_map["workspace_scope_contract"]["primary_workspace"].endswith(
+        "PinhoabacaxiMusicasDesktop"
+    )
