@@ -193,6 +193,24 @@ def test_long_operational_prompt_prefers_labeled_workspace_over_later_corpus_pat
 
     assert workspace == r"C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop"
 
+def test_compound_fix_mission_defers_future_execution_until_discovery() -> None:
+    prompt = (
+        r"Analise e corrija os problemas de codec em C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop. "
+        "Depois execute os testes e o Gradle build para validar a correcao."
+    )
+
+    decision = SemanticIntentResolutionService().resolve(prompt, source_channel="mobile_chat")
+
+    assert decision.intent_type == "workspace_fix_request"
+    assert decision.operation_type == "workspace_fix_request"
+    assert decision.requires_task is True
+    assert decision.readonly is True
+    assert decision.side_effect_requested is False
+    assert decision.semantic_intent_graph.mutation_intent is True
+    assert decision.semantic_intent_graph.execution_intent is True
+    assert "future_side_effect_intent_deferred_until_discovery" in decision.evidence
+
+
 def test_public_chat_long_authorized_mission_is_not_session_diagnostic() -> None:
     prompt = (
         "Autorizo nesta missao leitura, diagnostico, edicao de codigo, criacao de testes, "
@@ -209,12 +227,17 @@ def test_public_chat_long_authorized_mission_is_not_session_diagnostic() -> None
         source_channel="mobile_chat",
     )
 
-    assert response.operation_type == "patch_request"
-    assert response.intent["intent_type"] == "patch_or_write_request"
+    assert response.operation_type == "workspace_fix_request"
+    assert response.intent["intent_type"] == "workspace_fix_request"
     assert response.governance_lifecycle["intent"]["requires_task"] is True
     assert response.governance_lifecycle["operation_contract"]["workspace_path"] == r"C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop"
-    assert response.governance_lifecycle["operation_contract"]["read_only"] is False
-    assert response.governance_lifecycle["operation_contract"]["workspace_mutation"] is True
+    assert response.governance_lifecycle["operation_contract"]["read_only"] is True
+    assert response.governance_lifecycle["operation_contract"]["workspace_mutation"] is False
+    assert response.governance_lifecycle["intent"]["semantic_intent_graph"]["execution_intent"] is True
+    assert "future_side_effect_intent_deferred_until_discovery" in response.governance_lifecycle["intent"]["evidence"]
+    assert response.approval_id is None
+    assert response.task_draft_id is None
+    assert "WORKSPACE_DISCOVERY_REQUIRED" in response.message
 
 def test_subdirectory_word_does_not_convert_patch_mission_to_create_directory() -> None:
     prompt = (
@@ -228,8 +251,9 @@ def test_subdirectory_word_does_not_convert_patch_mission_to_create_directory() 
     service = CanonicalPublicChatService()
     response = service.respond(ChatRequest(message=prompt, session_id="unit_subdir_patch"), source_channel="mobile_chat")
 
-    assert response.operation_type == "patch_request"
-    assert response.governance_lifecycle["operation_contract"]["operation_type"] == "patch_request"
-    assert response.governance_lifecycle["operation_contract"]["requested_actions"] == ["apply_patch"]
+    assert response.operation_type == "workspace_fix_request"
+    assert response.governance_lifecycle["operation_contract"]["operation_type"] == "workspace_fix_request"
+    assert response.governance_lifecycle["operation_contract"]["requested_actions"] == []
+    assert response.governance_lifecycle["intent"]["semantic_intent_graph"]["execution_intent"] is True
     assert response.governance_lifecycle["intent"]["negative_constraints"].get("write_forbidden") is not True
     assert response.governance_lifecycle["intent"]["negative_constraints"].get("shell_forbidden") is not True
