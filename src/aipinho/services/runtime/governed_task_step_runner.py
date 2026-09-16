@@ -125,6 +125,11 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
                 objective=prompt,
                 source_id=run.run_id,
                 file_context_bundle=context.outputs.get("_file_context"),
+                workspace_scope_contract=(
+                    dict(run.intent_map.get("workspace_scope_contract") or {})
+                    if isinstance(run.intent_map, dict)
+                    else {}
+                ),
                 include_trace=True,
             )
             if planned.status == "ready" and planned.plan is not None:
