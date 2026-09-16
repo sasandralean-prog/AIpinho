@@ -23,6 +23,8 @@ class WriteCapabilityEnvelopeService:
         "run_shell_write": "shell",
         "run_shell_test": "shell",
         "run_shell_build": "shell",
+        "run_shell_git_write": "shell",
+        "run_shell_network": "shell",
         "run_shell_readonly": "shell",
     }
 
