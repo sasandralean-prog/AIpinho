@@ -314,14 +314,19 @@ class CanonicalIntentRouter:
                 evidence=["explicit_session_diagnostic"],
                 semantic_intent_graph=semantic_graph,
             )
-        if has_any(normalized, self.FIX_REQUEST_TERMS) and not semantic_graph.execution_intent:
+        if has_any(normalized, self.FIX_REQUEST_TERMS):
+            evidence = ["fix_request_requires_discovery_first", *semantic_graph.evidence]
+            if semantic_graph.mutation_intent or semantic_graph.execution_intent:
+                evidence.append("future_side_effect_intent_deferred_until_discovery")
             return CanonicalIntentDecision(
                 intent_type="workspace_fix_request",
                 operation_type="workspace_fix_request",
                 requires_task=True,
+                side_effect_requested=False,
                 readonly=True,
                 source_channel=source_channel,
-                evidence=["fix_request_requires_discovery_first"],
+                negative_constraints=readonly_negative,
+                evidence=list(dict.fromkeys(evidence)),
                 semantic_intent_graph=semantic_graph,
             )
         if semantic_graph.execution_intent and semantic_graph.state_effect in {"build_execution", "runtime_execution"}:
