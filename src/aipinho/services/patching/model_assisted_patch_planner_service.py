@@ -71,6 +71,7 @@ class ModelAssistedPatchPlannerService:
         source_id: str | None = None,
         file_context_bundle: FileContextBundle | dict[str, Any] | None = None,
         evidence_context: list[dict[str, Any]] | None = None,
+        workspace_scope_contract: dict[str, Any] | None = None,
         include_trace: bool = False,
     ) -> ModelPatchPlanningResult:
         settings = self._settings()
@@ -303,6 +304,7 @@ class ModelAssistedPatchPlannerService:
                 patch_candidates=[patch_candidate],
                 evidence=[evidence],
                 replacements={patch_candidate.target_file: replacement},
+                workspace_scope_contract=dict(workspace_scope_contract or {}),
                 model_assisted=True,
                 include_trace=include_trace,
             )
