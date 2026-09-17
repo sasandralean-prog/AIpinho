@@ -1,4 +1,4 @@
-# AIpinho Current State — 2026-09-15
+# AIpinho Current State — 2026-09-16
 
 ## Authority note
 
@@ -100,11 +100,23 @@ Phase 1 is intentionally not a success claim. `CanonicalOperationState=BLOCKED` 
 - Runtime map: `docs/architecture/CURRENT_RUNTIME_MAP_20260915.md`.
 - Context map: `AIpinho_context_pack/docs/context/05_RUNTIME_ARCHITECTURE_MAP.md`.
 
+## Active architecture wave — E2E New Runtime
+
+Canonical execution plan: `e2enewruntimee.md`.
+
+Wave status: `PLANNED`. Next sprint: `M1 — Canonical Mission Contract`.
+
+The wave extends the single canonical TaskRuntime with frozen mission contracts, prompt-derived local resources, prompt-derived remote repository/branch resources, explicit human authority, unified capability/policy decisions, governed Git/network execution, mission staging, cross-TaskRun continuation and cross-phase completion truth.
+
+Pre-wave diagnostic evidence was gathered on `fix/firetest5-mission-runtime-intentmap` at `cfba76ee094018f9680c0a63eda6378cb118a076`. That branch is evidence for the plan; it is not equivalent to code already canonized on `main`.
+
+Sprint closure protocol: every sprint is complete only after validated merge to `main`, update of this file, update of `AIpinho_context_pack/docs/context/current_state.json`, and update of the sprint status board in `e2enewruntimee.md`.
+
 ## Current engineering frontier
 
-There is no open P0/P1 from the FireTest 5 consolidation wave. New work should extend the single canonical runtime rather than introduce parallel planners, dispatchers, role runtimes or truth authorities.
+There is no open P0/P1 from the completed FireTest 5 consolidation wave. A new architecture wave is now planned to close the mission-authority and dynamic-resource frontier without introducing parallel planners, dispatchers, role runtimes or truth authorities.
 
-Near-term priorities are evidence-backed cleanup/evolution of compatibility surfaces, continued semantic/runtime capability growth, documentation/Genome synchronization, and explicitly scoped treatment of the deferred media-reader encoding issue if/when it becomes relevant.
+Immediate frontier: execute Sprint M1 from `e2enewruntimee.md`, then advance strictly through evidence-backed sprint closure. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
 
 ## Invariants
 

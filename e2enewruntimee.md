@@ -1,0 +1,1117 @@
+# AIpinho — E2E New Runtime: Mission Authority, Dynamic Resources and Governed Continuation
+
+**Document status:** canonical execution plan for the E2E New Runtime wave
+**Repository:** sasandralean-prog/AIpinho
+**Target branch for canonization:** main
+**Initial main baseline:** 7ad2b1532a53cd3becee7154a6e08dec28b00b0d
+**Pre-wave diagnostic branch snapshot:** fix/firetest5-mission-runtime-intentmap @ cfba76ee094018f9680c0a63eda6378cb118a076
+**Created:** 2026-09-16
+**Owner of final operational authority:** AIpinho canonical runtime
+
+---
+
+## 1. Authority and purpose
+
+This document is the execution map for the E2E New Runtime wave. It exists so that every sprint can be implemented, validated and closed without losing the architectural direction established by the runtime diagnosis.
+
+This document is not higher authority than production code, canonical contracts/configuration, validated RuntimeTruth, or validated runtime evidence. When implementation and this plan diverge, the divergence must be investigated and this document must be updated only after evidence justifies the change.
+
+The document must remain generic. FireTest 5 and Pinhoabacaxi Músicas are probes and evidence sources, not production configuration.
+
+The wave is successful only when the runtime can perform the same governed lifecycle for unrelated projects, local workspaces and remote repositories declared dynamically by the human prompt.
+
+---
+
+## 2. Problem statement
+
+The pre-wave diagnosis showed that the runtime had already corrected several important ingress and workspace-scope problems, but the complete end-to-end mission lifecycle remained fragmented across intent, workspace policy, approvals, agent policy, shell policy, Git/network policy and mission orchestration.
+
+The historical RAW failure exposed an initial chain:
+
+~~~text
+compound repair mission
+→ phrase "subdirectory" misread as create_directory
+→ filesystem_create_directory
+→ premature approval boundary
+→ missing analysis_ref
+→ no execution
+~~~
+
+The active correction branch fixed much of that entry path:
+
+~~~text
+prompt
+→ semantic operational mission
+→ workspace_fix_request
+→ real readonly discovery TaskRun
+→ frozen workspace scope
+~~~
+
+However, the diagnosis also exposed deeper structural gaps:
+
+- mission strategy is persisted but does not yet materialize the next TaskRun automatically;
+- declared capabilities are not the same thing as explicit human authority;
+- Tool Gateway and TaskRuntime can disagree about Git/network;
+- create_directory is implemented by tools but absent from parts of the canonical permission vocabulary;
+- direct filesystem writes do not propagate dynamic scope as consistently as patch execution;
+- Git classification is too coarse;
+- Git network operations are not expressed as composed capabilities;
+- remote repositories are not yet first-class dynamic resources;
+- clean promotion staging is not yet a dynamically derived mission resource;
+- mission completion criteria are not yet bound across phases as one final truth contract.
+
+This wave closes those gaps without creating a second runtime.
+
+---
+
+## 3. Architectural target
+
+The target lifecycle is:
+
+~~~text
+Human Prompt
+    │
+    ├─ semantic mission intent
+    ├─ mission execution strategy
+    ├─ local resource scopes
+    ├─ remote repository scopes
+    ├─ explicit human authority
+    ├─ negative constraints
+    └─ completion requirements
+             │
+             ▼
+       Frozen Mission Contract
+             │
+             ▼
+   Canonical TaskRuntime phases
+             │
+             ├─ Discovery
+             ├─ Planning
+             ├─ Mutation / Patch
+             ├─ Build / Test / Smoke
+             ├─ Promotion Staging
+             └─ Git / Remote Promotion
+             │
+             ▼
+   Cross-phase evidence binding
+             │
+             ▼
+   RuntimeTruth → CanonicalOperationState → SpeakerTruth
+~~~
+
+No planner, agent, gateway, shell adapter, Git adapter or UI surface may independently expand authority.
+
+---
+
+## 4. Core separation of concerns
+
+The runtime must distinguish four questions that were previously too easy to conflate:
+
+1. **What is requested?**
+2. **What has the human explicitly authorized?**
+3. **What resources are in scope?**
+4. **What does global policy permit?**
+
+The executable set is the intersection:
+
+~~~text
+requested capability
+∩ explicit human authority
+∩ resource permission
+∩ current phase contract
+∩ global policy
+= executable capability
+~~~
+
+A capability mentioned in prose is not automatically authorized.
+
+A mutable workspace is not unrestricted execution authority.
+
+An allowed remote repository is not arbitrary network access.
+
+A successful tool invocation is not mission completion.
+
+---
+
+## 5. Canonical resource model
+
+The new runtime must treat resources as explicit, frozen mission objects rather than infer them repeatedly from text.
+
+### 5.1 Local workspace resource
+
+Minimum fields:
+
+~~~yaml
+resource_type: local_workspace
+resource_id: <stable mission-local id>
+path: <absolute canonical path>
+role: source_readonly | target_mutable | system_mutable | mission_staging | protected | forbidden
+permissions: [...]
+constraints: [...]
+evidence: [...]
+~~~
+
+### 5.2 Remote repository resource
+
+Remote repositories are dynamic prompt-derived resources exactly like local workspaces.
+
+Minimum fields:
+
+~~~yaml
+resource_type: remote_repository
+resource_id: <stable mission-local id>
+provider: github
+owner: <owner>
+repository: <repo>
+canonical_remote: <normalized remote identity>
+branches:
+  allowed: [...]
+permissions:
+  clone: true|false
+  fetch: true|false
+  pull_fast_forward: true|false
+  commit: true|false
+  push: true|false
+constraints:
+  force_push: false
+  rewrite_history: false
+  delete_remote_branch: false
+evidence: [...]
+~~~
+
+No repository name may be hardcoded into production policy to make a mission pass.
+
+The prompt may add a repository to mission scope, but cannot override global host/network deny rules.
+
+### 5.3 Mission staging resource
+
+A mission may derive a temporary local resource from an authorized remote repository.
+
+~~~yaml
+resource_type: local_workspace
+role: mission_staging
+derived_from: <remote_repository resource id>
+lifetime: mission
+root_policy: globally_safe_staging_root
+~~~
+
+The global configuration defines only safe staging boundaries. The project/repository identity is derived from the mission.
+
+---
+
+## 6. Remote repository normalization rules
+
+Repository identity must be normalized before policy comparison.
+
+Equivalent forms for the same GitHub repository may include:
+
+~~~text
+https://github.com/owner/repo
+https://github.com/owner/repo.git
+git@github.com:owner/repo.git
+~~~
+
+Normalization must preserve:
+
+- provider/host;
+- owner;
+- repository;
+- branch scope;
+- operation being requested.
+
+Normalization must never make distinct repositories equivalent.
+
+Explicitly forbidden remotes in the prompt must become negative constraints and remain forbidden for the mission.
+
+Before any push, the runtime must observe the actual configured remote and branch and compare them with the frozen remote repository resource.
+
+---
+
+## 7. Non-negotiable invariants
+
+These invariants apply to every sprint in this wave:
+
+1. Prompt-derived allow does not override global protection or deny policy.
+2. Mentioned capability is not the same as authorized capability.
+3. Mutable workspace is not unrestricted execution.
+4. Allowed remote repository is not arbitrary network permission.
+5. Git permission is not destructive Git permission.
+6. One authorization may span phases only inside the frozen mission authority.
+7. Child TaskRuns may narrow authority but may never expand it.
+8. Every dynamically derived resource must have provenance.
+9. Planner cannot grant authority.
+10. Executor cannot reinterpret intent.
+11. Tool Gateway cannot invent permissions.
+12. Agents and roles remain subordinate to TaskRuntime.
+13. RuntimeTruth remains the final completion authority.
+14. SpeakerTruth may never upgrade partial, blocked or failed runtime truth.
+15. FireTest evidence never becomes runtime configuration.
+16. Unknown authority is fail-closed.
+17. Producer completion does not authorize consumer use.
+18. No success claim exists without evidence bound to the declared completion contract.
+19. No project name, local path, file extension or repository identity may become generic production truth.
+20. Global destructive operations remain denied unless a separate explicit governed design introduces them.
+
+---
+
+## 8. Wave status board
+
+| Sprint | Name | Initial state | Exit dependency |
+| --- | --- | --- | --- |
+| M1 | Canonical Mission Contract | PLANNED | none |
+| M2 | Dynamic Local Resource Scopes | PLANNED | M1 |
+| M3 | Dynamic Remote Repository Scopes | PLANNED | M1, M2 vocabulary |
+| M4 | Explicit Human Authority / Mission Grants | PLANNED | M1–M3 |
+| M5 | Unified Capability and Policy Kernel | PLANNED | M1–M4 |
+| M6 | Governed Git and Network Execution | PLANNED | M3–M5 |
+| M7 | Mission Staging and Derived Resources | PLANNED | M2, M3, M6 |
+| M8 | Mission Continuation Engine | PLANNED | M1–M7 |
+| M9 | Cross-Phase Truth and Completion Contract | PLANNED | M1–M8 |
+| M10 | Fresh Manual E2E FireTest and Consolidation | PLANNED | M1–M9 |
+
+No sprint is considered complete because code was written. Completion requires its Definition of Done and validation evidence.
+
+---
+
+# Sprint M1 — Canonical Mission Contract
+
+## Objective
+
+Create one frozen representation of the mission so later phases do not reinterpret the original prompt to discover authority, resources or strategy.
+
+## Required design
+
+Introduce or consolidate canonical structures equivalent to:
+
+- MissionContract;
+- MissionExecutionStrategy;
+- MissionResourceScope;
+- MissionAuthorityBinding;
+- MissionConstraint;
+- MissionCompletionContract;
+- MissionContractBinding.
+
+The exact class names may differ if existing canonical schemas can be evolved cleanly.
+
+## Minimum mission fields
+
+- mission_id;
+- session_id;
+- source_message_id;
+- source_prompt_hash;
+- objective;
+- execution strategy;
+- local resource scopes;
+- remote resource scopes;
+- requested capabilities;
+- authorized capabilities;
+- negative constraints;
+- validation requirements;
+- completion requirements;
+- authority hash/revision;
+- provenance/evidence refs.
+
+## Required behavior
+
+Prompt interpretation occurs once at mission bootstrap.
+
+All TaskRuns created for the mission bind to the frozen contract or a cryptographically/verifiably equivalent projection.
+
+Child phases may narrow the contract but cannot add a workspace, repository, branch, capability or authority that the mission did not contain or derive through a governed resource-derivation rule.
+
+## Definition of Done
+
+- deterministic contract generation for equivalent input;
+- stable hash/revision semantics;
+- persisted and reloadable contract;
+- child TaskRun binding;
+- tests proving child authority cannot expand;
+- tests proving prompt is not reparsed by downstream execution gates;
+- no parallel mission authority introduced.
+
+---
+
+# Sprint M2 — Dynamic Local Resource Scopes
+
+## Objective
+
+Finish the prompt-derived local workspace model and make all local mutations consume the same scope contract.
+
+## Required work
+
+Generalize the existing workspace_scope_contract into the canonical local resource representation without losing compatibility during migration.
+
+Close known gaps:
+
+- add create_directory to canonical permission vocabulary;
+- add create_directory to workspace-role operation rules;
+- propagate dynamic scope through direct create_file and modify_file execution;
+- implement governed create_directory in the canonical filesystem step path;
+- unify apply_patch, file writes, build, test and shell path resolution;
+- guarantee source_readonly denies mutation regardless of agent/tool policy;
+- preserve protected/forbidden static overrides;
+- repair WorkspaceContext rehydration from frozen TaskRun intent/mission data.
+
+## Enforcement rule
+
+Every local ToolInvocation must answer:
+
+~~~text
+target path
+→ matching mission resource
+→ role
+→ required operation permission
+→ human authority
+→ global policy
+→ execute / approval / deny
+~~~
+
+Checking only role == target_mutable is insufficient.
+
+## Definition of Done
+
+A previously unregistered temporary workspace declared by a prompt can be read and, when authorized, can create directories/files, modify files, apply patches, build and test.
+
+A separate readonly resource declared in the same prompt remains immutable.
+
+No project-specific workspace registration is required.
+
+---
+
+# Sprint M3 — Dynamic Remote Repository Scopes
+
+## Objective
+
+Make remote repositories first-class dynamic mission resources.
+
+## Required work
+
+Create a canonical remote-repository scope service/schema.
+
+Parse positive and negative repository scope from prompt intent.
+
+Represent at minimum:
+
+- provider;
+- normalized repository identity;
+- allowed branches;
+- clone/fetch/pull-fast-forward/commit/push permissions;
+- destructive constraints;
+- evidence/provenance.
+
+Support explicit prompt constraints such as:
+
+~~~text
+use repository A
+branch main
+do not use repository B
+do not initialize a repository in workspace X
+~~~
+
+## Security rules
+
+Remote permission is scoped to repository + branch + operation.
+
+Prompt scope cannot override global denied hosts, secret handling or network policy.
+
+Remote identity must be observed again immediately before promotion operations.
+
+## Definition of Done
+
+Tests with unrelated temporary repositories prove:
+
+- dynamic allow from prompt;
+- negative remote constraint;
+- equivalent URL normalization;
+- different repository rejection;
+- wrong branch rejection;
+- no project-specific remote allowlist.
+
+---
+
+# Sprint M4 — Explicit Human Authority and Mission Grants
+
+## Objective
+
+Separate requested capability from explicit human authorization and make one prompt capable of authorizing a complete mission without redundant approval prompts.
+
+## Direction
+
+Evolve the existing SessionGrant mechanism instead of creating an unrelated second permission system.
+
+A common authority abstraction may support:
+
+- single-use approval;
+- task grant;
+- mission grant;
+- session grant.
+
+## Prompt-native authorization
+
+An unambiguous clause such as:
+
+~~~text
+AUTORIZAÇÃO: autorizo nesta missão edição, build, testes, commit e push...
+~~~
+
+may create an already-effective mission authority binding because the user has granted consent in that source message.
+
+A conditional or descriptive mention such as:
+
+~~~text
+if git push fails...
+~~~
+
+must not be treated as consent.
+
+## Scope binding
+
+Authority must be bound to:
+
+- source_message_id and source_prompt_hash;
+- mission_id;
+- action/capability;
+- local resource(s);
+- remote repository/branch when applicable;
+- optional command constraints;
+- expiry/revocation/use constraints.
+
+## Required cleanup
+
+Make grant use-count, expiry and revocation real runtime behavior if those fields remain part of the contract.
+
+## Definition of Done
+
+Tests prove the semantic difference between:
+
+~~~text
+faça git push
+~~~
+
+and:
+
+~~~text
+autorizo git push nesta missão
+~~~
+
+Only explicit authorization can satisfy reusable human-authority requirements.
+
+---
+
+# Sprint M5 — Unified Capability and Policy Kernel
+
+## Objective
+
+Eliminate contradictory policy truth between TaskRuntime, Tool Gateway, shell policy, workspace roles and agent policy.
+
+## Known pre-wave contradiction
+
+The diagnostic branch showed Agent Tool Gateway paths that govern Git/network with approval while canonical TaskRuntime configuration still blocks git_commit/git_push and shell profile still forbids git_write_shell.
+
+This sprint must remove that split-brain policy state.
+
+## Canonical capability vocabulary
+
+At minimum normalize concepts equivalent to:
+
+~~~text
+local.read
+local.create_directory
+local.create_file
+local.modify_file
+local.patch
+
+shell.readonly
+shell.test
+shell.build
+shell.runtime
+
+network.http_read
+network.download
+
+git.local_read
+git.network_read
+git.worktree_write
+git.commit
+git.push
+git.destructive
+~~~
+
+Names may follow existing conventions, but semantic distinctions must remain.
+
+## Decision model
+
+Specialized policies may contribute facets, but only one canonical decision may authorize execution.
+
+Expected flow:
+
+~~~text
+Mission Contract
+→ capability demand
+→ resource permission
+→ human authority
+→ global safety/policy facets
+→ canonical capability decision
+→ execution adapter
+~~~
+
+## Definition of Done
+
+For the same operation, TaskRunGuard, Tool Gateway, WriteCapabilityEnvelope and agent policy cannot return incompatible authority verdicts.
+
+Diagnostics must expose which facet denied or constrained an operation.
+
+---
+
+# Sprint M6 — Governed Git and Network Execution
+
+## Objective
+
+Replace coarse Git classification with capability-aware governed Git/network execution.
+
+## Git classification
+
+Distinguish at least:
+
+- local Git reads;
+- network reads: clone/fetch/ls-remote;
+- worktree-changing operations;
+- commit;
+- push;
+- destructive history/worktree operations.
+
+Commands such as the following must not fall into a generic safe git_write bucket:
+
+~~~text
+git reset --hard
+git clean -f
+git clean -fd
+git push --force
+git push -f
+git branch -D
+~~~
+
+These remain fail-closed unless a separate future design explicitly governs them.
+
+## Composed capability demands
+
+Examples:
+
+~~~text
+git status
+requires: git.local_read
+
+git fetch
+requires:
+  git.network_read
+  outbound network
+  authorized remote repository
+
+git push
+requires:
+  git.push
+  outbound network
+  authorized remote repository
+  authorized branch
+  explicit human authority
+~~~
+
+## Promotion validation
+
+Before push:
+
+1. observe actual origin;
+2. normalize origin identity;
+3. compare with remote resource contract;
+4. observe current branch;
+5. compare with branch scope;
+6. reject force/rewrite operations;
+7. execute governed push.
+
+After push, success requires refreshed evidence that local HEAD equals the authorized remote branch HEAD.
+
+## Definition of Done
+
+Controlled repository fixtures prove allowed fetch/commit/push and denied wrong-remote, wrong-branch and destructive Git paths.
+
+---
+
+# Sprint M7 — Mission Staging and Derived Resources
+
+## Objective
+
+Allow an E2E mission to create a clean governed Git workspace without registering a project-specific directory in static config.
+
+## Resource derivation
+
+An authorized remote_repository may derive a mission_staging local resource under a globally configured safe staging root.
+
+The runtime must record:
+
+- derived resource id;
+- source remote resource id;
+- path;
+- lifetime;
+- authority inherited;
+- authority explicitly not inherited;
+- creation evidence.
+
+## Intended promotion flow
+
+~~~text
+authorized remote
+-> create mission staging directory
+-> clone/fetch
+-> verify origin
+-> fast-forward authorized branch
+-> synchronize only intentional changes
+-> validate
+-> commit
+-> push
+~~~
+
+## Constraints
+
+The original source/corpus remains untouched unless separately mutable.
+
+Staging authority is mission-scoped and disappears as an active authority when the mission ends.
+
+Cleanup is not allowed to rewrite final truth. A cleanup limitation after a proven push is a limitation, not evidence that the push did not occur.
+
+## Definition of Done
+
+A mission can materialize and use a clean staging clone for an arbitrary prompt-authorized repository without permanent workspace registration.
+
+---
+
+# Sprint M8 — Mission Continuation Engine
+
+## Objective
+
+Make end_to_end_governed operational rather than merely descriptive.
+
+## Service responsibility
+
+Introduce or evolve a thin MissionContinuationService / MissionPhaseCoordinator.
+
+It may coordinate TaskRuns but must not become another:
+
+- semantic router;
+- planner;
+- policy authority;
+- execution runtime;
+- validation engine;
+- truth authority.
+
+## Inputs
+
+- frozen MissionContract;
+- previous TaskRun;
+- RuntimeTruth;
+- SemanticTruth/PhaseOutcome;
+- mission checkpoints;
+- outstanding completion requirements.
+
+## Decisions
+
+Exactly one of:
+
+~~~text
+continue_to_next_phase
+await_existing_authority
+request_new_authority
+block
+complete
+~~~
+
+## Strategy semantics
+
+For end_to_end_governed:
+
+- continue automatically while next phase is inside existing authority and evidence gates;
+- stop only at a real authority/safety/evidence boundary.
+
+For staged:
+
+- stop at the requested phase boundary even if future authority exists.
+
+For single_operation:
+
+- do not invent a multi-phase mission.
+
+## Expected generic phase sequence
+
+A repair/promote mission may become:
+
+~~~text
+Discovery
+-> Patch Planning
+-> Mutation
+-> Build/Test/Smoke
+-> Promotion Staging
+-> Git Promotion
+-> Final Validation
+~~~
+
+These are runtime phases, not FireTest scripts.
+
+## Definition of Done
+
+A discovery TaskRun can terminalize and cause the next canonical TaskRun to be created without a new prompt when strategy and authority allow it.
+
+No phase can self-promote around RuntimeTruth.
+
+---
+
+# Sprint M9 — Cross-Phase Truth and Mission Completion Contract
+
+## Objective
+
+Make final mission success depend on evidence-bound completion requirements rather than on the last command returning zero.
+
+## Completion contract
+
+The mission may require outcomes such as:
+
+- concrete code change;
+- regression validation;
+- relevant behavior validation;
+- corpus integrity;
+- build/test success;
+- clean staging validation;
+- commit;
+- push;
+- local/remote HEAD equality.
+
+Requirements are derived from the prompt and frozen in the mission contract.
+
+## Evidence binding
+
+Each requirement must bind to evidence produced by one or more TaskRuns.
+
+Example:
+
+~~~text
+code_change
+-> patch/diff evidence
+
+regression_validation
+-> test result evidence
+
+behavior_validation
+-> smoke/runtime evidence
+
+git_push
+-> governed command evidence + remote observation
+
+head_remote_equality
+-> local SHA + refreshed remote SHA
+~~~
+
+## Final truth
+
+Mission success is reportable only if all required outcomes are satisfied or the completion contract explicitly permits a limited completion state.
+
+Partial evidence stays partial.
+
+Blocked promotion stays blocked.
+
+A local commit without proven push is not remote completion.
+
+## Definition of Done
+
+Cross-phase evidence can be rehydrated after restart and produces the same final RuntimeTruth.
+
+SpeakerTruth cannot claim completion above the mission truth ceiling.
+
+---
+
+# Sprint M10 — Fresh Manual E2E FireTest and Consolidation
+
+## Objective
+
+Validate the completed architecture through the normal AIpinho interface with a fresh human prompt.
+
+## Test restrictions
+
+Do not:
+
+- drive phases with FireTest scripts;
+- inject internal TaskRuns to manufacture progress;
+- hardcode Pinhoabacaxi workspace names;
+- hardcode repository names;
+- pre-register a project only to make the test pass;
+- bypass canonical approval/authority;
+- declare PASS from compilation alone.
+
+## Required observations
+
+The fresh mission must demonstrate:
+
+1. correct strategy selection;
+2. correct local mutable/readonly resource scopes;
+3. correct remote repository/branch scope;
+4. preserved explicit human authority;
+5. real discovery;
+6. real patch planning;
+7. real mutation;
+8. real tests/build and relevant smoke evidence when feasible;
+9. readonly corpus integrity;
+10. dynamic mission staging;
+11. observed origin/branch validation;
+12. governed commit/push;
+13. refreshed remote SHA equality;
+14. final mission truth consistent with all required outcomes.
+
+## Failure semantics
+
+Any real boundary failure must produce a specific reason_code and preserved evidence.
+
+No failure may be hidden by a later phase.
+
+No incomplete remote promotion may be called complete.
+
+## Definition of Done
+
+The same architecture must also be demonstrable with an unrelated workspace/repository fixture by changing only prompt-provided resources.
+
+The final validation must show no project-specific production configuration was introduced.
+
+---
+
+## 9. Sprint closure protocol
+
+Every sprint closure MUST update both current-state documents:
+
+1. **CURRENT_STATE.md**
+2. **AIpinho_context_pack/docs/context/current_state.json**
+
+This is part of the sprint Definition of Done, not optional documentation cleanup.
+
+Each closure update must record at minimum:
+
+- sprint identifier and name;
+- final status;
+- merge/main SHA;
+- validation summary;
+- architecture boundary closed;
+- remaining limitations or open frontier;
+- next sprint;
+- any newly introduced invariant;
+- whether this plan changed.
+
+The status board in this document must also be updated when a sprint changes state.
+
+Allowed sprint states:
+
+~~~text
+PLANNED
+IN_PROGRESS
+BLOCKED
+IMPLEMENTED_UNVALIDATED
+VALIDATED
+MERGED
+CLOSED
+~~~
+
+A sprint should normally move to CLOSED only after validated work is merged to main and both current-state files reflect the new state.
+
+---
+
+## 10. Per-sprint engineering lifecycle
+
+Unless a task explicitly requires another governed route, each sprint follows repository policy:
+
+~~~text
+sync main
+-> create sprint branch/worktree
+-> diagnose exact current boundary
+-> implement minimal coherent change
+-> focused tests
+-> regression tests appropriate to scope
+-> runtime/doctor checks when relevant
+-> inspect diff
+-> push branch
+-> merge validated work into main
+-> push main
+-> sync local main
+-> confirm tracked local main == tracked origin/main
+-> update current state and this status board
+~~~
+
+Do not develop directly on main.
+
+Do not use destructive cleanup to reconcile the local overlay.
+
+Do not commit generated local evidence, caches, secrets or unrelated dirty files.
+
+---
+
+## 11. Validation philosophy
+
+Every sprint needs three proof levels where applicable:
+
+### Contract proof
+
+Schemas, hashes, immutable bindings and deterministic decisions behave as specified.
+
+### Enforcement proof
+
+The last gate before execution actually rejects authority/resource violations; safety must not rely only on the planner choosing not to request them.
+
+### E2E proof
+
+The public/runtime path exercises the contract under realistic TaskRun execution.
+
+Unit tests alone do not prove E2E authority propagation.
+
+A successful E2E test does not excuse missing unit-level denial tests.
+
+---
+
+## 12. Regression requirements for the whole wave
+
+At minimum retain coverage for these failure classes:
+
+- "subdirectory" language does not become directory creation;
+- compound repair mission starts discovery-first;
+- source_readonly remains immutable;
+- target_mutable can be dynamic and unregistered;
+- create_directory is explicitly governed;
+- missing declared permission is denied at final tool gate;
+- missing human authority is denied or requires authority;
+- protected/forbidden global roots override prompt grants;
+- wrong remote repository is denied;
+- wrong branch is denied;
+- remote normalization does not broaden identity;
+- Git push requires network + remote + branch + authority;
+- destructive Git is denied;
+- child TaskRun cannot expand mission scope;
+- restart/rehydration preserves mission contract;
+- partial phase evidence is not converted into failure solely because it is partial;
+- partial evidence cannot become success without compatible completion truth;
+- final SpeakerTruth respects RuntimeTruth.
+
+---
+
+## 13. Known pre-wave evidence to preserve
+
+The diagnostic branch snapshot cfba76ee established several useful facts that future sprints should preserve or re-prove after refactoring:
+
+- compound repair intent is routed to discovery-first;
+- the "subdirectory" false create-directory classification is covered by regression;
+- end_to_end_governed strategy is derived from prompt intent;
+- dynamic workspace scopes can distinguish mutable target and readonly corpus;
+- prompt-derived workspace scope can replace project-specific allowlists;
+- protected/readonly static policy still overrides prompt mutation;
+- patch planning paths already consume workspace scope in several layers;
+- partial workflow phases can remain partial with limitations;
+- agent Git/network policy has experimental governed paths;
+- the current focused diagnostic regression produced 57 passed and one known pre-existing workflow dependency failure.
+
+These are evidence checkpoints, not guarantees that main already contains the implementation.
+
+---
+
+## 14. Known pre-wave gaps to close
+
+The following findings motivated this wave and should be explicitly retired by sprint evidence:
+
+- no actual discovery -> next TaskRun mission coordinator;
+- no canonical remote_repository mission resource;
+- no mission-scoped authority consumed by final execution gates;
+- SessionGrant not integrated into TaskRuntime/Tool Gateway authority;
+- grant use-count semantics incomplete;
+- create_directory absent from canonical workspace permission vocabulary;
+- direct filesystem step missing scope propagation;
+- no canonical explicit create-directory path in GovernedTaskStepRunner;
+- Tool Gateway resource role check not sufficient to enforce declared permission;
+- approval matching broader than exact operation authority;
+- coarse git_write_shell classification;
+- destructive Git can be hidden inside generic Git classification;
+- Git network operations do not demand composed Git + network + remote capabilities;
+- TaskRuntime and Agent Tool Gateway disagree about Git write authority;
+- no prompt-derived remote/branch enforcement before push;
+- no mission-created staging-resource model;
+- WorkspaceContext fallback rehydration can lose frozen scope;
+- final mission completion is not yet one cross-phase evidence contract.
+
+---
+
+## 15. Design decisions that require special care
+
+### 15.1 Do not auto-approve every imperative
+
+"Faça X" expresses desired operation.
+
+"Autorizo X nesta missão" expresses explicit authority.
+
+The semantic model must preserve both.
+
+### 15.2 Do not turn repository scope into general network scope
+
+A prompt-authorized GitHub repository authorizes only the operations granted for that resource. It does not allow arbitrary HTTP access to github.com or the internet.
+
+### 15.3 Do not hardcode FireTest resources
+
+Pinhoabacaxi workspaces, music corpora and repository names may appear in tests only as realistic fixtures where appropriate, never as production policy.
+
+### 15.4 Do not create Runtime v3 by accident
+
+Mission continuation is orchestration over the canonical TaskRuntime. It is not another lifecycle, truth engine, planner, dispatcher or policy authority.
+
+### 15.5 Preserve global boundaries
+
+Static configuration remains appropriate for global protections such as protected roots, forbidden hosts, secret constraints, destructive command policy and safe staging roots.
+
+Static configuration must not become a project allowlist.
+
+---
+
+## 16. Final wave Definition of Done
+
+This wave is CLOSED only when all of the following are true:
+
+- M1–M10 are CLOSED;
+- one frozen mission contract owns mission strategy/resources/authority/completion requirements;
+- local resources are prompt-dynamic;
+- remote repository resources are prompt-dynamic;
+- repository + branch + operation authority is enforced;
+- human authority is distinguishable from requested capability;
+- final tool gates consume mission authority;
+- TaskRuntime and tool/agent policies cannot disagree on canonical authority;
+- Git/network capabilities are granular and compositional;
+- destructive Git remains fail-closed;
+- mission staging is dynamically derived and governed;
+- end_to_end_governed creates subsequent TaskRuns without another prompt when authority permits;
+- cross-phase evidence determines final truth;
+- public SpeakerTruth cannot overclaim;
+- fresh manual E2E mission succeeds or blocks honestly;
+- an unrelated project/repository fixture proves generality;
+- no project/repository-specific production allowlist was added;
+- both current-state files and this document reflect the final architecture;
+- tracked local main equals tracked origin/main after canonization.
+
+---
+
+## 17. Success criterion in one sentence
+
+AIpinho must be able to receive one human mission prompt, derive and freeze its local and remote resources plus explicit authority, autonomously traverse the canonical governed phases that authority permits, and report success only when cross-phase RuntimeTruth proves the requested outcome.
+
+---
+
+## 18. Maintenance rule for future conversations
+
+When continuing this wave in a later conversation, start by reading:
+
+1. current production code/config for the active sprint;
+2. CURRENT_STATE.md;
+3. AIpinho_context_pack/docs/context/current_state.json;
+4. this document;
+5. validated evidence from the most recently closed sprint.
+
+Do not assume a sprint is complete merely because this document describes it.
+
+The current-state files identify what has actually been canonized.
+
+This document identifies where the wave is going and the invariants that must not be lost.

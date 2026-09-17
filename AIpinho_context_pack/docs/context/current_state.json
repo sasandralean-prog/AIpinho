@@ -1,11 +1,12 @@
 {
-  "schema_version": "context_state.v2026-09-15-consolidated",
-  "updated_at": "2026-09-15",
+  "schema_version": "context_state.v2026-09-16-e2e-new-runtime-planned",
+  "updated_at": "2026-09-16",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
     "name": "sasandralean-prog/AIpinho",
     "branch": "main",
-    "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0"
+    "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
+    "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d"
   },
   "authorities": [
     "Human operator",
@@ -78,10 +79,12 @@
     "root-role provenance tokenization suffix"
   ],
   "current_frontier": [
-    "evolve capabilities through the single canonical TaskRuntime",
-    "keep roles/models subordinate and contract-bound",
-    "retire or absorb compatibility surfaces only with evidence-backed migration",
-    "keep Genome/current-state documentation synchronized after architecture-changing waves"
+    "execute M1 Canonical Mission Contract from e2enewruntimee.md",
+    "derive local and remote resources dynamically from prompt intent without project allowlists",
+    "bind explicit human authority to mission resources and capabilities",
+    "unify TaskRuntime, Tool Gateway, agent, shell, Git and network policy decisions",
+    "materialize end_to_end_governed continuation across canonical TaskRuns",
+    "bind final mission completion to cross-phase RuntimeTruth evidence"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -112,5 +115,45 @@
     "roles are not authorities",
     "Doctor diagnoses but does not grant authority",
     "FireTest is regression evidence, not runtime configuration"
-  ]
+  ],
+  "active_wave": {
+    "id": "e2e_new_runtime",
+    "status": "PLANNED",
+    "plan_document": "e2enewruntimee.md",
+    "next_sprint": "M1",
+    "next_sprint_name": "Canonical Mission Contract",
+    "prewave_diagnostic_evidence": {
+      "branch": "fix/firetest5-mission-runtime-intentmap",
+      "sha": "cfba76ee094018f9680c0a63eda6378cb118a076",
+      "authority": "diagnostic_evidence_not_main"
+    },
+    "sprints": {
+      "M1": "PLANNED",
+      "M2": "PLANNED",
+      "M3": "PLANNED",
+      "M4": "PLANNED",
+      "M5": "PLANNED",
+      "M6": "PLANNED",
+      "M7": "PLANNED",
+      "M8": "PLANNED",
+      "M9": "PLANNED",
+      "M10": "PLANNED"
+    },
+    "resource_direction": [
+      "prompt-derived local workspace resources",
+      "prompt-derived remote repository and branch resources",
+      "mission-derived governed staging resources"
+    ],
+    "authority_direction": [
+      "requested capability != explicit human authority",
+      "child TaskRuns may narrow but never expand mission authority",
+      "global protection overrides prompt-derived allow"
+    ],
+    "sprint_closure_protocol": {
+      "update_current_state_md": true,
+      "update_context_current_state_json": true,
+      "update_plan_status_board": true,
+      "requires_validated_main_merge": true
+    }
+  }
 }
