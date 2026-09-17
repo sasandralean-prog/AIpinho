@@ -283,7 +283,7 @@ No sprint is considered complete because code was written. Completion requires i
 - broader runtime/semantic regression: `92 passed / 1 failed`; the single failure (`test_service_waits_for_approval_when_policy_requires_apply_patch`) reproduces unchanged on baseline `630d454f` from an unregistered detached worktree and is not an M1 regression;
 - integration note: callers that do not yet supply a persistent `source_message_id` receive a deterministic synthetic source reference. Public ingress should bind the real persistent message identity as mission bootstrap is consolidated in later sprints.
 
-Next sprint: **M4 - Explicit Human Authority / Mission Grants**.
+Next sprint: **M5 - Unified Capability and Policy Kernel**.
 
 ### M2 closure evidence - 2026-09-17
 
@@ -314,6 +314,22 @@ Next sprint: **M4 - Explicit Human Authority / Mission Grants**.
 - the single TaskRuntime failure is the same unregistered-worktree approval-test limitation documented during M2 and is outside the M3 code path;
 - `compileall`, staged diff checks and production hardcode scans passed; no project/repository/host-specific production allowlist was introduced;
 - plan direction did not change. M4 remains the explicit human-authority sprint.
+
+### M4 closure evidence - 2026-09-17
+
+- validated implementation/main SHA: `0fe414fb5196318e49eb660b5c5440b7dd135f11`;
+- semantic ingress now separates requested capability from explicit human authorization and freezes only evidence-backed authority into the MissionContract;
+- `Fa?a git push` and conditional mentions remain requests/mentions, while `Autorizo git push nesta miss?o` creates explicit authority evidence scoped to that source prompt;
+- the existing SessionGrant path is now a compatibility facade over the canonical `AuthorityGrantService`; no second grant authority was introduced;
+- mission grants bind mission id, source-message identity, source prompt hash, authority hash, capability/action, local resource/path and remote repository/branch scope;
+- expiry, revocation and use-count are executable runtime behavior rather than decorative fields;
+- `TaskRunGuard` and the final Agent Tool Gateway accept a valid mission grant only as satisfaction of the human-consent facet; static resource policy, profile policy and global denies remain independently authoritative;
+- dedicated M4 suite: `11 passed`; grant/contract compatibility suite: `28 passed`; gate/resource/remote/semantic regression: `55 passed`; broader runtime/public regression: `100 passed / 2 failed`;
+- both broader-suite failures were reproduced unchanged on M3 baseline `77685f0b`: the known unregistered-worktree approval fixture and the pre-existing persistent-chat Windows path parsing case;
+- full `compileall`, diff checks and production hardcode scans passed; no project/repository-specific allowlist or Git/network policy relaxation was added;
+- newly enforced invariant: requested capability is not human authority, and explicit authority cannot override stronger resource/global policy.
+
+Next sprint: **M5 - Unified Capability and Policy Kernel**.
 
 
 ---

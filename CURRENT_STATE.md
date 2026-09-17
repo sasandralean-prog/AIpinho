@@ -104,7 +104,7 @@ Phase 1 is intentionally not a success claim. `CanonicalOperationState=BLOCKED` 
 
 Canonical execution plan: `e2enewruntimee.md`.
 
-Wave status: `IN_PROGRESS`. `M1 - Canonical Mission Contract`, `M2 - Dynamic Local Resource Scopes` and `M3 - Dynamic Remote Repository Scopes` are CLOSED. Next sprint: `M4 - Explicit Human Authority / Mission Grants`.
+Wave status: `IN_PROGRESS`. `M1 - Canonical Mission Contract`, `M2 - Dynamic Local Resource Scopes`, `M3 - Dynamic Remote Repository Scopes` and `M4 - Explicit Human Authority / Mission Grants` are CLOSED. Next sprint: `M5 - Unified Capability and Policy Kernel`.
 
 The wave extends the single canonical TaskRuntime with frozen mission contracts, prompt-derived local resources, prompt-derived remote repository/branch resources, explicit human authority, unified capability/policy decisions, governed Git/network execution, mission staging, cross-TaskRun continuation and cross-phase completion truth.
 
@@ -118,11 +118,14 @@ M2 closure: implementation/main SHA `bb69739eb748472ebb36c359491bc4e7a895e24c`. 
 
 M3 closure: implementation/main SHA `3654d0e792f7fbe2c97aacd4f510f531c8e5b959`. Prompt-derived remote repositories are now frozen as credential-free, provider-aware `MissionResourceScope` entries with normalized repository identity, explicit allowed branches and operation permissions. The canonical remote gate enforces repository + branch + operation, negative repo scope, global host/scheme/secrets policy and destructive-operation denial; `git_push` additionally requires identity reobservation before later promotion execution. Validation: dedicated M3 suite `11 passed`; MissionContract/M2/M3 regression `31 passed`; semantic ingress `15 passed`; TaskRuntime `16 passed / 1 failed`, with the single failure matching the previously documented unregistered-worktree approval-test limitation. `compileall` and staged diff checks passed. No repository/host/project-specific production allowlist was added and no Git/network execution policy was relaxed.
 
+M4 closure: implementation/main SHA `0fe414fb5196318e49eb660b5c5440b7dd135f11`. Semantic ingress now distinguishes requested capability from evidence-backed explicit human authority. `AuthorityGrantService` is the canonical grant evaluator and the legacy SessionGrant service is a compatibility facade over the same store/model. Mission grants are bound to source message/hash, mission, action/capability, local resources/paths and remote repository/branch scope; use-count, expiry and revocation are runtime behavior. TaskRunGuard and Agent Tool Gateway consume the same authority only to satisfy the human-consent facet and cannot override source_readonly/protected/global policy. Validation: dedicated M4 `11 passed`; grant/contract compatibility `28 passed`; gate/resource/remote/semantic regression `55 passed`; broader runtime/public regression `100 passed / 2 failed`, both reproduced unchanged on M3 baseline `77685f0b`. `compileall` and diff/hardcode checks passed.
+
+
 ## Current engineering frontier
 
 There is no open P0/P1 from the completed FireTest 5 consolidation wave. The E2E New Runtime wave is active and extends the same canonical TaskRuntime; no parallel planner, dispatcher, role runtime or truth authority is authorized.
 
-Immediate frontier: execute Sprint M4 from `e2enewruntimee.md`. M4 must separate requested capability from explicit human authorization and evolve the existing SessionGrant mechanism into reusable mission-scoped authority bound to source message/hash, mission, action/capability, local resources and remote repository/branch scope. M3 intentionally did not enable real Git/network execution; that remains M6 after the unified policy kernel. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
+Immediate frontier: execute Sprint M5 from `e2enewruntimee.md`. M5 must unify capability and policy decisions so TaskRunGuard, Tool Gateway, patch, shell, Git/network and future continuation consume one decision model rather than duplicating allow/deny/approval semantics. M4 closed human-consent authority but did not enable Git/network execution; that remains M6 after M5. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
 
 ## Invariants
 
@@ -135,6 +138,8 @@ Immediate frontier: execute Sprint M4 from `e2enewruntimee.md`. M4 must separate
 - `run_completed != safe success`.
 - Doctor diagnoses; RuntimeTruth governs safe operational claims.
 - FireTest is regression evidence, not runtime configuration.
+- Requested capability != explicit human authority.
+- Explicit mission authority satisfies human consent only; stronger resource/global policy still wins.
 
 - Remote scope is repository + branch + operation; missing branch scope is fail-closed.
 - Remote promotion requires repository identity reobservation before promotion execution.

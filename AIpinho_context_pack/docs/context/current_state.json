@@ -1,5 +1,5 @@
 {
-  "schema_version": "context_state.v2026-09-17-e2e-new-runtime-m3",
+  "schema_version": "context_state.v2026-09-17-e2e-new-runtime-m4",
   "updated_at": "2026-09-17",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
@@ -7,7 +7,7 @@
     "branch": "main",
     "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
     "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d",
-    "current_main_head": "3654d0e792f7fbe2c97aacd4f510f531c8e5b959"
+    "current_main_head": "0fe414fb5196318e49eb660b5c5440b7dd135f11"
   },
   "authorities": [
     "Human operator",
@@ -84,10 +84,10 @@
     "repository + branch + operation remote scope gate with promotion identity reobservation"
   ],
   "current_frontier": [
-    "execute M4 Explicit Human Authority / Mission Grants from e2enewruntimee.md",
-    "separate requested capability from explicit reusable human mission authority",
-    "evolve SessionGrant into single-use/task/mission/session authority without a second permission system",
-    "bind authority to mission resources and remote repository/branch scope"
+    "execute M5 Unified Capability and Policy Kernel from e2enewruntimee.md",
+    "consolidate duplicated allow deny approval and capability decisions behind one canonical decision model",
+    "preserve MissionContract resources and AuthorityGrantService as inputs rather than parallel authorities",
+    "keep real governed Git/network execution deferred to M6"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -129,8 +129,8 @@
     "id": "e2e_new_runtime",
     "status": "IN_PROGRESS",
     "plan_document": "e2enewruntimee.md",
-    "next_sprint": "M4",
-    "next_sprint_name": "Explicit Human Authority / Mission Grants",
+    "next_sprint": "M5",
+    "next_sprint_name": "Unified Capability and Policy Kernel",
     "prewave_diagnostic_evidence": {
       "branch": "fix/firetest5-mission-runtime-intentmap",
       "sha": "cfba76ee094018f9680c0a63eda6378cb118a076",
@@ -140,7 +140,7 @@
       "M1": "CLOSED",
       "M2": "CLOSED",
       "M3": "CLOSED",
-      "M4": "PLANNED",
+      "M4": "CLOSED",
       "M5": "PLANNED",
       "M6": "PLANNED",
       "M7": "PLANNED",
@@ -232,6 +232,30 @@
         "remaining_notes": [
           "M3 does not enable real Git/network execution; M6 remains the governed execution sprint",
           "explicit reusable human mission authority begins in M4"
+        ],
+        "plan_changed": false
+      },
+      "M4": {
+        "name": "Explicit Human Authority / Mission Grants",
+        "implementation_main_sha": "0fe414fb5196318e49eb660b5c5440b7dd135f11",
+        "validation": {
+          "dedicated_m4_suite": "11 passed",
+          "grant_contract_compatibility": "28 passed",
+          "gate_resource_remote_semantic_regression": "55 passed",
+          "broader_runtime_public_regression": "100 passed / 2 failed",
+          "known_failures_baseline": "both reproduced unchanged on M3 baseline 77685f0b",
+          "compileall": "passed",
+          "diff_check": "passed"
+        },
+        "closed_boundary": [
+          "requested capability is distinct from explicit human authority evidence",
+          "mission grants bind source message/hash, mission, capability, local resource/path and remote repository/branch scope",
+          "expiry revocation and use-count are enforced at runtime",
+          "TaskRunGuard and final Tool Gateway share the canonical grant evaluator and stronger resource/global policy remains authoritative"
+        ],
+        "remaining_notes": [
+          "persistent public chat may still use the deterministic source-message fallback when a real persistent message id is unavailable",
+          "unified capability/policy decision model continues in M5"
         ],
         "plan_changed": false
       }
