@@ -130,8 +130,8 @@ def test_workspace_resolution_blocks_traversal_and_deny_override(tmp_path):
 
 def test_shell_safe_category_runs_and_dangerous_categories_block(tmp_path):
     gateway, kernel, _, run, *_ = _service(tmp_path)
-    safe = gateway.invoke("aipinho", run.run_id, "run_shell", ToolInvocationCreateRequest(workspace_id="target", input={"argv": ["echo", "ok"], "shell_category": "readonly_shell"}))
-    dangerous = gateway.invoke("aipinho", run.run_id, "run_shell", ToolInvocationCreateRequest(workspace_id="target", input={"argv": ["echo", "bad"], "shell_category": "destructive_shell"}))
+    safe = gateway.invoke("aipinho", run.run_id, "run_shell", ToolInvocationCreateRequest(workspace_id="target", input={"argv": ["python", "-c", "print('ok')"], "shell_category": "readonly_shell"}))
+    dangerous = gateway.invoke("aipinho", run.run_id, "run_shell", ToolInvocationCreateRequest(workspace_id="target", input={"argv": ["git", "push", "--force", "origin", "main"], "shell_category": "destructive_shell"}))
 
     assert safe.status == "succeeded"
     assert safe.output["exit_code"] == 0
@@ -151,7 +151,7 @@ def test_shell_absolute_cwd_inside_workspace_is_allowed(tmp_path):
         "run_shell",
         ToolInvocationCreateRequest(
             workspace_id="target",
-            input={"argv": ["echo", "ok"], "cwd": str(child), "shell_category": "readonly_shell"},
+            input={"argv": ["python", "-c", "print('ok')"], "cwd": str(child), "shell_category": "readonly_shell"},
         ),
     )
 

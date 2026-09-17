@@ -27,6 +27,7 @@ from aipinho.schemas.agents.tool_gateway import (
 )
 from aipinho.schemas.events.contracts import utc_now_iso
 from aipinho.schemas.governance.lifecycle import CanonicalOperationContract, CanonicalPermission, CanonicalPolicyDecision, CanonicalPolicyFacet
+from aipinho.schemas.tools.tool_execution import ToolExecutionRequest
 from aipinho.services.agents.agent_event_bus import MultiAgentEventBus
 from aipinho.services.agents.agent_session_kernel_service import AgentSessionKernelService
 from aipinho.services.agents.agent_session_store import AgentSessionStore
@@ -40,6 +41,8 @@ from aipinho.services.policy_kernel.authority_grant_service import AuthorityGran
 from aipinho.services.config_governance.workspace_permission_matrix_service import WorkspacePermissionMatrixService
 from aipinho.services.runtime.mission_contract_service import MissionContractService
 from aipinho.services.runtime.task_run_store import TaskRunStore
+from aipinho.services.tools.governed_tool_execution_service import GovernedToolExecutionService
+from aipinho.services.tools.shell_command_policy_service import ShellCommandPolicyService
 
 
 class ShellRunner(Protocol):
@@ -67,6 +70,8 @@ class AgentToolGatewayService:
         permission_matrix: WorkspacePermissionMatrixService | None = None,
         authority_grants: AuthorityGrantService | None = None,
         effective_policy: EffectivePolicyDecisionService | None = None,
+        shell_policy: ShellCommandPolicyService | None = None,
+        governed_execution: GovernedToolExecutionService | None = None,
     ) -> None:
         shared_store = AgentSessionStore()
         self.kernel = kernel or AgentSessionKernelService(store=shared_store)
@@ -81,6 +86,17 @@ class AgentToolGatewayService:
         self.authority_grants = authority_grants or AuthorityGrantService()
         self.effective_policy = effective_policy or EffectivePolicyDecisionService()
         self.missions = MissionContractService()
+        self.shell_policy = shell_policy or ShellCommandPolicyService()
+        if governed_execution is not None:
+            self.governed_execution = governed_execution
+        else:
+            def _runner(argv, *, cwd=None, timeout=30, **_kwargs):
+                return self.shell_runner.run([str(item) for item in argv], cwd=cwd, timeout=int(timeout))
+            self.governed_execution = GovernedToolExecutionService(
+                runner=_runner,
+                task_runs=self.task_runs,
+                authority_grants=self.authority_grants,
+            )
 
     def list_tools(self, *, enabled: bool | None = None) -> list[ToolDefinition]:
         return self.registry.list_tools(enabled=enabled)
@@ -116,7 +132,19 @@ class AgentToolGatewayService:
             request,
             local_resources=local_resources,
         )
-        permission = self._permission_for_tool(tool, request)
+        shell_classification = self._canonical_shell_classification(tool, request, workspace)
+        if shell_classification is not None:
+            input_payload = dict(request.input)
+            input_payload["shell_category"] = shell_classification.category
+            input_payload["git_classification"] = (
+                shell_classification.git_classification.model_dump(mode="json")
+                if shell_classification.git_classification is not None else None
+            )
+            request = request.model_copy(update={"input": input_payload})
+        permission = self._permission_for_tool(tool, request, shell_classification=shell_classification)
+        canonical_capability = self._canonical_capability_for_tool(
+            tool, request, shell_classification=shell_classification
+        )
         target_path = (
             workspace.resolved_path_sanitized or workspace.root_path_sanitized
             if workspace is not None
@@ -126,6 +154,9 @@ class AgentToolGatewayService:
         mission_authority_decision = None
         mission_authority_ready = False
         mission_authority_needed = False
+        authority_resource_id = None
+        repository_identity = None
+        git_branch = None
         if task_run is not None and workspace is not None and workspace.allowed:
             resource_permission_decision = self.permission_matrix.decide_with_resources(
                 path=target_path,
@@ -133,16 +164,23 @@ class AgentToolGatewayService:
                 local_resources=local_resources,
             )
             if resource_permission_decision.status != "denied" and task_run.mission_contract is not None:
+                authority_resource_id, repository_identity, git_branch = self._git_authority_scope(
+                    task_run, shell_classification, canonical_capability
+                )
                 mission_authority_decision = self.authority_grants.decision_for_contract(
                     task_run.mission_contract,
-                    action=str(permission),
+                    action=str(canonical_capability),
                     path=target_path,
-                    resource_id=resource_permission_decision.workspace_id,
+                    resource_id=authority_resource_id or resource_permission_decision.workspace_id,
+                    repository_identity=repository_identity,
+                    branch=git_branch,
                 )
                 mission_authority_ready = (
                     mission_authority_decision is not None
                     and mission_authority_decision.reason_code == "grant_effective"
                 )
+            else:
+                authority_resource_id, repository_identity, git_branch = (None, None, None)
             if resource_permission_decision.status == "denied":
                 workspace = workspace.model_copy(
                     update={
@@ -211,7 +249,7 @@ class AgentToolGatewayService:
             tool=tool,
             workspace=workspace,
             input_summary_sanitized=summary,
-            shell_category=str(request.input.get("shell_category", "unknown_shell")) if tool.can_run_shell else None,
+            shell_category=(shell_classification.category if shell_classification is not None else None),
             tool_invocation_id=invocation.tool_invocation_id,
             operation_type=invocation.operation_type,
             execution_mode=str(request.metadata_sanitized.get("execution_mode")) if request.metadata_sanitized.get("execution_mode") else None,
@@ -230,7 +268,7 @@ class AgentToolGatewayService:
             policy=policy,
             resource_permission_decision=resource_permission_decision,
             workspace=workspace,
-            permission=str(permission),
+            permission=str(canonical_capability),
             request=request,
             invocation=invocation,
             tool=tool,
@@ -249,6 +287,14 @@ class AgentToolGatewayService:
                 "facets": [item.model_dump(mode="json") for item in canonical_policy.facets],
             },
         ))
+        git_classification = (
+            shell_classification.git_classification
+            if shell_classification is not None else None
+        )
+        delegated_git_execution = bool(
+            git_classification is not None
+            and git_classification.operation_class != "local_read"
+        )
         mission_authority_needed = any(
             item.facet == "human_authority"
             and item.source == "mission_authority_grant"
@@ -317,16 +363,17 @@ class AgentToolGatewayService:
             event_ids.append(self._event(run, "tool_auto_approved", "Ferramenta autoaprovada pela politica.", invocation, {"auto_approval_id": policy.auto_approval_id}))
             event_ids.append(self._event(run, "auto_approval_granted", "Auto approval aplicado pela politica governada.", invocation, {"auto_approval_id": policy.auto_approval_id, "reason_code": policy.reason_code}))
 
-        if mission_authority_needed and task_run is not None and task_run.mission_contract is not None:
+        if mission_authority_needed and not delegated_git_execution and task_run is not None and task_run.mission_contract is not None:
             consumed = self.authority_grants.decision_for_contract(
                 task_run.mission_contract,
-                action=str(permission),
+                action=str(canonical_capability),
                 path=target_path,
                 resource_id=(
-                    resource_permission_decision.workspace_id
-                    if resource_permission_decision is not None
-                    else None
+                    authority_resource_id
+                    or (resource_permission_decision.workspace_id if resource_permission_decision is not None else None)
                 ),
+                repository_identity=repository_identity,
+                branch=git_branch,
                 consume=True,
             )
             if consumed is None or consumed.reason_code != "grant_consumed":
@@ -351,13 +398,37 @@ class AgentToolGatewayService:
                 "mission_authority_grant_consumed",
                 "Autoridade explicita da missao consumida no gate final.",
                 invocation,
-                {"grant_id": consumed.grant_id, "action": str(permission)},
+                {"grant_id": consumed.grant_id, "action": str(canonical_capability)},
             ))
         invocation = invocation.model_copy(update={"status": "running"})
         self.store.save_invocation(invocation)
         event_ids.append(self._event(run, "tool_started", "Ferramenta iniciada.", invocation, {"tool_name": tool.tool_name}))
         try:
-            output, artifacts, validation = self._execute(tool, invocation, request, workspace, event_ids)
+            output, artifacts, validation = self._execute(tool, invocation, request, workspace, event_ids, task_run_id=task_run_id)
+            delegated_policy = output.pop("_canonical_policy_decision", None) if isinstance(output, dict) else None
+            delegated_blocked = bool(output.pop("_governed_git_blocked", False)) if isinstance(output, dict) else False
+            if delegated_policy is not None:
+                canonical_policy = delegated_policy
+            if delegated_blocked:
+                violations = list(output.get("violations", [])) if isinstance(output, dict) else []
+                reason_code = str(violations[0] if violations else "governed_git_execution_blocked")
+                invocation = invocation.model_copy(update={
+                    "status": "blocked",
+                    "completed_at": utc_now_iso(),
+                    "block_reason_code": reason_code,
+                    "output_summary_sanitized": self._summary(output),
+                })
+                self.store.save_invocation(invocation)
+                event_ids.append(self._event(run, "tool_blocked", "Execucao Git governada bloqueada.", invocation, {"reason_code": reason_code}, severity="warning"))
+                return ToolInvocationResult(
+                    status="blocked",
+                    tool_invocation=invocation,
+                    policy_decision=policy,
+                    canonical_policy_decision=canonical_policy,
+                    workspace_resolution=workspace,
+                    output=redact_payload(output),
+                    events_emitted=event_ids,
+                )
             artifact_ids = [artifact.artifact_id for artifact in artifacts]
             invocation = invocation.model_copy(update={
                 "status": "succeeded",
@@ -479,6 +550,50 @@ class AgentToolGatewayService:
         if run.mission_contract is None or not self.missions.verify(run.mission_contract):
             raise PermissionError("canonical_task_run_mission_contract_invalid")
         return run
+
+    def _canonical_shell_classification(
+        self,
+        tool: ToolDefinition,
+        request: ToolInvocationCreateRequest,
+        workspace: WorkspaceResolution | None,
+    ):
+        if not tool.can_run_shell:
+            return None
+        raw_argv = request.input.get("argv")
+        argv = [str(item) for item in raw_argv] if isinstance(raw_argv, list) else None
+        command = str(request.input.get("command") or "")
+        working_dir = (
+            workspace.resolved_path_sanitized or workspace.root_path_sanitized
+            if workspace is not None else None
+        )
+        return self.shell_policy.classify(argv=argv, command=command, working_dir=working_dir)
+
+    def _canonical_capability_for_tool(
+        self,
+        tool: ToolDefinition,
+        request: ToolInvocationCreateRequest,
+        *,
+        shell_classification=None,
+    ) -> str:
+        if shell_classification is not None and shell_classification.git_classification is not None:
+            return str(shell_classification.git_classification.capability)
+        return self._permission_for_tool(tool, request, shell_classification=shell_classification)
+
+    def _git_authority_scope(self, task_run, shell_classification, capability: str):
+        git_info = getattr(shell_classification, "git_classification", None) if shell_classification is not None else None
+        if task_run is None or task_run.mission_contract is None or git_info is None:
+            return None, None, None
+        candidates = [
+            item for item in task_run.mission_contract.remote_resources
+            if item.role != "remote_denied" and capability in set(item.permissions)
+        ]
+        if len(candidates) != 1:
+            return None, None, None
+        resource = candidates[0]
+        branch = str(getattr(git_info, "branch", None) or "").strip() or None
+        if branch is None and len(resource.allowed_branches) == 1:
+            branch = resource.allowed_branches[0]
+        return resource.resource_id, resource.normalized_identity, branch
 
     def _canonical_tool_decision(
         self,
@@ -640,10 +755,12 @@ class AgentToolGatewayService:
         self,
         tool: ToolDefinition,
         request: ToolInvocationCreateRequest,
+        *,
+        shell_classification=None,
     ) -> str:
         if tool.tool_name == "run_shell":
-            category = str(request.input.get("shell_category") or "unknown_shell")
-            if category == "readonly_shell":
+            category = str(shell_classification.category if shell_classification is not None else request.input.get("shell_category") or "unknown_shell")
+            if category in {"readonly_shell", "git_read_shell"}:
                 return "shell_readonly"
             if category == "build_shell" or category == "package_shell":
                 return "shell_build"
@@ -683,6 +800,8 @@ class AgentToolGatewayService:
         request: ToolInvocationCreateRequest,
         workspace: WorkspaceResolution | None,
         event_ids: list[str],
+        *,
+        task_run_id: str | None = None,
     ) -> tuple[dict[str, Any], list[ToolArtifactRecord], ValidationResult | None]:
         if tool.tool_name == "list_dir":
             return self._list_dir(invocation, request, workspace), [], None
@@ -701,7 +820,7 @@ class AgentToolGatewayService:
         if tool.tool_name == "create_archive":
             return self._create_archive(invocation, request, workspace)
         if tool.tool_name == "run_shell":
-            return self._run_shell(invocation, request, workspace, event_ids), [], None
+            return self._run_shell(invocation, request, workspace, event_ids, task_run_id=task_run_id), [], None
         if tool.tool_name == "create_artifact":
             artifact = self._create_artifact(invocation, request)
             return {"artifact_id": artifact.artifact_id, "download_endpoint": artifact.download_endpoint, "requires_token": True}, [artifact], None
@@ -1526,6 +1645,8 @@ class AgentToolGatewayService:
         request: ToolInvocationCreateRequest,
         workspace: WorkspaceResolution | None,
         event_ids: list[str],
+        *,
+        task_run_id: str | None = None,
     ) -> dict[str, Any]:
         command = request.input.get("command")
         argv = request.input.get("argv")
@@ -1537,6 +1658,32 @@ class AgentToolGatewayService:
         timeout = int(request.input.get("timeout_seconds", 120))
         cwd = workspace.resolved_path_sanitized if workspace and workspace.resolved_path_sanitized else None
         argv = self._resolve_relative_executable(argv, cwd)
+        classification = self.shell_policy.classify(argv=[str(part) for part in argv], working_dir=cwd)
+        git_info = classification.git_classification
+        if git_info is not None and git_info.operation_class != "local_read":
+            payload = {"workspace": cwd or "", "argv": [str(part) for part in argv]}
+            if request.input.get("repository_locator"):
+                payload["repository_locator"] = request.input.get("repository_locator")
+            if request.input.get("branch"):
+                payload["branch"] = request.input.get("branch")
+            governed = self.governed_execution.execute(ToolExecutionRequest(
+                tool_id="shell.run_command",
+                mode="governed",
+                session_id=invocation.session_id,
+                task_run_id=task_run_id,
+                input=payload,
+            ))
+            return {
+                "_governed_git_blocked": governed.status != "executed_governed",
+                "_canonical_policy_decision": governed.canonical_policy_decision,
+                "governed_status": governed.status,
+                "exit_code": governed.metadata.get("exit_code"),
+                "stdout_sanitized": str(governed.content or ""),
+                "stderr_sanitized": str(governed.metadata.get("stderr_preview") or ""),
+                "violations": list(governed.violations),
+                "metadata": dict(governed.metadata),
+                "evidence_refs": [f"tool:{invocation.tool_invocation_id}", f"governed_exec:{governed.execution_id}"],
+            }
         run = self.kernel.get_run(invocation.run_id)
         if run is not None:
             event_ids.append(self._event(run, "shell_started", "Shell governado iniciado.", invocation, {"argv": argv, "cwd": cwd}))

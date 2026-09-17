@@ -12,9 +12,10 @@ from aipinho.services.events.event_core import redact_payload
 from aipinho.utils.yaml_loader import load_yaml_file
 
 
-CRITICAL_SHELL_CATEGORIES = {"destructive_shell", "process_control_shell", "unknown_shell"}
+CRITICAL_SHELL_CATEGORIES = {"destructive_shell", "process_control_shell", "unknown_shell", "git_destructive_shell"}
 EXTERNAL_OR_GIT_SHELL_CATEGORIES = {"network_shell", "git_write_shell"}
 SAFE_SHELL_CATEGORIES = {"readonly_shell", "test_shell", "build_shell", "package_shell", "git_read_shell"}
+GOVERNED_GIT_SHELL_CATEGORIES = {"git_network_read_shell", "git_worktree_shell", "git_commit_shell", "git_push_shell"}
 WRITE_CAPABILITIES = {"workspace_write", "create_file", "modify_file", "create_directory", "patch_apply"}
 READ_CAPABILITIES = {"read_workspace", "search_workspace"}
 ARTIFACT_CAPABILITIES = {"artifact_create", "artifact_upload", "artifact_download"}
@@ -166,8 +167,11 @@ class MultiAgentPolicyKernelService:
                 "destructive_shell": "destructive_shell_blocked",
                 "process_control_shell": "process_control_blocked",
                 "unknown_shell": "unknown_shell_blocked",
+                "git_destructive_shell": "destructive_shell_blocked",
             }.get(shell_category, "risk_too_high")
             return self._decision("deny", reason, agent_id, session_id, run_id, tool, workspace, "critical", mode, tool_invocation_id, operation_type)
+        if shell_category in GOVERNED_GIT_SHELL_CATEGORIES:
+            return self._decision("require_approval", "approval_required", agent_id, session_id, run_id, tool, workspace, "high", mode, tool_invocation_id, operation_type)
         if shell_category in EXTERNAL_OR_GIT_SHELL_CATEGORIES:
             if mode == "power_user":
                 return self._decision("require_approval", "approval_required", agent_id, session_id, run_id, tool, workspace, "high", mode, tool_invocation_id, operation_type)
