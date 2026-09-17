@@ -1,4 +1,4 @@
-# AIpinho — E2E New Runtime: Mission Authority, Dynamic Resources and Governed Continuation
+﻿# AIpinho â€” E2E New Runtime: Mission Authority, Dynamic Resources and Governed Continuation
 
 **Document status:** canonical execution plan for the E2E New Runtime wave
 **Repository:** sasandralean-prog/AIpinho
@@ -16,7 +16,7 @@ This document is the execution map for the E2E New Runtime wave. It exists so th
 
 This document is not higher authority than production code, canonical contracts/configuration, validated RuntimeTruth, or validated runtime evidence. When implementation and this plan diverge, the divergence must be investigated and this document must be updated only after evidence justifies the change.
 
-The document must remain generic. FireTest 5 and Pinhoabacaxi Músicas are probes and evidence sources, not production configuration.
+The document must remain generic. FireTest 5 and Pinhoabacaxi MÃºsicas are probes and evidence sources, not production configuration.
 
 The wave is successful only when the runtime can perform the same governed lifecycle for unrelated projects, local workspaces and remote repositories declared dynamically by the human prompt.
 
@@ -30,21 +30,21 @@ The historical RAW failure exposed an initial chain:
 
 ~~~text
 compound repair mission
-→ phrase "subdirectory" misread as create_directory
-→ filesystem_create_directory
-→ premature approval boundary
-→ missing analysis_ref
-→ no execution
+â†’ phrase "subdirectory" misread as create_directory
+â†’ filesystem_create_directory
+â†’ premature approval boundary
+â†’ missing analysis_ref
+â†’ no execution
 ~~~
 
 The active correction branch fixed much of that entry path:
 
 ~~~text
 prompt
-→ semantic operational mission
-→ workspace_fix_request
-→ real readonly discovery TaskRun
-→ frozen workspace scope
+â†’ semantic operational mission
+â†’ workspace_fix_request
+â†’ real readonly discovery TaskRun
+â†’ frozen workspace scope
 ~~~
 
 However, the diagnosis also exposed deeper structural gaps:
@@ -70,33 +70,33 @@ The target lifecycle is:
 
 ~~~text
 Human Prompt
-    │
-    ├─ semantic mission intent
-    ├─ mission execution strategy
-    ├─ local resource scopes
-    ├─ remote repository scopes
-    ├─ explicit human authority
-    ├─ negative constraints
-    └─ completion requirements
-             │
-             ▼
+    â”‚
+    â”œâ”€ semantic mission intent
+    â”œâ”€ mission execution strategy
+    â”œâ”€ local resource scopes
+    â”œâ”€ remote repository scopes
+    â”œâ”€ explicit human authority
+    â”œâ”€ negative constraints
+    â””â”€ completion requirements
+             â”‚
+             â–¼
        Frozen Mission Contract
-             │
-             ▼
+             â”‚
+             â–¼
    Canonical TaskRuntime phases
-             │
-             ├─ Discovery
-             ├─ Planning
-             ├─ Mutation / Patch
-             ├─ Build / Test / Smoke
-             ├─ Promotion Staging
-             └─ Git / Remote Promotion
-             │
-             ▼
+             â”‚
+             â”œâ”€ Discovery
+             â”œâ”€ Planning
+             â”œâ”€ Mutation / Patch
+             â”œâ”€ Build / Test / Smoke
+             â”œâ”€ Promotion Staging
+             â””â”€ Git / Remote Promotion
+             â”‚
+             â–¼
    Cross-phase evidence binding
-             │
-             ▼
-   RuntimeTruth → CanonicalOperationState → SpeakerTruth
+             â”‚
+             â–¼
+   RuntimeTruth â†’ CanonicalOperationState â†’ SpeakerTruth
 ~~~
 
 No planner, agent, gateway, shell adapter, Git adapter or UI surface may independently expand authority.
@@ -116,10 +116,10 @@ The executable set is the intersection:
 
 ~~~text
 requested capability
-∩ explicit human authority
-∩ resource permission
-∩ current phase contract
-∩ global policy
+âˆ© explicit human authority
+âˆ© resource permission
+âˆ© current phase contract
+âˆ© global policy
 = executable capability
 ~~~
 
@@ -261,17 +261,17 @@ These invariants apply to every sprint in this wave:
 | M1 | Canonical Mission Contract | CLOSED | none |
 | M2 | Dynamic Local Resource Scopes | CLOSED | M1 |
 | M3 | Dynamic Remote Repository Scopes | CLOSED | M1, M2 vocabulary |
-| M4 | Explicit Human Authority / Mission Grants | PLANNED | M1–M3 |
-| M5 | Unified Capability and Policy Kernel | PLANNED | M1–M4 |
-| M6 | Governed Git and Network Execution | PLANNED | M3–M5 |
+| M4 | Explicit Human Authority / Mission Grants | PLANNED | M1â€“M3 |
+| M5 | Unified Capability and Policy Kernel | PLANNED | M1â€“M4 |
+| M6 | Governed Git and Network Execution | PLANNED | M3â€“M5 |
 | M7 | Mission Staging and Derived Resources | PLANNED | M2, M3, M6 |
-| M8 | Mission Continuation Engine | PLANNED | M1–M7 |
-| M9 | Cross-Phase Truth and Completion Contract | PLANNED | M1–M8 |
-| M10 | Fresh Manual E2E FireTest and Consolidation | PLANNED | M1–M9 |
+| M8 | Mission Continuation Engine | PLANNED | M1â€“M7 |
+| M9 | Cross-Phase Truth and Completion Contract | PLANNED | M1â€“M8 |
+| M10 | Fresh Manual E2E FireTest and Consolidation | PLANNED | M1â€“M9 |
 
 No sprint is considered complete because code was written. Completion requires its Definition of Done and validation evidence.
 
-### M1 closure evidence — 2026-09-16
+### M1 closure evidence â€” 2026-09-16
 
 - validated implementation/main SHA: `489ca3bd37eb8584b7b58d86526a203897965121`;
 - canonical `MissionContract` and `MissionContractBinding` are frozen before planning inside `TaskRuntimeService`;
@@ -334,7 +334,7 @@ Next sprint: **M5 - Unified Capability and Policy Kernel**.
 
 ---
 
-# Sprint M1 — Canonical Mission Contract
+# Sprint M1 â€” Canonical Mission Contract
 
 ## Objective
 
@@ -392,7 +392,7 @@ Child phases may narrow the contract but cannot add a workspace, repository, bra
 
 ---
 
-# Sprint M2 — Dynamic Local Resource Scopes
+# Sprint M2 â€” Dynamic Local Resource Scopes
 
 ## Objective
 
@@ -419,12 +419,12 @@ Every local ToolInvocation must answer:
 
 ~~~text
 target path
-→ matching mission resource
-→ role
-→ required operation permission
-→ human authority
-→ global policy
-→ execute / approval / deny
+â†’ matching mission resource
+â†’ role
+â†’ required operation permission
+â†’ human authority
+â†’ global policy
+â†’ execute / approval / deny
 ~~~
 
 Checking only role == target_mutable is insufficient.
@@ -439,7 +439,7 @@ No project-specific workspace registration is required.
 
 ---
 
-# Sprint M3 — Dynamic Remote Repository Scopes
+# Sprint M3 â€” Dynamic Remote Repository Scopes
 
 ## Objective
 
@@ -490,7 +490,7 @@ Tests with unrelated temporary repositories prove:
 
 ---
 
-# Sprint M4 — Explicit Human Authority and Mission Grants
+# Sprint M4 â€” Explicit Human Authority and Mission Grants
 
 ## Objective
 
@@ -512,7 +512,7 @@ A common authority abstraction may support:
 An unambiguous clause such as:
 
 ~~~text
-AUTORIZAÇÃO: autorizo nesta missão edição, build, testes, commit e push...
+AUTORIZAÃ‡ÃƒO: autorizo nesta missÃ£o ediÃ§Ã£o, build, testes, commit e push...
 ~~~
 
 may create an already-effective mission authority binding because the user has granted consent in that source message.
@@ -546,20 +546,20 @@ Make grant use-count, expiry and revocation real runtime behavior if those field
 Tests prove the semantic difference between:
 
 ~~~text
-faça git push
+faÃ§a git push
 ~~~
 
 and:
 
 ~~~text
-autorizo git push nesta missão
+autorizo git push nesta missÃ£o
 ~~~
 
 Only explicit authorization can satisfy reusable human-authority requirements.
 
 ---
 
-# Sprint M5 — Unified Capability and Policy Kernel
+# Sprint M5 â€” Unified Capability and Policy Kernel
 
 ## Objective
 
@@ -608,12 +608,12 @@ Expected flow:
 
 ~~~text
 Mission Contract
-→ capability demand
-→ resource permission
-→ human authority
-→ global safety/policy facets
-→ canonical capability decision
-→ execution adapter
+â†’ capability demand
+â†’ resource permission
+â†’ human authority
+â†’ global safety/policy facets
+â†’ canonical capability decision
+â†’ execution adapter
 ~~~
 
 ## Definition of Done
@@ -624,7 +624,7 @@ Diagnostics must expose which facet denied or constrained an operation.
 
 ---
 
-# Sprint M6 — Governed Git and Network Execution
+# Sprint M6 â€” Governed Git and Network Execution
 
 ## Objective
 
@@ -697,7 +697,7 @@ Controlled repository fixtures prove allowed fetch/commit/push and denied wrong-
 
 ---
 
-# Sprint M7 — Mission Staging and Derived Resources
+# Sprint M7 â€” Mission Staging and Derived Resources
 
 ## Objective
 
@@ -745,7 +745,7 @@ A mission can materialize and use a clean staging clone for an arbitrary prompt-
 
 ---
 
-# Sprint M8 — Mission Continuation Engine
+# Sprint M8 â€” Mission Continuation Engine
 
 ## Objective
 
@@ -824,7 +824,7 @@ No phase can self-promote around RuntimeTruth.
 
 ---
 
-# Sprint M9 — Cross-Phase Truth and Mission Completion Contract
+# Sprint M9 â€” Cross-Phase Truth and Mission Completion Contract
 
 ## Objective
 
@@ -887,7 +887,7 @@ SpeakerTruth cannot claim completion above the mission truth ceiling.
 
 ---
 
-# Sprint M10 — Fresh Manual E2E FireTest and Consolidation
+# Sprint M10 â€” Fresh Manual E2E FireTest and Consolidation
 
 ## Objective
 
@@ -1103,9 +1103,9 @@ The following findings motivated this wave and should be explicitly retired by s
 
 ### 15.1 Do not auto-approve every imperative
 
-"Faça X" expresses desired operation.
+"FaÃ§a X" expresses desired operation.
 
-"Autorizo X nesta missão" expresses explicit authority.
+"Autorizo X nesta missÃ£o" expresses explicit authority.
 
 The semantic model must preserve both.
 
@@ -1133,7 +1133,7 @@ Static configuration must not become a project allowlist.
 
 This wave is CLOSED only when all of the following are true:
 
-- M1–M10 are CLOSED;
+- M1â€“M10 are CLOSED;
 - one frozen mission contract owns mission strategy/resources/authority/completion requirements;
 - local resources are prompt-dynamic;
 - remote repository resources are prompt-dynamic;
@@ -1176,3 +1176,4 @@ Do not assume a sprint is complete merely because this document describes it.
 The current-state files identify what has actually been canonized.
 
 This document identifies where the wave is going and the invariants that must not be lost.
+
