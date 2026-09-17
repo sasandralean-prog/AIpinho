@@ -26,6 +26,7 @@ from aipinho.schemas.agents.tool_gateway import (
     WorkspaceResolution,
 )
 from aipinho.schemas.events.contracts import utc_now_iso
+from aipinho.schemas.governance.lifecycle import CanonicalOperationContract, CanonicalPermission, CanonicalPolicyDecision, CanonicalPolicyFacet
 from aipinho.services.agents.agent_event_bus import MultiAgentEventBus
 from aipinho.services.agents.agent_session_kernel_service import AgentSessionKernelService
 from aipinho.services.agents.agent_session_store import AgentSessionStore
@@ -34,6 +35,7 @@ from aipinho.services.agents.agent_tool_policy_service import AgentToolPolicyDec
 from aipinho.services.agents.agent_tool_registry_service import AgentToolRegistryService
 from aipinho.services.agents.agent_tool_workspace_resolver import AgentToolWorkspaceResolver
 from aipinho.services.events.event_core import contains_secret, redact_payload
+from aipinho.services.governance.policy.effective_policy_decision_service import EffectivePolicyDecisionService
 from aipinho.services.policy_kernel.authority_grant_service import AuthorityGrantService
 from aipinho.services.config_governance.workspace_permission_matrix_service import WorkspacePermissionMatrixService
 from aipinho.services.runtime.mission_contract_service import MissionContractService
@@ -64,6 +66,7 @@ class AgentToolGatewayService:
         task_runs: TaskRunStore | None = None,
         permission_matrix: WorkspacePermissionMatrixService | None = None,
         authority_grants: AuthorityGrantService | None = None,
+        effective_policy: EffectivePolicyDecisionService | None = None,
     ) -> None:
         shared_store = AgentSessionStore()
         self.kernel = kernel or AgentSessionKernelService(store=shared_store)
@@ -76,6 +79,7 @@ class AgentToolGatewayService:
         self.task_runs = task_runs or TaskRunStore()
         self.permission_matrix = permission_matrix or WorkspacePermissionMatrixService().load()
         self.authority_grants = authority_grants or AuthorityGrantService()
+        self.effective_policy = effective_policy or EffectivePolicyDecisionService()
         self.missions = MissionContractService()
 
     def list_tools(self, *, enabled: bool | None = None) -> list[ToolDefinition]:
@@ -151,26 +155,6 @@ class AgentToolGatewayService:
                         ],
                     }
                 )
-            elif resource_permission_decision.status == "approval_required":
-                canonical_approval_ready = (
-                    str(task_run.status) == "running"
-                    and bool(task_run.approval_id)
-                    and request.approval_id == task_run.approval_id
-                )
-                if mission_authority_ready:
-                    mission_authority_needed = True
-                if not canonical_approval_ready and not mission_authority_ready:
-                    workspace = workspace.model_copy(
-                        update={
-                            "allowed": False,
-                            "reason_code": "mission_resource_requires_canonical_task_approval",
-                            "evidence_refs": [
-                                *workspace.evidence_refs,
-                                f"task_run:{task_run.run_id}",
-                                "gate:task_run_guard",
-                            ],
-                        }
-                    )
         invocation = ToolInvocation(
             run_id=run.run_id,
             parent_run_id=run.parent_run_id,
@@ -241,33 +225,92 @@ class AgentToolGatewayService:
         event_ids.append(self._event(run, "tool_policy_check_completed", "Politica da ferramenta avaliada.", invocation, {"decision": policy.decision, "reason_code": policy.reason_code}))
         event_ids.append(self._event(run, "policy_check_completed", "Policy Kernel concluiu a avaliacao.", invocation, {"decision": policy.decision, "reason_code": policy.reason_code, "execution_mode": policy.execution_mode}))
         event_ids.append(self._event(run, f"policy_decision_{policy.decision}", policy.human_reason, invocation, {"policy_decision_id": policy.policy_decision_id, "reason_code": policy.reason_code, "safe_alternative": policy.safe_alternative}))
-        if policy.decision == "deny":
+        canonical_policy = self._canonical_tool_decision(
+            task_run=task_run,
+            policy=policy,
+            resource_permission_decision=resource_permission_decision,
+            workspace=workspace,
+            permission=str(permission),
+            request=request,
+            invocation=invocation,
+            tool=tool,
+            mission_authority_ready=mission_authority_ready,
+        )
+        event_ids.append(self._event(
+            run,
+            "canonical_policy_decision",
+            "Decisao canonica de capability calculada.",
+            invocation,
+            {
+                "permission": canonical_policy.permission.value,
+                "reason_code": canonical_policy.reason_code.value,
+                "capability": canonical_policy.capability,
+                "resource_id": canonical_policy.resource_id,
+                "facets": [item.model_dump(mode="json") for item in canonical_policy.facets],
+            },
+        ))
+        mission_authority_needed = any(
+            item.facet == "human_authority"
+            and item.source == "mission_authority_grant"
+            and item.permission == CanonicalPermission.ALLOWED
+            for item in canonical_policy.facets
+        ) and any(
+            item.permission == CanonicalPermission.ASK
+            for item in canonical_policy.facets
+        )
+        if canonical_policy.permission == CanonicalPermission.DENIED:
+            blocking_facet = next(
+                (item for item in canonical_policy.facets if item.permission == CanonicalPermission.DENIED),
+                None,
+            )
+            reason_code = (
+                str(policy.reason_code)
+                if policy.decision == "deny"
+                else str(blocking_facet.reason_code if blocking_facet is not None else canonical_policy.reason_code.value)
+            )
             invocation = invocation.model_copy(update={
                 "status": "blocked",
                 "completed_at": utc_now_iso(),
-                "block_reason_code": policy.reason_code,
-                "output_summary_sanitized": policy.human_reason,
+                "block_reason_code": reason_code,
+                "output_summary_sanitized": canonical_policy.reason,
             })
             self.store.save_invocation(invocation)
-            event_ids.append(self._event(run, "tool_blocked", policy.human_reason, invocation, {"reason_code": policy.reason_code, "safe_alternative": policy.safe_alternative}, severity="warning"))
-            event_ids.append(self._event(run, "operation_blocked", policy.human_reason, invocation, {"reason_code": policy.reason_code, "safe_alternative": policy.safe_alternative}, severity="warning"))
-            if policy.safe_alternative:
-                event_ids.append(self._event(run, "safe_alternative_available", policy.safe_alternative, invocation, {"reason_code": policy.reason_code}, severity="info"))
-            return ToolInvocationResult(status="blocked", tool_invocation=invocation, policy_decision=policy, workspace_resolution=workspace, events_emitted=event_ids)
-        if policy.decision == "require_approval" and mission_authority_ready:
-            mission_authority_needed = True
-        if policy.decision == "require_approval" and not (
-            request.approval_id or request.auto_approval_id or mission_authority_ready
-        ):
+            event_ids.append(self._event(run, "tool_blocked", canonical_policy.reason, invocation, {"reason_code": reason_code}, severity="warning"))
+            return ToolInvocationResult(status="blocked", tool_invocation=invocation, policy_decision=policy, canonical_policy_decision=canonical_policy, workspace_resolution=workspace, events_emitted=event_ids)
+        if canonical_policy.permission == CanonicalPermission.ASK:
+            final_gate_requires_binding = (
+                task_run is not None
+                and resource_permission_decision is not None
+                and resource_permission_decision.status == "approval_required"
+            )
+            result_status = "blocked" if final_gate_requires_binding else "approval_required"
+            reason_code = (
+                "mission_resource_requires_canonical_task_approval"
+                if final_gate_requires_binding
+                else canonical_policy.reason_code.value
+            )
+            if final_gate_requires_binding and workspace is not None:
+                workspace = workspace.model_copy(update={
+                    "allowed": False,
+                    "reason_code": reason_code,
+                })
             invocation = invocation.model_copy(update={
-                "status": "approval_required",
+                "status": result_status,
                 "completed_at": utc_now_iso(),
-                "block_reason_code": policy.reason_code,
-                "output_summary_sanitized": policy.human_reason,
+                "block_reason_code": reason_code,
+                "output_summary_sanitized": canonical_policy.reason,
             })
             self.store.save_invocation(invocation)
-            event_ids.append(self._event(run, "tool_approval_required", policy.human_reason, invocation, {"reason_code": policy.reason_code, "safe_actions": policy.safe_actions}, severity="warning"))
-            return ToolInvocationResult(status="approval_required", tool_invocation=invocation, policy_decision=policy, workspace_resolution=workspace, events_emitted=event_ids)
+            event_ids.append(self._event(run, "tool_approval_required" if not final_gate_requires_binding else "tool_blocked", canonical_policy.reason, invocation, {"reason_code": reason_code, "facets": [item.facet for item in canonical_policy.facets]}, severity="warning"))
+            return ToolInvocationResult(status=result_status, tool_invocation=invocation, policy_decision=policy, canonical_policy_decision=canonical_policy, workspace_resolution=workspace, events_emitted=event_ids)
+        if canonical_policy.permission != CanonicalPermission.ALLOWED:
+            invocation = invocation.model_copy(update={
+                "status": "blocked",
+                "completed_at": utc_now_iso(),
+                "block_reason_code": canonical_policy.reason_code.value,
+            })
+            self.store.save_invocation(invocation)
+            return ToolInvocationResult(status="blocked", tool_invocation=invocation, policy_decision=policy, canonical_policy_decision=canonical_policy, workspace_resolution=workspace, events_emitted=event_ids)
         if policy.decision == "auto_approve":
             invocation = invocation.model_copy(update={"status": "auto_approved"})
             self.store.save_invocation(invocation)
@@ -299,6 +342,7 @@ class AgentToolGatewayService:
                     status="blocked",
                     tool_invocation=invocation,
                     policy_decision=policy,
+                    canonical_policy_decision=canonical_policy,
                     workspace_resolution=workspace,
                     events_emitted=event_ids,
                 )
@@ -328,6 +372,7 @@ class AgentToolGatewayService:
                 status="succeeded",
                 tool_invocation=invocation,
                 policy_decision=policy,
+                canonical_policy_decision=canonical_policy,
                 workspace_resolution=workspace,
                 output=redact_payload(output),
                 validation_result=validation,
@@ -343,7 +388,7 @@ class AgentToolGatewayService:
             })
             self.store.save_invocation(invocation)
             event_ids.append(self._event(run, "tool_failed", "Ferramenta falhou de forma controlada.", invocation, {"error_code": invocation.error_code}, severity="error"))
-            return ToolInvocationResult(status="failed", tool_invocation=invocation, policy_decision=policy, workspace_resolution=workspace, events_emitted=event_ids)
+            return ToolInvocationResult(status="failed", tool_invocation=invocation, policy_decision=policy, canonical_policy_decision=canonical_policy, workspace_resolution=workspace, events_emitted=event_ids)
 
     def list_invocations(self, *, run_id: str | None = None) -> list[ToolInvocation]:
         return self.store.list_invocations(run_id=run_id)
@@ -434,6 +479,162 @@ class AgentToolGatewayService:
         if run.mission_contract is None or not self.missions.verify(run.mission_contract):
             raise PermissionError("canonical_task_run_mission_contract_invalid")
         return run
+
+    def _canonical_tool_decision(
+        self,
+        *,
+        task_run: Any | None,
+        policy: PolicyDecision,
+        resource_permission_decision: Any | None,
+        workspace: WorkspaceResolution | None,
+        permission: str,
+        request: ToolInvocationCreateRequest,
+        invocation: ToolInvocation,
+        tool: ToolDefinition,
+        mission_authority_ready: bool,
+    ) -> CanonicalPolicyDecision:
+        resource_id = (
+            resource_permission_decision.workspace_id
+            if resource_permission_decision is not None
+            else workspace.workspace_id if workspace is not None else None
+        )
+        facets: list[CanonicalPolicyFacet] = [
+            CanonicalPolicyFacet(
+                facet="capability_demand",
+                permission=CanonicalPermission.ALLOWED,
+                source="agent_tool_gateway",
+                reason_code="capability_requested",
+                capability=str(permission),
+                resource_id=resource_id,
+                details={"tool": tool.tool_name, "tool_capability": tool.capability},
+            )
+        ]
+        if workspace is not None:
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="workspace_resolution",
+                    permission=(
+                        CanonicalPermission.ALLOWED
+                        if workspace.allowed
+                        else CanonicalPermission.DENIED
+                    ),
+                    source="agent_tool_workspace_resolver",
+                    reason_code=str(workspace.reason_code),
+                    capability=str(permission),
+                    resource_id=resource_id,
+                    details={"workspace_role": workspace.workspace_role},
+                )
+            )
+        resource_requires_human = False
+        if resource_permission_decision is not None:
+            resource_requires_human = resource_permission_decision.status == "approval_required"
+            resource_permission = (
+                CanonicalPermission.DENIED
+                if resource_permission_decision.status == "denied"
+                else CanonicalPermission.ASK
+                if resource_requires_human
+                else CanonicalPermission.ALLOWED
+            )
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="resource_permission",
+                    permission=resource_permission,
+                    source="workspace_permission_matrix",
+                    reason_code=str(resource_permission_decision.reason_code),
+                    capability=str(permission),
+                    resource_id=resource_id,
+                    requires_human_authority=resource_requires_human,
+                    details={
+                        "workspace_role": resource_permission_decision.workspace_role,
+                        "permission_value": resource_permission_decision.permission_value,
+                    },
+                    trace=list(resource_permission_decision.trace),
+                )
+            )
+        policy_requires_human = policy.decision == "require_approval"
+        policy_permission = (
+            CanonicalPermission.DENIED
+            if policy.decision == "deny"
+            else CanonicalPermission.ASK
+            if policy_requires_human
+            else CanonicalPermission.ALLOWED
+        )
+        facets.append(
+            CanonicalPolicyFacet(
+                facet="agent_tool_policy",
+                permission=policy_permission,
+                source="agent_tool_policy_decision",
+                reason_code=str(policy.reason_code),
+                capability=str(permission),
+                resource_id=resource_id,
+                requires_human_authority=policy_requires_human,
+                details={
+                    "legacy_decision": policy.decision,
+                    "tool_capability": policy.capability,
+                    "execution_mode": policy.execution_mode,
+                },
+            )
+        )
+        needs_human = resource_requires_human or policy_requires_human
+        if needs_human:
+            canonical_approval_ready = False
+            if task_run is not None:
+                canonical_approval_ready = (
+                    str(task_run.status) == "running"
+                    and bool(task_run.approval_id)
+                    and request.approval_id == task_run.approval_id
+                )
+            else:
+                canonical_approval_ready = bool(
+                    request.approval_id or request.auto_approval_id
+                )
+            if mission_authority_ready:
+                facets.append(
+                    CanonicalPolicyFacet(
+                        facet="human_authority",
+                        permission=CanonicalPermission.ALLOWED,
+                        source="mission_authority_grant",
+                        reason_code="grant_effective",
+                        capability=str(permission),
+                        resource_id=resource_id,
+                    )
+                )
+            elif canonical_approval_ready:
+                facets.append(
+                    CanonicalPolicyFacet(
+                        facet="human_authority",
+                        permission=CanonicalPermission.ALLOWED,
+                        source=(
+                            "canonical_task_approval"
+                            if task_run is not None
+                            else "tool_approval_reference"
+                        ),
+                        reason_code="approval_effective",
+                        capability=str(permission),
+                        resource_id=resource_id,
+                    )
+                )
+        contract = CanonicalOperationContract(
+            session_id=invocation.session_id,
+            source_channel="agent_tool_gateway",
+            intent_type=str(invocation.operation_type or tool.tool_name),
+            operation_type=str(invocation.operation_type or tool.tool_name),
+            contract_type=str(invocation.operation_type or tool.tool_name),
+            runtime_profile="agent_tool_gateway",
+            requires_task=task_run is not None,
+            workspace_mutation=bool(tool.can_modify_filesystem),
+            requested_actions=[str(invocation.operation_type or tool.tool_name)],
+            workspace_path=(
+                workspace.root_path_sanitized if workspace is not None else None
+            ),
+            risk_level=str(tool.risk_level or "low"),
+        )
+        return self.effective_policy.resolve_facets(
+            contract,
+            facets=facets,
+            capability=str(permission),
+            resource_id=resource_id,
+        )
 
     def _permission_for_tool(
         self,

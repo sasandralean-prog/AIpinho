@@ -6,6 +6,7 @@ from uuid import uuid4
 from pydantic import Field
 
 from aipinho.schemas.common.base import AIpinhoModel
+from aipinho.schemas.governance.lifecycle import CanonicalPolicyDecision
 from aipinho.schemas.events.contracts import utc_now_iso
 
 
@@ -200,6 +201,7 @@ class ToolInvocationResult(AIpinhoModel):
     status: str
     tool_invocation: ToolInvocation
     policy_decision: PolicyDecision | None = None
+    canonical_policy_decision: CanonicalPolicyDecision | None = None
     workspace_resolution: WorkspaceResolution | None = None
     output: dict[str, Any] = Field(default_factory=dict)
     validation_result: ValidationResult | None = None

@@ -8,6 +8,8 @@ from aipinho.schemas.runtime.task_run import TaskRun
 from aipinho.schemas.runtime.task_run_step import TaskRunStep
 from aipinho.schemas.runtime.task_run_trace import TaskRunTraceItem
 from aipinho.services.approvals.approval_service import ApprovalService
+from aipinho.schemas.governance.lifecycle import CanonicalOperationContract, CanonicalPermission, CanonicalPolicyDecision, CanonicalPolicyFacet
+from aipinho.services.governance.policy.effective_policy_decision_service import EffectivePolicyDecisionService
 from aipinho.services.config_governance.workspace_permission_matrix_service import WorkspacePermissionMatrixService
 from aipinho.services.policy_kernel.authority_grant_service import AuthorityGrantService
 from aipinho.services.policy_kernel.workspace_policy_service import WorkspacePolicyService
@@ -23,9 +25,10 @@ class TaskRunGuardDecision(AIpinhoModel):
     blocked_reasons: list[str] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
     trace: list[TaskRunTraceItem] = Field(default_factory=list)
+    canonical_policy_decisions: list[CanonicalPolicyDecision] = Field(default_factory=list)
 
 class TaskRunGuard:
-    def __init__(self, workspace_policy: WorkspacePolicyService | None = None, approvals: ApprovalService | None = None, lifecycle: TaskRunLifecycleService | None = None, workspace_roles: WorkspaceRoleContractService | None = None, profiles: RuntimeProfileService | None = None, permission_matrix: WorkspacePermissionMatrixService | None = None, authority_grants: AuthorityGrantService | None = None) -> None:
+    def __init__(self, workspace_policy: WorkspacePolicyService | None = None, approvals: ApprovalService | None = None, lifecycle: TaskRunLifecycleService | None = None, workspace_roles: WorkspaceRoleContractService | None = None, profiles: RuntimeProfileService | None = None, permission_matrix: WorkspacePermissionMatrixService | None = None, authority_grants: AuthorityGrantService | None = None, effective_policy: EffectivePolicyDecisionService | None = None) -> None:
         self.policy = load_yaml_file(PATHS.config_root / "runtime" / "task_runtime_policy.yaml", critical=True, root=PATHS.config_root / "runtime")
         self.steps = load_yaml_file(PATHS.config_root / "runtime" / "governed_task_steps.yaml", critical=True, root=PATHS.config_root / "runtime")
         self.limits = load_yaml_file(PATHS.config_root / "runtime" / "task_runtime_limits.yaml", critical=True, root=PATHS.config_root / "runtime")
@@ -35,11 +38,13 @@ class TaskRunGuard:
         self.profiles = profiles or RuntimeProfileService().load()
         self.approvals = approvals or ApprovalService()
         self.authority_grants = authority_grants or AuthorityGrantService()
+        self.effective_policy = effective_policy or EffectivePolicyDecisionService()
         self.lifecycle = lifecycle or TaskRunLifecycleService()
         self.trace_service = TaskRunTraceService()
 
     def check_run(self, run: TaskRun) -> TaskRunGuardDecision:
         reasons: list[str] = []
+        canonical_decisions: list[CanonicalPolicyDecision] = []
         settings = self.policy.get("task_runtime", {}) if isinstance(self.policy.get("task_runtime", {}), dict) else {}
         if not settings.get("enabled", False): reasons.append("task_runtime_disabled")
         if not run.task_id:
@@ -117,38 +122,36 @@ class TaskRunGuard:
                 reasons.append("approval_missing_execution_plan_binding")
             elif existing_approval.execution_id != execution_plan.execution_id:
                 reasons.append("approval_execution_plan_mismatch")
-        matrix_approval_required = False
-        mission_authority_actions: set[str] = set()
         for action in run.requested_actions:
-            if not run.workspace:
-                continue
-            matrix_decision = self.permission_matrix.decide_with_resources(
-                path=run.workspace,
-                permission=action,
-                local_resources=local_resources,
-            )
-            if matrix_decision.status == "denied":
-                if readonly_unregistered_allowed and self._readonly_action_allowed_for_unregistered(action, matrix_decision.reason_code):
-                    continue
-                reasons.append(f"{matrix_decision.reason_code}:{action}")
-            elif matrix_decision.status == "approval_required" and not approval_is_approved:
-                capability = str(matrix_decision.permission)
-                if self._mission_authority_allows(
-                    run,
-                    action=capability,
+            matrix_decision = None
+            if run.workspace:
+                matrix_decision = self.permission_matrix.decide_with_resources(
                     path=run.workspace,
-                    resource_id=matrix_decision.workspace_id,
+                    permission=action,
+                    local_resources=local_resources,
+                )
+                if (
+                    readonly_unregistered_allowed
+                    and matrix_decision.status == "denied"
+                    and self._readonly_action_allowed_for_unregistered(action, matrix_decision.reason_code)
                 ):
-                    mission_authority_actions.add(action)
-                else:
-                    matrix_approval_required = True
-                    reasons.append(f"{matrix_decision.reason_code}:{action}")
-        for action in run.requested_actions:
-            if action in blocked: reasons.append(self._blocked_reason(action))
-            elif action not in allowed: reasons.append(f"action_not_allowed:{action}")
-            elif action in policy_denied: reasons.append(f"action_denied_by_policy:{action}")
-            elif policy_allowed and action not in policy_allowed and action not in approvals_required: reasons.append(f"action_not_granted_by_policy:{action}")
-            elif action not in self._profile_actions(profile): reasons.append(f"action_not_allowed_by_profile:{action}")
+                    matrix_decision = None
+            canonical = self._canonical_action_decision(
+                run,
+                action=action,
+                matrix_decision=matrix_decision,
+                profile=profile,
+                allowed=allowed,
+                blocked=blocked,
+                policy_allowed=policy_allowed,
+                policy_denied=policy_denied,
+                approvals_required=approvals_required,
+                existing_approval=existing_approval,
+            )
+            canonical_decisions.append(canonical)
+            reason = self._legacy_reason_from_canonical(canonical, action=action)
+            if reason:
+                reasons.append(reason)
         denied_capabilities = set(run.policy_snapshot.get("denied_capabilities", []) or [])
         required_capabilities = set(run.capabilities_required or profile.get("required_capabilities", []) or [])
         for capability in required_capabilities.intersection(denied_capabilities):
@@ -156,28 +159,9 @@ class TaskRunGuard:
         side_effect_plan = any(step.side_effect for step in run.plan.steps)
         if side_effect_plan and execution_plan is not None and not execution_plan.approval_required:
             reasons.append("side_effect_execution_plan_requires_approval")
-        unresolved_policy_approvals: set[str] = set()
-        for action in approvals_required.intersection(run.requested_actions):
-            if action in mission_authority_actions:
-                continue
-            capability = self.permission_matrix.permission_for_action(action)
-            if self._mission_authority_allows(
-                run,
-                action=str(capability),
-                path=run.workspace,
-            ):
-                mission_authority_actions.add(action)
-            else:
-                unresolved_policy_approvals.add(action)
-        if unresolved_policy_approvals or matrix_approval_required:
-            approval = existing_approval
-            if approval is None or approval.status == "pending":
-                reasons.append("approval_required")
-            elif approval.status != "approved":
-                reasons.append("approval_denied")
         if run.cancellation_requested: reasons.append("cancellation_requested")
         if self.lifecycle.is_terminal(run.status): reasons.append("task_run_terminal")
-        return self._decision(reasons, "run_guard_checked")
+        return self._decision(reasons, "run_guard_checked", canonical_policy_decisions=canonical_decisions)
 
     def check_step(self, run: TaskRun, step: TaskRunStep, *, step_index: int, elapsed_seconds: float) -> TaskRunGuardDecision:
         reasons: list[str] = []
@@ -216,6 +200,222 @@ class TaskRunGuard:
             resource_id=resource_id,
         )
         return decision is not None and decision.reason_code == "grant_effective"
+
+    def _canonical_action_decision(
+        self,
+        run: TaskRun,
+        *,
+        action: str,
+        matrix_decision: Any | None,
+        profile: dict[str, Any],
+        allowed: set[str],
+        blocked: set[str],
+        policy_allowed: set[str],
+        policy_denied: set[str],
+        approvals_required: set[str],
+        existing_approval: Any | None,
+    ) -> CanonicalPolicyDecision:
+        capability = str(
+            matrix_decision.permission
+            if matrix_decision is not None
+            else self.permission_matrix.permission_for_action(action)
+        )
+        resource_id = matrix_decision.workspace_id if matrix_decision is not None else None
+        facets: list[CanonicalPolicyFacet] = [
+            CanonicalPolicyFacet(
+                facet="capability_demand",
+                permission=CanonicalPermission.ALLOWED,
+                source="task_run.requested_actions",
+                reason_code="capability_requested",
+                capability=capability,
+                resource_id=resource_id,
+                details={"action": action},
+            )
+        ]
+        resource_requires_human = False
+        if matrix_decision is not None:
+            resource_permission = (
+                CanonicalPermission.DENIED
+                if matrix_decision.status == "denied"
+                else CanonicalPermission.ASK
+                if matrix_decision.status == "approval_required"
+                else CanonicalPermission.ALLOWED
+            )
+            resource_requires_human = matrix_decision.status == "approval_required"
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="resource_permission",
+                    permission=resource_permission,
+                    source="workspace_permission_matrix",
+                    reason_code=(
+                        f"{matrix_decision.reason_code}:{action}"
+                        if matrix_decision.status == "denied"
+                        else str(matrix_decision.reason_code)
+                    ),
+                    capability=capability,
+                    resource_id=resource_id,
+                    requires_human_authority=resource_requires_human,
+                    details={
+                        "workspace_role": matrix_decision.workspace_role,
+                        "permission_value": matrix_decision.permission_value,
+                    },
+                    trace=list(matrix_decision.trace),
+                )
+            )
+
+        static_reason = None
+        if action in blocked:
+            static_reason = self._blocked_reason(action)
+        elif action not in allowed:
+            static_reason = f"action_not_allowed:{action}"
+        facets.append(
+            CanonicalPolicyFacet(
+                facet="global_policy",
+                permission=CanonicalPermission.DENIED if static_reason else CanonicalPermission.ALLOWED,
+                source="task_runtime_policy",
+                reason_code=static_reason or "action_allowed_by_runtime_policy",
+                capability=capability,
+                resource_id=resource_id,
+            )
+        )
+
+        snapshot_reason = None
+        if action in policy_denied:
+            snapshot_reason = f"action_denied_by_policy:{action}"
+        elif policy_allowed and action not in policy_allowed and action not in approvals_required:
+            snapshot_reason = f"action_not_granted_by_policy:{action}"
+        facets.append(
+            CanonicalPolicyFacet(
+                facet="policy_snapshot",
+                permission=CanonicalPermission.DENIED if snapshot_reason else CanonicalPermission.ALLOWED,
+                source="task_run.policy_snapshot",
+                reason_code=snapshot_reason or "action_allowed_by_policy_snapshot",
+                capability=capability,
+                resource_id=resource_id,
+            )
+        )
+
+        profile_allowed = action in self._profile_actions(profile)
+        facets.append(
+            CanonicalPolicyFacet(
+                facet="runtime_profile",
+                permission=CanonicalPermission.ALLOWED if profile_allowed else CanonicalPermission.DENIED,
+                source="runtime_profile",
+                reason_code=(
+                    "action_allowed_by_profile"
+                    if profile_allowed
+                    else f"action_not_allowed_by_profile:{action}"
+                ),
+                capability=capability,
+                resource_id=resource_id,
+            )
+        )
+
+        policy_requires_human = action in approvals_required
+        if policy_requires_human:
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="policy_approval_requirement",
+                    permission=CanonicalPermission.ASK,
+                    source="task_run.policy_snapshot",
+                    reason_code="approval_required",
+                    capability=capability,
+                    resource_id=resource_id,
+                    requires_human_authority=True,
+                )
+            )
+        needs_human = resource_requires_human or policy_requires_human
+        if needs_human:
+            mission_allowed = self._mission_authority_allows(
+                run,
+                action=capability,
+                path=run.workspace,
+                resource_id=resource_id,
+            )
+            if mission_allowed:
+                facets.append(
+                    CanonicalPolicyFacet(
+                        facet="human_authority",
+                        permission=CanonicalPermission.ALLOWED,
+                        source="mission_authority_grant",
+                        reason_code="grant_effective",
+                        capability=capability,
+                        resource_id=resource_id,
+                    )
+                )
+            elif existing_approval is not None and existing_approval.status == "approved":
+                facets.append(
+                    CanonicalPolicyFacet(
+                        facet="human_authority",
+                        permission=CanonicalPermission.ALLOWED,
+                        source="approval_service",
+                        reason_code="approval_effective",
+                        capability=capability,
+                        resource_id=resource_id,
+                    )
+                )
+            elif existing_approval is not None and existing_approval.status not in {"pending", "approved"}:
+                facets.append(
+                    CanonicalPolicyFacet(
+                        facet="human_authority",
+                        permission=CanonicalPermission.DENIED,
+                        source="approval_service",
+                        reason_code="approval_denied",
+                        capability=capability,
+                        resource_id=resource_id,
+                    )
+                )
+
+        denied_capabilities = set(run.policy_snapshot.get("denied_capabilities", []) or [])
+        if capability in denied_capabilities:
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="capability_policy",
+                    permission=CanonicalPermission.DENIED,
+                    source="task_run.policy_snapshot",
+                    reason_code=f"capability_denied:{capability}",
+                    capability=capability,
+                    resource_id=resource_id,
+                )
+            )
+        contract = CanonicalOperationContract(
+            session_id=run.session_id,
+            source_channel=str(run.intent_map.get("source_channel") if isinstance(run.intent_map, dict) and run.intent_map.get("source_channel") else "task_runtime"),
+            intent_type=str((run.intent_map.get("intent_type") if isinstance(run.intent_map, dict) else None) or run.operation_type or action),
+            operation_type=str(run.operation_type or action),
+            contract_type=str(run.contract_type or run.operation_type or action),
+            runtime_profile=str(run.runtime_profile or "conversation"),
+            requires_task=True,
+            requested_actions=[action],
+            workspace_path=run.workspace,
+        )
+        return self.effective_policy.resolve_facets(
+            contract,
+            facets=facets,
+            capability=capability,
+            resource_id=resource_id,
+        )
+
+    def _legacy_reason_from_canonical(
+        self,
+        decision: CanonicalPolicyDecision,
+        *,
+        action: str,
+    ) -> str | None:
+        if decision.permission == CanonicalPermission.ALLOWED:
+            return None
+        if decision.permission == CanonicalPermission.ASK:
+            return "approval_required"
+        for facet in decision.facets:
+            if facet.permission in {
+                CanonicalPermission.DENIED,
+                CanonicalPermission.INVALID,
+                CanonicalPermission.EXPIRED,
+                CanonicalPermission.STALE,
+                CanonicalPermission.NEEDS_CLARIFICATION,
+            } and facet.reason_code:
+                return str(facet.reason_code)
+        return f"canonical_policy_{decision.permission.value}:{action}"
 
     def _profile(self, run: TaskRun) -> dict[str, Any] | None:
         return self.profiles.resolve(
@@ -271,10 +471,37 @@ class TaskRunGuard:
         if action in {"run_command", "shell"}: return "shell_action_blocked"
         return f"blocked_action:{action}"
 
-    def _decision(self, reasons: list[str], reason: str, step_id: str | None = None) -> TaskRunGuardDecision:
+    def _decision(
+        self,
+        reasons: list[str],
+        reason: str,
+        step_id: str | None = None,
+        canonical_policy_decisions: list[CanonicalPolicyDecision] | None = None,
+    ) -> TaskRunGuardDecision:
         unique = list(dict.fromkeys(reasons))
+        decisions = list(canonical_policy_decisions or [])
         status = "blocked" if unique else "allowed"
-        return TaskRunGuardDecision(allowed=not unique, status=status, blocked_reasons=unique, trace=[self.trace_service.item("task_run_guard", status, reason, step_id=step_id, source="services/runtime/task_run_guard.py", data={"blocked_reasons": unique})])
+        return TaskRunGuardDecision(
+            allowed=not unique,
+            status=status,
+            blocked_reasons=unique,
+            canonical_policy_decisions=decisions,
+            trace=[
+                self.trace_service.item(
+                    "task_run_guard",
+                    status,
+                    reason,
+                    step_id=step_id,
+                    source="services/runtime/task_run_guard.py",
+                    data={
+                        "blocked_reasons": unique,
+                        "canonical_policy_decisions": [
+                            item.model_dump(mode="json") for item in decisions
+                        ],
+                    },
+                )
+            ],
+        )
 
     def status(self) -> dict[str, object]:
         profile_status = self.profiles.status()
