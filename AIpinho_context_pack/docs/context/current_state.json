@@ -1,13 +1,13 @@
 {
-  "schema_version": "context_state.v2026-09-16-e2e-new-runtime-m1",
-  "updated_at": "2026-09-16",
+  "schema_version": "context_state.v2026-09-17-e2e-new-runtime-m2",
+  "updated_at": "2026-09-17",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
     "name": "sasandralean-prog/AIpinho",
     "branch": "main",
     "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
     "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d",
-    "current_main_head": "489ca3bd37eb8584b7b58d86526a203897965121"
+    "current_main_head": "bb69739eb748472ebb36c359491bc4e7a895e24c"
   },
   "authorities": [
     "Human operator",
@@ -77,14 +77,15 @@
     "readonly artifact duplicate lifecycle/result/Truth path",
     "role step plan/execution bypass",
     "role pipeline runtime binding and deterministic supervisor consistency",
-    "root-role provenance tokenization suffix"
+    "root-role provenance tokenization suffix",
+    "prompt-derived local MissionResourceScope compilation and frozen MissionContract projection",
+    "permission-specific dynamic local resource enforcement across runtime, patch and final Tool Gateway"
   ],
   "current_frontier": [
-    "execute M2 Dynamic Local Resource Scopes from e2enewruntimee.md",
-    "compile prompt-derived local resources into the frozen MissionContract without project allowlists",
-    "enforce resource permission at the last canonical tool/runtime gate for create directory, create/modify file, patch, build/test and shell",
-    "preserve protected, forbidden and source_readonly static overrides",
-    "continue toward prompt-derived remote repository resources in M3"
+    "execute M3 Dynamic Remote Repository Scopes from e2enewruntimee.md",
+    "compile prompt-derived repository/provider/branch resources into the frozen MissionContract",
+    "enforce repository + branch + operation identity while preserving global host/network/secrets policy",
+    "continue to explicit reusable human mission authority in M4"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -114,14 +115,17 @@
     "producer completion does not authorize consumer usage",
     "roles are not authorities",
     "Doctor diagnoses but does not grant authority",
-    "FireTest is regression evidence, not runtime configuration"
+    "FireTest is regression evidence, not runtime configuration",
+    "dynamic local scope can replace only workspace_not_registered, never a stronger static deny",
+    "local resource role alone is insufficient; the specific permission must be declared",
+    "runtime enforcement consumes frozen MissionContract resources and does not reparse the prompt"
   ],
   "active_wave": {
     "id": "e2e_new_runtime",
     "status": "IN_PROGRESS",
     "plan_document": "e2enewruntimee.md",
-    "next_sprint": "M2",
-    "next_sprint_name": "Dynamic Local Resource Scopes",
+    "next_sprint": "M3",
+    "next_sprint_name": "Dynamic Remote Repository Scopes",
     "prewave_diagnostic_evidence": {
       "branch": "fix/firetest5-mission-runtime-intentmap",
       "sha": "cfba76ee094018f9680c0a63eda6378cb118a076",
@@ -129,7 +133,7 @@
     },
     "sprints": {
       "M1": "CLOSED",
-      "M2": "PLANNED",
+      "M2": "CLOSED",
       "M3": "PLANNED",
       "M4": "PLANNED",
       "M5": "PLANNED",
@@ -175,6 +179,30 @@
           "public ingress should provide persistent source_message_id when available",
           "local resource scope semantics and enforcement continue in M2"
         ]
+      },
+      "M2": {
+        "name": "Dynamic Local Resource Scopes",
+        "implementation_main_sha": "bb69739eb748472ebb36c359491bc4e7a895e24c",
+        "validation": {
+          "dynamic_local_resource_suite": "10 passed",
+          "semantic_resource_tool_patch_regression": "48 passed",
+          "runtime_workspace_regression": "34 passed / 1 failed",
+          "known_failure": "test_service_waits_for_approval_when_policy_requires_apply_patch",
+          "known_failure_baseline": "reproduced on unchanged 55e56a56 from a separate unregistered worktree",
+          "compileall": "passed",
+          "diff_check": "passed"
+        },
+        "closed_boundary": [
+          "prompt-derived local resources frozen into MissionContract before downstream enforcement",
+          "WorkspaceContext, TaskRunGuard, patch gates and final Agent Tool Gateway share frozen resource scope",
+          "dynamic resource permission is operation-specific and static protected/forbidden/source_readonly overrides remain stronger",
+          "unregistered temporary target supports create directory/file, modify, patch contract, build and test while separate readonly resource stays immutable"
+        ],
+        "remaining_notes": [
+          "explicit reusable human authority is M4; M2 retains canonical TaskRun approval binding for mutation execution",
+          "remote repository/provider/branch resources continue in M3"
+        ],
+        "plan_changed": false
       }
     }
   }

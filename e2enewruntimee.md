@@ -259,7 +259,7 @@ These invariants apply to every sprint in this wave:
 | Sprint | Name | Current state | Exit dependency |
 | --- | --- | --- | --- |
 | M1 | Canonical Mission Contract | CLOSED | none |
-| M2 | Dynamic Local Resource Scopes | PLANNED | M1 |
+| M2 | Dynamic Local Resource Scopes | CLOSED | M1 |
 | M3 | Dynamic Remote Repository Scopes | PLANNED | M1, M2 vocabulary |
 | M4 | Explicit Human Authority / Mission Grants | PLANNED | M1–M3 |
 | M5 | Unified Capability and Policy Kernel | PLANNED | M1–M4 |
@@ -283,7 +283,22 @@ No sprint is considered complete because code was written. Completion requires i
 - broader runtime/semantic regression: `92 passed / 1 failed`; the single failure (`test_service_waits_for_approval_when_policy_requires_apply_patch`) reproduces unchanged on baseline `630d454f` from an unregistered detached worktree and is not an M1 regression;
 - integration note: callers that do not yet supply a persistent `source_message_id` receive a deterministic synthetic source reference. Public ingress should bind the real persistent message identity as mission bootstrap is consolidated in later sprints.
 
-Next sprint: **M2 — Dynamic Local Resource Scopes**.
+Next sprint: **M3 - Dynamic Remote Repository Scopes**.
+
+### M2 closure evidence - 2026-09-17
+
+- validated implementation/main SHA: `bb69739eb748472ebb36c359491bc4e7a895e24c`;
+- prompt-level local paths are compiled at semantic ingress into frozen `MissionResourceScope` entries and downstream runtime consumes only the frozen `MissionContract`;
+- `target_mutable` scope is permission-specific: role alone never authorizes create-directory, create/modify-file, patch or shell operations;
+- static `protected`, `forbidden` and `source_readonly` workspace policy remains stronger than prompt-derived mutable scope;
+- `WorkspaceContext`, `TaskRunGuard`, patch planning/target guard and final Agent Tool Gateway use the same frozen local-resource authority;
+- project-specific patch root allowlists were removed; `patch_target_policy.allowed_roots` is empty and global deny boundaries remain;
+- a previously unregistered temporary target proved create-directory, create-file, modify-file, governed patch contract, build shell and test shell while a second readonly resource in the same mission rejected writes;
+- dedicated dynamic-local-resource suite: `10 passed`; semantic/resource/tool/patch regression: `48 passed`; runtime/workspace regression: `34 passed / 1 failed`;
+- the single runtime failure (`test_service_waits_for_approval_when_policy_requires_apply_patch`) was reproduced on the unchanged M1 baseline `55e56a56` from a separate unregistered worktree, proving the failure is the legacy test's registered-project-root dependency rather than an M2 regression;
+- `python -m compileall -q src/aipinho` and staged diff checks passed; production diff scan found no project/corpus-specific rule;
+- newly enforced invariant: a dynamic local resource can replace only `workspace_not_registered`; it cannot relax a stronger static deny/readonly rule, and an undeclared permission is denied at the final gate;
+- plan direction did not change; M2 clarified that the initial repair-mission discovery TaskRun freezes full mission resource/capability intent while executing only its readonly phase.
 
 ---
 

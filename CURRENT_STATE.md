@@ -104,7 +104,7 @@ Phase 1 is intentionally not a success claim. `CanonicalOperationState=BLOCKED` 
 
 Canonical execution plan: `e2enewruntimee.md`.
 
-Wave status: `IN_PROGRESS`. `M1 — Canonical Mission Contract` is CLOSED. Next sprint: `M2 — Dynamic Local Resource Scopes`.
+Wave status: `IN_PROGRESS`. `M1 - Canonical Mission Contract` and `M2 - Dynamic Local Resource Scopes` are CLOSED. Next sprint: `M3 - Dynamic Remote Repository Scopes`.
 
 The wave extends the single canonical TaskRuntime with frozen mission contracts, prompt-derived local resources, prompt-derived remote repository/branch resources, explicit human authority, unified capability/policy decisions, governed Git/network execution, mission staging, cross-TaskRun continuation and cross-phase completion truth.
 
@@ -114,11 +114,13 @@ Sprint closure protocol: every sprint is complete only after validated merge to 
 
 M1 closure: implementation/main SHA `489ca3bd37eb8584b7b58d86526a203897965121`. The canonical TaskRuntime now freezes and persists a `MissionContract`/`MissionContractBinding` before planning, binds mission identity/hash through bootstrap and durable run indexes, and enforces monotonic child-contract narrowing. Validation: new mission-contract suite `10 passed`; broader runtime/semantic regression `92 passed / 1 failed`, with the single failure reproduced unchanged on baseline `630d454f` from an unregistered detached worktree. No project-specific resource, repository or FireTest rule was added.
 
+M2 closure: implementation/main SHA `bb69739eb748472ebb36c359491bc4e7a895e24c`. Prompt-derived local workspaces/corpora are now frozen as permission-specific `MissionResourceScope` entries and enforced consistently by WorkspaceContext, TaskRunGuard, patch gates and the final Agent Tool Gateway. Static protected/forbidden/source_readonly policy remains stronger than prompt-derived mutable scope. Validation: dedicated M2 suite `10 passed`; semantic/resource/tool/patch regression `48 passed`; runtime/workspace regression `34 passed / 1 failed`, with the single failure reproduced on unchanged baseline `55e56a56` from an unregistered detached worktree. `compileall` and diff checks passed. No project-specific local resource registration or patch allowlist was added.
+
 ## Current engineering frontier
 
 There is no open P0/P1 from the completed FireTest 5 consolidation wave. The E2E New Runtime wave is active and extends the same canonical TaskRuntime; no parallel planner, dispatcher, role runtime or truth authority is authorized.
 
-Immediate frontier: execute Sprint M2 from `e2enewruntimee.md`. M2 must promote prompt-derived local resource scopes into the frozen mission contract and enforce them consistently across create-directory, create/modify-file, patch, build/test and shell paths, while preserving static protected/forbidden overrides. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
+Immediate frontier: execute Sprint M3 from `e2enewruntimee.md`. M3 must compile prompt-derived remote repository/provider/branch scope into the frozen MissionContract and enforce repository + branch + operation identity without project-specific remote allowlists. Explicit reusable human mission authority remains M4; M2 only preserves the existing canonical approval binding for mutation execution. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
 
 ## Invariants
 
