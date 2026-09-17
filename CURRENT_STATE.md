@@ -104,7 +104,7 @@ Phase 1 is intentionally not a success claim. `CanonicalOperationState=BLOCKED` 
 
 Canonical execution plan: `e2enewruntimee.md`.
 
-Wave status: `IN_PROGRESS`. `M1 - Canonical Mission Contract` and `M2 - Dynamic Local Resource Scopes` are CLOSED. Next sprint: `M3 - Dynamic Remote Repository Scopes`.
+Wave status: `IN_PROGRESS`. `M1 - Canonical Mission Contract`, `M2 - Dynamic Local Resource Scopes` and `M3 - Dynamic Remote Repository Scopes` are CLOSED. Next sprint: `M4 - Explicit Human Authority / Mission Grants`.
 
 The wave extends the single canonical TaskRuntime with frozen mission contracts, prompt-derived local resources, prompt-derived remote repository/branch resources, explicit human authority, unified capability/policy decisions, governed Git/network execution, mission staging, cross-TaskRun continuation and cross-phase completion truth.
 
@@ -116,11 +116,13 @@ M1 closure: implementation/main SHA `489ca3bd37eb8584b7b58d86526a203897965121`. 
 
 M2 closure: implementation/main SHA `bb69739eb748472ebb36c359491bc4e7a895e24c`. Prompt-derived local workspaces/corpora are now frozen as permission-specific `MissionResourceScope` entries and enforced consistently by WorkspaceContext, TaskRunGuard, patch gates and the final Agent Tool Gateway. Static protected/forbidden/source_readonly policy remains stronger than prompt-derived mutable scope. Validation: dedicated M2 suite `10 passed`; semantic/resource/tool/patch regression `48 passed`; runtime/workspace regression `34 passed / 1 failed`, with the single failure reproduced on unchanged baseline `55e56a56` from an unregistered detached worktree. `compileall` and diff checks passed. No project-specific local resource registration or patch allowlist was added.
 
+M3 closure: implementation/main SHA `3654d0e792f7fbe2c97aacd4f510f531c8e5b959`. Prompt-derived remote repositories are now frozen as credential-free, provider-aware `MissionResourceScope` entries with normalized repository identity, explicit allowed branches and operation permissions. The canonical remote gate enforces repository + branch + operation, negative repo scope, global host/scheme/secrets policy and destructive-operation denial; `git_push` additionally requires identity reobservation before later promotion execution. Validation: dedicated M3 suite `11 passed`; MissionContract/M2/M3 regression `31 passed`; semantic ingress `15 passed`; TaskRuntime `16 passed / 1 failed`, with the single failure matching the previously documented unregistered-worktree approval-test limitation. `compileall` and staged diff checks passed. No repository/host/project-specific production allowlist was added and no Git/network execution policy was relaxed.
+
 ## Current engineering frontier
 
 There is no open P0/P1 from the completed FireTest 5 consolidation wave. The E2E New Runtime wave is active and extends the same canonical TaskRuntime; no parallel planner, dispatcher, role runtime or truth authority is authorized.
 
-Immediate frontier: execute Sprint M3 from `e2enewruntimee.md`. M3 must compile prompt-derived remote repository/provider/branch scope into the frozen MissionContract and enforce repository + branch + operation identity without project-specific remote allowlists. Explicit reusable human mission authority remains M4; M2 only preserves the existing canonical approval binding for mutation execution. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
+Immediate frontier: execute Sprint M4 from `e2enewruntimee.md`. M4 must separate requested capability from explicit human authorization and evolve the existing SessionGrant mechanism into reusable mission-scoped authority bound to source message/hash, mission, action/capability, local resources and remote repository/branch scope. M3 intentionally did not enable real Git/network execution; that remains M6 after the unified policy kernel. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
 
 ## Invariants
 
@@ -133,3 +135,6 @@ Immediate frontier: execute Sprint M3 from `e2enewruntimee.md`. M3 must compile 
 - `run_completed != safe success`.
 - Doctor diagnoses; RuntimeTruth governs safe operational claims.
 - FireTest is regression evidence, not runtime configuration.
+
+- Remote scope is repository + branch + operation; missing branch scope is fail-closed.
+- Remote promotion requires repository identity reobservation before promotion execution.

@@ -260,7 +260,7 @@ These invariants apply to every sprint in this wave:
 | --- | --- | --- | --- |
 | M1 | Canonical Mission Contract | CLOSED | none |
 | M2 | Dynamic Local Resource Scopes | CLOSED | M1 |
-| M3 | Dynamic Remote Repository Scopes | PLANNED | M1, M2 vocabulary |
+| M3 | Dynamic Remote Repository Scopes | CLOSED | M1, M2 vocabulary |
 | M4 | Explicit Human Authority / Mission Grants | PLANNED | M1–M3 |
 | M5 | Unified Capability and Policy Kernel | PLANNED | M1–M4 |
 | M6 | Governed Git and Network Execution | PLANNED | M3–M5 |
@@ -283,7 +283,7 @@ No sprint is considered complete because code was written. Completion requires i
 - broader runtime/semantic regression: `92 passed / 1 failed`; the single failure (`test_service_waits_for_approval_when_policy_requires_apply_patch`) reproduces unchanged on baseline `630d454f` from an unregistered detached worktree and is not an M1 regression;
 - integration note: callers that do not yet supply a persistent `source_message_id` receive a deterministic synthetic source reference. Public ingress should bind the real persistent message identity as mission bootstrap is consolidated in later sprints.
 
-Next sprint: **M3 - Dynamic Remote Repository Scopes**.
+Next sprint: **M4 - Explicit Human Authority / Mission Grants**.
 
 ### M2 closure evidence - 2026-09-17
 
@@ -299,6 +299,22 @@ Next sprint: **M3 - Dynamic Remote Repository Scopes**.
 - `python -m compileall -q src/aipinho` and staged diff checks passed; production diff scan found no project/corpus-specific rule;
 - newly enforced invariant: a dynamic local resource can replace only `workspace_not_registered`; it cannot relax a stronger static deny/readonly rule, and an undeclared permission is denied at the final gate;
 - plan direction did not change; M2 clarified that the initial repair-mission discovery TaskRun freezes full mission resource/capability intent while executing only its readonly phase.
+
+### M3 closure evidence - 2026-09-17
+
+- validated implementation/main SHA: `3654d0e792f7fbe2c97aacd4f510f531c8e5b959`;
+- prompt-declared repositories compile at semantic ingress into frozen `remote_repository` mission resources with provider, normalized identity, explicit branches, operation permissions and provenance;
+- HTTPS and SSH forms of the same repository normalize to the same credential-free identity; embedded user/token material is detected and never retained as an authorized locator;
+- remote authorization is scoped by repository + branch + operation, and multi-repository prompts associate branch/operation locally rather than cross-granting permissions;
+- missing branch scope is fail-closed/needs-clarification; different repositories and wrong branches are denied;
+- explicit negative repository constraints, global denied hosts/schemes, secret handling and destructive Git constraints remain stronger than prompt-derived allow;
+- `git_push` scope requires repository identity reobservation immediately before later promotion execution;
+- M3 deliberately does not enable Git/network execution or relax `git_write_shell`/network policy; actual governed execution remains M6;
+- dedicated M3 suite: `11 passed`; MissionContract/M2/M3 regression: `31 passed`; semantic ingress regression: `15 passed`; TaskRuntime regression: `16 passed / 1 failed`;
+- the single TaskRuntime failure is the same unregistered-worktree approval-test limitation documented during M2 and is outside the M3 code path;
+- `compileall`, staged diff checks and production hardcode scans passed; no project/repository/host-specific production allowlist was introduced;
+- plan direction did not change. M4 remains the explicit human-authority sprint.
+
 
 ---
 

@@ -1,5 +1,5 @@
 {
-  "schema_version": "context_state.v2026-09-17-e2e-new-runtime-m2",
+  "schema_version": "context_state.v2026-09-17-e2e-new-runtime-m3",
   "updated_at": "2026-09-17",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
@@ -7,7 +7,7 @@
     "branch": "main",
     "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
     "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d",
-    "current_main_head": "bb69739eb748472ebb36c359491bc4e7a895e24c"
+    "current_main_head": "3654d0e792f7fbe2c97aacd4f510f531c8e5b959"
   },
   "authorities": [
     "Human operator",
@@ -79,13 +79,15 @@
     "role pipeline runtime binding and deterministic supervisor consistency",
     "root-role provenance tokenization suffix",
     "prompt-derived local MissionResourceScope compilation and frozen MissionContract projection",
-    "permission-specific dynamic local resource enforcement across runtime, patch and final Tool Gateway"
+    "permission-specific dynamic local resource enforcement across runtime, patch and final Tool Gateway",
+    "prompt-derived remote repository/provider/branch scope frozen into MissionContract",
+    "repository + branch + operation remote scope gate with promotion identity reobservation"
   ],
   "current_frontier": [
-    "execute M3 Dynamic Remote Repository Scopes from e2enewruntimee.md",
-    "compile prompt-derived repository/provider/branch resources into the frozen MissionContract",
-    "enforce repository + branch + operation identity while preserving global host/network/secrets policy",
-    "continue to explicit reusable human mission authority in M4"
+    "execute M4 Explicit Human Authority / Mission Grants from e2enewruntimee.md",
+    "separate requested capability from explicit reusable human mission authority",
+    "evolve SessionGrant into single-use/task/mission/session authority without a second permission system",
+    "bind authority to mission resources and remote repository/branch scope"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -118,14 +120,17 @@
     "FireTest is regression evidence, not runtime configuration",
     "dynamic local scope can replace only workspace_not_registered, never a stronger static deny",
     "local resource role alone is insufficient; the specific permission must be declared",
-    "runtime enforcement consumes frozen MissionContract resources and does not reparse the prompt"
+    "runtime enforcement consumes frozen MissionContract resources and does not reparse the prompt",
+    "remote scope is repository + branch + operation and missing branch scope is fail-closed",
+    "remote promotion requires repository identity reobservation immediately before promotion",
+    "prompt remote scope cannot override global host, scheme, secret or destructive-operation policy"
   ],
   "active_wave": {
     "id": "e2e_new_runtime",
     "status": "IN_PROGRESS",
     "plan_document": "e2enewruntimee.md",
-    "next_sprint": "M3",
-    "next_sprint_name": "Dynamic Remote Repository Scopes",
+    "next_sprint": "M4",
+    "next_sprint_name": "Explicit Human Authority / Mission Grants",
     "prewave_diagnostic_evidence": {
       "branch": "fix/firetest5-mission-runtime-intentmap",
       "sha": "cfba76ee094018f9680c0a63eda6378cb118a076",
@@ -134,7 +139,7 @@
     "sprints": {
       "M1": "CLOSED",
       "M2": "CLOSED",
-      "M3": "PLANNED",
+      "M3": "CLOSED",
       "M4": "PLANNED",
       "M5": "PLANNED",
       "M6": "PLANNED",
@@ -201,6 +206,32 @@
         "remaining_notes": [
           "explicit reusable human authority is M4; M2 retains canonical TaskRun approval binding for mutation execution",
           "remote repository/provider/branch resources continue in M3"
+        ],
+        "plan_changed": false
+      },
+      "M3": {
+        "name": "Dynamic Remote Repository Scopes",
+        "implementation_main_sha": "3654d0e792f7fbe2c97aacd4f510f531c8e5b959",
+        "validation": {
+          "dynamic_remote_repository_suite": "11 passed",
+          "mission_local_remote_contract_regression": "31 passed",
+          "semantic_ingress_regression": "15 passed",
+          "runtime_regression": "16 passed / 1 failed",
+          "known_failure": "test_service_waits_for_approval_when_policy_requires_apply_patch",
+          "known_failure_note": "same unregistered-worktree dependency already established during M2 closure",
+          "compileall": "passed",
+          "diff_check": "passed"
+        },
+        "closed_boundary": [
+          "prompt-derived remote repository scopes are frozen before downstream runtime enforcement",
+          "HTTPS/SSH-equivalent locators normalize to one credential-free repository identity",
+          "repository permission is scoped independently by repository, branch and operation",
+          "negative repository scope, global network policy and destructive Git constraints remain stronger than prompt allow",
+          "git_push scope requires immediate repository identity reobservation before later promotion execution"
+        ],
+        "remaining_notes": [
+          "M3 does not enable real Git/network execution; M6 remains the governed execution sprint",
+          "explicit reusable human mission authority begins in M4"
         ],
         "plan_changed": false
       }
