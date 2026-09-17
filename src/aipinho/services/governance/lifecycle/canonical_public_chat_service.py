@@ -36,6 +36,7 @@ from aipinho.services.rag.integration.context_prompt_policy_service import Conte
 from aipinho.services.semantic_runtime.semantic_proposition_normalization_service import SemanticPropositionNormalizationService
 from aipinho.services.sandbox.project_templates import android_kotlin_simple_game_template
 from aipinho.services.session.session_store import utc_now
+from aipinho.services.tools.shell_command_policy_service import ShellCommandPolicyService
 
 
 class CanonicalPublicChatService:
@@ -82,6 +83,7 @@ class CanonicalPublicChatService:
         followup_review: FollowupResultReviewService | None = None,
         session_diagnostic: SessionDiagnosticService | None = None,
         workspace_fix_discovery: WorkspaceFixDiscoveryService | None = None,
+        shell_policy: ShellCommandPolicyService | None = None,
     ) -> None:
         self.chat_service = chat_service or ChatService()
         self.lifecycle = lifecycle or GovernanceLifecycleService()
@@ -112,6 +114,7 @@ class CanonicalPublicChatService:
         self.followup_review = followup_review or FollowupResultReviewService()
         self.session_diagnostic = session_diagnostic or SessionDiagnosticService()
         self.semantic_propositions = SemanticPropositionNormalizationService()
+        self.shell_policy = shell_policy or ShellCommandPolicyService()
 
     @property
     def artifact_fulfillment(self) -> ChatArtifactFulfillmentService:
@@ -1742,19 +1745,20 @@ class CanonicalPublicChatService:
         command = self._extract_shell_command(text)
         if not workspace or not command:
             return {}
-        category = self._shell_category(command)
+        classification = self.shell_policy.classify(command=command, working_dir=workspace)
         return {
             "command": command,
             "cwd": workspace,
-            "shell_category": category,
-            "timeout_seconds": 240 if category == "build_shell" else 120,
+            "shell_category": classification.category,
+            "git_classification": (classification.git_classification.model_dump(mode="json") if classification.git_classification else None),
+            "timeout_seconds": 240 if classification.category == "build_shell" else 120,
             "expected_exit_code": 0,
             "validation_steps": ["shell_exit_code_matches_expected", "stdout_stderr_sanitized"],
         }
 
     def _extract_shell_command(self, text: str) -> str | None:
         source = str(text or "")
-        command_markers = ("gradle", "gradlew", "npm", "pytest", "python", "java", "adb", "where", "cmd")
+        command_markers = ("gradle", "gradlew", "npm", "pytest", "python", "java", "adb", "where", "cmd", "git")
         labeled_command = self._command_after_labeled_command(source, command_markers)
         if labeled_command:
             return labeled_command

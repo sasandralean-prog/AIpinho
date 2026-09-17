@@ -189,6 +189,8 @@ class TaskRunGuard:
         action: str,
         path: str | None = None,
         resource_id: str | None = None,
+        repository_identity: str | None = None,
+        branch: str | None = None,
     ) -> bool:
         contract = run.mission_contract
         if contract is None or action not in set(contract.authority.authorized_capabilities):
@@ -198,8 +200,41 @@ class TaskRunGuard:
             action=action,
             path=path,
             resource_id=resource_id,
+            repository_identity=repository_identity,
+            branch=branch,
         )
         return decision is not None and decision.reason_code == "grant_effective"
+
+    def _capability_for_action(self, run: TaskRun, action: str, matrix_decision: Any | None) -> str:
+        if action == "run_command" and isinstance(run.intent_map, dict):
+            shell_plan = run.intent_map.get("shell_plan")
+            git_info = shell_plan.get("git_classification") if isinstance(shell_plan, dict) else None
+            if isinstance(git_info, dict) and git_info.get("capability"):
+                return str(git_info["capability"])
+        return str(
+            matrix_decision.permission
+            if matrix_decision is not None
+            else self.permission_matrix.permission_for_action(action)
+        )
+
+    def _git_authority_scope(self, run: TaskRun, action: str, capability: str):
+        if action != "run_command" or run.mission_contract is None or not isinstance(run.intent_map, dict):
+            return None, None, None
+        shell_plan = run.intent_map.get("shell_plan")
+        git_info = shell_plan.get("git_classification") if isinstance(shell_plan, dict) else None
+        if not isinstance(git_info, dict):
+            return None, None, None
+        candidates = [
+            item for item in run.mission_contract.remote_resources
+            if item.role != "remote_denied" and capability in set(item.permissions)
+        ]
+        if len(candidates) != 1:
+            return None, None, None
+        resource = candidates[0]
+        branch = str(git_info.get("branch") or "").strip() or None
+        if branch is None and len(resource.allowed_branches) == 1:
+            branch = resource.allowed_branches[0]
+        return resource.resource_id, resource.normalized_identity, branch
 
     def _canonical_action_decision(
         self,
@@ -215,12 +250,11 @@ class TaskRunGuard:
         approvals_required: set[str],
         existing_approval: Any | None,
     ) -> CanonicalPolicyDecision:
-        capability = str(
-            matrix_decision.permission
-            if matrix_decision is not None
-            else self.permission_matrix.permission_for_action(action)
-        )
+        capability = self._capability_for_action(run, action, matrix_decision)
         resource_id = matrix_decision.workspace_id if matrix_decision is not None else None
+        authority_resource_id, repository_identity, git_branch = self._git_authority_scope(
+            run, action, capability
+        )
         facets: list[CanonicalPolicyFacet] = [
             CanonicalPolicyFacet(
                 facet="capability_demand",
@@ -330,7 +364,9 @@ class TaskRunGuard:
                 run,
                 action=capability,
                 path=run.workspace,
-                resource_id=resource_id,
+                resource_id=authority_resource_id or resource_id,
+                repository_identity=repository_identity,
+                branch=git_branch,
             )
             if mission_allowed:
                 facets.append(
@@ -340,7 +376,8 @@ class TaskRunGuard:
                         source="mission_authority_grant",
                         reason_code="grant_effective",
                         capability=capability,
-                        resource_id=resource_id,
+                        resource_id=authority_resource_id or resource_id,
+                        details={"repository_identity": repository_identity, "branch": git_branch},
                     )
                 )
             elif existing_approval is not None and existing_approval.status == "approved":
@@ -368,7 +405,7 @@ class TaskRunGuard:
 
         shell_plan = run.intent_map.get("shell_plan") if isinstance(run.intent_map, dict) else None
         shell_category = str(shell_plan.get("shell_category") or "") if isinstance(shell_plan, dict) else ""
-        if action == "run_command" and shell_category in {"git_write_shell", "network_shell"}:
+        if action == "run_command" and shell_category in {"git_write_shell", "network_shell", "git_destructive_shell"}:
             facets.append(
                 CanonicalPolicyFacet(
                     facet="global_policy",
@@ -377,6 +414,8 @@ class TaskRunGuard:
                     reason_code=(
                         "git_write_requires_granular_classification"
                         if shell_category == "git_write_shell"
+                        else "git_destructive_operation_denied"
+                        if shell_category == "git_destructive_shell"
                         else "network_shell_requires_granular_classification"
                     ),
                     capability=capability,
