@@ -412,8 +412,8 @@ def test_unregistered_dynamic_target_supports_full_local_governed_surface(tmp_pa
     created_file = invoke("create_file", path=target / "generated" / "main.txt", input={"content": "one"})
     modified_file = invoke("modify_file", path=target / "generated" / "main.txt", input={"content": "two"})
     patch_contract = invoke("patch_apply", path=target / "generated" / "main.txt", input={"files_changed": ["generated/main.txt"]})
-    build = invoke("run_shell", path=target, input={"argv": ["echo", "build"], "cwd": str(target), "shell_category": "build_shell"})
-    test = invoke("run_shell", path=target, input={"argv": ["echo", "test"], "cwd": str(target), "shell_category": "test_shell"})
+    build = invoke("run_shell", path=target, input={"argv": ["gradle", "build"], "cwd": str(target), "shell_category": "build_shell"})
+    test = invoke("run_shell", path=target, input={"argv": ["pytest", "-q"], "cwd": str(target), "shell_category": "test_shell"})
     readonly_write = invoke("create_file", path=readonly / "blocked.txt", input={"content": "no"})
 
     assert [created_dir.status, created_file.status, modified_file.status, patch_contract.status, build.status, test.status] == ["succeeded"] * 6
