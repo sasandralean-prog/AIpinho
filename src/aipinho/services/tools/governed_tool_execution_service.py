@@ -27,6 +27,7 @@ from aipinho.schemas.tools.tool_execution_result import ToolExecutionResult
 from aipinho.services.approvals.approval_service import ApprovalService
 from aipinho.services.governance.policy.effective_policy_decision_service import EffectivePolicyDecisionService
 from aipinho.services.policy_kernel.authority_grant_service import AuthorityGrantService
+from aipinho.services.policy_kernel.remote_repository_scope_service import RemoteRepositoryScopeService
 from aipinho.services.policy_kernel.workspace_role_contract_service import WorkspaceRoleContractService
 from aipinho.services.runtime.mission_contract_service import MissionContractService
 from aipinho.services.runtime.task_run_store import TaskRunStore
@@ -53,6 +54,7 @@ class GovernedToolExecutionService:
         authority_grants: AuthorityGrantService | None = None,
         effective_policy: EffectivePolicyDecisionService | None = None,
         workspace_roles: WorkspaceRoleContractService | None = None,
+        remote_scopes: RemoteRepositoryScopeService | None = None,
     ) -> None:
         self.registry = registry or ToolRegistryService().load()
         self.approvals = approvals or ApprovalService()
@@ -71,6 +73,7 @@ class GovernedToolExecutionService:
         self.task_runs = task_runs or TaskRunStore()
         self.authority_grants = authority_grants or AuthorityGrantService()
         self.missions = MissionContractService()
+        self.remote_scopes = remote_scopes or RemoteRepositoryScopeService(policy_path=self.policy_path)
 
     def request_approval(self, request: ToolExecutionRequest) -> dict[str, object]:
         decision = self._decision(request)
@@ -171,6 +174,30 @@ class GovernedToolExecutionService:
             result = self._result_from_decision(request, decision, execution_id=execution_id)
             self.audit.record(result)
             return result
+
+        classification = decision.get("shell_classification")
+        git_classification = getattr(classification, "git_classification", None)
+        if git_classification is not None and git_classification.safe_for_governed_execution and git_classification.operation_class != "local_read":
+            observation = self._observe_git_runtime(request, git_classification)
+            decision = self._decision(request, git_observation=observation)
+            canonical = decision.get("canonical_policy")
+            if canonical is None or self._canonical_hard_blocked(canonical) or canonical.permission == CanonicalPermission.ASK:
+                if canonical is not None and canonical.permission == CanonicalPermission.ASK:
+                    decision["violations"].append("approval_id_required")
+                result = self._result_from_decision(request, decision, execution_id=execution_id)
+                self.audit.record(result)
+                return result
+
+        tool = decision["tool"]
+        assert isinstance(tool, ToolDefinition)
+        if tool.adapter == "shell" and tool.action == "run_command":
+            preflight_error = self._shell_execution_preflight_error(request)
+            if preflight_error:
+                decision["violations"].append(preflight_error)
+                result = self._result_from_decision(request, decision, execution_id=execution_id)
+                self.audit.record(result)
+                return result
+
         if decision.get("uses_mission_authority"):
             authority_error = self._consume_mission_authority(request, decision)
             if authority_error:
@@ -179,11 +206,11 @@ class GovernedToolExecutionService:
                 self.audit.record(result)
                 return result
 
-        tool = decision["tool"]
-        assert isinstance(tool, ToolDefinition)
         timeout = self._timeout_seconds(request)
         if tool.adapter == "shell" and tool.action == "run_command":
             result = self._execute_shell(request, tool, decision, execution_id=execution_id, timeout=timeout)
+            if git_classification is not None and git_classification.operation == "git_push" and result.status == "executed_governed":
+                result = self._post_validate_git_push(request, decision, result)
         elif tool.adapter == "web" and tool.action == "web_request":
             result = self._execute_web(request, tool, decision, execution_id=execution_id, timeout=timeout)
         else:
@@ -192,7 +219,7 @@ class GovernedToolExecutionService:
         self.audit.record(result)
         return result
 
-    def _decision(self, request: ToolExecutionRequest) -> dict[str, Any]:
+    def _decision(self, request: ToolExecutionRequest, *, git_observation: dict[str, str] | None = None) -> dict[str, Any]:
         config = self.policy.get("governed_tool_execution", {}) if isinstance(self.policy, dict) else {}
         tool = self.registry.get_tool(request.tool_id)
         violations: list[str] = []
@@ -268,16 +295,37 @@ class GovernedToolExecutionService:
             if role_decision is not None and role_decision.contract is not None
             else None
         )
+        git_classification = (
+            getattr(shell_decision.get("classification"), "git_classification", None)
+            if shell_decision is not None else None
+        )
+        git_scope_decision = None
+        git_repository_identity = None
+        git_branch = None
+        git_scope_resource_id = None
+        if git_classification is not None and git_classification.requires_remote_scope:
+            git_scope_decision = self._git_scope_decision(
+                task_run=task_run, request=request, git_classification=git_classification,
+                git_observation=git_observation,
+            )
+            if git_scope_decision is not None:
+                git_repository_identity = git_scope_decision.repository_identity
+                git_branch = git_scope_decision.branch
+                git_scope_resource_id = git_scope_decision.resource_id
+
         approval_valid = False
         approval_error = None
         if request.approval_id:
             approval_error = self._approval_error(request, {"tool": tool})
             approval_valid = approval_error is None
+        authority_resource_id = git_scope_resource_id or resource_id
         mission_authority = self._mission_authority_decision(
             task_run,
             capability=capability,
             workspace=workspace or None,
-            resource_id=resource_id,
+            resource_id=authority_resource_id,
+            repository_identity=git_repository_identity,
+            branch=git_branch,
             consume=False,
         )
         mission_authority_ready = bool(
@@ -314,6 +362,38 @@ class GovernedToolExecutionService:
                     reason_code=workspace_error or "workspace_allowed",
                     capability=capability,
                     resource_id=resource_id,
+                )
+            )
+
+        if git_classification is not None and git_classification.requires_remote_scope:
+            if git_observation is not None and git_observation.get("error"):
+                remote_permission = CanonicalPermission.DENIED
+                remote_reason = str(git_observation["error"])
+            elif git_scope_decision is None:
+                remote_permission = CanonicalPermission.DENIED
+                remote_reason = "git_remote_scope_unresolved"
+            else:
+                remote_permission = (
+                    CanonicalPermission.ALLOWED
+                    if git_scope_decision.status == "allowed"
+                    else CanonicalPermission.NEEDS_CLARIFICATION
+                    if git_scope_decision.status == "needs_clarification"
+                    else CanonicalPermission.DENIED
+                )
+                remote_reason = str(git_scope_decision.reason_code)
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="remote_repository_scope",
+                    permission=remote_permission,
+                    source="remote_repository_scope",
+                    reason_code=remote_reason,
+                    capability=capability,
+                    resource_id=git_scope_resource_id,
+                    details={
+                        "repository_identity": git_repository_identity,
+                        "branch": git_branch,
+                        "git_operation": git_classification.operation,
+                    },
                 )
             )
 
@@ -468,6 +548,10 @@ class GovernedToolExecutionService:
             "canonical_policy": canonical,
             "canonical_capability": capability,
             "resource_id": resource_id,
+            "authority_resource_id": authority_resource_id,
+            "git_scope_decision": git_scope_decision,
+            "git_repository_identity": git_repository_identity,
+            "git_branch": git_branch,
             "task_run": task_run,
             "mission_authority_ready": mission_authority_ready,
             "approval_valid": approval_valid,
@@ -521,7 +605,11 @@ class GovernedToolExecutionService:
     @staticmethod
     def _canonical_capability(tool: ToolDefinition, shell_decision: dict[str, Any] | None) -> str:
         if shell_decision is not None:
-            category = str(shell_decision["classification"].category)
+            classification = shell_decision["classification"]
+            git_classification = getattr(classification, "git_classification", None)
+            if git_classification is not None:
+                return str(git_classification.capability)
+            category = str(classification.category)
             return {
                 "readonly_shell": "shell_readonly",
                 "git_read_shell": "shell_readonly",
@@ -538,6 +626,81 @@ class GovernedToolExecutionService:
             return "network_download"
         return str(tool.capability)
 
+    def _git_scope_decision(
+        self,
+        *,
+        task_run,
+        request: ToolExecutionRequest,
+        git_classification,
+        git_observation: dict[str, str] | None,
+    ):
+        if task_run is None or task_run.mission_contract is None:
+            return None
+        resources = list(task_run.mission_contract.remote_resources)
+        candidates = [
+            item for item in resources
+            if item.role != "remote_denied"
+            and git_classification.operation in set(item.permissions)
+        ]
+        repository_locator = str(request.input.get("repository_locator") or "").strip() or None
+        if repository_locator is None and len(candidates) == 1:
+            repository_locator = candidates[0].locator
+        if repository_locator is None:
+            return None
+        branch = str(request.input.get("branch") or "").strip() or git_classification.branch
+        if git_observation and git_classification.operation in {"git_commit", "git_push"}:
+            branch = git_observation.get("current_branch") or branch
+        if not branch and len(candidates) == 1 and len(candidates[0].allowed_branches) == 1:
+            branch = candidates[0].allowed_branches[0]
+        observed = git_observation.get("remote_locator") if git_observation else None
+        return self.remote_scopes.decide(
+            remote_resources=resources,
+            repository_locator=repository_locator,
+            branch=branch,
+            operation=git_classification.operation,
+            observed_repository_locator=observed,
+            require_promotion_reobservation=git_observation is not None,
+        )
+
+    def _observe_git_runtime(self, request: ToolExecutionRequest, git_classification) -> dict[str, str]:
+        workspace = str(request.input.get("workspace") or "")
+        observation: dict[str, str] = {}
+        remote_name = str(git_classification.remote_name or "origin")
+        if git_classification.requires_remote_scope:
+            if self._is_remote_locator(remote_name):
+                observation["remote_locator"] = remote_name
+            else:
+                completed = self._run_git_read(workspace, ["git", "remote", "get-url", remote_name])
+                if completed.returncode != 0 or not str(completed.stdout or "").strip():
+                    return {"error": "git_remote_reobservation_failed"}
+                observation["remote_locator"] = str(completed.stdout).strip()
+        if git_classification.operation in {"git_commit", "git_push"}:
+            completed = self._run_git_read(workspace, ["git", "branch", "--show-current"])
+            branch = str(completed.stdout or "").strip()
+            if completed.returncode != 0 or not branch:
+                return {"error": "git_branch_reobservation_failed"}
+            observation["current_branch"] = branch
+            if git_classification.operation == "git_push" and git_classification.branch and branch != git_classification.branch:
+                return {"error": "git_push_current_branch_mismatch", "current_branch": branch}
+        return observation
+
+    def _run_git_read(self, workspace: str, argv: list[str]):
+        return self.runner(
+            argv, cwd=workspace, timeout=self._timeout_seconds_from_policy(),
+            capture_output=True, text=True, encoding="utf-8", errors="replace", shell=False,
+        )
+
+    def _timeout_seconds_from_policy(self) -> int:
+        config = self.policy.get("governed_tool_execution", {}) if isinstance(self.policy, dict) else {}
+        return int(config.get("default_timeout_seconds", 30) or 30)
+
+    def _is_remote_locator(self, value: str) -> bool:
+        try:
+            self.remote_scopes.identities.normalize(value)
+        except ValueError:
+            return False
+        return True
+
     def _mission_authority_decision(
         self,
         task_run,
@@ -545,6 +708,8 @@ class GovernedToolExecutionService:
         capability: str,
         workspace: str | None,
         resource_id: str | None,
+        repository_identity: str | None = None,
+        branch: str | None = None,
         consume: bool,
     ):
         if task_run is None or task_run.mission_contract is None:
@@ -554,6 +719,8 @@ class GovernedToolExecutionService:
             action=capability,
             path=workspace,
             resource_id=resource_id,
+            repository_identity=repository_identity,
+            branch=branch,
             consume=consume,
         )
 
@@ -566,7 +733,9 @@ class GovernedToolExecutionService:
             decision.get("task_run"),
             capability=str(decision.get("canonical_capability") or ""),
             workspace=str(request.input.get("workspace") or "") or None,
-            resource_id=decision.get("resource_id"),
+            resource_id=decision.get("authority_resource_id") or decision.get("resource_id"),
+            repository_identity=decision.get("git_repository_identity"),
+            branch=decision.get("git_branch"),
             consume=True,
         )
         if consumed is None:
@@ -601,6 +770,12 @@ class GovernedToolExecutionService:
         if approved_hash and approved_hash != self._request_fingerprint(request):
             return "approval_request_fingerprint_mismatch"
         return None
+
+    def _shell_execution_preflight_error(self, request: ToolExecutionRequest) -> str | None:
+        argv, parse_error = self._command_argv(request.input)
+        if parse_error:
+            return parse_error
+        return self._executable_error(argv)
 
     def _execute_shell(
         self,
@@ -713,6 +888,35 @@ class GovernedToolExecutionService:
             "risk_score": getattr(classification, "risk_score", None),
             "expected_side_effects": getattr(classification, "expected_side_effects", []),
         }
+
+    def _post_validate_git_push(
+        self,
+        request: ToolExecutionRequest,
+        decision: dict[str, Any],
+        result: ToolExecutionResult,
+    ) -> ToolExecutionResult:
+        workspace = str(request.input.get("workspace") or "")
+        branch = str(decision.get("git_branch") or "")
+        remote_name = "origin"
+        classification = decision.get("shell_classification")
+        git_classification = getattr(classification, "git_classification", None)
+        if git_classification is not None and git_classification.remote_name:
+            remote_name = str(git_classification.remote_name)
+        local = self._run_git_read(workspace, ["git", "rev-parse", "HEAD"])
+        remote = self._run_git_read(workspace, ["git", "ls-remote", remote_name, branch])
+        local_head = str(local.stdout or "").strip()
+        remote_line = str(remote.stdout or "").strip().splitlines()
+        remote_head = remote_line[0].split()[0] if remote_line and remote_line[0].split() else ""
+        metadata = dict(result.metadata)
+        metadata.update({"local_head": local_head, "remote_head": remote_head, "validated_branch": branch})
+        if local.returncode != 0 or remote.returncode != 0 or not local_head or not remote_head or local_head != remote_head:
+            return result.model_copy(update={
+                "status": "degraded",
+                "safe_to_execute": False,
+                "metadata": metadata,
+                "violations": [*result.violations, "git_push_remote_head_mismatch"],
+            })
+        return result.model_copy(update={"metadata": metadata})
 
     def _execute_web(
         self,

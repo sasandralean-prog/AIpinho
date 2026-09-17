@@ -44,6 +44,7 @@ class RemoteRepositoryScopeService:
         branch: str | None,
         operation: str,
         observed_repository_locator: str | None = None,
+        require_promotion_reobservation: bool = True,
     ) -> RemoteRepositoryScopeDecision:
         try:
             requested = self.identities.normalize(repository_locator)
@@ -139,15 +140,15 @@ class RemoteRepositoryScopeService:
                 operation=operation,
                 branch=branch,
             )
-        if operation in self.PROMOTION_OPERATIONS:
-            if not observed_repository_locator:
-                return self._clarify(
-                    "remote_identity_reobservation_required",
-                    requested.normalized_identity,
-                    allowed,
-                    operation,
-                    branch=branch,
-                )
+        if operation in self.PROMOTION_OPERATIONS and require_promotion_reobservation and not observed_repository_locator:
+            return self._clarify(
+                "remote_identity_reobservation_required",
+                requested.normalized_identity,
+                allowed,
+                operation,
+                branch=branch,
+            )
+        if observed_repository_locator:
             try:
                 observed = self.identities.normalize(observed_repository_locator)
             except ValueError:
@@ -161,7 +162,7 @@ class RemoteRepositoryScopeService:
                 )
             if observed.normalized_identity != requested.normalized_identity:
                 return self._deny(
-                    "remote_identity_changed_before_promotion",
+                    "remote_identity_changed_before_execution",
                     identity=requested.normalized_identity,
                     provider=requested.provider,
                     resource=allowed,

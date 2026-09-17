@@ -146,7 +146,7 @@ def test_dynamic_test_shell_without_authority_remains_canonical_ask(tmp_path: Pa
     assert approval["approval"].status == "pending"
 
 
-def test_ambiguous_git_and_network_shell_are_canonical_denied(tmp_path: Path) -> None:
+def test_granular_git_without_remote_scope_and_ambiguous_network_shell_are_denied(tmp_path: Path) -> None:
     service = GovernedToolExecutionService(runner=_runner)
     workspace = r"C:\Dev\AIpinho"
     git_request = ToolExecutionRequest(
@@ -171,7 +171,7 @@ def test_ambiguous_git_and_network_shell_are_canonical_denied(tmp_path: Path) ->
     network_reasons = {
         item["reason_code"] for item in network_preview["canonical_policy"]["facets"]
     }
-    assert "git_write_requires_granular_classification" in git_reasons
+    assert "git_remote_scope_unresolved" in git_reasons
     assert "network_shell_requires_granular_classification" in network_reasons
 
 
