@@ -263,7 +263,7 @@ These invariants apply to every sprint in this wave:
 | M3 | Dynamic Remote Repository Scopes | CLOSED | M1, M2 vocabulary |
 | M4 | Explicit Human Authority / Mission Grants | CLOSED | M1–M3 |
 | M5 | Unified Capability and Policy Kernel | CLOSED | M1–M4 |
-| M6 | Governed Git and Network Execution | PLANNED | M3–M5 |
+| M6 | Governed Git and Network Execution | CLOSED | M3–M5 |
 | M7 | Mission Staging and Derived Resources | PLANNED | M2, M3, M6 |
 | M8 | Mission Continuation Engine | PLANNED | M1–M7 |
 | M9 | Cross-Phase Truth and Completion Contract | PLANNED | M1–M8 |
@@ -349,6 +349,22 @@ Next sprint: **M5 - Unified Capability and Policy Kernel**.
 - newly enforced invariant: specialized policies contribute facets/evidence, but only the canonical policy decision may authorize execution.
 
 Next sprint: **M6 - Governed Git and Network Execution**.
+
+### M6 closure evidence - 2026-09-17
+
+- validated implementation/main SHA: `398f875e1485b878bf8bc7d242e53549c47c3659`;
+- checkpoint chain: M6-A `79d3955a`, M6-B.1a `b23f61d6`, M6-B.1b `d8d49366`, M6-B.2a `3f4cac48`, M6-B.2b `ba2762ea`, controlled fixture `ca63daa9`, final compatibility validation `398f875e`;
+- Git commands are classified into local read, network read, worktree write, commit, push, destructive and unknown demands; unknown/destructive operations remain fail-closed;
+- GovernedToolExecution reobserves repository identity and current branch immediately before remote Git execution, composes remote scope + explicit human authority, executes with `shell=False`, and validates pushed local HEAD against the authorized remote branch HEAD;
+- public ingress, TaskRunGuard and Agent Tool Gateway propagate the same granular Git capability, and the Gateway reclassifies argv/command instead of trusting caller-provided `shell_category`;
+- Agent Tool Gateway delegates non-read Git execution to the canonical GovernedToolExecution path, so there is no parallel Git runtime or duplicated promotion authority;
+- controlled real-Git fixture: `6 passed`, proving allowed fetch/commit/push and denied wrong-remote, wrong-branch and force-push paths;
+- final Git/policy/authority/Gateway regression: `86 passed`; resource/public regression: `44 passed`; TaskRuntime/bootstrap: `21 passed / 1 failed`;
+- the sole TaskRuntime failure is the established unregistered-worktree `test_service_waits_for_approval_when_policy_requires_apply_patch` baseline limitation;
+- `compileall`, full M6 diff checks and production hardcode scan passed; no project/repository/host-specific production allowlist was introduced;
+- generic `network_shell` remains fail-closed; structured HTTP `web.request` and classified Git network operations remain governed through canonical policy and mission scope.
+
+Next sprint: **M7 - Mission Staging and Derived Resources**.
 
 
 ---

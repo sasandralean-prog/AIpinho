@@ -104,7 +104,7 @@ Phase 1 is intentionally not a success claim. `CanonicalOperationState=BLOCKED` 
 
 Canonical execution plan: `e2enewruntimee.md`.
 
-Wave status: `IN_PROGRESS`. `M1 - Canonical Mission Contract`, `M2 - Dynamic Local Resource Scopes`, `M3 - Dynamic Remote Repository Scopes`, `M4 - Explicit Human Authority / Mission Grants` and `M5 - Unified Capability and Policy Kernel` are CLOSED. Next sprint: `M6 - Governed Git and Network Execution`.
+Wave status: `IN_PROGRESS`. `M1 - Canonical Mission Contract`, `M2 - Dynamic Local Resource Scopes`, `M3 - Dynamic Remote Repository Scopes`, `M4 - Explicit Human Authority / Mission Grants`, `M5 - Unified Capability and Policy Kernel` and `M6 - Governed Git and Network Execution` are CLOSED. Next sprint: `M7 - Mission Staging and Derived Resources`.
 
 The wave extends the single canonical TaskRuntime with frozen mission contracts, prompt-derived local resources, prompt-derived remote repository/branch resources, explicit human authority, unified capability/policy decisions, governed Git/network execution, mission staging, cross-TaskRun continuation and cross-phase completion truth.
 
@@ -123,11 +123,14 @@ M4 closure: implementation/main SHA `0fe414fb5196318e49eb660b5c5440b7dd135f11`. 
 
 M5 closure: implementation/main SHA `75baa3551a1520ebc62ba985dbedbf3a1eae71f6`. `CanonicalPolicyDecision` is now the sole execution-authority verdict for TaskRunGuard, Agent Tool Gateway, WriteCapabilityEnvelope and GovernedToolExecution; specialized policies remain facet/evidence producers. Mission authority satisfies only matching ASK facets and cannot override hard resource/global denies. GovernedToolExecution resolves `task_run_id` back to the canonical MissionContract for dynamic resources, while legacy callers use the central workspace-role registry; its duplicated project allowlist was removed. Generic `git_write_shell` and `network_shell` remain fail-closed pending M6 granular classification, while structured HTTP web requests remain governed. Validation: C.1 `9/9` focused and `26/26` regression; C.2 `4/4` focused and `8/8` cross-gate; final policy/authority/Gateway/envelope/executor `55/55`; TaskRuntime/resources `55 passed / 1 failed`, the same known unregistered-worktree baseline failure. `compileall`, diff and hardcode checks passed.
 
+
+M6 closure: implementation/main SHA `398f875e1485b878bf8bc7d242e53549c47c3659`. Git is now capability-classified into local read, network read, worktree write, commit, push, destructive and unknown classes; destructive/unknown paths remain fail-closed. GovernedToolExecution reobserves remote identity and branch JIT, composes remote scope plus human authority, executes with `shell=False`, and requires refreshed remote HEAD evidence after push. Public ingress, TaskRunGuard and Agent Tool Gateway propagate the same granular capability; the Gateway reclassifies actual argv/command and delegates non-read Git to GovernedToolExecution instead of trusting caller shell labels or creating a second Git runtime. Validation: controlled real-Git fixture `6/6`; Git/policy/authority/Gateway regression `86/86`; resources/public `44/44`; TaskRuntime/bootstrap `21 passed / 1 failed`, the same known unregistered-worktree baseline failure. `compileall`, diff and production hardcode checks passed. Generic `network_shell` remains fail-closed while structured HTTP and classified Git network operations remain governed.
+
 ## Current engineering frontier
 
 There is no open P0/P1 from the completed FireTest 5 consolidation wave. The E2E New Runtime wave is active and extends the same canonical TaskRuntime; no parallel planner, dispatcher, role runtime or truth authority is authorized.
 
-Immediate frontier: execute Sprint M6 from `e2enewruntimee.md`. M6 must classify and execute governed Git/network operations granularly against the frozen remote repository/branch/operation scope and canonical capability decision. Generic `git_write_shell`/`network_shell` remain intentionally fail-closed until that classification exists; structured HTTP web access remains governed. No bypass or parallel runtime is authorized. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
+Immediate frontier: execute Sprint M7 from `e2enewruntimee.md`. M7 must derive mission-scoped staging resources from authorized remote repositories without static project registration, preserve source/corpus immutability, and carry only explicitly inherited authority into staging. No bypass or parallel runtime is authorized. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
 
 ## Invariants
 
@@ -145,3 +148,4 @@ Immediate frontier: execute Sprint M6 from `e2enewruntimee.md`. M6 must classify
 
 - Remote scope is repository + branch + operation; missing branch scope is fail-closed.
 - Remote promotion requires repository identity reobservation before promotion execution.
+- Caller-provided shell category is not authority; command/argv is reclassified at the execution gate.

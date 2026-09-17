@@ -1,5 +1,5 @@
 {
-  "schema_version": "context_state.v2026-09-17-e2e-new-runtime-m5",
+  "schema_version": "context_state.v2026-09-17-e2e-new-runtime-m6",
   "updated_at": "2026-09-17",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
@@ -7,7 +7,7 @@
     "branch": "main",
     "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
     "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d",
-    "current_main_head": "75baa3551a1520ebc62ba985dbedbf3a1eae71f6"
+    "current_main_head": "398f875e1485b878bf8bc7d242e53549c47c3659"
   },
   "authorities": [
     "Human operator",
@@ -84,10 +84,10 @@
     "repository + branch + operation remote scope gate with promotion identity reobservation"
   ],
   "current_frontier": [
-    "execute M6 Governed Git and Network Execution from e2enewruntimee.md",
-    "classify Git commit push destructive and network operations granularly before execution",
-    "bind execution to MissionContract remote repository branch operation scope and canonical policy facets",
-    "preserve fail-closed generic external shell categories until granular classification is available"
+    "execute M7 Mission Staging and Derived Resources from e2enewruntimee.md",
+    "derive mission-scoped staging only from authorized remote repository resources",
+    "preserve source/corpus immutability and explicit authority inheritance boundaries",
+    "keep staging lifetime mission-scoped and promotion on canonical governed Git execution"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -123,14 +123,18 @@
     "runtime enforcement consumes frozen MissionContract resources and does not reparse the prompt",
     "remote scope is repository + branch + operation and missing branch scope is fail-closed",
     "remote promotion requires repository identity reobservation immediately before promotion",
-    "prompt remote scope cannot override global host, scheme, secret or destructive-operation policy"
+    "prompt remote scope cannot override global host, scheme, secret or destructive-operation policy",
+    "granular Git capability classification and governed remote execution are canonical",
+    "caller shell category is not authority; command/argv is reclassified before execution",
+    "destructive and unknown Git operations remain fail-closed",
+    "push success requires refreshed authorized remote branch HEAD equal to local HEAD"
   ],
   "active_wave": {
     "id": "e2e_new_runtime",
     "status": "IN_PROGRESS",
     "plan_document": "e2enewruntimee.md",
-    "next_sprint": "M6",
-    "next_sprint_name": "Governed Git and Network Execution",
+    "next_sprint": "M7",
+    "next_sprint_name": "Mission Staging and Derived Resources",
     "prewave_diagnostic_evidence": {
       "branch": "fix/firetest5-mission-runtime-intentmap",
       "sha": "cfba76ee094018f9680c0a63eda6378cb118a076",
@@ -142,7 +146,7 @@
       "M3": "CLOSED",
       "M4": "CLOSED",
       "M5": "CLOSED",
-      "M6": "PLANNED",
+      "M6": "CLOSED",
       "M7": "PLANNED",
       "M8": "PLANNED",
       "M9": "PLANNED",
@@ -288,6 +292,31 @@
         "remaining_notes": [
           "M6 owns real granular Git and network execution against remote repository branch and operation scope",
           "generic git_write_shell and network_shell remain denied until M6 classification replaces ambiguity"
+        ],
+        "plan_changed": false
+      },
+      "M6": {
+        "name": "Governed Git and Network Execution",
+        "implementation_main_sha": "398f875e1485b878bf8bc7d242e53549c47c3659",
+        "validation": {
+          "controlled_real_git_fixture": "6 passed",
+          "git_policy_authority_gateway_regression": "86 passed",
+          "resource_public_regression": "44 passed",
+          "taskruntime_bootstrap_regression": "21 passed / 1 failed",
+          "known_failure": "test_service_waits_for_approval_when_policy_requires_apply_patch",
+          "known_failure_note": "same unregistered-worktree baseline limitation established before M6",
+          "compileall": "passed",
+          "diff_check": "passed"
+        },
+        "closed_boundary": [
+          "Git demand is classified into local read network read worktree write commit push destructive and unknown",
+          "remote Git execution is bound to MissionContract repository branch operation scope and explicit human authority",
+          "push reobserves remote and branch immediately before execution and validates refreshed remote HEAD after execution",
+          "Agent Tool Gateway reclassifies actual argv and delegates non-read Git to canonical GovernedToolExecution",
+          "destructive unknown and generic network shell paths remain fail-closed"
+        ],
+        "remaining_notes": [
+          "M7 owns mission staging and derived local resource creation from authorized remotes"
         ],
         "plan_changed": false
       }
