@@ -34,6 +34,7 @@ shell:
   category_policy:
     blocked_categories:
       - destructive_shell
+      - git_destructive_shell
       - git_write_shell
       - unknown_shell
     approval_required_categories:
@@ -43,6 +44,10 @@ shell:
       - write_shell
       - network_shell
       - process_control_shell
+      - git_network_read_shell
+      - git_worktree_shell
+      - git_commit_shell
+      - git_push_shell
   categories:
     destructive_shell:
       tokens:
@@ -133,8 +138,6 @@ shell:
     - bash.exe
     - sh
     - sh.exe
-    - git
-    - git.exe
     - ssh
     - ssh.exe
     - scp

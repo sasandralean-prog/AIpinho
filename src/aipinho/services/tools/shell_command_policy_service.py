@@ -27,11 +27,7 @@ class ShellCommandPolicyService:
         git_classification = None
         if executable in {"git", "git.exe"}:
             git_classification = self.git_classifier.classify([str(item) for item in tokens])
-            category = (
-                "git_read_shell"
-                if git_classification.operation_class == "local_read"
-                else "git_write_shell"
-            )
+            category = self._git_shell_category(git_classification.operation_class)
             reasons = [
                 git_classification.reason_code,
                 f"git_operation:{git_classification.operation}",
@@ -70,6 +66,19 @@ class ShellCommandPolicyService:
             git_classification=git_classification,
         )
 
+
+    @staticmethod
+    def _git_shell_category(operation_class: str) -> str:
+        return {
+            "local_read": "git_read_shell",
+            "network_read": "git_network_read_shell",
+            "worktree_write": "git_worktree_shell",
+            "commit": "git_commit_shell",
+            "push": "git_push_shell",
+            "destructive": "git_destructive_shell",
+            "unknown": "git_destructive_shell",
+        }.get(str(operation_class), "git_destructive_shell")
+
     def _category(self, normalized: str, executable: str) -> tuple[str, list[str]]:
         shell_policy = self.policy.get("shell", {}) if isinstance(self.policy, dict) else {}
         categories = shell_policy.get("categories", {}) if isinstance(shell_policy.get("categories"), dict) else {}
@@ -93,9 +102,9 @@ class ShellCommandPolicyService:
     def _risk(self, category: str) -> str:
         if category in {"readonly_shell", "git_read_shell"}:
             return "low"
-        if category in {"test_shell", "build_shell", "package_shell", "network_shell", "process_control_shell"}:
+        if category in {"test_shell", "build_shell", "package_shell", "network_shell", "process_control_shell", "git_network_read_shell"}:
             return "medium"
-        if category in {"write_shell", "unknown_shell"}:
+        if category in {"write_shell", "unknown_shell", "git_worktree_shell", "git_commit_shell"}:
             return "high"
         return "critical"
 

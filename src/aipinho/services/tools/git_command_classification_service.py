@@ -133,6 +133,7 @@ class GitCommandClassificationService:
                 operation_class="commit",
                 operation="git_commit",
                 capability="git_commit",
+                requires_remote_scope=True,
                 worktree_mutation=True,
                 reason_code="git_commit_classified",
                 safe_for_governed_execution=True,
@@ -178,6 +179,8 @@ class GitCommandClassificationService:
         if subcommand == "clean":
             return "git_clean_denied"
         if subcommand == "push" and flags.intersection({"-f", "--force", "--force-with-lease", "--mirror", "--delete"}):
+            return "git_force_or_delete_push_denied"
+        if subcommand == "push" and any(item.startswith(":") for item in lowered if not item.startswith("--")):
             return "git_force_or_delete_push_denied"
         if subcommand == "branch" and flags.intersection({"-d", "-D", "--delete"}):
             return "git_branch_delete_denied"
@@ -236,7 +239,8 @@ class GitCommandClassificationService:
         remote = positional[0] if positional else None
         branch = positional[1] if len(positional) > 1 else None
         if branch and ":" in branch:
-            branch = branch.split(":", 1)[0] or None
+            source, destination = branch.split(":", 1)
+            branch = destination or source or None
         return remote, branch
 
     @staticmethod

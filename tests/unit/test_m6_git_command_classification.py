@@ -100,7 +100,7 @@ def test_unknown_git_subcommand_remains_fail_closed() -> None:
     assert result.reason_code == "git_subcommand_not_governed"
 
 
-def test_shell_policy_projects_granular_git_into_legacy_fail_closed_boundary() -> None:
+def test_shell_policy_projects_granular_git_categories() -> None:
     service = ShellCommandPolicyService()
     status = service.classify(argv=["git", "status"], working_dir=r"C:\tmp\repo")
     fetch = service.classify(argv=["git", "fetch", "origin", "main"], working_dir=r"C:\tmp\repo")
@@ -108,9 +108,9 @@ def test_shell_policy_projects_granular_git_into_legacy_fail_closed_boundary() -
     force = service.classify(argv=["git", "push", "--force", "origin", "main"], working_dir=r"C:\tmp\repo")
 
     assert status.category == "git_read_shell" and status.policy_decision == "allowed"
-    assert fetch.category == "git_write_shell" and fetch.policy_decision == "blocked"
-    assert push.category == "git_write_shell" and push.policy_decision == "blocked"
-    assert force.category == "git_write_shell" and force.policy_decision == "blocked"
+    assert fetch.category == "git_network_read_shell" and fetch.policy_decision == "approval_required"
+    assert push.category == "git_push_shell" and push.policy_decision == "approval_required"
+    assert force.category == "git_destructive_shell" and force.policy_decision == "blocked"
     assert fetch.git_classification and fetch.git_classification.operation == "git_fetch"
     assert push.git_classification and push.git_classification.capability == "git_push"
     assert force.git_classification and force.git_classification.destructive is True

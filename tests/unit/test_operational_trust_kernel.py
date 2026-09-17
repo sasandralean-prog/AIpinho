@@ -166,8 +166,8 @@ def test_shell_policy_classifies_readonly_test_and_dangerous_categories():
     assert readonly.policy_decision == "allowed"
     assert test.category == "test_shell"
     assert test.policy_decision == "approval_required"
-    assert dangerous.category == "git_write_shell"
-    assert dangerous.policy_decision == "blocked"
+    assert dangerous.category == "git_push_shell"
+    assert dangerous.policy_decision == "approval_required"
 
 
 def test_governed_shell_result_contains_policy_trace_and_metadata(tmp_path):
