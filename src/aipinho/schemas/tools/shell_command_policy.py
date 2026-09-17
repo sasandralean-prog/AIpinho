@@ -5,6 +5,7 @@ from typing import Literal
 from pydantic import Field
 
 from aipinho.schemas.common.base import AIpinhoModel
+from aipinho.schemas.tools.git_command_policy import GitCommandClassification
 
 
 ShellCommandCategory = Literal[
@@ -32,3 +33,4 @@ class ShellCommandClassification(AIpinhoModel):
     expected_side_effects: list[str] = Field(default_factory=list)
     reasons: list[str] = Field(default_factory=list)
     trace: list[dict[str, object]] = Field(default_factory=list)
+    git_classification: GitCommandClassification | None = None

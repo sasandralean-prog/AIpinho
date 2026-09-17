@@ -7,13 +7,15 @@ from typing import Any
 
 from aipinho.core.paths import PATHS
 from aipinho.schemas.tools.shell_command_policy import ShellCommandClassification
+from aipinho.services.tools.git_command_classification_service import GitCommandClassificationService
 from aipinho.utils.yaml_loader import load_yaml_file
 
 
 class ShellCommandPolicyService:
-    def __init__(self, policy_path: Path | None = None) -> None:
+    def __init__(self, policy_path: Path | None = None, git_classifier: GitCommandClassificationService | None = None) -> None:
         self.policy_path = policy_path or PATHS.config_root / "policies" / "governed_tool_execution_policy.yaml"
         self.policy = load_yaml_file(self.policy_path, critical=True, root=self.policy_path.parent)
+        self.git_classifier = git_classifier or GitCommandClassificationService()
 
     def classify(self, *, argv: list[str] | None = None, command: str | None = None, working_dir: str | None = None) -> ShellCommandClassification:
         normalized = self._normalized(argv=argv, command=command)
@@ -22,7 +24,21 @@ class ShellCommandPolicyService:
         except ValueError:
             tokens = [""]
         executable = Path(tokens[0].strip('"')).name.lower() if normalized else ""
-        category, reasons = self._category(normalized, executable)
+        git_classification = None
+        if executable in {"git", "git.exe"}:
+            git_classification = self.git_classifier.classify([str(item) for item in tokens])
+            category = (
+                "git_read_shell"
+                if git_classification.operation_class == "local_read"
+                else "git_write_shell"
+            )
+            reasons = [
+                git_classification.reason_code,
+                f"git_operation:{git_classification.operation}",
+                f"git_capability:{git_classification.capability}",
+            ]
+        else:
+            category, reasons = self._category(normalized, executable)
         shell_policy = self.policy.get("shell", {}) if isinstance(self.policy, dict) else {}
         category_policy = shell_policy.get("category_policy", {}) if isinstance(shell_policy.get("category_policy"), dict) else {}
         blocked_categories = {str(item) for item in category_policy.get("blocked_categories", []) or []}
@@ -43,8 +59,15 @@ class ShellCommandPolicyService:
                 "decision": decision,
                 "reason": f"category:{category}",
                 "source": str(self.policy_path),
-                "data": {"executable": executable, "category": category, "risk_score": risk},
+                "data": {
+                    "executable": executable,
+                    "category": category,
+                    "risk_score": risk,
+                    "git_operation": git_classification.operation if git_classification else None,
+                    "git_capability": git_classification.capability if git_classification else None,
+                },
             }],
+            git_classification=git_classification,
         )
 
     def _category(self, normalized: str, executable: str) -> tuple[str, list[str]]:
