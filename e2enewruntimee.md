@@ -256,9 +256,9 @@ These invariants apply to every sprint in this wave:
 
 ## 8. Wave status board
 
-| Sprint | Name | Initial state | Exit dependency |
+| Sprint | Name | Current state | Exit dependency |
 | --- | --- | --- | --- |
-| M1 | Canonical Mission Contract | PLANNED | none |
+| M1 | Canonical Mission Contract | CLOSED | none |
 | M2 | Dynamic Local Resource Scopes | PLANNED | M1 |
 | M3 | Dynamic Remote Repository Scopes | PLANNED | M1, M2 vocabulary |
 | M4 | Explicit Human Authority / Mission Grants | PLANNED | M1–M3 |
@@ -270,6 +270,20 @@ These invariants apply to every sprint in this wave:
 | M10 | Fresh Manual E2E FireTest and Consolidation | PLANNED | M1–M9 |
 
 No sprint is considered complete because code was written. Completion requires its Definition of Done and validation evidence.
+
+### M1 closure evidence — 2026-09-16
+
+- validated implementation/main SHA: `489ca3bd37eb8584b7b58d86526a203897965121`;
+- canonical `MissionContract` and `MissionContractBinding` are frozen before planning inside `TaskRuntimeService`;
+- source prompt is retained only as SHA/provenance at this boundary; downstream runtime does not reinterpret free-form prompt text to gain authority;
+- TaskRuns persist and rehydrate the contract, bootstrap binding, mission identity and authority hash;
+- child TaskRuns inherit the parent contract by default; explicit revisions may only narrow capabilities/resources or add constraints and validation/completion requirements;
+- mission binding is projected into durable TaskRun indexes and creation/bootstrap event metadata;
+- new M1 contract suite: `10 passed`;
+- broader runtime/semantic regression: `92 passed / 1 failed`; the single failure (`test_service_waits_for_approval_when_policy_requires_apply_patch`) reproduces unchanged on baseline `630d454f` from an unregistered detached worktree and is not an M1 regression;
+- integration note: callers that do not yet supply a persistent `source_message_id` receive a deterministic synthetic source reference. Public ingress should bind the real persistent message identity as mission bootstrap is consolidated in later sprints.
+
+Next sprint: **M2 — Dynamic Local Resource Scopes**.
 
 ---
 

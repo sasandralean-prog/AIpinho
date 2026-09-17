@@ -1,12 +1,13 @@
 {
-  "schema_version": "context_state.v2026-09-16-e2e-new-runtime-planned",
+  "schema_version": "context_state.v2026-09-16-e2e-new-runtime-m1",
   "updated_at": "2026-09-16",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
     "name": "sasandralean-prog/AIpinho",
     "branch": "main",
     "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
-    "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d"
+    "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d",
+    "current_main_head": "489ca3bd37eb8584b7b58d86526a203897965121"
   },
   "authorities": [
     "Human operator",
@@ -79,12 +80,11 @@
     "root-role provenance tokenization suffix"
   ],
   "current_frontier": [
-    "execute M1 Canonical Mission Contract from e2enewruntimee.md",
-    "derive local and remote resources dynamically from prompt intent without project allowlists",
-    "bind explicit human authority to mission resources and capabilities",
-    "unify TaskRuntime, Tool Gateway, agent, shell, Git and network policy decisions",
-    "materialize end_to_end_governed continuation across canonical TaskRuns",
-    "bind final mission completion to cross-phase RuntimeTruth evidence"
+    "execute M2 Dynamic Local Resource Scopes from e2enewruntimee.md",
+    "compile prompt-derived local resources into the frozen MissionContract without project allowlists",
+    "enforce resource permission at the last canonical tool/runtime gate for create directory, create/modify file, patch, build/test and shell",
+    "preserve protected, forbidden and source_readonly static overrides",
+    "continue toward prompt-derived remote repository resources in M3"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -118,17 +118,17 @@
   ],
   "active_wave": {
     "id": "e2e_new_runtime",
-    "status": "PLANNED",
+    "status": "IN_PROGRESS",
     "plan_document": "e2enewruntimee.md",
-    "next_sprint": "M1",
-    "next_sprint_name": "Canonical Mission Contract",
+    "next_sprint": "M2",
+    "next_sprint_name": "Dynamic Local Resource Scopes",
     "prewave_diagnostic_evidence": {
       "branch": "fix/firetest5-mission-runtime-intentmap",
       "sha": "cfba76ee094018f9680c0a63eda6378cb118a076",
       "authority": "diagnostic_evidence_not_main"
     },
     "sprints": {
-      "M1": "PLANNED",
+      "M1": "CLOSED",
       "M2": "PLANNED",
       "M3": "PLANNED",
       "M4": "PLANNED",
@@ -154,6 +154,28 @@
       "update_context_current_state_json": true,
       "update_plan_status_board": true,
       "requires_validated_main_merge": true
+    },
+    "completed_sprints": {
+      "M1": {
+        "name": "Canonical Mission Contract",
+        "implementation_main_sha": "489ca3bd37eb8584b7b58d86526a203897965121",
+        "validation": {
+          "mission_contract_suite": "10 passed",
+          "broader_runtime_semantic_regression": "92 passed / 1 failed",
+          "known_failure": "test_service_waits_for_approval_when_policy_requires_apply_patch",
+          "known_failure_baseline": "reproduced unchanged on 630d454f from unregistered detached worktree"
+        },
+        "closed_boundary": [
+          "mission contract frozen before canonical planning",
+          "TaskRun persistence and rehydration of mission contract and binding",
+          "child TaskRuns cannot expand mission capabilities or resources",
+          "mission identity and authority hash projected into bootstrap, run index and creation events"
+        ],
+        "remaining_notes": [
+          "public ingress should provide persistent source_message_id when available",
+          "local resource scope semantics and enforcement continue in M2"
+        ]
+      }
     }
   }
 }

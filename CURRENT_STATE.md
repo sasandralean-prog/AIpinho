@@ -104,7 +104,7 @@ Phase 1 is intentionally not a success claim. `CanonicalOperationState=BLOCKED` 
 
 Canonical execution plan: `e2enewruntimee.md`.
 
-Wave status: `PLANNED`. Next sprint: `M1 — Canonical Mission Contract`.
+Wave status: `IN_PROGRESS`. `M1 — Canonical Mission Contract` is CLOSED. Next sprint: `M2 — Dynamic Local Resource Scopes`.
 
 The wave extends the single canonical TaskRuntime with frozen mission contracts, prompt-derived local resources, prompt-derived remote repository/branch resources, explicit human authority, unified capability/policy decisions, governed Git/network execution, mission staging, cross-TaskRun continuation and cross-phase completion truth.
 
@@ -112,11 +112,13 @@ Pre-wave diagnostic evidence was gathered on `fix/firetest5-mission-runtime-inte
 
 Sprint closure protocol: every sprint is complete only after validated merge to `main`, update of this file, update of `AIpinho_context_pack/docs/context/current_state.json`, and update of the sprint status board in `e2enewruntimee.md`.
 
+M1 closure: implementation/main SHA `489ca3bd37eb8584b7b58d86526a203897965121`. The canonical TaskRuntime now freezes and persists a `MissionContract`/`MissionContractBinding` before planning, binds mission identity/hash through bootstrap and durable run indexes, and enforces monotonic child-contract narrowing. Validation: new mission-contract suite `10 passed`; broader runtime/semantic regression `92 passed / 1 failed`, with the single failure reproduced unchanged on baseline `630d454f` from an unregistered detached worktree. No project-specific resource, repository or FireTest rule was added.
+
 ## Current engineering frontier
 
-There is no open P0/P1 from the completed FireTest 5 consolidation wave. A new architecture wave is now planned to close the mission-authority and dynamic-resource frontier without introducing parallel planners, dispatchers, role runtimes or truth authorities.
+There is no open P0/P1 from the completed FireTest 5 consolidation wave. The E2E New Runtime wave is active and extends the same canonical TaskRuntime; no parallel planner, dispatcher, role runtime or truth authority is authorized.
 
-Immediate frontier: execute Sprint M1 from `e2enewruntimee.md`, then advance strictly through evidence-backed sprint closure. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
+Immediate frontier: execute Sprint M2 from `e2enewruntimee.md`. M2 must promote prompt-derived local resource scopes into the frozen mission contract and enforce them consistently across create-directory, create/modify-file, patch, build/test and shell paths, while preserving static protected/forbidden overrides. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
 
 ## Invariants
 
