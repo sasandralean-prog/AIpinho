@@ -91,6 +91,9 @@ def test_guard_and_gateway_agree_on_explicit_authority(tmp_path: Path) -> None:
     assert gateway_result.canonical_policy_decision is not None
     assert gateway_result.canonical_policy_decision.permission == CanonicalPermission.ALLOWED
     assert gateway_result.canonical_policy_decision.capability == canonical_guard.capability
+    gateway_facets = {(item.facet, item.permission, item.source) for item in gateway_result.canonical_policy_decision.facets}
+    assert ("resource_permission", CanonicalPermission.ASK, "workspace_permission_matrix") in gateway_facets
+    assert ("human_authority", CanonicalPermission.ALLOWED, "mission_authority_grant") in gateway_facets
     assert {
         (facet.facet, facet.permission)
         for facet in canonical_guard.facets
@@ -136,6 +139,9 @@ def test_guard_and_gateway_agree_on_readonly_resource_denial(tmp_path: Path) -> 
     assert gateway_result.canonical_policy_decision is not None
     assert gateway_result.canonical_policy_decision.permission == CanonicalPermission.DENIED
     assert gateway_result.canonical_policy_decision.capability == canonical_guard.capability
+    blocking = next(item for item in gateway_result.canonical_policy_decision.facets if item.permission == CanonicalPermission.DENIED)
+    assert blocking.facet in {"workspace_resolution", "resource_permission"}
+    assert blocking.source in {"agent_tool_workspace_resolver", "workspace_permission_matrix"}
     assert not (source / "blocked.txt").exists()
 
 
@@ -171,5 +177,8 @@ def test_guard_and_gateway_agree_on_missing_human_authority(tmp_path: Path) -> N
     assert gateway_result.canonical_policy_decision is not None
     assert gateway_result.canonical_policy_decision.permission == CanonicalPermission.ASK
     assert gateway_result.canonical_policy_decision.capability == canonical_guard.capability
+    pending = [item for item in gateway_result.canonical_policy_decision.facets if item.permission == CanonicalPermission.ASK]
+    assert any(item.facet == "resource_permission" and item.requires_human_authority for item in pending)
+    assert not any(item.facet == "human_authority" and item.permission == CanonicalPermission.ALLOWED for item in gateway_result.canonical_policy_decision.facets)
     assert gateway_result.status in {"blocked", "approval_required"}
     assert existing.read_text(encoding="utf-8") == "old"
