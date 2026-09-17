@@ -4,6 +4,7 @@ from aipinho.schemas.governance.lifecycle import (
     CanonicalOperationContract,
     CanonicalPermission,
     CanonicalPolicyDecision,
+    CanonicalPolicyFacet,
     GovernanceLifecycleReasonCode,
 )
 from aipinho.schemas.policy.policy_decision import PolicyDecision, PolicyResolveRequest
@@ -40,6 +41,21 @@ class EffectivePolicyDecisionService:
         return self.canonical_policy.resolve(contract, explicit_decisions=explicit_decisions).model_copy(
             update={"source": "effective_policy_decision"}
         )
+
+    def resolve_facets(
+        self,
+        contract: CanonicalOperationContract,
+        *,
+        facets: list[CanonicalPolicyFacet],
+        capability: str | None = None,
+        resource_id: str | None = None,
+    ) -> CanonicalPolicyDecision:
+        return self.canonical_policy.resolve_facets(
+            contract,
+            facets=facets,
+            capability=capability,
+            resource_id=resource_id,
+        ).model_copy(update={"source": "effective_policy_decision"})
 
     def from_policy_decision(
         self,

@@ -115,6 +115,18 @@ class CanonicalOperationContract(AIpinhoModel):
     trace: list[dict[str, Any]] = Field(default_factory=list)
 
 
+class CanonicalPolicyFacet(AIpinhoModel):
+    facet: str
+    permission: CanonicalPermission
+    source: str
+    reason_code: str = ""
+    capability: str | None = None
+    resource_id: str | None = None
+    requires_human_authority: bool = False
+    details: dict[str, Any] = Field(default_factory=dict)
+    trace: list[dict[str, Any]] = Field(default_factory=list)
+
+
 class CanonicalPolicyDecision(AIpinhoModel):
     permission: CanonicalPermission = CanonicalPermission.ALLOWED
     allowed_actions: list[str] = Field(default_factory=list)
@@ -124,6 +136,9 @@ class CanonicalPolicyDecision(AIpinhoModel):
     reason: str = ""
     source: str = "canonical_policy"
     requires_approval: bool = False
+    capability: str | None = None
+    resource_id: str | None = None
+    facets: list[CanonicalPolicyFacet] = Field(default_factory=list)
     trace: list[dict[str, Any]] = Field(default_factory=list)
 
 

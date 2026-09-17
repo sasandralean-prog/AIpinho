@@ -4,6 +4,7 @@ from aipinho.schemas.governance.lifecycle import (
     CanonicalOperationContract,
     CanonicalPermission,
     CanonicalPolicyDecision,
+    CanonicalPolicyFacet,
     GovernanceLifecycleReasonCode,
 )
 
@@ -52,6 +53,156 @@ class CanonicalPolicyService:
         if text in self.ALLOWED_VALUES or not text:
             return CanonicalPermission.ALLOWED
         return CanonicalPermission.INVALID
+
+    def resolve_facets(
+        self,
+        contract: CanonicalOperationContract,
+        *,
+        facets: list[CanonicalPolicyFacet],
+        capability: str | None = None,
+        resource_id: str | None = None,
+    ) -> CanonicalPolicyDecision:
+        actions = list(dict.fromkeys(contract.requested_actions))
+        ordered = list(facets)
+        hard_order = (
+            CanonicalPermission.INVALID,
+            CanonicalPermission.EXPIRED,
+            CanonicalPermission.STALE,
+            CanonicalPermission.DENIED,
+        )
+        for permission in hard_order:
+            matching = [item for item in ordered if item.permission == permission]
+            if matching:
+                reason_code = (
+                    GovernanceLifecycleReasonCode.INVALID_OPERATION
+                    if permission == CanonicalPermission.INVALID
+                    else GovernanceLifecycleReasonCode.APPROVAL_EXPIRED
+                    if permission == CanonicalPermission.EXPIRED
+                    else GovernanceLifecycleReasonCode.APPROVAL_STALE
+                    if permission == CanonicalPermission.STALE
+                    else GovernanceLifecycleReasonCode.POLICY_DENIED
+                )
+                return self._facet_decision(
+                    permission=CanonicalPermission.DENIED,
+                    contract=contract,
+                    facets=ordered,
+                    capability=capability,
+                    resource_id=resource_id,
+                    reason_code=reason_code,
+                    reason=f"Canonical policy facet denied execution: {matching[0].facet}.",
+                    denied_actions=actions,
+                )
+
+        clarification = [
+            item for item in ordered
+            if item.permission == CanonicalPermission.NEEDS_CLARIFICATION
+        ]
+        if clarification:
+            return self._facet_decision(
+                permission=CanonicalPermission.NEEDS_CLARIFICATION,
+                contract=contract,
+                facets=ordered,
+                capability=capability,
+                resource_id=resource_id,
+                reason_code=GovernanceLifecycleReasonCode.NEEDS_CLARIFICATION,
+                reason=f"Canonical policy facet needs clarification: {clarification[0].facet}.",
+                ask_actions=actions,
+            )
+
+        unresolved_asks: list[CanonicalPolicyFacet] = []
+        for item in ordered:
+            if item.permission != CanonicalPermission.ASK:
+                continue
+            if item.requires_human_authority and self._human_authority_satisfies(
+                ordered, capability=item.capability or capability
+            ):
+                continue
+            unresolved_asks.append(item)
+        if unresolved_asks:
+            return self._facet_decision(
+                permission=CanonicalPermission.ASK,
+                contract=contract,
+                facets=ordered,
+                capability=capability,
+                resource_id=resource_id,
+                reason_code=GovernanceLifecycleReasonCode.APPROVAL_REQUIRED,
+                reason=f"Canonical policy facet requires approval: {unresolved_asks[0].facet}.",
+                ask_actions=actions,
+                requires_approval=True,
+            )
+
+        return self._facet_decision(
+            permission=CanonicalPermission.ALLOWED,
+            contract=contract,
+            facets=ordered,
+            capability=capability,
+            resource_id=resource_id,
+            reason_code=GovernanceLifecycleReasonCode.NONE,
+            reason="All canonical policy facets allow execution or have satisfied requirements.",
+            allowed_actions=actions,
+        )
+
+    def _human_authority_satisfies(
+        self,
+        facets: list[CanonicalPolicyFacet],
+        *,
+        capability: str | None,
+    ) -> bool:
+        for item in facets:
+            if item.facet != "human_authority":
+                continue
+            if item.permission != CanonicalPermission.ALLOWED:
+                continue
+            if capability is not None and item.capability not in {None, capability}:
+                continue
+            return True
+        return False
+
+    def _facet_decision(
+        self,
+        *,
+        permission: CanonicalPermission,
+        contract: CanonicalOperationContract,
+        facets: list[CanonicalPolicyFacet],
+        capability: str | None,
+        resource_id: str | None,
+        reason_code: GovernanceLifecycleReasonCode,
+        reason: str,
+        allowed_actions: list[str] | None = None,
+        ask_actions: list[str] | None = None,
+        denied_actions: list[str] | None = None,
+        requires_approval: bool = False,
+    ) -> CanonicalPolicyDecision:
+        return CanonicalPolicyDecision(
+            permission=permission,
+            allowed_actions=allowed_actions or [],
+            ask_actions=ask_actions or [],
+            denied_actions=denied_actions or [],
+            reason_code=reason_code,
+            reason=reason,
+            source="canonical_policy",
+            requires_approval=requires_approval,
+            capability=capability,
+            resource_id=resource_id,
+            facets=facets,
+            trace=[
+                {
+                    "stage": "canonical_policy_facets",
+                    "operation_id": contract.operation_id,
+                    "capability": capability,
+                    "resource_id": resource_id,
+                    "facets": [
+                        {
+                            "facet": item.facet,
+                            "permission": item.permission.value,
+                            "source": item.source,
+                            "reason_code": item.reason_code,
+                        }
+                        for item in facets
+                    ],
+                }
+            ],
+        )
 
     def resolve(
         self,
