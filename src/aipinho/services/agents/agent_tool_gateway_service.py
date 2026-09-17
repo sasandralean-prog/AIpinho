@@ -34,6 +34,7 @@ from aipinho.services.agents.agent_tool_policy_service import AgentToolPolicyDec
 from aipinho.services.agents.agent_tool_registry_service import AgentToolRegistryService
 from aipinho.services.agents.agent_tool_workspace_resolver import AgentToolWorkspaceResolver
 from aipinho.services.events.event_core import contains_secret, redact_payload
+from aipinho.services.policy_kernel.authority_grant_service import AuthorityGrantService
 from aipinho.services.config_governance.workspace_permission_matrix_service import WorkspacePermissionMatrixService
 from aipinho.services.runtime.mission_contract_service import MissionContractService
 from aipinho.services.runtime.task_run_store import TaskRunStore
@@ -62,6 +63,7 @@ class AgentToolGatewayService:
         shell_runner: ShellRunner | None = None,
         task_runs: TaskRunStore | None = None,
         permission_matrix: WorkspacePermissionMatrixService | None = None,
+        authority_grants: AuthorityGrantService | None = None,
     ) -> None:
         shared_store = AgentSessionStore()
         self.kernel = kernel or AgentSessionKernelService(store=shared_store)
@@ -73,6 +75,7 @@ class AgentToolGatewayService:
         self.shell_runner = shell_runner or SubprocessShellRunner()
         self.task_runs = task_runs or TaskRunStore()
         self.permission_matrix = permission_matrix or WorkspacePermissionMatrixService().load()
+        self.authority_grants = authority_grants or AuthorityGrantService()
         self.missions = MissionContractService()
 
     def list_tools(self, *, enabled: bool | None = None) -> list[ToolDefinition]:
@@ -109,15 +112,33 @@ class AgentToolGatewayService:
             request,
             local_resources=local_resources,
         )
+        permission = self._permission_for_tool(tool, request)
+        target_path = (
+            workspace.resolved_path_sanitized or workspace.root_path_sanitized
+            if workspace is not None
+            else None
+        )
         resource_permission_decision = None
+        mission_authority_decision = None
+        mission_authority_ready = False
+        mission_authority_needed = False
         if task_run is not None and workspace is not None and workspace.allowed:
-            permission = self._permission_for_tool(tool, request)
-            target_path = workspace.resolved_path_sanitized or workspace.root_path_sanitized
             resource_permission_decision = self.permission_matrix.decide_with_resources(
                 path=target_path,
                 permission=permission,
                 local_resources=local_resources,
             )
+            if resource_permission_decision.status != "denied" and task_run.mission_contract is not None:
+                mission_authority_decision = self.authority_grants.decision_for_contract(
+                    task_run.mission_contract,
+                    action=str(permission),
+                    path=target_path,
+                    resource_id=resource_permission_decision.workspace_id,
+                )
+                mission_authority_ready = (
+                    mission_authority_decision is not None
+                    and mission_authority_decision.reason_code == "grant_effective"
+                )
             if resource_permission_decision.status == "denied":
                 workspace = workspace.model_copy(
                     update={
@@ -136,7 +157,9 @@ class AgentToolGatewayService:
                     and bool(task_run.approval_id)
                     and request.approval_id == task_run.approval_id
                 )
-                if not canonical_approval_ready:
+                if mission_authority_ready:
+                    mission_authority_needed = True
+                if not canonical_approval_ready and not mission_authority_ready:
                     workspace = workspace.model_copy(
                         update={
                             "allowed": False,
@@ -231,7 +254,11 @@ class AgentToolGatewayService:
             if policy.safe_alternative:
                 event_ids.append(self._event(run, "safe_alternative_available", policy.safe_alternative, invocation, {"reason_code": policy.reason_code}, severity="info"))
             return ToolInvocationResult(status="blocked", tool_invocation=invocation, policy_decision=policy, workspace_resolution=workspace, events_emitted=event_ids)
-        if policy.decision == "require_approval" and not (request.approval_id or request.auto_approval_id):
+        if policy.decision == "require_approval" and mission_authority_ready:
+            mission_authority_needed = True
+        if policy.decision == "require_approval" and not (
+            request.approval_id or request.auto_approval_id or mission_authority_ready
+        ):
             invocation = invocation.model_copy(update={
                 "status": "approval_required",
                 "completed_at": utc_now_iso(),
@@ -247,6 +274,41 @@ class AgentToolGatewayService:
             event_ids.append(self._event(run, "tool_auto_approved", "Ferramenta autoaprovada pela politica.", invocation, {"auto_approval_id": policy.auto_approval_id}))
             event_ids.append(self._event(run, "auto_approval_granted", "Auto approval aplicado pela politica governada.", invocation, {"auto_approval_id": policy.auto_approval_id, "reason_code": policy.reason_code}))
 
+        if mission_authority_needed and task_run is not None and task_run.mission_contract is not None:
+            consumed = self.authority_grants.decision_for_contract(
+                task_run.mission_contract,
+                action=str(permission),
+                path=target_path,
+                resource_id=(
+                    resource_permission_decision.workspace_id
+                    if resource_permission_decision is not None
+                    else None
+                ),
+                consume=True,
+            )
+            if consumed is None or consumed.reason_code != "grant_consumed":
+                invocation = invocation.model_copy(update={
+                    "status": "blocked",
+                    "completed_at": utc_now_iso(),
+                    "block_reason_code": (
+                        consumed.reason_code if consumed is not None else "mission_authority_missing"
+                    ),
+                })
+                self.store.save_invocation(invocation)
+                return ToolInvocationResult(
+                    status="blocked",
+                    tool_invocation=invocation,
+                    policy_decision=policy,
+                    workspace_resolution=workspace,
+                    events_emitted=event_ids,
+                )
+            event_ids.append(self._event(
+                run,
+                "mission_authority_grant_consumed",
+                "Autoridade explicita da missao consumida no gate final.",
+                invocation,
+                {"grant_id": consumed.grant_id, "action": str(permission)},
+            ))
         invocation = invocation.model_copy(update={"status": "running"})
         self.store.save_invocation(invocation)
         event_ids.append(self._event(run, "tool_started", "Ferramenta iniciada.", invocation, {"tool_name": tool.tool_name}))

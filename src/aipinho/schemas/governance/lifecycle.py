@@ -90,6 +90,9 @@ class CanonicalIntentDecision(AIpinhoModel):
     local_resources: list[MissionResourceScope] = Field(default_factory=list)
     remote_resources: list[MissionResourceScope] = Field(default_factory=list)
     mission_constraints: list[MissionConstraint] = Field(default_factory=list)
+    requested_capabilities: list[str] = Field(default_factory=list)
+    authorized_capabilities: list[str] = Field(default_factory=list)
+    authority_evidence: list[dict[str, Any]] = Field(default_factory=list)
     mission_execution_mode: MissionExecutionMode = "single_operation"
 
 

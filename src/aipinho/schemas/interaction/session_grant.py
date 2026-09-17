@@ -8,17 +8,25 @@ from pydantic import Field
 from aipinho.schemas.common.base import AIpinhoModel
 
 SessionGrantStatus = Literal["pending", "approved", "denied", "expired", "revoked"]
-SessionGrantScope = Literal["single_use", "session", "task", "permanent_preview"]
+SessionGrantScope = Literal["single_use", "session", "task", "mission", "permanent_preview"]
 
 
 class SessionGrant(AIpinhoModel):
     grant_id: str
     session_id: str
+    mission_id: str | None = None
+    source_message_id: str | None = None
+    source_prompt_sha256: str | None = None
+    authority_sha256: str | None = None
     workspace_id: str | None = None
     workspace_path: str | None = None
     actions: list[str] = Field(default_factory=list)
     paths_scope: list[str] = Field(default_factory=list)
     command_scope: list[str] = Field(default_factory=list)
+    local_resource_ids: list[str] = Field(default_factory=list)
+    remote_resource_ids: list[str] = Field(default_factory=list)
+    repository_scope: list[str] = Field(default_factory=list)
+    branch_scope: dict[str, list[str]] = Field(default_factory=dict)
     scope: SessionGrantScope = "single_use"
     source_channel: str = "api"
     approved_by: str | None = None

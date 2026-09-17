@@ -9,6 +9,7 @@ from aipinho.schemas.runtime.task_run_step import TaskRunStep
 from aipinho.schemas.runtime.task_run_trace import TaskRunTraceItem
 from aipinho.services.approvals.approval_service import ApprovalService
 from aipinho.services.config_governance.workspace_permission_matrix_service import WorkspacePermissionMatrixService
+from aipinho.services.policy_kernel.authority_grant_service import AuthorityGrantService
 from aipinho.services.policy_kernel.workspace_policy_service import WorkspacePolicyService
 from aipinho.services.policy_kernel.workspace_role_contract_service import WorkspaceRoleContractService
 from aipinho.services.runtime.runtime_profile_service import RuntimeProfileService
@@ -24,7 +25,7 @@ class TaskRunGuardDecision(AIpinhoModel):
     trace: list[TaskRunTraceItem] = Field(default_factory=list)
 
 class TaskRunGuard:
-    def __init__(self, workspace_policy: WorkspacePolicyService | None = None, approvals: ApprovalService | None = None, lifecycle: TaskRunLifecycleService | None = None, workspace_roles: WorkspaceRoleContractService | None = None, profiles: RuntimeProfileService | None = None, permission_matrix: WorkspacePermissionMatrixService | None = None) -> None:
+    def __init__(self, workspace_policy: WorkspacePolicyService | None = None, approvals: ApprovalService | None = None, lifecycle: TaskRunLifecycleService | None = None, workspace_roles: WorkspaceRoleContractService | None = None, profiles: RuntimeProfileService | None = None, permission_matrix: WorkspacePermissionMatrixService | None = None, authority_grants: AuthorityGrantService | None = None) -> None:
         self.policy = load_yaml_file(PATHS.config_root / "runtime" / "task_runtime_policy.yaml", critical=True, root=PATHS.config_root / "runtime")
         self.steps = load_yaml_file(PATHS.config_root / "runtime" / "governed_task_steps.yaml", critical=True, root=PATHS.config_root / "runtime")
         self.limits = load_yaml_file(PATHS.config_root / "runtime" / "task_runtime_limits.yaml", critical=True, root=PATHS.config_root / "runtime")
@@ -33,6 +34,7 @@ class TaskRunGuard:
         self.permission_matrix = permission_matrix or WorkspacePermissionMatrixService().load()
         self.profiles = profiles or RuntimeProfileService().load()
         self.approvals = approvals or ApprovalService()
+        self.authority_grants = authority_grants or AuthorityGrantService()
         self.lifecycle = lifecycle or TaskRunLifecycleService()
         self.trace_service = TaskRunTraceService()
 
@@ -116,6 +118,7 @@ class TaskRunGuard:
             elif existing_approval.execution_id != execution_plan.execution_id:
                 reasons.append("approval_execution_plan_mismatch")
         matrix_approval_required = False
+        mission_authority_actions: set[str] = set()
         for action in run.requested_actions:
             if not run.workspace:
                 continue
@@ -129,8 +132,17 @@ class TaskRunGuard:
                     continue
                 reasons.append(f"{matrix_decision.reason_code}:{action}")
             elif matrix_decision.status == "approval_required" and not approval_is_approved:
-                matrix_approval_required = True
-                reasons.append(f"{matrix_decision.reason_code}:{action}")
+                capability = str(matrix_decision.permission)
+                if self._mission_authority_allows(
+                    run,
+                    action=capability,
+                    path=run.workspace,
+                    resource_id=matrix_decision.workspace_id,
+                ):
+                    mission_authority_actions.add(action)
+                else:
+                    matrix_approval_required = True
+                    reasons.append(f"{matrix_decision.reason_code}:{action}")
         for action in run.requested_actions:
             if action in blocked: reasons.append(self._blocked_reason(action))
             elif action not in allowed: reasons.append(f"action_not_allowed:{action}")
@@ -144,7 +156,20 @@ class TaskRunGuard:
         side_effect_plan = any(step.side_effect for step in run.plan.steps)
         if side_effect_plan and execution_plan is not None and not execution_plan.approval_required:
             reasons.append("side_effect_execution_plan_requires_approval")
-        if approvals_required.intersection(run.requested_actions) or matrix_approval_required:
+        unresolved_policy_approvals: set[str] = set()
+        for action in approvals_required.intersection(run.requested_actions):
+            if action in mission_authority_actions:
+                continue
+            capability = self.permission_matrix.permission_for_action(action)
+            if self._mission_authority_allows(
+                run,
+                action=str(capability),
+                path=run.workspace,
+            ):
+                mission_authority_actions.add(action)
+            else:
+                unresolved_policy_approvals.add(action)
+        if unresolved_policy_approvals or matrix_approval_required:
             approval = existing_approval
             if approval is None or approval.status == "pending":
                 reasons.append("approval_required")
@@ -172,6 +197,25 @@ class TaskRunGuard:
         max_seconds = self._max_runtime_seconds(profile)
         if elapsed_seconds > max_seconds: reasons.append("runtime_timeout_exceeded")
         return self._decision(reasons, "step_guard_checked", step_id=step.step_id)
+
+    def _mission_authority_allows(
+        self,
+        run: TaskRun,
+        *,
+        action: str,
+        path: str | None = None,
+        resource_id: str | None = None,
+    ) -> bool:
+        contract = run.mission_contract
+        if contract is None or action not in set(contract.authority.authorized_capabilities):
+            return False
+        decision = self.authority_grants.decision_for_contract(
+            contract,
+            action=action,
+            path=path,
+            resource_id=resource_id,
+        )
+        return decision is not None and decision.reason_code == "grant_effective"
 
     def _profile(self, run: TaskRun) -> dict[str, Any] | None:
         return self.profiles.resolve(

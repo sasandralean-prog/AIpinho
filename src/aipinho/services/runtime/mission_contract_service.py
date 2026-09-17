@@ -6,6 +6,7 @@ from typing import Any, Iterable
 
 from aipinho.schemas.runtime.mission_contract import (
     MissionAuthorityBinding,
+    MissionAuthorityEvidence,
     MissionCompletionContract,
     MissionConstraint,
     MissionContract,
@@ -81,6 +82,11 @@ class MissionContractService:
         authorized = self._ordered_unique(
             self._string_list(intent.get("authorized_capabilities"))
         )
+        authority_evidence = self._authority_evidence(
+            intent.get("authority_evidence"),
+            prompt_sha=prompt_sha,
+            authorized_capabilities=authorized,
+        )
         local_resources = self._resource_list(
             intent.get("local_resources"),
             expected_types={"local_workspace"},
@@ -124,6 +130,7 @@ class MissionContractService:
                 source_refs=self._ordered_unique(
                     self._string_list(intent.get("authority_source_refs"))
                 ),
+                explicit_evidence=authority_evidence,
             ),
             negative_constraints=negative_constraints,
             completion=completion,
@@ -253,6 +260,7 @@ class MissionContractService:
                         else parent.authority.authorized_capabilities
                     ),
                     source_refs=list(parent.authority.source_refs),
+                    explicit_evidence=list(parent.authority.explicit_evidence),
                 ),
                 "local_resources": list(
                     local_resources if local_resources is not None else parent.local_resources
@@ -437,6 +445,27 @@ class MissionContractService:
             )
             resources.append(resource)
         return sorted(resources, key=lambda item: item.resource_id)
+
+    def _authority_evidence(
+        self,
+        value: Any,
+        *,
+        prompt_sha: str,
+        authorized_capabilities: list[str],
+    ) -> list[MissionAuthorityEvidence]:
+        if not authorized_capabilities:
+            return []
+        if not isinstance(value, list) or not value:
+            raise ValueError("mission_contract_authority_evidence_missing")
+        evidence = [MissionAuthorityEvidence.model_validate(item) for item in value if isinstance(item, dict)]
+        if not evidence:
+            raise ValueError("mission_contract_authority_evidence_missing")
+        if any(item.source_prompt_sha256 != prompt_sha for item in evidence):
+            raise ValueError("mission_contract_authority_prompt_hash_mismatch")
+        covered = {capability for item in evidence for capability in item.capabilities}
+        if not set(authorized_capabilities).issubset(covered):
+            raise ValueError("mission_contract_authority_evidence_incomplete")
+        return evidence
 
     def _constraints(
         self,

@@ -40,7 +40,8 @@ class WorkspaceFixDiscoveryService:
         if not primary:
             raise ValueError("workspace_fix_discovery_workspace_missing")
         requested_capabilities = sorted(
-            {
+            set(snapshot.intent.requested_capabilities)
+            or {
                 permission
                 for resource in [*resources, *remote_resources]
                 for permission in resource.permissions
@@ -70,6 +71,13 @@ class WorkspaceFixDiscoveryService:
                     "mode": snapshot.intent.mission_execution_mode,
                 },
                 "requested_capabilities": requested_capabilities,
+                "authorized_capabilities": list(snapshot.intent.authorized_capabilities),
+                "authority_evidence": list(snapshot.intent.authority_evidence),
+                "authority_source_refs": [
+                    str(item.get("source_ref"))
+                    for item in snapshot.intent.authority_evidence
+                    if item.get("source_ref")
+                ],
                 "local_resources": [
                     resource.model_dump(mode="json") for resource in resources
                 ],

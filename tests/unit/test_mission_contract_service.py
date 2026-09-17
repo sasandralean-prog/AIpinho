@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+
 import pytest
 
 from aipinho.schemas.runtime.mission_contract import (
@@ -12,12 +14,22 @@ from tests.support.runtime_fixtures import runtime_request
 
 
 def _mission_request(**intent_updates):
+    prompt = "AUTORIZACAO: Autorizo nesta missao modificar arquivos e executar testes."
+    prompt_sha = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
+    authorized = ["local.modify_file", "shell.test"]
     intent = {
         "intent_type": "workspace_fix_request",
-        "raw_prompt": "Corrija o projeto e valide o resultado.",
+        "raw_prompt": prompt,
         "mission_execution_strategy": {"mode": "end_to_end_governed"},
-        "requested_capabilities": ["local.modify_file", "shell.test"],
-        "authorized_capabilities": ["local.modify_file", "shell.test"],
+        "requested_capabilities": authorized,
+        "authorized_capabilities": authorized,
+        "authority_evidence": [{
+            "kind": "explicit_human_authorization",
+            "source_ref": "test_explicit_authority",
+            "clause_sha256": prompt_sha,
+            "source_prompt_sha256": prompt_sha,
+            "capabilities": authorized,
+        }],
         "validation_requirements": ["tests_pass"],
         "completion_requirements": ["validated_change"],
     }

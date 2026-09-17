@@ -44,10 +44,19 @@ class MissionResourceScope(AIpinhoModel):
     metadata: dict[str, Any] = Field(default_factory=dict)
 
 
+class MissionAuthorityEvidence(AIpinhoModel):
+    kind: Literal["explicit_human_authorization"] = "explicit_human_authorization"
+    source_ref: str
+    clause_sha256: str
+    source_prompt_sha256: str
+    capabilities: list[str] = Field(default_factory=list)
+
+
 class MissionAuthorityBinding(AIpinhoModel):
     requested_capabilities: list[str] = Field(default_factory=list)
     authorized_capabilities: list[str] = Field(default_factory=list)
     source_refs: list[str] = Field(default_factory=list)
+    explicit_evidence: list[MissionAuthorityEvidence] = Field(default_factory=list)
 
 
 class MissionCompletionContract(AIpinhoModel):
