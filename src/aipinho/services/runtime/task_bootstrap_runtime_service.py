@@ -32,6 +32,9 @@ class TaskBootstrapRuntimeService:
             workspace_id=request.workspace_id or self._workspace_id_from(request),
             project_id=request.project_id or self._project_id_from(request),
             session_id=request.session_id,
+            source_message_id=request.source_message_id,
+            mission_id=request.mission_id,
+            mission_binding=request.mission_binding,
             workspace=request.workspace,
             operation_type=request.operation_type,
             contract_type=request.contract_type,
@@ -67,6 +70,8 @@ class TaskBootstrapRuntimeService:
             "phase": run.current_phase,
             "parent_task_id": run.parent_task_id,
             "session_id": run.session_id,
+            "mission_id": run.mission_binding.mission_id if run.mission_binding else None,
+            "mission_authority_sha256": run.mission_binding.authority_sha256 if run.mission_binding else None,
             "created_at": run.created_at,
             "source": "task_run_store",
         }

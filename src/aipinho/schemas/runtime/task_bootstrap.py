@@ -7,6 +7,7 @@ from pydantic import Field
 
 from aipinho.schemas.common.base import AIpinhoModel
 from aipinho.schemas.events.contracts import utc_now_iso
+from aipinho.schemas.runtime.mission_contract import MissionContractBinding
 
 
 class UniversalTask(AIpinhoModel):
@@ -17,6 +18,9 @@ class UniversalTask(AIpinhoModel):
     workspace_id: str | None = None
     project_id: str | None = None
     session_id: str | None = None
+    source_message_id: str | None = None
+    mission_id: str | None = None
+    mission_binding: MissionContractBinding | None = None
     workspace: str | None = None
     operation_type: str | None = None
     contract_type: str
@@ -30,6 +34,9 @@ class UniversalTask(AIpinhoModel):
 
 class TaskBootstrapRequest(AIpinhoModel):
     session_id: str | None = None
+    source_message_id: str | None = None
+    mission_id: str | None = None
+    mission_binding: MissionContractBinding | None = None
     workspace: str | None = None
     contract_type: str
     operation_type: str | None = None

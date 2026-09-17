@@ -329,6 +329,10 @@ class TaskRunStore:
             "session_id": run.session_id,
             "draft_id": run.draft_id,
             "contract_type": run.contract_type,
+            "mission_id": run.mission_binding.mission_id if run.mission_binding else None,
+            "mission_authority_sha256": (
+                run.mission_binding.authority_sha256 if run.mission_binding else None
+            ),
             "created_at": run.created_at,
         }
 
@@ -1251,6 +1255,12 @@ class TaskRunStore:
             "task_run_id": run.task_run_id,
             "operation_id": run.operation_id,
             "session_id": run.session_id,
+            "source_message_id": run.source_message_id,
+            "mission_id": run.mission_binding.mission_id if run.mission_binding else None,
+            "mission_authority_sha256": (
+                run.mission_binding.authority_sha256 if run.mission_binding else None
+            ),
+            "mission_revision": run.mission_binding.revision if run.mission_binding else None,
             "workspace": run.workspace,
             "contract_type": run.contract_type,
             "operation_type": run.operation_type,
@@ -1275,6 +1285,16 @@ class TaskRunStore:
             "task_run_id": data.get("task_run_id"),
             "operation_id": data.get("operation_id"),
             "session_id": data.get("session_id"),
+            "source_message_id": data.get("source_message_id"),
+            "mission_id": (data.get("mission_binding") or {}).get("mission_id")
+            if isinstance(data.get("mission_binding"), dict)
+            else None,
+            "mission_authority_sha256": (data.get("mission_binding") or {}).get("authority_sha256")
+            if isinstance(data.get("mission_binding"), dict)
+            else None,
+            "mission_revision": (data.get("mission_binding") or {}).get("revision")
+            if isinstance(data.get("mission_binding"), dict)
+            else None,
             "workspace": data.get("workspace"),
             "contract_type": data.get("contract_type"),
             "operation_type": data.get("operation_type"),

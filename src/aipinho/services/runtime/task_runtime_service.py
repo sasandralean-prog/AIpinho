@@ -22,6 +22,7 @@ from aipinho.services.runtime.supervised_execution_loop import SupervisedExecuti
 from aipinho.services.runtime.task_queue_service import TaskQueueService
 from aipinho.services.runtime.task_run_audit_service import TaskRunAuditService
 from aipinho.services.runtime.task_bootstrap_runtime_service import TaskBootstrapRuntimeService
+from aipinho.services.runtime.mission_contract_service import MissionContractService
 from aipinho.services.runtime.runtime_timeline_service import RuntimeTimelineService
 from aipinho.services.runtime.workflow_runtime_service import WorkflowRuntimeService
 from aipinho.services.runtime.runtime_truth_engine import RuntimeTruthEngine
@@ -156,6 +157,7 @@ class TaskRuntimeService:
         self.engineering_autopilot = engineering_autopilot or EngineeringAutopilotService()
         self.tool_governance = ToolGovernanceService()
         self.bootstrap = TaskBootstrapRuntimeService(store=self.store)
+        self.missions = MissionContractService()
         self.timeline = RuntimeTimelineService(store=self.store)
         self.workflows = WorkflowRuntimeService()
         self.truth = RuntimeTruthEngine()
@@ -168,8 +170,34 @@ class TaskRuntimeService:
         )
         self.execution_plan_promotion = ExecutionPlanPromotionService()
 
+    def _mission_contract_for_request(
+        self,
+        request: TaskRunRequest,
+        *,
+        reserved_run: TaskRun | None = None,
+    ):
+        if reserved_run is not None and reserved_run.mission_contract is not None:
+            reserved = reserved_run.mission_contract
+            if (
+                request.mission_contract is not None
+                and request.mission_contract.authority_sha256 != reserved.authority_sha256
+            ):
+                raise ValueError("task_run_reservation_mission_contract_mismatch")
+            if not self.missions.verify(reserved):
+                raise ValueError("mission_contract_authority_hash_invalid")
+            return reserved
+
+        inherited = None
+        if request.parent_task_id:
+            parent = self.store.get_run_by_task_id(request.parent_task_id)
+            if parent is not None and parent.mission_contract is not None:
+                inherited = parent.mission_contract
+        return self.missions.resolve_for_request(request, inherited=inherited)
+
     def reserve_run(self, request: TaskRunRequest) -> TaskRun:
         """Persist immutable TaskRun identity before planning or enrichment."""
+        mission_contract = self._mission_contract_for_request(request)
+        mission_binding = mission_contract.binding()
         effective_operation_type = str(
             request.operation_type
             or request.intent_map.get("operation_type")
@@ -179,6 +207,9 @@ class TaskRuntimeService:
         bootstrap = self.bootstrap.bootstrap(
             TaskBootstrapRequest(
                 session_id=request.session_id,
+                source_message_id=mission_contract.source_message_id,
+                mission_id=mission_contract.mission_id,
+                mission_binding=mission_binding,
                 workspace=request.workspace,
                 contract_type=request.contract_type,
                 operation_type=effective_operation_type,
@@ -216,6 +247,9 @@ class TaskRuntimeService:
             preview_id=request.preview_id,
             approval_id=request.approval_id,
             session_id=request.session_id,
+            source_message_id=mission_contract.source_message_id,
+            mission_contract=mission_contract,
+            mission_binding=mission_binding,
             workspace=request.workspace,
             contract_type=request.contract_type,
             operation_type=effective_operation_type,
@@ -237,6 +271,15 @@ class TaskRuntimeService:
             policy_snapshot=self.store.sanitize(request.policy_decision),
             context_injection_plan_id=request.context_injection_plan_id,
             auto_run_requested=bool(request.start_immediately),
+            trace=[
+                self.trace.item(
+                    "mission_contract_frozen",
+                    "ready",
+                    "mission_contract_bound_before_planning",
+                    source="services/runtime/mission_contract_service.py",
+                    data=mission_binding.model_dump(mode="json"),
+                )
+            ],
         )
         self.store.create_run(run)
         self.events.create(
@@ -252,6 +295,9 @@ class TaskRuntimeService:
                 "workspace_id": run.workspace_id,
                 "project_id": run.project_id,
                 "parent_task_id": run.parent_task_id,
+                "mission_id": mission_binding.mission_id,
+                "mission_authority_sha256": mission_binding.authority_sha256,
+                "mission_revision": mission_binding.revision,
                 "workflow_id": None,
                 "contract_type": run.contract_type,
                 "auto_run_requested": run.auto_run_requested,
@@ -270,6 +316,9 @@ class TaskRuntimeService:
                 "runtime_profile": run.runtime_profile,
                 "workspace_id": run.workspace_id,
                 "project_id": run.project_id,
+                "mission_id": mission_binding.mission_id,
+                "mission_authority_sha256": mission_binding.authority_sha256,
+                "mission_revision": mission_binding.revision,
                 "current_phase": run.current_phase,
                 "workflow_id": None,
                 "parent_task_id": run.parent_task_id,
@@ -288,6 +337,11 @@ class TaskRuntimeService:
                 raise ValueError("task_run_reservation_operation_mismatch")
             if request.task_id != reserved_run.task_id:
                 raise ValueError("task_run_reservation_task_mismatch")
+        mission_contract = self._mission_contract_for_request(
+            request,
+            reserved_run=reserved_run,
+        )
+        mission_binding = mission_contract.binding()
         requested_start = bool(request.start_immediately)
         plan = self.planner.plan(request)
         runtime_profile = str(plan.metadata.get("runtime_profile") or request.runtime_profile or "") or None
@@ -308,6 +362,9 @@ class TaskRuntimeService:
         bootstrap = self.bootstrap.bootstrap(
             TaskBootstrapRequest(
                 session_id=request.session_id,
+                source_message_id=mission_contract.source_message_id,
+                mission_id=mission_contract.mission_id,
+                mission_binding=mission_binding,
                 workspace=effective_workspace,
                 contract_type=request.contract_type,
                 operation_type=effective_operation_type,
@@ -345,6 +402,9 @@ class TaskRuntimeService:
             preview_id=request.preview_id,
             approval_id=request.approval_id,
             session_id=request.session_id,
+            source_message_id=mission_contract.source_message_id,
+            mission_contract=mission_contract,
+            mission_binding=mission_binding,
             workspace=effective_workspace,
             contract_type=request.contract_type,
             operation_type=effective_operation_type,
@@ -377,7 +437,16 @@ class TaskRuntimeService:
                 if requested_start and not self.queue.auto_run_enabled
                 else []
             ),
-            trace=list(plan.trace),
+            trace=[
+                self.trace.item(
+                    "mission_contract_frozen",
+                    "ready",
+                    "mission_contract_bound_before_planning",
+                    source="services/runtime/mission_contract_service.py",
+                    data=mission_binding.model_dump(mode="json"),
+                ),
+                *list(plan.trace),
+            ],
         )
         if run.plan.canonical_execution_plan is None:
             candidate = self.execution_plan_promotion.candidate_from_task_run_plan(
@@ -640,6 +709,9 @@ class TaskRuntimeService:
                     "workspace_id": run.workspace_id,
                     "project_id": run.project_id,
                     "parent_task_id": run.parent_task_id,
+                    "mission_id": mission_binding.mission_id,
+                    "mission_authority_sha256": mission_binding.authority_sha256,
+                    "mission_revision": mission_binding.revision,
                     "workflow_id": run.workflow.workflow_id if run.workflow else None,
                     "contract_type": run.contract_type,
                     "auto_run_requested": run.auto_run_requested,
@@ -657,6 +729,9 @@ class TaskRuntimeService:
                     "runtime_profile": run.runtime_profile,
                     "workspace_id": run.workspace_id,
                     "project_id": run.project_id,
+                    "mission_id": mission_binding.mission_id,
+                    "mission_authority_sha256": mission_binding.authority_sha256,
+                    "mission_revision": mission_binding.revision,
                     "current_phase": run.current_phase,
                     "workflow_id": run.workflow.workflow_id if run.workflow else None,
                     "parent_task_id": run.parent_task_id,

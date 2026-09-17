@@ -11,6 +11,7 @@ from aipinho.schemas.runtime.workspace_context import ExecutionContext, Retrieva
 from aipinho.schemas.runtime.task_run_state import TaskRunStatus
 from aipinho.schemas.runtime.task_run_trace import TaskRunTraceItem
 from aipinho.schemas.runtime.task_block_cause import TaskBlockCause
+from aipinho.schemas.runtime.mission_contract import MissionContract, MissionContractBinding
 
 class TaskRun(AIpinhoModel):
     run_id: str
@@ -28,6 +29,9 @@ class TaskRun(AIpinhoModel):
     preview_id: str | None = None
     approval_id: str | None = None
     session_id: str | None = None
+    source_message_id: str | None = None
+    mission_contract: MissionContract | None = None
+    mission_binding: MissionContractBinding | None = None
     workspace: str | None = None
     contract_type: str = "readonly_analysis"
     operation_type: str | None = None

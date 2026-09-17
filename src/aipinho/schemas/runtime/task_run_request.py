@@ -3,6 +3,7 @@ from typing import Any, Literal
 from pydantic import Field
 from aipinho.schemas.common.actor import Actor
 from aipinho.schemas.common.base import AIpinhoModel
+from aipinho.schemas.runtime.mission_contract import MissionContract
 
 TaskRunSourceType = Literal["draft", "preview", "direct"]
 
@@ -18,6 +19,8 @@ class TaskRunRequest(AIpinhoModel):
     draft_id: str | None = None
     preview_id: str | None = None
     session_id: str | None = None
+    source_message_id: str | None = None
+    mission_contract: MissionContract | None = None
     workspace: str | None = None
     contract_type: str = "readonly_analysis"
     operation_type: str | None = None
