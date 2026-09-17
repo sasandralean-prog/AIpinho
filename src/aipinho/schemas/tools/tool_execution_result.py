@@ -5,6 +5,7 @@ from typing import Any, Literal
 from pydantic import Field
 
 from aipinho.schemas.common.base import AIpinhoModel
+from aipinho.schemas.governance.lifecycle import CanonicalPolicyDecision
 
 ToolExecutionStatus = Literal["executed_readonly", "executed_governed", "blocked", "invalid", "degraded", "timeout"]
 
@@ -26,3 +27,4 @@ class ToolExecutionResult(AIpinhoModel):
     trace: list[dict[str, Any]] = Field(default_factory=list)
     side_effects: bool = False
     safe_to_execute: bool = False
+    canonical_policy_decision: CanonicalPolicyDecision | None = None

@@ -366,6 +366,25 @@ class TaskRunGuard:
                     )
                 )
 
+        shell_plan = run.intent_map.get("shell_plan") if isinstance(run.intent_map, dict) else None
+        shell_category = str(shell_plan.get("shell_category") or "") if isinstance(shell_plan, dict) else ""
+        if action == "run_command" and shell_category in {"git_write_shell", "network_shell"}:
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="global_policy",
+                    permission=CanonicalPermission.DENIED,
+                    source="m5_ambiguous_external_shell_boundary",
+                    reason_code=(
+                        "git_write_requires_granular_classification"
+                        if shell_category == "git_write_shell"
+                        else "network_shell_requires_granular_classification"
+                    ),
+                    capability=capability,
+                    resource_id=resource_id,
+                    details={"shell_category": shell_category},
+                )
+            )
+
         denied_capabilities = set(run.policy_snapshot.get("denied_capabilities", []) or [])
         if capability in denied_capabilities:
             facets.append(

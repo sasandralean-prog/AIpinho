@@ -182,3 +182,77 @@ def test_guard_and_gateway_agree_on_missing_human_authority(tmp_path: Path) -> N
     assert not any(item.facet == "human_authority" and item.permission == CanonicalPermission.ALLOWED for item in gateway_result.canonical_policy_decision.facets)
     assert gateway_result.status in {"blocked", "approval_required"}
     assert existing.read_text(encoding="utf-8") == "old"
+
+
+def _shell_guard_run(target: Path, contract, shell_category: str):
+    run = runtime_run(
+        action="run_command",
+        contract_type="shell",
+        operation_type="shell_execute",
+        runtime_profile="shell",
+        workspace=str(target),
+        policy={
+            "status": "needs_approval",
+            "allowed_actions": ["run_command"],
+            "denied_actions": [],
+            "approval_required_for": ["run_command"],
+        },
+    )
+    run.intent_map = {
+        "intent_type": "shell_execute",
+        "shell_plan": {"shell_category": shell_category},
+    }
+    run.mission_contract = contract
+    run.mission_binding = contract.binding()
+    return run
+
+
+def test_guard_and_gateway_deny_ambiguous_external_shells(tmp_path: Path) -> None:
+    target = tmp_path / "dynamic_target"
+    target.mkdir()
+    contract = local_contract(
+        target,
+        [_resource(target, "target_mutable", ["read_file", "script_execution"])],
+    )
+    expected = {
+        "git_write_shell": "git_write_requires_granular_classification",
+        "network_shell": "network_shell_requires_granular_classification",
+    }
+
+    for index, (category, reason_code) in enumerate(expected.items(), start=1):
+        guard = TaskRunGuard().check_run(
+            _shell_guard_run(target, contract, category)
+        )
+        canonical_guard = next(
+            item
+            for item in guard.canonical_policy_decisions
+            if item.capability == "script_execution"
+        )
+        assert canonical_guard.permission == CanonicalPermission.DENIED
+        assert reason_code in {item.reason_code for item in canonical_guard.facets}
+
+        task_store = TaskRunStore(root=tmp_path / f"task_runs_{index}")
+        task_run = _gateway_task_run(
+            target,
+            contract,
+            run_id=f"task_run_e5e5e5e{index}",
+        )
+        task_store.create_run(task_run)
+        gateway, agent_run = _dynamic_gateway(tmp_path / f"gateway_{index}", task_store)
+        result = gateway.invoke(
+            "aipinho",
+            agent_run.run_id,
+            "run_shell",
+            ToolInvocationCreateRequest(
+                path_ref=str(target),
+                input={
+                    "argv": ["echo", category],
+                    "cwd": str(target),
+                    "shell_category": category,
+                },
+            ),
+            task_run_id=task_run.run_id,
+        )
+        assert result.status == "blocked"
+        assert result.canonical_policy_decision is not None
+        assert result.canonical_policy_decision.permission == CanonicalPermission.DENIED

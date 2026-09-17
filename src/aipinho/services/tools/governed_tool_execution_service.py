@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import shlex
 import subprocess
 import time
@@ -17,10 +16,20 @@ from aipinho.core.paths import PATHS
 from aipinho.schemas.approvals.approval_policy_snapshot import ApprovalPolicySnapshot
 from aipinho.schemas.approvals.approval_request import ApprovalRequest
 from aipinho.schemas.common.actor import Actor
+from aipinho.schemas.governance.lifecycle import (
+    CanonicalOperationContract,
+    CanonicalPermission,
+    CanonicalPolicyFacet,
+)
 from aipinho.schemas.tools.tool_definition import ToolDefinition
 from aipinho.schemas.tools.tool_execution import ToolExecutionRequest
 from aipinho.schemas.tools.tool_execution_result import ToolExecutionResult
 from aipinho.services.approvals.approval_service import ApprovalService
+from aipinho.services.governance.policy.effective_policy_decision_service import EffectivePolicyDecisionService
+from aipinho.services.policy_kernel.authority_grant_service import AuthorityGrantService
+from aipinho.services.policy_kernel.workspace_role_contract_service import WorkspaceRoleContractService
+from aipinho.services.runtime.mission_contract_service import MissionContractService
+from aipinho.services.runtime.task_run_store import TaskRunStore
 from aipinho.services.session.session_store import utc_now
 from aipinho.services.tools.execution_audit_service import ExecutionAuditService
 from aipinho.services.tools.shell_command_policy_service import ShellCommandPolicyService
@@ -40,6 +49,10 @@ class GovernedToolExecutionService:
         opener=urlopen,
         shell_policy: ShellCommandPolicyService | None = None,
         write_envelopes: WriteCapabilityEnvelopeService | None = None,
+        task_runs: TaskRunStore | None = None,
+        authority_grants: AuthorityGrantService | None = None,
+        effective_policy: EffectivePolicyDecisionService | None = None,
+        workspace_roles: WorkspaceRoleContractService | None = None,
     ) -> None:
         self.registry = registry or ToolRegistryService().load()
         self.approvals = approvals or ApprovalService()
@@ -49,14 +62,32 @@ class GovernedToolExecutionService:
         self.runner = runner
         self.opener = opener
         self.shell_policy = shell_policy or ShellCommandPolicyService(policy_path=self.policy_path)
-        self.write_envelopes = write_envelopes or WriteCapabilityEnvelopeService()
+        self.effective_policy = effective_policy or EffectivePolicyDecisionService()
+        self.workspace_roles = workspace_roles or WorkspaceRoleContractService().load()
+        self.write_envelopes = write_envelopes or WriteCapabilityEnvelopeService(
+            workspace_roles=self.workspace_roles,
+            effective_policy=self.effective_policy,
+        )
+        self.task_runs = task_runs or TaskRunStore()
+        self.authority_grants = authority_grants or AuthorityGrantService()
+        self.missions = MissionContractService()
 
     def request_approval(self, request: ToolExecutionRequest) -> dict[str, object]:
         decision = self._decision(request)
-        if not decision["allowed"]:
+        canonical = decision.get("canonical_policy")
+        if canonical is None or self._canonical_hard_blocked(canonical):
             result = self._result_from_decision(request, decision)
             self.audit.record(result)
             return {"status": result.status, "result": result}
+        if canonical.permission == CanonicalPermission.ALLOWED:
+            return {
+                "status": "authorized",
+                "approval": None,
+                "tool_execution_request_id": request.tool_execution_request_id,
+                "request_fingerprint": self._request_fingerprint(request),
+                "safe_to_execute_after_approval": True,
+                "canonical_policy": canonical,
+            }
 
         tool = decision["tool"]
         assert isinstance(tool, ToolDefinition)
@@ -77,15 +108,13 @@ class GovernedToolExecutionService:
             created_at=now.isoformat(),
             updated_at=now.isoformat(),
             created_by=request.requested_by or Actor(type="user", id="local_user"),
-            trace=[
-                {
-                    "stage": "governed_tool_approval",
-                    "decision": "pending",
-                    "reason": "approval_required_before_execution",
-                    "tool_id": tool.tool_id,
-                    "action": tool.action,
-                }
-            ],
+            trace=[{
+                "stage": "governed_tool_approval",
+                "decision": "pending",
+                "reason": "approval_required_before_execution",
+                "tool_id": tool.tool_id,
+                "action": tool.action,
+            }],
             execution_status="not_executed",
         )
         self.approvals.store.save(approval)
@@ -101,17 +130,18 @@ class GovernedToolExecutionService:
             "tool_execution_request_id": request.tool_execution_request_id,
             "request_fingerprint": self._request_fingerprint(request),
             "safe_to_execute_after_approval": True,
+            "canonical_policy": canonical,
         }
 
     def preview_decision(self, request: ToolExecutionRequest) -> dict[str, Any]:
-        """Evaluate a governed tool request without executing or creating approval."""
         decision = self._decision(request)
         tool = decision.get("tool")
+        canonical = decision.get("canonical_policy")
         return {
-            "allowed": bool(decision.get("allowed")),
+            "allowed": bool(canonical is not None and canonical.permission == CanonicalPermission.ALLOWED),
             "tool_id": tool.tool_id if isinstance(tool, ToolDefinition) else request.tool_id,
             "action": tool.action if isinstance(tool, ToolDefinition) else None,
-            "capability": tool.capability if isinstance(tool, ToolDefinition) else None,
+            "capability": decision.get("canonical_capability") or (tool.capability if isinstance(tool, ToolDefinition) else None),
             "violations": list(decision.get("violations", [])),
             "warnings": list(decision.get("warnings", [])),
             "trace": list(decision.get("trace", [])),
@@ -120,22 +150,34 @@ class GovernedToolExecutionService:
                 if hasattr(decision.get("shell_classification"), "model_dump")
                 else None
             ),
+            "canonical_policy": (
+                canonical.model_dump(mode="json") if canonical is not None else None
+            ),
         }
 
     def execute(self, request: ToolExecutionRequest) -> ToolExecutionResult:
         execution_id = f"exec_{uuid4().hex}"
         decision = self._decision(request)
-        if not decision["allowed"]:
+        canonical = decision.get("canonical_policy")
+        if canonical is None or self._canonical_hard_blocked(canonical):
             result = self._result_from_decision(request, decision, execution_id=execution_id)
             self.audit.record(result)
             return result
-
-        approval_error = self._approval_error(request, decision)
-        if approval_error:
-            decision["violations"].append(approval_error)
+        if canonical.permission == CanonicalPermission.ASK:
+            if request.approval_id:
+                decision["violations"].append("approval_not_effective")
+            else:
+                decision["violations"].append("approval_id_required")
             result = self._result_from_decision(request, decision, execution_id=execution_id)
             self.audit.record(result)
             return result
+        if decision.get("uses_mission_authority"):
+            authority_error = self._consume_mission_authority(request, decision)
+            if authority_error:
+                decision["violations"].append(authority_error)
+                result = self._result_from_decision(request, decision, execution_id=execution_id)
+                self.audit.record(result)
+                return result
 
         tool = decision["tool"]
         assert isinstance(tool, ToolDefinition)
@@ -156,54 +198,280 @@ class GovernedToolExecutionService:
         violations: list[str] = []
         warnings: list[str] = []
         trace: list[dict[str, Any]] = []
+        task_run = None
+        if request.task_run_id:
+            task_run = self.task_runs.get_run(request.task_run_id)
+            if task_run is None:
+                violations.append("canonical_task_run_not_found")
+            elif task_run.mission_contract is None or not self.missions.verify(task_run.mission_contract):
+                violations.append("canonical_task_run_mission_contract_invalid")
+
+        global_errors: list[str] = []
         if not config.get("enabled", False):
-            violations.append("governed_tool_execution_disabled")
+            global_errors.append("governed_tool_execution_disabled")
         if request.mode != "governed":
-            violations.append("mode_not_governed")
+            global_errors.append("mode_not_governed")
         if tool is None:
-            violations.append("unknown_tool")
-            return {"allowed": False, "tool": None, "violations": violations, "warnings": warnings, "trace": trace}
+            global_errors.append("unknown_tool")
+            violations.extend(global_errors)
+            return {
+                "allowed": False,
+                "tool": None,
+                "violations": list(dict.fromkeys(violations)),
+                "warnings": warnings,
+                "trace": trace,
+                "canonical_policy": None,
+            }
         if not tool.enabled:
-            violations.append("disabled_tool")
+            global_errors.append("disabled_tool")
         if not tool.execute_supported:
-            violations.append("execute_not_supported")
+            global_errors.append("execute_not_supported")
         if not tool.requires_approval:
-            violations.append("approval_required_for_governed_execution")
+            global_errors.append("approval_required_for_governed_execution")
         if tool.action not in set(config.get("allowed_actions", []) or []):
-            violations.append("action_not_allowed_for_governed_execution")
+            global_errors.append("action_not_allowed_for_governed_execution")
         if tool.action in set(config.get("denied_actions", []) or []):
-            violations.append("action_denied_for_governed_execution")
+            global_errors.append("action_denied_for_governed_execution")
         if tool.capability not in set(config.get("allowed_capabilities", []) or []):
-            violations.append("capability_not_allowed_for_governed_execution")
+            global_errors.append("capability_not_allowed_for_governed_execution")
         if tool.capability in set(config.get("denied_capabilities", []) or []):
-            violations.append("capability_denied_for_governed_execution")
+            global_errors.append("capability_denied_for_governed_execution")
+        violations.extend(global_errors)
+
+        workspace = str(request.input.get("workspace") or "")
+        local_resources = (
+            list(task_run.mission_contract.local_resources)
+            if task_run is not None and task_run.mission_contract is not None
+            else []
+        )
+        role_decision = None
+        workspace_error = None
         if tool.action in set(config.get("workspace_required_for", []) or []):
-            workspace_error = self._workspace_error(str(request.input.get("workspace") or ""))
+            workspace_error, role_decision = self._workspace_error(
+                workspace,
+                local_resources=local_resources,
+                mission_bound=task_run is not None,
+            )
             if workspace_error:
                 violations.append(workspace_error)
-        shell_decision: dict[str, Any] | None = None
+
+        shell_decision = None
         if tool.adapter == "shell" and tool.action == "run_command":
             shell_decision = self._shell_decision(request)
             trace.extend(shell_decision["trace"])
             warnings.extend(shell_decision["warnings"])
             violations.extend(shell_decision["violations"])
-        trace.append(
-            {
-                "stage": "governed_tool_policy",
-                "decision": "blocked" if violations else "allowed",
-                "action": tool.action,
-                "capability": tool.capability,
-                "requires_approval": tool.requires_approval,
-            }
+
+        capability = self._canonical_capability(tool, shell_decision)
+        resource_id = (
+            role_decision.contract.workspace_id
+            if role_decision is not None and role_decision.contract is not None
+            else None
         )
+        approval_valid = False
+        approval_error = None
+        if request.approval_id:
+            approval_error = self._approval_error(request, {"tool": tool})
+            approval_valid = approval_error is None
+        mission_authority = self._mission_authority_decision(
+            task_run,
+            capability=capability,
+            workspace=workspace or None,
+            resource_id=resource_id,
+            consume=False,
+        )
+        mission_authority_ready = bool(
+            mission_authority is not None
+            and mission_authority.reason_code == "grant_effective"
+        )
+        human_authority_effective = approval_valid or mission_authority_ready
+
+        facets: list[CanonicalPolicyFacet] = [
+            CanonicalPolicyFacet(
+                facet="capability_demand",
+                permission=CanonicalPermission.ALLOWED,
+                source="governed_tool_execution",
+                reason_code="capability_requested",
+                capability=capability,
+                resource_id=resource_id,
+            ),
+            CanonicalPolicyFacet(
+                facet="governed_tool_policy",
+                permission=(CanonicalPermission.DENIED if global_errors else CanonicalPermission.ALLOWED),
+                source="governed_tool_execution_policy",
+                reason_code=(global_errors[0] if global_errors else "governed_tool_policy_allowed"),
+                capability=capability,
+                resource_id=resource_id,
+                details={"violations": global_errors},
+            ),
+        ]
+        if tool.action in set(config.get("workspace_required_for", []) or []):
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="workspace_resolution",
+                    permission=(CanonicalPermission.DENIED if workspace_error else CanonicalPermission.ALLOWED),
+                    source="workspace_role_contract",
+                    reason_code=workspace_error or "workspace_allowed",
+                    capability=capability,
+                    resource_id=resource_id,
+                )
+            )
+
+        if shell_decision is not None:
+            classification = shell_decision["classification"]
+            shell_permission = (
+                CanonicalPermission.DENIED
+                if classification.policy_decision == "blocked"
+                else CanonicalPermission.ASK
+                if classification.policy_decision == "approval_required"
+                else CanonicalPermission.ALLOWED
+            )
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="shell_policy",
+                    permission=shell_permission,
+                    source="shell_command_policy",
+                    reason_code=f"shell_category:{classification.category}",
+                    capability=capability,
+                    resource_id=resource_id,
+                    requires_human_authority=(shell_permission == CanonicalPermission.ASK),
+                    details={"category": classification.category},
+                    trace=list(classification.trace),
+                )
+            )
+            if classification.category in {"git_write_shell", "network_shell"}:
+                facets.append(
+                    CanonicalPolicyFacet(
+                        facet="global_policy",
+                        permission=CanonicalPermission.DENIED,
+                        source="m5_ambiguous_external_shell_boundary",
+                        reason_code=(
+                            "git_write_requires_granular_classification"
+                            if classification.category == "git_write_shell"
+                            else "network_shell_requires_granular_classification"
+                        ),
+                        capability=capability,
+                        resource_id=resource_id,
+                        details={"shell_category": classification.category},
+                    )
+                )
+
+            operation_type = shell_decision.get("operation_type")
+            if operation_type:
+                envelope_decision = self.write_envelopes.create(
+                    task_id=request.task_run_id or request.draft_id or request.tool_execution_request_id,
+                    session_id=request.session_id,
+                    workspace_path=workspace,
+                    target_path=workspace,
+                    operation_type=operation_type,
+                    preview_id=request.preview_id,
+                    approval_id=(request.approval_id if approval_valid else None),
+                    expected_side_effects=classification.expected_side_effects,
+                    risk_score=classification.risk_score,
+                    actor="governed_tool_execution",
+                    local_resources=local_resources,
+                    human_authority_effective=mission_authority_ready,
+                )
+                shell_decision["envelope_decision"] = envelope_decision
+                facets.extend(envelope_decision.canonical_policy_decision.facets if envelope_decision.canonical_policy_decision else [])
+                if envelope_decision.canonical_policy_decision is not None:
+                    if envelope_decision.canonical_policy_decision.permission == CanonicalPermission.DENIED:
+                        violations.extend(envelope_decision.envelope.blocking_reasons)
+
+        facets.append(
+            CanonicalPolicyFacet(
+                facet="tool_human_authority_requirement",
+                permission=CanonicalPermission.ASK,
+                source="governed_tool_execution_policy",
+                reason_code="approval_required_before_execution",
+                capability=capability,
+                resource_id=resource_id,
+                requires_human_authority=True,
+            )
+        )
+        if approval_valid:
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="human_authority",
+                    permission=CanonicalPermission.ALLOWED,
+                    source="approved_execution_binding",
+                    reason_code="approval_binding_valid",
+                    capability=capability,
+                    resource_id=resource_id,
+                )
+            )
+        elif request.approval_id and approval_error:
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="human_authority",
+                    permission=CanonicalPermission.DENIED,
+                    source="approval_service",
+                    reason_code=approval_error,
+                    capability=capability,
+                    resource_id=resource_id,
+                )
+            )
+        if mission_authority_ready:
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="human_authority",
+                    permission=CanonicalPermission.ALLOWED,
+                    source="mission_authority_grant",
+                    reason_code="grant_effective",
+                    capability=capability,
+                    resource_id=resource_id,
+                )
+            )
+
+        contract = CanonicalOperationContract(
+            session_id=request.session_id,
+            source_channel="governed_tool_execution",
+            intent_type=str(tool.action),
+            operation_type=str(tool.action),
+            contract_type="governed_tool_execution",
+            runtime_profile="governed_tool_execution",
+            requires_task=task_run is not None,
+            workspace_mutation=bool(tool.side_effect and tool.adapter != "web"),
+            requested_actions=[tool.action],
+            workspace_path=workspace or None,
+            risk_level=str(tool.risk_level or "low"),
+        )
+        canonical = self.effective_policy.resolve_facets(
+            contract,
+            facets=facets,
+            capability=capability,
+            resource_id=resource_id,
+        )
+        trace.extend(canonical.trace)
+        trace.append({
+            "stage": "governed_tool_policy",
+            "decision": canonical.permission.value,
+            "action": tool.action,
+            "capability": capability,
+            "requires_approval": canonical.requires_approval,
+        })
+        if canonical.permission == CanonicalPermission.DENIED and not violations:
+            blocking = next(
+                (item for item in canonical.facets if item.permission == CanonicalPermission.DENIED),
+                None,
+            )
+            if blocking is not None and blocking.reason_code:
+                violations.append(str(blocking.reason_code))
         return {
-            "allowed": not violations,
+            "allowed": canonical.permission in {CanonicalPermission.ALLOWED, CanonicalPermission.ASK},
             "tool": tool,
             "violations": list(dict.fromkeys(violations)),
             "warnings": list(dict.fromkeys(warnings)),
             "trace": trace,
             "shell_classification": shell_decision.get("classification") if shell_decision else None,
             "write_envelope": shell_decision.get("envelope_decision").envelope if shell_decision and shell_decision.get("envelope_decision") else None,
+            "canonical_policy": canonical,
+            "canonical_capability": capability,
+            "resource_id": resource_id,
+            "task_run": task_run,
+            "mission_authority_ready": mission_authority_ready,
+            "approval_valid": approval_valid,
+            "uses_mission_authority": mission_authority_ready and not approval_valid,
         }
 
     def _shell_decision(self, request: ToolExecutionRequest) -> dict[str, Any]:
@@ -211,54 +479,29 @@ class GovernedToolExecutionService:
         argv = request.input.get("argv")
         command = str(request.input.get("command") or "")
         normalized_argv = [str(item) for item in argv] if isinstance(argv, list) else None
-        classification = self.shell_policy.classify(argv=normalized_argv, command=command, working_dir=workspace)
+        classification = self.shell_policy.classify(
+            argv=normalized_argv,
+            command=command,
+            working_dir=workspace,
+        )
         violations: list[str] = []
         warnings: list[str] = []
         if classification.policy_decision == "blocked":
             violations.append(f"shell_category_blocked:{classification.category}")
         elif classification.policy_decision == "approval_required":
             warnings.append(f"shell_category_requires_approval:{classification.category}")
-        envelope_decision = None
-        operation_type = self._operation_type_for_shell_category(classification.category)
-        if operation_type:
-            envelope_decision = self.write_envelopes.create(
-                task_id=request.draft_id or request.tool_execution_request_id,
-                session_id=request.session_id,
-                workspace_path=workspace,
-                target_path=workspace,
-                operation_type=operation_type,
-                preview_id=request.preview_id,
-                approval_id=request.approval_id,
-                expected_side_effects=classification.expected_side_effects,
-                risk_score=classification.risk_score,
-                actor="governed_tool_execution",
-            )
-            if not envelope_decision.allowed:
-                violations.append(f"write_envelope:{envelope_decision.reason}")
-        trace = [
-            {
-                "stage": "shell_policy",
-                "decision": classification.policy_decision,
-                "command_id": classification.command_id,
-                "category": classification.category,
-                "risk_score": classification.risk_score,
-                "expected_side_effects": classification.expected_side_effects,
-            }
-        ]
-        if envelope_decision is not None:
-            trace.append(
-                {
-                    "stage": "write_capability_envelope",
-                    "decision": "allowed" if envelope_decision.allowed else "blocked",
-                    "operation_id": envelope_decision.envelope.operation_id,
-                    "workspace_id": envelope_decision.envelope.workspace_id,
-                    "workspace_role": envelope_decision.envelope.workspace_role,
-                    "reason": envelope_decision.reason,
-                }
-            )
+        trace = [{
+            "stage": "shell_policy",
+            "decision": classification.policy_decision,
+            "command_id": classification.command_id,
+            "category": classification.category,
+            "risk_score": classification.risk_score,
+            "expected_side_effects": classification.expected_side_effects,
+        }]
         return {
             "classification": classification,
-            "envelope_decision": envelope_decision,
+            "operation_type": self._operation_type_for_shell_category(classification.category),
+            "envelope_decision": None,
             "violations": violations,
             "warnings": warnings,
             "trace": trace,
@@ -274,6 +517,73 @@ class GovernedToolExecutionService:
             "package_shell": "run_shell_build",
             "write_shell": "run_shell_write",
         }.get(category)
+
+    @staticmethod
+    def _canonical_capability(tool: ToolDefinition, shell_decision: dict[str, Any] | None) -> str:
+        if shell_decision is not None:
+            category = str(shell_decision["classification"].category)
+            return {
+                "readonly_shell": "shell_readonly",
+                "git_read_shell": "shell_readonly",
+                "test_shell": "shell_test",
+                "build_shell": "shell_build",
+                "package_shell": "shell_build",
+                "write_shell": "script_execution",
+                "process_control_shell": "script_execution",
+                "network_shell": "network_download",
+                "git_write_shell": "git_write_ambiguous",
+                "unknown_shell": "script_execution",
+            }.get(category, str(tool.capability))
+        if tool.adapter == "web" and tool.action == "web_request":
+            return "network_download"
+        return str(tool.capability)
+
+    def _mission_authority_decision(
+        self,
+        task_run,
+        *,
+        capability: str,
+        workspace: str | None,
+        resource_id: str | None,
+        consume: bool,
+    ):
+        if task_run is None or task_run.mission_contract is None:
+            return None
+        return self.authority_grants.decision_for_contract(
+            task_run.mission_contract,
+            action=capability,
+            path=workspace,
+            resource_id=resource_id,
+            consume=consume,
+        )
+
+    def _consume_mission_authority(
+        self,
+        request: ToolExecutionRequest,
+        decision: dict[str, Any],
+    ) -> str | None:
+        consumed = self._mission_authority_decision(
+            decision.get("task_run"),
+            capability=str(decision.get("canonical_capability") or ""),
+            workspace=str(request.input.get("workspace") or "") or None,
+            resource_id=decision.get("resource_id"),
+            consume=True,
+        )
+        if consumed is None:
+            return "mission_authority_missing"
+        if consumed.reason_code != "grant_consumed":
+            return consumed.reason_code
+        return None
+
+    @staticmethod
+    def _canonical_hard_blocked(canonical) -> bool:
+        return canonical.permission in {
+            CanonicalPermission.DENIED,
+            CanonicalPermission.NEEDS_CLARIFICATION,
+            CanonicalPermission.INVALID,
+            CanonicalPermission.EXPIRED,
+            CanonicalPermission.STALE,
+        }
 
     def _approval_error(self, request: ToolExecutionRequest, decision: dict[str, Any]) -> str | None:
         if not request.approval_id:
@@ -339,6 +649,7 @@ class GovernedToolExecutionService:
                 trace=[*decision["trace"], {"stage": "shell_command_finished", "decision": "timeout"}],
                 side_effects=tool.side_effect,
                 safe_to_execute=False,
+            canonical_policy_decision=decision.get("canonical_policy"),
             )
         except Exception as exc:
             result = ToolExecutionResult(
@@ -355,6 +666,7 @@ class GovernedToolExecutionService:
                 trace=[*decision["trace"], {"stage": "shell_adapter", "decision": "failed"}],
                 side_effects=tool.side_effect,
                 safe_to_execute=False,
+            canonical_policy_decision=decision.get("canonical_policy"),
             )
             return result
         stdout = completed.stdout or ""
@@ -386,6 +698,7 @@ class GovernedToolExecutionService:
             ],
             side_effects=tool.side_effect,
             safe_to_execute=completed.returncode == 0,
+            canonical_policy_decision=decision.get("canonical_policy"),
         )
 
     @staticmethod
@@ -436,6 +749,7 @@ class GovernedToolExecutionService:
                 trace=[*decision["trace"], {"stage": "web_adapter", "decision": "failed"}],
                 side_effects=tool.side_effect,
                 safe_to_execute=False,
+            canonical_policy_decision=decision.get("canonical_policy"),
             )
         return ToolExecutionResult(
             execution_id=execution_id,
@@ -450,6 +764,7 @@ class GovernedToolExecutionService:
             trace=[*decision["trace"], {"stage": "web_adapter", "decision": "executed_governed", "http_status": status_code}],
             side_effects=tool.side_effect,
             safe_to_execute=True,
+            canonical_policy_decision=decision.get("canonical_policy"),
         )
 
     def _command_argv(self, payload: dict[str, Any]) -> tuple[list[str], str | None]:
@@ -507,20 +822,25 @@ class GovernedToolExecutionService:
             return "network_localhost_denied"
         return None
 
-    def _workspace_error(self, workspace: str) -> str | None:
+    def _workspace_error(
+        self,
+        workspace: str,
+        *,
+        local_resources: list,
+        mission_bound: bool,
+    ):
         if not workspace:
-            return "workspace_required"
-        workspace_path = Path(workspace).resolve(strict=False)
-        allowed = [
-            Path(str(item)).resolve(strict=False)
-            for item in (self.policy.get("governed_tool_execution", {}) or {}).get("allowed_workspace_roots", []) or []
-        ]
-        normalized_workspace = os.path.normcase(str(workspace_path))
-        for root in allowed:
-            normalized_root = os.path.normcase(str(root))
-            if normalized_workspace == normalized_root or normalized_workspace.startswith(normalized_root + os.sep):
-                return None
-        return "workspace_not_allowlisted_for_governed_execution"
+            return "workspace_required", None
+        decision = self.workspace_roles.resolve_with_resources(
+            workspace,
+            local_resources=local_resources,
+            required=True,
+        )
+        if mission_bound and decision.reason == "workspace_not_registered":
+            return "workspace_not_declared_by_mission", decision
+        if decision.status != "allowed" or decision.contract is None:
+            return decision.reason, decision
+        return None, decision
 
     def _timeout_seconds(self, request: ToolExecutionRequest) -> int:
         config = self.policy.get("governed_tool_execution", {}) if isinstance(self.policy, dict) else {}
@@ -560,6 +880,7 @@ class GovernedToolExecutionService:
             trace=list(decision.get("trace", [])),
             side_effects=bool(tool.side_effect) if isinstance(tool, ToolDefinition) else False,
             safe_to_execute=False,
+            canonical_policy_decision=decision.get("canonical_policy"),
         )
 
     def _policy_snapshot(self, request: ToolExecutionRequest, tool: ToolDefinition, decision: dict[str, Any]) -> ApprovalPolicySnapshot:
@@ -588,6 +909,7 @@ class GovernedToolExecutionService:
             "tool_id": request.tool_id,
             "input": request.input,
             "mode": "governed",
+            "task_run_id": request.task_run_id,
         }
         return hashlib.sha256(json.dumps(payload, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
 

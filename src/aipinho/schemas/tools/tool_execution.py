@@ -16,6 +16,7 @@ class ToolExecutionRequest(AIpinhoModel):
     tool_id: str
     input: dict[str, Any] = Field(default_factory=dict)
     session_id: str | None = None
+    task_run_id: str | None = None
     draft_id: str | None = None
     preview_id: str | None = None
     approval_id: str | None = None
