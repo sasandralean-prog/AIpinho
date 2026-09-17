@@ -34,6 +34,9 @@ class MissionResourceScope(AIpinhoModel):
     resource_type: MissionResourceType
     role: str | None = None
     locator: str | None = None
+    provider: str | None = None
+    normalized_identity: str | None = None
+    allowed_branches: list[str] = Field(default_factory=list)
     permissions: list[str] = Field(default_factory=list)
     constraints: list[MissionConstraint] = Field(default_factory=list)
     derived_from: str | None = None

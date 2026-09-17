@@ -35,13 +35,14 @@ class WorkspaceFixDiscoveryService:
         source_channel: str,
     ) -> WorkspaceFixDiscoveryExecution:
         resources = list(snapshot.intent.local_resources)
+        remote_resources = list(snapshot.intent.remote_resources)
         primary = self._primary_workspace(resources, workspace)
         if not primary:
             raise ValueError("workspace_fix_discovery_workspace_missing")
         requested_capabilities = sorted(
             {
                 permission
-                for resource in resources
+                for resource in [*resources, *remote_resources]
                 for permission in resource.permissions
             }
         )
@@ -71,6 +72,13 @@ class WorkspaceFixDiscoveryService:
                 "requested_capabilities": requested_capabilities,
                 "local_resources": [
                     resource.model_dump(mode="json") for resource in resources
+                ],
+                "remote_resources": [
+                    resource.model_dump(mode="json") for resource in remote_resources
+                ],
+                "negative_constraints": [
+                    constraint.model_dump(mode="json")
+                    for constraint in snapshot.intent.mission_constraints
                 ],
                 "semantic_intent_graph": semantic_graph,
                 "semantic_goal": request.message,

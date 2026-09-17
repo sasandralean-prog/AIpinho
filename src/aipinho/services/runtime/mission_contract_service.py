@@ -309,6 +309,8 @@ class MissionContractService:
                 parent.resource_type == child.resource_type
                 and parent.role == child.role
                 and parent.locator == child.locator
+                and parent.provider == child.provider
+                and parent.normalized_identity == child.normalized_identity
                 and parent.derived_from == child.derived_from
                 and parent.metadata == child.metadata
             )
@@ -316,6 +318,8 @@ class MissionContractService:
                 raise ValueError("mission_contract_child_changes_resource_identity")
             if not set(child.permissions).issubset(set(parent.permissions)):
                 raise ValueError("mission_contract_child_expands_resource_permissions")
+            if not set(child.allowed_branches).issubset(set(parent.allowed_branches)):
+                raise ValueError("mission_contract_child_expands_resource_branches")
             parent_constraints = {
                 self._stable_json(item.model_dump(mode="json"))
                 for item in parent.constraints
@@ -423,6 +427,7 @@ class MissionContractService:
             resource = resource.model_copy(
                 update={
                     "permissions": self._ordered_unique(resource.permissions),
+                    "allowed_branches": self._ordered_unique(resource.allowed_branches),
                     "constraints": sorted(
                         resource.constraints,
                         key=lambda constraint: constraint.constraint_id,

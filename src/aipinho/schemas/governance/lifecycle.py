@@ -8,7 +8,7 @@ from pydantic import Field
 
 from aipinho.schemas.common.base import AIpinhoModel
 from aipinho.schemas.intent.semantic_intent_graph import SemanticIntentGraph
-from aipinho.schemas.runtime.mission_contract import MissionExecutionMode, MissionResourceScope
+from aipinho.schemas.runtime.mission_contract import MissionConstraint, MissionExecutionMode, MissionResourceScope
 
 
 class GovernanceLifecycleState(str, Enum):
@@ -88,6 +88,8 @@ class CanonicalIntentDecision(AIpinhoModel):
     evidence: list[str] = Field(default_factory=list)
     semantic_intent_graph: SemanticIntentGraph = Field(default_factory=SemanticIntentGraph)
     local_resources: list[MissionResourceScope] = Field(default_factory=list)
+    remote_resources: list[MissionResourceScope] = Field(default_factory=list)
+    mission_constraints: list[MissionConstraint] = Field(default_factory=list)
     mission_execution_mode: MissionExecutionMode = "single_operation"
 
 

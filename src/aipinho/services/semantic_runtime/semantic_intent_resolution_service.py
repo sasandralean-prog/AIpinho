@@ -6,6 +6,7 @@ from aipinho.schemas.governance.lifecycle import CanonicalIntentDecision
 from aipinho.services.governance.intent.canonical_intent_router import CanonicalIntentRouter
 from aipinho.services.governance.intent.intent_normalizer import normalize_text
 from aipinho.services.governance.intent_local_resource_service import IntentLocalResourceService
+from aipinho.services.governance.intent_remote_repository_service import IntentRemoteRepositoryService
 from aipinho.services.orchestration.mission_execution_strategy_service import MissionExecutionStrategyService
 
 
@@ -61,10 +62,12 @@ class SemanticIntentResolutionService:
         self,
         router: CanonicalIntentRouter | None = None,
         local_resources: IntentLocalResourceService | None = None,
+        remote_resources: IntentRemoteRepositoryService | None = None,
         mission_strategy: MissionExecutionStrategyService | None = None,
     ) -> None:
         self.router = router or CanonicalIntentRouter()
         self.local_resources = local_resources or IntentLocalResourceService()
+        self.remote_resources = remote_resources or IntentRemoteRepositoryService()
         self.mission_strategy = mission_strategy or MissionExecutionStrategyService()
 
     def resolve(
@@ -106,6 +109,7 @@ class SemanticIntentResolutionService:
             workspace_hint=workspace_hint,
             semantic_graph=decision.semantic_intent_graph,
         )
+        remote = self.remote_resources.resolve(text)
         strategy = self.mission_strategy.resolve(
             prompt=text,
             semantic_graph=decision.semantic_intent_graph,
@@ -113,6 +117,8 @@ class SemanticIntentResolutionService:
         return decision.model_copy(
             update={
                 "local_resources": resources,
+                "remote_resources": remote.resources,
+                "mission_constraints": remote.mission_constraints,
                 "mission_execution_mode": strategy,
             }
         )
