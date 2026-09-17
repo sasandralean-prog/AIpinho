@@ -262,7 +262,7 @@ These invariants apply to every sprint in this wave:
 | M2 | Dynamic Local Resource Scopes | CLOSED | M1 |
 | M3 | Dynamic Remote Repository Scopes | CLOSED | M1, M2 vocabulary |
 | M4 | Explicit Human Authority / Mission Grants | CLOSED | M1–M3 |
-| M5 | Unified Capability and Policy Kernel | PLANNED | M1–M4 |
+| M5 | Unified Capability and Policy Kernel | CLOSED | M1–M4 |
 | M6 | Governed Git and Network Execution | PLANNED | M3–M5 |
 | M7 | Mission Staging and Derived Resources | PLANNED | M2, M3, M6 |
 | M8 | Mission Continuation Engine | PLANNED | M1–M7 |
@@ -283,7 +283,7 @@ No sprint is considered complete because code was written. Completion requires i
 - broader runtime/semantic regression: `92 passed / 1 failed`; the single failure (`test_service_waits_for_approval_when_policy_requires_apply_patch`) reproduces unchanged on baseline `630d454f` from an unregistered detached worktree and is not an M1 regression;
 - integration note: callers that do not yet supply a persistent `source_message_id` receive a deterministic synthetic source reference. Public ingress should bind the real persistent message identity as mission bootstrap is consolidated in later sprints.
 
-Next sprint: **M5 - Unified Capability and Policy Kernel**.
+Next sprint: **M2 - Dynamic Local Resource Scopes**.
 
 ### M2 closure evidence - 2026-09-17
 
@@ -330,6 +330,25 @@ Next sprint: **M5 - Unified Capability and Policy Kernel**.
 - newly enforced invariant: requested capability is not human authority, and explicit authority cannot override stronger resource/global policy.
 
 Next sprint: **M5 - Unified Capability and Policy Kernel**.
+
+
+### M5 closure evidence - 2026-09-17
+
+- validated implementation/main SHA: `75baa3551a1520ebc62ba985dbedbf3a1eae71f6`;
+- checkpoint chain: M5-A `0f51c451`, M5-B.1 `0caea0ac`, M5-B.2 `1977d39c`, M5-C.1 `5c2101cf`, M5-C.2 `75baa355`;
+- `CanonicalPolicyDecision` now composes capability demand, resource permission, human authority, runtime/global policy, profile/tool policy and execution-envelope facets;
+- TaskRunGuard, Agent Tool Gateway, WriteCapabilityEnvelope and GovernedToolExecution now expose/consume the same canonical verdict instead of independently authorizing execution;
+- explicit mission authority can satisfy only ASK facets for the same capability/resource; DENIED/INVALID/STALE/EXPIRED facets remain non-overridable;
+- GovernedToolExecution accepts `task_run_id`, resolves the canonical TaskRun/MissionContract, honors dynamic workspace resources and uses the central workspace-role registry as legacy fallback;
+- the duplicate governed-tool `allowed_workspace_roots` project allowlist was removed;
+- generic `git_write_shell` and `network_shell` are fail-closed with explicit granular-classification reasons until M6; structured HTTP `web.request` remains governed through policy/approval;
+- M5-C.1 focused suite: `9 passed`; C.1 regression: `26 passed`; M5-C.2 focused suite: `4 passed`; cross-gate C.2 suite: `8 passed`;
+- final policy/authority/Gateway/envelope/executor regression: `55 passed`; TaskRuntime/resource regression: `55 passed / 1 failed`;
+- the sole runtime failure is the previously established unregistered-worktree `test_service_waits_for_approval_when_policy_requires_apply_patch` baseline limitation;
+- `compileall`, diff checks and production hardcode scans passed; project-specific governed-execution allowlist entries were removed rather than expanded;
+- newly enforced invariant: specialized policies contribute facets/evidence, but only the canonical policy decision may authorize execution.
+
+Next sprint: **M6 - Governed Git and Network Execution**.
 
 
 ---

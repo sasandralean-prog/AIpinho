@@ -1,5 +1,5 @@
 {
-  "schema_version": "context_state.v2026-09-17-e2e-new-runtime-m4",
+  "schema_version": "context_state.v2026-09-17-e2e-new-runtime-m5",
   "updated_at": "2026-09-17",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
@@ -7,7 +7,7 @@
     "branch": "main",
     "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
     "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d",
-    "current_main_head": "0fe414fb5196318e49eb660b5c5440b7dd135f11"
+    "current_main_head": "75baa3551a1520ebc62ba985dbedbf3a1eae71f6"
   },
   "authorities": [
     "Human operator",
@@ -84,10 +84,10 @@
     "repository + branch + operation remote scope gate with promotion identity reobservation"
   ],
   "current_frontier": [
-    "execute M5 Unified Capability and Policy Kernel from e2enewruntimee.md",
-    "consolidate duplicated allow deny approval and capability decisions behind one canonical decision model",
-    "preserve MissionContract resources and AuthorityGrantService as inputs rather than parallel authorities",
-    "keep real governed Git/network execution deferred to M6"
+    "execute M6 Governed Git and Network Execution from e2enewruntimee.md",
+    "classify Git commit push destructive and network operations granularly before execution",
+    "bind execution to MissionContract remote repository branch operation scope and canonical policy facets",
+    "preserve fail-closed generic external shell categories until granular classification is available"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -129,8 +129,8 @@
     "id": "e2e_new_runtime",
     "status": "IN_PROGRESS",
     "plan_document": "e2enewruntimee.md",
-    "next_sprint": "M5",
-    "next_sprint_name": "Unified Capability and Policy Kernel",
+    "next_sprint": "M6",
+    "next_sprint_name": "Governed Git and Network Execution",
     "prewave_diagnostic_evidence": {
       "branch": "fix/firetest5-mission-runtime-intentmap",
       "sha": "cfba76ee094018f9680c0a63eda6378cb118a076",
@@ -141,7 +141,7 @@
       "M2": "CLOSED",
       "M3": "CLOSED",
       "M4": "CLOSED",
-      "M5": "PLANNED",
+      "M5": "CLOSED",
       "M6": "PLANNED",
       "M7": "PLANNED",
       "M8": "PLANNED",
@@ -256,6 +256,38 @@
         "remaining_notes": [
           "persistent public chat may still use the deterministic source-message fallback when a real persistent message id is unavailable",
           "unified capability/policy decision model continues in M5"
+        ],
+        "plan_changed": false
+      },
+      "M5": {
+        "name": "Unified Capability and Policy Kernel",
+        "implementation_main_sha": "75baa3551a1520ebc62ba985dbedbf3a1eae71f6",
+        "validation": {
+          "m5_a_canonical_facets": "10 passed",
+          "m5_b_cross_gate": "42 passed",
+          "m5_b_policy_agent_regression": "45 passed",
+          "m5_b_runtime_resource_regression": "55 passed / 1 failed",
+          "m5_c1_focused": "9 passed",
+          "m5_c1_regression": "26 passed",
+          "m5_c2_focused": "4 passed",
+          "m5_c2_cross_gate": "8 passed",
+          "final_policy_authority_gateway_envelope_executor": "55 passed",
+          "final_runtime_resource_regression": "55 passed / 1 failed",
+          "known_failure": "test_service_waits_for_approval_when_policy_requires_apply_patch",
+          "known_failure_note": "same unregistered-worktree baseline limitation established before M5",
+          "compileall": "passed",
+          "diff_check": "passed"
+        },
+        "closed_boundary": [
+          "one canonical capability/policy verdict composes specialized policy facets",
+          "TaskRunGuard Agent Tool Gateway WriteCapabilityEnvelope and GovernedToolExecution consume the canonical verdict",
+          "human authority satisfies matching ASK only and cannot override hard deny invalid stale or expired facets",
+          "governed tool execution resolves canonical TaskRun MissionContract resources and no longer owns a project allowlist",
+          "ambiguous git/network shell categories remain fail-closed until M6 granular classification"
+        ],
+        "remaining_notes": [
+          "M6 owns real granular Git and network execution against remote repository branch and operation scope",
+          "generic git_write_shell and network_shell remain denied until M6 classification replaces ambiguity"
         ],
         "plan_changed": false
       }
