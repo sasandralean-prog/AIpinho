@@ -3,6 +3,7 @@ from __future__ import annotations
 from pydantic import Field
 
 from aipinho.schemas.common.base import AIpinhoModel
+from aipinho.schemas.runtime.mission_contract import MissionResourceScope
 from aipinho.schemas.patching.canonical_diagnosis_artifact import CanonicalDiagnosisArtifact
 from aipinho.schemas.patching.patch_candidate_artifact import PatchCandidateArtifact
 from aipinho.schemas.patching.patch_evidence import PatchEvidence
@@ -14,6 +15,7 @@ class PatchPlanRequest(AIpinhoModel):
     source_id: str | None = None
     objective: str = ""
     affected_files: list[str] = Field(default_factory=list)
+    local_resources: list[MissionResourceScope] = Field(default_factory=list)
     diagnosis_artifacts: list[CanonicalDiagnosisArtifact] = Field(default_factory=list)
     patch_candidates: list[PatchCandidateArtifact] = Field(default_factory=list)
     evidence: list[PatchEvidence] = Field(default_factory=list)

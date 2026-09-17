@@ -17,6 +17,46 @@ class AgentLocalActionPlanner:
     def __init__(self, tool_gateway: AgentToolGatewayService | None = None) -> None:
         self.tool_gateway = tool_gateway or AgentToolGatewayService()
 
+    def run_explicit_create_directory(
+        self,
+        *,
+        agent_id: str,
+        run_id: str,
+        prompt: str,
+        workspace_context: str | None,
+        requested_capabilities: list[str],
+        approval_id: str | None = None,
+        execution_mode: str = "governed_autorun",
+        metadata_sanitized: dict[str, Any] | None = None,
+        task_run_id: str | None = None,
+    ) -> ToolInvocationResult | None:
+        if "create_directory" not in set(requested_capabilities or []):
+            return None
+        if not workspace_context:
+            return None
+        relative = self.extract_requested_directory(prompt)
+        if not relative:
+            return None
+        target_path = str(Path(workspace_context) / relative)
+        return self.tool_gateway.invoke(
+            agent_id,
+            run_id,
+            "create_directory",
+            ToolInvocationCreateRequest(
+                operation_type="create_directory",
+                workspace_id=self.infer_workspace_id(workspace_context),
+                path_ref=target_path,
+                approval_id=approval_id,
+                input={},
+                metadata_sanitized={
+                    **(metadata_sanitized or {}),
+                    "execution_mode": execution_mode,
+                    "planner_mode": "explicit_create_directory_request",
+                },
+            ),
+            task_run_id=task_run_id,
+        )
+
     def run_explicit_create_file(
         self,
         *,
@@ -29,6 +69,7 @@ class AgentLocalActionPlanner:
         approval_id: str | None = None,
         execution_mode: str = "governed_autorun",
         metadata_sanitized: dict[str, Any] | None = None,
+        task_run_id: str | None = None,
     ) -> ToolInvocationResult | None:
         if "create_file" not in set(requested_capabilities or []):
             return None
@@ -58,6 +99,7 @@ class AgentLocalActionPlanner:
                     "planner_mode": "explicit_create_file_request",
                 },
             ),
+            task_run_id=task_run_id,
         )
 
     def run_explicit_modify_file(
@@ -72,6 +114,7 @@ class AgentLocalActionPlanner:
         approval_id: str | None = None,
         execution_mode: str = "governed_autorun",
         metadata_sanitized: dict[str, Any] | None = None,
+        task_run_id: str | None = None,
     ) -> ToolInvocationResult | None:
         if "modify_file" not in set(requested_capabilities or []):
             return None
@@ -108,6 +151,7 @@ class AgentLocalActionPlanner:
                     "planner_mode": "explicit_modify_file_request",
                 },
             ),
+            task_run_id=task_run_id,
         )
 
     def run_inferred_ui_text_update(
@@ -122,6 +166,7 @@ class AgentLocalActionPlanner:
         approval_id: str | None = None,
         execution_mode: str = "governed_autorun",
         metadata_sanitized: dict[str, Any] | None = None,
+        task_run_id: str | None = None,
     ) -> ToolInvocationResult | None:
         if "modify_file" not in set(requested_capabilities or []):
             return None
@@ -160,7 +205,35 @@ class AgentLocalActionPlanner:
                     "inferred_target_path": str(target_path),
                 },
             ),
+            task_run_id=task_run_id,
         )
+
+    def extract_requested_directory(self, prompt: str) -> str | None:
+        patterns = [
+            r"(?:crie|criar|create|mkdir|gere|gerar)\s+(?:uma?\s+)?(?:pasta|diret[?o]rio|directory|folder)\s+(?:chamada?|nomeada?|named)?\s*[`\"']?([A-Za-z0-9_. \-/]+)[`\"']?",
+            r"(?:mkdir)\s+[`\"']?([A-Za-z0-9_. \-/]+)[`\"']?",
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, prompt, flags=re.IGNORECASE | re.MULTILINE)
+            if not match:
+                continue
+            candidate = match.group(1).strip().strip("`\"'")
+            candidate = re.split(
+                r"\s+(?:e|and|para|to|dentro|inside|no|na|em)\s+",
+                candidate,
+                maxsplit=1,
+                flags=re.IGNORECASE,
+            )[0].strip().rstrip(".,;:")
+            normalized = re.sub(r"[\\/]+", "/", candidate).strip("/")
+            if not normalized or re.match(r"^[A-Za-z]:", normalized) or normalized.startswith("//"):
+                continue
+            parts = [part for part in normalized.split("/") if part and part != "."]
+            if not parts or any(part == ".." for part in parts):
+                continue
+            if any(re.search(r"[\x00-\x1f]", part) for part in parts):
+                continue
+            return "/".join(parts)
+        return None
 
     def extract_requested_filename(self, prompt: str) -> str | None:
         patterns = [

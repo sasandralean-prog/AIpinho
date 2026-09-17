@@ -10,6 +10,8 @@ from aipinho.schemas.runtime.task_run import TaskRun
 from aipinho.schemas.runtime.task_run_context import TaskRunContext
 from aipinho.schemas.runtime.task_run_step import TaskRunStep
 from aipinho.services.agents.agent_local_action_planner import AgentLocalActionPlanner
+from aipinho.services.agents.agent_tool_gateway_service import AgentToolGatewayService
+from aipinho.services.runtime.task_run_store import TaskRunStore
 from aipinho.services.patching.model_assisted_patch_planner_service import ModelAssistedPatchPlannerService
 from aipinho.services.patching.apply.hunk_apply_engine import HunkApplyEngine
 from aipinho.services.patching.apply.patch_apply_hashing import sha256_file
@@ -30,10 +32,13 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
         model_patch_planner: ModelAssistedPatchPlannerService | None = None,
         project_generation_executor: ProjectGenerationPlanExecutor | None = None,
         readonly_artifact_runtime: Any | None = None,
+        task_run_store: TaskRunStore | None = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
-        self.local_actions = local_actions or AgentLocalActionPlanner()
+        self.local_actions = local_actions or AgentLocalActionPlanner(
+            tool_gateway=AgentToolGatewayService(task_runs=task_run_store or TaskRunStore())
+        )
         self.no_change_evidence = no_change_evidence or TaskNoChangeEvidenceService()
         self.model_patch_planner = model_patch_planner or ModelAssistedPatchPlannerService()
         self.project_generation_executor = project_generation_executor or ProjectGenerationPlanExecutor()
@@ -46,7 +51,18 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
         if not prompt:
             return TaskStepOutcome(status="blocked", violations=["execution_goal_missing"])
         agent_run_id = self._agent_run_id(run, "filesystem_write")
-        result = self.local_actions.run_explicit_create_file(
+        result = self.local_actions.run_explicit_create_directory(
+            agent_id="aipinho",
+            run_id=agent_run_id,
+            prompt=prompt,
+            workspace_context=run.workspace,
+            requested_capabilities=["create_directory"],
+            approval_id=run.approval_id,
+            metadata_sanitized=self._metadata(run, context, "execute_filesystem_operation"),
+            task_run_id=run.run_id,
+        )
+        if result is None:
+            result = self.local_actions.run_explicit_create_file(
             agent_id="aipinho",
             run_id=agent_run_id,
             prompt=prompt,
@@ -54,6 +70,7 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
             requested_capabilities=["create_file"],
             approval_id=run.approval_id,
             metadata_sanitized=self._metadata(run, context, "execute_filesystem_operation"),
+            task_run_id=run.run_id,
         )
         if result is None:
             result = self.local_actions.run_explicit_modify_file(
@@ -108,6 +125,7 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
             requested_capabilities=["modify_file"],
             approval_id=run.approval_id,
             metadata_sanitized=self._metadata(run, context, "execute_patch_pipeline"),
+            task_run_id=run.run_id,
         )
         if result is None:
             result = self.local_actions.run_inferred_ui_text_update(
@@ -125,6 +143,11 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
                 objective=prompt,
                 source_id=run.run_id,
                 file_context_bundle=context.outputs.get("_file_context"),
+                local_resources=(
+                    list(run.mission_contract.local_resources)
+                    if run.mission_contract is not None
+                    else []
+                ),
                 include_trace=True,
             )
             if planned.status == "ready" and planned.plan is not None:
@@ -259,6 +282,7 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
                         "relative_path": rel,
                     },
                 ),
+                task_run_id=run.run_id,
             )
             summary = self._tool_summary(result)
             results.append(summary or {})
@@ -298,6 +322,7 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
                 "no_change_reason_code": no_change.reason_code,
                 "no_change_report_path": no_change.report_path,
             },
+            task_run_id=run.run_id,
         )
         if report_result is not None and report_result.status != "succeeded":
             return self._tool_outcome(report_result, context, "patch_result")
@@ -334,6 +359,7 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
             requested_capabilities=["create_file"],
             approval_id=run.approval_id,
             metadata_sanitized=self._metadata(run, context, "execute_project_generation"),
+            task_run_id=run.run_id,
         )
         if result is None:
             return TaskStepOutcome(
@@ -407,6 +433,7 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
                     "shell_category": str(plan.get("shell_category") or "unknown_shell"),
                 },
             ),
+            task_run_id=run.run_id,
         )
         summary = self._tool_summary(result)
         context.outputs["_shell"] = summary
@@ -485,6 +512,10 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
                 metadata_sanitized={
                     "task_run_id": run.run_id,
                     "task_step_source": "governed_task_step_runner",
+                    "mission_id": run.mission_binding.mission_id if run.mission_binding else None,
+                    "mission_authority_sha256": (
+                        run.mission_binding.authority_sha256 if run.mission_binding else None
+                    ),
                 },
             ),
         )

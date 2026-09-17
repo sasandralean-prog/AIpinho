@@ -81,7 +81,14 @@ class PatchPlanningService:
         candidates = self._build_patch_candidates(diagnoses)
         evidence_valid, evidence_blocked = self.evidence_service.validate(evidence)
         scope = self.scope_service.build(request.workspace, paths)
-        affected = [self.target_guard.validate(request.workspace, path) for path in scope.affected_paths]
+        affected = [
+            self.target_guard.validate(
+                request.workspace,
+                path,
+                local_resources=request.local_resources,
+            )
+            for path in scope.affected_paths
+        ]
         file_contents: dict[str, str] = {}
         for index, file in enumerate(list(affected)):
             checked, content = self.file_reader.read(file)
@@ -119,6 +126,7 @@ class PatchPlanningService:
             source_id=request.source_id,
             objective=request.objective,
             affected_files=affected,
+            local_resources=list(request.local_resources),
             diagnosis_artifacts=diagnoses,
             patch_candidates=candidates,
             evidence=evidence,
@@ -145,7 +153,17 @@ class PatchPlanningService:
         plan = self.store.get_plan(plan_id)
         if plan is None:
             return None
-        request = PatchPlanRequest(workspace=plan.workspace, source_type=plan.source_type, source_id=plan.source_id, objective=plan.objective, affected_files=[file.path for file in plan.affected_files], diagnosis_artifacts=plan.diagnosis_artifacts, patch_candidates=plan.patch_candidates, evidence=plan.evidence)
+        request = PatchPlanRequest(
+            workspace=plan.workspace,
+            source_type=plan.source_type,
+            source_id=plan.source_id,
+            objective=plan.objective,
+            affected_files=[file.path for file in plan.affected_files],
+            local_resources=list(plan.local_resources),
+            diagnosis_artifacts=plan.diagnosis_artifacts,
+            patch_candidates=plan.patch_candidates,
+            evidence=plan.evidence,
+        )
         refreshed = self.create_plan(request).plan
         refreshed.plan_id = plan.plan_id
         self.store.save_plan(refreshed)

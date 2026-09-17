@@ -34,6 +34,9 @@ from aipinho.services.agents.agent_tool_policy_service import AgentToolPolicyDec
 from aipinho.services.agents.agent_tool_registry_service import AgentToolRegistryService
 from aipinho.services.agents.agent_tool_workspace_resolver import AgentToolWorkspaceResolver
 from aipinho.services.events.event_core import contains_secret, redact_payload
+from aipinho.services.config_governance.workspace_permission_matrix_service import WorkspacePermissionMatrixService
+from aipinho.services.runtime.mission_contract_service import MissionContractService
+from aipinho.services.runtime.task_run_store import TaskRunStore
 
 
 class ShellRunner(Protocol):
@@ -57,6 +60,8 @@ class AgentToolGatewayService:
         store: AgentToolInvocationStore | None = None,
         event_bus: MultiAgentEventBus | None = None,
         shell_runner: ShellRunner | None = None,
+        task_runs: TaskRunStore | None = None,
+        permission_matrix: WorkspacePermissionMatrixService | None = None,
     ) -> None:
         shared_store = AgentSessionStore()
         self.kernel = kernel or AgentSessionKernelService(store=shared_store)
@@ -66,6 +71,9 @@ class AgentToolGatewayService:
         self.policy = policy or AgentToolPolicyDecisionService()
         self.store = store or AgentToolInvocationStore()
         self.shell_runner = shell_runner or SubprocessShellRunner()
+        self.task_runs = task_runs or TaskRunStore()
+        self.permission_matrix = permission_matrix or WorkspacePermissionMatrixService().load()
+        self.missions = MissionContractService()
 
     def list_tools(self, *, enabled: bool | None = None) -> list[ToolDefinition]:
         return self.registry.list_tools(enabled=enabled)
@@ -73,16 +81,73 @@ class AgentToolGatewayService:
     def get_tool(self, tool_name: str) -> ToolDefinition | None:
         return self.registry.get(tool_name)
 
-    def invoke(self, agent_id: str, run_id: str, tool_name: str, request: ToolInvocationCreateRequest) -> ToolInvocationResult:
+    def invoke(
+        self,
+        agent_id: str,
+        run_id: str,
+        tool_name: str,
+        request: ToolInvocationCreateRequest,
+        *,
+        task_run_id: str | None = None,
+    ) -> ToolInvocationResult:
         run = self.kernel.get_run(run_id)
         if run is None:
             raise FileNotFoundError(run_id)
         if run.agent_id != agent_id:
             raise PermissionError("agent_run_mismatch")
         tool = self.registry.require(tool_name)
+        task_run = self._canonical_task_run(task_run_id)
+        local_resources = (
+            list(task_run.mission_contract.local_resources)
+            if task_run is not None and task_run.mission_contract is not None
+            else []
+        )
         input_sanitized = redact_payload(request.input)
         summary = self._summary(input_sanitized)
-        workspace = self._resolve_workspace(tool, request)
+        workspace = self._resolve_workspace(
+            tool,
+            request,
+            local_resources=local_resources,
+        )
+        resource_permission_decision = None
+        if task_run is not None and workspace is not None and workspace.allowed:
+            permission = self._permission_for_tool(tool, request)
+            target_path = workspace.resolved_path_sanitized or workspace.root_path_sanitized
+            resource_permission_decision = self.permission_matrix.decide_with_resources(
+                path=target_path,
+                permission=permission,
+                local_resources=local_resources,
+            )
+            if resource_permission_decision.status == "denied":
+                workspace = workspace.model_copy(
+                    update={
+                        "allowed": False,
+                        "reason_code": resource_permission_decision.reason_code,
+                        "evidence_refs": [
+                            *workspace.evidence_refs,
+                            f"task_run:{task_run.run_id}",
+                            f"mission:{task_run.mission_binding.mission_id if task_run.mission_binding else ''}",
+                        ],
+                    }
+                )
+            elif resource_permission_decision.status == "approval_required":
+                canonical_approval_ready = (
+                    str(task_run.status) == "running"
+                    and bool(task_run.approval_id)
+                    and request.approval_id == task_run.approval_id
+                )
+                if not canonical_approval_ready:
+                    workspace = workspace.model_copy(
+                        update={
+                            "allowed": False,
+                            "reason_code": "mission_resource_requires_canonical_task_approval",
+                            "evidence_refs": [
+                                *workspace.evidence_refs,
+                                f"task_run:{task_run.run_id}",
+                                "gate:task_run_guard",
+                            ],
+                        }
+                    )
         invocation = ToolInvocation(
             run_id=run.run_id,
             parent_run_id=run.parent_run_id,
@@ -298,7 +363,41 @@ class AgentToolGatewayService:
         path = self.store.artifact_content_path(artifact)
         return artifact, path.read_bytes()
 
-    def _resolve_workspace(self, tool: ToolDefinition, request: ToolInvocationCreateRequest) -> WorkspaceResolution | None:
+    def _canonical_task_run(self, task_run_id: str | None):
+        if not task_run_id:
+            return None
+        run = self.task_runs.get_run(task_run_id)
+        if run is None:
+            raise PermissionError("canonical_task_run_not_found")
+        if run.mission_contract is None or not self.missions.verify(run.mission_contract):
+            raise PermissionError("canonical_task_run_mission_contract_invalid")
+        return run
+
+    def _permission_for_tool(
+        self,
+        tool: ToolDefinition,
+        request: ToolInvocationCreateRequest,
+    ) -> str:
+        if tool.tool_name == "run_shell":
+            category = str(request.input.get("shell_category") or "unknown_shell")
+            if category == "readonly_shell":
+                return "shell_readonly"
+            if category == "build_shell" or category == "package_shell":
+                return "shell_build"
+            if category == "test_shell":
+                return "shell_test"
+            return "script_execution"
+        return self.permission_matrix.permission_for_action(
+            request.operation_type or tool.tool_name
+        )
+
+    def _resolve_workspace(
+        self,
+        tool: ToolDefinition,
+        request: ToolInvocationCreateRequest,
+        *,
+        local_resources=None,
+    ) -> WorkspaceResolution | None:
         if not tool.requires_workspace:
             return None
         access = "read"
@@ -311,6 +410,7 @@ class AgentToolGatewayService:
             path_ref=request.path_ref or request.input.get("path_ref"),
             relative_path=request.input.get("relative_path") or request.input.get("cwd"),
             access=access,
+            local_resources=local_resources,
         )
 
     def _execute(

@@ -15,12 +15,15 @@ from aipinho.schemas.config_governance.workspace_permission import (
     WorkspacePreviewRequest,
     WorkspaceRegistryRole,
 )
+from aipinho.schemas.runtime.mission_contract import MissionResourceScope
+from aipinho.services.policy_kernel.mission_local_resource_scope_service import MissionLocalResourceScopeService
 from aipinho.utils.yaml_loader import load_yaml_file
 
 
 ALL_PERMISSIONS: tuple[PermissionName, ...] = (
     "read_file",
     "list_files",
+    "create_directory",
     "create_file",
     "modify_file",
     "apply_patch",
@@ -110,6 +113,9 @@ ACTION_PERMISSION_ALIASES: dict[str, PermissionName] = {
     "analyze": "read_file",
     "list_files": "list_files",
     "search_files": "list_files",
+    "create_directory": "create_directory",
+    "mkdir": "create_directory",
+    "filesystem_create_directory": "create_directory",
     "create_file": "create_file",
     "write_file": "create_file",
     "write_files": "modify_file",
@@ -129,8 +135,12 @@ ACTION_PERMISSION_ALIASES: dict[str, PermissionName] = {
     "shell_readonly": "shell_readonly",
     "run_shell_build": "shell_build",
     "shell_build": "shell_build",
+    "build": "shell_build",
+    "run_build": "shell_build",
     "run_shell_test": "shell_test",
     "run_tests": "shell_test",
+    "test": "shell_test",
+    "tests": "shell_test",
     "shell_test": "shell_test",
     "script_execution": "script_execution",
     "run_command": "script_execution",
@@ -143,8 +153,14 @@ ACTION_PERMISSION_ALIASES: dict[str, PermissionName] = {
 
 
 class WorkspacePermissionMatrixService:
-    def __init__(self, registry_path: Path | None = None) -> None:
+    def __init__(
+        self,
+        registry_path: Path | None = None,
+        *,
+        mission_scopes: MissionLocalResourceScopeService | None = None,
+    ) -> None:
         self.registry_path = registry_path or PATHS.config_root / "workspaces" / "workspace_registry.yaml"
+        self.mission_scopes = mission_scopes or MissionLocalResourceScopeService()
         self._config: dict[str, Any] | None = None
 
     def load(self) -> "WorkspacePermissionMatrixService":
@@ -272,6 +288,110 @@ class WorkspacePermissionMatrixService:
         if value == "ask":
             return self._decision("approval_required", "permission_requires_approval", permission_name, value, workspace_id, role, matched_root, path)
         return self._decision("denied", "permission_denied", permission_name, value, workspace_id, role, matched_root, path)
+
+    def decide_with_resources(
+        self,
+        *,
+        path: str | None,
+        permission: PermissionName | str,
+        local_resources: list[MissionResourceScope] | None = None,
+    ) -> WorkspacePermissionDecision:
+        permission_name = self.permission_for_action(permission)
+        base = self.decide(path=path, permission=permission_name)
+        scope = self.mission_scopes.scope_for_path(local_resources, path)
+        if scope is None or not path:
+            return base
+
+        selected = self._select_workspace(path)
+        if selected is not None:
+            entry, _root = selected
+            role = str(entry.get("role") or "forbidden")
+            if role in {"forbidden", "protected", "source_readonly", "external_inbox"}:
+                return base
+            if base.status == "denied":
+                return base
+
+        if permission_name not in set(scope.permissions):
+            return self._mission_decision(
+                status="denied",
+                reason_code="permission_not_declared_by_mission_resource",
+                permission=permission_name,
+                value="denied",
+                scope=scope,
+                path=path,
+                base=base,
+            )
+
+        role = str(scope.role or "source_readonly")
+        if role not in ROLE_DEFAULTS:
+            role = "source_readonly"
+        mission_value = self.role_defaults().get(role, ROLE_DEFAULTS["forbidden"]).get(
+            permission_name, "denied"
+        )
+        combined = mission_value
+        if selected is not None:
+            combined = self._most_restrictive(base.permission_value, mission_value)
+        status = (
+            "allowed"
+            if combined == "allowed"
+            else "approval_required"
+            if combined == "ask"
+            else "denied"
+        )
+        reason = {
+            "allowed": "permission_allowed_by_mission_resource",
+            "approval_required": "permission_requires_approval_by_mission_resource",
+            "denied": "permission_denied_by_mission_resource",
+        }[status]
+        return self._mission_decision(
+            status=status,
+            reason_code=reason,
+            permission=permission_name,
+            value=combined,
+            scope=scope,
+            path=path,
+            base=base,
+        )
+
+    def _mission_decision(
+        self,
+        *,
+        status: str,
+        reason_code: str,
+        permission: PermissionName,
+        value: PermissionValue,
+        scope: MissionResourceScope,
+        path: str,
+        base: WorkspacePermissionDecision,
+    ) -> WorkspacePermissionDecision:
+        decision = self._decision(
+            status,
+            reason_code,
+            permission,
+            value,
+            scope.resource_id,
+            str(scope.role or "source_readonly"),
+            str(scope.locator or path),
+            path,
+        )
+        decision.trace = [
+            *base.trace,
+            *decision.trace,
+            {
+                "event_type": "mission_resource_permission_decision",
+                "status": status,
+                "reason_code": reason_code,
+                "resource_id": scope.resource_id,
+                "authority": "mission_contract.local_resources",
+            },
+        ]
+        return decision
+
+    def _most_restrictive(
+        self, left: PermissionValue, right: PermissionValue
+    ) -> PermissionValue:
+        rank = {"allowed": 0, "ask": 1, "denied": 2}
+        return left if rank[left] >= rank[right] else right
 
     def permission_for_action(self, action: str) -> PermissionName:
         if action in ALL_PERMISSIONS:

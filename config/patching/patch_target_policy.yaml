@@ -5,15 +5,9 @@ targets:
   blocked_extensions: [".exe", ".dll", ".so", ".bin", ".sqlite", ".db", ".zip", ".7z", ".rar", ".pem", ".key"]
   blocked_dirs: [".git", ".venv", "venv", "node_modules", "data/runtime", "data/logs", "data/vectorstores", "__pycache__"]
   high_risk_dirs: ["config", "scripts", "migrations"]
-  allowed_roots:
-    - "C:\\Dev\\AIpinho"
-    - "C:\\Users\\rafae\\Documents\\AIpinhoTestes"
-    - "C:\\Dev\\AI\\coding-brain-supervisor"
-    - "C:\\PinhoabacaxiAI"
-    - "C:\\Users\\rafae\\Documents\\FashionHelper"
-    - "C:\\Users\\rafae\\Documents\\Fashion Helper legado"
-    - "C:\\Users\\rafae\\Documents\\Pinhoabacaxi-musicas-main"
-    - "C:\\Users\\rafae\\Documents\\TestesIALocal"
+  # Project/workspace eligibility is resolved by the canonical workspace registry
+  # or the frozen MissionContract.local_resources. Keep only global deny boundaries here.
+  allowed_roots: []
   forbidden_roots: ["C:\\Windows"]
 
 path_rules:

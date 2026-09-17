@@ -8,18 +8,30 @@ from aipinho.core.paths import PATHS
 from aipinho.schemas.runtime.task_run import TaskRun
 from aipinho.schemas.runtime.task_run_request import TaskRunRequest
 from aipinho.schemas.runtime.workspace_context import ExecutionContext, RetrievalContext, WorkspaceContext
+from aipinho.schemas.runtime.mission_contract import MissionResourceScope
 from aipinho.services.config_governance.workspace_permission_matrix_service import WorkspacePermissionMatrixService
+from aipinho.services.policy_kernel.workspace_role_contract_service import WorkspaceRoleContractService
 from aipinho.services.session.session_store import utc_now
 
 
 class WorkspaceContextService:
     """Canonical workspace authority for runtime consumers."""
 
-    def __init__(self, matrix: WorkspacePermissionMatrixService | None = None) -> None:
+    def __init__(
+        self,
+        matrix: WorkspacePermissionMatrixService | None = None,
+        roles: WorkspaceRoleContractService | None = None,
+    ) -> None:
         self.matrix = matrix or WorkspacePermissionMatrixService().load()
+        self.roles = roles or WorkspaceRoleContractService().load()
 
     def from_request(self, request: TaskRunRequest, *, runtime_profile: str | None = None) -> WorkspaceContext:
         intent = request.intent_map if isinstance(request.intent_map, dict) else {}
+        local_resources = (
+            list(request.mission_contract.local_resources)
+            if request.mission_contract is not None
+            else []
+        )
         return self.resolve(
             workspace_id=request.workspace_id,
             workspace_path=request.workspace,
@@ -31,6 +43,7 @@ class WorkspaceContextService:
             library_roots=self._list(intent.get("library_roots")),
             readonly_flags=self._dict(intent.get("readonly_flags")),
             workspace_ids=self._list(intent.get("workspace_ids")),
+            local_resources=local_resources,
         )
 
     def from_run(self, run: TaskRun) -> WorkspaceContext:
@@ -43,10 +56,15 @@ class WorkspaceContextService:
             runtime_profile=run.runtime_profile,
             current_phase=run.current_phase,
             current_task=run.task_id or run.run_id,
-            external_roots=list(run.workspace_context.external_roots) if run.workspace_context else [],
-            library_roots=list(run.workspace_context.library_roots) if run.workspace_context else [],
-            readonly_flags=dict(run.workspace_context.readonly_flags) if run.workspace_context else {},
-            workspace_ids=list(run.workspace_context.workspace_ids) if run.workspace_context else [],
+            external_roots=[],
+            library_roots=[],
+            readonly_flags={},
+            workspace_ids=[],
+            local_resources=(
+                list(run.mission_contract.local_resources)
+                if run.mission_contract is not None
+                else []
+            ),
         )
 
     def resolve(
@@ -62,21 +80,40 @@ class WorkspaceContextService:
         library_roots: list[str] | None = None,
         readonly_flags: dict[str, bool] | None = None,
         workspace_ids: list[str] | None = None,
+        local_resources: list[MissionResourceScope] | None = None,
     ) -> WorkspaceContext:
+        resources = list(local_resources or [])
         entry = self._entry_for(workspace_id=workspace_id, workspace_path=workspace_path)
         warnings: list[str] = []
         path = workspace_path
         role = None
         resolved_workspace_id = workspace_id
         registered_root = None
-        if entry is not None:
+        if workspace_path and resources:
+            role_decision = self.roles.resolve_with_resources(
+                workspace_path,
+                local_resources=resources,
+                required=True,
+            )
+            if role_decision.contract is not None:
+                resolved_workspace_id = role_decision.contract.workspace_id
+                registered_root = role_decision.contract.root_path or workspace_path
+                role = role_decision.contract.role
+                path = workspace_path
+            if role_decision.status == "denied":
+                warnings.append(role_decision.reason)
+        elif entry is not None:
             resolved_workspace_id = str(entry.get("workspace_id") or resolved_workspace_id or "")
             registered_root = str(entry.get("root_path") or "") or None
-            path = workspace_path or registered_root or path or ""
+            path = workspace_path or registered_root or path
             role = str(entry.get("role") or "") or None
         elif workspace_path:
             decision = self.matrix.decide(path=workspace_path, permission="read_file")
-            resolved_workspace_id = decision.workspace_id or workspace_id or self._synthetic_workspace_id(workspace_path)
+            resolved_workspace_id = (
+                decision.workspace_id
+                or workspace_id
+                or self._synthetic_workspace_id(workspace_path)
+            )
             role = decision.workspace_role
             if decision.status == "denied":
                 warnings.append(decision.reason_code)
@@ -85,10 +122,48 @@ class WorkspaceContextService:
 
         project_root = str(Path(path).expanduser().resolve(strict=False)) if path else None
         allowed_root = str(Path(registered_root).expanduser().resolve(strict=False)) if registered_root else project_root
-        external = [self._resolve_path(item) for item in (external_roots or []) if item]
-        libraries = [self._resolve_path(item) for item in (library_roots or []) if item]
-        allowed_roots = [item for item in [allowed_root, *external, *libraries] if item]
-        resolved_workspace_ids = list(dict.fromkeys([item for item in [resolved_workspace_id, *(workspace_ids or [])] if item]))
+        resource_roots = [
+            self._resolve_path(str(resource.locator))
+            for resource in resources
+            if resource.locator
+        ]
+        resource_libraries = [
+            self._resolve_path(str(resource.locator))
+            for resource in resources
+            if resource.locator and str(resource.metadata.get("kind") or "") == "library"
+        ]
+        resource_external = [
+            self._resolve_path(str(resource.locator))
+            for resource in resources
+            if resource.locator and str(resource.metadata.get("kind") or "") == "external"
+        ]
+        external = list(dict.fromkeys([
+            *[self._resolve_path(item) for item in (external_roots or []) if item],
+            *resource_external,
+        ]))
+        libraries = list(dict.fromkeys([
+            *[self._resolve_path(item) for item in (library_roots or []) if item],
+            *resource_libraries,
+        ]))
+        resource_readonly = {
+            self._resolve_path(str(resource.locator)): str(resource.role or "")
+            not in {"target_mutable", "system_mutable", "temp_staging"}
+            for resource in resources
+            if resource.locator
+        }
+        merged_readonly_flags = {**(readonly_flags or {}), **resource_readonly}
+        allowed_roots = list(dict.fromkeys([
+            item for item in [allowed_root, *resource_roots, *external, *libraries] if item
+        ]))
+        resolved_workspace_ids = list(dict.fromkeys([
+            item
+            for item in [
+                resolved_workspace_id,
+                *(workspace_ids or []),
+                *[resource.resource_id for resource in resources],
+            ]
+            if item
+        ]))
         artifact_store = str((PATHS.project_root / "data" / "runtime" / "artifacts").resolve(strict=False))
         resolved_project_id = project_id or (f"project_{resolved_workspace_id}" if resolved_workspace_id else None)
         project_name = Path(project_root).name if project_root else None
@@ -98,6 +173,7 @@ class WorkspaceContextService:
             "workspace_id": resolved_workspace_id,
             "project": resolved_project_id,
             "allowed_roots": allowed_roots,
+            "mission_resource_ids": [resource.resource_id for resource in resources],
             "source": "WorkspaceContextService",
         }
         return WorkspaceContext(
@@ -109,8 +185,9 @@ class WorkspaceContextService:
             project_root=project_root,
             external_roots=external,
             library_roots=libraries,
-            readonly_flags=readonly_flags or {},
+            readonly_flags=merged_readonly_flags,
             workspace_ids=resolved_workspace_ids,
+            local_resources=resources,
             artifact_store=artifact_store,
             retrieval_scope=retrieval_scope,
             allowed_roots=allowed_roots,

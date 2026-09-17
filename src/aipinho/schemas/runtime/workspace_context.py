@@ -7,6 +7,7 @@ from pydantic import Field
 
 from aipinho.schemas.common.base import AIpinhoModel
 from aipinho.schemas.events.contracts import utc_now_iso
+from aipinho.schemas.runtime.mission_contract import MissionResourceScope
 
 
 class WorkspaceContext(AIpinhoModel):
@@ -21,6 +22,7 @@ class WorkspaceContext(AIpinhoModel):
     library_roots: list[str] = Field(default_factory=list)
     readonly_flags: dict[str, bool] = Field(default_factory=dict)
     workspace_ids: list[str] = Field(default_factory=list)
+    local_resources: list[MissionResourceScope] = Field(default_factory=list)
     artifact_store: str | None = None
     retrieval_scope: dict[str, Any] = Field(default_factory=dict)
     allowed_roots: list[str] = Field(default_factory=list)

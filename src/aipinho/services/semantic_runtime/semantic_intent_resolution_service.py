@@ -5,6 +5,8 @@ import re
 from aipinho.schemas.governance.lifecycle import CanonicalIntentDecision
 from aipinho.services.governance.intent.canonical_intent_router import CanonicalIntentRouter
 from aipinho.services.governance.intent.intent_normalizer import normalize_text
+from aipinho.services.governance.intent_local_resource_service import IntentLocalResourceService
+from aipinho.services.orchestration.mission_execution_strategy_service import MissionExecutionStrategyService
 
 
 class SemanticIntentResolutionService:
@@ -55,19 +57,32 @@ class SemanticIntentResolutionService:
         r"\bpode\s+(?:escrever|criar|ler|alterar|modificar|rodar|executar)\b",
     )
 
-    def __init__(self, router: CanonicalIntentRouter | None = None) -> None:
+    def __init__(
+        self,
+        router: CanonicalIntentRouter | None = None,
+        local_resources: IntentLocalResourceService | None = None,
+        mission_strategy: MissionExecutionStrategyService | None = None,
+    ) -> None:
         self.router = router or CanonicalIntentRouter()
+        self.local_resources = local_resources or IntentLocalResourceService()
+        self.mission_strategy = mission_strategy or MissionExecutionStrategyService()
 
-    def resolve(self, text: str, *, source_channel: str = "unknown") -> CanonicalIntentDecision:
+    def resolve(
+        self,
+        text: str,
+        *,
+        source_channel: str = "unknown",
+        workspace_hint: str | None = None,
+    ) -> CanonicalIntentDecision:
         base = self.router.decide(text, source_channel=source_channel)
         if self._has_hard_precedence(base):
-            return base
+            return self._with_local_resources(base, text=text, workspace_hint=workspace_hint)
 
         normalized = normalize_text(text)
         if self._is_positive_permission_grant(normalized) and not self._has_operational_mission_directive(normalized):
             permanent = any(term in normalized for term in self._PERMANENT_PERMISSION_TERMS)
             operation_type = "config_permission_grant" if permanent else "session_permission_grant"
-            return CanonicalIntentDecision(
+            return self._with_local_resources(CanonicalIntentDecision(
                 intent_type="permission_grant_request",
                 operation_type=operation_type,
                 requires_task=False,
@@ -75,9 +90,32 @@ class SemanticIntentResolutionService:
                 readonly=False,
                 source_channel=source_channel,
                 evidence=["positive_permission_grant_signal", "semantic_intent_resolution"],
-            )
+            ), text=text, workspace_hint=workspace_hint)
 
-        return base
+        return self._with_local_resources(base, text=text, workspace_hint=workspace_hint)
+
+    def _with_local_resources(
+        self,
+        decision: CanonicalIntentDecision,
+        *,
+        text: str,
+        workspace_hint: str | None,
+    ) -> CanonicalIntentDecision:
+        resources = self.local_resources.resolve(
+            prompt=text,
+            workspace_hint=workspace_hint,
+            semantic_graph=decision.semantic_intent_graph,
+        )
+        strategy = self.mission_strategy.resolve(
+            prompt=text,
+            semantic_graph=decision.semantic_intent_graph,
+        )
+        return decision.model_copy(
+            update={
+                "local_resources": resources,
+                "mission_execution_mode": strategy,
+            }
+        )
 
     def _has_hard_precedence(self, decision: CanonicalIntentDecision) -> bool:
         if decision.intent_type == "approval_command":

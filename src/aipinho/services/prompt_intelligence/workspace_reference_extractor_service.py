@@ -35,20 +35,19 @@ class WorkspaceReferenceExtractorService:
             evidence = None
             confidence = 0.5
             if isinstance(role_aliases, dict):
+                nearest: tuple[int, str, str] | None = None
                 for role_id, raw in role_aliases.items():
                     aliases = raw.get("aliases", []) if isinstance(raw, dict) else []
-                    matched = next(
-                        (
-                            str(alias)
-                            for alias in aliases
-                            if self._normalize(str(alias)) in context
-                        ),
-                        None,
-                    )
-                    if matched:
-                        role = str(role_id)
-                        evidence = matched
-                        confidence = 0.95
+                    for alias in aliases:
+                        alias_text = self._normalize(str(alias))
+                        position = context.rfind(alias_text)
+                        if position < 0:
+                            continue
+                        if nearest is None or position > nearest[0]:
+                            nearest = (position, str(role_id), str(alias))
+                if nearest is not None:
+                    _position, role, evidence = nearest
+                    confidence = 0.95
             references.append(
                 WorkspaceReference(
                     path=extracted.value,

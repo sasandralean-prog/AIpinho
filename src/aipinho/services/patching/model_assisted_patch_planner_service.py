@@ -14,6 +14,7 @@ from aipinho.schemas.patching.model_patch_proposal import ModelPatchPlanningResu
 from aipinho.schemas.patching.patch_candidate_artifact import PatchCandidateArtifact
 from aipinho.schemas.patching.patch_evidence import PatchEvidence
 from aipinho.schemas.patching.patch_plan_request import PatchPlanRequest
+from aipinho.schemas.runtime.mission_contract import MissionResourceScope
 from aipinho.schemas.patching.repair_proposal_artifact import (
     RepairProposalAssembly,
     RepairProposalAssemblyStage,
@@ -71,6 +72,7 @@ class ModelAssistedPatchPlannerService:
         source_id: str | None = None,
         file_context_bundle: FileContextBundle | dict[str, Any] | None = None,
         evidence_context: list[dict[str, Any]] | None = None,
+        local_resources: list[MissionResourceScope] | None = None,
         include_trace: bool = False,
     ) -> ModelPatchPlanningResult:
         settings = self._settings()
@@ -299,6 +301,7 @@ class ModelAssistedPatchPlannerService:
                 source_id=source_id or bundle.bundle_id,
                 objective=objective,
                 affected_files=[patch_candidate.target_file],
+                local_resources=list(local_resources or []),
                 diagnosis_artifacts=[diagnosis],
                 patch_candidates=[patch_candidate],
                 evidence=[evidence],

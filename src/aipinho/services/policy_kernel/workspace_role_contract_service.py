@@ -6,6 +6,8 @@ from typing import Any
 
 from aipinho.core.paths import PATHS
 from aipinho.schemas.policy.workspace_role_contract import WorkspaceRoleContract, WorkspaceRoleDecision
+from aipinho.schemas.runtime.mission_contract import MissionResourceScope
+from aipinho.services.policy_kernel.mission_local_resource_scope_service import MissionLocalResourceScopeService
 from aipinho.utils.yaml_loader import load_yaml_file
 
 
@@ -30,7 +32,7 @@ class WorkspaceRoleContractService:
             "patch_allowed": False,
             "approval_required": False,
             "allowed_operations": ["read_workspace", "inspect_files", "analyze", "run_shell_readonly"],
-            "forbidden_operations": ["create_file", "modify_file", "delete_file", "move_file", "apply_patch", "run_shell_write"],
+            "forbidden_operations": ["create_directory", "create_file", "modify_file", "delete_file", "move_file", "apply_patch", "run_shell_write"],
             "max_risk_without_approval": "low",
         },
         "target_mutable": {
@@ -39,7 +41,7 @@ class WorkspaceRoleContractService:
             "shell_allowed": True,
             "patch_allowed": True,
             "approval_required": True,
-            "allowed_operations": ["read_workspace", "create_file", "modify_file", "apply_patch", "run_shell_readonly", "run_shell_test", "run_shell_build"],
+            "allowed_operations": ["read_workspace", "create_directory", "create_file", "modify_file", "apply_patch", "run_shell_readonly", "run_shell_test", "run_shell_build"],
             "forbidden_operations": ["delete_file", "move_file", "git_write_shell", "destructive_shell"],
             "max_risk_without_approval": "low",
         },
@@ -50,7 +52,7 @@ class WorkspaceRoleContractService:
             "patch_allowed": False,
             "approval_required": False,
             "allowed_operations": ["read_workspace", "inspect_files", "analyze", "copy_from"],
-            "forbidden_operations": ["create_file", "modify_file", "delete_file", "move_file", "apply_patch", "run_shell_write"],
+            "forbidden_operations": ["create_directory", "create_file", "modify_file", "delete_file", "move_file", "apply_patch", "run_shell_write"],
             "max_risk_without_approval": "low",
         },
         "artifact_output": {
@@ -105,8 +107,14 @@ class WorkspaceRoleContractService:
         },
     }
 
-    def __init__(self, config_path: Path | None = None) -> None:
+    def __init__(
+        self,
+        config_path: Path | None = None,
+        *,
+        mission_scopes: MissionLocalResourceScopeService | None = None,
+    ) -> None:
         self.config_path = config_path or PATHS.config_root / "workspaces" / "workspace_registry.yaml"
+        self.mission_scopes = mission_scopes or MissionLocalResourceScopeService()
         self._config: dict[str, Any] | None = None
 
     def load(self) -> "WorkspaceRoleContractService":
@@ -203,6 +211,59 @@ class WorkspaceRoleContractService:
             ],
         )
 
+    def resolve_with_resources(
+        self,
+        path: str | None,
+        *,
+        local_resources: list[MissionResourceScope] | None = None,
+        required: bool = True,
+    ) -> WorkspaceRoleDecision:
+        base = self.resolve(path, required=required)
+        scope = self.mission_scopes.scope_for_path(local_resources, path)
+        if scope is None or not path:
+            return base
+
+        base_role = base.contract.role if base.contract is not None else None
+        if (
+            base.reason != "workspace_not_registered"
+            and base_role in {"forbidden", "protected", "source_readonly", "external_inbox"}
+        ):
+            return base
+
+        role = str(scope.role or "source_readonly")
+        if role not in {"source_readonly", "target_mutable", "system_mutable", "temp_staging"}:
+            role = "source_readonly"
+        contract = self._contract_from_entry(
+            {
+                "workspace_id": scope.resource_id,
+                "root_path": str(scope.locator or path),
+                "role": role,
+                "human_label": f"Mission-scoped {role} workspace",
+                "reason": "workspace_role_from_mission_resource",
+                "evidence": [*scope.provenance_refs, "mission_contract.local_resources"],
+            },
+            matched_root=str(scope.locator or path),
+            path_within_workspace=True,
+        )
+        return WorkspaceRoleDecision(
+            status="allowed",
+            contract=contract,
+            reason="workspace_role_from_mission_resource",
+            trace=[
+                *list(base.trace),
+                self._trace(
+                    "workspace_role_contract",
+                    "allowed",
+                    "workspace_role_from_mission_resource",
+                    {
+                        "workspace_id": scope.resource_id,
+                        "role": role,
+                        "authority": "mission_contract.local_resources",
+                    },
+                ),
+            ],
+        )
+
     def operation_allowed(self, contract: WorkspaceRoleContract, operation_type: str) -> tuple[bool, str]:
         if operation_type in set(contract.forbidden_operations):
             return False, "operation_forbidden_by_workspace_role"
@@ -212,7 +273,7 @@ class WorkspaceRoleContractService:
             return False, "workspace_role_denies_read"
         if contract.allowed_operations and operation_type not in set(contract.allowed_operations):
             return False, "operation_not_allowed_by_workspace_role"
-        if operation_type in {"create_file", "modify_file", "delete_file", "move_file", "apply_patch", "run_shell_write"} and not contract.write_allowed:
+        if operation_type in {"create_directory", "create_file", "modify_file", "delete_file", "move_file", "apply_patch", "run_shell_write"} and not contract.write_allowed:
             return False, "workspace_role_denies_write"
         if operation_type == "apply_patch" and not contract.patch_allowed:
             return False, "workspace_role_denies_patch"

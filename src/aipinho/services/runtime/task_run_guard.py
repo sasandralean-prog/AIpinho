@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 from pydantic import Field
@@ -75,6 +75,11 @@ class TaskRunGuard:
                 reasons.append("execution_plan_task_id_mismatch")
             if execution_plan.status == "blocked":
                 reasons.extend(execution_plan.blocked_reasons or ["execution_plan_blocked"])
+        local_resources = (
+            list(run.mission_contract.local_resources)
+            if run.mission_contract is not None
+            else []
+        )
         readonly_unregistered_allowed = self._readonly_unregistered_allowed(run, profile)
         requirements = profile.get("workspace_requirements", {}) if isinstance(profile.get("workspace_requirements", {}), dict) else {}
         workspace_required = bool(requirements.get("required", False))
@@ -82,7 +87,11 @@ class TaskRunGuard:
         workspace = self.workspace_policy.evaluate(workspace_path=run.workspace, requires_workspace=workspace_required)
         if workspace.blocked: reasons.append("forbidden_root")
         if workspace.needs_clarification: reasons.append("workspace_needs_clarification")
-        role_decision = self.workspace_roles.resolve(run.workspace, required=workspace_required)
+        role_decision = self.workspace_roles.resolve_with_resources(
+            run.workspace,
+            local_resources=local_resources,
+            required=workspace_required,
+        )
         if role_decision.status == "denied" and not (readonly_unregistered_allowed and role_decision.reason == "workspace_not_registered"):
             reasons.append(role_decision.reason)
         if role_decision.status == "needs_clarification": reasons.append(role_decision.reason)
@@ -110,7 +119,11 @@ class TaskRunGuard:
         for action in run.requested_actions:
             if not run.workspace:
                 continue
-            matrix_decision = self.permission_matrix.decide(path=run.workspace, permission=action)
+            matrix_decision = self.permission_matrix.decide_with_resources(
+                path=run.workspace,
+                permission=action,
+                local_resources=local_resources,
+            )
             if matrix_decision.status == "denied":
                 if readonly_unregistered_allowed and self._readonly_action_allowed_for_unregistered(action, matrix_decision.reason_code):
                     continue

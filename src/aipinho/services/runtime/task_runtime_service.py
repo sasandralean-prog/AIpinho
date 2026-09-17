@@ -121,6 +121,7 @@ class TaskRuntimeService:
         self.context_validator = ContextUsageValidator()
         draft_store = getattr(self.drafts, "store", None)
         runner = GovernedTaskStepRunner(
+            task_run_store=self.store,
             project_generation_executor=ProjectGenerationPlanExecutor(
                 draft_store=draft_store,
             ),
@@ -342,8 +343,14 @@ class TaskRuntimeService:
             reserved_run=reserved_run,
         )
         mission_binding = mission_contract.binding()
+        request_with_mission = request.model_copy(
+            update={
+                "mission_contract": mission_contract,
+                "source_message_id": mission_contract.source_message_id,
+            }
+        )
         requested_start = bool(request.start_immediately)
-        plan = self.planner.plan(request)
+        plan = self.planner.plan(request_with_mission)
         runtime_profile = str(plan.metadata.get("runtime_profile") or request.runtime_profile or "") or None
         effective_operation_type = str(
             request.operation_type
@@ -351,7 +358,7 @@ class TaskRuntimeService:
             or request.intent_map.get("intent_type")
             or request.contract_type
         )
-        workspace_context = self.workspace_contexts.from_request(request, runtime_profile=runtime_profile)
+        workspace_context = self.workspace_contexts.from_request(request_with_mission, runtime_profile=runtime_profile)
         retrieval_context = self.retrieval_contexts.from_workspace_context(
             workspace_context,
             task_id=request.task_id,
@@ -450,7 +457,7 @@ class TaskRuntimeService:
         )
         if run.plan.canonical_execution_plan is None:
             candidate = self.execution_plan_promotion.candidate_from_task_run_plan(
-                request=request,
+                request=request_with_mission,
                 plan=run.plan,
                 workspace_context=workspace_context.model_dump(mode="json"),
             )

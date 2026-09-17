@@ -28,6 +28,7 @@ from aipinho.services.governance.lifecycle.public_route_lifecycle_service import
 from aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_service import ReadonlyAnalysisArtifactRuntimeService
 from aipinho.services.orchestration.task_draft_store import TaskDraftStore
 from aipinho.services.orchestration.task_preview_service import TaskPreviewService
+from aipinho.services.orchestration.workspace_fix_discovery_service import WorkspaceFixDiscoveryService
 from aipinho.services.patching.execution_preview_compiler import ExecutionPreviewCompiler
 from aipinho.services.policy_kernel.workspace_policy_service import WorkspacePolicyService
 from aipinho.services.prompt_intelligence.path_extraction_service import PathExtractionService
@@ -80,6 +81,7 @@ class CanonicalPublicChatService:
         followup_recall: FollowupResultRecallService | None = None,
         followup_review: FollowupResultReviewService | None = None,
         session_diagnostic: SessionDiagnosticService | None = None,
+        workspace_fix_discovery: WorkspaceFixDiscoveryService | None = None,
     ) -> None:
         self.chat_service = chat_service or ChatService()
         self.lifecycle = lifecycle or GovernanceLifecycleService()
@@ -96,6 +98,9 @@ class CanonicalPublicChatService:
         self.project_analysis = project_analysis or ProjectAnalysisService()
         self.readonly_artifact_runtime = (
             readonly_artifact_runtime or ReadonlyAnalysisArtifactRuntimeService()
+        )
+        self.workspace_fix_discovery = workspace_fix_discovery or WorkspaceFixDiscoveryService(
+            runtime=self.readonly_artifact_runtime.runtime
         )
         self.execution_preview_compiler = ExecutionPreviewCompiler()
         self.workspace_policy = workspace_policy or WorkspacePolicyService().load()
@@ -154,7 +159,12 @@ class CanonicalPublicChatService:
             return self._readonly_response(request, initial)
 
         if intent_type == "workspace_fix_request":
-            return self._fix_request_discovery_response(request, initial, workspace=workspace)
+            return self._fix_request_discovery_response(
+                request,
+                initial,
+                workspace=workspace,
+                source_channel=source_channel,
+            )
 
         if initial.intent.side_effect_requested or initial.operation_contract.requested_actions:
             return self._governed_operation_response(request, source_channel=source_channel, workspace=workspace, initial=initial)
@@ -667,35 +677,92 @@ class CanonicalPublicChatService:
         snapshot: GovernanceLifecycleSnapshot,
         *,
         workspace: str | None,
+        source_channel: str,
     ) -> ChatResponse:
-        status_label = "WORKSPACE_DISCOVERY_REQUIRED" if workspace else "APPROVAL_NOT_CREATED_WORKSPACE_NOT_RESOLVED"
+        if not workspace and not snapshot.intent.local_resources:
+            response = self._base_response(
+                request,
+                status="needs_clarification",
+                operation_type="workspace_fix_request",
+                message_type="clarification_request",
+                message=(
+                    "WORKSPACE_FIX_DISCOVERY_WORKSPACE_NOT_RESOLVED\n"
+                    "A missao de correcao requer ao menos um workspace local resolvido para iniciar discovery read-only."
+                ),
+                intent={
+                    "intent_type": "workspace_fix_request",
+                    "requires_task": True,
+                    "readonly_first_phase": True,
+                },
+                policy={"write_approval_created": False},
+                requires_user_action=True,
+            )
+            return self._attach_lifecycle(response, snapshot)
+
+        execution = self.workspace_fix_discovery.execute(
+            request=request,
+            snapshot=snapshot,
+            workspace=workspace,
+            source_channel=source_channel,
+        )
+        run = execution.run
+        result = execution.result
+        if result.status == "completed":
+            response_status = "ok"
+            label = "WORKSPACE_FIX_DISCOVERY_COMPLETED"
+        elif result.status in {"completed_with_limitations", "partial"}:
+            response_status = "degraded"
+            label = "WORKSPACE_FIX_DISCOVERY_COMPLETED_WITH_LIMITATIONS"
+        elif result.status == "blocked":
+            response_status = "blocked"
+            label = "WORKSPACE_FIX_DISCOVERY_BLOCKED"
+        else:
+            response_status = "failed"
+            label = "WORKSPACE_FIX_DISCOVERY_FAILED"
+
         response = self._base_response(
             request,
-            status="preview",
+            status=response_status,
             operation_type="workspace_fix_request",
-            message_type="task_preview",
+            message_type="task_status_update",
             message=(
-                f"{status_label}\n"
-                "Pedido de correcao identificado como fluxo em duas fases. Primeiro preciso fazer discovery/diagnostico read-only, "
-                "identificar arquivos-alvo e gerar plano executavel. Nenhum ApprovalRequest de escrita foi criado."
+                f"{label}\n"
+                "A fase inicial foi materializada e executada pelo TaskRuntime canonico. "
+                "Nenhuma autorizacao de escrita foi criada ou ampliada por esta fase."
             ),
             intent={
                 "intent_type": "workspace_fix_request",
-                "operation_type": "workspace_fix_request",
+                "operation_type": "project_analysis",
                 "requires_task": True,
                 "readonly_first_phase": True,
+                "mission_execution_mode": snapshot.intent.mission_execution_mode,
+                "local_resource_ids": [
+                    item.resource_id for item in snapshot.intent.local_resources
+                ],
             },
             policy={
                 "write_approval_created": False,
-                "reason_code": status_label,
-                "required_before_write_approval": ["workspace_snapshot_ref", "analysis_ref", "target_files", "executable_plan_ref"],
+                "reason_code": result.reason_code or label,
+                "runtime_status": result.status,
             },
-            actions=[],
             contract_preview={
-                "phase": "discovery_first",
-                "workspace": workspace,
-                "next_status": "PROJECT_DIAGNOSIS_READY",
+                "phase": "discovery",
+                "mission_id": run.mission_binding.mission_id if run.mission_binding else None,
+                "mission_authority_sha256": (
+                    run.mission_binding.authority_sha256 if run.mission_binding else None
+                ),
+                "next_phase": "patch_planning",
+                "continuation_owner": "M8_mission_continuation",
             },
+            warnings=list(result.warnings),
+        )
+        response = response.model_copy(
+            update={
+                "task_id": run.task_id,
+                "task_run_id": run.run_id,
+                "result_ref_id": result.trace_ref,
+                "is_final_answer": False,
+            }
         )
         return self._attach_lifecycle(response, snapshot)
 

@@ -6,13 +6,22 @@ from typing import Any
 
 from aipinho.core.paths import PATHS
 from aipinho.schemas.agents.tool_gateway import WorkspaceResolution
+from aipinho.schemas.runtime.mission_contract import MissionResourceScope
+from aipinho.services.policy_kernel.mission_local_resource_scope_service import MissionLocalResourceScopeService
 from aipinho.utils.yaml_loader import load_yaml_file
 
 
 class AgentToolWorkspaceResolver:
-    def __init__(self, path: Path | None = None, *, root: Path | None = None) -> None:
+    def __init__(
+        self,
+        path: Path | None = None,
+        *,
+        root: Path | None = None,
+        mission_scopes: MissionLocalResourceScopeService | None = None,
+    ) -> None:
         self.path = path or PATHS.config_root / "agents" / "tool_gateway_workspaces.yaml"
         self.root = root or PATHS.config_root
+        self.mission_scopes = mission_scopes or MissionLocalResourceScopeService()
 
     def _data(self) -> dict[str, Any]:
         return load_yaml_file(self.path, critical=False, root=self.root)
@@ -42,25 +51,68 @@ class AgentToolWorkspaceResolver:
         path_ref: str | None = None,
         relative_path: str | None = None,
         access: str = "read",
+        local_resources: list[MissionResourceScope] | None = None,
     ) -> WorkspaceResolution:
         entries = self._entries()
         selected: dict[str, Any] | None = None
+        mission_scope: MissionResourceScope | None = None
+        explicit_path = path_ref
+        if not explicit_path and relative_path:
+            try:
+                relative_candidate = Path(relative_path).expanduser()
+                if relative_candidate.is_absolute():
+                    explicit_path = str(relative_candidate)
+            except OSError:
+                explicit_path = None
+
         if workspace_id:
-            selected = next((entry for entry in entries if str(entry.get("workspace_id")) == workspace_id), None)
+            selected = next(
+                (entry for entry in entries if str(entry.get("workspace_id")) == workspace_id),
+                None,
+            )
             if selected is None:
-                return WorkspaceResolution(workspace_id=workspace_id, allowed=False, reason_code="workspace_id_not_registered")
-        else:
-            candidate_path = Path(path_ref).expanduser().resolve() if path_ref else None
-            if candidate_path is not None:
-                matches = [entry for entry in entries if self._is_relative_to(candidate_path, entry["resolved_root"])]
-                matches.sort(key=lambda entry: len(str(entry["resolved_root"])), reverse=True)
-                selected = matches[0] if matches else None
+                mission_scope = self.mission_scopes.resource_by_id(
+                    local_resources,
+                    workspace_id,
+                )
+        if selected is None and mission_scope is None and explicit_path:
+            candidate_path = Path(explicit_path).expanduser().resolve()
+            matches = [
+                entry
+                for entry in entries
+                if self._is_relative_to(candidate_path, entry["resolved_root"])
+            ]
+            matches.sort(key=lambda entry: len(str(entry["resolved_root"])), reverse=True)
+            selected = matches[0] if matches else None
+            if selected is None:
+                mission_scope = self.mission_scopes.scope_for_path(
+                    local_resources,
+                    str(candidate_path),
+                )
+
+        if selected is None and mission_scope is not None and mission_scope.locator:
+            root_path = Path(mission_scope.locator).expanduser().resolve()
+            selected = {
+                "workspace_id": mission_scope.resource_id,
+                "role": str(mission_scope.role or "source_readonly"),
+                "resolved_root": root_path,
+                "mission_resource": True,
+            }
         if selected is None:
-            return WorkspaceResolution(workspace_id=workspace_id, allowed=False, reason_code="workspace_unknown")
+            reason = "workspace_id_not_registered" if workspace_id else "workspace_unknown"
+            return WorkspaceResolution(
+                workspace_id=workspace_id,
+                allowed=False,
+                reason_code=reason,
+            )
 
         role = str(selected.get("role", "unknown"))
         root_path: Path = selected["resolved_root"]
-        resolved_path = self._resolve_child(root_path, path_ref=path_ref, relative_path=relative_path)
+        resolved_path = self._resolve_child(
+            root_path,
+            path_ref=path_ref,
+            relative_path=relative_path,
+        )
         if resolved_path is None:
             return WorkspaceResolution(
                 workspace_id=str(selected.get("workspace_id")),
@@ -79,11 +131,20 @@ class AgentToolWorkspaceResolver:
                 resolved_path_sanitized=str(resolved_path),
                 allowed=False,
                 reason_code="workspace_deny_override",
-                evidence_refs=[f"workspace:{deny_match.get('workspace_id')}"],
+                evidence_refs=[f"workspace:{deny_match.get('workspace_id')}"] ,
             )
 
         allowed = self._role_allows(role, access)
-        reason = "workspace_allowed" if allowed else ("source_readonly_write_denied" if role == "source_readonly" and access == "write" else f"{role}_does_not_allow_{access}")
+        reason = (
+            "workspace_allowed"
+            if allowed
+            else "source_readonly_write_denied"
+            if role == "source_readonly" and access in {"write", "shell"}
+            else f"{role}_does_not_allow_{access}"
+        )
+        refs = [f"workspace:{selected.get('workspace_id')}"]
+        if selected.get("mission_resource"):
+            refs.append("authority:mission_contract.local_resources")
         return WorkspaceResolution(
             workspace_id=str(selected.get("workspace_id")),
             workspace_role=role,  # type: ignore[arg-type]
@@ -91,7 +152,7 @@ class AgentToolWorkspaceResolver:
             resolved_path_sanitized=str(resolved_path),
             allowed=allowed,
             reason_code=reason,
-            evidence_refs=[f"workspace:{selected.get('workspace_id')}"],
+            evidence_refs=refs,
         )
 
     def _resolve_child(self, root_path: Path, *, path_ref: str | None, relative_path: str | None) -> Path | None:

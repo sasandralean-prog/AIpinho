@@ -90,7 +90,11 @@ class GovernanceLifecycleService:
         outputs: dict[str, Any] | None = None,
         proposed_completion_status: str = "not_run",
     ) -> GovernanceLifecycleSnapshot:
-        intent = self.intent_resolution.resolve(user_text, source_channel=source_channel)
+        intent = self.intent_resolution.resolve(
+            user_text,
+            source_channel=source_channel,
+            workspace_hint=workspace_path,
+        )
         op_type = operation_type or intent.operation_type
         actions = list(dict.fromkeys(requested_actions or self._default_actions_for_operation(op_type)))
         if self._readonly_hard_override(intent):

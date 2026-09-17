@@ -20,6 +20,7 @@ WorkspaceRegistryRole = Literal[
 PermissionName = Literal[
     "read_file",
     "list_files",
+    "create_directory",
     "create_file",
     "modify_file",
     "apply_patch",
