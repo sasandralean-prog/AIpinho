@@ -6,6 +6,7 @@ from uuid import uuid4
 from pydantic import Field
 
 from aipinho.schemas.common.base import AIpinhoModel
+from aipinho.schemas.governance.lifecycle import CanonicalPolicyDecision
 
 
 WriteOperationType = Literal[
@@ -50,3 +51,4 @@ class WriteCapabilityEnvelopeDecision(AIpinhoModel):
     allowed: bool
     envelope: WriteCapabilityEnvelope
     reason: str
+    canonical_policy_decision: CanonicalPolicyDecision | None = None
