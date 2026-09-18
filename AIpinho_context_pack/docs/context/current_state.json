@@ -1,5 +1,5 @@
 {
-  "schema_version": "context_state.v2026-09-18-e2e-new-runtime-m7",
+  "schema_version": "context_state.v2026-09-18-e2e-new-runtime-m8",
   "updated_at": "2026-09-18",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
@@ -7,7 +7,7 @@
     "branch": "main",
     "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
     "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d",
-    "current_main_head": "725f47b789c6c356aa63b2126461d4c59c45fb4c"
+    "current_main_head": "446d22349850d29e59116b4540d64c29d01a14eb"
   },
   "authorities": [
     "Human operator",
@@ -83,13 +83,17 @@
     "prompt-derived remote repository/provider/branch scope frozen into MissionContract",
     "repository + branch + operation remote scope gate with promotion identity reobservation",
     "mission-scoped staging derived from authorized remote resources without permanent workspace registration",
-    "governed staging clone/fetch/ff-only promotion with lifecycle expiry and source/registry immutability"
+    "governed staging clone/fetch/ff-only promotion with lifecycle expiry and source/registry immutability",
+    "automatic end_to_end_governed continuation through canonical TaskRunPlanner and MissionPhaseCoordinator",
+    "frozen MissionContract semantic_context used for continuation without raw prompt reparsing",
+    "mission authority permissions separated from runtime profile capabilities across child TaskRuns",
+    "continuation depth phase-lineage and history guards fail closed against loops"
   ],
   "current_frontier": [
-    "execute M8 Mission Continuation Engine from e2enewruntimee.md",
-    "continue end_to_end_governed missions across TaskRuns without reparsing authority",
-    "narrow inherited mission authority and resources at every continuation boundary",
-    "keep continuation coordination subordinate to canonical TaskRuntime planning policy and RuntimeTruth"
+    "execute M9 Cross-Phase Truth and Mission Completion Contract from e2enewruntimee.md",
+    "bind mission completion requirements across PhaseOutcome and RuntimeTruth evidence from multiple canonical TaskRuns",
+    "prevent last-phase or last-command success from substituting for mission-level completion truth",
+    "keep cross-phase completion subordinate to canonical RuntimeTruth and SpeakerTruth ceilings"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -132,14 +136,18 @@
     "push success requires refreshed authorized remote branch HEAD equal to local HEAD",
     "mission staging can be derived only from a frozen authorized remote resource under the global safe staging root",
     "mission staging does not inherit human authority as local-resource metadata",
-    "terminal parent or staging child TaskRun makes staging authority fail-closed while preserving previously proven promotion truth"
+    "terminal parent or staging child TaskRun makes staging authority fail-closed while preserving previously proven promotion truth",
+    "continuation planner candidates are descriptive and cannot supply policy or authority",
+    "child phases consume bounded runtime capabilities without erasing mission-wide authority needed by later phases",
+    "mission continuation depth and phase lineage are bounded and cycles fail closed",
+    "terminal PhaseOutcome and dependency admission remain mandatory before continuation materialization"
   ],
   "active_wave": {
     "id": "e2e_new_runtime",
     "status": "IN_PROGRESS",
     "plan_document": "e2enewruntimee.md",
-    "next_sprint": "M8",
-    "next_sprint_name": "Mission Continuation Engine",
+    "next_sprint": "M9",
+    "next_sprint_name": "Cross-Phase Truth and Mission Completion Contract",
     "prewave_diagnostic_evidence": {
       "branch": "fix/firetest5-mission-runtime-intentmap",
       "sha": "cfba76ee094018f9680c0a63eda6378cb118a076",
@@ -153,7 +161,7 @@
       "M5": "CLOSED",
       "M6": "CLOSED",
       "M7": "CLOSED",
-      "M8": "PLANNED",
+      "M8": "CLOSED",
       "M9": "PLANNED",
       "M10": "PLANNED"
     },
@@ -164,7 +172,7 @@
     ],
     "authority_direction": [
       "requested capability != explicit human authority",
-      "child TaskRuns may narrow but never expand mission authority",
+      "child TaskRuns may preserve or narrow but never expand mission authority",
       "global protection overrides prompt-derived allow"
     ],
     "sprint_closure_protocol": {
@@ -348,6 +356,33 @@
         "remaining_notes": [
           "physical staging cleanup remains subordinate to the global delete_files deny; retained staging after terminal authority is a cleanup limitation, not a truth rollback",
           "M8 owns cross-TaskRun automatic mission continuation using the frozen mission contract"
+        ],
+        "plan_changed": false
+      },
+      "M8": {
+        "name": "Mission Continuation Engine",
+        "implementation_main_sha": "446d22349850d29e59116b4540d64c29d01a14eb",
+        "validation": {
+          "focused_mission_contract_m8": "38 passed",
+          "m4_m8_cross_sprint_regression": "134 passed",
+          "broader_runtime_public_regression": "65 passed / 1 failed",
+          "known_failure": "test_service_waits_for_approval_when_policy_requires_apply_patch",
+          "known_failure_baseline": "reproduced identically on clean 4b14e2f8 baseline",
+          "compileall": "passed",
+          "diff_check": "passed",
+          "production_hardcode_raw_prompt_scan": "passed"
+        },
+        "closed_boundary": [
+          "terminal end_to_end_governed TaskRuns invoke canonical TaskRunPlanner continuation planning from frozen structured mission semantics",
+          "MissionContract semantic_context freezes continuation semantics and child contracts cannot alter that identity",
+          "planner candidates are descriptive only and canonical policy is recomputed outside the candidate",
+          "mission authority permissions are distinct from runtime profile capabilities so bounded child execution does not erase later mission authority",
+          "PhaseOutcome semantic demand and dependency admission gate every child materialization",
+          "depth phase-lineage and history are persisted across child TaskRuns and cycles or depth exhaustion fail closed"
+        ],
+        "remaining_notes": [
+          "M9 owns cross-phase mission completion truth across the TaskRuns now connected by M8",
+          "the established unregistered-worktree approval fixture remains a baseline test limitation outside M8"
         ],
         "plan_changed": false
       }

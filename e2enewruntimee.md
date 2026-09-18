@@ -265,7 +265,7 @@ These invariants apply to every sprint in this wave:
 | M5 | Unified Capability and Policy Kernel | CLOSED | M1–M4 |
 | M6 | Governed Git and Network Execution | CLOSED | M3–M5 |
 | M7 | Mission Staging and Derived Resources | CLOSED | M2, M3, M6 |
-| M8 | Mission Continuation Engine | PLANNED | M1–M7 |
+| M8 | Mission Continuation Engine | CLOSED | M1–M7 |
 | M9 | Cross-Phase Truth and Completion Contract | PLANNED | M1–M8 |
 | M10 | Fresh Manual E2E FireTest and Consolidation | PLANNED | M1–M9 |
 
@@ -382,6 +382,22 @@ Next sprint: **M7 - Mission Staging and Derived Resources**.
 - `compileall`, diff checks and production hardcode scans passed; no project/repository/host-specific production allowlist was introduced.
 
 Next sprint: **M8 - Mission Continuation Engine**.
+
+### M8 closure evidence - 2026-09-18
+
+- validated implementation/main SHA: `446d22349850`;
+- checkpoint chain: M8-A `e56d8ca4`, M8-B.1 `9ca1ff68`, M8-B.2 `a960e6f6`, M8-C.1 `4b14e2f8`, M8-C.2 `446d2234`;
+- terminal `end_to_end_governed` TaskRuns now invoke the canonical `TaskRunPlanner` to propose the next bounded phase from frozen structured mission semantics; the MissionContinuationService/Coordinator remain validators/orchestrators rather than a second planner;
+- `MissionContract.semantic_context` freezes structured continuation semantics at ingress while downstream continuation never reparses `raw_prompt`; child contracts must preserve this semantic identity;
+- planner output is descriptive only: phase/profile/operation/actions are validated against runtime profile/action catalogs, while canonical policy is recomputed independently and human authority is never accepted from candidate metadata;
+- mission authority permissions and runtime capabilities are distinct: candidate `required_capabilities` bind frozen human authority while `runtime_capabilities_required` bind the canonical TaskRun/profile; a child phase may use a subset without erasing mission-wide authority needed by later phases;
+- child resources remain monotonic, candidate actions cannot expand mission authority, and depth/phase-lineage/history guards prevent continuation cycles; `max_mission_continuation_depth` is configuration-driven;
+- PhaseOutcome and PhaseSemanticDemandCompiler remain the evidence/demand boundary before child materialization; RuntimeTruth/dependency blocks still stop continuation;
+- focused MissionContract/M8 suite: `38 passed`; cross-sprint M4-M8 regression: `134 passed`; broader runtime/public ingress regression: `65 passed / 1 failed`;
+- the sole broader failure, `test_service_waits_for_approval_when_policy_requires_apply_patch`, reproduced identically on clean baseline `4b14e2f8` and remains the established unregistered-worktree fixture limitation;
+- `compileall`, diff checks and production hardcode/`raw_prompt` scans passed; no project/repository/user-path-specific production rule or parallel runtime was introduced.
+
+Next sprint: **M9 - Cross-Phase Truth and Mission Completion Contract**.
 
 
 ---
@@ -893,6 +909,10 @@ These are runtime phases, not FireTest scripts.
 A discovery TaskRun can terminalize and cause the next canonical TaskRun to be created without a new prompt when strategy and authority allow it.
 
 No phase can self-promote around RuntimeTruth.
+
+## Closure result
+
+M8 is validated and CLOSED. The canonical path is terminal TaskRun -> frozen MissionContract/semantic context -> canonical TaskRunPlanner continuation proposal -> deterministic catalog/authority/dependency gates -> MissionPhaseCoordinator -> canonical child TaskRun -> existing TaskRuntime planner/executor. The candidate cannot grant policy or authority, raw prompt text is not reparsed, mission-wide authority is preserved or narrowed but never expanded, and loop/depth boundaries fail closed.
 
 ---
 
