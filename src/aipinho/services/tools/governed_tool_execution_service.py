@@ -32,6 +32,7 @@ from aipinho.services.policy_kernel.remote_repository_scope_service import Remot
 from aipinho.services.policy_kernel.mission_staging_policy_service import MissionStagingPolicyService
 from aipinho.services.policy_kernel.workspace_role_contract_service import WorkspaceRoleContractService
 from aipinho.services.runtime.mission_contract_service import MissionContractService
+from aipinho.services.runtime.task_run_lifecycle_service import TaskRunLifecycleService
 from aipinho.services.runtime.task_run_store import TaskRunStore
 from aipinho.services.session.session_store import utc_now
 from aipinho.services.tools.execution_audit_service import ExecutionAuditService
@@ -79,6 +80,7 @@ class GovernedToolExecutionService:
         self.task_runs = task_runs or TaskRunStore()
         self.authority_grants = authority_grants or AuthorityGrantService()
         self.missions = MissionContractService(staging_policy=self.staging_policy)
+        self.lifecycle = TaskRunLifecycleService()
         self.remote_scopes = remote_scopes or RemoteRepositoryScopeService(policy_path=self.policy_path)
 
     def request_approval(self, request: ToolExecutionRequest) -> dict[str, object]:
@@ -284,6 +286,9 @@ class GovernedToolExecutionService:
             if task_run is not None and task_run.mission_contract is not None
             else []
         )
+        staging_lifecycle_error = self._mission_staging_lifecycle_error(task_run)
+        if staging_lifecycle_error:
+            violations.append(staging_lifecycle_error)
         role_decision = None
         workspace_error = None
         if tool.action in set(config.get("workspace_required_for", []) or []):
@@ -380,6 +385,18 @@ class GovernedToolExecutionService:
                 details={"violations": global_errors},
             ),
         ]
+        if staging_lifecycle_error:
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="mission_staging_lifecycle",
+                    permission=CanonicalPermission.DENIED,
+                    source="task_run_lifecycle",
+                    reason_code=staging_lifecycle_error,
+                    capability=capability,
+                    resource_id=resource_id,
+                )
+            )
+
         if tool.action in set(config.get("workspace_required_for", []) or []):
             facets.append(
                 CanonicalPolicyFacet(
@@ -624,6 +641,26 @@ class GovernedToolExecutionService:
             "approval_valid": approval_valid,
             "uses_mission_authority": mission_authority_ready and not approval_valid,
         }
+
+    def _mission_staging_lifecycle_error(self, task_run) -> str | None:
+        if task_run is None or task_run.mission_contract is None:
+            return None
+        has_staging = any(
+            item.resource_type == "mission_staging"
+            for item in task_run.mission_contract.local_resources
+        )
+        if not has_staging:
+            return None
+        if self.lifecycle.is_terminal(str(task_run.status)):
+            return "mission_staging_child_run_terminal"
+        if not task_run.parent_task_id:
+            return "mission_staging_parent_run_missing"
+        parent = self.task_runs.get_run_by_task_id(task_run.parent_task_id)
+        if parent is None:
+            return "mission_staging_parent_run_missing"
+        if self.lifecycle.is_terminal(str(parent.status)):
+            return "mission_staging_parent_run_terminal"
+        return None
 
     def _staging_materialization_allowed(self, *, task_run, resource_id: str | None) -> bool:
         if (

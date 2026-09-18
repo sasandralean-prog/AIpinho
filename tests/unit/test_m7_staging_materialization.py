@@ -1,13 +1,17 @@
 from __future__ import annotations
 
+import hashlib
 import shutil
 import subprocess
 from pathlib import Path
 from uuid import uuid4
 
+from aipinho.core.paths import PATHS
+from aipinho.schemas.runtime.mission_contract import MissionResourceScope
 from aipinho.schemas.runtime.task_run import TaskRun
 from aipinho.schemas.runtime.task_run_plan import TaskRunPlan
 from aipinho.schemas.runtime.task_run_request import TaskRunRequest
+from aipinho.schemas.tools.tool_execution import ToolExecutionRequest
 from aipinho.services.governance.intent_human_authority_service import IntentHumanAuthorityService
 from aipinho.services.governance.intent_remote_repository_service import IntentRemoteRepositoryService
 from aipinho.services.policy_kernel.authority_grant_service import AuthorityGrantService
@@ -73,7 +77,7 @@ class RewriteCloneRunner:
         if (
             len(original) >= 2
             and original[0].lower().endswith("git")
-            and original[1] in {"clone", "fetch", "pull", "ls-remote"}
+            and original[1] in {"clone", "fetch", "pull", "push", "ls-remote"}
         ):
             mapped = [
                 "git",
@@ -93,22 +97,50 @@ class RewriteCloneRunner:
         )
 
 
-def _contract(*, authorize_clone: bool = True, authorize_sync: bool = False):
+def _contract(
+    *,
+    authorize_clone: bool = True,
+    authorize_sync: bool = False,
+    authorize_promotion: bool = False,
+    source_path: Path | None = None,
+):
     token = uuid4().hex
     prompt = f"Use repository {REPO} branch main and git clone. "
+    if authorize_promotion:
+        prompt += "Prepare an intentional change, git commit it, and git push it. "
     if authorize_clone:
         prompt += "AUTORIZACAO: Autorizo git clone nesta missao. "
     if authorize_sync:
         prompt += (
             "AUTORIZACAO: Autorizo git fetch nesta missao. "
-            "AUTORIZACAO: Autorizo git pull --ff-only nesta missao."
+            "AUTORIZACAO: Autorizo git pull --ff-only nesta missao. "
+        )
+    if authorize_promotion:
+        prompt += (
+            "AUTORIZACAO: Autorizo git commit nesta missao. "
+            "AUTORIZACAO: Autorizo git push nesta missao."
         )
     prompt = prompt.strip()
-    human = IntentHumanAuthorityService().resolve(
-        prompt=prompt,
-        known_capabilities=["git_clone", "git_fetch", "git_pull_ff"],
-    )
+    known = ["git_clone", "git_fetch", "git_pull_ff", "git_commit", "git_push"]
+    requested = ["git_clone"]
+    if authorize_sync:
+        requested.extend(["git_fetch", "git_pull_ff"])
+    if authorize_promotion:
+        requested.extend(["git_commit", "git_push"])
+    human = IntentHumanAuthorityService().resolve(prompt=prompt, known_capabilities=known)
     remote = IntentRemoteRepositoryService().resolve(prompt).resources
+    local_resources = []
+    if source_path is not None:
+        local_resources.append(
+            MissionResourceScope(
+                resource_id=f"source_readonly_{token[:12]}",
+                resource_type="local_workspace",
+                role="source_readonly",
+                locator=str(source_path),
+                permissions=["read_file"],
+                provenance_refs=["m7_c_source_fixture"],
+            )
+        )
     request = TaskRunRequest(
         source_type="direct",
         source_channel="unit",
@@ -117,14 +149,15 @@ def _contract(*, authorize_clone: bool = True, authorize_sync: bool = False):
         contract_type="shell",
         operation_type="git_clone",
         runtime_profile="shell",
-        capabilities_required=["git_clone", *(["git_fetch", "git_pull_ff"] if authorize_sync else [])],
+        capabilities_required=requested,
         requested_actions=["run_command"],
         intent_map={
             "intent_type": "git_clone",
             "raw_prompt": prompt,
-            "requested_capabilities": ["git_clone", *(["git_fetch", "git_pull_ff"] if authorize_sync else [])],
+            "requested_capabilities": requested,
             "authorized_capabilities": human.authorized_capabilities,
             "authority_evidence": human.evidence,
+            "local_resources": [item.model_dump(mode="json") for item in local_resources],
             "remote_resources": [item.model_dump(mode="json") for item in remote],
         },
     )
@@ -341,5 +374,164 @@ def test_synchronize_without_fetch_pull_authority_is_fail_closed(tmp_path: Path)
         assert synchronized.status == "blocked"
         assert synchronized.reason_code == "mission_staging_git_fetch_not_permitted"
         assert len(runner.calls) == before_calls
+    finally:
+        shutil.rmtree(staging.parent, ignore_errors=True)
+
+
+def _sha256_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def test_terminal_parent_expires_staging_authority_without_rewriting_truth(tmp_path: Path) -> None:
+    bare = _bare_repository(tmp_path)
+    store = TaskRunStore(root=tmp_path / "task_runs_terminal")
+    contract = _contract(authorize_sync=True)
+    parent = _parent(store, contract)
+    remote = contract.remote_resources[0]
+    service, _runner = _service(tmp_path, bare, store)
+
+    materialized = service.materialize(
+        parent_run_id=parent.run_id,
+        remote_resource_id=remote.resource_id,
+        branch="main",
+    )
+    assert materialized.status == "materialized"
+    assert materialized.child_task_run_id
+    staging = Path(materialized.workspace_path or "")
+    try:
+        parent = service.tools.lifecycle.transition(parent, "completed")
+        store.update_run(parent)
+        preview = service.tools.preview_decision(
+            ToolExecutionRequest(
+                tool_id="shell.run_command",
+                mode="governed",
+                task_run_id=materialized.child_task_run_id,
+                input={
+                    "workspace": str(staging),
+                    "argv": ["git", "fetch", "origin", "main"],
+                    "repository_locator": remote.locator,
+                    "branch": "main",
+                },
+            )
+        )
+
+        canonical = preview["canonical_policy"]
+        assert canonical["permission"] == "denied"
+        assert any(
+            facet["facet"] == "mission_staging_lifecycle"
+            and facet["reason_code"] == "mission_staging_parent_run_terminal"
+            for facet in canonical["facets"]
+        )
+        assert staging.is_dir()
+    finally:
+        shutil.rmtree(staging.parent, ignore_errors=True)
+
+
+def test_full_staging_promotion_preserves_source_and_static_registry(tmp_path: Path) -> None:
+    bare = _bare_repository(tmp_path)
+    source_root = tmp_path / "source_readonly"
+    source_root.mkdir()
+    source_file = source_root / "corpus.txt"
+    source_file.write_text("immutable corpus\n", encoding="utf-8")
+    source_hash_before = _sha256_file(source_file)
+    registry_path = PATHS.config_root / "workspaces" / "workspace_registry.yaml"
+    registry_hash_before = _sha256_file(registry_path)
+
+    store = TaskRunStore(root=tmp_path / "task_runs_promotion")
+    contract = _contract(
+        authorize_sync=True,
+        authorize_promotion=True,
+        source_path=source_root,
+    )
+    assert {"git_clone", "git_fetch", "git_pull_ff", "git_commit", "git_push"}.issubset(
+        set(contract.authority.authorized_capabilities)
+    )
+    parent = _parent(store, contract)
+    remote = contract.remote_resources[0]
+    service, runner = _service(tmp_path, bare, store)
+
+    materialized = service.materialize(
+        parent_run_id=parent.run_id,
+        remote_resource_id=remote.resource_id,
+        branch="main",
+    )
+    assert materialized.status == "materialized", materialized.model_dump(mode="json")
+    assert materialized.child_task_run_id
+    staging = Path(materialized.workspace_path or "")
+    try:
+        synchronized = service.synchronize(
+            child_run_id=materialized.child_task_run_id,
+            remote_resource_id=remote.resource_id,
+            branch="main",
+        )
+        assert synchronized.status == "synchronized", synchronized.model_dump(mode="json")
+
+        readme = staging / "README.md"
+        readme.write_text(
+            readme.read_text(encoding="utf-8") + "intentional promoted change\n",
+            encoding="utf-8",
+        )
+        commit = service.tools.execute(
+            ToolExecutionRequest(
+                tool_id="shell.run_command",
+                mode="governed",
+                task_run_id=materialized.child_task_run_id,
+                input={
+                    "workspace": str(staging),
+                    "argv": [
+                        "git", "-c", "user.name=M7 Fixture",
+                        "-c", "user.email=m7@example.test",
+                        "commit", "-am", "M7 governed promotion",
+                    ],
+                    "repository_locator": remote.locator,
+                    "branch": "main",
+                },
+            )
+        )
+        assert commit.status == "executed_governed", (commit.violations, commit.content)
+        promoted_head = _git(staging, "rev-parse", "HEAD").stdout.strip()
+
+        push = service.tools.execute(
+            ToolExecutionRequest(
+                tool_id="shell.run_command",
+                mode="governed",
+                task_run_id=materialized.child_task_run_id,
+                input={
+                    "workspace": str(staging),
+                    "argv": ["git", "push", "origin", "main"],
+                    "repository_locator": remote.locator,
+                    "branch": "main",
+                },
+            )
+        )
+        assert push.status == "executed_governed", (push.violations, push.content)
+        assert push.safe_to_execute is True
+        assert push.metadata["local_head"] == push.metadata["remote_head"] == promoted_head
+        assert _git(None, f"--git-dir={bare}", "rev-parse", "refs/heads/main").stdout.strip() == promoted_head
+        assert ["git", "push", "origin", "main"] in runner.calls
+        assert _sha256_file(source_file) == source_hash_before
+        assert _sha256_file(registry_path) == registry_hash_before
+        assert str(staging.resolve(strict=False)) not in registry_path.read_text(encoding="utf-8")
+
+        parent = service.tools.lifecycle.transition(parent, "completed")
+        store.update_run(parent)
+        expired = service.tools.preview_decision(
+            ToolExecutionRequest(
+                tool_id="shell.run_command",
+                mode="governed",
+                task_run_id=materialized.child_task_run_id,
+                input={
+                    "workspace": str(staging),
+                    "argv": ["git", "fetch", "origin", "main"],
+                    "repository_locator": remote.locator,
+                    "branch": "main",
+                },
+            )
+        )
+        assert expired["canonical_policy"]["permission"] == "denied"
+        assert staging.is_dir()
+        assert _git(None, f"--git-dir={bare}", "rev-parse", "refs/heads/main").stdout.strip() == promoted_head
+        assert _sha256_file(source_file) == source_hash_before
+        assert _sha256_file(registry_path) == registry_hash_before
     finally:
         shutil.rmtree(staging.parent, ignore_errors=True)
