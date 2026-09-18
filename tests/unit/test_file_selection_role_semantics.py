@@ -24,6 +24,8 @@ def test_media_file_rejected_for_source_reading_can_be_inventory_eligible(tmp_pa
     assert result.omitted_files[0].inventory_eligible is True
     assert result.omitted_files[0].entity_role == "media_asset_candidate"
     assert result.omitted_files[0].routing_hints == ["media_metadata_observation"]
+    assert result.violations == []
+    assert "file_selection_nonfatal_policy_omissions" in result.warnings
     assert result.plan is not None
     assert result.plan["inventory_eligible_entities_count"] == 1
     assert result.plan["source_readable_selected_count"] == 0
@@ -48,5 +50,6 @@ def test_source_project_keeps_media_file_as_text_read_rejection_not_inventory(tm
     assert result.selected_files == []
     assert result.omitted_files[0].blocked_reason == "extension_not_allowed"
     assert result.omitted_files[0].inventory_eligible is False
+    assert result.violations == []
     assert result.plan is not None
     assert result.plan["inventory_eligible_entities_count"] == 0

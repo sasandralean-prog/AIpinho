@@ -1034,8 +1034,9 @@ Validate the completed architecture through the normal AIpinho interface with a 
 - **M10-A.9 — Flattened continuation option catalog:** profile/operation/action compatibility is projected into deterministic continuation options before semantic selection so the model never has to invent cross-product compatibility between independent catalogs.
 - **M10-A.10 — Compact runtime-owned continuation materialization:** the semantic proposal selects only a governed option id, contract type and allowed action subset. Runtime profile, operation type and fresh phase identity are materialized deterministically by TaskRunPlanner. Redundant raw profile/action catalogs are removed from the model payload so correction retries remain below inference input limits.
 - **M10-A.11 — Semantic continuation selector:** choosing among already-governed continuation options is semantic interpretation/routing, not free-form planning authority. The proposal therefore uses the canonical `semantic_interpreter` role; TaskRunPlanner remains the deterministic authority that materializes and validates the next work unit.
+- **M10-A.12 — Non-fatal file-context omissions:** text-read ineligibility and explicit inventory-only handoff are configurable omission classes, not security violations. They remain visible in omitted-file summaries, warnings and limitation evidence, but must not fail a required context phase when useful text context was safely collected. Secret/protected/traversal/symlink/explicitly blocked-extension violations remain fatal. A partial context producer is admitted downstream only as `ADMITTED_WITH_CONSTRAINTS`.
 - These are generic runtime corrections discovered by the FireTest. No FireTest workspace, repository, media extension or project name may appear in production policy or branch logic.
-- After A.1-A.11 are checkpointed, merged and the canonical backend is restarted, repeat the same human prompt through the normal interface; do not manufacture continuation or inject TaskRuns.
+- After A.1-A.12 are checkpointed, merged and the canonical backend is restarted, repeat the same human prompt through the normal interface; do not manufacture continuation or inject TaskRuns.
 
 ### M10-A validation evidence
 
@@ -1045,6 +1046,10 @@ Validate the completed architecture through the normal AIpinho interface with a 
 - Real in-memory replay of the blocked FireTest run leaves the persisted run untouched and now returns `MISSION_CONTINUATION_CANDIDATE_PLANNED`.
 - The real continuation selection uses `qwen3_1_7b_q6_k`, returns `evaluation_status=accepted`, confidence `0.9`, zero candidate retries, and deterministically materializes `phase_001_patch / patch_preview / patch_request`.
 - The compact continuation payload is approximately 10.6k characters for the observed real mission, below the 20k semantic-inference ceiling.
+- M10-A.12 focused file-selection/context/workflow regression: `18/18`.
+- Real workspace replay: 76 discovered candidates, 40 safely included, 36 omitted (2 text-read-ineligible and 34 max-files budget), `bundle.status=partial`, zero violations, 88,153 bytes read; the downstream project-analysis phase is `ADMITTED_WITH_CONSTRAINTS`.
+- Expanded analysis/workflow/M8/M9 regression: `194 passed / 2 timing-sensitive failures`; the two 1 ms timeout tests passed `2/2` immediately when rerun in isolation with no code change, confirming timing flakiness rather than an A.12 regression.
+- Runtime/publisher regression: `21 passed / 1 failed`; the sole failure is the previously documented unregistered-worktree approval fixture `test_service_waits_for_approval_when_policy_requires_apply_patch`, with no new A.12 failure.
 
 ## Test restrictions
 

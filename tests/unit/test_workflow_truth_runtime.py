@@ -100,6 +100,52 @@ def test_r5_valid_phase_dependency_allows_next_phase(task_runtime_service):
     )
 
 
+def test_r5_partial_phase_without_violations_can_feed_next_phase(
+    task_runtime_service,
+):
+    run = task_runtime_service.create_run(runtime_request())
+    workflow = run.workflow
+    assert workflow is not None
+    service = WorkflowRuntimeService()
+    producer = workflow.phases[0]
+    consumer = workflow.phases[1]
+
+    service.start_phase_for_step(
+        workflow,
+        producer.source_step_id,
+    )
+    service.finish_phase_for_step(
+        workflow,
+        producer.source_step_id,
+        status="partial",
+        validation_ref="validation_partial_context",
+        violations=[],
+    )
+
+    assert producer.status == "partial"
+    assert producer.validation_status == "passed"
+
+    allowed, reasons = service.can_start_phase(
+        workflow,
+        consumer.source_step_id,
+    )
+
+    assert allowed is True
+    assert reasons == []
+    dependency = next(
+        item
+        for item in workflow.dependencies
+        if item.producer_phase_id == producer.phase_id
+        and item.consumer_phase_id == consumer.phase_id
+    )
+    assert dependency.status == "completed"
+    assert dependency.evaluation is not None
+    assert dependency.evaluation.decision == "ADMITTED_WITH_CONSTRAINTS"
+    assert dependency.admission is not None
+    assert dependency.admission.authorized is True
+    assert dependency.admission.decision == "ADMITTED_WITH_CONSTRAINTS"
+
+
 def test_r5_missing_artifact_dependency_blocks_phase(task_runtime_service):
     run = task_runtime_service.create_run(runtime_request())
     workflow = run.workflow

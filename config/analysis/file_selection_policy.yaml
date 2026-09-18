@@ -3,6 +3,9 @@ file_selection:
   enabled: true
   max_files: 12
   max_total_bytes: 120000
+  nonfatal_omission_violations:
+    - extension_not_allowed
+    - extension_not_allowed_for_source_reading
   semantic_token_weight: 35
   semantic_group_weight: 90
   implementation_source_weight: 80

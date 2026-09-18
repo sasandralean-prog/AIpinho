@@ -147,8 +147,35 @@ class FileSelectionService:
         for item in omitted:
             reason = item.blocked_reason or item.reason or "omitted"
             rejected_summary[reason] = rejected_summary.get(reason, 0) + 1
+        nonfatal_omission_violations = {
+            str(item).casefold()
+            for item in (
+                self.settings.get(
+                    "nonfatal_omission_violations",
+                    [],
+                )
+                or []
+            )
+            if str(item)
+        }
+        fatal_blocked = [
+            item
+            for item in blocked
+            if str(item.blocked_reason or "").casefold()
+            not in nonfatal_omission_violations
+        ]
+        nonfatal_blocked = [
+            item
+            for item in blocked
+            if str(item.blocked_reason or "").casefold()
+            in nonfatal_omission_violations
+        ]
         if omitted:
             reason_codes.append("FILE_SELECTION_PARTIAL")
+        if nonfatal_blocked:
+            reason_codes.append(
+                "FILE_SELECTION_NONFATAL_POLICY_OMISSIONS"
+            )
         if source_rejected_inventory:
             reason_codes.append("MEDIA_CORPUS_FILE_SELECTION_REJECTED_AS_SOURCE_BUT_ELIGIBLE_FOR_INVENTORY")
         if corpus_inventory_mode and inventory_eligible:
@@ -204,13 +231,37 @@ class FileSelectionService:
             warnings=list(
                 dict.fromkeys(
                     [
-                        *(["file_selection_partial"] if omitted and selected else []),
-                        *(["media_corpus_source_reading_empty_inventory_handoff_ready"] if corpus_inventory_mode and inventory_eligible and not selected else []),
-                        *(["file_selection_budget_partial"] if budget_exceeded and selected else []),
+                        *(
+                            ["file_selection_partial"]
+                            if omitted and selected
+                            else []
+                        ),
+                        *(
+                            ["file_selection_nonfatal_policy_omissions"]
+                            if nonfatal_blocked
+                            else []
+                        ),
+                        *(
+                            ["media_corpus_source_reading_empty_inventory_handoff_ready"]
+                            if (
+                                corpus_inventory_mode
+                                and inventory_eligible
+                                and not selected
+                            )
+                            else []
+                        ),
+                        *(
+                            ["file_selection_budget_partial"]
+                            if budget_exceeded and selected
+                            else []
+                        ),
                     ]
                 )
             ),
-            violations=[item.blocked_reason or "blocked" for item in blocked],
+            violations=[
+                item.blocked_reason or "blocked"
+                for item in fatal_blocked
+            ],
             trace=[self.trace_service.item("file_selection", status, "files_selected", source="file_selection_service", data={"selected": len(selected), "omitted": len(omitted)})],
             plan=plan.model_dump(mode="json"),
         )
