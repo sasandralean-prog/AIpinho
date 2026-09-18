@@ -67,3 +67,29 @@ class MissionCompletionFacet(AIpinhoModel):
     producer_task_run_ids: list[str] = Field(default_factory=list)
     authority_sha256: str
     schema_version: str = "mission_completion_facet.v1"
+
+
+class MissionCompletionEvidenceItem(AIpinhoModel):
+    evidence_ref: str
+    producer_task_run_id: str
+    phase_id: str
+    phase_outcome_authority_sha256: str
+    runtime_status: str
+    result_status: str
+    runtime_truth_status: str | None = None
+    runtime_truth_safe_to_report_success: bool | None = None
+    phase_dependency_status: str | None = None
+    reason_code: str | None = None
+    limitations: list[str] = Field(default_factory=list)
+    missing_truth: list[str] = Field(default_factory=list)
+    use_safety: dict[str, object] = Field(default_factory=dict)
+    semantic_properties: dict[str, object] = Field(default_factory=dict)
+    artifact_descriptors: list[dict[str, object]] = Field(default_factory=list)
+
+
+class MissionCompletionEvidenceCatalog(AIpinhoModel):
+    mission_id: str
+    snapshot_authority_sha256: str
+    items: list[MissionCompletionEvidenceItem] = Field(default_factory=list)
+    authority_sha256: str
+    schema_version: str = "mission_completion_evidence_catalog.v1"
