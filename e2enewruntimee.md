@@ -936,6 +936,14 @@ Make final mission success depend on evidence-bound completion requirements rath
 
 M9 must not introduce a second RuntimeTruth, SpeakerTruth, planner or lifecycle authority. Mission completion is a deterministic facet consumed by the existing truth chain.
 
+### M9-B checkpoint evidence - 2026-09-18
+
+- B.1 canonical evidence catalog checkpoint: `483079bdd56a`; mission evidence refs are projected with producer TaskRun, PhaseOutcome authority, RuntimeTruth/use-safety state, limitations and bounded artifact descriptors without copying raw artifact payloads.
+- B.2 semantic proposal checkpoint: `84df6a4805dd`; the existing ContractBoundSemanticReasoner receives only frozen semantic context, exact requirements and the canonical evidence catalog. Proposal rows carry semantic relation/confidence/rationale only and cannot inject a truth status.
+- B.3 deterministic compiler derives requirement evaluations only after validating exact requirement vocabulary, evidence refs, producer bindings, policy limits and canonical truth safety. A model `supports` relation alone cannot promote unsafe evidence.
+- B regression: M9 A+B plus M8 continuation and existing RuntimeTruth focused suites `93/93`; compile/diff/hardcode scans are required before the B.3 checkpoint is accepted.
+- Restart note for M9-C: semantic binding proposals are model-assisted interpretations, not reconstructible truth authority. C must persist/rehydrate the accepted proposal or equivalent bounded interpretation and deterministically recompile it against current canonical evidence rather than silently re-invoking the model to reconstruct final truth.
+
 ## Completion contract
 
 The mission may require outcomes such as:
