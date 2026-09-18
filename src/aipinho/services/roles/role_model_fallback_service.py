@@ -14,17 +14,59 @@ class RoleModelFallbackService:
         self.config_path = config_path or PATHS.config_root / "roles" / "role_model_fallback_policy.yaml"
         self.config = config or load_yaml_file(self.config_path, critical=True, root=self.config_path.parent)
 
-    def decide(self, binding: RoleModelBinding, *, reason: str) -> RoleModelFallback:
-        policy = self.config.get("fallback", {}) if isinstance(self.config.get("fallback", {}), dict) else {}
+    def decide(
+        self,
+        binding: RoleModelBinding,
+        *,
+        reason: str,
+        attempt: int = 0,
+        enforce_runtime_policy: bool = False,
+    ) -> RoleModelFallback:
+        policy = (
+            self.config.get("fallback", {})
+            if isinstance(self.config.get("fallback", {}), dict)
+            else {}
+        )
         fallback_model = binding.fallback_model
         blocked: list[str] = []
         if not policy.get("enabled", True):
             blocked.append("fallback_disabled")
-        if fallback_model in set(policy.get("blocked_fallback_models", []) or []):
-            blocked.append("fallback_to_manual_only_model_blocked")
+        if enforce_runtime_policy:
+            if not policy.get("allow_model_fallback", True):
+                blocked.append("model_fallback_disabled")
+            allowed_reasons = {
+                str(item)
+                for item in policy.get(
+                    "fallback_on_status",
+                    [],
+                )
+                or []
+                if str(item)
+            }
+            if (
+                allowed_reasons
+                and str(reason) not in allowed_reasons
+            ):
+                blocked.append("fallback_reason_not_allowed")
+            max_attempts = max(
+                0,
+                int(policy.get("max_attempts", 1) or 0),
+            )
+            if int(attempt) >= max_attempts:
+                blocked.append(
+                    "fallback_attempt_limit_reached"
+                )
+        if fallback_model in set(
+            policy.get("blocked_fallback_models", []) or []
+        ):
+            blocked.append(
+                "fallback_to_manual_only_model_blocked"
+            )
         return RoleModelFallback(
             fallback_model_id=fallback_model,
-            fallback_allowed=bool(fallback_model and not blocked),
+            fallback_allowed=bool(
+                fallback_model and not blocked
+            ),
             reason=reason,
             blocked_reasons=blocked,
         )

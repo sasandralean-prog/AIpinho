@@ -3,6 +3,7 @@
 limits:
   max_steps_per_run: 20
   max_mission_continuation_depth: 12
+  max_mission_continuation_candidate_retries: 1
   max_runtime_seconds: 180
   max_events_per_run: 500
   max_trace_items: 300

@@ -166,22 +166,13 @@ class PhaseSemanticDemandCompiler:
 
         required_use_safety: dict[str, list[Any]] = {}
         allowed_statuses = ["satisfied", "satisfied_with_limitations"]
-        planning_intent = bool(semantic_graph.get("planning_intent"))
         knowledge_output = bool(semantic_graph.get("knowledge_output"))
-        mutation_intent = bool(semantic_graph.get("mutation_intent"))
-        step_side_effect = any(bool(getattr(step, "side_effect", False)) for step in selected_steps)
-        destructive_demand = mutation_intent or step_side_effect
+        step_side_effect = any(
+            bool(getattr(step, "side_effect", False))
+            for step in selected_steps
+        )
+        destructive_demand = step_side_effect
 
-        if planning_intent:
-            required_use_safety["safe_for_planning"] = [True, "true_with_limitations"]
-            self._provenance(
-                provenance,
-                "required_use_safety:safe_for_planning",
-                "semantic_intent_graph",
-                plan_ref,
-                "planning_intent",
-                True,
-            )
         if knowledge_output:
             # Knowledge output is semantically ambiguous: producing knowledge does
             # not imply that every upstream claim domain requires full truth.
@@ -189,15 +180,12 @@ class PhaseSemanticDemandCompiler:
             pass
         if destructive_demand:
             required_use_safety["safe_for_destructive_action"] = [True]
-            source_kind = "semantic_intent_graph" if mutation_intent else "canonical_execution_step"
-            source_ref = plan_ref if mutation_intent else step_refs[0]
-            source_field = "mutation_intent" if mutation_intent else "side_effect"
             self._provenance(
                 provenance,
                 "required_use_safety:safe_for_destructive_action",
-                source_kind,
-                source_ref,
-                source_field,
+                "canonical_execution_step",
+                step_refs[0],
+                "side_effect",
                 True,
             )
 

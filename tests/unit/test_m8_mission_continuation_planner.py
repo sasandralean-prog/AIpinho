@@ -24,9 +24,11 @@ class FakeReasoner:
     def __init__(self, output: dict) -> None:
         self.output = output
         self.calls = 0
+        self.last_kwargs = None
 
-    def propose_json(self, **_kwargs):
+    def propose_json(self, **kwargs):
         self.calls += 1
+        self.last_kwargs = kwargs
         return {
             "status": "candidate",
             "candidate": self.output,
@@ -34,6 +36,27 @@ class FakeReasoner:
             "response_id": f"fake-response-{self.calls}",
             "real_inference": False,
         }
+class SequencedReasoner:
+    def __init__(self, outputs: list[dict]) -> None:
+        self.outputs = list(outputs)
+        self.calls = 0
+        self.kwargs_history: list[dict] = []
+
+    def propose_json(self, **kwargs):
+        self.kwargs_history.append(kwargs)
+        index = min(self.calls, len(self.outputs) - 1)
+        self.calls += 1
+        return {
+            "status": "candidate",
+            "candidate": self.outputs[index],
+            "model_id": "fake-model",
+            "response_id": f"fake-response-{self.calls}",
+            "real_inference": False,
+            "evaluation_status": "accepted",
+            "warnings": [],
+        }
+
+
 class FakeDemands:
     def compile_for_run(
         self,
@@ -134,9 +157,26 @@ def _run(
 
 
 def _proposal(candidate: dict, *, action: str = "continue") -> dict:
+    materialized = dict(candidate)
+    if (
+        action == "continue"
+        and "option_id" not in materialized
+        and materialized.get("runtime_profile")
+        and materialized.get("operation_type")
+    ):
+        materialized["option_id"] = (
+            TaskRunPlanner._continuation_option_id(
+                runtime_profile=str(
+                    materialized["runtime_profile"]
+                ),
+                operation_type=str(
+                    materialized["operation_type"]
+                ),
+            )
+        )
     return {
         "action": action,
-        "candidate": candidate,
+        "candidate": materialized,
         "confidence": 0.93,
         "rationale": "Bounded next work follows from frozen mission semantics.",
     }
@@ -171,7 +211,7 @@ def test_plans_candidate_from_catalog_without_candidate_authority() -> None:
 
     assert result.status == "planned"
     assert result.candidate is not None
-    assert result.candidate.phase_id == "implementation"
+    assert result.candidate.phase_id == "phase_001_patch"
     assert result.candidate.requested_actions == ["apply_patch"]
     assert result.candidate.required_capabilities == ["apply_patch"]
     assert set(result.candidate.runtime_capabilities_required) == {
@@ -179,6 +219,65 @@ def test_plans_candidate_from_catalog_without_candidate_authority() -> None:
         "write_workspace",
     }
     assert "policy_decision" not in result.candidate.metadata
+    assert result.candidate.metadata["continuation_option_id"] == (
+        TaskRunPlanner._continuation_option_id(
+            runtime_profile="patch",
+            operation_type="patch_apply",
+        )
+    )
+
+
+def test_continuation_uses_semantic_interpreter_for_bounded_option_selection() -> None:
+    reasoner = FakeReasoner(
+        _proposal(
+            {
+                "phase_id": "implementation",
+                "operation_type": "patch_apply",
+                "contract_type": "patch_apply",
+                "runtime_profile": "patch",
+                "requested_actions": ["apply_patch"],
+            }
+        )
+    )
+    planner = TaskRunPlanner(
+        semantic_reasoner=reasoner,
+        phase_demands=FakeDemands(),
+    )
+    run = _run(
+        capabilities=["apply_patch"],
+        semantic_graph={
+            "mutation_intent": True,
+            "requested_effects": ["workspace_mutation"],
+        },
+    )
+
+    result = planner.plan_continuation(run=run)
+
+    assert result.status == "planned"
+    assert reasoner.last_kwargs is not None
+    assert reasoner.last_kwargs["role_id"] == "semantic_interpreter"
+    payload = reasoner.last_kwargs["payload"]
+    assert "runtime_profiles" not in payload
+    assert "action_catalog" not in payload
+    assert "patch_apply" in payload["allowed_contract_types"]
+    assert all(
+        isinstance(item, str)
+        for item in payload["allowed_contract_types"]
+    )
+    options = payload["continuation_options"]
+    patch_option = next(
+        item
+        for item in options
+        if item["runtime_profile"] == "patch"
+        and item["operation_type"] == "patch_apply"
+    )
+    assert "apply_patch" in patch_option["allowed_actions"]
+    assert "patch_apply" in patch_option["default_contract_types"]
+    assert "phase_id" not in payload["output_schema"]["candidate"]
+    assert any(
+        "continuation_options" in rule
+        for rule in payload["rules"]
+    )
 
 
 def test_rejects_candidate_that_expands_authority() -> None:
@@ -204,10 +303,13 @@ def test_rejects_candidate_that_expands_authority() -> None:
     result = planner.plan_continuation(run=run)
 
     assert result.status == "blocked"
-    assert result.reason_code == "MISSION_CONTINUATION_CAPABILITY_NOT_REQUESTED"
+    assert (
+        result.reason_code
+        == "MISSION_CONTINUATION_ACTION_NOT_OPTION_ALLOWED"
+    )
 
 
-def test_rejects_phase_cycle_before_dependency_compilation() -> None:
+def test_model_phase_id_is_ignored_and_runtime_assigns_fresh_identity() -> None:
     reasoner = FakeReasoner(
         _proposal(
             {
@@ -230,8 +332,72 @@ def test_rejects_phase_cycle_before_dependency_compilation() -> None:
 
     result = planner.plan_continuation(run=run)
 
-    assert result.status == "blocked"
-    assert result.reason_code == "MISSION_CONTINUATION_PHASE_CYCLE_DETECTED"
+    assert result.status == "planned"
+    assert result.candidate is not None
+    assert result.candidate.phase_id == "phase_001_readonly_analysis"
+    assert result.candidate.phase_id != "discovery"
+    assert reasoner.calls == 1
+
+
+def test_bounded_candidate_retry_corrects_deterministic_rejection() -> None:
+    reasoner = SequencedReasoner(
+        [
+            _proposal(
+                {
+                    "phase_id": "model_supplied_ignored",
+                    "operation_type": "project_analysis",
+                    "contract_type": "patch_apply",
+                    "runtime_profile": "patch",
+                    "requested_actions": ["apply_patch"],
+                }
+            ),
+            _proposal(
+                {
+                    "phase_id": "implementation",
+                    "operation_type": "patch_apply",
+                    "contract_type": "patch_apply",
+                    "runtime_profile": "patch",
+                    "requested_actions": ["apply_patch"],
+                }
+            ),
+        ]
+    )
+    planner = TaskRunPlanner(
+        semantic_reasoner=reasoner,
+        phase_demands=FakeDemands(),
+    )
+    run = _run(
+        capabilities=["read_file", "apply_patch"],
+        semantic_graph={
+            "mutation_intent": True,
+            "requested_effects": ["workspace_mutation"],
+        },
+    )
+
+    result = planner.plan_continuation(run=run)
+
+    assert result.status == "planned"
+    assert result.candidate is not None
+    assert result.candidate.phase_id == "phase_001_patch"
+    assert reasoner.calls == 2
+    correction = reasoner.kwargs_history[1]["payload"][
+        "candidate_correction"
+    ]
+    assert correction["attempt"] == 1
+    assert (
+        correction["reason_code"]
+        == "MISSION_CONTINUATION_OPTION_UNKNOWN"
+    )
+    assert correction["rejected_candidate"]["option_id"] == (
+        TaskRunPlanner._continuation_option_id(
+            runtime_profile="patch",
+            operation_type="project_analysis",
+        )
+    )
+    assert result.provenance["candidate_retries"] == 1
+    assert result.provenance["candidate_rejections"] == [
+        "MISSION_CONTINUATION_OPTION_UNKNOWN"
+    ]
 
 
 def test_rejects_premature_complete_with_unsatisfied_effects() -> None:
@@ -374,13 +540,13 @@ def test_taskruntime_terminal_plans_and_executes_child_without_manual_candidate(
     planning = completed.intent_map["mission_continuation_planning"]
     assert planning["status"] == "planned"
     candidate = completed.plan.metadata["mission_continuation_candidate"]
-    assert candidate["phase_id"] == "followup_analysis"
+    assert candidate["phase_id"] == "phase_001_readonly_analysis"
     continuation = completed.intent_map["mission_continuation_runtime"]
     assert continuation["status"] == "executed"
     child = store.get_run(continuation["child_task_run_id"])
     assert child is not None
     assert child.status == "completed"
-    assert child.current_phase == "followup_analysis"
+    assert child.current_phase == "phase_001_readonly_analysis"
     assert child.mission_contract is not None
     assert set(child.mission_contract.authority.authorized_capabilities) == {
         "read_file",
@@ -390,6 +556,6 @@ def test_taskruntime_terminal_plans_and_executes_child_without_manual_candidate(
     assert child.intent_map["mission_continuation"]["depth"] == 1
     assert child.intent_map["mission_continuation"]["phase_lineage"] == [
         "discovery",
-        "followup_analysis",
+        "phase_001_readonly_analysis",
     ]
     assert reasoner.calls >= 1

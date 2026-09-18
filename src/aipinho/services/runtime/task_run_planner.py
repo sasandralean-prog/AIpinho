@@ -1,5 +1,6 @@
 ﻿from __future__ import annotations
 
+import hashlib
 import os
 import re
 from typing import Any
@@ -226,150 +227,270 @@ class TaskRunPlanner:
             semantic_context=semantic_context,
         )
         reasoner = self.semantic_reasoner or ContractBoundSemanticReasoner()
-        proposal = reasoner.propose_json(
-            semantic_goal=(
-                "Select the next bounded mission work unit, or declare the mission "
-                "complete only when the frozen mission semantics and terminal evidence "
-                "support completion."
-            ),
-            payload={
-                "mission": {
-                    "mission_id": contract.mission_id,
-                    "strategy": contract.strategy,
-                    "source_prompt_sha256": contract.source_prompt_sha256,
-                    "semantic_context": {
-                        key: value
-                        for key, value in semantic_context.items()
-                        if key != "semantic_intent_graph"
-                    },
-                    "requested_capabilities": list(
-                        contract.authority.requested_capabilities
-                    ),
-                    "authorized_capabilities": list(
-                        contract.authority.authorized_capabilities
-                    ),
-                    "completion_requirements": list(
-                        contract.completion.completion_requirements
-                    ),
-                    "validation_requirements": list(
-                        contract.completion.validation_requirements
-                    ),
-                },
-                "current": {
-                    "phase_id": current_phase,
-                    "operation_type": getattr(run, "operation_type", None),
-                    "contract_type": getattr(run, "contract_type", None),
-                    "runtime_profile": getattr(run, "runtime_profile", None),
-                    "requested_actions": list(
-                        getattr(run, "requested_actions", []) or []
-                    ),
-                    "depth": depth,
-                    "phase_lineage": phase_lineage,
-                },
-                "terminal_outcome": self._continuation_outcome_payload(
-                    phase_outcome
-                ),
-                "semantic_intent_graph": semantic_graph,
-                "unsatisfied_requested_effects": unsatisfied_effects,
-                "runtime_profiles": self.profiles.catalog(),
-                "action_catalog": self._continuation_action_catalog(),
-                "rules": [
-                    "Use only supplied runtime profiles, operation types and actions.",
-                    "Do not expand capabilities, resources or authority.",
-                    "Do not repeat a phase id from phase_lineage.",
-                    "Do not use raw prompt text or infer permissions.",
-                    "Return complete only when unsatisfied_requested_effects is empty.",
-                    "Candidate is descriptive only; policy and execution authority are external.",
-                ],
-                "output_schema": {
-                    "action": "continue|complete",
-                    "candidate": {
-                        "phase_id": "machine_identifier",
-                        "operation_type": "catalog_operation_type",
-                        "contract_type": "runtime_contract_type",
-                        "runtime_profile": "catalog_profile_id",
-                        "requested_actions": ["catalog_action"],
-                    },
-                    "confidence": "number_between_0_and_1",
-                    "rationale": "non_empty_string",
-                },
-            },
-            allowed_fields=["action", "candidate", "confidence", "rationale"],
-            required_fields=["action", "candidate", "confidence", "rationale"],
-            role_id="mission_continuation_planner",
-            max_tokens=650,
-        )
-        provenance = {
-            "model_id": proposal.get("model_id"),
-            "response_id": proposal.get("response_id"),
-            "real_inference": proposal.get("real_inference"),
-            "evaluation_status": proposal.get("evaluation_status"),
-            "warnings": list(proposal.get("warnings") or []),
-            "depth": depth,
-            "max_depth": max_depth,
+        continuation_options = self._continuation_option_catalog(run)
+        continuation_option_map = {
+            str(item["option_id"]): item
+            for item in continuation_options
         }
-        if proposal.get("status") != "candidate":
-            return self._continuation_result(
-                "blocked",
-                str(
-                    proposal.get("reason_code")
-                    or "MISSION_CONTINUATION_PLANNER_MODEL_UNAVAILABLE"
-                ),
-                provenance=provenance,
-            )
-
-        model_output = dict(proposal.get("candidate") or {})
-        action = str(model_output.get("action") or "").strip().casefold()
-        candidate_payload = (
-            dict(model_output.get("candidate") or {})
-            if isinstance(model_output.get("candidate"), dict)
-            else {}
+        continuation_goal = (
+            "Select the next bounded mission work unit, or declare the mission "
+            "complete only when the frozen mission semantics and terminal evidence "
+            "support completion."
         )
-        try:
-            confidence = float(model_output.get("confidence", 0.0))
-        except (TypeError, ValueError):
-            confidence = 0.0
-        rationale = str(model_output.get("rationale") or "").strip()
-        if confidence < 0.65 or not rationale:
-            return self._continuation_result(
-                "blocked",
-                "MISSION_CONTINUATION_PLANNER_CONFIDENCE_INSUFFICIENT",
-                provenance={**provenance, "confidence": confidence},
+        continuation_payload = {
+            "mission": {
+                "mission_id": contract.mission_id,
+                "strategy": contract.strategy,
+                "source_prompt_sha256": contract.source_prompt_sha256,
+                "semantic_context": {
+                    key: value
+                    for key, value in semantic_context.items()
+                    if key != "semantic_intent_graph"
+                },
+                "requested_capabilities": list(
+                    contract.authority.requested_capabilities
+                ),
+                "authorized_capabilities": list(
+                    contract.authority.authorized_capabilities
+                ),
+                "completion_requirements": list(
+                    contract.completion.completion_requirements
+                ),
+                "validation_requirements": list(
+                    contract.completion.validation_requirements
+                ),
+            },
+            "current": {
+                "phase_id": current_phase,
+                "operation_type": getattr(run, "operation_type", None),
+                "contract_type": getattr(run, "contract_type", None),
+                "runtime_profile": getattr(run, "runtime_profile", None),
+                "requested_actions": list(
+                    getattr(run, "requested_actions", []) or []
+                ),
+                "depth": depth,
+                "phase_lineage": phase_lineage,
+            },
+            "terminal_outcome": self._continuation_outcome_payload(
+                phase_outcome
+            ),
+            "semantic_intent_graph": semantic_graph,
+            "unsatisfied_requested_effects": unsatisfied_effects,
+            "continuation_options": continuation_options,
+            "allowed_contract_types": list(
+                self.runtime.get(
+                    "allowed_contract_types",
+                    [],
+                )
+                or []
+            ),
+            "rules": [
+                "Select exactly one option_id from continuation_options; runtime_profile and operation_type are materialized by the runtime.",
+                "requested_actions must be a subset of the selected continuation option allowed_actions.",
+                "Use contract_type from the selected option default_contract_types when that list is non-empty; otherwise use allowed_contract_types.",
+                "Do not expand capabilities, resources or authority.",
+                "Phase identity is assigned deterministically by the runtime; do not infer or authorize it.",
+                "Do not use raw prompt text or infer permissions.",
+                "Return complete only when unsatisfied_requested_effects is empty.",
+                "Candidate is descriptive only; policy and execution authority are external.",
+            ],
+            "output_schema": {
+                "action": "continue|complete",
+                "candidate": {
+                    "option_id": "continuation_option_id",
+                    "contract_type": "runtime_contract_type",
+                    "requested_actions": ["option_allowed_action"],
+                },
+                "confidence": "number_between_0_and_1",
+                "rationale": "non_empty_string",
+            },
+        }
+        candidate_retry_limit = max(
+            0,
+            int(
+                (self.limits.get("limits", {}) or {}).get(
+                    "max_mission_continuation_candidate_retries",
+                    0,
+                )
+                or 0
+            ),
+        )
+        candidate_retries = 0
+        candidate_rejections: list[str] = []
+        correction: dict[str, Any] | None = None
+
+        while True:
+            proposal_payload = dict(continuation_payload)
+            if correction is not None:
+                proposal_payload["candidate_correction"] = correction
+            proposal = reasoner.propose_json(
+                semantic_goal=continuation_goal,
+                payload=proposal_payload,
+                allowed_fields=[
+                    "action",
+                    "candidate",
+                    "confidence",
+                    "rationale",
+                ],
+                required_fields=[
+                    "action",
+                    "candidate",
+                    "confidence",
+                    "rationale",
+                ],
+                role_id="semantic_interpreter",
+                max_tokens=650,
             )
-        if action == "complete":
-            if unsatisfied_effects:
+            provenance = {
+                "model_id": proposal.get("model_id"),
+                "response_id": proposal.get("response_id"),
+                "real_inference": proposal.get("real_inference"),
+                "evaluation_status": proposal.get("evaluation_status"),
+                "warnings": list(proposal.get("warnings") or []),
+                "depth": depth,
+                "max_depth": max_depth,
+                "candidate_retries": candidate_retries,
+                "candidate_rejections": list(candidate_rejections),
+            }
+            if proposal.get("status") != "candidate":
                 return self._continuation_result(
                     "blocked",
-                    "MISSION_CONTINUATION_PREMATURE_COMPLETE",
+                    str(
+                        proposal.get("reason_code")
+                        or "MISSION_CONTINUATION_PLANNER_MODEL_UNAVAILABLE"
+                    ),
+                    provenance=provenance,
+                )
+
+            model_output = dict(proposal.get("candidate") or {})
+            action = str(
+                model_output.get("action") or ""
+            ).strip().casefold()
+            candidate_payload = (
+                dict(model_output.get("candidate") or {})
+                if isinstance(
+                    model_output.get("candidate"),
+                    dict,
+                )
+                else {}
+            )
+            try:
+                confidence = float(
+                    model_output.get("confidence", 0.0)
+                )
+            except (TypeError, ValueError):
+                confidence = 0.0
+            rationale = str(
+                model_output.get("rationale") or ""
+            ).strip()
+            if confidence < 0.65 or not rationale:
+                return self._continuation_result(
+                    "blocked",
+                    "MISSION_CONTINUATION_PLANNER_CONFIDENCE_INSUFFICIENT",
                     provenance={
                         **provenance,
                         "confidence": confidence,
-                        "unsatisfied_requested_effects": unsatisfied_effects,
                     },
                 )
-            return self._continuation_result(
-                "not_applicable",
-                "MISSION_CONTINUATION_PLANNER_COMPLETE",
-                provenance={**provenance, "confidence": confidence},
-            )
-        if action != "continue":
-            return self._continuation_result(
-                "blocked",
-                "MISSION_CONTINUATION_PLANNER_ACTION_INVALID",
-                provenance={**provenance, "confidence": confidence},
-            )
+            if action == "complete":
+                if unsatisfied_effects:
+                    return self._continuation_result(
+                        "blocked",
+                        "MISSION_CONTINUATION_PREMATURE_COMPLETE",
+                        provenance={
+                            **provenance,
+                            "confidence": confidence,
+                            "unsatisfied_requested_effects": (
+                                unsatisfied_effects
+                            ),
+                        },
+                    )
+                return self._continuation_result(
+                    "not_applicable",
+                    "MISSION_CONTINUATION_PLANNER_COMPLETE",
+                    provenance={
+                        **provenance,
+                        "confidence": confidence,
+                    },
+                )
+            if action != "continue":
+                return self._continuation_result(
+                    "blocked",
+                    "MISSION_CONTINUATION_PLANNER_ACTION_INVALID",
+                    provenance={
+                        **provenance,
+                        "confidence": confidence,
+                    },
+                )
 
-        validated, reason = self._validate_continuation_candidate_payload(
-            run=run,
-            candidate_payload=candidate_payload,
-            phase_lineage=phase_lineage,
-        )
-        if validated is None:
-            return self._continuation_result(
-                "blocked",
-                reason or "MISSION_CONTINUATION_CANDIDATE_INVALID",
-                provenance={**provenance, "confidence": confidence},
+            (
+                materialized_candidate,
+                option_reason,
+            ) = self._materialize_continuation_option(
+                candidate_payload=candidate_payload,
+                option_map=continuation_option_map,
             )
+            if materialized_candidate is None:
+                validated = None
+                reason = option_reason
+            else:
+                candidate_payload = materialized_candidate
+                candidate_payload["phase_id"] = (
+                    self._continuation_phase_id(
+                        depth=depth,
+                        runtime_profile=str(
+                            candidate_payload.get(
+                                "runtime_profile",
+                                "",
+                            )
+                        ),
+                        operation_type=str(
+                            candidate_payload.get(
+                                "operation_type",
+                                "",
+                            )
+                        ),
+                    )
+                )
+                validated, reason = (
+                    self._validate_continuation_candidate_payload(
+                        run=run,
+                        candidate_payload=candidate_payload,
+                        phase_lineage=phase_lineage,
+                    )
+                )
+            if validated is not None:
+                break
+            rejection_reason = (
+                reason
+                or "MISSION_CONTINUATION_CANDIDATE_INVALID"
+            )
+            candidate_rejections.append(rejection_reason)
+            if candidate_retries >= candidate_retry_limit:
+                return self._continuation_result(
+                    "blocked",
+                    rejection_reason,
+                    provenance={
+                        **provenance,
+                        "confidence": confidence,
+                        "candidate_rejections": list(
+                            candidate_rejections
+                        ),
+                    },
+                )
+            candidate_retries += 1
+            correction = {
+                "attempt": candidate_retries,
+                "reason_code": rejection_reason,
+                "rejected_candidate": candidate_payload,
+                "instruction": (
+                    "Produce a new candidate that satisfies all supplied "
+                    "catalogs, lineage constraints, capability boundaries "
+                    "and deterministic rules. Do not repeat the rejected "
+                    "candidate."
+                ),
+            }
+
         demand = self.phase_demands.compile_for_run(
             run=run,
             consumer_phase_id=validated["phase_id"],
@@ -428,6 +549,9 @@ class TaskRunPlanner:
                 "source_plan_id": run.plan.plan_id,
                 "source_execution_id": demand.source_execution_id,
                 "source_semantics_sha256": demand.source_semantics_sha256,
+                "continuation_option_id": validated.get(
+                    "continuation_option_id"
+                ),
             },
         )
         return self._continuation_result(
@@ -436,6 +560,142 @@ class TaskRunPlanner:
             candidate=candidate,
             provenance={**provenance, "confidence": confidence},
         )
+
+    def _materialize_continuation_option(
+        self,
+        *,
+        candidate_payload: dict[str, Any],
+        option_map: dict[str, dict[str, Any]],
+    ) -> tuple[dict[str, Any] | None, str | None]:
+        option_id = str(
+            candidate_payload.get("option_id") or ""
+        ).strip()
+        if not option_id:
+            return (
+                None,
+                "MISSION_CONTINUATION_OPTION_ID_REQUIRED",
+            )
+        option = option_map.get(option_id)
+        if option is None:
+            return (
+                None,
+                "MISSION_CONTINUATION_OPTION_UNKNOWN",
+            )
+
+        contract_type = str(
+            candidate_payload.get("contract_type") or ""
+        ).strip()
+        default_contract_types = {
+            str(item)
+            for item in list(
+                option.get("default_contract_types", []) or []
+            )
+            if str(item)
+        }
+        if (
+            default_contract_types
+            and contract_type not in default_contract_types
+        ):
+            return (
+                None,
+                "MISSION_CONTINUATION_CONTRACT_OPTION_MISMATCH",
+            )
+
+        raw_actions = candidate_payload.get(
+            "requested_actions"
+        )
+        if not isinstance(raw_actions, list):
+            return (
+                None,
+                "MISSION_CONTINUATION_ACTIONS_INVALID",
+            )
+        try:
+            requested_actions = self._unique(
+                [
+                    self.actions.normalize_action(str(item))
+                    for item in raw_actions
+                ]
+            )
+        except Exception:
+            return (
+                None,
+                "MISSION_CONTINUATION_ACTION_UNKNOWN",
+            )
+        option_actions = {
+            str(item)
+            for item in list(
+                option.get("allowed_actions", []) or []
+            )
+            if str(item)
+        }
+        if any(
+            action not in option_actions
+            for action in requested_actions
+        ):
+            return (
+                None,
+                "MISSION_CONTINUATION_ACTION_NOT_OPTION_ALLOWED",
+            )
+
+        return (
+            {
+                **dict(candidate_payload),
+                "option_id": option_id,
+                "runtime_profile": str(
+                    option.get("runtime_profile") or ""
+                ),
+                "operation_type": str(
+                    option.get("operation_type") or ""
+                ),
+                "requested_actions": requested_actions,
+            },
+            None,
+        )
+
+    @staticmethod
+    def _continuation_option_id(
+        *,
+        runtime_profile: str,
+        operation_type: str,
+    ) -> str:
+        raw = (
+            f"{str(runtime_profile).strip()}|"
+            f"{str(operation_type).strip()}"
+        )
+        stem = re.sub(
+            r"[^a-z0-9_]+",
+            "_",
+            raw.casefold(),
+        ).strip("_")
+        if not stem:
+            stem = "work"
+        digest = hashlib.sha256(
+            raw.encode("utf-8")
+        ).hexdigest()[:8]
+        return f"option_{stem[:44]}_{digest}"
+
+    def _continuation_phase_id(
+        self,
+        *,
+        depth: int,
+        runtime_profile: str,
+        operation_type: str,
+    ) -> str:
+        raw_stem = (
+            str(runtime_profile or "").strip()
+            or str(operation_type or "").strip()
+            or "work"
+        )
+        stem = re.sub(
+            r"[^a-z0-9_]+",
+            "_",
+            raw_stem.casefold(),
+        ).strip("_")
+        if not stem:
+            stem = "work"
+        prefix = f"phase_{max(0, int(depth)) + 1:03d}_"
+        max_stem = max(1, 63 - len(prefix))
+        return f"{prefix}{stem[:max_stem]}"
 
     def _validate_continuation_candidate_payload(
         self,
@@ -531,6 +791,9 @@ class TaskRunPlanner:
                 "requested_actions": requested_actions,
                 "required_capabilities": authority_permissions,
                 "runtime_capabilities_required": runtime_capabilities,
+                "continuation_option_id": str(
+                    candidate_payload.get("option_id") or ""
+                ),
             },
             None,
         )
@@ -608,6 +871,94 @@ class TaskRunPlanner:
         ):
             unsatisfied.append("runtime_execution")
         return self._unique(unsatisfied)
+
+    def _continuation_option_catalog(
+        self,
+        run: Any,
+    ) -> list[dict[str, Any]]:
+        mission = getattr(run, "mission_contract", None)
+        requested_authority = set(
+            getattr(
+                getattr(mission, "authority", None),
+                "requested_capabilities",
+                [],
+            )
+            or []
+        )
+        authorized_authority = set(
+            getattr(
+                getattr(mission, "authority", None),
+                "authorized_capabilities",
+                [],
+            )
+            or []
+        )
+        runtime_allowed = set(
+            self.runtime.get("allowed_actions", []) or []
+        )
+        runtime_blocked = set(
+            self.runtime.get("blocked_actions", []) or []
+        )
+        allowed_contracts = set(
+            self.runtime.get("allowed_contract_types", []) or []
+        )
+        options: list[dict[str, Any]] = []
+        for profile in self.profiles.catalog():
+            profile_id = str(profile.get("id") or "")
+            if not profile_id:
+                continue
+            allowed_actions: list[str] = []
+            for raw_action in list(
+                profile.get("allowed_actions", []) or []
+            ):
+                action = str(raw_action)
+                if not action or not self.actions.action_exists(action):
+                    continue
+                normalized = self.actions.normalize_action(action)
+                if (
+                    normalized in runtime_blocked
+                    or normalized not in runtime_allowed
+                ):
+                    continue
+                permission = self.permission_matrix.permission_for_action(
+                    normalized
+                )
+                if permission not in requested_authority:
+                    continue
+                if permission not in authorized_authority:
+                    continue
+                allowed_actions.append(normalized)
+            default_contract_types = [
+                contract_type
+                for contract_type, default_profile in (
+                    RuntimeProfileService.CONTRACT_DEFAULTS.items()
+                )
+                if default_profile == profile_id
+                and contract_type in allowed_contracts
+            ]
+            for operation_type in list(
+                profile.get("operation_types", []) or []
+            ):
+                if not str(operation_type):
+                    continue
+                operation = str(operation_type)
+                options.append(
+                    {
+                        "option_id": self._continuation_option_id(
+                            runtime_profile=profile_id,
+                            operation_type=operation,
+                        ),
+                        "runtime_profile": profile_id,
+                        "operation_type": operation,
+                        "allowed_actions": self._unique(
+                            allowed_actions
+                        ),
+                        "default_contract_types": (
+                            default_contract_types
+                        ),
+                    }
+                )
+        return options
 
     def _continuation_action_catalog(self) -> list[dict[str, Any]]:
         return [

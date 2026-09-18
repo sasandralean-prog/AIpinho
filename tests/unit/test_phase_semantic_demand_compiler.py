@@ -215,12 +215,52 @@ def test_same_phase_number_different_plan_operations_compile_different_demands()
     assert readonly.status == mutation.status == "compiled"
     assert readonly.requirements is not None
     assert mutation.requirements is not None
-    assert readonly.requirements.required_use_safety == {
-        "safe_for_planning": [True, "true_with_limitations"]
-    }
+    assert readonly.requirements.required_use_safety == {}
     assert mutation.requirements.required_use_safety == {
         "safe_for_destructive_action": [True]
     }
+
+
+def test_global_mutation_intent_does_not_require_destructive_safety_for_readonly_consumer() -> None:
+    compiler = PhaseSemanticDemandCompiler()
+    readonly = compiler.compile_for_run(
+        run=_run(
+            operation_type="inspect_path",
+            action="inspect_path",
+            side_effect=False,
+            semantic_graph={
+                "mutation_intent": True,
+                "execution_intent": True,
+                "requested_effects": ["workspace_mutation"],
+            },
+        ),
+        consumer_phase_id="phase_readonly",
+    )
+    destructive = compiler.compile_for_run(
+        run=_run(
+            operation_type="filesystem_write",
+            action="write_files",
+            side_effect=True,
+            semantic_graph={
+                "mutation_intent": True,
+                "execution_intent": True,
+                "requested_effects": ["workspace_mutation"],
+            },
+            required_capabilities=["write_workspace"],
+        ),
+        consumer_phase_id="phase_write",
+    )
+
+    assert readonly.status == "compiled"
+    assert destructive.status == "compiled"
+    assert readonly.requirements is not None
+    assert destructive.requirements is not None
+    assert "safe_for_destructive_action" not in (
+        readonly.requirements.required_use_safety
+    )
+    assert destructive.requirements.required_use_safety[
+        "safe_for_destructive_action"
+    ] == [True]
 
 
 def test_phase_name_does_not_determine_semantic_requirements() -> None:
@@ -257,7 +297,7 @@ def test_same_operation_with_different_canonical_intent_compiles_different_deman
 
     assert planning.requirements is not None
     assert truth_claim.requirements is not None
-    assert "safe_for_planning" in planning.requirements.required_use_safety
+    assert "safe_for_planning" not in planning.requirements.required_use_safety
     assert truth_claim.requirements.required_use_safety["safe_for_truth_claim"] == [True]
     assert truth_claim.semantic_interpretation["status"] == "accepted"
 
@@ -428,7 +468,6 @@ def test_system_invariants_only_strengthen_compiled_task_semantics() -> None:
     assert compilation.requirements is not None
     assert compilation.requirements.allowed_dependency_statuses == ["satisfied"]
     assert compilation.requirements.required_use_safety == {
-        "safe_for_planning": [True, "true_with_limitations"],
         "safe_for_truth_claim": [True],
     }
     assert "policy_guard" in compilation.requirements.required_capabilities
@@ -478,6 +517,6 @@ def test_every_compiled_requirement_has_explicit_source_provenance() -> None:
     assert "operation_type" in provenance
     assert "allowed_dependency_statuses" in provenance
     assert "evidence_required" in provenance
-    assert "required_use_safety:safe_for_planning" in provenance
+    assert "required_use_safety:safe_for_planning" not in provenance
     assert "required_capability:read_workspace" in provenance
     assert "prohibited_effect:workspace_mutation" in provenance

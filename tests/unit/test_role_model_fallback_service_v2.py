@@ -23,3 +23,32 @@ def test_deterministic_fallback_never_claims_tools_or_side_effects():
     assert response.status == "completed"
     assert response.real_inference is False
     assert "No tools, files, patch, shell, git or network were used." in response.content
+
+
+def test_runtime_policy_rejects_unlisted_fallback_reason():
+    binding = RoleModelBindingService().get_binding("coder")
+    assert binding is not None
+
+    decision = RoleModelFallbackService().decide(
+        binding,
+        reason="preview",
+        enforce_runtime_policy=True,
+    )
+
+    assert decision.fallback_allowed is False
+    assert "fallback_reason_not_allowed" in decision.blocked_reasons
+
+
+def test_runtime_policy_enforces_fallback_attempt_limit():
+    binding = RoleModelBindingService().get_binding("coder")
+    assert binding is not None
+
+    decision = RoleModelFallbackService().decide(
+        binding,
+        reason="blocked",
+        attempt=1,
+        enforce_runtime_policy=True,
+    )
+
+    assert decision.fallback_allowed is False
+    assert "fallback_attempt_limit_reached" in decision.blocked_reasons

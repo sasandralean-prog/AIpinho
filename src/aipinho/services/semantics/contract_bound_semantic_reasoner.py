@@ -5,8 +5,18 @@ from typing import Any
 
 from aipinho.schemas.models.model_request import ModelRequest
 from aipinho.schemas.prompts.prompt_message import PromptMessage
+from aipinho.schemas.roles.role_model_binding import RoleInferenceRequest
 from aipinho.services.models.model_invocation_service import ModelInvocationService
 from aipinho.services.models.model_router_service import ModelRouterService
+from aipinho.services.roles.role_inference_budget_service import (
+    RoleInferenceBudgetService,
+)
+from aipinho.services.roles.role_model_binding_service import (
+    RoleModelBindingService,
+)
+from aipinho.services.roles.role_model_fallback_service import (
+    RoleModelFallbackService,
+)
 
 
 class ContractBoundSemanticReasoner:
@@ -21,11 +31,21 @@ class ContractBoundSemanticReasoner:
         *,
         router: ModelRouterService | None = None,
         invocation: ModelInvocationService | None = None,
-        timeout_seconds: int = 45,
+        bindings: RoleModelBindingService | None = None,
+        budgets: RoleInferenceBudgetService | None = None,
+        fallback: RoleModelFallbackService | None = None,
+        timeout_seconds: int | None = None,
     ) -> None:
         self.router = router or ModelRouterService()
         self.invocation = invocation or ModelInvocationService(router=self.router)
-        self.timeout_seconds = max(1, int(timeout_seconds))
+        self.bindings = bindings or RoleModelBindingService()
+        self.budgets = budgets or RoleInferenceBudgetService()
+        self.fallback = fallback or RoleModelFallbackService()
+        self.timeout_seconds = (
+            max(1, int(timeout_seconds))
+            if timeout_seconds is not None
+            else None
+        )
 
     def propose_json(
         self,
@@ -37,6 +57,13 @@ class ContractBoundSemanticReasoner:
         role_id: str = "semantic_interpreter",
         max_tokens: int = 700,
     ) -> dict[str, Any]:
+        binding = self.bindings.resolve_binding(role_id)
+        if binding is None or not binding.enabled:
+            return {
+                "status": "unavailable",
+                "reason_code": "SEMANTIC_REASONER_ROLE_BINDING_UNAVAILABLE",
+                "role_id": role_id,
+            }
         decision = self.router.select_model(purpose="chat", role_id=role_id)
         if decision.status != "ok" or decision.model is None or decision.provider is None:
             return {
@@ -59,6 +86,28 @@ class ContractBoundSemanticReasoner:
             },
             ensure_ascii=False,
             separators=(",", ":"),
+        )
+        role_budget = self.budgets.calculate(
+            binding,
+            RoleInferenceRequest(
+                role_id=role_id,
+                prompt=user,
+                context={"semantic_goal": semantic_goal},
+            ),
+            hardware_class=getattr(
+                decision.model,
+                "hardware_class",
+                None,
+            ),
+        )
+        effective_timeout = (
+            self.timeout_seconds
+            if self.timeout_seconds is not None
+            else role_budget.timeout_seconds
+        )
+        effective_max_tokens = max(
+            1,
+            min(int(max_tokens), int(role_budget.max_output_tokens)),
         )
         request = ModelRequest(
             model_id=decision.model.model_id,
@@ -83,18 +132,116 @@ class ContractBoundSemanticReasoner:
                 "role_pipeline_controlled_inference": True,
                 "semantic_goal": semantic_goal,
                 "max_stdout_chars": 12000,
-                "timeout_seconds": self.timeout_seconds,
+                "timeout_seconds": effective_timeout,
+                "role_budget": role_budget.model_dump(mode="json"),
             },
         )
-        request.generation_config.max_tokens = max_tokens
+        request.generation_config.max_tokens = effective_max_tokens
         response, retry_attempts, retry_warnings = (
             self._invoke_with_governed_retry(request)
         )
+        primary_model_id = response.model_id
+        fallback_used = False
+        fallback_model_id = None
+        fallback_retry_attempts = 0
+        fallback_warnings: list[str] = []
+        fallback_reason = self._fallback_reason(
+            response,
+            required_fields=required_fields,
+        )
+        if fallback_reason:
+            fallback_decision = self.fallback.decide(
+                binding,
+                reason=fallback_reason,
+                attempt=0,
+                enforce_runtime_policy=True,
+            )
+            if (
+                fallback_decision.fallback_allowed
+                and fallback_decision.fallback_model_id
+            ):
+                fallback_route = self.router.select_model(
+                    requested_model_id=(
+                        fallback_decision.fallback_model_id
+                    ),
+                    purpose="chat",
+                    role_id=role_id,
+                )
+                if (
+                    fallback_route.status == "ok"
+                    and fallback_route.model is not None
+                    and fallback_route.provider is not None
+                ):
+                    fallback_request = request.model_copy(
+                        update={
+                            "model_id": fallback_route.model.model_id,
+                            "provider_id": (
+                                fallback_route.provider.provider_id
+                            ),
+                            "metadata": {
+                                **dict(request.metadata),
+                                "semantic_model_fallback": True,
+                                "semantic_primary_model_id": (
+                                    primary_model_id
+                                ),
+                                "semantic_fallback_reason": (
+                                    fallback_reason
+                                ),
+                                "semantic_fallback_model_id": (
+                                    fallback_route.model.model_id
+                                ),
+                            },
+                        },
+                        deep=True,
+                    )
+                    (
+                        response,
+                        fallback_retry_attempts,
+                        fallback_retry_warnings,
+                    ) = self._invoke_with_governed_retry(
+                        fallback_request
+                    )
+                    fallback_used = True
+                    fallback_model_id = fallback_route.model.model_id
+                    fallback_warnings.extend(
+                        fallback_retry_warnings
+                    )
+                else:
+                    fallback_warnings.extend(
+                        [
+                            "semantic_fallback_route_unavailable",
+                            *list(fallback_route.warnings or []),
+                        ]
+                    )
+            else:
+                fallback_warnings.extend(
+                    fallback_decision.blocked_reasons
+                )
         warnings = list(
             dict.fromkeys(
-                [*retry_warnings, *response.warnings]
+                [
+                    *retry_warnings,
+                    *fallback_warnings,
+                    *response.warnings,
+                    *(
+                        ["semantic_model_fallback_used"]
+                        if fallback_used
+                        else []
+                    ),
+                ]
             )
         )
+        total_retry_attempts = (
+            retry_attempts + fallback_retry_attempts
+        )
+        final_evaluation_status = str(
+            (
+                dict(response.evaluation_result or {})
+                if isinstance(response.evaluation_result, dict)
+                else {}
+            ).get("status")
+            or ""
+        ).strip()
         if response.status not in {"completed", "degraded"}:
             return {
                 "status": "unavailable",
@@ -102,7 +249,26 @@ class ContractBoundSemanticReasoner:
                 "model_id": response.model_id,
                 "response_id": response.response_id,
                 "warnings": warnings,
-                "retry_attempts": retry_attempts,
+                "retry_attempts": total_retry_attempts,
+                "primary_model_id": primary_model_id,
+                "fallback_used": fallback_used,
+                "fallback_model_id": fallback_model_id,
+            }
+        if final_evaluation_status in {"needs_retry", "rejected"}:
+            return {
+                "status": "invalid",
+                "reason_code": (
+                    "SEMANTIC_REASONER_EVALUATION_NOT_ACCEPTED"
+                ),
+                "model_id": response.model_id,
+                "response_id": response.response_id,
+                "real_inference": response.real_inference,
+                "evaluation_status": final_evaluation_status,
+                "warnings": warnings,
+                "retry_attempts": total_retry_attempts,
+                "primary_model_id": primary_model_id,
+                "fallback_used": fallback_used,
+                "fallback_model_id": fallback_model_id,
             }
         parsed = self._parse_json_object(
             response.content,
@@ -117,7 +283,10 @@ class ContractBoundSemanticReasoner:
                 "real_inference": response.real_inference,
                 "evaluation_status": (response.evaluation_result or {}).get("status"),
                 "warnings": warnings,
-                "retry_attempts": retry_attempts,
+                "retry_attempts": total_retry_attempts,
+                "primary_model_id": primary_model_id,
+                "fallback_used": fallback_used,
+                "fallback_model_id": fallback_model_id,
             }
         if not isinstance(parsed, dict):
             return {
@@ -144,8 +313,41 @@ class ContractBoundSemanticReasoner:
             "real_inference": response.real_inference,
             "evaluation_status": (response.evaluation_result or {}).get("status"),
             "warnings": warnings,
-            "retry_attempts": retry_attempts,
+            "retry_attempts": total_retry_attempts,
+            "primary_model_id": primary_model_id,
+            "fallback_used": fallback_used,
+            "fallback_model_id": fallback_model_id,
         }
+
+    def _fallback_reason(
+        self,
+        response,
+        *,
+        required_fields: list[str],
+    ) -> str | None:
+        evaluation = (
+            dict(response.evaluation_result or {})
+            if isinstance(response.evaluation_result, dict)
+            else {}
+        )
+        evaluation_status = str(
+            evaluation.get("status") or ""
+        ).strip()
+        if evaluation_status in {"needs_retry", "rejected"}:
+            return evaluation_status
+        if response.status not in {"completed", "degraded"}:
+            return str(response.status)
+        parsed = self._parse_json_object(
+            response.content,
+            required_fields=required_fields,
+        )
+        if parsed is None:
+            return (
+                "degraded"
+                if response.status == "degraded"
+                else "rejected"
+            )
+        return None
 
     def _invoke_with_governed_retry(
         self,

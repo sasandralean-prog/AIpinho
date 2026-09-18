@@ -1026,8 +1026,25 @@ Validate the completed architecture through the normal AIpinho interface with a 
 - **M10-A.1 — Contract-bound semantic demand payload:** downstream semantic reasoning must consume frozen structured mission semantics, canonical plan fields, resource/authority descriptors and hashes only. Raw prompt text and free-form semantic-goal text must not be re-sent downstream.
 - **M10-A.2 — Resource-scoped negative semantics:** a write prohibition tied to a concrete readonly resource must constrain that resource without becoming a global `workspace_mutation` prohibition for the mission. Windows drive syntax must not be split at the drive colon during clause normalization.
 - **M10-A.3 — Governed semantic-output robustness:** when canonical model evaluation explicitly requests retry for a retryable output-contract failure, ContractBoundSemanticReasoner may perform only the bounded retry count granted by evaluation policy. Llama CLI role echo must be sanitized before JSON validation; invalid/non-retryable output remains fail-closed.
+- **M10-A.4 — Phase-local dependency safety demand:** dependency use-safety invariants must be derived from the downstream consumer step/operation, not from mission-global planning or mutation intent. A read-only consumer inside a mission that will mutate later must not require destructive-action safety; a consumer with an actual side effect must still require it.
+- **M10-A.5 — Registered role-bound continuation inference:** continuation proposals must route through an existing canonical role binding; invented role identifiers are not valid runtime dependencies. Model unavailability remains fail-closed.
+- **M10-A.6 — Governed role budget and model fallback:** contract-bound semantic inference must honor the selected role's canonical timeout/output budget and may use only the fallback model declared by the role binding when the configured fallback policy permits it. Primary/fallback share the same JSON contract and safety envelope; rejected evaluation remains rejected.
+- **M10-A.7 — Explicit continuation contract vocabulary:** every contract identifier required from the semantic candidate must be supplied in the governed continuation vocabulary before deterministic validation.
+- **M10-A.8 — Bounded deterministic candidate correction:** a candidate rejected by the deterministic continuation gate may receive at most the configured bounded correction attempt. The rejection reason is evidence for a new proposal, never permission to relax the gate; the replacement candidate is revalidated from zero.
+- **M10-A.9 — Flattened continuation option catalog:** profile/operation/action compatibility is projected into deterministic continuation options before semantic selection so the model never has to invent cross-product compatibility between independent catalogs.
+- **M10-A.10 — Compact runtime-owned continuation materialization:** the semantic proposal selects only a governed option id, contract type and allowed action subset. Runtime profile, operation type and fresh phase identity are materialized deterministically by TaskRunPlanner. Redundant raw profile/action catalogs are removed from the model payload so correction retries remain below inference input limits.
+- **M10-A.11 — Semantic continuation selector:** choosing among already-governed continuation options is semantic interpretation/routing, not free-form planning authority. The proposal therefore uses the canonical `semantic_interpreter` role; TaskRunPlanner remains the deterministic authority that materializes and validates the next work unit.
 - These are generic runtime corrections discovered by the FireTest. No FireTest workspace, repository, media extension or project name may appear in production policy or branch logic.
-- After A.1/A.2/A.3, repeat the same human prompt through the normal interface; do not manufacture continuation or inject TaskRuns.
+- After A.1-A.11 are checkpointed, merged and the canonical backend is restarted, repeat the same human prompt through the normal interface; do not manufacture continuation or inject TaskRuns.
+
+### M10-A validation evidence
+
+- Focused current continuation/reasoner/dependency regression: `61/61`.
+- Cross-sprint M4-M9 plus M10-A regression: `238/238`.
+- Broader runtime/public regression: `71 passed / 1 failed`; the sole failure is the previously documented `test_service_waits_for_approval_when_policy_requires_apply_patch` unregistered-worktree approval fixture, with no new M10-A failure.
+- Real in-memory replay of the blocked FireTest run leaves the persisted run untouched and now returns `MISSION_CONTINUATION_CANDIDATE_PLANNED`.
+- The real continuation selection uses `qwen3_1_7b_q6_k`, returns `evaluation_status=accepted`, confidence `0.9`, zero candidate retries, and deterministically materializes `phase_001_patch / patch_preview / patch_request`.
+- The compact continuation payload is approximately 10.6k characters for the observed real mission, below the 20k semantic-inference ceiling.
 
 ## Test restrictions
 
