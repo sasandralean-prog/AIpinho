@@ -738,6 +738,14 @@ Controlled repository fixtures prove allowed fetch/commit/push and denied wrong-
 
 Allow an E2E mission to create a clean governed Git workspace without registering a project-specific directory in static config.
 
+## Execution checkpoints
+
+- **M7-A — Derived staging contract:** define the mission-scoped staging resource, safe-root policy, derivation provenance, lifetime and explicit authority non-inheritance. No directory creation or Git materialization occurs in this checkpoint.
+- **M7-B — Governed staging materialization:** create the derived staging directory, clone/fetch the authorized remote, verify origin/branch, fast-forward only the authorized branch and expose the resulting staging resource through the canonical TaskRuntime gates.
+- **M7-C — Promotion flow validation and closure:** prove arbitrary authorized repositories can use staging without permanent registration, validate source/corpus immutability and cleanup/truth semantics, run regression, merge and close the sprint.
+
+Each checkpoint must remain inside the existing MissionContract → canonical policy → GovernedToolExecution authority chain. No staging-specific planner, bypass runtime or parallel Git authority is permitted.
+
 ## Resource derivation
 
 An authorized remote_repository may derive a mission_staging local resource under a globally configured safe staging root.

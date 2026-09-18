@@ -14,6 +14,7 @@ from aipinho.schemas.runtime.mission_contract import (
     MissionResourceScope,
 )
 from aipinho.schemas.runtime.task_run_request import TaskRunRequest
+from aipinho.services.policy_kernel.mission_staging_policy_service import MissionStagingPolicyService
 
 
 _EXECUTION_MODES = {
@@ -30,6 +31,13 @@ class MissionContractService:
     for provenance, but it never reparses free-form prompt text to infer new
     capabilities, resources, authority, or continuation semantics.
     """
+
+    def __init__(
+        self,
+        *,
+        staging_policy: MissionStagingPolicyService | None = None,
+    ) -> None:
+        self.staging_policy = staging_policy or MissionStagingPolicyService()
 
     def resolve_for_request(
         self,
@@ -203,6 +211,7 @@ class MissionContractService:
             parent.local_resources,
             child.local_resources,
             scope="local",
+            parent_contract=parent,
         )
         self._validate_resource_narrowing(
             parent.remote_resources,
@@ -306,11 +315,22 @@ class MissionContractService:
         child_resources: list[MissionResourceScope],
         *,
         scope: str,
+        parent_contract: MissionContract | None = None,
     ) -> None:
         parent_by_id = {item.resource_id: item for item in parent_resources}
         for child in child_resources:
             parent = parent_by_id.get(child.resource_id)
             if parent is None:
+                if (
+                    scope == "local"
+                    and child.resource_type == "mission_staging"
+                    and parent_contract is not None
+                ):
+                    self.staging_policy.validate_derived_resource(
+                        parent=parent_contract,
+                        resource=child,
+                    )
+                    continue
                 raise ValueError(f"mission_contract_child_adds_{scope}_resource")
 
             immutable = (

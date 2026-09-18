@@ -15,6 +15,7 @@ MissionExecutionMode = Literal[
 ]
 MissionResourceType = Literal[
     "local_workspace",
+    "mission_staging",
     "remote_repository",
     "external_resource",
 ]

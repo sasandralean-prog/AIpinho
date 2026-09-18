@@ -19,7 +19,7 @@ class MissionLocalResourceScopeService:
         candidates = [
             resource
             for resource in (resources or [])
-            if resource.resource_type == "local_workspace"
+            if resource.resource_type in {"local_workspace", "mission_staging"}
             and resource.locator
             and self.is_under(path, resource.locator)
         ]
@@ -38,7 +38,7 @@ class MissionLocalResourceScopeService:
             (
                 resource
                 for resource in (resources or [])
-                if resource.resource_type == "local_workspace"
+                if resource.resource_type in {"local_workspace", "mission_staging"}
                 and resource.resource_id == resource_id
             ),
             None,

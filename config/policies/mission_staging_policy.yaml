@@ -1,0 +1,19 @@
+version: 1
+mission_staging:
+  enabled: true
+  root_strategy: system_temp
+  directory_name: aipinho_mission_staging
+  lifetime: mission
+  role: temp_staging
+  allowed_permissions:
+    - read_file
+    - list_files
+    - create_directory
+    - create_file
+    - modify_file
+    - apply_patch
+    - shell_readonly
+    - shell_build
+    - shell_test
+    - script_execution
+    - git_commit
