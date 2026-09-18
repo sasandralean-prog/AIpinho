@@ -815,6 +815,14 @@ M7 is validated and CLOSED. The canonical path is MissionContract -> derived `mi
 
 Make end_to_end_governed operational rather than merely descriptive.
 
+## Execution checkpoints
+
+- **M8-A — Continuation decision contract:** define planner-supplied next-phase candidates and a pure continuation decision that composes frozen MissionContract, canonical lifecycle and PhaseOutcome/dependency truth. No child TaskRun is created in this checkpoint.
+- **M8-B — Canonical child TaskRun continuation:** reserve and enrich the next TaskRun only after an M8-A continuation decision, rebind the dependency evaluation to the real child identity, preserve monotonic mission authority/resources and invoke only the existing TaskRuntime planner/executor.
+- **M8-C — Automatic continuation E2E and closure:** wire terminal phase completion to the continuation coordinator for end_to_end_governed missions, prove staged/single-operation stopping boundaries, run cross-sprint regression, merge and close M8.
+
+The continuation service may validate a planner-supplied phase candidate but may never invent a phase sequence, reparse the original prompt, grant authority, or become a second planner/runtime/truth authority.
+
 ## Service responsibility
 
 Introduce or evolve a thin MissionContinuationService / MissionPhaseCoordinator.
