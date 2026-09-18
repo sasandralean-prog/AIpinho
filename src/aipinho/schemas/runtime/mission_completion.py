@@ -14,6 +14,7 @@ class MissionCompletionSnapshot(AIpinhoModel):
     reason_codes: list[str] = Field(default_factory=list)
     source_prompt_sha256: str | None = None
     strategy: str | None = None
+    semantic_context: dict[str, object] = Field(default_factory=dict)
     completion_requirements: list[str] = Field(default_factory=list)
     validation_requirements: list[str] = Field(default_factory=list)
     allow_limited_completion: bool = False
@@ -93,3 +94,36 @@ class MissionCompletionEvidenceCatalog(AIpinhoModel):
     items: list[MissionCompletionEvidenceItem] = Field(default_factory=list)
     authority_sha256: str
     schema_version: str = "mission_completion_evidence_catalog.v1"
+
+
+class MissionCompletionBindingCandidate(AIpinhoModel):
+    requirement: str
+    requirement_kind: Literal["completion", "validation"]
+    semantic_relation: Literal["supports", "does_not_support", "ambiguous"]
+    evidence_refs: list[str] = Field(default_factory=list)
+    producer_task_run_ids: list[str] = Field(default_factory=list)
+    confidence: float = Field(default=0.0, ge=0.0, le=1.0)
+    rationale: str = ""
+
+
+class MissionCompletionBindingProposal(AIpinhoModel):
+    mission_id: str
+    snapshot_authority_sha256: str
+    catalog_authority_sha256: str
+    status: Literal["candidate", "unavailable", "invalid"]
+    reason_code: str
+    bindings: list[MissionCompletionBindingCandidate] = Field(default_factory=list)
+    provenance: dict[str, object] = Field(default_factory=dict)
+    proposal_sha256: str
+    schema_version: str = "mission_completion_binding_proposal.v1"
+
+
+class MissionCompletionBindingCompilation(AIpinhoModel):
+    mission_id: str
+    snapshot_authority_sha256: str
+    catalog_authority_sha256: str
+    proposal_sha256: str
+    status: Literal["compiled", "blocked"]
+    reason_codes: list[str] = Field(default_factory=list)
+    evaluations: list[MissionCompletionRequirementEvaluation] = Field(default_factory=list)
+    schema_version: str = "mission_completion_binding_compilation.v1"
