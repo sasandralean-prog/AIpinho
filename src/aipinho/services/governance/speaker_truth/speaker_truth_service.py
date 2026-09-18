@@ -38,7 +38,12 @@ class CanonicalSpeakerTruthService:
             disclosures.extend(f"contradiction:{item}" for item in truth.contradictions)
         if truth.missing_evidence:
             disclosures.extend(f"missing_evidence:{item}" for item in truth.missing_evidence)
+        disclosures.extend(truth.mission_completion_disclosures)
         if not truth.safe_to_report_success:
+            disclosures.extend(
+                f"mission_completion:{item}"
+                for item in truth.mission_completion_reason_codes
+            )
             forbidden.extend(self.SUCCESS_CLAIMS)
         can_claim = truth.safe_to_report_success and not truth.contradictions and not truth.missing_evidence
         if not can_claim and truth.reason_code:

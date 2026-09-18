@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 from threading import RLock
 from typing import Any
 from uuid import uuid4
@@ -23,6 +24,9 @@ from aipinho.services.runtime.task_queue_service import TaskQueueService
 from aipinho.services.runtime.task_run_audit_service import TaskRunAuditService
 from aipinho.services.runtime.task_bootstrap_runtime_service import TaskBootstrapRuntimeService
 from aipinho.services.runtime.mission_contract_service import MissionContractService
+from aipinho.services.runtime.mission_completion_resolution_service import (
+    MissionCompletionResolutionService,
+)
 from aipinho.services.runtime.runtime_timeline_service import RuntimeTimelineService
 from aipinho.services.runtime.workflow_runtime_service import WorkflowRuntimeService
 from aipinho.services.runtime.runtime_truth_engine import RuntimeTruthEngine
@@ -96,6 +100,7 @@ class TaskRuntimeService:
         operational_memory=None,
         engineering_autopilot=None,
         planner=None,
+        mission_completion=None,
     ):
         self.store = store or TaskRunStore()
         self.drafts = drafts or TaskContractDraftService()
@@ -161,6 +166,10 @@ class TaskRuntimeService:
         self.tool_governance = ToolGovernanceService()
         self.bootstrap = TaskBootstrapRuntimeService(store=self.store)
         self.missions = MissionContractService()
+        self.mission_completion = (
+            mission_completion
+            or MissionCompletionResolutionService(store=self.store)
+        )
         self.timeline = RuntimeTimelineService(store=self.store)
         self.workflows = WorkflowRuntimeService()
         self.truth = RuntimeTruthEngine()
@@ -976,12 +985,41 @@ class TaskRuntimeService:
             run,
             result=result,
             truth=truth,
-            artifacts=[dict(item) for item in run.produced_artifacts if isinstance(item, dict)],
+            artifacts=[
+                dict(item)
+                for item in run.produced_artifacts
+                if isinstance(item, dict)
+            ],
         )
         self.store.update_run(run)
-        self._publish_terminal_result(run, result)
-        self.operational_memory.capture_task_run(run, trigger="task_run_finished")
+        self.operational_memory.capture_task_run(
+            run,
+            trigger="task_run_finished",
+        )
         self._continue_terminal_mission(run)
+
+        run = self.store.get_run(run.run_id) or run
+        mission_facet = self._rehydrate_terminal_mission_completion(run)
+        if mission_facet is not None:
+            truth = self.truth.evaluate(
+                run,
+                result=result,
+                timeline=timeline,
+                mission_completion=mission_facet,
+            )
+            run.canonical_state = self.canonical_states.derive(
+                run,
+                result=result,
+                truth=truth,
+                artifacts=[
+                    dict(item)
+                    for item in run.produced_artifacts
+                    if isinstance(item, dict)
+                ],
+            )
+            self.store.update_run(run)
+
+        self._publish_terminal_result(run, result, truth=truth)
         return self.store.get_run(run.run_id) or run, result
 
     def bind_readonly_artifact_runtime(self, service) -> None:
@@ -1021,14 +1059,37 @@ class TaskRuntimeService:
         if run is None:
             return None
         result = self.store.get_result(run_id)
-        if result is None and str(run.status) in {"created", "queued", "running", "waiting_input", "waiting_delegation"}:
-            return self.truth.evaluate(run, result=None, timeline=None)
-        if str(run.status) in {"blocked", "failed", "cancelled", "expired"}:
-            return self.truth.evaluate(run, result=result, timeline=None)
+        mission_facet = self._rehydrate_terminal_mission_completion(run)
+        if result is None and str(run.status) in {
+            "created",
+            "queued",
+            "running",
+            "waiting_input",
+            "waiting_delegation",
+        }:
+            return self.truth.evaluate(
+                run,
+                result=None,
+                timeline=None,
+                mission_completion=mission_facet,
+            )
+        if str(run.status) in {
+            "blocked",
+            "failed",
+            "cancelled",
+            "expired",
+        }:
+            return self.truth.evaluate(
+                run,
+                result=result,
+                timeline=None,
+                mission_completion=mission_facet,
+            )
         return self.truth.evaluate(
             run,
             result=result,
             timeline=self.timeline.build(run_id),
+            mission_completion=mission_facet,
         )
 
     def get_trace(self, run_id):
@@ -1469,6 +1530,12 @@ class TaskRuntimeService:
                     ),
                     reason_code=planning.reason_code,
                 )
+                if (
+                    planning.status == "not_applicable"
+                    and planning.reason_code
+                    == "MISSION_CONTINUATION_PLANNER_COMPLETE"
+                ):
+                    self._resolve_terminal_mission_completion(run)
                 return None
             payload = planning.candidate.model_dump(mode="json")
             run.plan.metadata["mission_continuation_candidate"] = payload
@@ -1519,6 +1586,86 @@ class TaskRuntimeService:
         )
         return execution
 
+    def _resolve_terminal_mission_completion(self, run):
+        contract = getattr(run, "mission_contract", None)
+        binding = getattr(run, "mission_binding", None)
+        mission_id = (
+            getattr(contract, "mission_id", None)
+            or getattr(binding, "mission_id", None)
+        )
+        if not mission_id:
+            return None
+        resolution = self.mission_completion.resolve(
+            mission_id=mission_id,
+            anchor_run_id=run.run_id,
+            allow_inference=True,
+        )
+        self._record_mission_completion_state(
+            run,
+            resolution,
+        )
+        return resolution
+
+    def _rehydrate_terminal_mission_completion(self, run):
+        payload = (
+            run.intent_map.get("mission_completion_runtime")
+            if isinstance(run.intent_map, dict)
+            else None
+        )
+        if not isinstance(payload, dict):
+            return None
+        contract = getattr(run, "mission_contract", None)
+        binding = getattr(run, "mission_binding", None)
+        mission_id = (
+            getattr(contract, "mission_id", None)
+            or getattr(binding, "mission_id", None)
+            or payload.get("mission_id")
+        )
+        if not mission_id:
+            return None
+        resolution = self.mission_completion.resolve(
+            mission_id=str(mission_id),
+            anchor_run_id=run.run_id,
+            allow_inference=False,
+        )
+        return resolution.facet
+
+    def _record_mission_completion_state(
+        self,
+        run,
+        resolution,
+    ) -> None:
+        current = self.store.get_run(run.run_id) or run
+        payload = resolution.model_dump(mode="json")
+        current.intent_map["mission_completion_runtime"] = payload
+        self.store.update_run(current)
+        run.intent_map["mission_completion_runtime"] = payload
+        self.events.create(
+            run.run_id,
+            "mission_completion_evaluated",
+            resolution.status,
+            "Mission-wide completion truth was evaluated.",
+            metadata={
+                "mission_id": resolution.mission_id,
+                "status": resolution.status,
+                "reason_codes": list(resolution.reason_codes),
+                "snapshot_authority_sha256": (
+                    resolution.snapshot_authority_sha256
+                ),
+                "catalog_authority_sha256": (
+                    resolution.catalog_authority_sha256
+                ),
+                "proposal_sha256": resolution.proposal_sha256,
+                "proposal_source": resolution.proposal_source,
+                "compilation_status": resolution.compilation_status,
+                "facet_authority_sha256": (
+                    resolution.facet.authority_sha256
+                    if resolution.facet is not None
+                    else None
+                ),
+            },
+        )
+
     def _record_mission_continuation_state(
         self,
         run,
@@ -1550,9 +1697,38 @@ class TaskRuntimeService:
             metadata=payload,
         )
 
-    def _publish_terminal_result(self, run, result) -> None:
+    def _publish_terminal_result(self, run, result, *, truth=None) -> None:
+        continuation = (
+            run.intent_map.get("mission_continuation_runtime")
+            if isinstance(run.intent_map, dict)
+            else None
+        )
+        contract = getattr(run, "mission_contract", None)
+        if (
+            contract is not None
+            and contract.strategy == "end_to_end_governed"
+            and isinstance(continuation, dict)
+        ):
+            continuation_status = str(
+                continuation.get("status") or ""
+            )
+            if (
+                continuation_status == "executed"
+                and continuation.get("child_task_run_id")
+            ):
+                return
+            if continuation_status == "blocked":
+                return
         try:
-            self.result_publisher.publish(run, result)
+            signature = inspect.signature(self.result_publisher.publish)
+            if "runtime_truth" in signature.parameters:
+                self.result_publisher.publish(
+                    run,
+                    result,
+                    runtime_truth=truth,
+                )
+            else:
+                self.result_publisher.publish(run, result)
         except Exception:
             # Chat publication is best-effort and must not invalidate a completed task.
             return

@@ -111,7 +111,7 @@ class CanonicalOperationStateService:
             return "COMPLETED"
         if result and result.status == "completed" and truth is None:
             return "BLOCKED"
-        if result and result.status == "completed" and truth and truth.status == "completed" and not truth.safe_to_report_success:
+        if result and result.status == "completed" and truth and not truth.safe_to_report_success:
             return "BLOCKED"
         if lifecycle_status == "waiting_input":
             return "WAITING_APPROVAL"

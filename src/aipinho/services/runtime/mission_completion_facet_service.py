@@ -173,6 +173,32 @@ class MissionCompletionFacetService:
             evaluations=selected,
         )
 
+    def unresolved(
+        self,
+        snapshot: MissionCompletionSnapshot,
+        *,
+        reason_codes: list[str],
+    ) -> MissionCompletionFacet:
+        return self._facet(
+            snapshot,
+            status="insufficient_evidence",
+            safe=False,
+            reason_codes=reason_codes,
+        )
+
+    def blocked(
+        self,
+        snapshot: MissionCompletionSnapshot,
+        *,
+        reason_codes: list[str],
+    ) -> MissionCompletionFacet:
+        return self._facet(
+            snapshot,
+            status="blocked",
+            safe=False,
+            reason_codes=reason_codes,
+        )
+
     def _binding_reasons(
         self,
         snapshot: MissionCompletionSnapshot,

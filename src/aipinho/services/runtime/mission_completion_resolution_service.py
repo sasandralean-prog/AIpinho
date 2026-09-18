@@ -67,11 +67,19 @@ class MissionCompletionResolutionService:
     ) -> MissionCompletionResolution:
         snapshot = self.projection.project(mission_id=mission_id)
         if snapshot.status == "missing":
+            facet = self.facets.unresolved(
+                snapshot,
+                reason_codes=[
+                    *snapshot.reason_codes,
+                    "MISSION_COMPLETION_SNAPSHOT_MISSING",
+                ],
+            )
             return self._resolution(
                 mission_id=mission_id,
                 status="unavailable",
-                reason_codes=list(snapshot.reason_codes),
+                reason_codes=list(facet.reason_codes),
                 snapshot_sha=snapshot.authority_sha256,
+                facet=facet,
             )
         if snapshot.status == "invalid":
             facet = self.facets.evaluate(snapshot, evaluations=[])
@@ -93,26 +101,36 @@ class MissionCompletionResolutionService:
 
         if proposal is None:
             if not allow_inference:
-                return self._resolution(
-                    mission_id=mission_id,
-                    status="unavailable",
+                facet = self.facets.unresolved(
+                    snapshot,
                     reason_codes=[
                         "MISSION_COMPLETION_BINDING_PROPOSAL_NOT_PERSISTED"
                     ],
+                )
+                return self._resolution(
+                    mission_id=mission_id,
+                    status="unavailable",
+                    reason_codes=list(facet.reason_codes),
                     snapshot_sha=snapshot.authority_sha256,
                     catalog_sha=catalog.authority_sha256,
+                    facet=facet,
                 )
             proposal = self.proposer.propose(snapshot, catalog)
             proposal_source = "generated"
             if proposal.status != "candidate":
+                facet = self.facets.unresolved(
+                    snapshot,
+                    reason_codes=[proposal.reason_code],
+                )
                 return self._resolution(
                     mission_id=mission_id,
                     status="unavailable",
-                    reason_codes=[proposal.reason_code],
+                    reason_codes=list(facet.reason_codes),
                     snapshot_sha=snapshot.authority_sha256,
                     catalog_sha=catalog.authority_sha256,
                     proposal_sha=proposal.proposal_sha256,
                     proposal_source=proposal_source,
+                    facet=facet,
                 )
 
         compilation = self.compiler.compile(
@@ -121,6 +139,10 @@ class MissionCompletionResolutionService:
             proposal,
         )
         if compilation.status != "compiled":
+            facet = self.facets.blocked(
+                snapshot,
+                reason_codes=list(compilation.reason_codes),
+            )
             return self._resolution(
                 mission_id=mission_id,
                 status="blocked",
@@ -130,6 +152,7 @@ class MissionCompletionResolutionService:
                 proposal_sha=proposal.proposal_sha256,
                 proposal_source=proposal_source,
                 compilation_status=compilation.status,
+                facet=facet,
             )
 
         if proposal_source == "generated":
@@ -139,17 +162,22 @@ class MissionCompletionResolutionService:
                 anchor_run_id=anchor_run_id,
             )
             if not persisted:
-                return self._resolution(
-                    mission_id=mission_id,
-                    status="blocked",
+                facet = self.facets.blocked(
+                    snapshot,
                     reason_codes=[
                         "MISSION_COMPLETION_BINDING_PROPOSAL_PERSIST_FAILED"
                     ],
+                )
+                return self._resolution(
+                    mission_id=mission_id,
+                    status="blocked",
+                    reason_codes=list(facet.reason_codes),
                     snapshot_sha=snapshot.authority_sha256,
                     catalog_sha=catalog.authority_sha256,
                     proposal_sha=proposal.proposal_sha256,
                     proposal_source=proposal_source,
                     compilation_status=compilation.status,
+                    facet=facet,
                 )
 
         facet = self.facets.evaluate(

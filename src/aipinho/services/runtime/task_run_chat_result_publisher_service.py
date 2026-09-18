@@ -5,6 +5,7 @@ from typing import Any
 from aipinho.schemas.chat.chat_response import ChatResponse
 from aipinho.schemas.events.contracts import EventPublishRequest
 from aipinho.schemas.interaction.contracts import ChatMessageCreateRequest
+from aipinho.schemas.runtime.runtime_truth import RuntimeTruth
 from aipinho.schemas.runtime.task_run import TaskRun
 from aipinho.schemas.runtime.task_run_result import TaskRunResult
 from aipinho.services.chat.chat_result_index_service import ChatResultIndexService
@@ -29,7 +30,13 @@ class TaskRunChatResultPublisherService:
         self.result_index = result_index or ChatResultIndexService()
         self.event_publisher = event_publisher or EventPublisherService()
 
-    def publish(self, run: TaskRun, result: TaskRunResult | None) -> dict[str, Any]:
+    def publish(
+        self,
+        run: TaskRun,
+        result: TaskRunResult | None,
+        *,
+        runtime_truth: RuntimeTruth | None = None,
+    ) -> dict[str, Any]:
         session_id = run.session_id
         if result is None:
             return {"status": "skipped", "reason": "task_result_missing"}
@@ -47,19 +54,29 @@ class TaskRunChatResultPublisherService:
                 "task_run_id": run.run_id,
             }
 
+        success_allowed = bool(
+            result.status == "completed"
+            and (
+                runtime_truth is None
+                or runtime_truth.safe_to_report_success
+            )
+        )
         message_type = (
             "assistant_final_answer"
-            if result.status == "completed"
+            if success_allowed
             else "assistant_degraded_answer"
         )
-        response_status = "ok" if result.status == "completed" else "degraded"
+        response_status = "ok" if success_allowed else "degraded"
         operation_type = str(
             run.intent_map.get("intent_type")
             or run.contract_type
             or "task_run"
         )
         evidence_refs = self._evidence_refs(run, result)
-        content = self._render_message(result)
+        content = self._render_message(
+            result,
+            runtime_truth=runtime_truth,
+        )
         source_event_id = self._publish_event(run, result, session_id)
         metadata = {
             "source": "task_run_result_publisher",
@@ -78,7 +95,7 @@ class TaskRunChatResultPublisherService:
             "operation_type": operation_type,
             "operation_id": run.operation_id,
             "requires_user_action": "False",
-            "is_final_answer": str(result.status == "completed"),
+            "is_final_answer": str(success_allowed),
             "grounded": "True",
             "grounding_required": "False",
             "raw_available": "False",
@@ -86,6 +103,21 @@ class TaskRunChatResultPublisherService:
                 (result.validation or {}).get("status") or "not_available"
             ),
             "evidence_refs": evidence_refs,
+            "runtime_truth_status": (
+                runtime_truth.status
+                if runtime_truth is not None
+                else "not_available"
+            ),
+            "runtime_truth_safe_to_report_success": str(
+                runtime_truth.safe_to_report_success
+                if runtime_truth is not None
+                else result.status == "completed"
+            ),
+            "mission_completion_status": (
+                runtime_truth.mission_completion_status
+                if runtime_truth is not None
+                else None
+            ),
         }
         message = self.message_service.create(
             session_id,
@@ -99,7 +131,7 @@ class TaskRunChatResultPublisherService:
         )
 
         result_ref_id = None
-        if result.status == "completed":
+        if success_allowed:
             response = ChatResponse(
                 response_id=f"task_result_{run.run_id}",
                 session_id=session_id,
@@ -144,19 +176,82 @@ class TaskRunChatResultPublisherService:
                 return message
         return None
 
-    def _render_message(self, result: TaskRunResult) -> str:
+    def _render_message(
+        self,
+        result: TaskRunResult,
+        *,
+        runtime_truth: RuntimeTruth | None = None,
+    ) -> str:
+        if (
+            runtime_truth is not None
+            and not runtime_truth.safe_to_report_success
+        ):
+            parts = [
+                (
+                    "A execução da fase terminou, mas a verdade canônica "
+                    "da missão não permite declarar sucesso completo."
+                )
+            ]
+            if runtime_truth.mission_completion_reason_codes:
+                parts.append(
+                    "Razões canônicas:\n- "
+                    + "\n- ".join(
+                        runtime_truth.mission_completion_reason_codes
+                    )
+                )
+            if runtime_truth.mission_completion_disclosures:
+                parts.append(
+                    "Limitações obrigatórias:\n- "
+                    + "\n- ".join(
+                        runtime_truth.mission_completion_disclosures
+                    )
+                )
+            if runtime_truth.missing_evidence:
+                parts.append(
+                    "Evidência ausente:\n- "
+                    + "\n- ".join(runtime_truth.missing_evidence)
+                )
+            if result.limitations:
+                parts.append(
+                    "Limitações da fase:\n- "
+                    + "\n- ".join(result.limitations)
+                )
+            return "\n\n".join(part for part in parts if part)
+
         report = result.outputs.get("project_report")
         if isinstance(report, dict):
-            rendered = str(report.get("rendered_markdown") or "").strip()
+            rendered = str(
+                report.get("rendered_markdown") or ""
+            ).strip()
             if rendered:
-                return rendered
-        parts = [result.summary.strip()]
+                parts = [rendered]
+            else:
+                parts = [result.summary.strip()]
+        else:
+            parts = [result.summary.strip()]
         if result.limitations:
-            parts.append("Limitações:\n- " + "\n- ".join(result.limitations))
+            parts.append(
+                "Limitações:\n- " + "\n- ".join(result.limitations)
+            )
+        if (
+            runtime_truth is not None
+            and runtime_truth.mission_completion_disclosures
+        ):
+            parts.append(
+                "Limitações obrigatórias:\n- "
+                + "\n- ".join(
+                    runtime_truth.mission_completion_disclosures
+                )
+            )
         if result.blocked_items:
-            parts.append("Itens bloqueados:\n- " + "\n- ".join(result.blocked_items))
+            parts.append(
+                "Itens bloqueados:\n- "
+                + "\n- ".join(result.blocked_items)
+            )
         if result.warnings:
-            parts.append("Avisos:\n- " + "\n- ".join(result.warnings))
+            parts.append(
+                "Avisos:\n- " + "\n- ".join(result.warnings)
+            )
         return "\n\n".join(part for part in parts if part)
 
     def _evidence_refs(

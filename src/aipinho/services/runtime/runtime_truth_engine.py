@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from aipinho.schemas.runtime.mission_completion import MissionCompletionFacet
 from aipinho.schemas.runtime.runtime_timeline import RuntimeTimeline
 from aipinho.schemas.runtime.runtime_truth import RuntimeTruth, RuntimeTruthEvidence
 from aipinho.schemas.runtime.task_run import TaskRun
@@ -42,6 +43,7 @@ class RuntimeTruthEngine:
         *,
         result: TaskRunResult | None = None,
         timeline: RuntimeTimeline | None = None,
+        mission_completion: MissionCompletionFacet | None = None,
     ) -> RuntimeTruth:
         runtime_status = str(run.status)
         workflow_status = str(run.workflow.status) if run.workflow else None
@@ -63,6 +65,7 @@ class RuntimeTruthEngine:
             result,
             timeline,
             semantic,
+            mission_completion,
         )
         missing = self._missing_evidence(
             run,
@@ -91,11 +94,23 @@ class RuntimeTruthEngine:
             missing=missing,
             result=result,
         )
+        status, reason, mission_missing = self._apply_mission_completion_ceiling(
+            status=status,
+            reason=reason,
+            mission_completion=mission_completion,
+        )
+        missing = list(dict.fromkeys([*missing, *mission_missing]))
+        mission_safe = bool(
+            mission_completion is None
+            or mission_completion.status == "not_applicable"
+            or mission_completion.safe_to_report_success
+        )
         safe = (
             status == "completed"
             and not contradictions
             and not missing
             and semantic.safe_to_report_success
+            and mission_safe
             and (
                 bool(
                     timeline
@@ -141,6 +156,36 @@ class RuntimeTruthEngine:
             semantic_truth_facet_authority_sha256=(
                 semantic.authority_sha256
             ),
+            mission_id=(
+                mission_completion.mission_id
+                if mission_completion is not None
+                else None
+            ),
+            mission_completion_status=(
+                mission_completion.status
+                if mission_completion is not None
+                else None
+            ),
+            mission_completion_safe_to_report_success=(
+                mission_completion.safe_to_report_success
+                if mission_completion is not None
+                else None
+            ),
+            mission_completion_reason_codes=(
+                list(mission_completion.reason_codes)
+                if mission_completion is not None
+                else []
+            ),
+            mission_completion_disclosures=(
+                list(mission_completion.disclosures)
+                if mission_completion is not None
+                else []
+            ),
+            mission_completion_authority_sha256=(
+                mission_completion.authority_sha256
+                if mission_completion is not None
+                else None
+            ),
             ui_status=self._ui_status(status),
             speaker_truth_status=(
                 "allowed" if safe else "evidence_required"
@@ -148,6 +193,54 @@ class RuntimeTruthEngine:
             evidence=evidence,
             contradictions=contradictions,
             missing_evidence=missing,
+        )
+
+    def _apply_mission_completion_ceiling(
+        self,
+        *,
+        status: str,
+        reason: str,
+        mission_completion: MissionCompletionFacet | None,
+    ) -> tuple[str, str, list[str]]:
+        if (
+            mission_completion is None
+            or mission_completion.status == "not_applicable"
+        ):
+            return status, reason, []
+        if mission_completion.status == "blocked":
+            return (
+                "blocked",
+                "mission_completion_blocked",
+                [
+                    f"mission_completion:{item}"
+                    for item in mission_completion.reason_codes
+                ],
+            )
+        if mission_completion.status == "insufficient_evidence":
+            if status in _BLOCKING_STATUSES:
+                return status, reason, []
+            return (
+                "partial",
+                "mission_completion_insufficient_evidence",
+                [
+                    f"mission_completion:{item}"
+                    for item in mission_completion.reason_codes
+                ],
+            )
+        if mission_completion.status == "constrained":
+            if status == "completed":
+                return (
+                    "completed",
+                    "mission_completion_constrained",
+                    [],
+                )
+            return status, reason, []
+        if mission_completion.status == "ready":
+            return status, reason, []
+        return (
+            "blocked",
+            "mission_completion_status_invalid",
+            ["mission_completion:status_invalid"],
         )
 
     def _resolve_status(
@@ -260,6 +353,7 @@ class RuntimeTruthEngine:
         result: TaskRunResult | None,
         timeline: RuntimeTimeline | None,
         semantic: SemanticTruthFacet,
+        mission_completion: MissionCompletionFacet | None,
     ) -> list[RuntimeTruthEvidence]:
         rows = [
             RuntimeTruthEvidence(
@@ -369,6 +463,34 @@ class RuntimeTruthEngine:
                 },
             )
         )
+        if mission_completion is not None:
+            rows.append(
+                RuntimeTruthEvidence(
+                    evidence_type="mission_completion_facet",
+                    evidence_id=mission_completion.authority_sha256,
+                    status=mission_completion.status,
+                    summary=(
+                        ",".join(mission_completion.reason_codes)
+                        if mission_completion.reason_codes
+                        else mission_completion.status
+                    ),
+                    metadata={
+                        "mission_id": mission_completion.mission_id,
+                        "safe_to_report_success": (
+                            mission_completion.safe_to_report_success
+                        ),
+                        "snapshot_authority_sha256": (
+                            mission_completion.snapshot_authority_sha256
+                        ),
+                        "disclosures": list(
+                            mission_completion.disclosures
+                        ),
+                        "authority_sha256": (
+                            mission_completion.authority_sha256
+                        ),
+                    },
+                )
+            )
         return rows
 
     def _missing_evidence(

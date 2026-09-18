@@ -1,5 +1,6 @@
 from types import SimpleNamespace
 
+from aipinho.schemas.runtime.runtime_truth import RuntimeTruth
 from aipinho.schemas.runtime.task_run_result import TaskRunResult
 from aipinho.services.runtime.task_run_chat_result_publisher_service import (
     TaskRunChatResultPublisherService,
@@ -117,4 +118,56 @@ def test_task_result_without_persistent_chat_is_not_published():
         "reason": "persistent_chat_session_not_found",
     }
     assert messages.messages == []
+    assert index.calls == []
+
+
+def test_completed_phase_with_unsafe_mission_truth_is_published_as_degraded():
+    service, messages, index, _events = _publisher()
+    run = runtime_run(status="completed")
+    run.session_id = "chat_test"
+    run.intent_map = {"intent_type": "workspace_fix_request"}
+    result = TaskRunResult(
+        run_id=run.run_id,
+        status="completed",
+        summary="Missão concluída com sucesso.",
+        validation={"validation_id": "validation_test", "status": "passed"},
+    )
+    truth = RuntimeTruth(
+        truth_id=f"runtime_truth_{run.run_id}",
+        task_run_id=run.run_id,
+        status="partial",
+        reason_code="mission_completion_insufficient_evidence",
+        safe_to_report_success=False,
+        mission_id="mission_test",
+        mission_completion_status="insufficient_evidence",
+        mission_completion_safe_to_report_success=False,
+        mission_completion_reason_codes=[
+            "MISSION_COMPLETION_EVALUATION_MISSING:validation:tests_pass"
+        ],
+        mission_completion_authority_sha256="a" * 64,
+        missing_evidence=[
+            "mission_completion:MISSION_COMPLETION_EVALUATION_MISSING:validation:tests_pass"
+        ],
+        ui_status="partial",
+        speaker_truth_status="evidence_required",
+    )
+
+    published = service.publish(
+        run,
+        result,
+        runtime_truth=truth,
+    )
+
+    assert published["status"] == "published"
+    assert len(messages.messages) == 1
+    message = messages.messages[0]
+    assert message.metadata["message_type"] == "assistant_degraded_answer"
+    assert message.metadata["is_final_answer"] == "False"
+    assert message.metadata["runtime_truth_status"] == "partial"
+    assert (
+        message.metadata["mission_completion_status"]
+        == "insufficient_evidence"
+    )
+    assert "Missão concluída com sucesso." not in message.content
+    assert "não permite declarar sucesso completo" in message.content
     assert index.calls == []
