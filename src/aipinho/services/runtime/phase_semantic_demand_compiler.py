@@ -124,9 +124,14 @@ class PhaseSemanticDemandCompiler:
         source_payload = {
             "plan_id": plan_id,
             "execution_id": execution_id,
-            "semantic_goal": getattr(canonical, "semantic_goal", None),
+            "semantic_goal_sha256": self._semantic_goal_sha256(
+                canonical
+            ),
             "operation_kind": getattr(canonical, "operation_kind", None),
-            "intent_map": dict(getattr(run, "intent_map", {}) or {}),
+            "intent_map": self._structured_intent_context(
+                run,
+                semantic_graph=semantic_graph,
+            ),
             "targets": list(getattr(canonical, "targets", []) or []),
             "artifact_expectations": list(getattr(canonical, "artifact_expectations", []) or []),
             "validation_requirements": list(getattr(canonical, "validation_requirements", []) or []),
@@ -358,6 +363,106 @@ class PhaseSemanticDemandCompiler:
             requirements=requirements,
             semantic_interpretation=semantic_interpretation,
         )
+
+    def _semantic_goal_sha256(self, canonical: Any) -> str | None:
+        goal = getattr(canonical, "semantic_goal", None)
+        if goal is None:
+            return None
+        value = str(goal)
+        if not value:
+            return None
+        return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+    def _structured_intent_context(
+        self,
+        run: Any,
+        *,
+        semantic_graph: dict[str, Any],
+    ) -> dict[str, Any]:
+        contract = getattr(run, "mission_contract", None)
+        frozen = dict(
+            getattr(contract, "semantic_context", {}) or {}
+        )
+        live = dict(getattr(run, "intent_map", {}) or {})
+        context: dict[str, Any] = {}
+
+        for key in (
+            "intent_type",
+            "operation_type",
+            "future_side_effect_intent",
+            "mission_execution_strategy",
+            "requested_deliverables",
+            "validation_requirements",
+            "completion_requirements",
+        ):
+            value = frozen.get(key)
+            if value in (None, "", [], {}):
+                value = live.get(key)
+            if value not in (None, "", [], {}):
+                context[key] = value
+
+        if semantic_graph:
+            context["semantic_intent_graph"] = dict(semantic_graph)
+
+        if contract is not None:
+            context["mission_binding"] = {
+                "mission_id": getattr(contract, "mission_id", None),
+                "revision": getattr(contract, "revision", None),
+                "source_prompt_sha256": getattr(
+                    contract,
+                    "source_prompt_sha256",
+                    None,
+                ),
+                "strategy": getattr(contract, "strategy", None),
+            }
+            context["resource_scope"] = [
+                {
+                    "resource_id": getattr(item, "resource_id", None),
+                    "resource_type": getattr(
+                        item,
+                        "resource_type",
+                        None,
+                    ),
+                    "role": getattr(item, "role", None),
+                    "permissions": list(
+                        getattr(item, "permissions", []) or []
+                    ),
+                    "constraints": [
+                        constraint.model_dump(mode="json")
+                        if hasattr(constraint, "model_dump")
+                        else dict(constraint)
+                        for constraint in (
+                            getattr(item, "constraints", []) or []
+                        )
+                        if hasattr(constraint, "model_dump")
+                        or isinstance(constraint, dict)
+                    ],
+                }
+                for item in [
+                    *list(
+                        getattr(contract, "local_resources", []) or []
+                    ),
+                    *list(
+                        getattr(contract, "remote_resources", []) or []
+                    ),
+                ]
+            ]
+            context["negative_constraints"] = [
+                item.model_dump(mode="json")
+                if hasattr(item, "model_dump")
+                else dict(item)
+                for item in (
+                    getattr(contract, "negative_constraints", []) or []
+                )
+                if hasattr(item, "model_dump")
+                or isinstance(item, dict)
+            ]
+
+        return {
+            key: value
+            for key, value in context.items()
+            if value not in (None, "", [], {})
+        }
 
     def _merge_required_mapping(
         self,

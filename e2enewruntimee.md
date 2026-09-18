@@ -267,7 +267,7 @@ These invariants apply to every sprint in this wave:
 | M7 | Mission Staging and Derived Resources | CLOSED | M2, M3, M6 |
 | M8 | Mission Continuation Engine | CLOSED | M1–M7 |
 | M9 | Cross-Phase Truth and Completion Contract | CLOSED | M1–M8 |
-| M10 | Fresh Manual E2E FireTest and Consolidation | PLANNED | M1–M9 |
+| M10 | Fresh Manual E2E FireTest and Consolidation | IN_PROGRESS | M1–M9 |
 
 No sprint is considered complete because code was written. Completion requires its Definition of Done and validation evidence.
 
@@ -1020,6 +1020,14 @@ SpeakerTruth cannot claim completion above the mission truth ceiling.
 ## Objective
 
 Validate the completed architecture through the normal AIpinho interface with a fresh human prompt.
+
+## M10-A preflight bugfixes discovered by the fresh manual E2E
+
+- **M10-A.1 — Contract-bound semantic demand payload:** downstream semantic reasoning must consume frozen structured mission semantics, canonical plan fields, resource/authority descriptors and hashes only. Raw prompt text and free-form semantic-goal text must not be re-sent downstream.
+- **M10-A.2 — Resource-scoped negative semantics:** a write prohibition tied to a concrete readonly resource must constrain that resource without becoming a global `workspace_mutation` prohibition for the mission. Windows drive syntax must not be split at the drive colon during clause normalization.
+- **M10-A.3 — Governed semantic-output robustness:** when canonical model evaluation explicitly requests retry for a retryable output-contract failure, ContractBoundSemanticReasoner may perform only the bounded retry count granted by evaluation policy. Llama CLI role echo must be sanitized before JSON validation; invalid/non-retryable output remains fail-closed.
+- These are generic runtime corrections discovered by the FireTest. No FireTest workspace, repository, media extension or project name may appear in production policy or branch logic.
+- After A.1/A.2/A.3, repeat the same human prompt through the normal interface; do not manufacture continuation or inject TaskRuns.
 
 ## Test restrictions
 

@@ -40,9 +40,25 @@ class ModelOutputSanitizer:
 
     def _strip_role_echo(self, text: str) -> str:
         output = text or ""
+        leading_role_echo = output.lstrip().startswith(
+            ("system:", "user:", "assistant:")
+        )
         for marker in ("\n```json", "\n{"):
             index = output.find(marker)
-            if index > 0 and any(tag in output[:index] for tag in ("system:", "\nuser:", "\nassistant:")):
+            if (
+                index > 0
+                and (
+                    leading_role_echo
+                    or any(
+                        tag in output[:index]
+                        for tag in (
+                            "system:",
+                            "\nuser:",
+                            "\nassistant:",
+                        )
+                    )
+                )
+            ):
                 return output[index + 1 :]
         return output
 

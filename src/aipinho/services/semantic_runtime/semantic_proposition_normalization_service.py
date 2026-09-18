@@ -10,7 +10,7 @@ from aipinho.services.prompt_intelligence.output_intent_detector import OutputIn
 
 
 class SemanticPropositionNormalizationService:
-    _CLAUSE_SPLIT_RE = re.compile(r"[\n\r.;:]+")
+    _CLAUSE_SPLIT_RE = re.compile(r"(?:[\n\r.;]+|:(?!\\))")
     _NEGATIVE_RE = re.compile(r"\b(?:nao|nunca|sem)\b")
     _NON_WORD_RE = re.compile(r"[^0-9a-zA-Z]+")
 

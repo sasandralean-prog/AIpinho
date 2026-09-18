@@ -87,14 +87,22 @@ class ContractBoundSemanticReasoner:
             },
         )
         request.generation_config.max_tokens = max_tokens
-        response = self.invocation.invoke_role_model(request)
+        response, retry_attempts, retry_warnings = (
+            self._invoke_with_governed_retry(request)
+        )
+        warnings = list(
+            dict.fromkeys(
+                [*retry_warnings, *response.warnings]
+            )
+        )
         if response.status not in {"completed", "degraded"}:
             return {
                 "status": "unavailable",
                 "reason_code": "SEMANTIC_REASONER_INVOCATION_UNAVAILABLE",
                 "model_id": response.model_id,
                 "response_id": response.response_id,
-                "warnings": list(response.warnings),
+                "warnings": warnings,
+                "retry_attempts": retry_attempts,
             }
         parsed = self._parse_json_object(
             response.content,
@@ -108,7 +116,8 @@ class ContractBoundSemanticReasoner:
                 "response_id": response.response_id,
                 "real_inference": response.real_inference,
                 "evaluation_status": (response.evaluation_result or {}).get("status"),
-                "warnings": list(response.warnings),
+                "warnings": warnings,
+                "retry_attempts": retry_attempts,
             }
         if not isinstance(parsed, dict):
             return {
@@ -134,8 +143,72 @@ class ContractBoundSemanticReasoner:
             "response_id": response.response_id,
             "real_inference": response.real_inference,
             "evaluation_status": (response.evaluation_result or {}).get("status"),
-            "warnings": list(response.warnings),
+            "warnings": warnings,
+            "retry_attempts": retry_attempts,
         }
+
+    def _invoke_with_governed_retry(
+        self,
+        request: ModelRequest,
+    ):
+        response = self.invocation.invoke_role_model(request)
+        attempts = 0
+        warnings: list[str] = []
+        while True:
+            evaluation = (
+                dict(response.evaluation_result or {})
+                if isinstance(response.evaluation_result, dict)
+                else {}
+            )
+            retry = evaluation.get("retry_decision")
+            retry = dict(retry) if isinstance(retry, dict) else {}
+            should_retry = bool(retry.get("should_retry"))
+            max_retries = max(
+                0,
+                int(retry.get("max_retries", 0) or 0),
+            )
+            if not should_retry or attempts >= max_retries:
+                return response, attempts, warnings
+
+            hint = str(
+                retry.get("retry_prompt_hint")
+                or "Retry with stricter output contract compliance."
+            ).strip()
+            attempts += 1
+            warnings.extend(
+                str(item)
+                for item in response.warnings
+                if str(item)
+            )
+            retry_request = request.model_copy(
+                update={
+                    "messages": [
+                        *request.messages,
+                        PromptMessage(
+                            role="user",
+                            content=(
+                                "The previous candidate did not satisfy the "
+                                "governed output contract. "
+                                f"{hint} "
+                                "Return only the requested JSON object. "
+                                "Do not add prose, markdown fences, tools, "
+                                "permissions, evidence, or fields outside the "
+                                "allowed contract."
+                            ),
+                        ),
+                    ],
+                    "metadata": {
+                        **dict(request.metadata),
+                        "semantic_retry_attempt": attempts,
+                        "semantic_retry_reason": retry.get("reason"),
+                        "semantic_retry_strategy": retry.get("strategy"),
+                    },
+                },
+                deep=True,
+            )
+            response = self.invocation.invoke_role_model(
+                retry_request
+            )
 
     def _parse_json_object(
         self,

@@ -63,6 +63,9 @@ def _run(
     side_effect: bool = False,
     semantic_graph: dict | None = None,
     required_capabilities: list[str] | None = None,
+    semantic_goal: str = "governed downstream operation",
+    intent_map: dict | None = None,
+    mission_contract=None,
 ):
     step = CanonicalExecutionStep(
         step_id="step_consumer",
@@ -72,7 +75,7 @@ def _run(
         required_capabilities=list(required_capabilities or ["read_workspace"]),
     )
     canonical = CanonicalExecutionPlan(
-        semantic_goal="governed downstream operation",
+        semantic_goal=semantic_goal,
         operation_kind=operation_type,
         execution_steps=[step],
         required_capabilities=list(required_capabilities or ["read_workspace"]),
@@ -90,7 +93,8 @@ def _run(
         operation_type=operation_type,
         run_id="task_run_semantic_demand",
         task_id="task_semantic_demand",
-        intent_map={},
+        intent_map=dict(intent_map or {}),
+        mission_contract=mission_contract,
         capabilities_required=list(required_capabilities or ["read_workspace"]),
     )
     compilation = TaskSemanticVocabularyCompilerService().compile_for_run(run=run)
@@ -106,6 +110,89 @@ def _planning_graph() -> dict:
         "readonly_contract": True,
         "prohibited_effects": ["workspace_mutation"],
     }
+
+
+def test_semantic_reasoning_payload_excludes_raw_prompt_and_freeform_goal() -> None:
+    class _Capture(_SemanticInterpreter):
+        def __init__(self) -> None:
+            super().__init__()
+            self.source_payload = None
+
+        def interpret(
+            self,
+            *,
+            source_payload: dict,
+            semantic_graph: dict,
+            vocabulary=None,
+        ) -> dict:
+            self.source_payload = source_payload
+            return super().interpret(
+                source_payload=source_payload,
+                semantic_graph=semantic_graph,
+                vocabulary=vocabulary,
+            )
+
+    semantic_graph = {
+        "knowledge_output": True,
+        "observational_intent": True,
+        "mutation_intent": True,
+        "requested_effects": ["workspace_mutation"],
+    }
+    frozen_context = {
+        "intent_type": "workspace_fix_request",
+        "operation_type": "project_analysis",
+        "semantic_intent_graph": semantic_graph,
+        "future_side_effect_intent": True,
+        "mission_execution_strategy": {
+            "mode": "end_to_end_governed",
+        },
+    }
+    contract = SimpleNamespace(
+        mission_id="mission_structured_semantics",
+        revision=1,
+        source_prompt_sha256="a" * 64,
+        strategy="end_to_end_governed",
+        semantic_context=frozen_context,
+        local_resources=[],
+        remote_resources=[],
+        negative_constraints=[],
+    )
+    capture = _Capture()
+    compiler = PhaseSemanticDemandCompiler(
+        semantic_interpreter=capture,
+    )
+    run = _run(
+        semantic_graph=semantic_graph,
+        semantic_goal="goal-free-text-" + ("G" * 25000),
+        intent_map={
+            "raw_prompt": "raw-user-prompt-" + ("R" * 30000),
+            "semantic_goal": "live-free-text-" + ("L" * 20000),
+            "intent_type": "unfrozen_live_value",
+            "semantic_intent_graph": semantic_graph,
+        },
+        mission_contract=contract,
+    )
+
+    compilation = compiler.compile_for_run(
+        run=run,
+        consumer_phase_id="consumer",
+    )
+
+    assert compilation.status == "compiled"
+    assert capture.source_payload is not None
+    payload = capture.source_payload
+    serialized = str(payload)
+    assert "raw-user-prompt-" not in serialized
+    assert "goal-free-text-" not in serialized
+    assert "live-free-text-" not in serialized
+    assert payload["intent_map"]["intent_type"] == "workspace_fix_request"
+    assert payload["intent_map"]["mission_binding"] == {
+        "mission_id": "mission_structured_semantics",
+        "revision": 1,
+        "source_prompt_sha256": "a" * 64,
+        "strategy": "end_to_end_governed",
+    }
+    assert len(payload["semantic_goal_sha256"]) == 64
 
 
 def test_same_phase_number_different_plan_operations_compile_different_demands() -> None:

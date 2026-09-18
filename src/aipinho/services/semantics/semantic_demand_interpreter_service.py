@@ -91,9 +91,12 @@ class SemanticDemandInterpreterService:
                 "instruction": (
                     "Apply the playbook to current_task_semantics. Examples and "
                     "counterexamples are illustrative only and MUST NOT be copied. "
-                    "Select identifiers only from governed_vocabulary. If the "
-                    "vocabulary has no identifier for a concept, leave that field "
-                    "empty and lower confidence rather than inventing one."
+                    "Select identifiers only from governed_vocabulary. Empty "
+                    "requirement lists or mappings are valid and may have high "
+                    "confidence when the current task clearly requires no such "
+                    "guarantee. Lower confidence only when the current task actually "
+                    "requires a concept that governed_vocabulary cannot represent; "
+                    "never invent an identifier."
                 ),
             },
             allowed_fields=[

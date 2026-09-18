@@ -64,3 +64,18 @@ def test_long_mission_scopes_corpus_write_prohibition_without_blocking_workspace
     assert graph.filesystem_effect == "mutable"
     assert graph.runtime_effect != "prohibited"
     assert "scoped_negative:workspace_mutation" in graph.evidence
+
+
+def test_windows_drive_scoped_write_prohibition_does_not_become_global() -> None:
+    graph = SemanticPropositionNormalizationService().normalize(
+        "Edite e corrija o codigo no workspace alvo. "
+        r"Nao modifique D:\media\readonly_corpus. "
+        "Execute testes e build depois da alteracao."
+    )
+
+    assert graph.mutation_intent is True
+    assert graph.execution_intent is True
+    assert "workspace_mutation" in graph.requested_effects
+    assert "workspace_mutation" not in graph.prohibited_effects
+    assert graph.filesystem_effect == "mutable"
+    assert "scoped_negative:workspace_mutation" in graph.evidence

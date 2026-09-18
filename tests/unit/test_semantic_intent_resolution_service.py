@@ -221,6 +221,43 @@ def test_long_operational_prompt_prefers_labeled_workspace_over_later_corpus_pat
 
     assert workspace == r"C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop"
 
+def test_scoped_readonly_path_preserves_mutable_target_semantics() -> None:
+    prompt = (
+        r"WORKSPACE ALVO: C:\Work\TargetApp. "
+        r"CORPUS SOMENTE LEITURA: D:\Media\ReadonlyCorpus. "
+        r"Nao modifique D:\Media\ReadonlyCorpus. "
+        "Edite e corrija o codigo no workspace alvo, execute testes e build."
+    )
+
+    decision = SemanticIntentResolutionService().resolve(
+        prompt,
+        source_channel="unit",
+        workspace_hint=r"C:\Work\TargetApp",
+    )
+
+    assert decision.semantic_intent_graph.mutation_intent is True
+    assert (
+        "workspace_mutation"
+        not in decision.semantic_intent_graph.prohibited_effects
+    )
+    assert decision.semantic_intent_graph.filesystem_effect == "mutable"
+
+    by_locator = {
+        item.locator: item
+        for item in decision.local_resources
+        if item.locator
+    }
+    target = by_locator[r"C:\Work\TargetApp"]
+    corpus = by_locator[r"D:\Media\ReadonlyCorpus"]
+
+    assert target.role == "target_mutable"
+    assert "modify_file" in target.permissions
+    assert corpus.role == "source_readonly"
+    assert "read_file" in corpus.permissions
+    assert "modify_file" not in corpus.permissions
+    assert "apply_patch" not in corpus.permissions
+
+
 def test_generic_investigate_and_repair_mission_is_discovery_first() -> None:
     decision = SemanticIntentResolutionService().resolve(
         "Investigue e corrija estruturalmente o aplicativo no workspace. Depois execute testes e build.",

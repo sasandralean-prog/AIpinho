@@ -46,3 +46,25 @@ def test_model_output_sanitizer_strips_reasoning_content():
 def test_model_output_sanitizer_blocks_unclosed_reasoning_content():
     sanitized = ModelOutputSanitizer().strip_reasoning_content("[Start thinking]\ninternal")
     assert sanitized == ""
+
+
+def test_model_output_sanitizer_strips_truncated_leading_user_echo_before_json():
+    prompt = "system: rules\n\nuser: very long governed prompt"
+    raw = (
+        "user: very long governed prompt ... (truncated)\n\n"
+        "{\n"
+        '  "truth_claim_required": false,\n'
+        '  "confidence": 0.9,\n'
+        '  "rationale": "bounded interpretation"\n'
+        "}\n"
+    )
+
+    sanitized = ModelOutputSanitizer().extract_llama_cli_completion(
+        raw,
+        prompt=prompt,
+    )
+
+    assert sanitized.startswith("{")
+    assert sanitized.endswith("}")
+    assert "user:" not in sanitized
+    assert '"confidence": 0.9' in sanitized
