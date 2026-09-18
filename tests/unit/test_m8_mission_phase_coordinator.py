@@ -14,6 +14,7 @@ from aipinho.schemas.runtime.phase_dependency_evaluation import DownstreamPhaseR
 from aipinho.schemas.runtime.phase_outcome import PhaseOutcome
 from aipinho.schemas.runtime.task_run import TaskRun
 from aipinho.schemas.runtime.task_run_plan import TaskRunPlan
+from aipinho.schemas.runtime.task_run_request import TaskRunRequest
 from aipinho.services.runtime.mission_contract_service import MissionContractService
 from aipinho.services.runtime.mission_phase_coordinator_service import MissionPhaseCoordinatorService
 from aipinho.services.runtime.task_run_store import TaskRunStore
@@ -360,6 +361,146 @@ def test_non_applicable_materialization_never_enters_taskruntime_start(tmp_path:
     assert materialized.status == "not_applicable"
     assert execution.status == "not_applicable"
     assert execution.reason_code == "mission_continuation_staged_boundary"
+    children = [
+        run
+        for run in store.list_runs(session_id=parent.session_id, limit=100)
+        if run.parent_task_id == parent.task_id
+    ]
+    assert children == []
+
+
+def _automatic_runtime_run(
+    tmp_path: Path,
+    *,
+    strategy: str,
+) -> tuple[TaskRuntimeService, TaskRunStore, TaskRun, MissionContinuationCandidate]:
+    contract = _contract(tmp_path, strategy=strategy)
+    workspace = Path(contract.local_resources[0].locator or "")
+    workspace.mkdir(parents=True, exist_ok=True)
+    store = TaskRunStore(root=tmp_path / f"automatic_runs_{uuid4().hex}")
+    runtime = TaskRuntimeService(store=store)
+    run = runtime.create_run(
+        TaskRunRequest(
+            source_type="direct",
+            source_channel="mission_continuation_test",
+            session_id=contract.session_id,
+            source_message_id=contract.source_message_id,
+            mission_contract=contract,
+            workspace=str(workspace),
+            contract_type="analysis_readonly",
+            operation_type="project_analysis",
+            runtime_profile="readonly_analysis",
+            capabilities_required=["read_workspace"],
+            requested_actions=["read_workspace"],
+            intent_map={
+                "intent_type": "generic_mission",
+                "operation_type": "project_analysis",
+                "phase_id": "phase_1",
+            },
+            policy_decision={
+                "status": "allowed",
+                "policy_status": "allowed",
+                "allowed_actions": ["read_workspace", "read_files"],
+                "approval_required_for": [],
+                "denied_actions": [],
+            },
+            mode="read_only",
+            start_immediately=False,
+        )
+    )
+    resource = contract.local_resources[0]
+    candidate = MissionContinuationCandidate(
+        planner_ref=f"canonical_execution_plan:{run.plan.plan_id}:phase_2",
+        dependency_id=f"dependency_{run.run_id}_phase_2",
+        phase_id="phase_2",
+        operation_type="project_analysis",
+        contract_type="analysis_readonly",
+        runtime_profile="readonly_analysis",
+        requested_actions=["read_workspace"],
+        required_capabilities=["read_workspace"],
+        local_resource_ids=[resource.resource_id],
+        workspace_resource_id=resource.resource_id,
+        mode="read_only",
+        metadata={
+            "policy_decision": {
+                "status": "allowed",
+                "policy_status": "allowed",
+                "allowed_actions": ["read_workspace", "read_files"],
+                "approval_required_for": [],
+                "denied_actions": [],
+            }
+        },
+        requirements=DownstreamPhaseRequirements(
+            contract_id=f"continuation_requirement_{run.run_id}",
+            consumer_phase_id="phase_2",
+            operation_type="project_analysis",
+            authority_source="workflow_contract",
+            allowed_dependency_statuses=["satisfied", "satisfied_with_limitations"],
+            required_capabilities=["read_workspace"],
+            evidence_required=True,
+        ),
+    )
+    run.plan.metadata["mission_continuation_candidate"] = candidate.model_dump(mode="json")
+    store.update_run(run)
+    return runtime, store, run, candidate
+
+
+def test_taskruntime_terminal_hook_automatically_continues_end_to_end_mission(
+    tmp_path: Path,
+) -> None:
+    runtime, store, parent, candidate = _automatic_runtime_run(
+        tmp_path,
+        strategy="end_to_end_governed",
+    )
+
+    completed, result = runtime.start(parent.run_id)
+
+    assert completed.status == "completed"
+    assert result.status == "completed"
+    state = completed.intent_map["mission_continuation_runtime"]
+    assert state["status"] == "executed", state
+    assert state["candidate_id"] == candidate.candidate_id
+    child = store.get_run(state["child_task_run_id"])
+    assert child is not None
+    assert child.parent_task_id == completed.task_id
+    assert child.status == "completed"
+    assert child.mission_contract is not None
+    assert completed.mission_contract is not None
+    assert child.mission_contract.parent_authority_sha256 == completed.mission_contract.authority_sha256
+
+
+def test_taskruntime_terminal_hook_stops_at_staged_boundary(tmp_path: Path) -> None:
+    runtime, store, parent, _candidate_value = _automatic_runtime_run(
+        tmp_path,
+        strategy="staged",
+    )
+
+    completed, result = runtime.start(parent.run_id)
+
+    assert completed.status == "completed"
+    assert result.status == "completed"
+    assert "mission_continuation_runtime" not in completed.intent_map
+    children = [
+        run
+        for run in store.list_runs(session_id=parent.session_id, limit=100)
+        if run.parent_task_id == parent.task_id
+    ]
+    assert children == []
+
+
+def test_taskruntime_terminal_hook_stops_at_single_operation_boundary(
+    tmp_path: Path,
+) -> None:
+    runtime, store, parent, _candidate_value = _automatic_runtime_run(
+        tmp_path,
+        strategy="single_operation",
+    )
+
+    completed, result = runtime.start(parent.run_id)
+
+    assert completed.status == "completed"
+    assert result.status == "completed"
+    assert "mission_continuation_runtime" not in completed.intent_map
     children = [
         run
         for run in store.list_runs(session_id=parent.session_id, limit=100)

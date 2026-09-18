@@ -979,7 +979,8 @@ class TaskRuntimeService:
         self.store.update_run(run)
         self._publish_terminal_result(run, result)
         self.operational_memory.capture_task_run(run, trigger="task_run_finished")
-        return run, result
+        self._continue_terminal_mission(run)
+        return self.store.get_run(run.run_id) or run, result
 
     def bind_readonly_artifact_runtime(self, service) -> None:
         """Bind a specialized read-only artifact executor into the canonical step runner.
@@ -1422,9 +1423,7 @@ class TaskRuntimeService:
                     "started_run_id": None,
                     "queue": queue,
                 }
-            started, result = self.loop.run(run.run_id)
-            self._publish_terminal_result(started, result)
-            self.operational_memory.capture_task_run(started, trigger="task_run_finished")
+            started, result = self.start(run.run_id)
             return {
                 "status": started.status,
                 "started_run_id": started.run_id,
@@ -1432,6 +1431,104 @@ class TaskRuntimeService:
                 "result": result,
                 "queue": self.queue.reconcile().snapshot,
             }
+
+    def _continue_terminal_mission(self, run):
+        contract = getattr(run, "mission_contract", None)
+        if (
+            contract is None
+            or contract.strategy != "end_to_end_governed"
+            or not self.lifecycle.is_terminal(str(run.status))
+        ):
+            return None
+
+        payload = (
+            run.plan.metadata.get("mission_continuation_candidate")
+            if run.plan is not None and isinstance(run.plan.metadata, dict)
+            else None
+        )
+        if payload is None:
+            self._record_mission_continuation_state(
+                run,
+                status="not_applicable",
+                reason_code="mission_continuation_candidate_not_planned",
+            )
+            return None
+
+        from aipinho.schemas.runtime.mission_continuation import (
+            MissionContinuationCandidate,
+        )
+        from aipinho.services.runtime.mission_phase_coordinator_service import (
+            MissionPhaseCoordinatorService,
+        )
+
+        try:
+            candidate = MissionContinuationCandidate.model_validate(payload)
+        except Exception as exc:
+            self._record_mission_continuation_state(
+                run,
+                status="blocked",
+                reason_code=(
+                    "mission_continuation_candidate_invalid:"
+                    f"{exc.__class__.__name__}"
+                ),
+            )
+            return None
+
+        coordinator = MissionPhaseCoordinatorService(
+            store=self.store,
+            runtime=self,
+            lifecycle=self.lifecycle,
+        )
+        materialization = coordinator.materialize_next_run(
+            previous_run_id=run.run_id,
+            candidate=candidate,
+            outstanding_completion_requirements=list(
+                contract.completion.completion_requirements
+            ),
+        )
+        execution = coordinator.execute_materialized_run(materialization)
+        self._record_mission_continuation_state(
+            run,
+            status=execution.status,
+            reason_code=execution.reason_code,
+            candidate_id=candidate.candidate_id,
+            child_task_run_id=execution.child_task_run_id,
+            child_status=execution.child_status,
+            decision_action=materialization.decision.action,
+            next_phase=materialization.decision.next_phase,
+        )
+        return execution
+
+    def _record_mission_continuation_state(
+        self,
+        run,
+        *,
+        status: str,
+        reason_code: str,
+        candidate_id: str | None = None,
+        child_task_run_id: str | None = None,
+        child_status: str | None = None,
+        decision_action: str | None = None,
+        next_phase: str | None = None,
+    ) -> None:
+        payload = {
+            "status": status,
+            "reason_code": reason_code,
+            "candidate_id": candidate_id,
+            "child_task_run_id": child_task_run_id,
+            "child_status": child_status,
+            "decision_action": decision_action,
+            "next_phase": next_phase,
+        }
+        run.intent_map["mission_continuation_runtime"] = payload
+        self.store.update_run(run)
+        self.events.create(
+            run.run_id,
+            "mission_continuation_evaluated",
+            status,
+            "Terminal TaskRun mission continuation was evaluated.",
+            metadata=payload,
+        )
 
     def _publish_terminal_result(self, run, result) -> None:
         try:
