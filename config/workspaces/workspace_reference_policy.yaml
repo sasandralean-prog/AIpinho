@@ -1,5 +1,11 @@
 schema_version: 1
 context_window_chars: 160
+exclusion_context_window_chars: 64
+exclude_context_suffixes:
+  - nao use
+  - nao utilize
+  - do not use
+  - never use
 
 roles:
   source_readonly:

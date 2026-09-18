@@ -12,7 +12,7 @@ path_extraction:
     quoted_regex: '(?i)["`'']([A-Z]:[\\/][^\r\n"`'']+)["`'']'
     bare_regex: '(?i)(?:^|\s)([A-Z]:[\\/][^\r\n"`''<>|]+?)(?=\s+[A-Z]:[\\/]|[\r\n]|$)'
     normalize_separator: "\\"
-    strip_trailing: ".,;)"
+    strip_trailing: ".,;)—–"
     split_before_next_drive: true
     bare_stop_words:
       - workspace
@@ -29,6 +29,7 @@ path_extraction:
       - apenas
       - comece
       - nao
+      - nem
       - retorne
       - responda
       - faca

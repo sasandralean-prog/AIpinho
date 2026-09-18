@@ -38,3 +38,45 @@ def test_windows_path_extraction_stops_at_textual_connector_before_second_path()
         r"C:\Dev\AIpinho",
         r"D:\Media Library",
     ]
+
+
+def test_windows_path_extraction_stops_before_accented_negative_prose() -> None:
+    service = PathExtractionService()
+
+    paths = service.extract(
+        "IMPORTANTE: "
+        r"C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop"
+        " não possui .git. Não inicialize um repositório novo nele."
+    )
+
+    assert [item.value for item in paths] == [
+        r"C:\Users\rafae\Documents\PinhoabacaxiMusicasDesktop"
+    ]
+
+
+def test_windows_path_extraction_stops_before_neither_connector() -> None:
+    service = PathExtractionService()
+
+    paths = service.extract(
+        "NÃO use "
+        r"C:\Users\rafae\Documents\Pinhoabacaxi-musicas-main"
+        " nem o remoto pinhoabacaxi/TestePinho."
+    )
+
+    assert [item.value for item in paths] == [
+        r"C:\Users\rafae\Documents\Pinhoabacaxi-musicas-main"
+    ]
+
+
+def test_windows_path_extraction_strips_em_dash_before_readonly_label() -> None:
+    service = PathExtractionService()
+
+    paths = service.extract(
+        "CORPUS DE MÚSICAS PARA TESTES — SOMENTE LEITURA: "
+        r"D:\rafa\novapinhomusic"
+        " — SOMENTE LEITURA"
+    )
+
+    assert [item.value for item in paths] == [
+        r"D:\rafa\novapinhomusic"
+    ]

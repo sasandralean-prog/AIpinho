@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import unicodedata
 from dataclasses import dataclass
 from pathlib import PureWindowsPath
 from typing import Any
@@ -77,9 +78,8 @@ class PathExtractionService:
         if not isinstance(stop_words, list):
             stop_words = []
         if stop_words:
-            pattern = r"\s+(?:" + "|".join(re.escape(str(item)) for item in stop_words if item) + r")\b"
-            value = re.split(pattern, value, maxsplit=1, flags=re.IGNORECASE)[0]
-        value = value.rstrip(trailing)
+            value = self._split_at_stop_word(value, stop_words)
+        value = value.rstrip().rstrip(trailing).rstrip()
         if not re.match(r"(?i)^[A-Z]:[\\/]", value):
             return ""
         normalized = str(PureWindowsPath(value))
@@ -87,6 +87,34 @@ class PathExtractionService:
         if separator == "/":
             return normalized.replace("\\", "/")
         return normalized
+
+    def _split_at_stop_word(
+        self,
+        value: str,
+        stop_words: list[object],
+    ) -> str:
+        normalized_stops = {
+            self._normalize_token(str(item))
+            for item in stop_words
+            if str(item).strip()
+        }
+        for match in re.finditer(r"\S+", value):
+            token = self._normalize_token(match.group(0))
+            if token and token in normalized_stops:
+                return value[: match.start()].rstrip()
+        return value
+
+    def _normalize_token(self, value: str) -> str:
+        token = str(value or "").strip(".,;:()[]{}<>\"'\x60“”‘’—–")
+        decomposed = unicodedata.normalize(
+            "NFKD",
+            token.casefold(),
+        )
+        return "".join(
+            ch
+            for ch in decomposed
+            if not unicodedata.combining(ch)
+        )
 
     def status(self) -> dict[str, object]:
         return {

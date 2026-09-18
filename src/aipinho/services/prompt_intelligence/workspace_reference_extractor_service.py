@@ -31,6 +31,8 @@ class WorkspaceReferenceExtractorService:
         for extracted in self.path_extractor.extract(prompt):
             start = max(0, extracted.start - window_chars)
             context = self._normalize(prompt[start:extracted.start])
+            if self._excluded_by_context(context):
+                continue
             role = "unknown"
             evidence = None
             confidence = 0.5
@@ -57,6 +59,26 @@ class WorkspaceReferenceExtractorService:
                 )
             )
         return references
+
+    def _excluded_by_context(self, context: str) -> bool:
+        window_chars = int(
+            self.config.get("exclusion_context_window_chars", 64)
+            or 64
+        )
+        raw_aliases = self.config.get("exclude_context_suffixes", [])
+        aliases = (
+            raw_aliases
+            if isinstance(raw_aliases, list)
+            else []
+        )
+        tail = str(context or "")[-window_chars:].rstrip(
+            " \t:;,-—–"
+        )
+        return any(
+            tail.endswith(self._normalize(str(alias)))
+            for alias in aliases
+            if str(alias).strip()
+        )
 
     def _normalize(self, value: str) -> str:
         decomposed = unicodedata.normalize("NFKD", value.casefold())

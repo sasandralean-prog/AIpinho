@@ -94,6 +94,35 @@ def test_semantic_ingress_compiles_dynamic_target_and_readonly_corpus(tmp_path: 
 
 
 
+def test_semantic_ingress_excludes_explicitly_forbidden_workspace_reference(
+    tmp_path: Path,
+) -> None:
+    target = tmp_path / "TargetApp"
+    forbidden = tmp_path / "OldCheckout"
+    corpus = tmp_path / "ReadonlyCorpus"
+    prompt = (
+        f"WORKSPACE DO APP A SER CORRIGIDO: {target}\n"
+        f"CORPUS DE TESTES — SOMENTE LEITURA: {corpus}\n"
+        f"NÃO use {forbidden} nem outro checkout antigo.\n"
+        "Autorizo leitura, edição de código, build e testes nesta missão."
+    )
+
+    decision = SemanticIntentResolutionService().resolve(
+        prompt,
+        source_channel="unit",
+        workspace_hint=str(target),
+    )
+    locators = {
+        Path(item.locator)
+        for item in decision.local_resources
+        if item.locator
+    }
+
+    assert target in locators
+    assert corpus in locators
+    assert forbidden not in locators
+
+
 def test_multi_phase_repair_strategy_handles_portuguese_infinitive() -> None:
     strategy = MissionExecutionStrategyService().resolve(
         prompt="Investigar o problema, corrigir o codigo e depois executar testes e build.",

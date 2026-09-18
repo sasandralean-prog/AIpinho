@@ -82,6 +82,90 @@ def test_requested_capability_is_not_explicit_authority() -> None:
     assert explicit.evidence and explicit.evidence[0]["kind"] == "explicit_human_authorization"
 
 
+def test_mission_contract_preserves_exact_raw_prompt_hash_with_trailing_whitespace(
+    tmp_path: Path,
+) -> None:
+    target = tmp_path / "target_exact_prompt"
+    target.mkdir()
+    prompt = (
+        "AUTORIZACAO: Autorizo nesta missao leitura, edicao de codigo e testes."
+        "\n\n"
+    )
+    capabilities = ["read_file", "modify_file", "shell_test"]
+    resolved = _evidence(prompt, capabilities)
+    request = TaskRunRequest(
+        source_type="direct",
+        source_channel="unit",
+        session_id="session_exact_prompt",
+        source_message_id="msg_exact_prompt",
+        workspace=str(target),
+        contract_type="analysis_readonly",
+        operation_type="project_analysis",
+        runtime_profile="readonly_analysis",
+        intent_map={
+            "raw_prompt": prompt,
+            "requested_capabilities": capabilities,
+            "authorized_capabilities": resolved.authorized_capabilities,
+            "authority_evidence": resolved.evidence,
+            "local_resources": [{
+                "resource_id": "resource_target",
+                "resource_type": "local_workspace",
+                "role": "target_mutable",
+                "locator": str(target),
+                "permissions": capabilities,
+            }],
+        },
+    )
+
+    contract = MissionContractService().compile_from_request(request)
+
+    expected_sha = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
+    assert contract.source_prompt_sha256 == expected_sha
+    assert contract.authority.explicit_evidence
+    assert all(
+        item.source_prompt_sha256 == expected_sha
+        for item in contract.authority.explicit_evidence
+    )
+
+
+def test_mission_contract_still_rejects_authority_from_different_prompt(
+    tmp_path: Path,
+) -> None:
+    target = tmp_path / "target_mismatch"
+    target.mkdir()
+    authorized_prompt = "AUTORIZACAO: Autorizo edicao de codigo nesta missao."
+    runtime_prompt = authorized_prompt + "\ncontexto diferente"
+    capabilities = ["modify_file"]
+    resolved = _evidence(authorized_prompt, capabilities)
+    request = TaskRunRequest(
+        source_type="direct",
+        source_channel="unit",
+        workspace=str(target),
+        contract_type="filesystem_write",
+        operation_type="filesystem_write_file",
+        runtime_profile="write_file",
+        intent_map={
+            "raw_prompt": runtime_prompt,
+            "requested_capabilities": capabilities,
+            "authorized_capabilities": resolved.authorized_capabilities,
+            "authority_evidence": resolved.evidence,
+            "local_resources": [{
+                "resource_id": "resource_target",
+                "resource_type": "local_workspace",
+                "role": "target_mutable",
+                "locator": str(target),
+                "permissions": capabilities,
+            }],
+        },
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="mission_contract_authority_prompt_hash_mismatch",
+    ):
+        MissionContractService().compile_from_request(request)
+
+
 def test_mission_contract_rejects_authority_without_prompt_evidence(tmp_path: Path) -> None:
     target = tmp_path / "target"
     target.mkdir()

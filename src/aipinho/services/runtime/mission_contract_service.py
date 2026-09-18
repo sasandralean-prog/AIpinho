@@ -373,9 +373,13 @@ class MissionContractService:
         supplied = self._first_text(intent, "source_prompt_sha256", "prompt_sha256")
         if supplied:
             return supplied
-        prompt = self._first_text(intent, "raw_prompt", "source_prompt")
-        if prompt is not None:
-            return self._sha256(prompt)
+        for key in ("raw_prompt", "source_prompt"):
+            value = intent.get(key)
+            if value is None:
+                continue
+            prompt = str(value)
+            if prompt:
+                return self._sha256(prompt)
         structured = {
             "session_id": request.session_id,
             "source_channel": request.source_channel,
