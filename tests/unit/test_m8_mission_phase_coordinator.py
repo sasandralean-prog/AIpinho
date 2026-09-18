@@ -150,15 +150,6 @@ def _candidate(contract: MissionContract) -> MissionContinuationCandidate:
             required_capabilities=["read_workspace"],
             evidence_required=True,
         ),
-        metadata={
-            "policy_decision": {
-                "status": "allowed",
-                "policy_status": "allowed",
-                "allowed_actions": ["read_workspace", "read_files"],
-                "approval_required_for": [],
-                "denied_actions": [],
-            }
-        },
     )
 
 
@@ -421,15 +412,6 @@ def _automatic_runtime_run(
         local_resource_ids=[resource.resource_id],
         workspace_resource_id=resource.resource_id,
         mode="read_only",
-        metadata={
-            "policy_decision": {
-                "status": "allowed",
-                "policy_status": "allowed",
-                "allowed_actions": ["read_workspace", "read_files"],
-                "approval_required_for": [],
-                "denied_actions": [],
-            }
-        },
         requirements=DownstreamPhaseRequirements(
             contract_id=f"continuation_requirement_{run.run_id}",
             consumer_phase_id="phase_2",

@@ -80,6 +80,7 @@ class MissionContract(AIpinhoModel):
     source_message_id: str
     source_prompt_sha256: str
     objective: str
+    semantic_context: dict[str, Any] = Field(default_factory=dict)
     strategy: MissionExecutionMode = "single_operation"
     local_resources: list[MissionResourceScope] = Field(default_factory=list)
     remote_resources: list[MissionResourceScope] = Field(default_factory=list)

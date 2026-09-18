@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 from typing import Iterable
 
+from aipinho.schemas.governance.lifecycle import CanonicalOperationContract
 from aipinho.schemas.runtime.mission_continuation import (
     MissionContinuationCandidate,
     MissionContinuationExecution,
@@ -16,6 +17,10 @@ from aipinho.schemas.runtime.phase_dependency_evaluation import (
 )
 from aipinho.schemas.runtime.phase_outcome import PhaseOutcome
 from aipinho.schemas.runtime.task_run_request import TaskRunRequest
+from aipinho.services.governance.policy.effective_policy_decision_service import (
+    EffectivePolicyDecisionService,
+)
+from aipinho.services.policy_kernel.action_registry_service import ActionRegistryService
 from aipinho.services.runtime.mission_continuation_service import MissionContinuationService
 from aipinho.services.runtime.phase_dependency_evaluation_service import (
     PhaseDependencyEvaluationService,
@@ -36,10 +41,14 @@ class MissionPhaseCoordinatorService:
         continuation: MissionContinuationService | None = None,
         dependencies: PhaseDependencyEvaluationService | None = None,
         lifecycle: TaskRunLifecycleService | None = None,
+        policy: EffectivePolicyDecisionService | None = None,
+        actions: ActionRegistryService | None = None,
     ) -> None:
         self.store = store or TaskRunStore()
         self.dependencies = dependencies or PhaseDependencyEvaluationService()
         self.lifecycle = lifecycle or TaskRunLifecycleService()
+        self.policy = policy or EffectivePolicyDecisionService()
+        self.actions = actions or ActionRegistryService()
         self.runtime = runtime or TaskRuntimeService(store=self.store)
         self.continuation = continuation or MissionContinuationService(
             store=self.store,
@@ -113,12 +122,32 @@ class MissionPhaseCoordinatorService:
         if workspace_error:
             return self._blocked(decision, workspace_error)
 
-        required_capabilities = self._unique(
+        runtime_capabilities = self._unique(
+            candidate.runtime_capabilities_required
+            or candidate.required_capabilities
+        )
+        try:
+            requested_actions = self._unique(
+                [self.actions.normalize_action(action) for action in candidate.requested_actions]
+            )
+        except Exception as exc:
+            return self._blocked(
+                decision,
+                f"mission_continuation_candidate_action_invalid:{exc.__class__.__name__}",
+            )
+        action_capabilities = self._unique(
             [
-                *candidate.required_capabilities,
-                *candidate.requirements.required_capabilities,
+                capability
+                for action in requested_actions
+                for capability in [self.actions.capability_for(action)]
+                if capability
             ]
         )
+        if not set(action_capabilities).issubset(set(runtime_capabilities)):
+            return self._blocked(
+                decision,
+                "mission_continuation_candidate_action_capability_mismatch",
+            )
         base_intent = self._intent_map(
             previous=previous,
             candidate=candidate,
@@ -137,8 +166,8 @@ class MissionPhaseCoordinatorService:
                 contract_type=candidate.contract_type,
                 operation_type=candidate.operation_type,
                 runtime_profile=candidate.runtime_profile,
-                capabilities_required=required_capabilities,
-                requested_actions=list(candidate.requested_actions),
+                capabilities_required=runtime_capabilities,
+                requested_actions=requested_actions,
                 intent_map=base_intent,
                 mode=candidate.mode,
                 start_immediately=False,
@@ -214,6 +243,13 @@ class MissionPhaseCoordinatorService:
             evaluation=evaluation.model_dump(mode="json"),
             admission=admission.model_dump(mode="json"),
         )
+        policy_snapshot = self._policy_snapshot_for_candidate(
+            previous=previous,
+            reserved=reserved,
+            candidate=candidate,
+            workspace=workspace,
+            requested_actions=requested_actions,
+        )
         enrich_request = reserve_request.model_copy(
             update={
                 "task_id": reserved.task_id,
@@ -222,11 +258,7 @@ class MissionPhaseCoordinatorService:
                 "workspace_id": reserved.workspace_id,
                 "project_id": reserved.project_id,
                 "intent_map": bound_intent,
-                "policy_decision": dict(
-                    candidate.metadata.get("policy_decision")
-                    if isinstance(candidate.metadata.get("policy_decision"), dict)
-                    else {}
-                ),
+                "policy_decision": policy_snapshot,
             }
         )
         child = self.runtime.create_run(enrich_request)
@@ -452,19 +484,115 @@ class MissionPhaseCoordinatorService:
             return located[0], None
         return None, None
 
+    def _policy_snapshot_for_candidate(
+        self,
+        *,
+        previous,
+        reserved,
+        candidate,
+        workspace: str | None,
+        requested_actions: list[str],
+    ) -> dict:
+        side_effect = any(
+            self.actions.is_side_effect(action) for action in requested_actions
+        )
+        contract = CanonicalOperationContract(
+            operation_id=str(reserved.operation_id or ""),
+            session_id=previous.session_id,
+            source_channel="mission_continuation",
+            intent_type=str(
+                previous.intent_map.get("intent_type") or candidate.operation_type
+            ),
+            operation_type=candidate.operation_type,
+            contract_type=candidate.contract_type,
+            runtime_profile=str(candidate.runtime_profile or ""),
+            requires_task=True,
+            read_only=not side_effect,
+            artifact_generation=False,
+            workspace_mutation=side_effect,
+            requested_actions=list(requested_actions),
+            workspace_path=workspace,
+            risk_level="medium" if side_effect else "low",
+            trace=[
+                {
+                    "stage": "mission_continuation_policy_contract",
+                    "source": "MissionPhaseCoordinatorService",
+                    "candidate_id": candidate.candidate_id,
+                }
+            ],
+        )
+        decision = self.policy.resolve(contract)
+        payload = decision.model_dump(mode="json")
+        permission = decision.permission.value
+        payload["status"] = permission
+        payload["policy_status"] = permission
+        payload["approval_required_for"] = (
+            list(decision.ask_actions) if decision.requires_approval else []
+        )
+        return payload
+
     def _intent_map(self, *, previous, candidate, evaluation, admission):
+        previous_continuation = (
+            previous.intent_map.get("mission_continuation")
+            if isinstance(previous.intent_map.get("mission_continuation"), dict)
+            else {}
+        )
+        try:
+            previous_depth = max(
+                0,
+                int(previous_continuation.get("depth") or 0),
+            )
+        except (TypeError, ValueError):
+            previous_depth = 0
+        lineage = [
+            str(item)
+            for item in list(previous_continuation.get("lineage") or [])
+            if str(item)
+        ]
+        lineage = self._unique([*lineage, previous.run_id])
+        previous_phase = (
+            previous.current_phase
+            or previous.intent_map.get("phase_id")
+            or previous.intent_map.get("mission_phase")
+        )
+        phase_lineage = self._unique(
+            [
+                *list(previous_continuation.get("phase_lineage") or []),
+                *([str(previous_phase)] if previous_phase else []),
+                candidate.phase_id,
+            ]
+        )
+        history = [
+            dict(item)
+            for item in list(previous_continuation.get("history") or [])
+            if isinstance(item, dict)
+        ]
+        history.append(
+            {
+                "candidate_id": candidate.candidate_id,
+                "phase_id": candidate.phase_id,
+                "operation_type": candidate.operation_type,
+                "contract_type": candidate.contract_type,
+                "runtime_profile": candidate.runtime_profile,
+                "requested_actions": list(candidate.requested_actions),
+                "required_capabilities": list(candidate.required_capabilities),
+                "runtime_capabilities_required": list(
+                    candidate.runtime_capabilities_required
+                ),
+            }
+        )
         payload = {
             "candidate_id": candidate.candidate_id,
             "planner_ref": candidate.planner_ref,
             "dependency_id": candidate.dependency_id,
             "previous_run_id": previous.run_id,
             "previous_task_id": previous.task_id,
-            "previous_phase": (
-                previous.current_phase
-                or previous.intent_map.get("phase_id")
-                or previous.intent_map.get("mission_phase")
-            ),
+            "previous_phase": previous_phase,
             "next_phase": candidate.phase_id,
+            "depth": previous_depth + 1,
+            "lineage": lineage,
+            "phase_lineage": phase_lineage,
+            "history": history,
             "phase_dependency_requirements": candidate.requirements.model_dump(
                 mode="json"
             ),
@@ -473,7 +601,20 @@ class MissionPhaseCoordinatorService:
             payload["phase_dependency_evaluation"] = evaluation
         if admission is not None:
             payload["phase_dependency_admission"] = admission
+        inherited_semantics = {
+            key: previous.intent_map[key]
+            for key in (
+                "semantic_intent_graph",
+                "future_side_effect_intent",
+                "mission_execution_strategy",
+                "completion_requirements",
+                "validation_requirements",
+                "allow_limited_completion",
+            )
+            if key in previous.intent_map
+        }
         return {
+            **inherited_semantics,
             "intent_type": str(
                 previous.intent_map.get("intent_type")
                 or candidate.operation_type

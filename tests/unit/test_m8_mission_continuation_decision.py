@@ -189,8 +189,12 @@ def test_end_to_end_candidate_continues_with_monotonic_child_contract(tmp_path: 
     child = decision.child_contract
     assert child.revision == contract.revision + 1
     assert child.parent_authority_sha256 == contract.authority_sha256
-    assert child.authority.requested_capabilities == ["modify_file"]
-    assert child.authority.authorized_capabilities == ["modify_file"]
+    assert set(child.authority.requested_capabilities) == set(
+        contract.authority.requested_capabilities
+    )
+    assert set(child.authority.authorized_capabilities) == set(
+        contract.authority.authorized_capabilities
+    )
     assert [item.resource_id for item in child.local_resources] == [contract.local_resources[0].resource_id]
     assert MissionContractService().verify(child)
     assert decision.dependency_evaluation is not None

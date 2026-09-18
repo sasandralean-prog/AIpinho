@@ -129,6 +129,7 @@ class MissionContractService:
             source_message_id=source_message_id,
             source_prompt_sha256=prompt_sha,
             objective=objective,
+            semantic_context=self._semantic_context(intent),
             strategy=strategy,
             local_resources=local_resources,
             remote_resources=remote_resources,
@@ -186,6 +187,10 @@ class MissionContractService:
                 child.source_prompt_sha256,
             ),
             "objective": (parent.objective, child.objective),
+            "semantic_context": (
+                parent.semantic_context,
+                child.semantic_context,
+            ),
             "strategy": (parent.strategy, child.strategy),
         }
         if any(before != after for before, after in immutable_pairs.values()):
@@ -424,6 +429,40 @@ class MissionContractService:
             }
         )
         return f"mission_{self._sha256(seed)[:24]}"
+
+    def _semantic_context(self, intent: dict[str, Any]) -> dict[str, Any]:
+        semantic_graph = intent.get("semantic_intent_graph")
+        if hasattr(semantic_graph, "model_dump"):
+            semantic_graph = semantic_graph.model_dump(mode="json")
+        semantic_graph = (
+            dict(semantic_graph) if isinstance(semantic_graph, dict) else {}
+        )
+        context: dict[str, Any] = {
+            "intent_type": self._first_text(intent, "intent_type"),
+            "operation_type": self._first_text(intent, "operation_type"),
+            "semantic_intent_graph": semantic_graph,
+            "future_side_effect_intent": bool(
+                intent.get("future_side_effect_intent", False)
+            ),
+        }
+        strategy = intent.get("mission_execution_strategy")
+        if isinstance(strategy, dict):
+            context["mission_execution_strategy"] = {
+                "mode": str(strategy.get("mode") or "")
+            }
+        for key in (
+            "requested_deliverables",
+            "validation_requirements",
+            "completion_requirements",
+        ):
+            values = self._string_list(intent.get(key))
+            if values:
+                context[key] = values
+        return {
+            key: value
+            for key, value in context.items()
+            if value not in (None, "", [], {})
+        }
 
     def _strategy(self, intent: dict[str, Any]) -> MissionExecutionMode:
         value = intent.get("mission_execution_strategy")

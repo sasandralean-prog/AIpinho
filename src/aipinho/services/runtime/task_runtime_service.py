@@ -34,6 +34,7 @@ from aipinho.services.runtime.task_run_chat_result_publisher_service import (
 from aipinho.services.runtime.task_run_cancellation_service import TaskRunCancellationService
 from aipinho.services.runtime.task_run_event_service import TaskRunEventService
 from aipinho.services.runtime.task_run_guard import TaskRunGuard
+from aipinho.services.runtime.phase_outcome_repository import PhaseOutcomeRepository
 from aipinho.services.runtime.task_run_lifecycle_service import TaskRunLifecycleService
 from aipinho.services.runtime.task_run_planner import TaskRunPlanner
 from aipinho.services.runtime.task_run_store import TaskRunStore
@@ -94,6 +95,7 @@ class TaskRuntimeService:
         result_publisher=None,
         operational_memory=None,
         engineering_autopilot=None,
+        planner=None,
     ):
         self.store = store or TaskRunStore()
         self.drafts = drafts or TaskContractDraftService()
@@ -104,7 +106,7 @@ class TaskRuntimeService:
             critical=True,
             root=PATHS.config_root / "runtime",
         )
-        self.planner = TaskRunPlanner()
+        self.planner = planner or TaskRunPlanner()
         self.semantic_vocabularies = TaskSemanticVocabularyCompilerService()
         self.semantic_graphs = SemanticExecutionGraphCompilerService()
         self.edge_semantic_demands = EdgeSemanticDemandCompilerService()
@@ -1447,12 +1449,30 @@ class TaskRuntimeService:
             else None
         )
         if payload is None:
-            self._record_mission_continuation_state(
-                run,
-                status="not_applicable",
-                reason_code="mission_continuation_candidate_not_planned",
+            phase_outcome = PhaseOutcomeRepository(store=self.store).project(
+                run_id=run.run_id
             )
-            return None
+            planning = self.planner.plan_continuation(
+                run=run,
+                phase_outcome=phase_outcome,
+            )
+            run.intent_map["mission_continuation_planning"] = planning.model_dump(
+                mode="json"
+            )
+            if planning.status != "planned" or planning.candidate is None:
+                self._record_mission_continuation_state(
+                    run,
+                    status=(
+                        "blocked"
+                        if planning.status == "blocked"
+                        else "not_applicable"
+                    ),
+                    reason_code=planning.reason_code,
+                )
+                return None
+            payload = planning.candidate.model_dump(mode="json")
+            run.plan.metadata["mission_continuation_candidate"] = payload
+            self.store.update_run(run)
 
         from aipinho.schemas.runtime.mission_continuation import (
             MissionContinuationCandidate,

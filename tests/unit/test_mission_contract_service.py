@@ -104,6 +104,44 @@ def test_child_taskrun_inherits_frozen_contract_without_reparsing_prompt(
     )
 
 
+def test_semantic_context_is_frozen_and_immutable_across_child_contracts():
+    service = MissionContractService()
+    parent = service.compile_from_request(
+        _mission_request(
+            semantic_intent_graph={
+                "mutation_intent": True,
+                "execution_intent": True,
+                "requested_effects": [
+                    "workspace_mutation",
+                    "test_execution",
+                ],
+            },
+            requested_deliverables=["validated_patch"],
+        )
+    )
+
+    assert "raw_prompt" not in parent.semantic_context
+    assert parent.semantic_context["semantic_intent_graph"]["mutation_intent"] is True
+    assert parent.semantic_context["requested_deliverables"] == ["validated_patch"]
+
+    child = service.narrowed_child(parent)
+    assert child.semantic_context == parent.semantic_context
+    service.validate_child_contract(parent=parent, child=child)
+
+    altered = service.freeze(
+        child.model_copy(
+            update={
+                "semantic_context": {
+                    **child.semantic_context,
+                    "future_side_effect_intent": True,
+                }
+            }
+        )
+    )
+    with pytest.raises(ValueError, match="mission_contract_child_identity_mismatch"):
+        service.validate_child_contract(parent=parent, child=altered)
+
+
 def test_child_contract_may_narrow_but_not_expand_authority(task_runtime_service):
     parent = task_runtime_service.create_run(_mission_request())
     assert parent.mission_contract is not None

@@ -32,12 +32,21 @@ class MissionContinuationCandidate(AIpinhoModel):
     runtime_profile: str | None = None
     requested_actions: list[str] = Field(default_factory=list)
     required_capabilities: list[str] = Field(default_factory=list)
+    runtime_capabilities_required: list[str] = Field(default_factory=list)
     local_resource_ids: list[str] = Field(default_factory=list)
     remote_resource_ids: list[str] = Field(default_factory=list)
     workspace_resource_id: str | None = None
     mode: str = "governed"
     requirements: DownstreamPhaseRequirements
     metadata: dict[str, Any] = Field(default_factory=dict)
+
+
+class MissionContinuationPlanningResult(AIpinhoModel):
+    status: Literal["planned", "not_applicable", "blocked"]
+    reason_code: str
+    candidate: MissionContinuationCandidate | None = None
+    provenance: dict[str, Any] = Field(default_factory=dict)
+    trace: list[dict[str, Any]] = Field(default_factory=list)
 
 
 class MissionContinuationDecision(AIpinhoModel):

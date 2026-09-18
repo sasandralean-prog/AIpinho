@@ -140,10 +140,7 @@ class MissionContinuationService:
             )
 
         required_capabilities = self._unique(
-            [
-                *candidate.required_capabilities,
-                *candidate.requirements.required_capabilities,
-            ]
+            candidate.required_capabilities
         )
         missing_requested = sorted(
             set(required_capabilities) - set(contract.authority.requested_capabilities)
@@ -184,8 +181,12 @@ class MissionContinuationService:
         try:
             child = self.missions.narrowed_child(
                 contract,
-                requested_capabilities=required_capabilities,
-                authorized_capabilities=required_capabilities,
+                requested_capabilities=list(
+                    contract.authority.requested_capabilities
+                ),
+                authorized_capabilities=list(
+                    contract.authority.authorized_capabilities
+                ),
                 local_resources=local_resources,
                 remote_resources=remote_resources,
                 additional_constraints=[],

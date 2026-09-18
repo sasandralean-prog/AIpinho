@@ -74,6 +74,27 @@ class RuntimeProfileService:
         profile = self._profiles.get(str(profile_id)) if profile_id else None
         return dict(profile) if profile is not None else None
 
+    def catalog(self) -> list[dict[str, Any]]:
+        if not self._profiles:
+            self.load()
+        return [
+            {
+                "id": profile_id,
+                "operation_types": list(profile.get("operation_types", []) or []),
+                "allowed_actions": list(profile.get("allowed_actions", []) or []),
+                "required_capabilities": list(
+                    profile.get("required_capabilities", []) or []
+                ),
+                "allowed_side_effects": list(
+                    profile.get("allowed_side_effects", []) or []
+                ),
+                "workspace_requirements": dict(
+                    profile.get("workspace_requirements", {}) or {}
+                ),
+            }
+            for profile_id, profile in sorted(self._profiles.items())
+        ]
+
     def get(self, profile_id: str) -> dict[str, Any] | None:
         if not self._profiles:
             self.load()
