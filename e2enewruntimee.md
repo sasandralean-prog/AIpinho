@@ -266,7 +266,7 @@ These invariants apply to every sprint in this wave:
 | M6 | Governed Git and Network Execution | CLOSED | M3–M5 |
 | M7 | Mission Staging and Derived Resources | CLOSED | M2, M3, M6 |
 | M8 | Mission Continuation Engine | CLOSED | M1–M7 |
-| M9 | Cross-Phase Truth and Completion Contract | IN_PROGRESS | M1–M8 |
+| M9 | Cross-Phase Truth and Completion Contract | CLOSED | M1–M8 |
 | M10 | Fresh Manual E2E FireTest and Consolidation | PLANNED | M1–M9 |
 
 No sprint is considered complete because code was written. Completion requires its Definition of Done and validation evidence.
@@ -943,6 +943,20 @@ M9 must not introduce a second RuntimeTruth, SpeakerTruth, planner or lifecycle 
 - B.3 deterministic compiler derives requirement evaluations only after validating exact requirement vocabulary, evidence refs, producer bindings, policy limits and canonical truth safety. A model `supports` relation alone cannot promote unsafe evidence.
 - B regression: M9 A+B plus M8 continuation and existing RuntimeTruth focused suites `93/93`; compile/diff/hardcode scans are required before the B.3 checkpoint is accepted.
 - Restart note for M9-C: semantic binding proposals are model-assisted interpretations, not reconstructible truth authority. C must persist/rehydrate the accepted proposal or equivalent bounded interpretation and deterministically recompile it against current canonical evidence rather than silently re-invoking the model to reconstruct final truth.
+
+### M9-C closure evidence - 2026-09-18
+
+- C.1 persisted mission binding interpretation checkpoint: `9e780992705c`; accepted semantic binding proposals are persisted only after deterministic compilation and are rehydrated after restart without model reinvocation. Focused M9 completion suite: `29/29`.
+- C.2 RuntimeTruth/SpeakerTruth ceiling checkpoint: `6b2f4a506180`; mission completion is an optional deterministic facet consumed by the existing RuntimeTruthEngine, CanonicalOperationState and canonical result publisher. Intermediate or blocked continuation cannot publish final mission success. Focused M8/M9/truth/publisher regression: `76/76`.
+- C.3 restart-equivalence checkpoint: `19beb80d866018c5b0ee26547e2577c2ce775992`; a real terminal mission persists its accepted semantic proposal, then a fresh TaskRunStore/runtime reproduces the exact RuntimeTruth model dump without invoking the semantic reasoner or emitting a second completion event.
+- Cross-sprint M4-M9 regression: `172/172`.
+- Broader runtime/public regression: `69 passed / 1 failed`; the sole failure is the established `test_service_waits_for_approval_when_policy_requires_apply_patch` unregistered-worktree fixture already documented before M9, with no new M9 failure.
+- Final focused restart/ceiling regression: `9/9`; `compileall`, `git diff --check` and production hardcode/`raw_prompt` scans passed.
+- No second RuntimeTruth, SpeakerTruth, planner, dispatcher or execution runtime was introduced.
+
+## Closure result
+
+M9 is validated and CLOSED. Mission completion requirements are projected across durable mission TaskRuns and PhaseOutcomes, semantically bound only as non-authoritative candidates, deterministically compiled against canonical evidence, and consumed as a ceiling by the existing RuntimeTruth/SpeakerTruth chain. A local phase or command reporting `completed` cannot elevate mission truth above missing, blocked or limited mission evidence. Accepted model-assisted binding interpretation is persisted and recompiled after restart rather than regenerated, so restart reproduces the same final truth without granting the model authority.
 
 ## Completion contract
 

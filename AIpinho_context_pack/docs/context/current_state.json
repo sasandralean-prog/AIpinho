@@ -1,5 +1,5 @@
 {
-  "schema_version": "context_state.v2026-09-18-e2e-new-runtime-m8",
+  "schema_version": "context_state.v2026-09-18-e2e-new-runtime-m9",
   "updated_at": "2026-09-18",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
@@ -7,7 +7,7 @@
     "branch": "main",
     "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
     "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d",
-    "current_main_head": "446d22349850d29e59116b4540d64c29d01a14eb"
+    "current_main_head": "19beb80d866018c5b0ee26547e2577c2ce775992"
   },
   "authorities": [
     "Human operator",
@@ -87,13 +87,17 @@
     "automatic end_to_end_governed continuation through canonical TaskRunPlanner and MissionPhaseCoordinator",
     "frozen MissionContract semantic_context used for continuation without raw prompt reparsing",
     "mission authority permissions separated from runtime profile capabilities across child TaskRuns",
-    "continuation depth phase-lineage and history guards fail closed against loops"
+    "continuation depth phase-lineage and history guards fail closed against loops",
+    "mission-wide completion requirements projected across durable TaskRuns and PhaseOutcomes",
+    "persisted non-authoritative semantic requirement-to-evidence binding with deterministic recompilation after restart",
+    "MissionCompletionFacet ceiling integrated into canonical RuntimeTruth and SpeakerTruth publication",
+    "restart-equivalent final RuntimeTruth without semantic model reinvocation"
   ],
   "current_frontier": [
-    "execute M9 Cross-Phase Truth and Mission Completion Contract from e2enewruntimee.md",
-    "bind mission completion requirements across PhaseOutcome and RuntimeTruth evidence from multiple canonical TaskRuns",
-    "prevent last-phase or last-command success from substituting for mission-level completion truth",
-    "keep cross-phase completion subordinate to canonical RuntimeTruth and SpeakerTruth ceilings"
+    "execute M10 Fresh Manual E2E FireTest and Consolidation from e2enewruntimee.md",
+    "validate the closed M1-M9 canonical runtime through a fresh manual end-to-end mission",
+    "confirm mission continuation, evidence-bound mission completion, restart rehydration and SpeakerTruth ceilings under real workflow conditions",
+    "consolidate validated M10 evidence without creating parallel runtime authorities"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -140,14 +144,18 @@
     "continuation planner candidates are descriptive and cannot supply policy or authority",
     "child phases consume bounded runtime capabilities without erasing mission-wide authority needed by later phases",
     "mission continuation depth and phase lineage are bounded and cycles fail closed",
-    "terminal PhaseOutcome and dependency admission remain mandatory before continuation materialization"
+    "terminal PhaseOutcome and dependency admission remain mandatory before continuation materialization",
+    "mission completion success requires evidence-bound satisfaction of frozen mission completion requirements",
+    "model-assisted requirement-to-evidence binding is interpretation only and cannot grant truth authority",
+    "accepted mission binding interpretation is persisted and restart recompiles it against canonical evidence without silent model reinvocation",
+    "TaskRunResult completed cannot exceed the MissionCompletionFacet ceiling exposed through RuntimeTruth and SpeakerTruth"
   ],
   "active_wave": {
     "id": "e2e_new_runtime",
     "status": "IN_PROGRESS",
     "plan_document": "e2enewruntimee.md",
-    "next_sprint": "M9",
-    "next_sprint_name": "Cross-Phase Truth and Mission Completion Contract",
+    "next_sprint": "M10",
+    "next_sprint_name": "Fresh Manual E2E FireTest and Consolidation",
     "prewave_diagnostic_evidence": {
       "branch": "fix/firetest5-mission-runtime-intentmap",
       "sha": "cfba76ee094018f9680c0a63eda6378cb118a076",
@@ -162,7 +170,7 @@
       "M6": "CLOSED",
       "M7": "CLOSED",
       "M8": "CLOSED",
-      "M9": "PLANNED",
+      "M9": "CLOSED",
       "M10": "PLANNED"
     },
     "resource_direction": [
@@ -383,6 +391,37 @@
         "remaining_notes": [
           "M9 owns cross-phase mission completion truth across the TaskRuns now connected by M8",
           "the established unregistered-worktree approval fixture remains a baseline test limitation outside M8"
+        ],
+        "plan_changed": false
+      },
+      "M9": {
+        "name": "Cross-Phase Truth and Mission Completion Contract",
+        "implementation_main_sha": "19beb80d866018c5b0ee26547e2577c2ce775992",
+        "validation": {
+          "c1_completion_rehydration": "29 passed",
+          "c2_focused_runtime_truth_ceiling": "76 passed",
+          "restart_ceiling_final": "9 passed",
+          "m4_m9_cross_sprint_regression": "172 passed",
+          "broader_runtime_public_regression": "69 passed / 1 failed",
+          "known_failure": "test_service_waits_for_approval_when_policy_requires_apply_patch",
+          "known_failure_baseline": "pre-existing unregistered-worktree approval fixture documented before M9",
+          "compileall": "passed",
+          "diff_check": "passed",
+          "production_hardcode_raw_prompt_scan": "passed"
+        },
+        "closed_boundary": [
+          "mission TaskRuns are queryable and PhaseOutcomes rehydrate in durable chronological lineage",
+          "completion and validation requirements are projected into a strict mission snapshot with stable authority hashing",
+          "semantic binding proposals carry candidate relations only and cannot declare truth or fabricate evidence authority",
+          "deterministic compiler validates exact requirement vocabulary, evidence refs, producers and canonical truth safety",
+          "accepted binding interpretation is persisted and reused after restart without model reinvocation",
+          "MissionCompletionFacet is a ceiling consumed by existing RuntimeTruth and SpeakerTruth rather than a second truth authority",
+          "intermediate, blocked, partial or insufficient-evidence mission states cannot publish final mission success",
+          "restart reproduces the same final RuntimeTruth model dump from persisted proposal plus canonical evidence"
+        ],
+        "remaining_notes": [
+          "M10 owns fresh manual E2E FireTest and consolidation over the closed M1-M9 runtime",
+          "the established unregistered-worktree approval fixture remains a baseline test limitation outside M9"
         ],
         "plan_changed": false
       }

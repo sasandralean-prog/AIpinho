@@ -104,7 +104,7 @@ Phase 1 is intentionally not a success claim. `CanonicalOperationState=BLOCKED` 
 
 Canonical execution plan: `e2enewruntimee.md`.
 
-Wave status: `IN_PROGRESS`. `M1 - Canonical Mission Contract`, `M2 - Dynamic Local Resource Scopes`, `M3 - Dynamic Remote Repository Scopes`, `M4 - Explicit Human Authority / Mission Grants`, `M5 - Unified Capability and Policy Kernel`, `M6 - Governed Git and Network Execution`, `M7 - Mission Staging and Derived Resources` and `M8 - Mission Continuation Engine` are CLOSED. Next sprint: `M9 - Cross-Phase Truth and Mission Completion Contract`.
+Wave status: `IN_PROGRESS`. `M1 - Canonical Mission Contract` through `M9 - Cross-Phase Truth and Mission Completion Contract` are CLOSED. Next sprint: `M10 - Fresh Manual E2E FireTest and Consolidation`.
 
 The wave extends the single canonical TaskRuntime with frozen mission contracts, prompt-derived local resources, prompt-derived remote repository/branch resources, explicit human authority, unified capability/policy decisions, governed Git/network execution, mission staging, cross-TaskRun continuation and cross-phase completion truth.
 
@@ -130,11 +130,13 @@ M7 closure: implementation/main SHA `725f47b789c6c356aa63b2126461d4c59c45fb4c`. 
 
 M8 closure: implementation/main SHA `446d22349850`. Terminal `end_to_end_governed` TaskRuns can now cause the canonical `TaskRunPlanner` to propose the next bounded phase from frozen structured mission semantics and automatically materialize a canonical child TaskRun through the existing TaskRuntime. `MissionContract.semantic_context` freezes continuation semantics without retaining/reparsing `raw_prompt`; planner candidates remain descriptive and cannot supply policy or authority. Mission authority permissions are separated from internal runtime/profile capabilities so a child phase consumes only its required runtime subset without erasing mission-wide authority needed later. Child resources remain monotonic, policy is recomputed canonically, PhaseOutcome/dependency truth gates the handoff, and configurable depth/phase-lineage/history guards fail closed against loops. Validation: focused MissionContract/M8 `38/38`; cross-sprint M4-M8 `134/134`; broader runtime/public `65 passed / 1 failed`, with the sole failure reproduced identically on clean baseline `4b14e2f8`; `compileall`, diff and production hardcode/`raw_prompt` scans passed.
 
+M9 closure: implementation SHA `19beb80d866018c5b0ee26547e2577c2ce775992`. Mission-wide completion now projects durable TaskRun/PhaseOutcome evidence, persists accepted model-assisted requirement/evidence bindings only after deterministic compilation, and applies the resulting MissionCompletionFacet as a ceiling inside the existing RuntimeTruth/SpeakerTruth chain. Missing mission evidence can no longer be upgraded by a locally completed phase; intermediate or blocked continuation cannot publish final mission success. Restart rehydrates the persisted proposal and recompiles it against canonical evidence without model reinvocation, reproducing the same RuntimeTruth. Validation: C.1 `29/29`; C.2 focused `76/76`; restart/ceiling `9/9`; cross-sprint M4-M9 `172/172`; broader runtime/public `69 passed / 1 failed`, with the sole failure the previously documented `test_service_waits_for_approval_when_policy_requires_apply_patch` unregistered-worktree fixture. `compileall`, diff and production hardcode/`raw_prompt` scans passed.
+
 ## Current engineering frontier
 
 There is no open P0/P1 from the completed FireTest 5 consolidation wave. The E2E New Runtime wave is active and extends the same canonical TaskRuntime; no parallel planner, dispatcher, role runtime or truth authority is authorized.
 
-Immediate frontier: execute Sprint M9 from `e2enewruntimee.md`. M9 must bind mission-level completion requirements across the PhaseOutcome/RuntimeTruth evidence produced by M8's multiple canonical TaskRuns, so final mission success cannot be inferred from the last phase or command alone. Cross-phase completion remains subordinate to canonical RuntimeTruth and SpeakerTruth ceilings. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
+Immediate frontier: execute Sprint M10 from `e2enewruntimee.md`: a fresh manual end-to-end FireTest and consolidation pass over the closed M1-M9 runtime. Mission-level completion truth is now evidence-bound across canonical TaskRuns and remains subordinate to RuntimeTruth/SpeakerTruth; restart rehydrates the accepted semantic binding interpretation without model reinvocation. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
 
 ## Invariants
 
