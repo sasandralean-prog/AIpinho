@@ -234,7 +234,7 @@ class TaskRunStore:
                 return run
         return None
 
-    def list_runs(self, *, status: str | None = None, session_id: str | None = None, draft_id: str | None = None, contract_type: str | None = None, created_after: str | None = None, limit: int = 100) -> list[TaskRun]:
+    def list_runs(self, *, status: str | None = None, session_id: str | None = None, mission_id: str | None = None, draft_id: str | None = None, contract_type: str | None = None, created_after: str | None = None, limit: int = 100) -> list[TaskRun]:
         """List lightweight run projections after filtering on durable indexes.
 
         Listing is an identity/lifecycle query, not a request to hydrate runtime
@@ -261,6 +261,7 @@ class TaskRunStore:
                     index,
                     status=status,
                     session_id=session_id,
+                    mission_id=mission_id,
                     draft_id=draft_id,
                     contract_type=contract_type,
                     created_after=created_after,
@@ -279,6 +280,7 @@ class TaskRunStore:
                 self._run_index_payload(run),
                 status=status,
                 session_id=session_id,
+                mission_id=mission_id,
                 draft_id=draft_id,
                 contract_type=contract_type,
                 created_after=created_after,
@@ -307,6 +309,7 @@ class TaskRunStore:
         *,
         status: str | None,
         session_id: str | None,
+        mission_id: str | None,
         draft_id: str | None,
         contract_type: str | None,
         created_after: str | None,
@@ -314,6 +317,8 @@ class TaskRunStore:
         if status and index.get("status") != status:
             return False
         if session_id and index.get("session_id") != session_id:
+            return False
+        if mission_id and index.get("mission_id") != mission_id:
             return False
         if draft_id and index.get("draft_id") != draft_id:
             return False

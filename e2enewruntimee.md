@@ -266,7 +266,7 @@ These invariants apply to every sprint in this wave:
 | M6 | Governed Git and Network Execution | CLOSED | M3–M5 |
 | M7 | Mission Staging and Derived Resources | CLOSED | M2, M3, M6 |
 | M8 | Mission Continuation Engine | CLOSED | M1–M7 |
-| M9 | Cross-Phase Truth and Completion Contract | PLANNED | M1–M8 |
+| M9 | Cross-Phase Truth and Completion Contract | IN_PROGRESS | M1–M8 |
 | M10 | Fresh Manual E2E FireTest and Consolidation | PLANNED | M1–M9 |
 
 No sprint is considered complete because code was written. Completion requires its Definition of Done and validation evidence.
@@ -921,6 +921,17 @@ M8 is validated and CLOSED. The canonical path is terminal TaskRun -> frozen Mis
 ## Objective
 
 Make final mission success depend on evidence-bound completion requirements rather than on the last command returning zero.
+
+## Execution checkpoints
+
+- **M9-A — Mission-wide completion facet and rehydratable evidence projection.**
+  - **M9-A.1 — Durable mission lineage query:** extend the canonical TaskRunStore index/query surface with mission identity and rebuild the ordered set of TaskRuns/PhaseOutcomes after restart without hydrating unrelated runtime payloads.
+  - **M9-A.2 — Strict mission completion snapshot:** project the frozen mission completion contract across observed child revisions using monotonic union of completion/validation requirements and the most restrictive limited-completion policy; bind the projection to mission/run/outcome authority refs.
+  - **M9-A.3 — Pure completion facet resolver:** introduce a deterministic mission-completion facet consumed later by RuntimeTruth. It accepts explicit requirement evaluations, never invents requirement semantics, and preserves missing/partial/blocked states with stable authority hashing.
+- **M9-B — Requirement-to-evidence binding:** compile semantic requirement/evidence bindings only from the frozen structured MissionContract context and observed PhaseOutcomes. Model reasoning may propose semantic matches but cannot fabricate evidence, authority, policy or satisfaction; deterministic gates validate every referenced run/outcome/evidence item.
+- **M9-C — RuntimeTruth/SpeakerTruth ceiling, restart E2E and closure:** compose the M9 facet into the existing RuntimeTruthEngine and CanonicalSpeakerTruthService, prove equivalent mission truth after process restart/rehydration, run cross-sprint regressions, merge and close M9.
+
+M9 must not introduce a second RuntimeTruth, SpeakerTruth, planner or lifecycle authority. Mission completion is a deterministic facet consumed by the existing truth chain.
 
 ## Completion contract
 

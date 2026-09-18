@@ -4,6 +4,7 @@ import time
 from datetime import datetime, timedelta, timezone
 
 from tests.support.runtime_fixtures import runtime_request, runtime_run
+from aipinho.schemas.runtime.mission_contract import MissionContractBinding
 from aipinho.schemas.runtime.task_run_result import TaskRunResult
 from aipinho.schemas.runtime.task_run_event import TaskRunEvent
 from aipinho.schemas.runtime.workspace_context import ExecutionContext
@@ -141,6 +142,54 @@ def test_list_runs_filters_by_index_without_hydrating_payload_refs(tmp_path, mon
     monkeypatch.setattr(store, "_hydrate_payload_refs", reject_hydration)
 
     listed = store.list_runs(session_id="session_target", limit=10)
+
+    assert [run.run_id for run in listed] == [matching.run_id]
+
+
+def test_list_runs_filters_by_mission_index_without_hydrating_payload_refs(
+    tmp_path,
+    monkeypatch,
+):
+    store = TaskRunStore(root=tmp_path / "runs")
+    matching = runtime_run().model_copy(
+        update={
+            "mission_binding": MissionContractBinding(
+                mission_id="mission_target",
+                authority_sha256="a" * 64,
+                revision=1,
+                source_prompt_sha256="b" * 64,
+                strategy="end_to_end_governed",
+            )
+        }
+    )
+    unrelated = runtime_run().model_copy(
+        update={
+            "run_id": "task_run_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "task_run_id": "task_run_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "mission_binding": MissionContractBinding(
+                mission_id="mission_other",
+                authority_sha256="c" * 64,
+                revision=1,
+                source_prompt_sha256="d" * 64,
+                strategy="end_to_end_governed",
+            ),
+            "execution_context": ExecutionContext(
+                artifacts=[
+                    {"artifact_id": f"artifact_{index}", "evidence": "x" * 4000}
+                    for index in range(130)
+                ]
+            ),
+        }
+    )
+    store.create_run(matching)
+    store.create_run(unrelated)
+
+    def reject_hydration(*_args, **_kwargs):
+        raise AssertionError("mission listing must not hydrate unrelated payload refs")
+
+    monkeypatch.setattr(store, "_hydrate_payload_refs", reject_hydration)
+
+    listed = store.list_runs(mission_id="mission_target", limit=10)
 
     assert [run.run_id for run in listed] == [matching.run_id]
 

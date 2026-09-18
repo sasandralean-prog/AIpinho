@@ -45,6 +45,37 @@ class PhaseOutcomeRepository:
             return self.project(run_id=run.run_id)
         return None
 
+    def list_for_mission(
+        self,
+        *,
+        mission_id: str,
+        limit: int = 1000,
+    ) -> list[PhaseOutcome]:
+        if not mission_id:
+            return []
+        runs = self.store.list_runs(
+            mission_id=mission_id,
+            limit=limit,
+        )
+        ordered = sorted(
+            runs,
+            key=lambda item: (
+                str(item.created_at or ""),
+                str(item.run_id),
+            ),
+        )
+        outcomes: list[PhaseOutcome] = []
+        for run in ordered:
+            binding = getattr(run, "mission_binding", None)
+            if binding is None or binding.mission_id != mission_id:
+                continue
+            if self.store.get_result(run.run_id) is None:
+                continue
+            outcome = self.project(run_id=run.run_id)
+            if outcome is not None:
+                outcomes.append(outcome)
+        return outcomes
+
     def project(self, *, run_id: str) -> PhaseOutcome | None:
         run = self.store.get_run(run_id)
         result = self.store.get_result(run_id)

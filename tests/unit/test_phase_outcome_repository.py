@@ -2,7 +2,11 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
+from aipinho.schemas.runtime.mission_contract import MissionContractBinding
+from aipinho.schemas.runtime.task_run_result import TaskRunResult
 from aipinho.services.runtime.phase_outcome_repository import PhaseOutcomeRepository
+from aipinho.services.runtime.task_run_store import TaskRunStore
+from tests.support.runtime_fixtures import runtime_run
 
 
 
@@ -112,6 +116,79 @@ def _fixture():
         limitations=["identity_not_observed"],
     )
     return run, result
+
+
+def test_phase_outcome_list_for_mission_rehydrates_chronological_outcomes_after_restart(
+    tmp_path,
+) -> None:
+    root = tmp_path / "runs"
+    first_store = TaskRunStore(root=root)
+    binding = MissionContractBinding(
+        mission_id="mission_restart",
+        authority_sha256="a" * 64,
+        revision=1,
+        source_prompt_sha256="b" * 64,
+        strategy="end_to_end_governed",
+    )
+    first = runtime_run().model_copy(
+        update={
+            "mission_binding": binding,
+            "current_phase": "discovery",
+            "created_at": "2026-09-18T09:00:00+00:00",
+            "status": "completed",
+        }
+    )
+    second = runtime_run().model_copy(
+        update={
+            "run_id": "task_run_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "task_run_id": "task_run_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "mission_binding": binding,
+            "current_phase": "validation",
+            "created_at": "2026-09-18T09:05:00+00:00",
+            "status": "completed",
+        }
+    )
+    unrelated = runtime_run().model_copy(
+        update={
+            "run_id": "task_run_cccccccccccccccccccccccccccccccc",
+            "task_run_id": "task_run_cccccccccccccccccccccccccccccccc",
+            "mission_binding": MissionContractBinding(
+                mission_id="mission_other",
+                authority_sha256="c" * 64,
+                revision=1,
+                source_prompt_sha256="d" * 64,
+                strategy="end_to_end_governed",
+            ),
+            "current_phase": "other",
+            "created_at": "2026-09-18T09:02:00+00:00",
+            "status": "completed",
+        }
+    )
+    for run in (first, second, unrelated):
+        first_store.create_run(run)
+        first_store.save_result(
+            run.run_id,
+            TaskRunResult(
+                run_id=run.run_id,
+                status="completed",
+                summary=f"{run.current_phase} completed",
+            ),
+        )
+
+    restarted_store = TaskRunStore(root=root)
+    repository = PhaseOutcomeRepository(
+        store=restarted_store,
+        timelines=_FakeTimelines(),  # type: ignore[arg-type]
+        truth=_FakeTruthEngine(_truth()),  # type: ignore[arg-type]
+    )
+
+    outcomes = repository.list_for_mission(mission_id="mission_restart")
+
+    assert [item.phase_id for item in outcomes] == ["discovery", "validation"]
+    assert [item.producer_task_run_id for item in outcomes] == [
+        first.run_id,
+        second.run_id,
+    ]
 
 
 def test_phase_outcome_projects_limited_success_without_promoting_truth() -> None:
