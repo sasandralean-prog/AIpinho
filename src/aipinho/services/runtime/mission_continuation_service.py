@@ -161,13 +161,11 @@ class MissionContinuationService:
                 **common,
             )
 
-        snapshot = self._dependency_snapshot(outcome, candidate)
-        evaluation = self.dependencies.evaluate(
-            snapshot=snapshot,
-            requirements=candidate.requirements,
+        evaluation = self.evaluate_candidate_dependency(
+            outcome=outcome,
+            candidate=candidate,
             consumer_task_run_id=f"candidate:{candidate.candidate_id}",
             consumer_operation_id=f"candidate_operation:{candidate.candidate_id}",
-            consumer_operation_type=candidate.operation_type,
         )
         if evaluation.decision not in {"ADMITTED", "ADMITTED_WITH_CONSTRAINTS"}:
             return self._decision(
@@ -225,6 +223,23 @@ class MissionContinuationService:
             evidence_refs=self._unique([*outcome.evidence_refs, *evaluation.evidence_refs]),
             **common,
         )
+    def evaluate_candidate_dependency(
+        self,
+        *,
+        outcome: PhaseOutcome,
+        candidate: MissionContinuationCandidate,
+        consumer_task_run_id: str,
+        consumer_operation_id: str,
+    ):
+        snapshot = self._dependency_snapshot(outcome, candidate)
+        return self.dependencies.evaluate(
+            snapshot=snapshot,
+            requirements=candidate.requirements,
+            consumer_task_run_id=consumer_task_run_id,
+            consumer_operation_id=consumer_operation_id,
+            consumer_operation_type=candidate.operation_type,
+        )
+
     def _candidate_contract_error(self, candidate: MissionContinuationCandidate) -> str | None:
         requirements = candidate.requirements
         if not candidate.planner_ref.strip():
@@ -242,6 +257,11 @@ class MissionContinuationService:
         remote_ids = candidate.remote_resource_ids or list(remote_by_id)
         if not set(local_ids).issubset(local_by_id):
             return "mission_continuation_local_resource_out_of_scope", [], []
+        if (
+            candidate.workspace_resource_id
+            and candidate.workspace_resource_id not in set(local_ids)
+        ):
+            return "mission_continuation_workspace_resource_out_of_scope", [], []
         if not set(remote_ids).issubset(remote_by_id):
             return "mission_continuation_remote_resource_out_of_scope", [], []
         return (

@@ -34,6 +34,8 @@ class MissionContinuationCandidate(AIpinhoModel):
     required_capabilities: list[str] = Field(default_factory=list)
     local_resource_ids: list[str] = Field(default_factory=list)
     remote_resource_ids: list[str] = Field(default_factory=list)
+    workspace_resource_id: str | None = None
+    mode: str = "governed"
     requirements: DownstreamPhaseRequirements
     metadata: dict[str, Any] = Field(default_factory=dict)
 
@@ -55,3 +57,17 @@ class MissionContinuationDecision(AIpinhoModel):
     constraints: list[str] = Field(default_factory=list)
     evidence_refs: list[str] = Field(default_factory=list)
     trace: list[dict[str, Any]] = Field(default_factory=list)
+
+
+class MissionContinuationMaterialization(AIpinhoModel):
+    status: Literal["materialized", "not_applicable", "blocked"]
+    reason_code: str
+    decision: MissionContinuationDecision
+    child_task_run_id: str | None = None
+    child_task_id: str | None = None
+    child_operation_id: str | None = None
+    child_phase: str | None = None
+    reused_existing_child: bool = False
+    dependency_evaluation: PhaseDependencyEvaluation | None = None
+    dependency_admission: dict[str, Any] | None = None
+    evidence_refs: list[str] = Field(default_factory=list)
