@@ -1,13 +1,13 @@
 {
-  "schema_version": "context_state.v2026-09-17-e2e-new-runtime-m6",
-  "updated_at": "2026-09-17",
+  "schema_version": "context_state.v2026-09-18-e2e-new-runtime-m7",
+  "updated_at": "2026-09-18",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
     "name": "sasandralean-prog/AIpinho",
     "branch": "main",
     "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
     "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d",
-    "current_main_head": "398f875e1485b878bf8bc7d242e53549c47c3659"
+    "current_main_head": "725f47b789c6c356aa63b2126461d4c59c45fb4c"
   },
   "authorities": [
     "Human operator",
@@ -81,13 +81,15 @@
     "prompt-derived local MissionResourceScope compilation and frozen MissionContract projection",
     "permission-specific dynamic local resource enforcement across runtime, patch and final Tool Gateway",
     "prompt-derived remote repository/provider/branch scope frozen into MissionContract",
-    "repository + branch + operation remote scope gate with promotion identity reobservation"
+    "repository + branch + operation remote scope gate with promotion identity reobservation",
+    "mission-scoped staging derived from authorized remote resources without permanent workspace registration",
+    "governed staging clone/fetch/ff-only promotion with lifecycle expiry and source/registry immutability"
   ],
   "current_frontier": [
-    "execute M7 Mission Staging and Derived Resources from e2enewruntimee.md",
-    "derive mission-scoped staging only from authorized remote repository resources",
-    "preserve source/corpus immutability and explicit authority inheritance boundaries",
-    "keep staging lifetime mission-scoped and promotion on canonical governed Git execution"
+    "execute M8 Mission Continuation Engine from e2enewruntimee.md",
+    "continue end_to_end_governed missions across TaskRuns without reparsing authority",
+    "narrow inherited mission authority and resources at every continuation boundary",
+    "keep continuation coordination subordinate to canonical TaskRuntime planning policy and RuntimeTruth"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -127,14 +129,17 @@
     "granular Git capability classification and governed remote execution are canonical",
     "caller shell category is not authority; command/argv is reclassified before execution",
     "destructive and unknown Git operations remain fail-closed",
-    "push success requires refreshed authorized remote branch HEAD equal to local HEAD"
+    "push success requires refreshed authorized remote branch HEAD equal to local HEAD",
+    "mission staging can be derived only from a frozen authorized remote resource under the global safe staging root",
+    "mission staging does not inherit human authority as local-resource metadata",
+    "terminal parent or staging child TaskRun makes staging authority fail-closed while preserving previously proven promotion truth"
   ],
   "active_wave": {
     "id": "e2e_new_runtime",
     "status": "IN_PROGRESS",
     "plan_document": "e2enewruntimee.md",
-    "next_sprint": "M7",
-    "next_sprint_name": "Mission Staging and Derived Resources",
+    "next_sprint": "M8",
+    "next_sprint_name": "Mission Continuation Engine",
     "prewave_diagnostic_evidence": {
       "branch": "fix/firetest5-mission-runtime-intentmap",
       "sha": "cfba76ee094018f9680c0a63eda6378cb118a076",
@@ -147,7 +152,7 @@
       "M4": "CLOSED",
       "M5": "CLOSED",
       "M6": "CLOSED",
-      "M7": "PLANNED",
+      "M7": "CLOSED",
       "M8": "PLANNED",
       "M9": "PLANNED",
       "M10": "PLANNED"
@@ -317,6 +322,32 @@
         ],
         "remaining_notes": [
           "M7 owns mission staging and derived local resource creation from authorized remotes"
+        ],
+        "plan_changed": false
+      },
+      "M7": {
+        "name": "Mission Staging and Derived Resources",
+        "implementation_main_sha": "725f47b789c6c356aa63b2126461d4c59c45fb4c",
+        "validation": {
+          "m7_a_derivation_and_resource_regression": "51 passed",
+          "m7_b1_materialization_regression": "25 passed",
+          "m7_b2_staging_git_resource_regression": "60 passed",
+          "m7_c_focused": "8 passed",
+          "m7_final_cross_sprint_regression": "107 passed",
+          "compileall": "passed",
+          "diff_check": "passed",
+          "production_hardcode_scan": "passed"
+        },
+        "closed_boundary": [
+          "mission_staging is derived only from a frozen authorized remote_repository under the global safe staging root",
+          "staging materialization uses canonical TaskRuntime identity plus GovernedToolExecution for directory creation and classified Git clone/fetch/ff-only",
+          "origin branch and remote HEAD are reobserved before and after governed promotion operations",
+          "source_readonly content and the static workspace registry remain unchanged while arbitrary prompt-authorized repositories use staging",
+          "terminal parent or child lifecycle expires staging authority without rewriting already-proven commit/push truth"
+        ],
+        "remaining_notes": [
+          "physical staging cleanup remains subordinate to the global delete_files deny; retained staging after terminal authority is a cleanup limitation, not a truth rollback",
+          "M8 owns cross-TaskRun automatic mission continuation using the frozen mission contract"
         ],
         "plan_changed": false
       }

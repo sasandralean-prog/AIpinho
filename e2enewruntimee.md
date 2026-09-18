@@ -264,7 +264,7 @@ These invariants apply to every sprint in this wave:
 | M4 | Explicit Human Authority / Mission Grants | CLOSED | M1–M3 |
 | M5 | Unified Capability and Policy Kernel | CLOSED | M1–M4 |
 | M6 | Governed Git and Network Execution | CLOSED | M3–M5 |
-| M7 | Mission Staging and Derived Resources | PLANNED | M2, M3, M6 |
+| M7 | Mission Staging and Derived Resources | CLOSED | M2, M3, M6 |
 | M8 | Mission Continuation Engine | PLANNED | M1–M7 |
 | M9 | Cross-Phase Truth and Completion Contract | PLANNED | M1–M8 |
 | M10 | Fresh Manual E2E FireTest and Consolidation | PLANNED | M1–M9 |
@@ -365,6 +365,23 @@ Next sprint: **M6 - Governed Git and Network Execution**.
 - generic `network_shell` remains fail-closed; structured HTTP `web.request` and classified Git network operations remain governed through canonical policy and mission scope.
 
 Next sprint: **M7 - Mission Staging and Derived Resources**.
+
+### M7 closure evidence - 2026-09-18
+
+- validated implementation/main SHA: `725f47b789c6c356aa63b2126461d4c59c45fb4c`;
+- checkpoint chain: M7-A `beffa0af`, M7-B.1 `0d0f764f`, M7-B.2 `7b2175f4`, M7-C implementation `725f47b7`;
+- `mission_staging` is derived only from a frozen authorized `remote_repository` and a global safe staging root; prompt ingress cannot declare staging as a local resource;
+- derived staging records source remote identity/branch, lifetime, provenance and explicit authority non-inheritance, and its mission id/path segments are hash-bounded;
+- staging materialization reserves a canonical child TaskRun before side effects, creates the directory through GovernedToolExecution, and performs classified `git clone/fetch/pull --ff-only` through the same M6 Git authority path;
+- origin identity, current branch and refreshed remote HEAD are reobserved before/after promotion-sensitive operations; branch drift and missing fetch/pull authority fail closed;
+- WorkspaceContext exposes the derived staging resource without adding it to `workspace_registry.yaml`;
+- controlled promotion proved arbitrary prompt-authorized remote -> staging clone/sync -> intentional change -> governed commit -> governed push while a separate `source_readonly` corpus and the static workspace registry remained hash-identical;
+- terminal parent or staging child TaskRun adds a hard canonical lifecycle deny, so staging authority ceases when the mission ends while already-proven remote promotion truth remains unchanged;
+- physical staging cleanup is intentionally not privileged around the global `delete_files` deny; retained staging is a cleanup limitation, not evidence that a validated push did not occur;
+- validation: M7-A resource/contract regression `51 passed`; M7-B.1 `25 passed`; M7-B.2 `60 passed`; focused M7-C `8 passed`; final cross-sprint regression `107 passed`;
+- `compileall`, diff checks and production hardcode scans passed; no project/repository/host-specific production allowlist was introduced.
+
+Next sprint: **M8 - Mission Continuation Engine**.
 
 
 ---
@@ -785,6 +802,10 @@ Cleanup is not allowed to rewrite final truth. A cleanup limitation after a prov
 ## Definition of Done
 
 A mission can materialize and use a clean staging clone for an arbitrary prompt-authorized repository without permanent workspace registration.
+
+## Closure result
+
+M7 is validated and CLOSED. The canonical path is MissionContract -> derived `mission_staging` -> child TaskRun -> canonical policy -> GovernedToolExecution. No staging-specific planner or Git runtime was introduced. Mission-terminal lifecycle removes active staging authority; physical deletion remains governed separately and cannot rewrite promotion truth.
 
 ---
 
