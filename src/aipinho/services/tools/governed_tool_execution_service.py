@@ -218,6 +218,8 @@ class GovernedToolExecutionService:
             if git_classification is not None and result.status == "executed_governed":
                 if git_classification.operation == "git_push":
                     result = self._post_validate_git_push(request, decision, result)
+                elif git_classification.operation == "git_pull_ff":
+                    result = self._post_validate_git_pull_ff(request, decision, result)
                 elif git_classification.operation == "git_clone":
                     result = self._post_validate_git_clone(request, decision, result)
         elif tool.adapter == "filesystem" and tool.action == "create_directory":
@@ -748,7 +750,7 @@ class GovernedToolExecutionService:
         if repository_locator is None:
             return None
         branch = str(request.input.get("branch") or "").strip() or git_classification.branch
-        if git_observation and git_classification.operation in {"git_commit", "git_push"}:
+        if git_observation and git_classification.operation in {"git_commit", "git_push", "git_pull_ff"}:
             branch = git_observation.get("current_branch") or branch
         if not branch and len(candidates) == 1 and len(candidates[0].allowed_branches) == 1:
             branch = candidates[0].allowed_branches[0]
@@ -774,7 +776,7 @@ class GovernedToolExecutionService:
                 if completed.returncode != 0 or not str(completed.stdout or "").strip():
                     return {"error": "git_remote_reobservation_failed"}
                 observation["remote_locator"] = str(completed.stdout).strip()
-        if git_classification.operation in {"git_commit", "git_push"}:
+        if git_classification.operation in {"git_commit", "git_push", "git_pull_ff"}:
             completed = self._run_git_read(workspace, ["git", "branch", "--show-current"])
             branch = str(completed.stdout or "").strip()
             if completed.returncode != 0 or not branch:
@@ -782,6 +784,8 @@ class GovernedToolExecutionService:
             observation["current_branch"] = branch
             if git_classification.operation == "git_push" and git_classification.branch and branch != git_classification.branch:
                 return {"error": "git_push_current_branch_mismatch", "current_branch": branch}
+            if git_classification.operation == "git_pull_ff" and git_classification.branch and branch != git_classification.branch:
+                return {"error": "git_pull_ff_current_branch_mismatch", "current_branch": branch}
         return observation
 
     def _run_git_read(self, workspace: str, argv: list[str]):
@@ -1065,6 +1069,40 @@ class GovernedToolExecutionService:
                 "safe_to_execute": False,
                 "metadata": metadata,
                 "violations": [*result.violations, "git_clone_post_validation_failed"],
+            })
+        return result.model_copy(update={"metadata": metadata})
+
+    def _post_validate_git_pull_ff(
+        self,
+        request: ToolExecutionRequest,
+        decision: dict[str, Any],
+        result: ToolExecutionResult,
+    ) -> ToolExecutionResult:
+        workspace = str(request.input.get("workspace") or "")
+        branch = str(decision.get("git_branch") or "")
+        local = self._run_git_read(workspace, ["git", "rev-parse", "HEAD"])
+        remote = self._run_git_read(workspace, ["git", "ls-remote", "origin", branch])
+        local_head = str(local.stdout or "").strip()
+        remote_line = str(remote.stdout or "").strip().splitlines()
+        remote_head = remote_line[0].split()[0] if remote_line and remote_line[0].split() else ""
+        metadata = dict(result.metadata)
+        metadata.update({
+            "local_head": local_head,
+            "remote_head": remote_head,
+            "validated_branch": branch,
+        })
+        if (
+            local.returncode != 0
+            or remote.returncode != 0
+            or not local_head
+            or not remote_head
+            or local_head != remote_head
+        ):
+            return result.model_copy(update={
+                "status": "degraded",
+                "safe_to_execute": False,
+                "metadata": metadata,
+                "violations": [*result.violations, "git_pull_ff_remote_head_mismatch"],
             })
         return result.model_copy(update={"metadata": metadata})
 

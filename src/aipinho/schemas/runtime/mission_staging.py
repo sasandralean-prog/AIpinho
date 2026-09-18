@@ -20,7 +20,7 @@ class MissionStagingDerivationDecision(AIpinhoModel):
 
 
 class MissionStagingMaterializationResult(AIpinhoModel):
-    status: Literal["materialized", "blocked", "degraded"]
+    status: Literal["materialized", "synchronized", "blocked", "degraded"]
     reason_code: str
     child_task_run_id: str | None = None
     resource_id: str | None = None
@@ -30,5 +30,7 @@ class MissionStagingMaterializationResult(AIpinhoModel):
     branch: str | None = None
     directory_execution_id: str | None = None
     clone_execution_id: str | None = None
+    fetch_execution_id: str | None = None
+    fast_forward_execution_id: str | None = None
     evidence_refs: list[str] = Field(default_factory=list)
     violations: list[str] = Field(default_factory=list)

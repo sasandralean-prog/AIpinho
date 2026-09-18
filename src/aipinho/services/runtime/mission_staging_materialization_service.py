@@ -156,6 +156,123 @@ class MissionStagingMaterializationService:
             ],
         )
 
+    def synchronize(
+        self,
+        *,
+        child_run_id: str,
+        remote_resource_id: str,
+        branch: str | None = None,
+    ) -> MissionStagingMaterializationResult:
+        child = self.task_runs.get_run(child_run_id)
+        if child is None or child.mission_contract is None or not child.parent_task_id:
+            return self._blocked("mission_staging_child_run_missing", remote_resource_id)
+        parent = self.task_runs.get_run_by_task_id(child.parent_task_id)
+        if parent is None or parent.mission_contract is None:
+            return self._blocked("mission_staging_parent_run_missing", remote_resource_id)
+        try:
+            self.staging_resources.missions.validate_child_contract(
+                parent=parent.mission_contract,
+                child=child.mission_contract,
+            )
+        except ValueError as exc:
+            return self._blocked(str(exc), remote_resource_id)
+
+        resource = next(
+            (
+                item for item in child.mission_contract.local_resources
+                if item.resource_type == "mission_staging" and item.derived_from == remote_resource_id
+            ),
+            None,
+        )
+        remote = next(
+            (item for item in child.mission_contract.remote_resources if item.resource_id == remote_resource_id),
+            None,
+        )
+        if resource is None or remote is None or not remote.locator:
+            return self._blocked("mission_staging_resource_binding_missing", remote_resource_id)
+        try:
+            self.staging_resources.policy.validate_derived_resource(
+                parent=parent.mission_contract,
+                resource=resource,
+            )
+        except ValueError as exc:
+            return self._blocked(str(exc), remote_resource_id)
+
+        selected_branch = branch or (remote.allowed_branches[0] if len(remote.allowed_branches) == 1 else None)
+        if not selected_branch or selected_branch not in set(remote.allowed_branches):
+            return self._blocked("mission_staging_branch_not_authorized", remote_resource_id)
+        for capability in ("git_fetch", "git_pull_ff"):
+            if capability not in set(remote.permissions):
+                return self._blocked(f"mission_staging_{capability}_not_permitted", remote_resource_id)
+            if capability not in set(child.mission_contract.authority.authorized_capabilities):
+                return self._blocked(f"mission_staging_{capability}_not_human_authorized", remote_resource_id)
+
+        common = {
+            "workspace": resource.locator,
+            "repository_locator": remote.locator,
+            "branch": selected_branch,
+        }
+        fetch_result = self.tools.execute(
+            ToolExecutionRequest(
+                tool_id="shell.run_command",
+                mode="governed",
+                task_run_id=child.run_id,
+                session_id=child.session_id,
+                input={**common, "argv": ["git", "fetch", "origin", selected_branch]},
+            )
+        )
+        if fetch_result.status != "executed_governed" or not fetch_result.safe_to_execute:
+            return self._from_failure(
+                "mission_staging_fetch_failed",
+                child_run_id=child.run_id,
+                resource_id=resource.resource_id,
+                workspace=resource.locator,
+                remote_resource_id=remote.resource_id,
+                repository_identity=remote.normalized_identity,
+                branch=selected_branch,
+                fetch_execution_id=fetch_result.execution_id,
+                violations=fetch_result.violations,
+            )
+
+        ff_result = self.tools.execute(
+            ToolExecutionRequest(
+                tool_id="shell.run_command",
+                mode="governed",
+                task_run_id=child.run_id,
+                session_id=child.session_id,
+                input={**common, "argv": ["git", "pull", "--ff-only", "origin", selected_branch]},
+            )
+        )
+        if ff_result.status != "executed_governed" or not ff_result.safe_to_execute:
+            return self._from_failure(
+                "mission_staging_fast_forward_failed",
+                child_run_id=child.run_id,
+                resource_id=resource.resource_id,
+                workspace=resource.locator,
+                remote_resource_id=remote.resource_id,
+                repository_identity=remote.normalized_identity,
+                branch=selected_branch,
+                fetch_execution_id=fetch_result.execution_id,
+                fast_forward_execution_id=ff_result.execution_id,
+                violations=ff_result.violations,
+            )
+        return MissionStagingMaterializationResult(
+            status="synchronized",
+            reason_code="mission_staging_synchronized_ff_only",
+            child_task_run_id=child.run_id,
+            resource_id=resource.resource_id,
+            workspace_path=resource.locator,
+            source_remote_resource_id=remote.resource_id,
+            repository_identity=remote.normalized_identity,
+            branch=selected_branch,
+            fetch_execution_id=fetch_result.execution_id,
+            fast_forward_execution_id=ff_result.execution_id,
+            evidence_refs=[
+                f"tool_execution:{fetch_result.execution_id}",
+                f"tool_execution:{ff_result.execution_id}",
+            ],
+        )
+
     @staticmethod
     def _blocked(reason: str, remote_resource_id: str) -> MissionStagingMaterializationResult:
         return MissionStagingMaterializationResult(
@@ -177,6 +294,8 @@ class MissionStagingMaterializationService:
         branch: str | None,
         directory_execution_id: str | None = None,
         clone_execution_id: str | None = None,
+        fetch_execution_id: str | None = None,
+        fast_forward_execution_id: str | None = None,
         violations: list[str] | None = None,
     ) -> MissionStagingMaterializationResult:
         return MissionStagingMaterializationResult(
@@ -190,5 +309,7 @@ class MissionStagingMaterializationService:
             branch=branch,
             directory_execution_id=directory_execution_id,
             clone_execution_id=clone_execution_id,
+            fetch_execution_id=fetch_execution_id,
+            fast_forward_execution_id=fast_forward_execution_id,
             violations=list(violations or []),
         )
