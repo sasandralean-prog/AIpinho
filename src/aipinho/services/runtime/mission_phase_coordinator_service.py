@@ -6,7 +6,13 @@ from typing import Iterable
 
 from aipinho.schemas.runtime.mission_continuation import (
     MissionContinuationCandidate,
+    MissionContinuationExecution,
     MissionContinuationMaterialization,
+)
+from aipinho.schemas.runtime.phase_dependency_evaluation import (
+    DownstreamPhaseRequirements,
+    PhaseDependencyAdmission,
+    PhaseDependencyEvaluation,
 )
 from aipinho.schemas.runtime.phase_outcome import PhaseOutcome
 from aipinho.schemas.runtime.task_run_request import TaskRunRequest
@@ -243,6 +249,176 @@ class MissionPhaseCoordinatorService:
             ),
         )
 
+    def execute_materialized_run(
+        self,
+        materialization: MissionContinuationMaterialization,
+    ) -> MissionContinuationExecution:
+        if materialization.status != "materialized" or not materialization.child_task_run_id:
+            return MissionContinuationExecution(
+                status=(
+                    "not_applicable"
+                    if materialization.status == "not_applicable"
+                    else "blocked"
+                ),
+                reason_code=materialization.reason_code,
+                materialization=materialization,
+                child_task_run_id=materialization.child_task_run_id,
+                evidence_refs=list(materialization.evidence_refs),
+            )
+
+        child = self.store.get_run(materialization.child_task_run_id)
+        if child is None or child.mission_contract is None:
+            return self._execution_blocked(
+                materialization,
+                "mission_continuation_child_run_missing",
+            )
+        if not child.parent_task_id:
+            return self._execution_blocked(
+                materialization,
+                "mission_continuation_child_parent_missing",
+                child=child,
+            )
+        parent = self.store.get_run_by_task_id(child.parent_task_id)
+        if parent is None or parent.mission_contract is None:
+            return self._execution_blocked(
+                materialization,
+                "mission_continuation_child_parent_missing",
+                child=child,
+            )
+        try:
+            self.continuation.missions.validate_child_contract(
+                parent=parent.mission_contract,
+                child=child.mission_contract,
+            )
+        except ValueError as exc:
+            return self._execution_blocked(
+                materialization,
+                str(exc),
+                child=child,
+                mark_child=True,
+            )
+
+        if self.lifecycle.is_terminal(str(child.status)):
+            result = self.store.get_result(child.run_id)
+            successful_terminal = str(child.status) in {"completed", "partial"}
+            return MissionContinuationExecution(
+                status="executed" if successful_terminal else "blocked",
+                reason_code=(
+                    "mission_continuation_child_already_terminal"
+                    if successful_terminal
+                    else f"mission_continuation_child_terminal:{child.status}"
+                ),
+                materialization=materialization,
+                child_task_run_id=child.run_id,
+                child_status=str(child.status),
+                result_status=str(result.status) if result is not None else None,
+                reused_terminal_result=True,
+                evidence_refs=self._unique(
+                    [
+                        *materialization.evidence_refs,
+                        f"task_run:{child.run_id}",
+                        *(
+                            [f"task_run_result:{child.run_id}"]
+                            if result is not None
+                            else []
+                        ),
+                    ]
+                ),
+            )
+
+        continuation = (
+            child.intent_map.get("mission_continuation")
+            if isinstance(child.intent_map.get("mission_continuation"), dict)
+            else {}
+        )
+        requirements_value = continuation.get("phase_dependency_requirements")
+        evaluation_value = continuation.get("phase_dependency_evaluation")
+        admission_value = continuation.get("phase_dependency_admission")
+        if not all(
+            isinstance(value, dict)
+            for value in (requirements_value, evaluation_value, admission_value)
+        ):
+            return self._execution_blocked(
+                materialization,
+                "mission_continuation_dependency_binding_missing",
+                child=child,
+                mark_child=True,
+            )
+        try:
+            requirements = DownstreamPhaseRequirements.model_validate(requirements_value)
+            evaluation = PhaseDependencyEvaluation.model_validate(evaluation_value)
+            admission = PhaseDependencyAdmission.model_validate(admission_value)
+        except Exception:
+            return self._execution_blocked(
+                materialization,
+                "mission_continuation_dependency_binding_invalid",
+                child=child,
+                mark_child=True,
+            )
+
+        previous_phase = str(continuation.get("previous_phase") or "")
+        next_phase = str(
+            continuation.get("next_phase")
+            or child.current_phase
+            or child.intent_map.get("mission_phase")
+            or ""
+        )
+        dependency_id = str(continuation.get("dependency_id") or "")
+        valid, validation_reason = self.dependencies.validate_admission(
+            admission,
+            evaluation=evaluation,
+            requirements=requirements,
+            consumer_task_run_id=child.run_id,
+            consumer_operation_id=str(child.operation_id or ""),
+            consumer_operation_type=str(child.operation_type or ""),
+            producer_task_run_id=parent.run_id,
+            producer_operation_id=parent.operation_id,
+            dependency_id=dependency_id,
+            producer_phase_id=previous_phase,
+            consumer_phase_id=next_phase,
+        )
+        if not admission.authorized or not valid:
+            return self._execution_blocked(
+                materialization,
+                str(
+                    validation_reason
+                    or admission.reason_code
+                    or "mission_continuation_dependency_admission_invalid"
+                ),
+                child=child,
+                mark_child=True,
+            )
+
+        started, result = self.runtime.start(child.run_id)
+        blocked_statuses = {"blocked", "failed", "cancelled", "expired"}
+        return MissionContinuationExecution(
+            status=(
+                "blocked"
+                if str(started.status) in blocked_statuses
+                else "executed"
+            ),
+            reason_code=(
+                f"mission_continuation_taskruntime:{started.status}"
+                if str(started.status) in blocked_statuses
+                else "mission_continuation_child_started_via_taskruntime"
+            ),
+            materialization=materialization,
+            child_task_run_id=started.run_id,
+            child_status=str(started.status),
+            result_status=str(result.status) if result is not None else None,
+            evidence_refs=self._unique(
+                [
+                    *materialization.evidence_refs,
+                    f"task_run:{started.run_id}",
+                    *(
+                        [f"task_run_result:{started.run_id}"]
+                        if result is not None
+                        else []
+                    ),
+                ]
+            ),
+        )
+
     def _existing_child(self, previous, candidate):
         parent_refs = {str(previous.task_id or ""), str(previous.run_id)}
         for run in self.store.list_runs(
@@ -362,6 +538,33 @@ class MissionPhaseCoordinatorService:
                 *(evaluation.evidence_refs if evaluation is not None else []),
                 f"task_run:{run.run_id}",
             ]
+        )
+
+    def _execution_blocked(
+        self,
+        materialization: MissionContinuationMaterialization,
+        reason: str,
+        *,
+        child=None,
+        mark_child: bool = False,
+    ) -> MissionContinuationExecution:
+        if child is not None and mark_child:
+            if self.lifecycle.can_transition(str(child.status), "blocked"):
+                child = self.lifecycle.transition(child, "blocked")
+            child.blocked_reasons = self._unique([*child.blocked_reasons, reason])
+            self.store.update_run(child)
+        return MissionContinuationExecution(
+            status="blocked",
+            reason_code=reason,
+            materialization=materialization,
+            child_task_run_id=child.run_id if child is not None else materialization.child_task_run_id,
+            child_status=str(child.status) if child is not None else None,
+            evidence_refs=self._unique(
+                [
+                    *materialization.evidence_refs,
+                    *([f"task_run:{child.run_id}"] if child is not None else []),
+                ]
+            ),
         )
 
     @staticmethod

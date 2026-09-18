@@ -71,3 +71,14 @@ class MissionContinuationMaterialization(AIpinhoModel):
     dependency_evaluation: PhaseDependencyEvaluation | None = None
     dependency_admission: dict[str, Any] | None = None
     evidence_refs: list[str] = Field(default_factory=list)
+
+
+class MissionContinuationExecution(AIpinhoModel):
+    status: Literal["executed", "not_applicable", "blocked"]
+    reason_code: str
+    materialization: MissionContinuationMaterialization
+    child_task_run_id: str | None = None
+    child_status: str | None = None
+    result_status: str | None = None
+    reused_terminal_result: bool = False
+    evidence_refs: list[str] = Field(default_factory=list)

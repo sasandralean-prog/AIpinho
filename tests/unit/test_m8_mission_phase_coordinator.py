@@ -271,3 +271,98 @@ def test_authority_gap_does_not_reserve_child(tmp_path: Path) -> None:
         if run.parent_task_id == parent.task_id
     ]
     assert children == []
+
+
+def test_executes_materialized_child_only_through_taskruntime_start(tmp_path: Path) -> None:
+    contract = _contract(tmp_path)
+    coordinator, store, parent = _coordinator(tmp_path, contract)
+    materialized = coordinator.materialize_next_run(
+        previous_run_id=parent.run_id,
+        candidate=_candidate(contract),
+        phase_outcome=_outcome(parent),
+    )
+    assert materialized.status == "materialized"
+
+    execution = coordinator.execute_materialized_run(materialized)
+
+    assert execution.status == "executed", execution.model_dump(mode="json")
+    assert execution.reason_code == "mission_continuation_child_started_via_taskruntime"
+    assert execution.child_task_run_id == materialized.child_task_run_id
+    assert execution.child_status == "completed"
+    assert execution.result_status == "completed"
+    persisted = store.get_run(materialized.child_task_run_id or "")
+    assert persisted is not None
+    assert persisted.status == "completed"
+    assert persisted.canonical_state is not None
+
+
+def test_execution_is_idempotent_after_child_reaches_terminal_state(tmp_path: Path) -> None:
+    contract = _contract(tmp_path)
+    coordinator, _store, parent = _coordinator(tmp_path, contract)
+    materialized = coordinator.materialize_next_run(
+        previous_run_id=parent.run_id,
+        candidate=_candidate(contract),
+        phase_outcome=_outcome(parent),
+    )
+
+    first = coordinator.execute_materialized_run(materialized)
+    second = coordinator.execute_materialized_run(materialized)
+
+    assert first.status == "executed"
+    assert second.status == "executed"
+    assert second.reason_code == "mission_continuation_child_already_terminal"
+    assert second.reused_terminal_result is True
+    assert second.child_status == first.child_status == "completed"
+    assert second.result_status == first.result_status == "completed"
+
+
+def test_tampered_dependency_admission_blocks_before_taskruntime_start(tmp_path: Path) -> None:
+    contract = _contract(tmp_path)
+    coordinator, store, parent = _coordinator(tmp_path, contract)
+    materialized = coordinator.materialize_next_run(
+        previous_run_id=parent.run_id,
+        candidate=_candidate(contract),
+        phase_outcome=_outcome(parent),
+    )
+    child = store.get_run(materialized.child_task_run_id or "")
+    assert child is not None
+    continuation = dict(child.intent_map["mission_continuation"])
+    admission = dict(continuation["phase_dependency_admission"])
+    admission["authority_sha256"] = "0" * 64
+    continuation["phase_dependency_admission"] = admission
+    child.intent_map = {**child.intent_map, "mission_continuation": continuation}
+    store.update_run(child)
+
+    execution = coordinator.execute_materialized_run(materialized)
+
+    assert execution.status == "blocked"
+    assert execution.reason_code == "PHASE_DEPENDENCY_ADMISSION_TAMPERED"
+    persisted = store.get_run(child.run_id)
+    assert persisted is not None
+    assert persisted.status == "blocked"
+    blocked_result = store.get_result(child.run_id)
+    assert blocked_result is not None
+    assert blocked_result.status == "blocked"
+    assert blocked_result.reason_code == "PHASE_DEPENDENCY_ADMISSION_TAMPERED"
+
+
+def test_non_applicable_materialization_never_enters_taskruntime_start(tmp_path: Path) -> None:
+    contract = _contract(tmp_path, strategy="staged")
+    coordinator, store, parent = _coordinator(tmp_path, contract)
+    materialized = coordinator.materialize_next_run(
+        previous_run_id=parent.run_id,
+        candidate=_candidate(contract),
+        phase_outcome=_outcome(parent),
+    )
+
+    execution = coordinator.execute_materialized_run(materialized)
+
+    assert materialized.status == "not_applicable"
+    assert execution.status == "not_applicable"
+    assert execution.reason_code == "mission_continuation_staged_boundary"
+    children = [
+        run
+        for run in store.list_runs(session_id=parent.session_id, limit=100)
+        if run.parent_task_id == parent.task_id
+    ]
+    assert children == []
