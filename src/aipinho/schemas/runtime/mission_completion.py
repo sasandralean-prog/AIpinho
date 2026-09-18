@@ -127,3 +127,23 @@ class MissionCompletionBindingCompilation(AIpinhoModel):
     reason_codes: list[str] = Field(default_factory=list)
     evaluations: list[MissionCompletionRequirementEvaluation] = Field(default_factory=list)
     schema_version: str = "mission_completion_binding_compilation.v1"
+
+
+class MissionCompletionResolution(AIpinhoModel):
+    mission_id: str
+    status: Literal[
+        "not_applicable",
+        "ready",
+        "constrained",
+        "insufficient_evidence",
+        "blocked",
+        "unavailable",
+    ]
+    reason_codes: list[str] = Field(default_factory=list)
+    snapshot_authority_sha256: str | None = None
+    catalog_authority_sha256: str | None = None
+    proposal_sha256: str | None = None
+    proposal_source: Literal["generated", "persisted", "none"] = "none"
+    compilation_status: str | None = None
+    facet: MissionCompletionFacet | None = None
+    schema_version: str = "mission_completion_resolution.v1"
