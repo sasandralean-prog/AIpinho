@@ -12,6 +12,7 @@ governed_tool_execution:
   allowed_actions:
     - run_command
     - web_request
+    - create_directory
     - write_files
     - apply_patch
   denied_actions:
@@ -29,6 +30,7 @@ governed_tool_execution:
     - memory_write
   workspace_required_for:
     - run_command
+    - create_directory
 shell:
   allow_shell_metacharacters: false
   category_policy:

@@ -25,9 +25,11 @@ from aipinho.schemas.tools.tool_definition import ToolDefinition
 from aipinho.schemas.tools.tool_execution import ToolExecutionRequest
 from aipinho.schemas.tools.tool_execution_result import ToolExecutionResult
 from aipinho.services.approvals.approval_service import ApprovalService
+from aipinho.services.config_governance.workspace_permission_matrix_service import WorkspacePermissionMatrixService
 from aipinho.services.governance.policy.effective_policy_decision_service import EffectivePolicyDecisionService
 from aipinho.services.policy_kernel.authority_grant_service import AuthorityGrantService
 from aipinho.services.policy_kernel.remote_repository_scope_service import RemoteRepositoryScopeService
+from aipinho.services.policy_kernel.mission_staging_policy_service import MissionStagingPolicyService
 from aipinho.services.policy_kernel.workspace_role_contract_service import WorkspaceRoleContractService
 from aipinho.services.runtime.mission_contract_service import MissionContractService
 from aipinho.services.runtime.task_run_store import TaskRunStore
@@ -54,6 +56,8 @@ class GovernedToolExecutionService:
         authority_grants: AuthorityGrantService | None = None,
         effective_policy: EffectivePolicyDecisionService | None = None,
         workspace_roles: WorkspaceRoleContractService | None = None,
+        permission_matrix: WorkspacePermissionMatrixService | None = None,
+        staging_policy: MissionStagingPolicyService | None = None,
         remote_scopes: RemoteRepositoryScopeService | None = None,
     ) -> None:
         self.registry = registry or ToolRegistryService().load()
@@ -66,13 +70,15 @@ class GovernedToolExecutionService:
         self.shell_policy = shell_policy or ShellCommandPolicyService(policy_path=self.policy_path)
         self.effective_policy = effective_policy or EffectivePolicyDecisionService()
         self.workspace_roles = workspace_roles or WorkspaceRoleContractService().load()
+        self.permission_matrix = permission_matrix or WorkspacePermissionMatrixService().load()
+        self.staging_policy = staging_policy or MissionStagingPolicyService()
         self.write_envelopes = write_envelopes or WriteCapabilityEnvelopeService(
             workspace_roles=self.workspace_roles,
             effective_policy=self.effective_policy,
         )
         self.task_runs = task_runs or TaskRunStore()
         self.authority_grants = authority_grants or AuthorityGrantService()
-        self.missions = MissionContractService()
+        self.missions = MissionContractService(staging_policy=self.staging_policy)
         self.remote_scopes = remote_scopes or RemoteRepositoryScopeService(policy_path=self.policy_path)
 
     def request_approval(self, request: ToolExecutionRequest) -> dict[str, object]:
@@ -209,8 +215,13 @@ class GovernedToolExecutionService:
         timeout = self._timeout_seconds(request)
         if tool.adapter == "shell" and tool.action == "run_command":
             result = self._execute_shell(request, tool, decision, execution_id=execution_id, timeout=timeout)
-            if git_classification is not None and git_classification.operation == "git_push" and result.status == "executed_governed":
-                result = self._post_validate_git_push(request, decision, result)
+            if git_classification is not None and result.status == "executed_governed":
+                if git_classification.operation == "git_push":
+                    result = self._post_validate_git_push(request, decision, result)
+                elif git_classification.operation == "git_clone":
+                    result = self._post_validate_git_clone(request, decision, result)
+        elif tool.adapter == "filesystem" and tool.action == "create_directory":
+            result = self._execute_create_directory(request, tool, decision, execution_id=execution_id)
         elif tool.adapter == "web" and tool.action == "web_request":
             result = self._execute_web(request, tool, decision, execution_id=execution_id, timeout=timeout)
         else:
@@ -313,6 +324,20 @@ class GovernedToolExecutionService:
                 git_branch = git_scope_decision.branch
                 git_scope_resource_id = git_scope_decision.resource_id
 
+        filesystem_permission = None
+        staging_materialization = False
+        if tool.adapter == "filesystem" and tool.action == "create_directory":
+            target_path = str(request.input.get("path") or workspace or "")
+            filesystem_permission = self.permission_matrix.decide_with_resources(
+                path=target_path,
+                permission="create_directory",
+                local_resources=local_resources,
+            )
+            staging_materialization = self._staging_materialization_allowed(
+                task_run=task_run,
+                resource_id=filesystem_permission.workspace_id,
+            )
+
         approval_valid = False
         approval_error = None
         if request.approval_id:
@@ -362,6 +387,33 @@ class GovernedToolExecutionService:
                     reason_code=workspace_error or "workspace_allowed",
                     capability=capability,
                     resource_id=resource_id,
+                )
+            )
+
+        if filesystem_permission is not None:
+            permission = (
+                CanonicalPermission.DENIED
+                if filesystem_permission.status == "denied"
+                else CanonicalPermission.ALLOWED
+                if staging_materialization or filesystem_permission.status == "allowed"
+                else CanonicalPermission.ASK
+            )
+            reason = (
+                "mission_staging_materialization_permission_derived"
+                if staging_materialization and permission == CanonicalPermission.ALLOWED
+                else filesystem_permission.reason_code
+            )
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="resource_permission",
+                    permission=permission,
+                    source="workspace_permission_matrix",
+                    reason_code=str(reason),
+                    capability=capability,
+                    resource_id=filesystem_permission.workspace_id,
+                    requires_human_authority=(permission == CanonicalPermission.ASK),
+                    details={"workspace_role": filesystem_permission.workspace_role},
+                    trace=list(filesystem_permission.trace),
                 )
             )
 
@@ -458,17 +510,30 @@ class GovernedToolExecutionService:
                     if envelope_decision.canonical_policy_decision.permission == CanonicalPermission.DENIED:
                         violations.extend(envelope_decision.envelope.blocking_reasons)
 
-        facets.append(
-            CanonicalPolicyFacet(
-                facet="tool_human_authority_requirement",
-                permission=CanonicalPermission.ASK,
-                source="governed_tool_execution_policy",
-                reason_code="approval_required_before_execution",
-                capability=capability,
-                resource_id=resource_id,
-                requires_human_authority=True,
+        if not staging_materialization:
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="tool_human_authority_requirement",
+                    permission=CanonicalPermission.ASK,
+                    source="governed_tool_execution_policy",
+                    reason_code="approval_required_before_execution",
+                    capability=capability,
+                    resource_id=resource_id,
+                    requires_human_authority=True,
+                )
             )
-        )
+        else:
+            facets.append(
+                CanonicalPolicyFacet(
+                    facet="derived_resource_materialization",
+                    permission=CanonicalPermission.ALLOWED,
+                    source="mission_staging_policy",
+                    reason_code="mission_staging_materialization_authorized",
+                    capability=capability,
+                    resource_id=resource_id,
+                    details={"authority_inherited": False},
+                )
+            )
         if approval_valid:
             facets.append(
                 CanonicalPolicyFacet(
@@ -558,6 +623,39 @@ class GovernedToolExecutionService:
             "uses_mission_authority": mission_authority_ready and not approval_valid,
         }
 
+    def _staging_materialization_allowed(self, *, task_run, resource_id: str | None) -> bool:
+        if (
+            task_run is None
+            or task_run.mission_contract is None
+            or not task_run.parent_task_id
+            or not resource_id
+        ):
+            return False
+        resource = next(
+            (item for item in task_run.mission_contract.local_resources if item.resource_id == resource_id),
+            None,
+        )
+        parent_run = self.task_runs.get_run_by_task_id(task_run.parent_task_id)
+        if (
+            resource is None
+            or resource.resource_type != "mission_staging"
+            or parent_run is None
+            or parent_run.mission_contract is None
+        ):
+            return False
+        try:
+            self.missions.validate_child_contract(
+                parent=parent_run.mission_contract,
+                child=task_run.mission_contract,
+            )
+            self.staging_policy.validate_derived_resource(
+                parent=parent_run.mission_contract,
+                resource=resource,
+            )
+        except ValueError:
+            return False
+        return True
+
     def _shell_decision(self, request: ToolExecutionRequest) -> dict[str, Any]:
         workspace = str(request.input.get("workspace") or "")
         argv = request.input.get("argv")
@@ -604,6 +702,8 @@ class GovernedToolExecutionService:
 
     @staticmethod
     def _canonical_capability(tool: ToolDefinition, shell_decision: dict[str, Any] | None) -> str:
+        if tool.adapter == "filesystem" and tool.action == "create_directory":
+            return "create_directory"
         if shell_decision is not None:
             classification = shell_decision["classification"]
             git_classification = getattr(classification, "git_classification", None)
@@ -777,6 +877,40 @@ class GovernedToolExecutionService:
             return parse_error
         return self._executable_error(argv)
 
+    def _execute_create_directory(
+        self,
+        request: ToolExecutionRequest,
+        tool: ToolDefinition,
+        decision: dict[str, Any],
+        *,
+        execution_id: str,
+    ) -> ToolExecutionResult:
+        workspace = Path(str(request.input.get("workspace") or "")).expanduser().resolve(strict=False)
+        target = Path(str(request.input.get("path") or workspace)).expanduser().resolve(strict=False)
+        try:
+            target.relative_to(workspace)
+        except ValueError:
+            decision["violations"].append("target_outside_workspace")
+            return self._result_from_decision(request, decision, execution_id=execution_id)
+        existed = target.exists()
+        target.mkdir(parents=True, exist_ok=True)
+        return ToolExecutionResult(
+            execution_id=execution_id,
+            tool_id=request.tool_id,
+            status="executed_governed",
+            action=tool.action,
+            capability="create_directory",
+            workspace=str(workspace),
+            target_path=str(target),
+            metadata={"created": not existed, "path": str(target)},
+            warnings=list(decision["warnings"]),
+            violations=list(decision["violations"]),
+            trace=[*decision["trace"], {"stage": "filesystem_create_directory", "decision": "executed"}],
+            side_effects=True,
+            safe_to_execute=True,
+            canonical_policy_decision=decision.get("canonical_policy"),
+        )
+
     def _execute_shell(
         self,
         request: ToolExecutionRequest,
@@ -888,6 +1022,51 @@ class GovernedToolExecutionService:
             "risk_score": getattr(classification, "risk_score", None),
             "expected_side_effects": getattr(classification, "expected_side_effects", []),
         }
+
+    def _post_validate_git_clone(
+        self,
+        request: ToolExecutionRequest,
+        decision: dict[str, Any],
+        result: ToolExecutionResult,
+    ) -> ToolExecutionResult:
+        workspace = str(request.input.get("workspace") or "")
+        observed_remote = self._run_git_read(workspace, ["git", "remote", "get-url", "origin"])
+        observed_branch = self._run_git_read(workspace, ["git", "branch", "--show-current"])
+        remote_locator = str(observed_remote.stdout or "").strip()
+        branch = str(observed_branch.stdout or "").strip()
+        classification = decision.get("shell_classification")
+        git_classification = getattr(classification, "git_classification", None)
+        task_run = decision.get("task_run")
+        post_scope = None
+        if git_classification is not None:
+            post_scope = self._git_scope_decision(
+                task_run=task_run,
+                request=request,
+                git_classification=git_classification,
+                git_observation={"remote_locator": remote_locator},
+            )
+        expected_branch = str(decision.get("git_branch") or "")
+        metadata = dict(result.metadata)
+        metadata.update({
+            "observed_remote": remote_locator,
+            "observed_branch": branch,
+            "validated_branch": expected_branch,
+        })
+        if (
+            observed_remote.returncode != 0
+            or observed_branch.returncode != 0
+            or not remote_locator
+            or post_scope is None
+            or post_scope.status != "allowed"
+            or (expected_branch and branch != expected_branch)
+        ):
+            return result.model_copy(update={
+                "status": "degraded",
+                "safe_to_execute": False,
+                "metadata": metadata,
+                "violations": [*result.violations, "git_clone_post_validation_failed"],
+            })
+        return result.model_copy(update={"metadata": metadata})
 
     def _post_validate_git_push(
         self,

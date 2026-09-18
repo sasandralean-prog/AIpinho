@@ -84,7 +84,7 @@ class ToolRegistryService:
             and definition.requires_approval
             and definition.action in allowed_actions
             and definition.capability in allowed_capabilities
-            and definition.adapter in {"shell", "web"}
+            and definition.adapter in {"filesystem", "shell", "web"}
         )
 
     @property

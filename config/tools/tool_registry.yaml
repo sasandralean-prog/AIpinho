@@ -132,6 +132,40 @@ tools:
       properties:
         metadata:
           type: object
+  filesystem.create_directory:
+    name: Create Directory
+    category: filesystem
+    adapter: filesystem
+    action: create_directory
+    capability: write_workspace
+    side_effect: true
+    requires_approval: true
+    enabled: true
+    dry_run_supported: true
+    execute_supported: true
+    risk_level: medium
+    description: Create a directory only after canonical workspace/resource policy allows it.
+    tags:
+    - filesystem
+    - directory
+    - governed
+    input_schema:
+      type: object
+      required:
+      - workspace
+      - path
+      properties:
+        workspace:
+          type: string
+        path:
+          type: string
+    output_schema:
+      type: object
+      properties:
+        created:
+          type: boolean
+        path:
+          type: string
   filesystem.write_file:
     name: Write File
     category: filesystem
