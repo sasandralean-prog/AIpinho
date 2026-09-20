@@ -21,6 +21,23 @@ def test_apply_patch_requires_approval():
     assert registry.is_side_effect("apply_patch") is True
 
 
+def test_semantic_dependency_mode_defaults_fail_closed_to_interpreted():
+    registry = ActionRegistryService().load()
+
+    assert (
+        registry.get_action("read_files").semantic_dependency_mode
+        == "interpreted"
+    )
+    assert (
+        registry.get_action("project_tree").semantic_dependency_mode
+        == "deterministic"
+    )
+    assert (
+        registry.get_action("project_analysis").semantic_dependency_mode
+        == "interpreted"
+    )
+
+
 def test_unknown_action_is_not_allowed_silently():
     registry = ActionRegistryService().load()
 

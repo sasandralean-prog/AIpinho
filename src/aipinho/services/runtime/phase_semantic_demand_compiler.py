@@ -10,6 +10,9 @@ from aipinho.schemas.runtime.phase_dependency_evaluation import (
     PhaseSemanticDemandCompilation,
     RequirementProvenance,
 )
+from aipinho.services.policy_kernel.action_registry_service import (
+    ActionRegistryService,
+)
 from aipinho.services.runtime.phase_dependency_contract_registry import PhaseDependencyContractRegistry
 from aipinho.services.semantics.semantic_demand_interpreter_service import (
     SemanticDemandInterpreterService,
@@ -36,12 +39,14 @@ class PhaseSemanticDemandCompiler:
         system_invariants: PhaseDependencyContractRegistry | None = None,
         semantic_interpreter: SemanticDemandInterpreterService | None = None,
         vocabulary_authority: TaskSemanticVocabularyAuthorityService | None = None,
+        action_registry: ActionRegistryService | None = None,
     ) -> None:
         self.system_invariants = system_invariants or PhaseDependencyContractRegistry()
         self.semantic_interpreter = semantic_interpreter or SemanticDemandInterpreterService()
         self.vocabulary_authority = (
             vocabulary_authority or TaskSemanticVocabularyAuthorityService()
         )
+        self.action_registry = action_registry or ActionRegistryService()
 
     def compile_for_run(
         self,
@@ -237,11 +242,82 @@ class PhaseSemanticDemandCompiler:
         required_semantic_properties: dict[str, list[Any]] = {}
         base_constraints: list[str] = []
         risk_constraints: list[str] = []
-        semantic_interpretation = self.semantic_interpreter.interpret(
-            source_payload=source_payload,
-            semantic_graph=semantic_graph,
-            vocabulary=vocabulary,
-        )
+
+        semantic_dependency_modes: list[dict[str, str]] = []
+        semantic_interpretation_required = False
+        for step, step_ref in zip(
+            selected_steps,
+            step_refs,
+            strict=True,
+        ):
+            action = str(
+                getattr(step, "action", "")
+                or operation_type
+            )
+            mode = "interpreted"
+            registered_action = bool(
+                action
+                and self.action_registry.action_exists(
+                    action
+                )
+            )
+            if registered_action:
+                mode = str(
+                    self.action_registry.get_action(
+                        action
+                    ).semantic_dependency_mode
+                )
+            semantic_dependency_modes.append(
+                {
+                    "step_id": str(
+                        getattr(step, "step_id", "")
+                    ),
+                    "action": action,
+                    "mode": mode,
+                }
+            )
+            self._provenance(
+                provenance,
+                (
+                    "semantic_dependency_mode:"
+                    f"{getattr(step, 'step_id', '')}"
+                ),
+                "policy_snapshot",
+                (
+                    f"action_registry:{action}"
+                    if registered_action
+                    else f"action_registry_default:{action}"
+                ),
+                (
+                    "semantic_dependency_mode"
+                    if registered_action
+                    else "default_semantic_dependency_mode"
+                ),
+                mode,
+            )
+            if mode != "deterministic":
+                semantic_interpretation_required = True
+
+        if semantic_interpretation_required:
+            semantic_interpretation = (
+                self.semantic_interpreter.interpret(
+                    source_payload=source_payload,
+                    semantic_graph=semantic_graph,
+                    vocabulary=vocabulary,
+                )
+            )
+        else:
+            semantic_interpretation = {
+                "status": "not_required",
+                "reason_code": None,
+                "accepted_requirements": {},
+                "provenance": {
+                    "authority": (
+                        "action_registry_semantic_dependency_mode"
+                    ),
+                    "actions": semantic_dependency_modes,
+                },
+            }
         if semantic_interpretation.get("status") == "insufficient_evidence":
             return PhaseSemanticDemandCompilation(
                 status="insufficient_contract_evidence",

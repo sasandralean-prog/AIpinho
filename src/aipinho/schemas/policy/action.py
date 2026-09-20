@@ -1,5 +1,7 @@
 ﻿from __future__ import annotations
 
+from typing import Literal
+
 from pydantic import Field
 
 from aipinho.schemas.common.base import AIpinhoModel
@@ -11,6 +13,10 @@ class ActionDefinition(AIpinhoModel):
     side_effect: bool = False
     requires_approval: bool = False
     capability: str | None = None
+    semantic_dependency_mode: Literal[
+        "deterministic",
+        "interpreted",
+    ] = "interpreted"
     approval_exception_reason: str | None = None
 
 

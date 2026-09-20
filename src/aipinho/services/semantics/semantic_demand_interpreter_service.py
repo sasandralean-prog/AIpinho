@@ -15,16 +15,21 @@ from aipinho.services.semantics.semantic_reasoning_playbook_service import (
 class SemanticDemandInterpreterService:
     """Interpret ambiguous downstream truth/use demand without granting authority."""
 
+    _UNRESOLVED_REASON_CODES = {
+        "task_semantics_ambiguous",
+        "required_concept_not_in_vocabulary",
+        "dependency_scope_ambiguous",
+        "conflicting_task_semantics",
+    }
+
     def __init__(
         self,
         *,
         reasoner: ContractBoundSemanticReasoner | None = None,
         playbook: SemanticReasoningPlaybookService | None = None,
-        minimum_confidence: float = 0.65,
     ) -> None:
         self.reasoner = reasoner
         self.playbook = playbook or SemanticReasoningPlaybookService()
-        self.minimum_confidence = max(0.0, min(1.0, minimum_confidence))
 
     def interpret(
         self,
@@ -85,18 +90,23 @@ class SemanticDemandInterpreterService:
                     "required_semantic_properties": "object[string,list[scalar]]",
                     "base_constraints": "list[string]",
                     "risk_constraints": "list[string]",
-                    "confidence": "number_between_0_and_1",
+                    "resolution_status": "resolved|unresolved",
+                    "unresolved_reason_codes": (
+                        "list[task_semantics_ambiguous|required_concept_not_in_vocabulary|"
+                        "dependency_scope_ambiguous|conflicting_task_semantics]"
+                    ),
                     "rationale": "non_empty_string",
                 },
                 "instruction": (
                     "Apply the playbook to current_task_semantics. Examples and "
                     "counterexamples are illustrative only and MUST NOT be copied. "
                     "Select identifiers only from governed_vocabulary. Empty "
-                    "requirement lists or mappings are valid and may have high "
-                    "confidence when the current task clearly requires no such "
-                    "guarantee. Lower confidence only when the current task actually "
-                    "requires a concept that governed_vocabulary cannot represent; "
-                    "never invent an identifier."
+                    "requirement lists or mappings are valid. Use resolution_status="
+                    "resolved when the minimum requirement set can be determined, "
+                    "including a confidently empty requirement set. Use unresolved "
+                    "only when ambiguity or missing governed vocabulary prevents "
+                    "determining the requirement set, and then provide one or more "
+                    "allowed unresolved_reason_codes. Never invent an identifier."
                 ),
             },
             allowed_fields=[
@@ -106,7 +116,8 @@ class SemanticDemandInterpreterService:
                 "required_semantic_properties",
                 "base_constraints",
                 "risk_constraints",
-                "confidence",
+                "resolution_status",
+                "unresolved_reason_codes",
                 "rationale",
             ],
             required_fields=[
@@ -116,7 +127,8 @@ class SemanticDemandInterpreterService:
                 "required_semantic_properties",
                 "base_constraints",
                 "risk_constraints",
-                "confidence",
+                "resolution_status",
+                "unresolved_reason_codes",
                 "rationale",
             ],
             role_id="semantic_interpreter",
@@ -145,12 +157,15 @@ class SemanticDemandInterpreterService:
                 "accepted_requirements": {},
                 "provenance": self._proposal_provenance(proposal),
             }
-        confidence = float(validated["confidence"])
-        if confidence < self.minimum_confidence:
+        if validated["resolution_status"] == "unresolved":
             return {
                 "status": "insufficient_evidence",
-                "reason_code": "SEMANTIC_DEMAND_INTERPRETATION_CONFIDENCE_INSUFFICIENT",
+                "reason_code": "SEMANTIC_DEMAND_INTERPRETATION_UNRESOLVED",
                 "accepted_requirements": {},
+                "unresolved_reason_codes": list(
+                    validated["unresolved_reason_codes"]
+                ),
+                "rationale": str(validated["rationale"]),
                 "provenance": self._proposal_provenance(proposal),
             }
 
@@ -173,7 +188,10 @@ class SemanticDemandInterpreterService:
                 "base_constraints": list(validated["base_constraints"]),
                 "risk_constraints": list(validated["risk_constraints"]),
             },
-            "confidence": confidence,
+            "resolution_status": str(validated["resolution_status"]),
+            "unresolved_reason_codes": list(
+                validated["unresolved_reason_codes"]
+            ),
             "rationale": str(validated["rationale"]),
             "provenance": self._proposal_provenance(proposal),
         }
@@ -186,12 +204,24 @@ class SemanticDemandInterpreterService:
     ) -> tuple[dict[str, Any], str | None]:
         if not isinstance(candidate.get("truth_claim_required"), bool):
             return {}, "SEMANTIC_DEMAND_TRUTH_REQUIREMENT_INVALID"
-        try:
-            confidence = float(candidate.get("confidence"))
-        except (TypeError, ValueError):
-            return {}, "SEMANTIC_DEMAND_CONFIDENCE_INVALID"
-        if not 0.0 <= confidence <= 1.0:
-            return {}, "SEMANTIC_DEMAND_CONFIDENCE_INVALID"
+
+        resolution_status = str(
+            candidate.get("resolution_status") or ""
+        ).strip().casefold()
+        if resolution_status not in {"resolved", "unresolved"}:
+            return {}, "SEMANTIC_DEMAND_RESOLUTION_STATUS_INVALID"
+        unresolved_reason_codes = self._string_list(
+            candidate.get("unresolved_reason_codes")
+        )
+        if any(
+            value not in self._UNRESOLVED_REASON_CODES
+            for value in unresolved_reason_codes
+        ):
+            return {}, "SEMANTIC_DEMAND_UNRESOLVED_REASON_INVALID"
+        if resolution_status == "resolved" and unresolved_reason_codes:
+            return {}, "SEMANTIC_DEMAND_RESOLUTION_CONFLICT"
+        if resolution_status == "unresolved" and not unresolved_reason_codes:
+            return {}, "SEMANTIC_DEMAND_UNRESOLVED_REASON_REQUIRED"
 
         required_downstream_uses = self._string_list(
             candidate.get("required_downstream_uses")
@@ -286,7 +316,8 @@ class SemanticDemandInterpreterService:
             "required_semantic_properties": required_semantic_properties,
             "base_constraints": base_constraints,
             "risk_constraints": risk_constraints,
-            "confidence": confidence,
+            "resolution_status": resolution_status,
+            "unresolved_reason_codes": unresolved_reason_codes,
             "rationale": rationale,
         }, None
 

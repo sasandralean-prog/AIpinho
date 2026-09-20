@@ -263,6 +263,117 @@ def test_global_mutation_intent_does_not_require_destructive_safety_for_readonly
     ] == [True]
 
 
+def test_deterministic_action_mode_skips_semantic_interpreter() -> None:
+    class _MustNotRun:
+        def interpret(self, **_kwargs):
+            raise AssertionError("semantic_interpreter_must_not_run")
+
+    compiler = PhaseSemanticDemandCompiler(
+        semantic_interpreter=_MustNotRun(),  # type: ignore[arg-type]
+    )
+    compilation = compiler.compile_for_run(
+        run=_run(
+            operation_type="project_tree",
+            action="project_tree",
+            semantic_graph={
+                "knowledge_output": True,
+                "observational_intent": True,
+                "readonly_contract": True,
+            },
+        ),
+        consumer_phase_id="phase_project_tree",
+    )
+
+    assert compilation.status == "compiled"
+    assert compilation.requirements is not None
+    assert compilation.semantic_interpretation["status"] == "not_required"
+    provenance = compilation.semantic_interpretation["provenance"]
+    assert (
+        provenance["authority"]
+        == "action_registry_semantic_dependency_mode"
+    )
+    assert provenance["actions"] == [
+        {
+            "step_id": "step_consumer",
+            "action": "project_tree",
+            "mode": "deterministic",
+        }
+    ]
+
+
+def test_interpreted_action_mode_keeps_semantic_interpreter_required() -> None:
+    class _TrackingInterpreter(_SemanticInterpreter):
+        def __init__(self) -> None:
+            super().__init__()
+            self.calls = 0
+
+        def interpret(self, **kwargs):
+            self.calls += 1
+            return super().interpret(**kwargs)
+
+    interpreter = _TrackingInterpreter()
+    compiler = PhaseSemanticDemandCompiler(
+        semantic_interpreter=interpreter,
+    )
+    compilation = compiler.compile_for_run(
+        run=_run(
+            operation_type="project_analysis",
+            action="project_analysis",
+            semantic_graph={
+                "knowledge_output": True,
+                "observational_intent": True,
+                "readonly_contract": True,
+            },
+        ),
+        consumer_phase_id="phase_project_analysis",
+    )
+
+    assert compilation.status == "compiled"
+    assert interpreter.calls == 1
+    assert compilation.semantic_interpretation["status"] == "accepted"
+
+
+def test_unregistered_action_defaults_to_interpreted_fail_closed_mode() -> None:
+    class _TrackingInterpreter(_SemanticInterpreter):
+        def __init__(self) -> None:
+            super().__init__()
+            self.calls = 0
+
+        def interpret(self, **kwargs):
+            self.calls += 1
+            return super().interpret(**kwargs)
+
+    interpreter = _TrackingInterpreter()
+    compiler = PhaseSemanticDemandCompiler(
+        semantic_interpreter=interpreter,
+    )
+    compilation = compiler.compile_for_run(
+        run=_run(
+            operation_type="unregistered_semantic_action",
+            action="unregistered_semantic_action",
+            semantic_graph={
+                "knowledge_output": True,
+                "observational_intent": True,
+            },
+        ),
+        consumer_phase_id="phase_unregistered",
+    )
+
+    assert compilation.status == "compiled"
+    assert interpreter.calls == 1
+    assert compilation.requirements is not None
+    provenance = next(
+        item
+        for item in compilation.requirements.requirement_provenance
+        if item.requirement == "semantic_dependency_mode:step_consumer"
+    )
+    assert (
+        provenance.source_ref
+        == "action_registry_default:unregistered_semantic_action"
+    )
+    assert provenance.source_field == "default_semantic_dependency_mode"
+
+
 def test_phase_name_does_not_determine_semantic_requirements() -> None:
     compiler = PhaseSemanticDemandCompiler()
     run = _run(semantic_graph=_planning_graph())

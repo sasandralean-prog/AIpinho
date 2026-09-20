@@ -34,9 +34,14 @@ class _Reasoner:
 
 
 def _candidate(candidate: dict, *, model_id: str = "fixture-model") -> dict:
+    structured = {
+        "resolution_status": "resolved",
+        "unresolved_reason_codes": [],
+        **candidate,
+    }
     return {
         "status": "candidate",
-        "candidate": candidate,
+        "candidate": structured,
         "model_id": model_id,
         "response_id": "fixture-response",
         "real_inference": True,
@@ -193,7 +198,7 @@ def test_semantic_demand_interpreter_rejects_deliverable_as_semantic_identifier(
     assert result["reason_code"] == "SEMANTIC_DEMAND_DOWNSTREAM_USE_UNGOVERNED"
 
 
-def test_semantic_demand_interpreter_fails_closed_on_low_confidence() -> None:
+def test_semantic_demand_interpreter_fails_closed_on_unresolved_demand() -> None:
     service = SemanticDemandInterpreterService(
         reasoner=_Reasoner(
             _candidate(
@@ -204,7 +209,10 @@ def test_semantic_demand_interpreter_fails_closed_on_low_confidence() -> None:
                     "required_semantic_properties": {},
                     "base_constraints": [],
                     "risk_constraints": [],
-                    "confidence": 0.31,
+                    "resolution_status": "unresolved",
+                    "unresolved_reason_codes": [
+                        "task_semantics_ambiguous"
+                    ],
                     "rationale": "Ambiguous request.",
                 }
             )
@@ -220,8 +228,46 @@ def test_semantic_demand_interpreter_fails_closed_on_low_confidence() -> None:
     assert result["status"] == "insufficient_evidence"
     assert (
         result["reason_code"]
-        == "SEMANTIC_DEMAND_INTERPRETATION_CONFIDENCE_INSUFFICIENT"
+        == "SEMANTIC_DEMAND_INTERPRETATION_UNRESOLVED"
     )
+    assert result["unresolved_reason_codes"] == [
+        "task_semantics_ambiguous"
+    ]
+
+
+def test_resolved_empty_demand_is_not_blocked_by_legacy_zero_confidence() -> None:
+    service = SemanticDemandInterpreterService(
+        reasoner=_Reasoner(
+            _candidate(
+                {
+                    "truth_claim_required": False,
+                    "required_downstream_uses": [],
+                    "required_use_safety": {},
+                    "required_semantic_properties": {},
+                    "base_constraints": [],
+                    "risk_constraints": [],
+                    "confidence": 0.0,
+                    "rationale": "No upstream semantic guarantee is required.",
+                }
+            )
+        )
+    )
+
+    result = service.interpret(
+        source_payload=_source_payload(),
+        semantic_graph=_source_payload()["semantic_intent_graph"],
+        vocabulary=_vocabulary(),
+    )
+
+    assert result["status"] == "accepted"
+    assert result["resolution_status"] == "resolved"
+    assert result["accepted_requirements"] == {
+        "required_downstream_uses": [],
+        "required_use_safety": {},
+        "required_semantic_properties": {},
+        "base_constraints": [],
+        "risk_constraints": [],
+    }
 
 
 def _requirements() -> DownstreamPhaseRequirements:

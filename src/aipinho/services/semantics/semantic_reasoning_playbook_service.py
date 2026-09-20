@@ -68,38 +68,36 @@ class SemanticReasoningPlaybookService:
                 "If a use-safety dimension is included, its acceptable-state list must be non-empty and every state must come from use_safety_requirement_states for that exact dimension.",
                 "If no semantic property is required, return required_semantic_properties as an empty object.",
                 "Never use vocabulary container names such as semantic_property_identifiers as output property identifiers.",
-                "Confidence measures confidence in the semantic interpretation, not how many requirements were selected.",
-                "An empty requirement set may have high confidence when the current task clearly does not depend on upstream semantic guarantees.",
+                "Resolution status describes whether the minimum requirement set can be determined, not how many requirements were selected.",
+                "An empty requirement set is resolved when the current task clearly does not depend on upstream semantic guarantees.",
+                "Use unresolved only when ambiguity, conflicting task semantics, dependency scope ambiguity, or missing governed vocabulary prevents determining the requirement set.",
             ],
-            "confidence_calibration": {
-                "high": (
-                    "0.80-1.00 when current task semantics are explicit enough to "
-                    "determine the required guarantees, including a confident conclusion "
-                    "that no upstream semantic guarantee is required."
+            "resolution_calibration": {
+                "resolved": (
+                    "Use when current task semantics and governed vocabulary are sufficient "
+                    "to determine the minimum requirement set, including an empty set."
                 ),
-                "medium": (
-                    "0.65-0.79 when requirements can be derived but some non-critical "
-                    "semantic ambiguity remains."
-                ),
-                "low": (
-                    "0.00-0.64 only when the task semantics are insufficient or ambiguous "
-                    "enough that the requirement set itself is uncertain."
+                "unresolved": (
+                    "Use only when the requirement set cannot be determined safely. "
+                    "Provide one or more governed unresolved reason codes."
                 ),
                 "warning": (
-                    "Do not lower confidence merely because requirement lists or mappings "
-                    "are empty. Empty and uncertain are different states."
+                    "Empty and unresolved are different states. Do not mark a clear empty "
+                    "requirement set unresolved merely because it contains no requirements."
                 ),
             },
             "empty_requirement_output_example": {
                 "instruction": (
                     "Structure-only example. Use when the current task clearly "
-                    "requires no upstream semantic guarantee. Do not copy confidence."
+                    "requires no upstream semantic guarantee."
                 ),
                 "required_downstream_uses": [],
                 "required_use_safety": {},
                 "required_semantic_properties": {},
                 "base_constraints": [],
                 "risk_constraints": [],
+                "resolution_status": "resolved",
+                "unresolved_reason_codes": [],
             },
             "generic_examples": self._examples(),
             "generic_counterexamples": self._counterexamples(),

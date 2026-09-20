@@ -21,6 +21,7 @@ actions:
     side_effect: false
     requires_approval: false
     capability: read_workspace
+    semantic_dependency_mode: deterministic
 
   read_config:
     aliases: [config_read, inspect_config]
@@ -119,6 +120,7 @@ actions:
     side_effect: false
     requires_approval: false
     capability: read_workspace
+    semantic_dependency_mode: deterministic
 
   project_context:
     aliases: [build_file_context]
@@ -126,6 +128,7 @@ actions:
     side_effect: false
     requires_approval: false
     capability: read_workspace
+    semantic_dependency_mode: deterministic
 
   project_analysis:
     aliases: [analyze_project]
@@ -133,6 +136,7 @@ actions:
     side_effect: false
     requires_approval: false
     capability: read_workspace
+    semantic_dependency_mode: interpreted
 
   project_report:
     aliases: [deterministic_project_report]
@@ -140,6 +144,7 @@ actions:
     side_effect: false
     requires_approval: false
     capability: read_workspace
+    semantic_dependency_mode: interpreted
 
   role_pipeline_run:
     aliases: [run_role_pipeline]
@@ -147,3 +152,4 @@ actions:
     side_effect: false
     requires_approval: false
     capability: model_inference
+    semantic_dependency_mode: interpreted
