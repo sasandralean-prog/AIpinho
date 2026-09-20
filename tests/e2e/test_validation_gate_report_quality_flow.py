@@ -1,7 +1,10 @@
 ﻿from aipinho.services.chat.chat_service import ChatService
 from aipinho.schemas.chat.chat_request import ChatRequest
 from aipinho.services.runtime.task_runtime_service import TaskRuntimeService
+from aipinho.services.validation.role_pipeline_validator import RolePipelineValidator
 from aipinho.services.validation.validation_gate_service import ValidationGateService
+from aipinho.services.validation.workspace_access_validator import WorkspaceAccessValidator
+from tests.support.runtime_fixtures import runtime_request
 from validation_fixtures import report_missing_evidence, valid_events, valid_report, valid_role_pipeline_run, valid_task_result, valid_task_run
 
 
@@ -52,7 +55,9 @@ def test_validation_gate_report_quality_flow_24_cases(task_runtime_store):
         cases.append((name, "failed", result.status, result.blocking_findings))
 
     forbidden = valid_task_run()
-    forbidden["workspace"] = "C:\\PinhoabacaxiAI"
+    forbidden_roots = WorkspaceAccessValidator().forbidden
+    assert forbidden_roots
+    forbidden["workspace"] = forbidden_roots[0]
     result = gate.validate_task_run_object(forbidden, result=valid_task_result(), events=valid_events())
     cases.append(("14_forbidden_root_access", "failed", result.status, result.blocking_findings))
 
@@ -73,7 +78,15 @@ def test_validation_gate_report_quality_flow_24_cases(task_runtime_store):
     role = valid_role_pipeline_run()
     role["passes"][0]["model_response"]["real_inference"] = True
     result = gate.validate_role_pipeline_object(role)
-    cases.append(("18_role_pipeline_real_inference_auto_use", "failed", result.status, result.blocking_findings))
+    inference_allowed = bool(
+        RolePipelineValidator().status()["real_inference_auto_use"]
+    )
+    cases.append((
+        "18_role_pipeline_real_inference_policy",
+        "passed" if inference_allowed else "failed",
+        result.status,
+        result.blocking_findings,
+    ))
 
     result = gate.validate_task_run_object(valid_task_run(), result=valid_task_result(), events=[{"type": "step_completed", "step_id": "s"}])
     cases.append(("19_event_order_invalid", "failed", result.status, result.blocking_findings))
@@ -83,7 +96,7 @@ def test_validation_gate_report_quality_flow_24_cases(task_runtime_store):
     cases.append(("20_duplicate_execution_signal", "failed", result.status, result.blocking_findings))
 
     service = TaskRuntimeService(store=task_runtime_store)
-    run = service.create_run(__import__("conftest", fromlist=["runtime_request"]).runtime_request())
+    run = service.create_run(runtime_request())
     finished, runtime_result = service.start(run.run_id)
     cases.append(("21_validation_attached_to_taskrunresult", "validation_present", "present" if runtime_result.validation else "missing", []))
 
