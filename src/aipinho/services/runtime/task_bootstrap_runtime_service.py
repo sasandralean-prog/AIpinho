@@ -10,6 +10,7 @@ from aipinho.schemas.runtime.task_bootstrap import (
     TaskBootstrapResult,
     UniversalTask,
 )
+from aipinho.services.runtime.phase_identity_service import PhaseIdentityService
 from aipinho.services.runtime.task_run_store import TaskRunStore
 
 
@@ -19,8 +20,9 @@ _SAFE_ID = re.compile(r"[^A-Za-z0-9_]+")
 class TaskBootstrapRuntimeService:
     """Creates canonical task identity before any executable runtime action."""
 
-    def __init__(self, *, store: TaskRunStore | None = None) -> None:
+    def __init__(self, *, store: TaskRunStore | None = None, phases: PhaseIdentityService | None = None) -> None:
         self.store = store
+        self.phases = phases or PhaseIdentityService()
 
     def bootstrap(self, request: TaskBootstrapRequest) -> TaskBootstrapResult:
         runtime_profile = request.runtime_profile or self._runtime_profile_from(request)
@@ -39,7 +41,7 @@ class TaskBootstrapRuntimeService:
             operation_type=request.operation_type,
             contract_type=request.contract_type,
             current_sprint=self._first_text(request.intent_map, "current_sprint", "sprint_id", "sprint"),
-            current_phase=self._first_text(request.intent_map, "current_phase", "phase_id", "phase"),
+            current_phase=self.phases.from_mapping(request.intent_map),
             parent_task_id=request.parent_task_id or self._first_text(request.intent_map, "parent_task_id", "parent_task"),
             source_channel=request.source_channel or str(request.intent_map.get("source_channel") or "runtime"),
             context={

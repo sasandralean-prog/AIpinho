@@ -247,6 +247,24 @@ class GovernanceLifecycleService:
             preview_quality = PreviewQualityDecision(status="not_required", can_create_approval=True)
         approval = self.approval_service.evaluate(policy, plan)
         completion = self.completion_resolver.resolve(plan.expected_outputs, outputs, proposed_status=proposed_completion_status)
+        if (
+            intent.requires_task
+            and plan.preview_kind == PreviewKind.PLAN_ONLY
+            and not plan.executable
+            and completion.safe_to_report_success
+        ):
+            completion_reason = (
+                plan.blocked_reason
+                if plan.blocked_reason != GovernanceLifecycleReasonCode.NONE
+                else GovernanceLifecycleReasonCode.MISSING_EXECUTABLE_PLAN
+            )
+            completion = completion.model_copy(
+                update={
+                    "status": "incomplete",
+                    "safe_to_report_success": False,
+                    "reason_code": completion_reason,
+                }
+            )
         validation = self._validation_verdict(outputs)
         snapshot = GovernanceLifecycleSnapshot(
             state=self._state(policy, plan, approval, completion),

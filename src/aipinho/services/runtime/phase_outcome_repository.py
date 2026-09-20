@@ -5,6 +5,7 @@ import json
 from typing import Any
 
 from aipinho.schemas.runtime.phase_outcome import PhaseOutcome
+from aipinho.services.runtime.phase_identity_service import PhaseIdentityService
 from aipinho.services.runtime.runtime_timeline_service import RuntimeTimelineService
 from aipinho.services.runtime.runtime_truth_engine import RuntimeTruthEngine
 from aipinho.services.runtime.task_run_store import TaskRunStore
@@ -23,20 +24,17 @@ class PhaseOutcomeRepository:
         *,
         timelines: RuntimeTimelineService | None = None,
         truth: RuntimeTruthEngine | None = None,
+        phases: PhaseIdentityService | None = None,
     ) -> None:
         self.store = store or TaskRunStore()
-        self.timelines = timelines or RuntimeTimelineService(store=self.store)
+        self.phases = phases or PhaseIdentityService()
+        self.timelines = timelines or RuntimeTimelineService(store=self.store, phases=self.phases)
         self.truth = truth or RuntimeTruthEngine()
 
     def resolve(self, *, session_id: str | None, phase_id: str) -> PhaseOutcome | None:
         candidates = self.store.list_runs(session_id=session_id, limit=1000)
         for run in candidates:
-            observed_phase = str(
-                run.intent_map.get("phase_id")
-                or run.bootstrap_context.get("phase_id")
-                or run.current_phase
-                or ""
-            )
+            observed_phase = self.phases.from_run(run) or ""
             if observed_phase != phase_id:
                 continue
             result = self.store.get_result(run.run_id)
@@ -81,12 +79,7 @@ class PhaseOutcomeRepository:
         result = self.store.get_result(run_id)
         if run is None or result is None:
             return None
-        phase_id = str(
-            run.intent_map.get("phase_id")
-            or run.bootstrap_context.get("phase_id")
-            or run.current_phase
-            or ""
-        )
+        phase_id = self.phases.from_run(run) or ""
         if not phase_id:
             return None
 

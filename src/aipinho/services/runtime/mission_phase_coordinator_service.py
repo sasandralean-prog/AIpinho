@@ -22,6 +22,7 @@ from aipinho.services.governance.policy.effective_policy_decision_service import
 )
 from aipinho.services.policy_kernel.action_registry_service import ActionRegistryService
 from aipinho.services.runtime.mission_continuation_service import MissionContinuationService
+from aipinho.services.runtime.phase_identity_service import PhaseIdentityService
 from aipinho.services.runtime.phase_dependency_evaluation_service import (
     PhaseDependencyEvaluationService,
 )
@@ -43,17 +44,20 @@ class MissionPhaseCoordinatorService:
         lifecycle: TaskRunLifecycleService | None = None,
         policy: EffectivePolicyDecisionService | None = None,
         actions: ActionRegistryService | None = None,
+        phases: PhaseIdentityService | None = None,
     ) -> None:
         self.store = store or TaskRunStore()
         self.dependencies = dependencies or PhaseDependencyEvaluationService()
         self.lifecycle = lifecycle or TaskRunLifecycleService()
         self.policy = policy or EffectivePolicyDecisionService()
         self.actions = actions or ActionRegistryService()
+        self.phases = phases or PhaseIdentityService()
         self.runtime = runtime or TaskRuntimeService(store=self.store)
         self.continuation = continuation or MissionContinuationService(
             store=self.store,
             dependencies=self.dependencies,
             lifecycle=self.lifecycle,
+            phases=self.phases,
         )
 
     def materialize_next_run(
@@ -99,7 +103,7 @@ class MissionPhaseCoordinatorService:
                 child_task_run_id=existing.run_id,
                 child_task_id=existing.task_id,
                 child_operation_id=existing.operation_id,
-                child_phase=existing.current_phase,
+                child_phase=self.phases.from_run(existing),
                 reused_existing_child=True,
                 dependency_evaluation=self._stored_evaluation(existing),
                 dependency_admission=self._stored_admission(existing),
@@ -391,8 +395,7 @@ class MissionPhaseCoordinatorService:
         previous_phase = str(continuation.get("previous_phase") or "")
         next_phase = str(
             continuation.get("next_phase")
-            or child.current_phase
-            or child.intent_map.get("mission_phase")
+            or self.phases.from_run(child)
             or ""
         )
         dependency_id = str(continuation.get("dependency_id") or "")
@@ -550,11 +553,7 @@ class MissionPhaseCoordinatorService:
             if str(item)
         ]
         lineage = self._unique([*lineage, previous.run_id])
-        previous_phase = (
-            previous.current_phase
-            or previous.intent_map.get("phase_id")
-            or previous.intent_map.get("mission_phase")
-        )
+        previous_phase = self.phases.from_run(previous)
         phase_lineage = self._unique(
             [
                 *list(previous_continuation.get("phase_lineage") or []),

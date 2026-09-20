@@ -16,6 +16,7 @@ from aipinho.schemas.runtime.task_run import TaskRun
 from aipinho.schemas.runtime.task_run_event import TaskRunEvent
 from aipinho.schemas.runtime.task_run_result import TaskRunResult
 from aipinho.services.artifacts.artifact_runtime_service import ArtifactRuntimeService
+from aipinho.services.runtime.phase_identity_service import PhaseIdentityService
 from aipinho.services.runtime.task_run_store import TaskRunStore
 
 
@@ -44,9 +45,11 @@ class RuntimeTimelineService:
         *,
         store: TaskRunStore | None = None,
         artifacts: ArtifactRuntimeService | None = None,
+        phases: PhaseIdentityService | None = None,
     ) -> None:
         self.store = store or TaskRunStore()
         self.artifacts = artifacts or ArtifactRuntimeService()
+        self.phases = phases or PhaseIdentityService()
 
     def build(self, run_id: str) -> RuntimeTimeline | None:
         run = self.store.get_run_lightweight(run_id)
@@ -73,7 +76,7 @@ class RuntimeTimelineService:
             workspace_id=run.workspace_id,
             project_id=run.project_id,
             status=completion.status,
-            phase=run.current_phase or self._phase_from_status(run.status),
+            phase=self.phases.from_run(run) or self._phase_from_status(run.status),
             events=timeline_events,
             steps=steps,
             artifacts=artifacts,
@@ -394,7 +397,7 @@ class RuntimeTimelineService:
 
     def _event_phase(self, run: TaskRun, event: TaskRunEvent) -> str | None:
         metadata = event.metadata if isinstance(event.metadata, dict) else {}
-        return str(metadata.get("phase") or metadata.get("current_phase") or run.current_phase or self._phase_from_status(event.status))
+        return str(metadata.get("phase") or metadata.get("current_phase") or self.phases.from_run(run) or self._phase_from_status(event.status))
 
     def _phase_from_status(self, status: str | None) -> str:
         value = str(status or "unknown")

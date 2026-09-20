@@ -153,3 +153,25 @@ def test_phase_chain_preserves_workspace_project_parent_and_session(tmp_path: Pa
     assert phase1.workspace_id == phase2.workspace_id == phase3.workspace_id
     assert phase1.project_id == phase2.project_id == phase3.project_id
     assert phase1.session_id == phase2.session_id == phase3.session_id == "chat_bootstrap"
+
+
+def test_mission_phase_alias_materializes_canonical_current_phase(tmp_path: Path) -> None:
+    workspace = tmp_path / "project"
+    workspace.mkdir()
+    runtime = _runtime(tmp_path)
+    request = _request(workspace=str(workspace))
+    request = request.model_copy(
+        update={
+            "intent_map": {
+                **request.intent_map,
+                "mission_phase": "discovery",
+            }
+        }
+    )
+
+    run = runtime.create_run(request)
+
+    assert run.current_phase == "discovery"
+    assert run.bootstrap_context["current_phase"] == "discovery"
+    assert run.workspace_context is not None
+    assert run.workspace_context.current_phase == "discovery"

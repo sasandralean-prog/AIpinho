@@ -22,6 +22,7 @@ from aipinho.services.semantics.contract_bound_semantic_reasoner import (
     ContractBoundSemanticReasoner,
 )
 from aipinho.services.runtime.execution_plan_promotion_service import ExecutionPlanPromotionService
+from aipinho.services.runtime.phase_identity_service import PhaseIdentityService
 from aipinho.services.config_governance.workspace_permission_matrix_service import (
     WorkspacePermissionMatrixService,
 )
@@ -35,6 +36,7 @@ class TaskRunPlanner:
         semantic_reasoner: ContractBoundSemanticReasoner | None = None,
         phase_demands: PhaseSemanticDemandCompiler | None = None,
         permission_matrix: WorkspacePermissionMatrixService | None = None,
+        phases: PhaseIdentityService | None = None,
     ) -> None:
         self.runtime = load_yaml_file(PATHS.config_root / "runtime" / "task_runtime_policy.yaml", critical=True, root=PATHS.config_root / "runtime")
         self.steps = load_yaml_file(PATHS.config_root / "runtime" / "governed_task_steps.yaml", critical=True, root=PATHS.config_root / "runtime")
@@ -46,6 +48,7 @@ class TaskRunPlanner:
         self.semantic_reasoner = semantic_reasoner
         self.phase_demands = phase_demands or PhaseSemanticDemandCompiler()
         self.permission_matrix = permission_matrix or WorkspacePermissionMatrixService()
+        self.phases = phases or PhaseIdentityService()
 
     def plan(self, request: TaskRunRequest) -> TaskRunPlan:
         allowed_contracts = set(self.runtime.get("allowed_contract_types", []) or [])
@@ -208,12 +211,7 @@ class TaskRunPlanner:
                 "MISSION_CONTINUATION_STRUCTURED_SEMANTICS_REQUIRED",
                 provenance={"depth": depth, "max_depth": max_depth},
             )
-        current_phase = str(
-            getattr(run, "current_phase", None)
-            or run.intent_map.get("phase_id")
-            or run.intent_map.get("mission_phase")
-            or ""
-        )
+        current_phase = self.phases.from_run(run) or ""
         phase_lineage = self._unique(
             [
                 *list(continuation.get("phase_lineage") or []),

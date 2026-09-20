@@ -1,4 +1,5 @@
 from __future__ import annotations
+import re
 from typing import Any
 from aipinho.core.paths import PATHS
 from aipinho.schemas.runtime.task_run_result import TaskRunResult
@@ -52,7 +53,7 @@ class TaskRunResultService:
         result_status = run.status if run.status in {"completed","partial","failed","cancelled","blocked"} else "failed"
         completion = context.outputs.get("_completion")
         execution_label = self._execution_label(run)
-        result = TaskRunResult(run_id=run.run_id, status=result_status, reason_code=self._reason_code(run, result_status, blocked), summary=self._summary(run, outputs, limitations), outputs=self.store.sanitize(outputs), step_summaries=self.store.sanitize(step_summaries), limitations=limitations, blocked_items=blocked, warnings=list(dict.fromkeys([*run.warnings,*context.warnings])), events_count=events_count, trace_ref=f"task-runs/{run.run_id}/trace", safe_to_display=True, block_cause=run.block_cause, completion=completion)
+        result = TaskRunResult(run_id=run.run_id, status=result_status, reason_code=self._reason_code(run, result_status), summary=self._summary(run, outputs, limitations), outputs=self.store.sanitize(outputs), step_summaries=self.store.sanitize(step_summaries), limitations=limitations, blocked_items=blocked, warnings=list(dict.fromkeys([*run.warnings,*context.warnings])), events_count=events_count, trace_ref=f"task-runs/{run.run_id}/trace", safe_to_display=True, block_cause=run.block_cause, completion=completion)
         try:
             from aipinho.services.validation.validation_gate_service import ValidationGateService
             validation = ValidationGateService().validate_task_run_object(run, result=result, events=self.store.get_events(run.run_id))
@@ -104,20 +105,32 @@ class TaskRunResultService:
             return "read-only"
         return "governada"
 
-    def _reason_code(self, run, result_status: str, blocked_items: list[str]) -> str | None:
+    def _reason_code(self, run, result_status: str) -> str | None:
         if result_status == "completed":
             return None
         cause = getattr(run, "block_cause", None)
-        if cause and getattr(cause, "block_reason_code", None):
-            return str(cause.block_reason_code)
-        blocked_reasons = getattr(run, "blocked_reasons", None)
-        if blocked_reasons:
-            return str(blocked_reasons[0])
-        if blocked_items:
-            return str(blocked_items[0])
+        candidates = [
+            getattr(cause, "block_reason_code", None) if cause else None,
+            *((getattr(run, "blocked_reasons", None) or [])[:1]),
+        ]
+        for candidate in candidates:
+            stable = self._stable_reason_code(candidate)
+            if stable:
+                return stable
+        if result_status == "partial":
+            return "task_run_partial"
         if result_status in {"blocked", "failed", "cancelled"}:
             return f"task_run_{result_status}"
         return None
+
+    @staticmethod
+    def _stable_reason_code(value: Any) -> str | None:
+        text = str(value or "").strip()
+        if not text or "/" in text or "\\" in text:
+            return None
+        if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_.:-]{1,127}", text):
+            return None
+        return text
 
     def status(self): return {"status":"ok","service":"task_run_result","safe_to_display":True,"raw_content_enabled":False}
 

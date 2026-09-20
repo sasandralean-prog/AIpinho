@@ -265,3 +265,23 @@ def test_phase_outcome_blocks_dependency_when_canonical_runtime_truth_blocks() -
     assert "completion_completed_timeline_has_gaps" in outcome.missing_truth
     assert "runtime_truth_blocked:runtime_truth_contradiction" in outcome.required_disclosures
     assert f"runtime_truth:{blocked_truth.truth_id}" in outcome.authority_refs
+
+
+def test_phase_outcome_accepts_structured_mission_phase_alias() -> None:
+    run, result = _fixture()
+    run.current_phase = None
+    run.intent_map = {"mission_phase": "discovery"}
+    repository = PhaseOutcomeRepository(
+        store=_FakeStore(run, result),  # type: ignore[arg-type]
+        timelines=_FakeTimelines(),  # type: ignore[arg-type]
+        truth=_FakeTruthEngine(_truth()),  # type: ignore[arg-type]
+    )
+
+    outcome = repository.project(run_id=run.run_id)
+
+    assert outcome is not None
+    assert outcome.phase_id == "discovery"
+    assert repository.resolve(
+        session_id="session_a",
+        phase_id="discovery",
+    ) is not None

@@ -52,6 +52,8 @@ def test_g9_ask_without_executable_plan_does_not_create_approval():
     assert snapshot.approval_gate.can_create_approval is False
     assert snapshot.approval_gate.status == "APPROVAL_NOT_CREATED_NO_EXECUTABLE_PLAN"
     assert snapshot.state == GovernanceLifecycleState.PLAN_ONLY_PREVIEW
+    assert snapshot.completion.status == "incomplete"
+    assert snapshot.completion.safe_to_report_success is False
 
 
 def test_g9_ask_with_executable_plan_creates_pending_approval_gate():

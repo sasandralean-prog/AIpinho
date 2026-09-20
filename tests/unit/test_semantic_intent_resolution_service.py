@@ -318,3 +318,62 @@ def test_subdirectory_word_does_not_convert_patch_mission_to_create_directory() 
     assert response.governance_lifecycle["operation_contract"]["requested_actions"] == []
     assert response.governance_lifecycle["intent"]["negative_constraints"].get("write_forbidden") is not True
     assert response.governance_lifecycle["intent"]["negative_constraints"].get("shell_forbidden") is not True
+
+
+class _BlockedContinuationDiscoveryService:
+    def execute(self, **_kwargs):
+        return SimpleNamespace(
+            run=SimpleNamespace(
+                task_id="task_fix_blocked",
+                run_id="task_run_fix_blocked",
+                current_phase="discovery",
+                mission_binding=SimpleNamespace(
+                    mission_id="mission_fix_blocked",
+                    authority_sha256="authority_fix_blocked",
+                ),
+                intent_map={
+                    "mission_continuation_runtime": {
+                        "status": "blocked",
+                        "reason_code": "mission_continuation_phase_outcome_missing",
+                        "candidate_id": "candidate_fix_blocked",
+                        "child_task_run_id": None,
+                        "child_status": None,
+                        "decision_action": "block",
+                        "next_phase": None,
+                    }
+                },
+                plan=SimpleNamespace(metadata={}),
+            ),
+            result=SimpleNamespace(
+                status="partial",
+                reason_code="task_run_partial",
+                warnings=[],
+                trace_ref="trace_fix_blocked",
+            ),
+        )
+
+
+def test_public_fix_response_projects_runtime_continuation_block() -> None:
+    service = CanonicalPublicChatService(
+        workspace_fix_discovery=_BlockedContinuationDiscoveryService()
+    )
+    prompt = (
+        "Investigue e corrija estruturalmente o aplicativo. "
+        r"WORKSPACE DO APP A SER CORRIGIDO: C:\Work\TargetApp. "
+        "Autorizo edicao, testes, build, commit e push."
+    )
+
+    response = service.respond(
+        ChatRequest(message=prompt, session_id="unit_continuation_block"),
+        source_channel="mobile_chat",
+    )
+
+    assert response.status == "blocked"
+    assert (
+        response.policy["reason_code"]
+        == "mission_continuation_phase_outcome_missing"
+    )
+    assert response.contract_preview["phase"] == "discovery"
+    assert response.contract_preview["continuation_status"] == "blocked"
+    assert response.contract_preview["next_phase"] is None
+    assert "continuation_owner" not in response.contract_preview

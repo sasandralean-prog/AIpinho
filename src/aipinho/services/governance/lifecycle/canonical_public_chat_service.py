@@ -29,6 +29,7 @@ from aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_serv
 from aipinho.services.orchestration.task_draft_store import TaskDraftStore
 from aipinho.services.orchestration.task_preview_service import TaskPreviewService
 from aipinho.services.orchestration.workspace_fix_discovery_service import WorkspaceFixDiscoveryService
+from aipinho.services.runtime.phase_identity_service import PhaseIdentityService
 from aipinho.services.patching.execution_preview_compiler import ExecutionPreviewCompiler
 from aipinho.services.policy_kernel.workspace_policy_service import WorkspacePolicyService
 from aipinho.services.prompt_intelligence.path_extraction_service import PathExtractionService
@@ -104,6 +105,7 @@ class CanonicalPublicChatService:
         self.workspace_fix_discovery = workspace_fix_discovery or WorkspaceFixDiscoveryService(
             runtime=self.readonly_artifact_runtime.runtime
         )
+        self.phase_identity = PhaseIdentityService()
         self.execution_preview_compiler = ExecutionPreviewCompiler()
         self.workspace_policy = workspace_policy or WorkspacePolicyService().load()
         self.context_prompt_policy = context_prompt_policy or ContextPromptPolicyService()
@@ -710,7 +712,29 @@ class CanonicalPublicChatService:
         )
         run = execution.run
         result = execution.result
-        if result.status == "completed":
+        run_intent = getattr(run, "intent_map", {})
+        if not isinstance(run_intent, dict):
+            run_intent = {}
+        continuation = run_intent.get("mission_continuation_runtime")
+        continuation = continuation if isinstance(continuation, dict) else {}
+        plan = getattr(run, "plan", None)
+        plan_metadata = getattr(plan, "metadata", {})
+        plan_metadata = plan_metadata if isinstance(plan_metadata, dict) else {}
+        planning = plan_metadata.get("mission_continuation_planning")
+        planning = planning if isinstance(planning, dict) else {}
+        candidate = plan_metadata.get("mission_continuation_candidate")
+        candidate = candidate if isinstance(candidate, dict) else {}
+        continuation_status = str(
+            continuation.get("status") or planning.get("status") or ""
+        )
+        continuation_reason = str(
+            continuation.get("reason_code") or planning.get("reason_code") or ""
+        ) or None
+
+        if continuation_status == "blocked":
+            response_status = "blocked"
+            label = "WORKSPACE_FIX_MISSION_CONTINUATION_BLOCKED"
+        elif result.status == "completed":
             response_status = "ok"
             label = "WORKSPACE_FIX_DISCOVERY_COMPLETED"
         elif result.status in {"completed_with_limitations", "partial"}:
@@ -745,17 +769,31 @@ class CanonicalPublicChatService:
             },
             policy={
                 "write_approval_created": False,
-                "reason_code": result.reason_code or label,
+                "reason_code": continuation_reason or result.reason_code or label,
                 "runtime_status": result.status,
+                "continuation_status": continuation_status or None,
+                "continuation_reason_code": continuation_reason,
             },
             contract_preview={
-                "phase": "discovery",
+                "phase": self.phase_identity.from_run(run),
                 "mission_id": run.mission_binding.mission_id if run.mission_binding else None,
                 "mission_authority_sha256": (
                     run.mission_binding.authority_sha256 if run.mission_binding else None
                 ),
-                "next_phase": "patch_planning",
-                "continuation_owner": "M8_mission_continuation",
+                "continuation_status": continuation_status or None,
+                "continuation_reason_code": continuation_reason,
+                "next_phase": (
+                    continuation.get("next_phase")
+                    if continuation
+                    else candidate.get("phase_id")
+                ),
+                "continuation_candidate_id": (
+                    continuation.get("candidate_id")
+                    if continuation
+                    else candidate.get("candidate_id")
+                ),
+                "child_task_run_id": continuation.get("child_task_run_id"),
+                "decision_action": continuation.get("decision_action"),
             },
             warnings=list(result.warnings),
         )

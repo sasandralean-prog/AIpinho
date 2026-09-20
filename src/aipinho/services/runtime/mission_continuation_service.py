@@ -9,6 +9,7 @@ from aipinho.schemas.runtime.mission_continuation import (
 from aipinho.schemas.runtime.phase_dependency_evaluation import PhaseDependencySnapshot
 from aipinho.schemas.runtime.phase_outcome import PhaseOutcome
 from aipinho.services.runtime.mission_contract_service import MissionContractService
+from aipinho.services.runtime.phase_identity_service import PhaseIdentityService
 from aipinho.services.runtime.phase_dependency_evaluation_service import (
     PhaseDependencyEvaluationService,
 )
@@ -31,9 +32,11 @@ class MissionContinuationService:
         dependencies: PhaseDependencyEvaluationService | None = None,
         missions: MissionContractService | None = None,
         lifecycle: TaskRunLifecycleService | None = None,
+        phases: PhaseIdentityService | None = None,
     ) -> None:
         self.store = store or TaskRunStore()
-        self.outcomes = outcomes or PhaseOutcomeRepository(store=self.store)
+        self.phases = phases or PhaseIdentityService()
+        self.outcomes = outcomes or PhaseOutcomeRepository(store=self.store, phases=self.phases)
         self.dependencies = dependencies or PhaseDependencyEvaluationService()
         self.missions = missions or MissionContractService()
         self.lifecycle = lifecycle or TaskRunLifecycleService()
@@ -323,15 +326,8 @@ class MissionContinuationService:
         if result_status in {"partial", "completed_with_limitations"}:
             return "satisfied_with_limitations"
         return result_status
-    @staticmethod
-    def _phase_id(run) -> str | None:
-        value = (
-            run.intent_map.get("phase_id")
-            or run.intent_map.get("mission_phase")
-            or run.current_phase
-            or run.bootstrap_context.get("phase_id")
-        )
-        return str(value) if value else None
+    def _phase_id(self, run) -> str | None:
+        return self.phases.from_run(run)
 
     def _decision(
         self,

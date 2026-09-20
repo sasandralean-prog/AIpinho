@@ -11,6 +11,7 @@ from aipinho.schemas.runtime.workspace_context import ExecutionContext, Retrieva
 from aipinho.schemas.runtime.mission_contract import MissionResourceScope
 from aipinho.services.config_governance.workspace_permission_matrix_service import WorkspacePermissionMatrixService
 from aipinho.services.policy_kernel.workspace_role_contract_service import WorkspaceRoleContractService
+from aipinho.services.runtime.phase_identity_service import PhaseIdentityService
 from aipinho.services.session.session_store import utc_now
 
 
@@ -21,9 +22,11 @@ class WorkspaceContextService:
         self,
         matrix: WorkspacePermissionMatrixService | None = None,
         roles: WorkspaceRoleContractService | None = None,
+        phases: PhaseIdentityService | None = None,
     ) -> None:
         self.matrix = matrix or WorkspacePermissionMatrixService().load()
         self.roles = roles or WorkspaceRoleContractService().load()
+        self.phases = phases or PhaseIdentityService()
 
     def from_request(self, request: TaskRunRequest, *, runtime_profile: str | None = None) -> WorkspaceContext:
         intent = request.intent_map if isinstance(request.intent_map, dict) else {}
@@ -37,7 +40,7 @@ class WorkspaceContextService:
             workspace_path=request.workspace,
             project_id=request.project_id,
             runtime_profile=runtime_profile or request.runtime_profile,
-            current_phase=str(request.intent_map.get("current_phase") or request.intent_map.get("phase") or "") or None,
+            current_phase=self.phases.from_mapping(intent),
             current_task=request.task_id,
             external_roots=self._list(intent.get("external_roots")),
             library_roots=self._list(intent.get("library_roots")),
@@ -54,7 +57,7 @@ class WorkspaceContextService:
             workspace_path=run.workspace,
             project_id=run.project_id,
             runtime_profile=run.runtime_profile,
-            current_phase=run.current_phase,
+            current_phase=self.phases.from_run(run),
             current_task=run.task_id or run.run_id,
             external_roots=[],
             library_roots=[],

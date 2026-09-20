@@ -162,3 +162,21 @@ def test_result_service_failed_run_cannot_keep_passed_validation(task_runtime_st
     assert result.validation["score"] == 0.0
     assert "task_run_status:failed" in result.validation["blocking_findings"]
     assert "validation_status:failed" in result.limitations
+
+
+def test_result_reason_code_never_uses_blocked_path(task_runtime_store):
+    run = runtime_run()
+    run.status = "partial"
+    run.plan.steps[0].status = "partial"
+    run.plan.steps[0].warnings = ["file_context_budget_or_omissions"]
+    context = runtime_context(run)
+    context.blocked_items = ["src/assets/icon.ico"]
+
+    result = TaskRunResultService(task_runtime_store).build(
+        run,
+        context,
+        events_count=1,
+    )
+
+    assert result.reason_code == "task_run_partial"
+    assert result.blocked_items == ["src/assets/icon.ico"]
