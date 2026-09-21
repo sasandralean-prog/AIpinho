@@ -66,6 +66,61 @@ def test_file_context_semantic_outcome_marks_blocked_context_unsafe():
     assert semantic["missing_truth"] == ["context_build_failed"]
 
 
+
+def test_project_analysis_semantic_outcome_marks_partial_report_safe_with_limitations():
+    runner = ReadOnlyTaskStepRunner()
+    result = SimpleNamespace(
+        status="partial",
+        safe_to_continue=True,
+        warnings=["file_selection_partial"],
+        limitations=["analysis_scope_partial"],
+        violations=[],
+    )
+
+    semantic = runner._project_analysis_semantic_outcome(result)
+
+    assert semantic["use_safety"]["safe_for_user_report"] == (
+        "true_with_limitations"
+    )
+    assert "file_selection_partial" in semantic["limitations"]
+    assert "analysis_scope_partial" in semantic["limitations"]
+    assert "project_analysis_partial" in semantic["limitations"]
+    assert semantic["missing_truth"] == []
+
+
+def test_project_analysis_semantic_outcome_marks_complete_report_safe():
+    runner = ReadOnlyTaskStepRunner()
+    result = SimpleNamespace(
+        status="ok",
+        safe_to_continue=True,
+        warnings=[],
+        limitations=[],
+        violations=[],
+    )
+
+    semantic = runner._project_analysis_semantic_outcome(result)
+
+    assert semantic["use_safety"]["safe_for_user_report"] is True
+    assert semantic["limitations"] == []
+    assert semantic["missing_truth"] == []
+
+
+def test_project_analysis_semantic_outcome_marks_unsafe_result_not_reportable():
+    runner = ReadOnlyTaskStepRunner()
+    result = SimpleNamespace(
+        status="failed",
+        safe_to_continue=False,
+        warnings=[],
+        limitations=[],
+        violations=["analysis_failed"],
+    )
+
+    semantic = runner._project_analysis_semantic_outcome(result)
+
+    assert semantic["use_safety"]["safe_for_user_report"] is False
+    assert semantic["missing_truth"] == ["analysis_failed"]
+
+
 def test_step_runner_blocks_unknown_step_type():
     run = runtime_run()
     context = runtime_context(run)

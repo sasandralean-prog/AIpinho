@@ -106,9 +106,42 @@ class ReadOnlyTaskStepRunner:
 
     def _run_project_analysis(self, run, context):
         result = self.analysis.analyze_project(self._request(run)); context.outputs["_project_analysis"] = result
-        summary = {"status": result.status, "result_id": result.result_id, "structures": list(result.structures), "findings_count": len(result.findings), "finding_summaries": [{"title": item.title, "severity": item.severity, "summary": item.summary} for item in result.findings[:20]]}
+        semantic_outcome = self._project_analysis_semantic_outcome(result)
+        summary = {"status": result.status, "result_id": result.result_id, "structures": list(result.structures), "findings_count": len(result.findings), "finding_summaries": [{"title": item.title, "severity": item.severity, "summary": item.summary} for item in result.findings[:20]], "semantic_outcome": semantic_outcome}
         status = "completed" if result.status == "ok" else ("partial" if result.status in {"partial", "degraded"} else "blocked")
-        return TaskStepOutcome(status=status, summary=summary, warnings=list(result.warnings), violations=list(result.violations), limitations=list(result.warnings))
+        return TaskStepOutcome(status=status, summary=summary, warnings=list(result.warnings), violations=list(result.violations), limitations=list(dict.fromkeys([*list(result.warnings), *list(result.limitations)])))
+
+    def _project_analysis_semantic_outcome(self, result) -> dict[str, Any]:
+        status = str(getattr(result, "status", "") or "")
+        safe_to_continue = bool(getattr(result, "safe_to_continue", False))
+        if status == "ok" and safe_to_continue:
+            safety: bool | str = True
+        elif status in {"partial", "degraded"} and safe_to_continue:
+            safety = "true_with_limitations"
+        else:
+            safety = False
+
+        limitations = [
+            *list(getattr(result, "warnings", []) or []),
+            *list(getattr(result, "limitations", []) or []),
+        ]
+        if status in {"partial", "degraded"} and "project_analysis_partial" not in limitations:
+            limitations.append("project_analysis_partial")
+        missing_truth = list(getattr(result, "violations", []) or [])
+        return {
+            "use_safety": {
+                "safe_for_user_report": safety,
+            },
+            "limitations": list(
+                dict.fromkeys(str(item) for item in limitations if str(item))
+            ),
+            "missing_truth": list(
+                dict.fromkeys(str(item) for item in missing_truth if str(item))
+            ),
+            "required_disclosures": list(
+                dict.fromkeys(str(item) for item in limitations if str(item))
+            ),
+        }
 
     def _generate_project_report(self, run, context):
         execution_metadata = self._execution_plan_metadata(run)

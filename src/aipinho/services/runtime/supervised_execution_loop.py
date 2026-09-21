@@ -62,6 +62,16 @@ class SupervisedExecutionLoop:
                 break
             deps_allowed, dependency_reasons = self.workflows.can_start_phase(run.workflow, step.step_id)
             if not deps_allowed:
+                if not step.required:
+                    step.status="skipped"; step.warnings=list(dict.fromkeys([*step.warnings,"optional_phase_dependency_unavailable",*dependency_reasons])); step.finished_at=utc_now()
+                    context.warnings.extend(step.warnings)
+                    run.execution_graph=self.graphs.mark_step_finished(run.execution_graph, step.step_id, status="skipped", output_summary={}, warnings=step.warnings, violations=[])
+                    skip_event=self.events.create(run_id,"step_skipped","skipped","Optional step skipped because governed workflow dependency evidence was unavailable.",step_id=step.step_id,metadata={"reasons":dependency_reasons,"workflow_id":run.workflow.workflow_id if run.workflow else None})
+                    run.workflow=self.workflows.finish_phase_for_step(run.workflow,step.step_id,status="skipped",event_id=skip_event.event_id,validation_ref=skip_event.event_id,violations=[],semantic_outcome={})
+                    phase = self.workflows.phase_for_step(run.workflow, step.step_id) if run.workflow else None
+                    run.execution_context=self.execution_contexts.record_phase(run,phase_id=phase.phase_id if phase else None,status="skipped",event_id=skip_event.event_id)
+                    self.audit.record(run_id=run_id,step_id=step.step_id,action=step.action,status="skipped",reason=",".join(dependency_reasons))
+                    run.revision+=1; self.store.update_run(run); continue
                 step.status="blocked"; step.violations.extend(dependency_reasons); run.blocked_reasons=list(dict.fromkeys([*run.blocked_reasons,*dependency_reasons])); step.finished_at=utc_now(); terminal="blocked"; self.events.create(run_id,"step_blocked","blocked","Step blocked by Workflow dependency runtime.",step_id=step.step_id,metadata={"reasons":dependency_reasons}); self.audit.record(run_id=run_id,step_id=step.step_id,action=step.action,status="blocked",reason=",".join(dependency_reasons)); self.store.update_run(run); break
             phase = self.workflows.phase_for_step(run.workflow, step.step_id) if run.workflow else None
             run.current_step_id=step.step_id; step.status="running"; step.started_at=utc_now(); run.execution_graph=self.graphs.mark_step_started(run.execution_graph, step.step_id); run.revision+=1; self.events.create(run_id,"StepStarted","running",f"Canonical step {step.step_type} started.",step_id=step.step_id,metadata={"execution_id":run.plan.canonical_execution_plan.execution_id if run.plan.canonical_execution_plan else None,"action":step.action}); start_event=self.events.create(run_id,"step_started","running",f"Step {step.step_type} started.",step_id=step.step_id,metadata={"workflow_id":run.workflow.workflow_id if run.workflow else None,"phase_id":phase.phase_id if phase else None}); run.workflow=self.workflows.start_phase_for_step(run.workflow, step.step_id, event_id=start_event.event_id); self.store.update_run(run)

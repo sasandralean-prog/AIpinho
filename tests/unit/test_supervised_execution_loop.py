@@ -6,7 +6,18 @@ from aipinho.services.runtime.task_run_event_service import TaskRunEventService
 from aipinho.services.runtime.task_run_lifecycle_service import TaskRunLifecycleService
 from aipinho.services.runtime.task_run_store import TaskRunStore
 from aipinho.services.runtime.task_run_guard import TaskRunGuard
+from aipinho.services.runtime.workflow_runtime_service import WorkflowRuntimeService
 from aipinho.schemas.runtime.task_run_step import TaskRunStep
+
+
+
+class OptionalDependencyUnavailableWorkflow(WorkflowRuntimeService):
+    def can_start_phase(self, workflow, source_step_id):
+        if source_step_id == "step_optional":
+            return False, [
+                "phase_dependency_fixture:PHASE_DEPENDENCY_EVALUATION_INCOMPLETE"
+            ]
+        return super().can_start_phase(workflow, source_step_id)
 
 
 class CompletingExecutor:
@@ -102,6 +113,42 @@ def test_supervised_loop_does_not_mark_completed_when_optional_step_leaves_limit
     assert finished.status == "partial"
     assert result.status == "partial"
     assert "optional_failed" in result.limitations
+
+
+
+def test_supervised_loop_skips_optional_step_when_dependency_is_unavailable(
+    task_runtime_store,
+):
+    run = runtime_run()
+    run.plan.steps.append(
+        TaskRunStep(
+            step_id="step_optional",
+            step_type="validate_runtime",
+            action="validate_runtime",
+            required=False,
+        )
+    )
+    workflow_service = OptionalDependencyUnavailableWorkflow()
+    run.workflow = workflow_service.create_for_run(run)
+    store_bootstrapped_run(task_runtime_store, run)
+    executor = CompletingExecutor()
+    loop = build_loop(task_runtime_store, executor)
+    loop.workflows = workflow_service
+
+    finished, result = loop.run(run.run_id)
+
+    optional = next(
+        step for step in finished.plan.steps if step.step_id == "step_optional"
+    )
+    assert finished.status != "blocked"
+    assert result.status != "blocked"
+    assert optional.status == "skipped"
+    assert "optional_phase_dependency_unavailable" in optional.warnings
+    assert any(
+        "PHASE_DEPENDENCY_EVALUATION_INCOMPLETE" in warning
+        for warning in optional.warnings
+    )
+    assert executor.calls == 1
 
 
 def test_supervised_loop_blocks_when_guard_denies_before_execution(task_runtime_store):

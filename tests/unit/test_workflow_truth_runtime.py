@@ -230,6 +230,80 @@ def test_r5_partial_phase_semantic_outcome_is_preserved_for_dependency_admission
     assert dependency.admission.authorized is True
 
 
+
+def test_r5_partial_analysis_semantic_outcome_is_preserved_for_report_dependency(
+    task_runtime_service,
+):
+    run = task_runtime_service.create_run(runtime_request())
+    workflow = run.workflow
+    assert workflow is not None
+    service = WorkflowRuntimeService()
+    producer = workflow.phases[0]
+    consumer = workflow.phases[1]
+    dependency = next(
+        item
+        for item in workflow.dependencies
+        if item.producer_phase_id == producer.phase_id
+        and item.consumer_phase_id == consumer.phase_id
+    )
+    requirements = DownstreamPhaseRequirements(
+        contract_id="workflow_partial_project_report",
+        consumer_phase_id=consumer.phase_id,
+        operation_type=consumer.action,
+        authority_source="workflow_contract",
+        allowed_dependency_statuses=[
+            "satisfied",
+            "satisfied_with_limitations",
+        ],
+        required_use_safety={
+            "safe_for_user_report": [
+                True,
+                "true_with_limitations",
+            ]
+        },
+        evidence_required=True,
+    )
+    dependency.requirements = requirements
+    assert dependency.demand_compilation is not None
+    dependency.demand_compilation.status = "compiled"
+    dependency.demand_compilation.requirements = requirements
+    dependency.evaluation = None
+    dependency.admission = None
+
+    service.start_phase_for_step(workflow, producer.source_step_id)
+    service.finish_phase_for_step(
+        workflow,
+        producer.source_step_id,
+        status="partial",
+        validation_ref="validation_partial_analysis_semantics",
+        violations=[],
+        semantic_outcome={
+            "use_safety": {
+                "safe_for_user_report": "true_with_limitations",
+            },
+        },
+    )
+
+    allowed, reasons = service.can_start_phase(
+        workflow,
+        consumer.source_step_id,
+    )
+
+    assert allowed is True
+    assert reasons == []
+    assert dependency.evaluation is not None
+    safety_check = next(
+        check
+        for check in dependency.evaluation.requirement_checks
+        if check.requirement == "use_safety:safe_for_user_report"
+    )
+    assert safety_check.expected == [True, "true_with_limitations"]
+    assert safety_check.observed == "true_with_limitations"
+    assert safety_check.status == "satisfied"
+    assert dependency.admission is not None
+    assert dependency.admission.authorized is True
+
+
 def test_r5_missing_artifact_dependency_blocks_phase(task_runtime_service):
     run = task_runtime_service.create_run(runtime_request())
     workflow = run.workflow
