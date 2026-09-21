@@ -97,10 +97,9 @@
     "remote clean-copy/fetch/fast-forward semantics recognized without auto-expanding human authority"
   ],
   "current_frontier": [
-    "promote and restart M10-A.20 on canonical main with dirty-state preservation",
-    "repeat the fresh manual end-to-end mission only after the A.20 backend restart is proven",
-    "expect git_clone/git_fetch/git_pull_ff to remain fail-closed unless explicit human authority covers those staging operations",
-    "continue M10 consolidation without creating parallel runtime authorities"
+    "run a fresh manual M10 end-to-end mission through the normal AIpinho interface on the restarted A.20 code",
+    "observe whether the next fail-closed boundary is the explicit git_clone/git_fetch/git_pull_ff authority gap or a later runtime dependency",
+    "continue M10 consolidation without widening frozen human authority or creating parallel runtime authorities"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -438,7 +437,10 @@
           "verified post-A.19 restart backend_restart_1789982393071 records healthy -> down -> healthy and transitions PID 21432 to PID 23916 with no warnings",
           "M10-A.20 implementation SHA 93b2cf13 separates requested capability from explicit human authority and resource permission envelopes; resource permissions no longer become requested capabilities automatically and negative/incidental mentions no longer fabricate artifact/write demand",
           "M10-A.20 remote ingress recognizes clean Git copy, fetch and safe fast-forward as git_clone/git_fetch/git_pull_ff resource/request semantics without auto-authorizing them; exact remaining future-side-effect authority gap is git_clone, git_fetch, git_pull_ff",
-          "M10-A.20 validation is green: focused ingress/authority/remote 45/45, MissionContract/grant/staging/continuation 76/76, final authority/staging set 72/72, compileall/diff/hardcode checks clean"
+          "M10-A.20 validation is green: focused ingress/authority/remote 45/45, MissionContract/grant/staging/continuation 76/76, final authority/staging set 72/72, compileall/diff/hardcode checks clean",
+          "M10-A.20 was promoted by fast-forward with zero incoming overlap against canonical dirty state; tracked dirty hashes were preserved and all 153 pre-existing untracked files remained present",
+          "verified A.20 restart backend_restart_1789986053376 records healthy -> down -> healthy, stops PID 23916, starts PID 13916, returns accepted with no warnings, and live runtime health is ok",
+          "after A.20 promotion/restart the next required validation is a fresh manual end-to-end mission through the normal interface; no new authority is to be synthesized for git_clone/git_fetch/git_pull_ff"
         ],
         "plan_changed": false
       }
