@@ -1,13 +1,13 @@
 {
-  "schema_version": "context_state.v2026-09-18-e2e-new-runtime-m9",
-  "updated_at": "2026-09-18",
+  "schema_version": "context_state.v2026-09-21-e2e-new-runtime-m10-a20",
+  "updated_at": "2026-09-21",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
     "name": "sasandralean-prog/AIpinho",
     "branch": "main",
     "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
     "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d",
-    "current_main_head": "19beb80d866018c5b0ee26547e2577c2ce775992"
+    "current_main_head": "93b2cf1360db785329217f697145d41cfaf64636"
   },
   "authorities": [
     "Human operator",
@@ -91,13 +91,16 @@
     "mission-wide completion requirements projected across durable TaskRuns and PhaseOutcomes",
     "persisted non-authoritative semantic requirement-to-evidence binding with deterministic recompilation after restart",
     "MissionCompletionFacet ceiling integrated into canonical RuntimeTruth and SpeakerTruth publication",
-    "restart-equivalent final RuntimeTruth without semantic model reinvocation"
+    "restart-equivalent final RuntimeTruth without semantic model reinvocation",
+    "bounded semantic continuation model-view with action-scoped use-safety applicability",
+    "requested capability separated from explicit human authority and resource permission envelope",
+    "remote clean-copy/fetch/fast-forward semantics recognized without auto-expanding human authority"
   ],
   "current_frontier": [
-    "execute M10 Fresh Manual E2E FireTest and Consolidation from e2enewruntimee.md",
-    "validate the closed M1-M9 canonical runtime through a fresh manual end-to-end mission",
-    "confirm mission continuation, evidence-bound mission completion, restart rehydration and SpeakerTruth ceilings under real workflow conditions",
-    "consolidate validated M10 evidence without creating parallel runtime authorities"
+    "promote and restart M10-A.20 on canonical main with dirty-state preservation",
+    "repeat the fresh manual end-to-end mission only after the A.20 backend restart is proven",
+    "expect git_clone/git_fetch/git_pull_ff to remain fail-closed unless explicit human authority covers those staging operations",
+    "continue M10 consolidation without creating parallel runtime authorities"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -171,7 +174,7 @@
       "M7": "CLOSED",
       "M8": "CLOSED",
       "M9": "CLOSED",
-      "M10": "PLANNED"
+      "M10": "IN_PROGRESS"
     },
     "resource_direction": [
       "prompt-derived local workspace resources",
@@ -430,7 +433,12 @@
           "M10-A.18 commits a266b732 and 5833fccd repair restart truth by falling back from stale PID metadata to the real listener, requiring stop_health=down before start, waiting for port closure, and capturing canonical script output through temporary files rather than inherited subprocess pipes",
           "verified restart backend_restart_1789957290698 returned accepted in 13.21 s with trace healthy -> down -> healthy, transitioned PID 24636 to PID 21432, created PID file 21432, and left live health/runtime/backend-control status healthy on canonical main",
           "read-only replay on the truly restarted code exposes the next fail-closed frontier SEMANTIC_REASONER_ROLE_BUDGET_EXCEEDED: continuation planner payload is 11237 serialized chars, continuation_options is 7367 chars, and semantic_interpreter low-role budget is 6000; no child TaskRun was materialized",
-          "the established unregistered-worktree approval fixture remains a baseline test limitation outside M9"
+          "the established unregistered-worktree approval fixture remains a baseline test limitation outside M9",
+          "M10-A.19 implementation/main SHA 57833beb7e54862956b67e91c0927c0f04d8f91f bounds continuation semantic payloads and makes interpreted use-safety applicability action-registry-driven; real project_analysis replay requires only safe_for_downstream_static_analysis=true and expanded regression is 130/130",
+          "verified post-A.19 restart backend_restart_1789982393071 records healthy -> down -> healthy and transitions PID 21432 to PID 23916 with no warnings",
+          "M10-A.20 implementation SHA 93b2cf13 separates requested capability from explicit human authority and resource permission envelopes; resource permissions no longer become requested capabilities automatically and negative/incidental mentions no longer fabricate artifact/write demand",
+          "M10-A.20 remote ingress recognizes clean Git copy, fetch and safe fast-forward as git_clone/git_fetch/git_pull_ff resource/request semantics without auto-authorizing them; exact remaining future-side-effect authority gap is git_clone, git_fetch, git_pull_ff",
+          "M10-A.20 validation is green: focused ingress/authority/remote 45/45, MissionContract/grant/staging/continuation 76/76, final authority/staging set 72/72, compileall/diff/hardcode checks clean"
         ],
         "plan_changed": false
       }
