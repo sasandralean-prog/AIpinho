@@ -96,12 +96,37 @@ class BackendControlService:
         self.events.record(MonitorEvent(event_type="backend_restart_started", service_id=service_id, port=backend_port, status="restarting", message="Restart governado iniciado pelo backend control."))
         stop_result = self._run_script("stop", backend_port=backend_port)
         trace_events.append({"event": "stop_script", **stop_result})
-        start_result = self._run_script("start", backend_port=backend_port)
+        stop_health = self.health.check(
+            service,
+            timeout_seconds=float(self._config("status_timeout_seconds", 1.0)),
+        )
+        trace_events.append({"event": "stop_health", "status": stop_health.status})
+        stop_confirmed = (
+            stop_result.get("returncode") == 0
+            and stop_health.status == "down"
+        )
+        if stop_confirmed:
+            start_result = self._run_script("start", backend_port=backend_port)
+        else:
+            start_result = {
+                "returncode": 125,
+                "error": "start_skipped_stop_not_confirmed",
+            }
         trace_events.append({"event": "start_script", **start_result})
-        post = self.health.check(service, timeout_seconds=float(self._config("status_timeout_seconds", 1.0)))
+        post = self.health.check(
+            service,
+            timeout_seconds=float(self._config("status_timeout_seconds", 1.0)),
+        )
         trace_events.append({"event": "post_health", "status": post.status})
-        command_ok = stop_result.get("returncode") == 0 and start_result.get("returncode") == 0
-        status = "accepted" if command_ok and post.status == "healthy" else ("degraded" if command_ok else "failed")
+        command_ok = (
+            stop_confirmed
+            and start_result.get("returncode") == 0
+        )
+        status = (
+            "accepted"
+            if command_ok and post.status == "healthy"
+            else ("degraded" if command_ok else "failed")
+        )
         self._write_state({"status": "online" if post.status == "healthy" else post.status, "restart_id": restart_id, "finished_at_epoch": time.time()})
         trace = self.traces.record(SupervisorTrace(action="backend_control_restart", service_id=service_id, port=backend_port, status=status, events=trace_events))
         audit = self.audit.record(SupervisorAudit(action="backend_control_restart", service_id=service_id, port=backend_port, requested_by=requested_by, device_id=device_id, status=status, data={"reason": reason, "control_port": control_port, "canonical_scripts": True}))
@@ -117,7 +142,16 @@ class BackendControlService:
             post_health=post,
             audit_id=audit.audit_id,
             trace_id=trace.trace_id,
-            warnings=[] if status == "accepted" else [f"post_health:{post.status}", f"stop:{stop_result.get('returncode')}", f"start:{start_result.get('returncode')}"],
+            warnings=(
+                []
+                if status == "accepted"
+                else [
+                    f"stop_health:{stop_health.status}",
+                    f"post_health:{post.status}",
+                    f"stop:{stop_result.get('returncode')}",
+                    f"start:{start_result.get('returncode')}",
+                ]
+            ),
             human_message="Backend reiniciado pelos scripts canonicos." if status == "accepted" else "Restart solicitado, mas o backend nao confirmou estado saudavel.",
         )
 

@@ -10,8 +10,20 @@ $pidFile = Join-Path $root "data\runtime\aipinho_api_$Port.pid"
 $processId = $null
 
 if (Test-Path -LiteralPath $pidFile) {
-    $processId = [int](Get-Content -LiteralPath $pidFile -Raw).Trim()
-} else {
+    $recordedId = [int](Get-Content -LiteralPath $pidFile -Raw).Trim()
+    $recordedOwner = Get-CimInstance Win32_Process -Filter "ProcessId = $recordedId" -ErrorAction SilentlyContinue
+    $recordedListener = Get-NetTCPConnection -State Listen -LocalPort $Port -ErrorAction SilentlyContinue |
+        Where-Object { $_.OwningProcess -eq $recordedId } |
+        Select-Object -First 1
+    if ($recordedOwner -and $recordedListener) {
+        $processId = $recordedId
+    } else {
+        Remove-Item -LiteralPath $pidFile -Force
+        Write-Output "Recorded PID is stale; falling back to the active listener."
+    }
+}
+
+if (-not $processId) {
     $listener = Get-NetTCPConnection -State Listen -LocalPort $Port -ErrorAction SilentlyContinue | Select-Object -First 1
     if ($listener) { $processId = $listener.OwningProcess }
 }
@@ -23,9 +35,7 @@ if (-not $processId) {
 
 $owner = Get-CimInstance Win32_Process -Filter "ProcessId = $processId" -ErrorAction SilentlyContinue
 if (-not $owner) {
-    if (Test-Path -LiteralPath $pidFile) { Remove-Item -LiteralPath $pidFile -Force }
-    Write-Output "Recorded process no longer exists."
-    exit 0
+    throw "Listener PID $processId disappeared before identity validation."
 }
 $listener = Get-NetTCPConnection -State Listen -LocalPort $Port -ErrorAction SilentlyContinue |
     Where-Object { $_.OwningProcess -eq $processId } |
@@ -45,5 +55,15 @@ if (-not $commandIdentifiesAipinho -and -not $healthIdentifiesAipinho) {
 }
 
 Stop-Process -Id $processId -Force
+$deadline = (Get-Date).AddSeconds(5)
+do {
+    $remainingListener = Get-NetTCPConnection -State Listen -LocalPort $Port -ErrorAction SilentlyContinue | Select-Object -First 1
+    if (-not $remainingListener) { break }
+    Start-Sleep -Milliseconds 100
+} while ((Get-Date) -lt $deadline)
+
+if ($remainingListener) {
+    throw "AIpinho listener on port $Port remained active after stopping PID $processId."
+}
 if (Test-Path -LiteralPath $pidFile) { Remove-Item -LiteralPath $pidFile -Force }
-Write-Output "AIpinho API stopped (PID $processId)."
+Write-Output "AIpinho API stopped (PID $processId); port $Port is no longer listening."
