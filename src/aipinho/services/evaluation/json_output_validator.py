@@ -89,7 +89,9 @@ class JSONOutputValidator:
         label = path or "root"
         if isinstance(schema, str):
             if schema == "non_empty_string":
-                return [] if isinstance(value, str) and value.strip() else [f"schema_type_mismatch:{label}"]
+                if not isinstance(value, str):
+                    return [f"schema_type_mismatch:{label}"]
+                return [] if value.strip() else [f"schema_non_empty_mismatch:{label}"]
             if schema == "number_between_0_and_1":
                 valid = (
                     isinstance(value, (int, float))
@@ -135,6 +137,8 @@ class JSONOutputValidator:
             if schema_type == "string":
                 if not isinstance(value, str):
                     return [f"schema_type_mismatch:{label}"]
+                if bool(schema.get("non_empty")) and not value.strip():
+                    return [f"schema_non_empty_mismatch:{label}"]
                 enum = list(schema.get("enum") or [])
                 if enum and value not in enum:
                     return [f"schema_enum_mismatch:{label}"]

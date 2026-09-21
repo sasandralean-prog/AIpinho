@@ -138,6 +138,7 @@ actions:
     requires_approval: false
     capability: read_workspace
     semantic_dependency_mode: interpreted
+    semantic_use_safety_dimensions: [safe_for_downstream_static_analysis]
 
   project_report:
     aliases: [deterministic_project_report]
@@ -146,6 +147,7 @@ actions:
     requires_approval: false
     capability: read_workspace
     semantic_dependency_mode: interpreted
+    semantic_use_safety_dimensions: [safe_for_truth_claim, safe_for_user_report]
 
   role_pipeline_run:
     aliases: [run_role_pipeline]
@@ -154,3 +156,4 @@ actions:
     requires_approval: false
     capability: model_inference
     semantic_dependency_mode: interpreted
+    semantic_use_safety_dimensions: [safe_for_downstream_static_analysis]

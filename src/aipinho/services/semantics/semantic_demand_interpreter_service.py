@@ -57,7 +57,7 @@ class SemanticDemandInterpreterService:
         reasoner = self.reasoner or ContractBoundSemanticReasoner()
         self.reasoner = reasoner
         try:
-            reasoning_context = self.playbook.build(
+            reasoning_context = self.playbook.build_model_view(
                 source_payload=source_payload,
                 vocabulary=vocabulary,
             )
@@ -90,16 +90,24 @@ class SemanticDemandInterpreterService:
                     "required_semantic_properties": "object[string,list[scalar]]",
                     "base_constraints": "list[string]",
                     "risk_constraints": "list[string]",
-                    "resolution_status": "resolved|unresolved",
-                    "unresolved_reason_codes": (
-                        "list[task_semantics_ambiguous|required_concept_not_in_vocabulary|"
-                        "dependency_scope_ambiguous|conflicting_task_semantics]"
-                    ),
-                    "rationale": "non_empty_string",
+                    "resolution_status": {
+                        "type": "string",
+                        "enum": ["resolved", "unresolved"],
+                    },
+                    "unresolved_reason_codes": {
+                        "type": "list",
+                        "item": {
+                            "type": "string",
+                            "enum": sorted(self._UNRESOLVED_REASON_CODES),
+                        },
+                    },
+                    "rationale": {
+                        "type": "string",
+                        "non_empty": True,
+                    },
                 },
                 "instruction": (
-                    "Apply the playbook to current_task_semantics. Examples and "
-                    "counterexamples are illustrative only and MUST NOT be copied. "
+                    "Apply the playbook to current_task_semantics. "
                     "Select identifiers only from governed_vocabulary. Empty "
                     "requirement lists or mappings are valid. Use resolution_status="
                     "resolved when the minimum requirement set can be determined, "
@@ -175,6 +183,12 @@ class SemanticDemandInterpreterService:
             if True not in values:
                 values.append(True)
             required_use_safety["safe_for_truth_claim"] = values
+        else:
+            required_use_safety.pop("safe_for_truth_claim", None)
+
+        steps = list(source_payload.get("steps") or [])
+        if steps and not any(bool(step.get("side_effect")) for step in steps if isinstance(step, dict)):
+            required_use_safety.pop("safe_for_destructive_action", None)
 
         return {
             "status": "accepted",

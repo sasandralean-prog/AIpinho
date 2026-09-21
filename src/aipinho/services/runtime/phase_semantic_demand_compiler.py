@@ -301,8 +301,12 @@ class PhaseSemanticDemandCompiler:
         if semantic_interpretation_required:
             semantic_interpretation = (
                 self.semantic_interpreter.interpret(
-                    source_payload=source_payload,
-                    semantic_graph=semantic_graph,
+                    source_payload=self._semantic_model_source_payload(
+                        source_payload
+                    ),
+                    semantic_graph=self._semantic_graph_model_view(
+                        semantic_graph
+                    ),
                     vocabulary=vocabulary,
                 )
             )
@@ -436,6 +440,60 @@ class PhaseSemanticDemandCompiler:
         if not value:
             return None
         return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+    @staticmethod
+    def _semantic_graph_model_view(
+        semantic_graph: dict[str, Any],
+    ) -> dict[str, Any]:
+        return {
+            key: value
+            for key, value in semantic_graph.items()
+            if key != "evidence" and value not in (None, "", [], {})
+        }
+
+    def _semantic_model_source_payload(
+        self,
+        source_payload: dict[str, Any],
+    ) -> dict[str, Any]:
+        intent_map = dict(source_payload.get("intent_map") or {})
+        projected_intent = {
+            key: value
+            for key, value in intent_map.items()
+            if key
+            not in {
+                "mission_binding",
+                "resource_scope",
+                "negative_constraints",
+                "semantic_intent_graph",
+            }
+            and value not in (None, "", [], {})
+        }
+        projected = {
+            "operation_kind": source_payload.get("operation_kind"),
+            "intent_map": projected_intent,
+            "semantic_intent_graph": self._semantic_graph_model_view(
+                dict(source_payload.get("semantic_intent_graph") or {})
+            ),
+            "artifact_expectations": list(
+                source_payload.get("artifact_expectations") or []
+            ),
+            "validation_requirements": list(
+                source_payload.get("validation_requirements") or []
+            ),
+            "required_capabilities": list(
+                source_payload.get("required_capabilities") or []
+            ),
+            "requested_deliverables": list(
+                source_payload.get("requested_deliverables") or []
+            ),
+            "steps": list(source_payload.get("steps") or []),
+        }
+        return {
+            key: value
+            for key, value in projected.items()
+            if value not in (None, "", [], {})
+        }
 
     def _structured_intent_context(
         self,

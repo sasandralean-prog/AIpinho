@@ -140,6 +140,40 @@ def test_semantic_reasoning_playbook_exposes_governed_vocabulary_without_copying
     assert "Do not copy identifiers or values" in context["authority_notice"]
 
 
+
+def test_semantic_reasoning_model_view_scopes_use_safety_by_action_registry() -> None:
+    context = SemanticReasoningPlaybookService().build_model_view(
+        source_payload=_source_payload(),
+        vocabulary=_vocabulary(),
+    )
+    governed = context["governed_vocabulary"]
+
+    assert governed["use_safety_dimensions"] == [
+        "safe_for_downstream_static_analysis"
+    ]
+    assert set(governed["use_safety_requirement_states"]) == {
+        "safe_for_downstream_static_analysis"
+    }
+
+
+def test_semantic_reasoning_model_view_preserves_legacy_vocabulary_without_scope() -> None:
+    payload = {
+        **_source_payload(),
+        "steps": [{"action": "memory_read", "side_effect": False}],
+    }
+    context = SemanticReasoningPlaybookService().build_model_view(
+        source_payload=payload,
+        vocabulary=_vocabulary(),
+    )
+
+    assert "safe_for_truth_claim" in context["governed_vocabulary"][
+        "use_safety_dimensions"
+    ]
+    assert "safe_for_destructive_action" in context["governed_vocabulary"][
+        "use_safety_dimensions"
+    ]
+
+
 def test_semantic_demand_interpreter_accepts_scoped_non_truth_demand() -> None:
     service = SemanticDemandInterpreterService(
         reasoner=_Reasoner(
@@ -178,6 +212,51 @@ def test_semantic_demand_interpreter_accepts_scoped_non_truth_demand() -> None:
         "safe_for_downstream_static_analysis"
     ] == [True, "true_with_limitations"]
     assert result["provenance"]["authority"] == "deterministic_semantic_gate"
+
+
+
+def test_semantic_demand_interpreter_prunes_inapplicable_safety_dimensions() -> None:
+    service = SemanticDemandInterpreterService(
+        reasoner=_Reasoner(
+            _candidate(
+                {
+                    "truth_claim_required": False,
+                    "required_downstream_uses": [],
+                    "required_use_safety": {
+                        "safe_for_truth_claim": [True],
+                        "safe_for_destructive_action": [True],
+                        "safe_for_downstream_static_analysis": [
+                            True,
+                            "true_with_limitations",
+                        ],
+                    },
+                    "required_semantic_properties": {},
+                    "base_constraints": [],
+                    "risk_constraints": [],
+                    "rationale": "Readonly analysis only needs analysis safety.",
+                }
+            )
+        )
+    )
+
+    legacy_payload = {
+        **_source_payload(),
+        "steps": [{"action": "memory_read", "side_effect": False}],
+    }
+    result = service.interpret(
+        source_payload=legacy_payload,
+        semantic_graph=legacy_payload["semantic_intent_graph"],
+        vocabulary=_vocabulary(),
+    )
+
+    assert result["status"] == "accepted"
+    safety = result["accepted_requirements"]["required_use_safety"]
+    assert "safe_for_truth_claim" not in safety
+    assert "safe_for_destructive_action" not in safety
+    assert safety["safe_for_downstream_static_analysis"] == [
+        True,
+        "true_with_limitations",
+    ]
 
 
 def test_semantic_demand_interpreter_rejects_deliverable_as_semantic_identifier() -> None:

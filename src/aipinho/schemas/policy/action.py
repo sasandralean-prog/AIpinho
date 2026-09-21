@@ -17,6 +17,7 @@ class ActionDefinition(AIpinhoModel):
         "deterministic",
         "interpreted",
     ] = "interpreted"
+    semantic_use_safety_dimensions: list[str] | None = None
     approval_exception_reason: str | None = None
 
 

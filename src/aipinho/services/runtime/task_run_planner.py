@@ -234,11 +234,26 @@ class TaskRunPlanner:
             semantic_context=semantic_context,
         )
         reasoner = self.semantic_reasoner or ContractBoundSemanticReasoner()
-        continuation_options = self._continuation_option_catalog(run)
-        continuation_option_map = {
-            str(item["option_id"]): item
-            for item in continuation_options
-        }
+        continuation_options = self._eligible_continuation_options(
+            self._continuation_option_catalog(run),
+            unsatisfied_effects=unsatisfied_effects,
+        )
+        if not continuation_options:
+            return self._continuation_result(
+                "blocked",
+                "MISSION_CONTINUATION_NO_AUTHORIZED_OPTION",
+                provenance={
+                    "depth": depth,
+                    "max_depth": max_depth,
+                    "unsatisfied_requested_effects": unsatisfied_effects,
+                },
+            )
+        (
+            continuation_model_options,
+            continuation_option_map,
+        ) = self._continuation_model_option_bindings(
+            continuation_options
+        )
         continuation_goal = (
             "Select the next bounded mission work unit, or declare the mission "
             "complete only when the frozen mission semantics and terminal evidence "
@@ -246,20 +261,7 @@ class TaskRunPlanner:
         )
         continuation_payload = {
             "mission": {
-                "mission_id": contract.mission_id,
                 "strategy": contract.strategy,
-                "source_prompt_sha256": contract.source_prompt_sha256,
-                "semantic_context": {
-                    key: value
-                    for key, value in semantic_context.items()
-                    if key != "semantic_intent_graph"
-                },
-                "requested_capabilities": list(
-                    contract.authority.requested_capabilities
-                ),
-                "authorized_capabilities": list(
-                    contract.authority.authorized_capabilities
-                ),
                 "completion_requirements": list(
                     contract.completion.completion_requirements
                 ),
@@ -278,12 +280,16 @@ class TaskRunPlanner:
                 "depth": depth,
                 "phase_lineage": phase_lineage,
             },
-            "terminal_outcome": self._continuation_outcome_payload(
+            "terminal_outcome": self._continuation_model_outcome_payload(
                 phase_outcome
             ),
-            "semantic_intent_graph": semantic_graph,
+            "semantic_intent_graph": {
+                key: value
+                for key, value in semantic_graph.items()
+                if key != "evidence" and value not in (None, "", [], {})
+            },
             "unsatisfied_requested_effects": unsatisfied_effects,
-            "continuation_options": continuation_options,
+            "continuation_options": continuation_model_options,
             "allowed_contract_types": list(
                 self.runtime.get(
                     "allowed_contract_types",
@@ -292,14 +298,11 @@ class TaskRunPlanner:
                 or []
             ),
             "rules": [
-                "Select exactly one option_id from continuation_options; runtime_profile and operation_type are materialized by the runtime.",
-                "requested_actions must be a subset of the selected continuation option allowed_actions.",
-                "Use contract_type from the selected option default_contract_types when that list is non-empty; otherwise use allowed_contract_types.",
-                "Do not expand capabilities, resources or authority.",
-                "Phase identity is assigned deterministically by the runtime; do not infer or authorize it.",
-                "Do not use raw prompt text or infer permissions.",
+                "Select one option_id; runtime identity is materialized externally.",
+                "requested_actions must be a subset of option allowed_actions.",
+                "Use an option default contract when present; otherwise use allowed_contract_types.",
+                "Do not expand authority or infer permissions.",
                 "Return complete only when unsatisfied_requested_effects is empty.",
-                "Candidate is descriptive only; policy and execution authority are external.",
             ],
             "output_schema": {
                 "action": "continue|complete",
@@ -669,7 +672,7 @@ class TaskRunPlanner:
         return (
             {
                 **dict(candidate_payload),
-                "option_id": option_id,
+                "option_id": str(option.get("option_id") or option_id),
                 "runtime_profile": str(
                     option.get("runtime_profile") or ""
                 ),
@@ -1101,6 +1104,87 @@ class TaskRunPlanner:
         ):
             unsatisfied.append("runtime_execution")
         return self._unique(unsatisfied)
+
+
+    def _eligible_continuation_options(
+        self,
+        options: list[dict[str, Any]],
+        *,
+        unsatisfied_effects: list[str],
+    ) -> list[dict[str, Any]]:
+        executable = [
+            option
+            for option in options
+            if list(option.get("allowed_actions") or [])
+        ]
+        effects = set(unsatisfied_effects)
+        target_categories: set[str] = set()
+        if effects.intersection({"workspace_mutation", "governed_side_effect"}):
+            target_categories.update(
+                {"filesystem_write", "patch", "project_write"}
+            )
+        elif effects.intersection({"build_execution", "runtime_execution"}):
+            target_categories.update({"shell", "validation"})
+        if not target_categories:
+            return executable
+        return [
+            option
+            for option in executable
+            if {
+                self.actions.get_action(action).category
+                for action in list(option.get("allowed_actions") or [])
+                if self.actions.action_exists(action)
+            }.intersection(target_categories)
+        ]
+
+    @staticmethod
+    def _continuation_model_option_bindings(
+        options: list[dict[str, Any]],
+    ) -> tuple[list[dict[str, Any]], dict[str, dict[str, Any]]]:
+        model_options: list[dict[str, Any]] = []
+        option_map: dict[str, dict[str, Any]] = {}
+        for index, option in enumerate(options, start=1):
+            selection_id = f"opt_{index:03d}"
+            option_map[selection_id] = option
+            model_options.append(
+                {
+                    "option_id": selection_id,
+                    "operation_type": option.get("operation_type"),
+                    "allowed_actions": list(
+                        option.get("allowed_actions") or []
+                    ),
+                    "default_contract_types": list(
+                        option.get("default_contract_types") or []
+                    ),
+                }
+            )
+        return model_options, option_map
+
+    @staticmethod
+    def _continuation_model_outcome_payload(
+        outcome: Any | None,
+    ) -> dict[str, Any]:
+        if outcome is None:
+            return {}
+        return {
+            "result_status": getattr(outcome, "result_status", None),
+            "limitations": list(getattr(outcome, "limitations", []) or []),
+            "required_disclosures": list(
+                getattr(outcome, "required_disclosures", []) or []
+            ),
+            "missing_truth": list(
+                getattr(outcome, "missing_truth", []) or []
+            ),
+            "risk_constraints": list(
+                getattr(outcome, "risk_constraints", []) or []
+            ),
+            "use_safety": dict(
+                getattr(outcome, "use_safety", {}) or {}
+            ),
+            "semantic_properties": dict(
+                getattr(outcome, "semantic_properties", {}) or {}
+            ),
+        }
 
     def _continuation_option_catalog(
         self,

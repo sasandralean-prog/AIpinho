@@ -21,6 +21,15 @@ def test_retry_policy_retries_missing_nested_required_field():
     assert decision.strategy == "ask_for_missing_fields"
 
 
+def test_retry_policy_retries_schema_non_empty_mismatch():
+    decision = RetryPolicyService().decide(
+        ["schema_non_empty_mismatch:rationale"]
+    )
+    assert decision.should_retry is True
+    assert decision.strategy == "repair_output_contract"
+    assert "non-empty" in decision.retry_prompt_hint
+
+
 def test_retry_policy_retries_schema_enum_mismatch():
     decision = RetryPolicyService().decide(
         ["schema_enum_mismatch:assessments[0].impact"]

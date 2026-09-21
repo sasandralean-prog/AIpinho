@@ -65,6 +65,23 @@ def test_json_output_validator_rejects_nested_enum_mismatch():
     assert "schema_enum_mismatch:assessments[0].limitation_id" in result.violations
 
 
+
+def test_json_output_validator_reports_empty_string_constraint() -> None:
+    result = JSONOutputValidator().validate(
+        '{"rationale":""}',
+        required_fields=["rationale"],
+        json_shape={
+            "rationale": {
+                "type": "string",
+                "non_empty": True,
+            }
+        },
+    )
+
+    assert result.valid is False
+    assert "schema_non_empty_mismatch:rationale" in result.violations
+
+
 def test_json_output_validator_can_reject_trailing_text():
     result = JSONOutputValidator().validate('```json\n{"ok": true}\n```\nextra', reject_trailing_text=True)
     assert "trailing_text_after_json" in result.violations

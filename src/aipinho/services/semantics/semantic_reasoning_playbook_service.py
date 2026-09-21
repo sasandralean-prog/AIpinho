@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from aipinho.schemas.semantics.task_semantic_vocabulary import TaskSemanticVocabulary
+from aipinho.services.policy_kernel.action_registry_service import ActionRegistryService
 from aipinho.services.semantics.task_semantic_vocabulary_authority_service import (
     TaskSemanticVocabularyAuthorityService,
 )
@@ -27,10 +28,12 @@ class SemanticReasoningPlaybookService:
         self,
         *,
         vocabulary_authority: TaskSemanticVocabularyAuthorityService | None = None,
+        actions: ActionRegistryService | None = None,
     ) -> None:
         self.vocabulary_authority = (
             vocabulary_authority or TaskSemanticVocabularyAuthorityService()
         )
+        self.actions = actions or ActionRegistryService()
 
     def build(
         self,
@@ -103,6 +106,82 @@ class SemanticReasoningPlaybookService:
             "generic_counterexamples": self._counterexamples(),
             "current_task_semantics": source_payload,
         }
+
+    def build_model_view(
+        self,
+        *,
+        source_payload: dict[str, Any],
+        vocabulary: TaskSemanticVocabulary,
+    ) -> dict[str, Any]:
+        governed_vocabulary = self._model_vocabulary_view(
+            source_payload=source_payload,
+            vocabulary=vocabulary,
+        )
+        return {
+            "playbook_version": "semantic_reasoning_playbook.v1",
+            "authority_notice": (
+                "Use only governed vocabulary. Produce requirements only; "
+                "never authorize execution or infer producer truth."
+            ),
+            "reasoning_principles": [
+                "Select only guarantees the downstream operation actually needs.",
+                "Unknown is not false; partial is not absent.",
+                "Limitations matter only when they intersect downstream demand.",
+                "Prefer the minimum sufficient requirement set.",
+                "Return unresolved only when governed semantics are insufficient.",
+            ],
+            "governed_vocabulary": governed_vocabulary,
+            "vocabulary_binding": vocabulary.binding().model_dump(mode="json"),
+            "output_construction_rules": [
+                "Use only governed identifiers and states.",
+                "Empty requirement collections are valid when no guarantee is needed.",
+                "Do not enumerate vocabulary merely because it is available.",
+                "Never invent capabilities, properties, safety dimensions or uses.",
+                "Do not copy task provenance or authority metadata into requirements.",
+            ],
+            "current_task_semantics": source_payload,
+        }
+
+
+    def _model_vocabulary_view(
+        self,
+        *,
+        source_payload: dict[str, Any],
+        vocabulary: TaskSemanticVocabulary,
+    ) -> dict[str, Any]:
+        governed = self.vocabulary_authority.governed_view(vocabulary)
+        declared_dimensions: set[str] = set()
+        saw_explicit_scope = False
+        for step in list(source_payload.get("steps") or []):
+            if not isinstance(step, dict):
+                continue
+            action = str(step.get("action") or "").strip()
+            if not action or not self.actions.action_exists(action):
+                continue
+            definition = self.actions.get_action(action)
+            dimensions = definition.semantic_use_safety_dimensions
+            if dimensions is None:
+                continue
+            saw_explicit_scope = True
+            declared_dimensions.update(
+                str(item) for item in dimensions if str(item)
+            )
+        if not saw_explicit_scope:
+            return governed
+
+        governed = dict(governed)
+        governed["use_safety_dimensions"] = sorted(declared_dimensions)
+        for field in (
+            "use_safety_allowed_states",
+            "use_safety_requirement_states",
+        ):
+            values = dict(governed.get(field) or {})
+            governed[field] = {
+                key: value
+                for key, value in values.items()
+                if key in declared_dimensions
+            }
+        return governed
 
     def _examples(self) -> list[dict[str, Any]]:
         return [

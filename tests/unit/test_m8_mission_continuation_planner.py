@@ -20,6 +20,25 @@ from aipinho.services.runtime.task_run_store import TaskRunStore
 from aipinho.services.runtime.task_runtime_service import TaskRuntimeService
 
 
+
+def _bind_model_option(output: dict, kwargs: dict) -> dict:
+    bound = dict(output)
+    candidate = dict(bound.get("candidate") or {})
+    payload = dict(kwargs.get("payload") or {})
+    options = list(payload.get("continuation_options") or [])
+    operation_type = str(candidate.get("operation_type") or "")
+    requested_actions = set(candidate.get("requested_actions") or [])
+    for option in options:
+        if str(option.get("operation_type") or "") != operation_type:
+            continue
+        allowed_actions = set(option.get("allowed_actions") or [])
+        if requested_actions.issubset(allowed_actions):
+            candidate["option_id"] = option["option_id"]
+            break
+    bound["candidate"] = candidate
+    return bound
+
+
 class FakeReasoner:
     def __init__(self, output: dict) -> None:
         self.output = output
@@ -31,7 +50,7 @@ class FakeReasoner:
         self.last_kwargs = kwargs
         return {
             "status": "candidate",
-            "candidate": self.output,
+            "candidate": _bind_model_option(self.output, kwargs),
             "model_id": "fake-model",
             "response_id": f"fake-response-{self.calls}",
             "real_inference": False,
@@ -48,7 +67,7 @@ class SequencedReasoner:
         self.calls += 1
         return {
             "status": "candidate",
-            "candidate": self.outputs[index],
+            "candidate": _bind_model_option(self.outputs[index], kwargs),
             "model_id": "fake-model",
             "response_id": f"fake-response-{self.calls}",
             "real_inference": False,
@@ -333,16 +352,109 @@ def test_continuation_uses_semantic_interpreter_for_bounded_option_selection() -
     patch_option = next(
         item
         for item in options
-        if item["runtime_profile"] == "patch"
-        and item["operation_type"] == "patch_apply"
+        if item["operation_type"] == "patch_apply"
     )
+    assert patch_option["option_id"].startswith("opt_")
+    assert "runtime_profile" not in patch_option
     assert "apply_patch" in patch_option["allowed_actions"]
     assert "patch_apply" in patch_option["default_contract_types"]
     assert "phase_id" not in payload["output_schema"]["candidate"]
+    assert result.candidate is not None
+    assert result.candidate.runtime_profile == "patch"
     assert any(
-        "continuation_options" in rule
+        "option_id" in rule
         for rule in payload["rules"]
     )
+
+
+
+def test_continuation_model_prompt_is_bounded_to_pending_effect_catalog() -> None:
+    reasoner = FakeReasoner(
+        _proposal(
+            {
+                "operation_type": "patch_apply",
+                "contract_type": "patch_apply",
+                "runtime_profile": "patch",
+                "requested_actions": ["apply_patch"],
+            }
+        )
+    )
+    planner = TaskRunPlanner(
+        semantic_reasoner=reasoner,
+        phase_demands=FakeDemands(),
+    )
+    run = _run(
+        capabilities=[
+            "apply_patch",
+            "modify_file",
+            "script_execution",
+            "shell_build",
+            "shell_test",
+            "read_file",
+        ],
+        semantic_graph={
+            "mutation_intent": True,
+            "execution_intent": True,
+            "requested_effects": [
+                "build_execution",
+                "runtime_execution",
+                "workspace_mutation",
+            ],
+            "evidence": [f"derived_{index}" for index in range(50)],
+        },
+    )
+
+    result = planner.plan_continuation(run=run)
+
+    assert result.status == "planned"
+    assert reasoner.last_kwargs is not None
+    payload = reasoner.last_kwargs["payload"]
+    user_prompt = __import__("json").dumps(
+        {
+            "semantic_goal": reasoner.last_kwargs["semantic_goal"],
+            "allowed_fields": reasoner.last_kwargs["allowed_fields"],
+            "required_fields": reasoner.last_kwargs["required_fields"],
+            "payload": payload,
+        },
+        ensure_ascii=False,
+        separators=(",", ":"),
+    )
+    assert len(user_prompt) < 6000
+    assert len(payload["continuation_options"]) < 20
+    assert all(
+        option["allowed_actions"]
+        for option in payload["continuation_options"]
+    )
+    assert all(
+        option["option_id"].startswith("opt_")
+        for option in payload["continuation_options"]
+    )
+    assert "evidence" not in payload["semantic_intent_graph"]
+
+
+def test_blocked_terminal_run_does_not_enter_mission_continuation_planner(
+    tmp_path: Path,
+) -> None:
+    class _MustNotPlan:
+        def __init__(self) -> None:
+            self.calls = 0
+
+        def plan_continuation(self, **_kwargs):
+            self.calls += 1
+            raise AssertionError("blocked_run_must_not_plan_continuation")
+
+    planner = _MustNotPlan()
+    runtime = TaskRuntimeService(
+        store=TaskRunStore(root=tmp_path / f"runs_{uuid4().hex}"),
+        planner=planner,  # type: ignore[arg-type]
+    )
+    run = SimpleNamespace(
+        status="blocked",
+        mission_contract=SimpleNamespace(strategy="end_to_end_governed"),
+    )
+
+    assert runtime._continue_terminal_mission(run) is None
+    assert planner.calls == 0
 
 
 def test_rejects_candidate_that_expands_authority() -> None:
@@ -370,7 +482,7 @@ def test_rejects_candidate_that_expands_authority() -> None:
     assert result.status == "blocked"
     assert (
         result.reason_code
-        == "MISSION_CONTINUATION_ACTION_NOT_OPTION_ALLOWED"
+        == "MISSION_CONTINUATION_NO_AUTHORIZED_OPTION"
     )
 
 

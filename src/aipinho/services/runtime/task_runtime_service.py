@@ -1500,7 +1500,7 @@ class TaskRuntimeService:
         if (
             contract is None
             or contract.strategy != "end_to_end_governed"
-            or not self.lifecycle.is_terminal(str(run.status))
+            or str(run.status) not in {"completed", "partial"}
         ):
             return None
 

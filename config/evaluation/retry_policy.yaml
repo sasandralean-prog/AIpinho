@@ -9,6 +9,7 @@ retry:
     - missing_required_section
     - missing_required_field
     - schema_type_mismatch
+    - schema_non_empty_mismatch
     - schema_enum_mismatch
     - schema_count_mismatch
   do_not_retry_on:
@@ -22,5 +23,6 @@ retry:
     missing_required_section: "ask_for_missing_sections"
     missing_required_field: "ask_for_missing_fields"
     schema_type_mismatch: "repair_output_contract"
+    schema_non_empty_mismatch: "repair_output_contract"
     schema_enum_mismatch: "repair_output_contract"
     schema_count_mismatch: "repair_output_contract"

@@ -731,7 +731,10 @@ class CanonicalPublicChatService:
             continuation.get("reason_code") or planning.get("reason_code") or ""
         ) or None
 
-        if continuation_status == "blocked":
+        if result.status == "blocked":
+            response_status = "blocked"
+            label = "WORKSPACE_FIX_DISCOVERY_BLOCKED"
+        elif continuation_status == "blocked":
             response_status = "blocked"
             label = "WORKSPACE_FIX_MISSION_CONTINUATION_BLOCKED"
         elif result.status == "completed":
@@ -740,23 +743,55 @@ class CanonicalPublicChatService:
         elif result.status in {"completed_with_limitations", "partial"}:
             response_status = "degraded"
             label = "WORKSPACE_FIX_DISCOVERY_COMPLETED_WITH_LIMITATIONS"
-        elif result.status == "blocked":
-            response_status = "blocked"
-            label = "WORKSPACE_FIX_DISCOVERY_BLOCKED"
         else:
             response_status = "failed"
             label = "WORKSPACE_FIX_DISCOVERY_FAILED"
+
+        steps = list(getattr(plan, "steps", []) or [])
+        finished_steps = [
+            step
+            for step in steps
+            if str(getattr(step, "status", ""))
+            in {"completed", "partial"}
+        ]
+        blocked_step = next(
+            (
+                step
+                for step in steps
+                if str(getattr(step, "status", "")) == "blocked"
+            ),
+            None,
+        )
+        if result.status == "blocked":
+            blocked_name = str(
+                getattr(blocked_step, "step_type", "")
+                or getattr(blocked_step, "action", "")
+                or "proxima unidade"
+            )
+            execution_message = (
+                "A discovery read-only foi iniciada pelo TaskRuntime canonico, "
+                f"avancou por {len(finished_steps)}/{len(steps)} unidades e "
+                f"bloqueou antes de concluir {blocked_name}. "
+                "Nenhuma autorizacao de escrita foi criada ou ampliada."
+            )
+        elif continuation_status == "blocked":
+            execution_message = (
+                "A discovery read-only chegou a um resultado terminal; a "
+                "continuacao da missao foi bloqueada pelo runtime governado. "
+                "Nenhuma autorizacao de escrita foi criada ou ampliada pela discovery."
+            )
+        else:
+            execution_message = (
+                "A fase inicial foi materializada e executada pelo TaskRuntime canonico. "
+                "Nenhuma autorizacao de escrita foi criada ou ampliada por esta fase."
+            )
 
         response = self._base_response(
             request,
             status=response_status,
             operation_type="workspace_fix_request",
             message_type="task_status_update",
-            message=(
-                f"{label}\n"
-                "A fase inicial foi materializada e executada pelo TaskRuntime canonico. "
-                "Nenhuma autorizacao de escrita foi criada ou ampliada por esta fase."
-            ),
+            message=f"{label}\n{execution_message}",
             intent={
                 "intent_type": "workspace_fix_request",
                 "operation_type": "project_analysis",
@@ -769,7 +804,11 @@ class CanonicalPublicChatService:
             },
             policy={
                 "write_approval_created": False,
-                "reason_code": continuation_reason or result.reason_code or label,
+                "reason_code": (
+                    result.reason_code
+                    if result.status == "blocked"
+                    else continuation_reason or result.reason_code or label
+                ),
                 "runtime_status": result.status,
                 "continuation_status": continuation_status or None,
                 "continuation_reason_code": continuation_reason,

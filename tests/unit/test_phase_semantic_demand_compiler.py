@@ -1,3 +1,4 @@
+import json
 from types import SimpleNamespace
 
 from aipinho.schemas.runtime.execution_plan import CanonicalExecutionPlan, CanonicalExecutionStep
@@ -9,6 +10,7 @@ from aipinho.schemas.runtime.task_run_plan import TaskRunPlan
 from aipinho.services.runtime.phase_dependency_contract_registry import PhaseDependencyContractRegistry
 from aipinho.services.runtime.phase_dependency_evaluation_service import PhaseDependencyEvaluationService
 from aipinho.services.runtime.phase_semantic_demand_compiler import PhaseSemanticDemandCompiler
+from aipinho.services.semantics.semantic_demand_interpreter_service import SemanticDemandInterpreterService
 from aipinho.services.semantics.task_semantic_vocabulary_compiler_service import (
     TaskSemanticVocabularyCompilerService,
 )
@@ -186,13 +188,108 @@ def test_semantic_reasoning_payload_excludes_raw_prompt_and_freeform_goal() -> N
     assert "goal-free-text-" not in serialized
     assert "live-free-text-" not in serialized
     assert payload["intent_map"]["intent_type"] == "workspace_fix_request"
-    assert payload["intent_map"]["mission_binding"] == {
-        "mission_id": "mission_structured_semantics",
-        "revision": 1,
-        "source_prompt_sha256": "a" * 64,
-        "strategy": "end_to_end_governed",
+    assert "mission_binding" not in payload["intent_map"]
+    assert "resource_scope" not in payload["intent_map"]
+    assert "semantic_intent_graph" not in payload["intent_map"]
+    assert "semantic_goal_sha256" not in payload
+    assert "policy_snapshot" not in payload
+    assert "evidence" not in payload["semantic_intent_graph"]
+
+
+
+def test_interpreted_semantic_demand_model_prompt_stays_within_role_budget() -> None:
+    class _CaptureReasoner:
+        def __init__(self) -> None:
+            self.kwargs = None
+
+        def propose_json(self, **kwargs):
+            self.kwargs = kwargs
+            return {
+                "status": "unavailable",
+                "reason_code": "capture_only",
+            }
+
+    semantic_graph = {
+        "knowledge_output": True,
+        "observational_intent": True,
+        "mutation_intent": True,
+        "execution_intent": True,
+        "requested_effects": [
+            "workspace_mutation",
+            "build_execution",
+            "runtime_execution",
+        ],
+        "evidence": [f"derived_evidence_{index}" for index in range(40)],
     }
-    assert len(payload["semantic_goal_sha256"]) == 64
+    contract = SimpleNamespace(
+        mission_id="mission_bounded_semantics",
+        revision=1,
+        source_prompt_sha256="b" * 64,
+        strategy="end_to_end_governed",
+        semantic_context={
+            "intent_type": "workspace_fix_request",
+            "operation_type": "project_analysis",
+            "semantic_intent_graph": semantic_graph,
+            "future_side_effect_intent": True,
+            "mission_execution_strategy": {"mode": "end_to_end_governed"},
+        },
+        local_resources=[
+            SimpleNamespace(
+                resource_id=f"resource_{index}",
+                resource_type="local_workspace",
+                role="target_mutable",
+                permissions=[
+                    "read_file",
+                    "modify_file",
+                    "apply_patch",
+                    "script_execution",
+                    "shell_build",
+                    "shell_test",
+                ],
+                constraints=[],
+            )
+            for index in range(12)
+        ],
+        remote_resources=[],
+        negative_constraints=[],
+    )
+    capture = _CaptureReasoner()
+    compiler = PhaseSemanticDemandCompiler(
+        semantic_interpreter=SemanticDemandInterpreterService(
+            reasoner=capture,  # type: ignore[arg-type]
+        )
+    )
+    run = _run(
+        semantic_graph=semantic_graph,
+        intent_map={"semantic_intent_graph": semantic_graph},
+        mission_contract=contract,
+    )
+
+    compilation = compiler.compile_for_run(
+        run=run,
+        consumer_phase_id="phase_project_analysis",
+        source_step_id="step_consumer",
+    )
+
+    assert compilation.status == "insufficient_contract_evidence"
+    assert capture.kwargs is not None
+    user_prompt = json.dumps(
+        {
+            "semantic_goal": capture.kwargs["semantic_goal"],
+            "allowed_fields": capture.kwargs["allowed_fields"],
+            "required_fields": capture.kwargs["required_fields"],
+            "payload": capture.kwargs["payload"],
+        },
+        ensure_ascii=False,
+        separators=(",", ":"),
+    )
+    assert len(user_prompt) < 6000
+    model_semantics = capture.kwargs["payload"]["semantic_reasoning_context"][
+        "current_task_semantics"
+    ]
+    assert "resource_scope" not in str(model_semantics)
+    assert "mission_binding" not in str(model_semantics)
+    assert "derived_evidence_" not in str(model_semantics)
 
 
 def test_same_phase_number_different_plan_operations_compile_different_demands() -> None:

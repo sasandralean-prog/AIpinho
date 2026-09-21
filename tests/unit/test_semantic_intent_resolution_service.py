@@ -320,6 +320,82 @@ def test_subdirectory_word_does_not_convert_patch_mission_to_create_directory() 
     assert response.governance_lifecycle["intent"]["negative_constraints"].get("shell_forbidden") is not True
 
 
+
+class _BlockedDiscoveryProgressService:
+    def execute(self, **_kwargs):
+        steps = [
+            SimpleNamespace(step_type=f"step_{index}", action=f"action_{index}", status="completed")
+            for index in range(1, 4)
+        ]
+        steps.append(
+            SimpleNamespace(
+                step_type="build_file_context",
+                action="project_context",
+                status="partial",
+            )
+        )
+        steps.append(
+            SimpleNamespace(
+                step_type="run_project_analysis",
+                action="project_analysis",
+                status="blocked",
+            )
+        )
+        steps.extend(
+            SimpleNamespace(step_type=f"step_{index}", action=f"action_{index}", status="pending")
+            for index in range(6, 9)
+        )
+        return SimpleNamespace(
+            run=SimpleNamespace(
+                task_id="task_fix_discovery_blocked",
+                run_id="task_run_fix_discovery_blocked",
+                current_phase="discovery",
+                mission_binding=SimpleNamespace(
+                    mission_id="mission_fix_discovery_blocked",
+                    authority_sha256="authority_fix_discovery_blocked",
+                ),
+                intent_map={
+                    "mission_continuation_runtime": {
+                        "status": "blocked",
+                        "reason_code": "secondary_continuation_must_not_mask_discovery",
+                    }
+                },
+                plan=SimpleNamespace(metadata={}, steps=steps),
+            ),
+            result=SimpleNamespace(
+                status="blocked",
+                reason_code="SEMANTIC_REASONER_ROLE_BUDGET_EXCEEDED",
+                warnings=["validation_status:failed"],
+                trace_ref="trace_fix_discovery_blocked",
+            ),
+        )
+
+
+def test_public_fix_response_reports_blocked_discovery_progress_truthfully() -> None:
+    service = CanonicalPublicChatService(
+        workspace_fix_discovery=_BlockedDiscoveryProgressService()
+    )
+    prompt = (
+        "Investigue e corrija estruturalmente o aplicativo. "
+        r"WORKSPACE DO APP A SER CORRIGIDO: C:\Work\TargetApp. "
+        "Autorizo edicao, testes, build, commit e push."
+    )
+
+    response = service.respond(
+        ChatRequest(message=prompt, session_id="unit_discovery_progress"),
+        source_channel="mobile_chat",
+    )
+
+    assert response.status == "blocked"
+    assert "WORKSPACE_FIX_DISCOVERY_BLOCKED" in response.message
+    assert "4/8 unidades" in response.message
+    assert "run_project_analysis" in response.message
+    assert (
+        response.policy["reason_code"]
+        == "SEMANTIC_REASONER_ROLE_BUDGET_EXCEEDED"
+    )
+
+
 class _BlockedContinuationDiscoveryService:
     def execute(self, **_kwargs):
         return SimpleNamespace(
