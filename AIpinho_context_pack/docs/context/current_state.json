@@ -421,6 +421,8 @@
         ],
         "remaining_notes": [
           "M10 owns fresh manual E2E FireTest and consolidation over the closed M1-M9 runtime",
+          "M10-A.16 implements consumer-owned continuation dependency semantics and opaque limitation binding; focused 27/27 and broader 68/68 regressions pass when PYTHONPATH is explicitly bound to the A.16 worktree",
+          "read-only replay no longer reaches LIMITATION_COMPATIBILITY_BINDING_INVALID; the next observed fail-closed frontier for M10-A.17 is SEMANTIC_REASONER_EVALUATION_NOT_ACCEPTED after malformed or truncated governed JSON output/retry",
           "the established unregistered-worktree approval fixture remains a baseline test limitation outside M9"
         ],
         "plan_changed": false

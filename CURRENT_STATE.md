@@ -136,7 +136,7 @@ M9 closure: implementation SHA `19beb80d866018c5b0ee26547e2577c2ce775992`. Missi
 
 There is no open P0/P1 from the completed FireTest 5 consolidation wave. The E2E New Runtime wave is active and extends the same canonical TaskRuntime; no parallel planner, dispatcher, role runtime or truth authority is authorized.
 
-Immediate frontier: execute Sprint M10 from `e2enewruntimee.md`: a fresh manual end-to-end FireTest and consolidation pass over the closed M1-M9 runtime. Mission-level completion truth is now evidence-bound across canonical TaskRuns and remains subordinate to RuntimeTruth/SpeakerTruth; restart rehydrates the accepted semantic binding interpretation without model reinvocation. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
+Immediate frontier: continue Sprint M10 from `e2enewruntimee.md`. M10-A.16 has implemented consumer-owned continuation dependency semantics and stable opaque limitation bindings without introducing a second runtime or execution authority. Focused and cross-runtime regression are green when explicitly bound to the A.16 worktree, and a read-only replay confirms the prior `LIMITATION_COMPATIBILITY_BINDING_INVALID` frontier no longer describes the limitation contract. The next observed fail-closed frontier is M10-A.17: robustness of `ContractBoundSemanticReasoner` when governed inference/retry yields malformed or truncated JSON (`SEMANTIC_REASONER_EVALUATION_NOT_ACCEPTED`). Mission-level completion truth remains evidence-bound across canonical TaskRuns and subordinate to RuntimeTruth/SpeakerTruth. The deferred Windows subprocess cp1252/.m4a reader issue remains separate unless a later mission explicitly scopes it.
 
 ## Invariants
 
