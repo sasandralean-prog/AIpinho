@@ -31,6 +31,9 @@ class _RestartHealth:
 
 def _runner(argv, **kwargs):
     assert kwargs["shell"] is False
+    assert "capture_output" not in kwargs
+    assert hasattr(kwargs["stdout"], "write")
+    assert hasattr(kwargs["stderr"], "write")
     assert "powershell.exe" in argv[0]
     assert "-File" in argv
     return _Completed()

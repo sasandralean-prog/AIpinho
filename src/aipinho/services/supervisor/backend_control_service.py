@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import tempfile
 import time
 from pathlib import Path
 from typing import Any
@@ -173,8 +174,35 @@ class BackendControlService:
         ]
         timeout = int(self._config("restart_timeout_seconds", 90))
         try:
-            result = self.runner(command, cwd=str(PATHS.project_root), timeout=timeout, capture_output=True, text=True, encoding="utf-8", errors="replace", shell=False)
-            return {"returncode": result.returncode, "stdout_tail": (result.stdout or "")[-500:], "stderr_tail": (result.stderr or "")[-500:]}
+            with tempfile.TemporaryFile(
+                mode="w+",
+                encoding="utf-8",
+                errors="replace",
+            ) as stdout_handle, tempfile.TemporaryFile(
+                mode="w+",
+                encoding="utf-8",
+                errors="replace",
+            ) as stderr_handle:
+                result = self.runner(
+                    command,
+                    cwd=str(PATHS.project_root),
+                    timeout=timeout,
+                    stdout=stdout_handle,
+                    stderr=stderr_handle,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                    shell=False,
+                )
+                stdout_handle.seek(0)
+                stderr_handle.seek(0)
+                stdout = stdout_handle.read()
+                stderr = stderr_handle.read()
+            return {
+                "returncode": result.returncode,
+                "stdout_tail": stdout[-500:],
+                "stderr_tail": stderr[-500:],
+            }
         except subprocess.TimeoutExpired:
             return {"returncode": 124, "error": "canonical_script_timeout"}
         except Exception as exc:
