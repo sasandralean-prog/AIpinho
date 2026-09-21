@@ -151,6 +151,7 @@ class SemanticReasoningPlaybookService:
     ) -> dict[str, Any]:
         governed = self.vocabulary_authority.governed_view(vocabulary)
         declared_dimensions: set[str] = set()
+        exact_requirement_states: dict[str, list[bool | str]] = {}
         saw_explicit_scope = False
         for step in list(source_payload.get("steps") or []):
             if not isinstance(step, dict):
@@ -160,12 +161,19 @@ class SemanticReasoningPlaybookService:
                 continue
             definition = self.actions.get_action(action)
             dimensions = definition.semantic_use_safety_dimensions
-            if dimensions is None:
+            requirements = definition.semantic_use_safety_requirements
+            if dimensions is None and requirements is None:
                 continue
             saw_explicit_scope = True
             declared_dimensions.update(
-                str(item) for item in dimensions if str(item)
+                str(item) for item in (dimensions or []) if str(item)
             )
+            for name, states in dict(requirements or {}).items():
+                dimension = str(name)
+                if not dimension:
+                    continue
+                declared_dimensions.add(dimension)
+                exact_requirement_states[dimension] = list(states)
         if not saw_explicit_scope:
             return governed
 
@@ -176,10 +184,26 @@ class SemanticReasoningPlaybookService:
             "use_safety_requirement_states",
         ):
             values = dict(governed.get(field) or {})
-            governed[field] = {
+            scoped = {
                 key: value
                 for key, value in values.items()
                 if key in declared_dimensions
+            }
+            if field == "use_safety_requirement_states":
+                for key, states in exact_requirement_states.items():
+                    if key not in scoped:
+                        continue
+                    base_states = list(scoped.get(key) or [])
+                    if any(state not in base_states for state in states):
+                        raise ValueError(
+                            f"action_semantic_use_safety_requirement_invalid:{key}"
+                        )
+                    scoped[key] = list(states)
+            governed[field] = scoped
+        if exact_requirement_states:
+            governed["use_safety_exact_requirement_states"] = {
+                key: list(states)
+                for key, states in sorted(exact_requirement_states.items())
             }
         return governed
 

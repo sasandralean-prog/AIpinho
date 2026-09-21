@@ -154,6 +154,12 @@ def test_semantic_reasoning_model_view_scopes_use_safety_by_action_registry() ->
     assert set(governed["use_safety_requirement_states"]) == {
         "safe_for_downstream_static_analysis"
     }
+    assert governed["use_safety_requirement_states"][
+        "safe_for_downstream_static_analysis"
+    ] == [True, "true_with_limitations"]
+    assert governed["use_safety_exact_requirement_states"][
+        "safe_for_downstream_static_analysis"
+    ] == [True, "true_with_limitations"]
 
 
 def test_semantic_reasoning_model_view_preserves_legacy_vocabulary_without_scope() -> None:
@@ -172,6 +178,38 @@ def test_semantic_reasoning_model_view_preserves_legacy_vocabulary_without_scope
     assert "safe_for_destructive_action" in context["governed_vocabulary"][
         "use_safety_dimensions"
     ]
+
+
+
+def test_semantic_demand_interpreter_expands_action_exact_acceptable_states() -> None:
+    service = SemanticDemandInterpreterService(
+        reasoner=_Reasoner(
+            _candidate(
+                {
+                    "truth_claim_required": False,
+                    "required_downstream_uses": [],
+                    "required_use_safety": {
+                        "safe_for_downstream_static_analysis": [True],
+                    },
+                    "required_semantic_properties": {},
+                    "base_constraints": [],
+                    "risk_constraints": [],
+                    "rationale": "Static analysis requires an analysis-safe upstream context.",
+                }
+            )
+        )
+    )
+
+    result = service.interpret(
+        source_payload=_source_payload(),
+        semantic_graph=_source_payload()["semantic_intent_graph"],
+        vocabulary=_vocabulary(),
+    )
+
+    assert result["status"] == "accepted"
+    assert result["accepted_requirements"]["required_use_safety"][
+        "safe_for_downstream_static_analysis"
+    ] == [True, "true_with_limitations"]
 
 
 def test_semantic_demand_interpreter_accepts_scoped_non_truth_demand() -> None:

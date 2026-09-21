@@ -1,4 +1,6 @@
-﻿from tests.support.runtime_fixtures import runtime_context, runtime_run
+﻿from types import SimpleNamespace
+
+from tests.support.runtime_fixtures import runtime_context, runtime_run
 from aipinho.schemas.runtime.task_run_step import TaskRunStep
 from aipinho.services.runtime.readonly_task_step_runner import ReadOnlyTaskStepRunner
 
@@ -11,6 +13,57 @@ class HealthyDependency:
 class DisabledDependency:
     def status(self):
         return {"status": "disabled"}
+
+
+
+def test_file_context_semantic_outcome_marks_partial_context_safe_with_limitations():
+    runner = ReadOnlyTaskStepRunner()
+    bundle = SimpleNamespace(
+        status="partial",
+        warnings=["file_selection_partial"],
+        violations=[],
+        omitted_files=[SimpleNamespace(path="src/omitted.kt")],
+    )
+
+    semantic = runner._file_context_semantic_outcome(bundle)
+
+    assert semantic["use_safety"]["safe_for_downstream_static_analysis"] == (
+        "true_with_limitations"
+    )
+    assert "file_context_budget_or_omissions" in semantic["limitations"]
+    assert "file_context_omitted_files_present" in semantic["limitations"]
+    assert semantic["missing_truth"] == []
+
+
+def test_file_context_semantic_outcome_marks_complete_context_fully_safe():
+    runner = ReadOnlyTaskStepRunner()
+    bundle = SimpleNamespace(
+        status="ok",
+        warnings=[],
+        violations=[],
+        omitted_files=[],
+    )
+
+    semantic = runner._file_context_semantic_outcome(bundle)
+
+    assert semantic["use_safety"]["safe_for_downstream_static_analysis"] is True
+    assert semantic["limitations"] == []
+    assert semantic["missing_truth"] == []
+
+
+def test_file_context_semantic_outcome_marks_blocked_context_unsafe():
+    runner = ReadOnlyTaskStepRunner()
+    bundle = SimpleNamespace(
+        status="blocked",
+        warnings=[],
+        violations=["context_build_failed"],
+        omitted_files=[],
+    )
+
+    semantic = runner._file_context_semantic_outcome(bundle)
+
+    assert semantic["use_safety"]["safe_for_downstream_static_analysis"] is False
+    assert semantic["missing_truth"] == ["context_build_failed"]
 
 
 def test_step_runner_blocks_unknown_step_type():

@@ -18,6 +18,7 @@ class ActionDefinition(AIpinhoModel):
         "interpreted",
     ] = "interpreted"
     semantic_use_safety_dimensions: list[str] | None = None
+    semantic_use_safety_requirements: dict[str, list[bool | str]] | None = None
     approval_exception_reason: str | None = None
 
 

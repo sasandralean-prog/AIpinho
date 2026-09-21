@@ -150,6 +150,35 @@ class WorkflowRuntimeService:
                     else str(producer.status)
                 ),
                 evidence_refs=list(dict.fromkeys([*producer.produced_artifacts, *producer.validation_refs])),
+                limitations=[
+                    str(item)
+                    for item in producer.semantic_outcome.get("limitations", [])
+                    if str(item)
+                ],
+                required_disclosures=[
+                    str(item)
+                    for item in producer.semantic_outcome.get("required_disclosures", [])
+                    if str(item)
+                ],
+                missing_truth=[
+                    str(item)
+                    for item in producer.semantic_outcome.get("missing_truth", [])
+                    if str(item)
+                ],
+                risk_constraints=[
+                    str(item)
+                    for item in producer.semantic_outcome.get("risk_constraints", [])
+                    if str(item)
+                ],
+                allowed_downstream_uses=[
+                    str(item)
+                    for item in producer.semantic_outcome.get("allowed_downstream_uses", [])
+                    if str(item)
+                ],
+                use_safety=dict(producer.semantic_outcome.get("use_safety") or {}),
+                semantic_properties=dict(
+                    producer.semantic_outcome.get("semantic_properties") or {}
+                ),
             )
             dependency.evaluation = self.dependency_evaluator.evaluate(
                 snapshot=snapshot,
@@ -217,6 +246,7 @@ class WorkflowRuntimeService:
         artifacts: list[str] | None = None,
         validation_ref: str | None = None,
         violations: list[str] | None = None,
+        semantic_outcome: dict[str, Any] | None = None,
     ) -> WorkflowRuntimeInstance | None:
         if workflow is None:
             return None
@@ -224,6 +254,7 @@ class WorkflowRuntimeService:
         if phase is None:
             return workflow
         phase.produced_artifacts = list(dict.fromkeys([*phase.produced_artifacts, *(artifacts or [])]))
+        phase.semantic_outcome = dict(semantic_outcome or {})
         if validation_ref:
             phase.validation_refs = list(dict.fromkeys([*phase.validation_refs, validation_ref]))
         phase.validation_status = "passed" if status in _SUCCESS_STATUSES and not violations else "failed"

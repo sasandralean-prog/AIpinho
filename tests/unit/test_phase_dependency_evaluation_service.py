@@ -151,6 +151,46 @@ def test_partial_truth_does_not_block_phase_that_does_not_require_truth_safety()
     assert admission.authorized is True
 
 
+
+def test_static_analysis_accepts_true_with_limitations_when_contract_allows_it() -> None:
+    requirements = _requirements(
+        operation_type="project_analysis",
+        consumer_phase_id="phase_analysis",
+        required_downstream_uses=[],
+        required_use_safety={
+            "safe_for_downstream_static_analysis": [
+                True,
+                "true_with_limitations",
+            ]
+        },
+        prohibited_effects=[],
+    )
+    snapshot = _snapshot(
+        dependency_status="satisfied_with_limitations",
+        use_safety={
+            "safe_for_downstream_static_analysis": "true_with_limitations",
+        },
+        limitations=[],
+        allowed_downstream_uses=[],
+    )
+
+    service, requirements, snapshot, evaluation = _evaluate(
+        requirements,
+        snapshot,
+    )
+    admission = _authorize(
+        service,
+        requirements,
+        snapshot,
+        evaluation,
+        consumer_phase_id="phase_analysis",
+    )
+
+    assert evaluation.decision == "ADMITTED_WITH_CONSTRAINTS"
+    assert evaluation.requirement_checks[-1].status == "satisfied"
+    assert admission.authorized is True
+
+
 def test_missing_required_observed_identity_blocks() -> None:
     requirements = _requirements(required_semantic_properties={"semantic_identity": ["observed"]})
     _service, _requirements_value, _snapshot_value, evaluation = _evaluate(requirements)

@@ -73,9 +73,36 @@ class ReadOnlyTaskStepRunner:
             project_tree=tree,
         )
         bundle = self.analysis.context_builder.build_context(request, selection); context.outputs["_file_context"] = bundle
-        summary = {"status": bundle.status, "bundle_id": bundle.bundle_id, "included_files": len([item for item in bundle.items if item.status == "included"]), "omitted_files": [getattr(item, "path", str(item)) for item in bundle.omitted_files[:100]], "total_bytes_read": bundle.total_bytes_read}
+        semantic_outcome = self._file_context_semantic_outcome(bundle)
+        summary = {"status": bundle.status, "bundle_id": bundle.bundle_id, "included_files": len([item for item in bundle.items if item.status == "included"]), "omitted_files": [getattr(item, "path", str(item)) for item in bundle.omitted_files[:100]], "total_bytes_read": bundle.total_bytes_read, "semantic_outcome": semantic_outcome}
         status = "completed" if bundle.status == "ok" else ("partial" if bundle.status == "partial" else "blocked")
         return TaskStepOutcome(status=status, summary=summary, warnings=list(bundle.warnings), violations=list(bundle.violations), limitations=["file_context_budget_or_omissions"] if bundle.status == "partial" else [], blocked_items=[getattr(item, "path", str(item)) for item in bundle.omitted_files[:100]])
+
+    def _file_context_semantic_outcome(self, bundle) -> dict[str, Any]:
+        status = str(getattr(bundle, "status", "") or "")
+        if status == "ok":
+            safety: bool | str = True
+        elif status == "partial":
+            safety = "true_with_limitations"
+        else:
+            safety = False
+
+        limitations = list(getattr(bundle, "warnings", []) or [])
+        if status == "partial" and "file_context_budget_or_omissions" not in limitations:
+            limitations.append("file_context_budget_or_omissions")
+        missing_truth = list(getattr(bundle, "violations", []) or [])
+        omitted_files = list(getattr(bundle, "omitted_files", []) or [])
+        if omitted_files and "file_context_omitted_files_present" not in limitations:
+            limitations.append("file_context_omitted_files_present")
+
+        return {
+            "use_safety": {
+                "safe_for_downstream_static_analysis": safety,
+            },
+            "limitations": list(dict.fromkeys(str(item) for item in limitations if str(item))),
+            "missing_truth": list(dict.fromkeys(str(item) for item in missing_truth if str(item))),
+            "required_disclosures": list(dict.fromkeys(str(item) for item in limitations if str(item))),
+        }
 
     def _run_project_analysis(self, run, context):
         result = self.analysis.analyze_project(self._request(run)); context.outputs["_project_analysis"] = result

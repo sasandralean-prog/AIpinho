@@ -178,6 +178,15 @@ class SemanticDemandInterpreterService:
             }
 
         required_use_safety = dict(validated["required_use_safety"])
+        exact_requirement_states = dict(
+            governed_vocabulary.get("use_safety_exact_requirement_states")
+            or {}
+        )
+        for name in list(required_use_safety):
+            exact_states = exact_requirement_states.get(name)
+            if isinstance(exact_states, list) and exact_states:
+                required_use_safety[name] = list(exact_states)
+
         if bool(validated["truth_claim_required"]):
             values = list(required_use_safety.get("safe_for_truth_claim") or [])
             if True not in values:

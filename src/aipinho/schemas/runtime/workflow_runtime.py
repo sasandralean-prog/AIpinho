@@ -59,6 +59,7 @@ class WorkflowPhase(AIpinhoModel):
     produced_artifacts: list[str] = Field(default_factory=list)
     validation_refs: list[str] = Field(default_factory=list)
     validation_status: str = "pending"
+    semantic_outcome: dict[str, Any] = Field(default_factory=dict)
     started_at: str | None = None
     finished_at: str | None = None
     progress: int = 0

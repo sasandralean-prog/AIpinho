@@ -139,6 +139,8 @@ actions:
     capability: read_workspace
     semantic_dependency_mode: interpreted
     semantic_use_safety_dimensions: [safe_for_downstream_static_analysis]
+    semantic_use_safety_requirements:
+      safe_for_downstream_static_analysis: [true, true_with_limitations]
 
   project_report:
     aliases: [deterministic_project_report]
