@@ -425,6 +425,8 @@
           "M10-A.17 closes the semantic-reasoner robustness frontier: bounded semantic requirement projection removes deterministic provenance bloat from the model payload while preserving provenance authority, role budgets fail closed, llama.cpp context overflow is explicit evidence with conservative configurable sizing, overflow retry does not grow the prompt, and nested json_shape validation remains in the canonical OutputContract/Evaluator/RetryPolicy chain",
           "real read-only A.17 replay reduces the observed semantic prompt from 9067 to 2758 chars, remains inside the low-role budget, performs one governed nested-field correction when required, returns accepted limitation compatibility, and the continuation decision becomes continue_to_next_phase with no authority gap and ADMITTED_WITH_CONSTRAINTS; no child TaskRun was materialized by the diagnostic replay",
           "M10-A.17 validation is green: focused 64/64, final cross-runtime/dependency 106/106, cross-caller schema compatibility 32/32, role-budget enforcement 8/8, compileall/diff/hardcode checks clean",
+          "M10-A.17 implementation/main SHA 0a803b6d6b36c95065d11b2b70f96992439e089e was promoted by fast-forward; canonical dirty tracked/untracked state had zero incoming overlap and remained preserved byte-for-byte/count-for-count",
+          "canonical backend restart backend_restart_1789955928500 completed through BackendControlService canonical stop/start scripts with accepted status, no warnings, healthy pre/post checks, and live health/runtime/task-runtime/role-inference endpoints all reporting ok",
           "the established unregistered-worktree approval fixture remains a baseline test limitation outside M9"
         ],
         "plan_changed": false
