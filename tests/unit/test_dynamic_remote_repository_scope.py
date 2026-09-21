@@ -49,6 +49,60 @@ def test_semantic_ingress_compiles_positive_negative_repo_and_branch_scope() -> 
     assert any(item.kind == "git_init" and item.effect == "deny" for item in decision.mission_constraints)
 
 
+
+def test_remote_scope_recognizes_clean_copy_fetch_and_fast_forward_language() -> None:
+    prompt = (
+        f"Use repository {REPO_A_HTTPS} branch main. "
+        "Obtenha uma copia Git limpa. "
+        "Atualize main com fetch + fast-forward seguro. "
+        "Depois faca git commit e git push."
+    )
+
+    resources = IntentRemoteRepositoryService().resolve(prompt).resources
+    allowed = next(item for item in resources if item.role == "remote_allowed")
+
+    assert {
+        "git_clone",
+        "git_fetch",
+        "git_pull_ff",
+        "git_commit",
+        "git_push",
+    } <= set(allowed.permissions)
+
+
+
+def test_authority_gap_preserves_only_ungranted_git_staging_operations() -> None:
+    prompt = (
+        "AUTORIZACAO: Autorizo nesta missao leitura, diagnostico, edicao de codigo, "
+        "criacao/alteracao de testes, execucao de build/test, git commit e git push. "
+        r"WORKSPACE ALVO: C:\Work\TargetApp. "
+        "Investigue e corrija estruturalmente o codigo no workspace alvo. "
+        f"REPOSITORIO CANONICO: {REPO_A_HTTPS} branch main. "
+        "Para promocao final, obtenha uma copia Git limpa e atualize main com "
+        "fetch + fast-forward seguro. Depois faca git commit e git push. "
+        "Nao versione caches ou artefatos transitorios."
+    )
+
+    decision = SemanticIntentResolutionService().resolve(
+        prompt,
+        source_channel="unit",
+        workspace_hint=r"C:\Work\TargetApp",
+    )
+
+    gap = set(decision.requested_capabilities) - set(
+        decision.authorized_capabilities
+    )
+    assert gap == {
+        "git_clone",
+        "git_fetch",
+        "git_pull_ff",
+    }
+    assert "artifact_create" not in decision.requested_capabilities
+    assert "create_directory" not in decision.requested_capabilities
+    assert "create_file" in decision.authorized_capabilities
+    assert "shell_readonly" in decision.authorized_capabilities
+
+
 def test_remote_scope_gate_allows_declared_push_after_identity_reobservation() -> None:
     resources = IntentRemoteRepositoryService().resolve(_resolution_prompt()).resources
     decision = RemoteRepositoryScopeService().decide(
@@ -220,6 +274,10 @@ def test_workspace_fix_discovery_freezes_remote_resources_into_first_taskrun(tmp
     )
 
     assert runtime.request is not None
+    assert (
+        runtime.request.intent_map["requested_capabilities"]
+        == intent.requested_capabilities
+    )
     frozen = runtime.request.intent_map["remote_resources"]
     assert len(frozen) == 2
     allowed = next(item for item in frozen if item["role"] == "remote_allowed")

@@ -123,9 +123,18 @@ class IntentRemoteRepositoryService:
     def _permission_mentions(self, text: str) -> list[tuple[int, str]]:
         normalized = normalize_text(text)
         patterns = (
-            ("git_clone", r"\bgit\s+clone\b|\bclonar\b|\bclone\s+o\s+repositorio\b"),
-            ("git_fetch", r"\bgit\s+fetch\b|\bbuscar\s+refs\b|\batualizar\s+refs\b"),
-            ("git_pull_ff", r"\bgit\s+pull\b|\bpull\s+fast-forward\b|\bpull\s+--ff-only\b"),
+            (
+                "git_clone",
+                r"\bgit\s+clone\b|\bclonar\b|\bclone\s+o\s+repositorio\b|"
+                r"\b(?:obtenha|use|crie)\s+(?:uma\s+)?copia\s+git\s+limpa\b|"
+                r"\bcopia\s+git\s+limpa\b",
+            ),
+            ("git_fetch", r"\bgit\s+fetch\b|\bfetch\b|\bbuscar\s+refs\b|\batualizar\s+refs\b"),
+            (
+                "git_pull_ff",
+                r"\bgit\s+pull\b|\bpull\s+fast-forward\b|\bpull\s+--ff-only\b|"
+                r"\bfast[- ]forward\s+seguro\b|\bff-only\b",
+            ),
             ("git_commit", r"\bgit\s+commit\b|\bfaca\s+commit\b|\bcrie\s+commit\b"),
             ("git_push", r"\bgit\s+push\b|\bfaca\s+push\b|\benvie\s+para\s+o\s+remoto\b"),
         )

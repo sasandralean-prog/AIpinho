@@ -126,7 +126,7 @@ class SemanticIntentResolutionService:
             prompt=text,
             known_capabilities=known_capabilities,
         )
-        requested_capabilities = sorted(set([*known_capabilities, *authority.requested_capabilities]))
+        requested_capabilities = sorted(set(authority.requested_capabilities))
         return decision.model_copy(
             update={
                 "local_resources": resources,

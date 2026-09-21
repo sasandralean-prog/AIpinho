@@ -82,6 +82,36 @@ def test_requested_capability_is_not_explicit_authority() -> None:
     assert explicit.evidence and explicit.evidence[0]["kind"] == "explicit_human_authorization"
 
 
+
+def test_authority_extraction_separates_positive_capabilities_from_negative_mentions() -> None:
+    service = IntentHumanAuthorityService()
+    resolution = service.resolve(
+        prompt=(
+            "AUTORIZACAO: Autorizo nesta missao diagnostico e criacao/alteracao de testes. "
+            "Nao versione build, caches ou artefatos transitorios. "
+            "O corpus nao e workspace de escrita."
+        ),
+        known_capabilities=[
+            "artifact_create",
+            "create_file",
+            "shell_readonly",
+        ],
+    )
+
+    assert resolution.requested_capabilities == [
+        "create_file",
+        "shell_readonly",
+    ]
+    assert resolution.authorized_capabilities == [
+        "create_file",
+        "shell_readonly",
+    ]
+    assert resolution.evidence[0]["capabilities"] == [
+        "create_file",
+        "shell_readonly",
+    ]
+
+
 def test_mission_contract_preserves_exact_raw_prompt_hash_with_trailing_whitespace(
     tmp_path: Path,
 ) -> None:

@@ -258,6 +258,41 @@ def test_scoped_readonly_path_preserves_mutable_target_semantics() -> None:
     assert "apply_patch" not in corpus.permissions
 
 
+
+def test_requested_capabilities_do_not_expand_to_resource_permission_envelope() -> None:
+    prompt = (
+        r"WORKSPACE ALVO: C:\Work\TargetApp. "
+        "AUTORIZACAO: Autorizo leitura, diagnostico, edicao de codigo, "
+        "criacao/alteracao de testes e execucao de build/test nesta missao. "
+        "Corrija o codigo, execute os testes e o build. "
+        "Nao versione caches ou artefatos transitorios."
+    )
+
+    decision = SemanticIntentResolutionService().resolve(
+        prompt,
+        source_channel="unit",
+        workspace_hint=r"C:\Work\TargetApp",
+    )
+
+    target = next(
+        item
+        for item in decision.local_resources
+        if item.locator == r"C:\Work\TargetApp"
+    )
+    assert {
+        "artifact_create",
+        "copy_from",
+        "create_directory",
+    } <= set(target.permissions)
+    assert "create_file" in decision.requested_capabilities
+    assert "shell_readonly" in decision.requested_capabilities
+    assert "create_file" in decision.authorized_capabilities
+    assert "shell_readonly" in decision.authorized_capabilities
+    assert "artifact_create" not in decision.requested_capabilities
+    assert "copy_from" not in decision.requested_capabilities
+    assert "create_directory" not in decision.requested_capabilities
+
+
 def test_generic_investigate_and_repair_mission_is_discovery_first() -> None:
     decision = SemanticIntentResolutionService().resolve(
         "Investigue e corrija estruturalmente o aplicativo no workspace. Depois execute testes e build.",

@@ -41,11 +41,6 @@ class WorkspaceFixDiscoveryService:
             raise ValueError("workspace_fix_discovery_workspace_missing")
         requested_capabilities = sorted(
             set(snapshot.intent.requested_capabilities)
-            or {
-                permission
-                for resource in [*resources, *remote_resources]
-                for permission in resource.permissions
-            }
         )
         semantic_graph = snapshot.intent.semantic_intent_graph.model_dump(mode="json")
         run_request = TaskRunRequest(
