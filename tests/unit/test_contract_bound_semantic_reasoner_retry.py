@@ -61,6 +61,8 @@ def _response(
     retry,
     warnings=None,
     model_id="fixture-model",
+    metadata=None,
+    violations=None,
 ):
     return ModelResponse(
         request_id="request_fixture",
@@ -70,8 +72,10 @@ def _response(
         content=content,
         real_inference=True,
         warnings=list(warnings or []),
+        metadata=dict(metadata or {}),
         evaluation_result={
             "status": evaluation_status,
+            "violations": list(violations or []),
             "retry_decision": retry,
         },
     )
@@ -134,6 +138,172 @@ def test_reasoner_executes_bounded_governed_retry_for_invalid_json() -> None:
     assert "invalid_json" in proposal["warnings"]
 
 
+
+
+def test_reasoner_retries_nested_contract_violation_with_exact_path() -> None:
+    first = _response(
+        status="degraded",
+        content=json.dumps(
+            {
+                "assessments": [
+                    {
+                        "limitation_id": "lim_1",
+                        "impact": "COMPATIBLE",
+                        "constraints": [],
+                    }
+                ],
+                "confidence": 0.9,
+                "rationale": "global rationale",
+            }
+        ),
+        evaluation_status="needs_retry",
+        violations=[
+            "missing_required_field:assessments[0].rationale"
+        ],
+        retry={
+            "should_retry": True,
+            "reason": "missing_required_field",
+            "strategy": "ask_for_missing_fields",
+            "max_retries": 1,
+            "retry_prompt_hint": (
+                "Include every required field from the output contract, "
+                "including nested fields."
+            ),
+        },
+    )
+    second = _response(
+        status="completed",
+        content=json.dumps(
+            {
+                "assessments": [
+                    {
+                        "limitation_id": "lim_1",
+                        "impact": "COMPATIBLE",
+                        "constraints": [],
+                        "rationale": "bounded rationale",
+                    }
+                ],
+                "confidence": 0.9,
+                "rationale": "global rationale",
+            }
+        ),
+        evaluation_status="accepted",
+        retry={
+            "should_retry": False,
+            "reason": "not_retryable",
+            "max_retries": 1,
+        },
+    )
+    invocation = _Invocation([first, second])
+    reasoner = ContractBoundSemanticReasoner(
+        router=_Router(),  # type: ignore[arg-type]
+        invocation=invocation,  # type: ignore[arg-type]
+    )
+
+    proposal = reasoner.propose_json(
+        semantic_goal="assess bounded fixture",
+        payload={
+            "output_schema": {
+                "assessments": {
+                    "type": "list",
+                    "item": {
+                        "limitation_id": {
+                            "type": "string",
+                            "enum": ["lim_1"],
+                        },
+                        "impact": {
+                            "type": "string",
+                            "enum": ["COMPATIBLE"],
+                        },
+                        "constraints": "list[string]",
+                        "rationale": "non_empty_string",
+                    },
+                    "required_count": 1,
+                },
+                "confidence": "number_between_0_and_1",
+                "rationale": "non_empty_string",
+            }
+        },
+        allowed_fields=["assessments", "confidence", "rationale"],
+        required_fields=["assessments", "confidence", "rationale"],
+    )
+
+    assert proposal["status"] == "candidate"
+    assert proposal["retry_attempts"] == 1
+    retry_request = invocation.requests[1]
+    assert (
+        "missing_required_field:assessments[0].rationale"
+        in retry_request.messages[-1].content
+    )
+    assert retry_request.output_contract["json_shape"]["assessments"][
+        "required_count"
+    ] == 1
+    assert (
+        proposal["candidate"]["assessments"][0]["rationale"]
+        == "bounded rationale"
+    )
+
+
+def test_reasoner_context_overflow_retry_expands_context_without_prompt_growth() -> None:
+    first = _response(
+        status="degraded",
+        content=(
+            "Error: request (3131 tokens) exceeds the available context size "
+            "(3072 tokens), try increasing it"
+        ),
+        evaluation_status="needs_retry",
+        retry={
+            "should_retry": True,
+            "reason": "truncation",
+            "strategy": "reduce_output_scope",
+            "max_retries": 1,
+            "retry_prompt_hint": (
+                "Reduce scope and complete the response without truncation."
+            ),
+        },
+        warnings=["llama_cli_error", "context_window_exceeded"],
+        metadata={
+            "context_window_exceeded": True,
+            "context_required_tokens": 3131,
+            "context_available_tokens": 3072,
+            "ctx_size": 3038,
+        },
+    )
+    second = _response(
+        status="completed",
+        content=json.dumps({"answer": "ok"}),
+        evaluation_status="accepted",
+        retry={
+            "should_retry": False,
+            "reason": "not_retryable",
+            "max_retries": 1,
+        },
+    )
+    invocation = _Invocation([first, second])
+    reasoner = ContractBoundSemanticReasoner(
+        router=_Router(),  # type: ignore[arg-type]
+        invocation=invocation,  # type: ignore[arg-type]
+    )
+
+    proposal = reasoner.propose_json(
+        semantic_goal="classify fixture",
+        payload={"structured": True},
+        allowed_fields=["answer"],
+        required_fields=["answer"],
+    )
+
+    assert proposal["status"] == "candidate"
+    assert proposal["retry_attempts"] == 1
+    assert "semantic_retry_context_expanded" in proposal["warnings"]
+    assert len(invocation.requests) == 2
+    first_request, retry_request = invocation.requests
+    assert [item.content for item in retry_request.messages] == [
+        item.content for item in first_request.messages
+    ]
+    assert retry_request.metadata["semantic_retry_context_expanded"] is True
+    assert retry_request.metadata["ctx_size"] >= 3899
+
+
 def test_reasoner_does_not_retry_nonretryable_response() -> None:
     response = _response(
         status="blocked",
@@ -163,6 +333,32 @@ def test_reasoner_does_not_retry_nonretryable_response() -> None:
     assert proposal["status"] == "unavailable"
     assert proposal["retry_attempts"] == 0
     assert len(invocation.requests) == 1
+
+
+
+def test_reasoner_fails_closed_when_role_prompt_budget_is_exceeded() -> None:
+    invocation = _Invocation([])
+    reasoner = ContractBoundSemanticReasoner(
+        router=_Router(),  # type: ignore[arg-type]
+        invocation=invocation,  # type: ignore[arg-type]
+    )
+
+    proposal = reasoner.propose_json(
+        semantic_goal="bounded fixture",
+        payload={"oversized": "x" * 7000},
+        allowed_fields=["answer"],
+        required_fields=["answer"],
+        role_id="semantic_interpreter",
+    )
+
+    assert proposal["status"] == "unavailable"
+    assert (
+        proposal["reason_code"]
+        == "SEMANTIC_REASONER_ROLE_BUDGET_EXCEEDED"
+    )
+    assert "prompt_budget_exceeded" in proposal["warnings"]
+    assert proposal["role_budget"]["exceeded"] is True
+    assert invocation.requests == []
 
 
 def test_reasoner_uses_role_budget_for_timeout_and_output_cap() -> None:

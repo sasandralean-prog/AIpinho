@@ -347,6 +347,11 @@ def test_limitation_resolver_accepts_constraint_bound_compatibility() -> None:
     ]
     payload = reasoner.last_kwargs["payload"]
     bindings = payload["upstream_context"]["limitation_bindings"]
+    frozen_requirements = payload["frozen_downstream_requirements"]
+    assert "requirement_provenance" not in frozen_requirements
+    assert "source_plan_id" not in frozen_requirements
+    assert "source_execution_id" not in frozen_requirements
+    assert "source_semantics_sha256" not in frozen_requirements
     assert bindings[0]["description"] == "identity_not_observed"
     assert bindings[0]["limitation_id"].startswith("lim_")
     assert "limitations" not in payload["upstream_context"]

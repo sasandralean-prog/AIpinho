@@ -11,11 +11,11 @@ from aipinho.services.models.provider_registry_service import ProviderRegistrySe
 from aipinho.services.models.real_inference_gate_service import RealInferenceGateService
 
 
-def _request(**metadata):
+def _request(content="hello", **metadata):
     return ModelRequest(
         model_id="llama.local.test",
         provider_id="llama_cpp.local",
-        messages=[PromptMessage(role="user", content="hello")],
+        messages=[PromptMessage(role="user", content=content)],
         output_contract={"contract_type": "plain_text", "format": "text"},
         safety_envelope={"rules": ["no tools"]},
         metadata=metadata,
@@ -114,6 +114,47 @@ def test_llama_cpp_provider_uses_request_ctx_size(tmp_path):
     assert "--ctx-size" in argv
     assert argv[argv.index("--ctx-size") + 1] == "4096"
 
+
+
+
+def test_llama_cpp_provider_uses_conservative_context_estimate(tmp_path):
+    runner = FakeRunner()
+    provider = _provider(tmp_path, gate_enabled=True, runner=runner)
+    request = _request("x" * 9000, allow_real_inference=True, manual_mode=True)
+
+    provider.invoke(request)
+
+    argv = runner.calls[0]["argv"]
+    ctx_size = int(argv[argv.index("--ctx-size") + 1])
+    assert ctx_size > 3072
+    assert ctx_size <= 8192
+
+
+def test_llama_cpp_provider_classifies_context_window_overflow(tmp_path):
+    stdout = (
+        "Error: request (3131 tokens) exceeds the available context size "
+        "(3072 tokens), try increasing it"
+    )
+    runner = FakeRunner(
+        ProcessResult(
+            status="completed",
+            stdout=stdout,
+            stderr="",
+            returncode=0,
+        )
+    )
+    provider = _provider(tmp_path, gate_enabled=True, runner=runner)
+
+    response = provider.invoke(
+        _request(allow_real_inference=True, manual_mode=True)
+    )
+
+    assert response.status == "error"
+    assert response.finish_reason == "error"
+    assert "context_window_exceeded" in response.warnings
+    assert response.metadata["context_window_exceeded"] is True
+    assert response.metadata["context_required_tokens"] == 3131
+    assert response.metadata["context_available_tokens"] == 3072
 
 def test_llama_cpp_provider_extracts_completion_from_cli_wrapper(tmp_path):
     stdout = "\nLoading model...\n\n> user: hello\n\nmodel output\n\n[ Prompt: 1.0 t/s | Generation: 1.0 t/s ]\n\nExiting...\n"

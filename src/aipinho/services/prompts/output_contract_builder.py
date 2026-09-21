@@ -26,6 +26,7 @@ class OutputContractBuilder:
             required_fields=list(value.get("required_fields", []) or []),
             require_evidence=bool(value.get("require_evidence", False)),
             require_valid_json=bool(value.get("require_valid_json", False)),
+            json_shape=value.get("json_shape"),
             max_chars=value.get("max_chars") if isinstance(value.get("max_chars"), int) else None,
             metadata={
                 k: v
@@ -37,6 +38,7 @@ class OutputContractBuilder:
                     "required_fields",
                     "require_evidence",
                     "require_valid_json",
+                    "json_shape",
                     "max_chars",
                 }
             },

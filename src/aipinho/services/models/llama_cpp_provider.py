@@ -1,5 +1,6 @@
 ﻿from __future__ import annotations
 
+import math
 import os
 from pathlib import Path
 from typing import Any
@@ -194,6 +195,7 @@ class LlamaCppProvider:
         )
         raw_stdout_chars = len(process.stdout or "")
         stderr_raw_chars = len(process.stderr or "")
+        context_window_error = self.sanitizer.context_window_error(process.stdout)
         completion = self.sanitizer.extract_llama_cli_completion(process.stdout, prompt=prompt)
         reasoning_content_stripped = self.sanitizer.has_reasoning_content(completion)
         completion = self.sanitizer.strip_reasoning_content(completion)
@@ -205,6 +207,8 @@ class LlamaCppProvider:
         warnings = [] if process.status == "completed" else [process.status]
         if stdout_error:
             warnings.append("llama_cli_error")
+        if context_window_error is not None:
+            warnings.append("context_window_exceeded")
         if reasoning_content_stripped:
             warnings.append("reasoning_content_stripped")
         if stderr:
@@ -235,6 +239,17 @@ class LlamaCppProvider:
                 "process_returncode": process.returncode,
                 "process_timed_out": process.timed_out,
                 "ctx_size": ctx_size,
+                "context_window_exceeded": context_window_error is not None,
+                "context_required_tokens": (
+                    context_window_error.get("required_tokens")
+                    if context_window_error is not None
+                    else None
+                ),
+                "context_available_tokens": (
+                    context_window_error.get("available_tokens")
+                    if context_window_error is not None
+                    else None
+                ),
                 "stdout_raw_chars": raw_stdout_chars,
                 "stderr_chars": stderr_raw_chars,
                 "parser": "llama_cli_completion",
@@ -284,16 +299,29 @@ class LlamaCppProvider:
         return "\n\n".join(f"{message.role}: {message.content}" for message in request.messages)
 
     def _ctx_size_for_request(self, request: ModelRequest, prompt: str) -> int:
-        requested = request.metadata.get("ctx_size")
-        if requested:
-            return int(requested)
         runtime = self.command_builder.config.get("runtime", {})
         runtime = runtime if isinstance(runtime, dict) else {}
         default_ctx = int(runtime.get("default_ctx_size", 2048) or 2048)
         max_ctx = int(runtime.get("max_ctx_size", 4096) or 4096)
-        estimated_prompt_tokens = max(1, len(prompt) // 4)
+        requested = request.metadata.get("ctx_size")
+        if requested:
+            return min(max_ctx, max(default_ctx, int(requested)))
+        chars_per_token = float(
+            runtime.get("estimated_chars_per_token", 3.0) or 3.0
+        )
+        chars_per_token = max(1.0, chars_per_token)
+        estimated_prompt_tokens = max(
+            1,
+            int(math.ceil(len(prompt) / chars_per_token)),
+        )
         output_tokens = max(0, int(request.generation_config.max_tokens or 0))
-        margin_tokens = max(256, min(1024, output_tokens // 2 if output_tokens else 256))
+        configured_margin = int(
+            runtime.get("context_safety_margin_tokens", 256) or 256
+        )
+        margin_tokens = max(
+            configured_margin,
+            min(1024, output_tokens // 2 if output_tokens else configured_margin),
+        )
         required = estimated_prompt_tokens + output_tokens + margin_tokens
         return min(max_ctx, max(default_ctx, required))
 

@@ -45,6 +45,7 @@ class OutputContractValidator:
                 allow_markdown_fence=bool(json_policy.get("allow_markdown_fence", True)),
                 reject_trailing_text=bool(json_policy.get("reject_trailing_text", False)),
                 contract_type=contract_type,
+                json_shape=contract.get("json_shape"),
             )
             result.required_sections = required_sections
             return result

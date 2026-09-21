@@ -100,6 +100,14 @@ class ContractBoundSemanticReasoner:
                 None,
             ),
         )
+        if role_budget.exceeded:
+            return {
+                "status": "unavailable",
+                "reason_code": "SEMANTIC_REASONER_ROLE_BUDGET_EXCEEDED",
+                "role_id": role_id,
+                "warnings": list(role_budget.warnings),
+                "role_budget": role_budget.model_dump(mode="json"),
+            }
         effective_timeout = (
             self.timeout_seconds
             if self.timeout_seconds is not None
@@ -121,6 +129,7 @@ class ContractBoundSemanticReasoner:
                 "format": "json",
                 "require_valid_json": True,
                 "required_fields": required_fields,
+                "json_shape": payload.get("output_schema"),
             },
             safety_envelope={
                 "envelope_id": "semantic_reasoning_readonly",
@@ -376,41 +385,107 @@ class ContractBoundSemanticReasoner:
                 retry.get("retry_prompt_hint")
                 or "Retry with stricter output contract compliance."
             ).strip()
+            contract_violations = [
+                str(item)
+                for item in list(evaluation.get("violations") or [])
+                if str(item)
+            ][:8]
+            violation_hint = (
+                " Observed contract violations: "
+                + ", ".join(contract_violations)
+                + "."
+                if contract_violations
+                else ""
+            )
             attempts += 1
             warnings.extend(
                 str(item)
                 for item in response.warnings
                 if str(item)
             )
+            response_metadata = (
+                dict(response.metadata or {})
+                if isinstance(response.metadata, dict)
+                else {}
+            )
+            context_window_exceeded = bool(
+                response_metadata.get("context_window_exceeded")
+                or "context_window_exceeded" in set(response.warnings or [])
+            )
+            retry_metadata = {
+                **dict(request.metadata),
+                "semantic_retry_attempt": attempts,
+                "semantic_retry_reason": retry.get("reason"),
+                "semantic_retry_strategy": retry.get("strategy"),
+            }
+            if context_window_exceeded:
+                retry_metadata["ctx_size"] = self._context_retry_size(
+                    request=request,
+                    response=response,
+                )
+                retry_metadata["semantic_retry_context_expanded"] = True
+                retry_messages = list(request.messages)
+                warnings.append("semantic_retry_context_expanded")
+            else:
+                retry_messages = [
+                    *request.messages,
+                    PromptMessage(
+                        role="user",
+                        content=(
+                            "The previous candidate did not satisfy the "
+                            "governed output contract. "
+                            f"{hint}{violation_hint} "
+                            "Return only the requested JSON object. "
+                            "Do not add prose, markdown fences, tools, "
+                            "permissions, evidence, or fields outside the "
+                            "allowed contract."
+                        ),
+                    ),
+                ]
             retry_request = request.model_copy(
                 update={
-                    "messages": [
-                        *request.messages,
-                        PromptMessage(
-                            role="user",
-                            content=(
-                                "The previous candidate did not satisfy the "
-                                "governed output contract. "
-                                f"{hint} "
-                                "Return only the requested JSON object. "
-                                "Do not add prose, markdown fences, tools, "
-                                "permissions, evidence, or fields outside the "
-                                "allowed contract."
-                            ),
-                        ),
-                    ],
-                    "metadata": {
-                        **dict(request.metadata),
-                        "semantic_retry_attempt": attempts,
-                        "semantic_retry_reason": retry.get("reason"),
-                        "semantic_retry_strategy": retry.get("strategy"),
-                    },
+                    "messages": retry_messages,
+                    "metadata": retry_metadata,
                 },
                 deep=True,
             )
             response = self.invocation.invoke_role_model(
                 retry_request
             )
+
+    @staticmethod
+    def _context_retry_size(*, request: ModelRequest, response: Any) -> int:
+        metadata = (
+            dict(getattr(response, "metadata", {}) or {})
+            if isinstance(getattr(response, "metadata", None), dict)
+            else {}
+        )
+        required_tokens = max(
+            0,
+            int(metadata.get("context_required_tokens") or 0),
+        )
+        current_ctx = max(
+            0,
+            int(
+                metadata.get("ctx_size")
+                or request.metadata.get("ctx_size")
+                or 0
+            ),
+        )
+        output_tokens = max(
+            0,
+            int(request.generation_config.max_tokens or 0),
+        )
+        margin_tokens = max(
+            256,
+            min(1024, output_tokens // 2 if output_tokens else 256),
+        )
+        observed_requirement = (
+            required_tokens + output_tokens + margin_tokens
+            if required_tokens
+            else current_ctx + output_tokens + margin_tokens
+        )
+        return max(current_ctx + margin_tokens, observed_requirement, 2048)
 
     def _parse_json_object(
         self,

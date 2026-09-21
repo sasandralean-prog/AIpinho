@@ -38,6 +38,18 @@ def test_model_output_sanitizer_extracts_fenced_json_after_role_echo():
     assert '"replacement": "print(1)\\n"' in sanitized
 
 
+def test_model_output_sanitizer_detects_context_window_error():
+    error = ModelOutputSanitizer().context_window_error(
+        "Error: request (3131 tokens) exceeds the available context size "
+        "(3072 tokens), try increasing it"
+    )
+
+    assert error == {
+        "required_tokens": 3131,
+        "available_tokens": 3072,
+    }
+
+
 def test_model_output_sanitizer_strips_reasoning_content():
     sanitized = ModelOutputSanitizer().strip_reasoning_content("[Start thinking]\ninternal\n[End thinking]\n4")
     assert sanitized == "4"

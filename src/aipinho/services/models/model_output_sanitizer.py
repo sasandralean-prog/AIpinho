@@ -9,6 +9,10 @@ class ModelOutputSanitizer:
         re.compile(r"(?i)(api[_-]?key|token|password|secret)\s*[:=]\s*[^\s]+"),
         re.compile(r"(?i)bearer\s+[A-Za-z0-9._\-]+"),
     )
+    CONTEXT_WINDOW_ERROR = re.compile(
+        r"request\s*\((?P<required>\d+)\s+tokens\)\s+exceeds\s+the\s+available\s+context\s+size\s*\((?P<available>\d+)\s+tokens\)",
+        flags=re.IGNORECASE,
+    )
 
     def sanitize(self, text: str, *, max_chars: int | None = None) -> str:
         sanitized = text or ""
@@ -91,6 +95,15 @@ class ModelOutputSanitizer:
 
     def has_llama_cli_error(self, text: str) -> bool:
         return any(line.lstrip().startswith("Error:") for line in (text or "").splitlines())
+
+    def context_window_error(self, text: str) -> dict[str, int] | None:
+        match = self.CONTEXT_WINDOW_ERROR.search(text or "")
+        if match is None:
+            return None
+        return {
+            "required_tokens": int(match.group("required")),
+            "available_tokens": int(match.group("available")),
+        }
 
     def status(self) -> dict[str, object]:
         return {"status": "ok", "service": "model_output_sanitizer", "secret_patterns": len(self.SECRET_PATTERNS)}

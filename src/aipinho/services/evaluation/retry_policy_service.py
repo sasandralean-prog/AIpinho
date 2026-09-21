@@ -45,6 +45,10 @@ class RetryPolicyService:
             "invalid_json": "Return only valid JSON matching the requested fields.",
             "truncation": "Reduce scope and complete the response without truncation.",
             "missing_required_section": "Include every required section from the output contract.",
+            "missing_required_field": "Include every required field from the output contract, including nested fields.",
+            "schema_type_mismatch": "Return values with the exact types required by the output contract.",
+            "schema_enum_mismatch": "Use only values allowed by the output contract enums.",
+            "schema_count_mismatch": "Return the exact item count required by the output contract.",
         }.get(reason, "Retry with stricter output contract compliance.")
 
     def status(self) -> dict[str, object]:

@@ -14,5 +14,6 @@ class OutputContract(AIpinhoModel):
     required_fields: list[str] = Field(default_factory=list)
     require_evidence: bool = False
     require_valid_json: bool = False
+    json_shape: Any | None = None
     max_chars: int | None = None
     metadata: dict[str, Any] = Field(default_factory=dict)

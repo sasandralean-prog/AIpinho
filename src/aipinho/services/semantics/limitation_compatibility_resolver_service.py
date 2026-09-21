@@ -62,7 +62,9 @@ class LimitationCompatibilityResolverService:
                 "requirements and do not authorize execution."
             ),
             payload={
-                "frozen_downstream_requirements": requirements.model_dump(mode="json"),
+                "frozen_downstream_requirements": self._semantic_requirements_view(
+                    requirements
+                ),
                 "upstream_context": {
                     "limitation_bindings": [
                         {
@@ -240,6 +242,36 @@ class LimitationCompatibilityResolverService:
                 "use_safety_key": "safe_for_downstream_static_analysis",
                 "observed_value": safety,
             },
+        }
+
+    @staticmethod
+    def _semantic_requirements_view(
+        requirements: DownstreamPhaseRequirements,
+    ) -> dict[str, Any]:
+        return {
+            "contract_id": requirements.contract_id,
+            "consumer_phase_id": requirements.consumer_phase_id,
+            "operation_type": requirements.operation_type,
+            "allowed_dependency_statuses": list(
+                requirements.allowed_dependency_statuses
+            ),
+            "required_downstream_uses": list(
+                requirements.required_downstream_uses
+            ),
+            "required_use_safety": dict(requirements.required_use_safety),
+            "required_semantic_properties": dict(
+                requirements.required_semantic_properties
+            ),
+            "required_capabilities": list(
+                requirements.required_capabilities
+            ),
+            "limitation_compatibility": dict(
+                requirements.limitation_compatibility
+            ),
+            "base_constraints": list(requirements.base_constraints),
+            "risk_constraints": list(requirements.risk_constraints),
+            "prohibited_effects": list(requirements.prohibited_effects),
+            "evidence_required": requirements.evidence_required,
         }
 
     @staticmethod

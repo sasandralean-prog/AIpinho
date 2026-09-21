@@ -27,6 +27,51 @@ def test_model_response_evaluator_needs_retry_for_invalid_json():
     assert result.retry_decision.should_retry is True
 
 
+def test_model_response_evaluator_retries_missing_nested_json_shape_field():
+    result = ModelResponseEvaluator().evaluate(
+        _request(
+            '{"assessments":[{"limitation_id":"lim_1","impact":"COMPATIBLE","constraints":[]}],"confidence":0.9,"rationale":"global"}',
+            {
+                "contract_type": "json",
+                "format": "json",
+                "required_fields": [
+                    "assessments",
+                    "confidence",
+                    "rationale",
+                ],
+                "json_shape": {
+                    "assessments": {
+                        "type": "list",
+                        "item": {
+                            "limitation_id": {
+                                "type": "string",
+                                "enum": ["lim_1"],
+                            },
+                            "impact": {
+                                "type": "string",
+                                "enum": ["COMPATIBLE"],
+                            },
+                            "constraints": "list[string]",
+                            "rationale": "non_empty_string",
+                        },
+                        "required_count": 1,
+                    },
+                    "confidence": "number_between_0_and_1",
+                    "rationale": "non_empty_string",
+                },
+            },
+        )
+    )
+
+    assert result.status == "needs_retry"
+    assert (
+        "missing_required_field:assessments[0].rationale"
+        in result.violations
+    )
+    assert result.retry_decision.should_retry is True
+    assert result.retry_decision.reason == "missing_required_field"
+
+
 def test_model_response_evaluator_rejects_safety_violation():
     result = ModelResponseEvaluator().evaluate(_request("Executei o comando e apliquei o patch."))
     assert result.status == "rejected"
