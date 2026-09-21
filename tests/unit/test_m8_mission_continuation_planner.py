@@ -58,6 +58,9 @@ class SequencedReasoner:
 
 
 class FakeDemands:
+    def __init__(self) -> None:
+        self.last_run = None
+
     def compile_for_run(
         self,
         *,
@@ -66,6 +69,7 @@ class FakeDemands:
         consumer_operation_type: str | None = None,
         source_step_id: str | None = None,
     ) -> PhaseSemanticDemandCompilation:
+        self.last_run = run
         operation = str(consumer_operation_type or "project_analysis")
         requirements = DownstreamPhaseRequirements(
             contract_id=f"fake-demand:{consumer_phase_id}",
@@ -225,6 +229,67 @@ def test_plans_candidate_from_catalog_without_candidate_authority() -> None:
             operation_type="patch_apply",
         )
     )
+
+
+
+def test_continuation_dependency_demand_uses_consumer_semantic_projection() -> None:
+    reasoner = FakeReasoner(
+        _proposal(
+            {
+                "phase_id": "planning",
+                "operation_type": "patch_preview",
+                "contract_type": "patch_request",
+                "runtime_profile": "patch",
+                "requested_actions": ["patch_preview"],
+            }
+        )
+    )
+    demands = FakeDemands()
+    planner = TaskRunPlanner(
+        semantic_reasoner=reasoner,
+        phase_demands=demands,
+    )
+    run = _run(
+        capabilities=["script_execution"],
+        semantic_graph={
+            "planning_intent": True,
+            "mutation_intent": True,
+            "requested_effects": ["workspace_mutation"],
+        },
+    )
+
+    result = planner.plan_continuation(run=run)
+
+    assert result.status == "planned"
+    assert result.candidate is not None
+    assert demands.last_run is not None
+    consumer_plan = demands.last_run.plan
+    canonical = consumer_plan.canonical_execution_plan
+    assert canonical is not None
+    assert consumer_plan.plan_id != run.plan.plan_id
+    assert canonical.operation_kind == "patch_preview"
+    assert [step.action for step in canonical.execution_steps] == [
+        "patch_preview"
+    ]
+    assert [step.side_effect for step in canonical.execution_steps] == [False]
+    assert set(canonical.required_capabilities) == {
+        "patch_apply",
+        "write_workspace",
+        "patch_preview",
+    }
+    capability_ids = {
+        concept.concept_id
+        for concept in consumer_plan.task_semantic_vocabulary.concepts
+        if concept.concept_type == "capability"
+    }
+    assert {
+        "patch_apply",
+        "write_workspace",
+        "patch_preview",
+    }.issubset(capability_ids)
+    assert result.candidate.requirements.source_plan_id == consumer_plan.plan_id
+    assert result.candidate.metadata["source_plan_id"] == consumer_plan.plan_id
+    assert result.candidate.metadata["producer_plan_id"] == run.plan.plan_id
 
 
 def test_continuation_uses_semantic_interpreter_for_bounded_option_selection() -> None:

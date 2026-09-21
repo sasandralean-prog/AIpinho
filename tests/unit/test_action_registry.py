@@ -36,6 +36,10 @@ def test_semantic_dependency_mode_defaults_fail_closed_to_interpreted():
         registry.get_action("project_analysis").semantic_dependency_mode
         == "interpreted"
     )
+    assert (
+        registry.get_action("patch_preview").semantic_dependency_mode
+        == "interpreted"
+    )
 
 
 def test_unknown_action_is_not_allowed_silently():

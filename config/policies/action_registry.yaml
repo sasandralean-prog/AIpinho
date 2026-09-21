@@ -92,6 +92,7 @@ actions:
     side_effect: false
     requires_approval: false
     capability: patch_preview
+    semantic_dependency_mode: interpreted
 
   memory_read:
     aliases: [read_memory, memory_search]

@@ -33,6 +33,16 @@ class _Reasoner:
         return dict(self.response)
 
 
+class _PayloadReasoner:
+    def __init__(self, builder) -> None:
+        self.builder = builder
+        self.last_kwargs = None
+
+    def propose_json(self, **kwargs):
+        self.last_kwargs = kwargs
+        return _candidate(self.builder(kwargs))
+
+
 def _candidate(candidate: dict, *, model_id: str = "fixture-model") -> dict:
     structured = {
         "resolution_status": "resolved",
@@ -305,26 +315,24 @@ def _snapshot() -> PhaseDependencySnapshot:
 
 
 def test_limitation_resolver_accepts_constraint_bound_compatibility() -> None:
-    service = LimitationCompatibilityResolverService(
-        reasoner=_Reasoner(
-            _candidate(
+    reasoner = _PayloadReasoner(
+        lambda kwargs: {
+            "assessments": [
                 {
-                    "assessments": [
-                        {
-                            "limitation": "identity_not_observed",
-                            "impact": "COMPATIBLE_WITH_CONSTRAINT",
-                            "constraints": [
-                                "do_not_promote_upstream_identity_to_truth"
-                            ],
-                            "rationale": "Identity truth is not required.",
-                        }
+                    "limitation_id": kwargs["payload"]["upstream_context"]
+                    ["limitation_bindings"][0]["limitation_id"],
+                    "impact": "COMPATIBLE_WITH_CONSTRAINT",
+                    "constraints": [
+                        "do_not_promote_upstream_identity_to_truth"
                     ],
-                    "confidence": 0.94,
-                    "rationale": "Compatible with scoped static analysis.",
+                    "rationale": "Identity truth is not required.",
                 }
-            )
-        )
+            ],
+            "confidence": 0.94,
+            "rationale": "Compatible with scoped static analysis.",
+        }
     )
+    service = LimitationCompatibilityResolverService(reasoner=reasoner)
 
     result = service.resolve(
         requirements=_requirements(),
@@ -337,6 +345,17 @@ def test_limitation_resolver_accepts_constraint_bound_compatibility() -> None:
     assert assessment["constraints"] == [
         "do_not_promote_upstream_identity_to_truth"
     ]
+    payload = reasoner.last_kwargs["payload"]
+    bindings = payload["upstream_context"]["limitation_bindings"]
+    assert bindings[0]["description"] == "identity_not_observed"
+    assert bindings[0]["limitation_id"].startswith("lim_")
+    assert "limitations" not in payload["upstream_context"]
+    assessment_schema = payload["output_schema"]["assessments"]
+    assert assessment_schema["required_count"] == 1
+    assert assessment_schema["item"]["limitation_id"]["enum"] == [
+        bindings[0]["limitation_id"]
+    ]
+    assert "one_supplied_limitation_id" not in str(payload["output_schema"])
 
 
 def test_limitation_resolver_requires_complete_limitation_coverage() -> None:
@@ -360,6 +379,72 @@ def test_limitation_resolver_requires_complete_limitation_coverage() -> None:
 
     assert result["status"] == "insufficient_evidence"
     assert result["reason_code"] == "LIMITATION_COMPATIBILITY_COVERAGE_REQUIRED"
+
+
+
+def test_limitation_resolver_rejects_unknown_opaque_binding() -> None:
+    reasoner = _PayloadReasoner(
+        lambda _kwargs: {
+            "assessments": [
+                {
+                    "limitation_id": "lim_not_supplied",
+                    "impact": "COMPATIBLE",
+                    "constraints": [],
+                    "rationale": "Unknown binding should be rejected.",
+                }
+            ],
+            "confidence": 0.9,
+            "rationale": "Unknown binding fixture.",
+        }
+    )
+    service = LimitationCompatibilityResolverService(reasoner=reasoner)
+
+    result = service.resolve(
+        requirements=_requirements(),
+        snapshot=_snapshot(),
+        limitations=["identity_not_observed"],
+    )
+
+    assert result["status"] == "insufficient_evidence"
+    assert result["reason_code"] == "LIMITATION_COMPATIBILITY_BINDING_INVALID"
+
+
+def test_limitation_resolver_rejects_duplicate_opaque_binding() -> None:
+    def _duplicate(kwargs):
+        binding_id = kwargs["payload"]["upstream_context"][
+            "limitation_bindings"
+        ][0]["limitation_id"]
+        return {
+            "assessments": [
+                {
+                    "limitation_id": binding_id,
+                    "impact": "COMPATIBLE",
+                    "constraints": [],
+                    "rationale": "First assessment.",
+                },
+                {
+                    "limitation_id": binding_id,
+                    "impact": "COMPATIBLE",
+                    "constraints": [],
+                    "rationale": "Duplicate assessment.",
+                },
+            ],
+            "confidence": 0.9,
+            "rationale": "Duplicate binding fixture.",
+        }
+
+    service = LimitationCompatibilityResolverService(
+        reasoner=_PayloadReasoner(_duplicate)
+    )
+
+    result = service.resolve(
+        requirements=_requirements(),
+        snapshot=_snapshot(),
+        limitations=["identity_not_observed", "metadata_incomplete"],
+    )
+
+    assert result["status"] == "insufficient_evidence"
+    assert result["reason_code"] == "LIMITATION_COMPATIBILITY_BINDING_INVALID"
 
 
 def test_semantic_demand_interpreter_rejects_invalid_use_safety_state() -> None:

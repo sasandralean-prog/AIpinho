@@ -1,8 +1,10 @@
 ﻿from __future__ import annotations
 
 import hashlib
+import json
 import os
 import re
+from types import SimpleNamespace
 from typing import Any
 from uuid import uuid4
 from aipinho.core.paths import PATHS
@@ -21,6 +23,9 @@ from aipinho.services.runtime.runtime_profile_service import RuntimeProfileServi
 from aipinho.services.semantics.contract_bound_semantic_reasoner import (
     ContractBoundSemanticReasoner,
 )
+from aipinho.services.semantics.task_semantic_vocabulary_compiler_service import (
+    TaskSemanticVocabularyCompilerService,
+)
 from aipinho.services.runtime.execution_plan_promotion_service import ExecutionPlanPromotionService
 from aipinho.services.runtime.phase_identity_service import PhaseIdentityService
 from aipinho.services.config_governance.workspace_permission_matrix_service import (
@@ -37,6 +42,7 @@ class TaskRunPlanner:
         phase_demands: PhaseSemanticDemandCompiler | None = None,
         permission_matrix: WorkspacePermissionMatrixService | None = None,
         phases: PhaseIdentityService | None = None,
+        semantic_vocabularies: TaskSemanticVocabularyCompilerService | None = None,
     ) -> None:
         self.runtime = load_yaml_file(PATHS.config_root / "runtime" / "task_runtime_policy.yaml", critical=True, root=PATHS.config_root / "runtime")
         self.steps = load_yaml_file(PATHS.config_root / "runtime" / "governed_task_steps.yaml", critical=True, root=PATHS.config_root / "runtime")
@@ -49,6 +55,9 @@ class TaskRunPlanner:
         self.phase_demands = phase_demands or PhaseSemanticDemandCompiler()
         self.permission_matrix = permission_matrix or WorkspacePermissionMatrixService()
         self.phases = phases or PhaseIdentityService()
+        self.semantic_vocabularies = (
+            semantic_vocabularies or TaskSemanticVocabularyCompilerService()
+        )
 
     def plan(self, request: TaskRunRequest) -> TaskRunPlan:
         allowed_contracts = set(self.runtime.get("allowed_contract_types", []) or [])
@@ -489,8 +498,29 @@ class TaskRunPlanner:
                 ),
             }
 
+        consumer_semantic_view, consumer_semantic_reason = (
+            self._continuation_consumer_semantic_view(
+                run=run,
+                contract=contract,
+                validated=validated,
+                semantic_graph=semantic_graph,
+                semantic_context=semantic_context,
+            )
+        )
+        if consumer_semantic_view is None:
+            return self._continuation_result(
+                "blocked",
+                str(
+                    consumer_semantic_reason
+                    or "MISSION_CONTINUATION_CONSUMER_SEMANTICS_REQUIRED"
+                ),
+                provenance={
+                    **provenance,
+                    "confidence": confidence,
+                },
+            )
         demand = self.phase_demands.compile_for_run(
-            run=run,
+            run=consumer_semantic_view,
             consumer_phase_id=validated["phase_id"],
             consumer_operation_type=validated["operation_type"],
         )
@@ -544,9 +574,10 @@ class TaskRunPlanner:
                 "planner": "TaskRunPlanner.plan_continuation",
                 "confidence": confidence,
                 "rationale": rationale,
-                "source_plan_id": run.plan.plan_id,
+                "source_plan_id": demand.source_plan_id,
                 "source_execution_id": demand.source_execution_id,
                 "source_semantics_sha256": demand.source_semantics_sha256,
+                "producer_plan_id": run.plan.plan_id,
                 "continuation_option_id": validated.get(
                     "continuation_option_id"
                 ),
@@ -795,6 +826,207 @@ class TaskRunPlanner:
             },
             None,
         )
+
+
+    def _continuation_consumer_semantic_view(
+        self,
+        *,
+        run: Any,
+        contract: Any,
+        validated: dict[str, Any],
+        semantic_graph: dict[str, Any],
+        semantic_context: dict[str, Any],
+    ) -> tuple[Any | None, str | None]:
+        requested_actions = self._unique(
+            list(validated.get("requested_actions") or [])
+        )
+        if not requested_actions:
+            return (
+                None,
+                "MISSION_CONTINUATION_CONSUMER_ACTION_SEMANTICS_REQUIRED",
+            )
+
+        runtime_capabilities = self._unique(
+            list(validated.get("runtime_capabilities_required") or [])
+        )
+        consumer_intent: dict[str, Any] = {}
+        live_intent = (
+            dict(getattr(run, "intent_map", {}) or {})
+            if isinstance(getattr(run, "intent_map", None), dict)
+            else {}
+        )
+        for key in (
+            "intent_type",
+            "future_side_effect_intent",
+            "mission_execution_strategy",
+            "requested_deliverables",
+            "validation_requirements",
+            "completion_requirements",
+            "allow_limited_completion",
+        ):
+            value = semantic_context.get(key)
+            if value in (None, "", [], {}):
+                value = live_intent.get(key)
+            if value not in (None, "", [], {}):
+                consumer_intent[key] = value
+        consumer_intent.update(
+            {
+                "operation_type": str(validated["operation_type"]),
+                "current_phase": str(validated["phase_id"]),
+                "phase_id": str(validated["phase_id"]),
+                "mission_phase": str(validated["phase_id"]),
+                "semantic_intent_graph": dict(semantic_graph),
+            }
+        )
+
+        source_payload = {
+            "mission_id": getattr(contract, "mission_id", None),
+            "mission_authority_sha256": getattr(
+                contract,
+                "authority_sha256",
+                None,
+            ),
+            "phase_id": str(validated["phase_id"]),
+            "operation_type": str(validated["operation_type"]),
+            "contract_type": str(validated["contract_type"]),
+            "runtime_profile": str(validated["runtime_profile"]),
+            "requested_actions": requested_actions,
+            "runtime_capabilities_required": runtime_capabilities,
+            "semantic_intent_graph": semantic_graph,
+        }
+        source_digest = hashlib.sha256(
+            json.dumps(
+                source_payload,
+                ensure_ascii=True,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+        ).hexdigest()
+        semantic_plan = TaskRunPlan(
+            plan_id=f"continuation_semantic_plan_{source_digest[:24]}",
+            contract_type=str(validated["contract_type"]),
+            status="ready",
+            steps=[
+                TaskRunStep(
+                    step_id=f"consumer_action_{index:02d}",
+                    step_type="mission_continuation_consumer_action",
+                    action=action,
+                    required=True,
+                    side_effect=self.actions.is_side_effect(action),
+                )
+                for index, action in enumerate(
+                    requested_actions,
+                    start=1,
+                )
+            ],
+            metadata={
+                "runtime_profile": str(validated["runtime_profile"]),
+                "required_capabilities": runtime_capabilities,
+                "normalized_actions": requested_actions,
+                "semantic_projection": True,
+                "semantic_source_kind": "mission_continuation_candidate",
+                "consumer_phase_id": str(validated["phase_id"]),
+                "source_sha256": source_digest,
+            },
+        )
+        semantic_request = TaskRunRequest(
+            source_type="direct",
+            source_channel="mission_continuation_semantic_projection",
+            session_id=getattr(run, "session_id", None),
+            source_message_id=getattr(
+                contract,
+                "source_message_id",
+                None,
+            ),
+            parent_task_id=(
+                getattr(run, "task_id", None)
+                or getattr(run, "run_id", None)
+            ),
+            mission_contract=contract,
+            workspace=getattr(run, "workspace", None),
+            contract_type=str(validated["contract_type"]),
+            operation_type=str(validated["operation_type"]),
+            runtime_profile=str(validated["runtime_profile"]),
+            capabilities_required=runtime_capabilities,
+            requested_actions=requested_actions,
+            intent_map=consumer_intent,
+            mode=(
+                "governed"
+                if any(
+                    self.actions.is_side_effect(action)
+                    for action in requested_actions
+                )
+                else "read_only"
+            ),
+            start_immediately=False,
+        )
+        candidate_plan = self.execution_plans.candidate_from_task_run_plan(
+            request=semantic_request,
+            plan=semantic_plan,
+            workspace_context=(
+                {"workspace_path": semantic_request.workspace}
+                if semantic_request.workspace
+                else {}
+            ),
+        )
+        promotion = self.execution_plans.promote(
+            candidate_plan,
+            policy_snapshot={},
+            task_id=getattr(run, "task_id", None),
+            taskrun_id=f"consumer_semantics:{source_digest[:24]}",
+        )
+        if (
+            promotion.execution_plan is None
+            or promotion.reason_codes
+        ):
+            return (
+                None,
+                "MISSION_CONTINUATION_CONSUMER_SEMANTIC_PLAN_INVALID",
+            )
+        promotion.execution_plan.metadata.update(
+            {
+                "semantic_projection": True,
+                "semantic_source_kind": "mission_continuation_candidate",
+                "consumer_phase_id": str(validated["phase_id"]),
+                "source_sha256": source_digest,
+            }
+        )
+        semantic_plan.candidate_plan = candidate_plan
+        semantic_plan.canonical_execution_plan = promotion.execution_plan
+        semantic_plan.metadata["candidate_plan_id"] = (
+            candidate_plan.candidate_plan_id
+        )
+        semantic_plan.metadata["execution_id"] = (
+            promotion.execution_plan.execution_id
+        )
+
+        semantic_view = SimpleNamespace(
+            plan=semantic_plan,
+            run_id=f"consumer_semantics:{source_digest[:24]}",
+            task_id=getattr(run, "task_id", None),
+            session_id=getattr(run, "session_id", None),
+            mission_contract=contract,
+            intent_map=consumer_intent,
+            capabilities_required=runtime_capabilities,
+            requested_actions=requested_actions,
+            operation_type=str(validated["operation_type"]),
+            contract_type=str(validated["contract_type"]),
+            runtime_profile=str(validated["runtime_profile"]),
+            workspace=getattr(run, "workspace", None),
+        )
+        vocabulary = self.semantic_vocabularies.compile_for_run(
+            run=semantic_view
+        )
+        if (
+            vocabulary.status != "compiled"
+            or vocabulary.vocabulary is None
+        ):
+            return (
+                None,
+                "MISSION_CONTINUATION_CONSUMER_SEMANTIC_VOCABULARY_REQUIRED",
+            )
+        semantic_plan.task_semantic_vocabulary = vocabulary.vocabulary
+        return semantic_view, None
 
     def _unsatisfied_requested_effects(
         self,
