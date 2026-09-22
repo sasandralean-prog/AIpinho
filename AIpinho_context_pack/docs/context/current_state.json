@@ -100,9 +100,9 @@
     "action-owned exact acceptable use-safety states constrain interpreted semantic demand"
   ],
   "current_frontier": [
-    "M10-A.27 implementation 2c916e90 adds a dedicated bounded mission_completion_evidence_binder and is validated without new regressions",
-    "promote A.27 to canonical main and perform a verified healthy -> down -> healthy backend restart before treating the new role/gate configuration as live",
-    "after restart, obtain fresh normal-interface evidence from a mission that actually freezes completion or validation requirements; do not manufacture binder activation with injected TaskRuns"
+    "M10-A.27 is implemented at 2c916e90, promoted to canonical main through 3797c6c8, and live after verified backend restart backend_restart_1790070634718",
+    "next evidence target is a fresh normal-interface mission that actually freezes completion or validation requirements so the mission_completion_evidence_binder is exercised end-to-end",
+    "continue only from the next genuine fail-closed boundary without injecting internal TaskRuns, widening frozen human authority, or creating parallel semantic/truth authorities"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -463,7 +463,8 @@
           "A.27 binder cognition is one frozen requirement per call over bounded evidence batches: max 8 evidence items, 9000 prompt chars, 12 total calls, 4 bindings per batch and 900 output tokens; authority hashes stay deterministic and oversized evidence/call count fails closed before inference without truncation",
           "Real A.27 synthetic M9 replay performs two accepted governed Qwen2.5 7B calls, returns MISSION_COMPLETION_BINDING_CANDIDATE_PROPOSED, compiles through MISSION_COMPLETION_BINDINGS_COMPILED, binds tests_pass only to evidence:tests and satisfies both synthetic requirements; provider provenance retains a non-blocking invalid_json:Expecting value warning",
           "A.27 validation: focused binder/gate/restart 17/17; M8/M9/A.24-A.27 cross-regression 152/152; generic role suite 19 passed / 1 failed with the patch_planner failure reproduced identically on baseline f4cfcba8; compileall/diff/role-config/model-route/hardcode checks clean",
-          "The existing fresh manual FireTest has zero frozen completion/validation requirements, so it cannot activate the A.27 binder; normal-interface binder activation remains a post-restart evidence target"
+          "The existing fresh manual FireTest has zero frozen completion/validation requirements, so it cannot activate the A.27 binder; normal-interface binder activation remains a post-restart evidence target",
+          "Verified post-A.27 restart backend_restart_1790070634718 is accepted without warnings; trace supervisor_trace_e67f31ed4de146b3b5094696859a0049 proves healthy -> down -> healthy, stops PID 17848, starts PID 380, PID file is 380, live runtime health is ok, and backend-control is online/healthy"
         ],
         "plan_changed": false
       }

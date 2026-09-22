@@ -162,6 +162,8 @@ Real A.27 replay on a synthetic M9-shaped snapshot with `validated_change` and `
 
 A.27 validation: focused binder/gate/restart checks `17/17`; full M8/M9/A.24-A.27 cross-regression `152/152`; generic role-policy/output/prompt regression `19 passed / 1 failed`, with the sole `patch_planner` runtime-limit assertion reproduced identically on baseline `f4cfcba8`. `compileall`, `git diff --check`, role/config loading, model routing and production/config hardcode scan are clean. The prior fresh FireTest still does not activate mission-completion binding because its frozen mission contains zero completion/validation requirements; fresh normal-interface evidence for the binder therefore remains a separate post-restart validation target.
 
+Verified post-A.27 restart `backend_restart_1790070634718` returned `accepted` with no warnings. Supervisor trace `supervisor_trace_e67f31ed4de146b3b5094696859a0049` proves `healthy -> down -> healthy`, stopping PID `17848` with port 9088 closed and starting PID `380`; the PID file contains `380`, live `/api/v1/runtime/health` returns `status=ok`, and backend-control status is `online/healthy` with this restart as the latest restart id.
+
 ## Invariants
 
 - `MODEL != AUTHORITY`.
