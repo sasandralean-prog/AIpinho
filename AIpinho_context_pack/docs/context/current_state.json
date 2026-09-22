@@ -1,5 +1,5 @@
 {
-  "schema_version": "context_state.v2026-09-22-e2e-new-runtime-m10-a23",
+  "schema_version": "context_state.v2026-09-22-e2e-new-runtime-m10-a30a",
   "updated_at": "2026-09-22",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
@@ -7,7 +7,7 @@
     "branch": "main",
     "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
     "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d",
-    "current_main_head": "7811ebdf1d55ac6cbe5ed9cec49f364cd673ffb0"
+    "current_main_head": "4f0e9aea34b78f66e2d017ee8180274c4cac0cdd"
   },
   "authorities": [
     "Human operator",
@@ -97,12 +97,16 @@
     "remote clean-copy/fetch/fast-forward semantics recognized without auto-expanding human authority",
     "intra-workflow producer semantic_outcome preserved into PhaseDependencySnapshot",
     "validated partial file context represented as safe_for_downstream_static_analysis=true_with_limitations",
-    "action-owned exact acceptable use-safety states constrain interpreted semantic demand"
+    "action-owned exact acceptable use-safety states constrain interpreted semantic demand",
+    "bounded governed evidence-repair continuation without authority expansion",
+    "prompt-grounded terminal mission completion and validation requirements frozen before execution",
+    "workflow implicit sequence separated from canonical explicit semantic dependency authority",
+    "explicit non-adjacent canonical step dependencies materialized as semantic workflow dependencies"
   ],
   "current_frontier": [
-    "M10-A.27 is implemented at 2c916e90, promoted to canonical main through 3797c6c8, and live after verified backend restart backend_restart_1790070634718",
-    "next evidence target is a fresh normal-interface mission that actually freezes completion or validation requirements so the mission_completion_evidence_binder is exercised end-to-end",
-    "continue only from the next genuine fail-closed boundary without injecting internal TaskRuns, widening frozen human authority, or creating parallel semantic/truth authorities"
+    "M10-A.30.a is implemented and promoted at 4f0e9aea34b78f66e2d017ee8180274c4cac0cdd; implicit workflow order no longer fabricates semantic dependency demand",
+    "fresh normal-interface A.30.a FireTest crosses the formerly blocked validate_workspace -> project_analysis boundary and recursively completes two readonly repair children",
+    "next genuine fail-closed frontier is MISSION_CONTINUATION_PREMATURE_COMPLETE: the model proposed complete while build_execution, runtime_execution, and workspace_mutation remain unsatisfied; deterministic runtime correctly blocks false completion"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -153,7 +157,9 @@
     "mission completion success requires evidence-bound satisfaction of frozen mission completion requirements",
     "model-assisted requirement-to-evidence binding is interpretation only and cannot grant truth authority",
     "accepted mission binding interpretation is persisted and restart recompiles it against canonical evidence without silent model reinvocation",
-    "TaskRunResult completed cannot exceed the MissionCompletionFacet ceiling exposed through RuntimeTruth and SpeakerTruth"
+    "TaskRunResult completed cannot exceed the MissionCompletionFacet ceiling exposed through RuntimeTruth and SpeakerTruth",
+    "workflow phase order is scheduling authority only; semantic dependency authority requires canonical explicit dependency",
+    "missing use-safety on an explicit semantic dependency remains fail-closed and is never fabricated from phase order"
   ],
   "active_wave": {
     "id": "e2e_new_runtime",
@@ -468,6 +474,29 @@
         ],
         "plan_changed": false
       }
-    }
+    },
+    "latest_checkpoint": "M10-A.30.a",
+    "latest_checkpoint_status": "MERGED_AND_E2E_VALIDATED_BOUNDARY",
+    "latest_checkpoint_sha": "4f0e9aea34b78f66e2d017ee8180274c4cac0cdd"
+  },
+  "m10_a30a_firetest": {
+    "session_id": "chat_4bf2354b600a4bad9b69e6779cd96fa0",
+    "parent_task_run_id": "task_run_146a956f17e646ad9d3ddeddfe5f058c",
+    "repair_child_task_run_ids": [
+      "task_run_4434a6126fd2439ca111c28d17576fcd",
+      "task_run_7fe4d294878448d091e6b78577c0d663"
+    ],
+    "a30a_boundary": "passed",
+    "formerly_blocked_phase": "phase_003_execute_readonly_artifact_analysis",
+    "observed_phase_status": "completed",
+    "observed_validation_status": "passed",
+    "next_frontier_reason_code": "MISSION_CONTINUATION_PREMATURE_COMPLETE",
+    "unsatisfied_requested_effects": [
+      "build_execution",
+      "runtime_execution",
+      "workspace_mutation"
+    ],
+    "final_mission_success": false,
+    "restart_id": "backend_restart_1790116962318"
   }
 }
