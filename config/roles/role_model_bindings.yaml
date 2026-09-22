@@ -26,6 +26,20 @@ role_model_bindings:
     manual_only: false
     max_latency_class: low
     output_contract: semantic_interpreter_output
+  mission_completion_evidence_binder:
+    enabled: true
+    primary_model: qwen2_5_7b_instruct_q5_k_m
+    allowed_capabilities: [instruction, summarization, reporting]
+    default_real_inference: true
+    manual_only: false
+    max_latency_class: medium
+    output_contract: mission_completion_binding_output
+    metadata:
+      specialized_child_only: true
+      tool_calling_enabled: false
+      workspace_write_enabled: false
+      truth_authority: false
+
   speaker:
     enabled: true
     primary_model: qwen3_1_7b_q6_k

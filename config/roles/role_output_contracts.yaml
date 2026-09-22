@@ -25,6 +25,12 @@ contracts:
     require_isr: true
     side_effects_allowed: false
 
+  mission_completion_evidence_binder:
+    output_contract_type: mission_completion_binding_output
+    require_evidence: true
+    side_effects_allowed: false
+    truth_authority: false
+
   speaker:
     output_contract_type: chat_response
     require_human_readable: true

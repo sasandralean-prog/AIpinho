@@ -139,6 +139,7 @@ class ContractBoundSemanticReasoner:
                 "purpose": "chat",
                 "role_id": role_id,
                 "role_pipeline_controlled_inference": True,
+                "semantic_reasoner_controlled_inference": True,
                 "semantic_goal": semantic_goal,
                 "max_stdout_chars": 12000,
                 "timeout_seconds": effective_timeout,

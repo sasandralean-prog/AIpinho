@@ -49,9 +49,9 @@ class _CatalogBindingReasoner:
     def propose_json(self, **kwargs):
         self.calls += 1
         payload = kwargs["payload"]
-        requirements = list(payload["requirements"])
+        requirement = dict(payload["requirement"])
         evidence = list(payload["evidence_catalog"])
-        assert requirements
+        assert requirement
         assert evidence
         preferred = next(
             (
@@ -76,7 +76,6 @@ class _CatalogBindingReasoner:
                     "supports the frozen completion requirement."
                 ),
             }
-            for requirement in requirements
         ]
         return {
             "status": "candidate",

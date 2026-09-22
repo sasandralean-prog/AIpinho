@@ -24,6 +24,12 @@ contracts:
   debugger_explanation_output: {contract_type: plain_text, format: text, require_evidence: false}
   memory_candidate_review_output: {contract_type: plain_text, format: text, require_evidence: false}
   intent_classification_output: {contract_type: plain_text, format: text, require_evidence: false}
+  mission_completion_binding_output:
+    contract_type: mission_completion_binding_candidate
+    format: json
+    require_evidence: true
+    require_valid_json: true
+    required_fields: [bindings]
   code_summary_output: {contract_type: plain_text, format: text, require_evidence: false}
   vision_analysis_output: {contract_type: structured_vision_summary, format: json, require_evidence: true, require_citations: true}
   ocr_extraction_output: {contract_type: structured_ocr_blocks, format: json, require_evidence: true, require_citations: true, require_confidence: true}

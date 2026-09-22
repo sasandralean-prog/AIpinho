@@ -105,3 +105,96 @@ def test_real_inference_gate_missing_safety_or_contract_blocks(tmp_path):
     decision = gate.evaluate(request=request, model=None, provider=None, model_path_validation=None, executable_validation=None)
     assert "missing_safety_envelope" in decision.blocked_reasons
     assert "missing_output_contract" in decision.blocked_reasons
+
+
+def test_real_inference_gate_allows_specialized_semantic_reasoner_only_when_listed(tmp_path):
+    model_path = tmp_path / "model.gguf"
+    exe_path = tmp_path / "llama-cli.exe"
+    model_path.write_text("m", encoding="utf-8")
+    exe_path.write_text("e", encoding="utf-8")
+    path_service = LocalModelPathService(
+        config={
+            "model_roots": {"allowed": [str(tmp_path)], "blocked": []},
+            "models": {},
+            "validation": {},
+        }
+    )
+    validator = ModelPathValidator(path_service)
+    gate = RealInferenceGateService(
+        config={
+            "real_inference": {
+                "enabled": True,
+                "require_request_opt_in": True,
+            },
+            "routing": {
+                "allow_auto_semantic_reasoner_inference": True,
+                "auto_semantic_reasoner_roles": [
+                    "mission_completion_evidence_binder"
+                ],
+                "auto_semantic_reasoner_purposes": ["chat"],
+            },
+        }
+    )
+
+    allowed = gate.evaluate(
+        request=_request(
+            semantic_reasoner_controlled_inference=True,
+            purpose="chat",
+            role_id="mission_completion_evidence_binder",
+        ),
+        model=ModelDefinition(
+            model_id="llama.local.test",
+            provider_id="llama_cpp.local",
+            display_name="test",
+            enabled=True,
+            real_inference=True,
+        ),
+        provider=ModelProvider(
+            provider_id="llama_cpp.local",
+            type="llama_cpp",
+            enabled=True,
+            real_inference=True,
+        ),
+        model_path_validation=validator.validate_model_path(
+            str(model_path),
+            model_enabled=True,
+        ),
+        executable_validation=validator.validate_executable_path(
+            str(exe_path),
+            provider_enabled=True,
+        ),
+    )
+    blocked = gate.evaluate(
+        request=_request(
+            semantic_reasoner_controlled_inference=True,
+            purpose="chat",
+            role_id="unlisted_semantic_role",
+        ),
+        model=ModelDefinition(
+            model_id="llama.local.test",
+            provider_id="llama_cpp.local",
+            display_name="test",
+            enabled=True,
+            real_inference=True,
+        ),
+        provider=ModelProvider(
+            provider_id="llama_cpp.local",
+            type="llama_cpp",
+            enabled=True,
+            real_inference=True,
+        ),
+        model_path_validation=validator.validate_model_path(
+            str(model_path),
+            model_enabled=True,
+        ),
+        executable_validation=validator.validate_executable_path(
+            str(exe_path),
+            provider_enabled=True,
+        ),
+    )
+
+    assert allowed.allowed is True
+    assert allowed.request_opt_in is True
+    assert allowed.trace[1]["data"]["semantic_reasoner_opt_in"] is True
+    assert blocked.allowed is False
+    assert "request_opt_in_required" in blocked.blocked_reasons

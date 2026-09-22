@@ -47,7 +47,19 @@ class RealInferenceGateService:
             and role_id in {str(item) for item in routing.get("auto_role_pipeline_roles", []) or []}
             and not any(bool(request.safety_envelope.get(key, False)) for key in ("tool_calling", "write_files", "patch_apply", "network", "memory_write", "rag_ingest"))
         )
-        request_opt_in = manual_opt_in or auto_conversation_opt_in or role_pipeline_opt_in
+        semantic_reasoner_opt_in = (
+            bool(routing.get("allow_auto_semantic_reasoner_inference", False))
+            and bool(request.metadata.get("semantic_reasoner_controlled_inference", False))
+            and purpose in {str(item) for item in routing.get("auto_semantic_reasoner_purposes", []) or []}
+            and role_id in {str(item) for item in routing.get("auto_semantic_reasoner_roles", []) or []}
+            and not any(bool(request.safety_envelope.get(key, False)) for key in ("tool_calling", "write_files", "patch_apply", "network", "memory_write", "rag_ingest"))
+        )
+        request_opt_in = (
+            manual_opt_in
+            or auto_conversation_opt_in
+            or role_pipeline_opt_in
+            or semantic_reasoner_opt_in
+        )
         input_chars = sum(len(message.content) for message in request.messages)
         budget_check = self.limiter.validate_request(
             input_chars=input_chars,
@@ -90,7 +102,7 @@ class RealInferenceGateService:
         status = "allowed" if allowed else "blocked"
         trace = [
             {"stage": "real_inference_gate", "status": status, "reason": ",".join(blocked) if blocked else "all_requirements_satisfied"},
-            {"stage": "requirements", "status": "ok" if allowed else "blocked", "data": {**requirements.model_dump(), "manual_opt_in": manual_opt_in, "auto_conversation_opt_in": auto_conversation_opt_in, "role_pipeline_opt_in": role_pipeline_opt_in}},
+            {"stage": "requirements", "status": "ok" if allowed else "blocked", "data": {**requirements.model_dump(), "manual_opt_in": manual_opt_in, "auto_conversation_opt_in": auto_conversation_opt_in, "role_pipeline_opt_in": role_pipeline_opt_in, "semantic_reasoner_opt_in": semantic_reasoner_opt_in}},
         ]
         return RealInferenceGateDecision(
             allowed=allowed,

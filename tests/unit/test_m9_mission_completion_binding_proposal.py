@@ -5,6 +5,11 @@ from aipinho.schemas.runtime.mission_completion import (
     MissionCompletionEvidenceItem,
     MissionCompletionSnapshot,
 )
+from aipinho.services.models.model_router_service import ModelRouterService
+from aipinho.services.roles.role_model_binding_service import (
+    RoleModelBindingService,
+)
+from aipinho.services.roles.role_registry_service import RoleRegistryService
 from aipinho.services.runtime.mission_completion_binding_proposal_service import (
     MissionCompletionBindingProposalService,
 )
@@ -17,9 +22,14 @@ class _FakeReasoner:
 
     def propose_json(self, **kwargs):
         self.calls.append(kwargs)
+        candidate = (
+            self.candidate(kwargs)
+            if callable(self.candidate)
+            else self.candidate
+        )
         return {
             "status": "candidate",
-            "candidate": self.candidate,
+            "candidate": candidate,
             "model_id": "fake-model",
             "response_id": "fake-response",
             "real_inference": False,
@@ -89,34 +99,33 @@ def _catalog(snapshot):
     )
 
 
-def test_reasoner_receives_only_frozen_semantics_requirements_and_catalog() -> None:
+def test_reasoner_receives_bounded_frozen_semantics_and_catalog() -> None:
     snapshot = _snapshot()
     catalog = _catalog(snapshot)
-    reasoner = _FakeReasoner(
-        {
+
+    def candidate_for_call(kwargs):
+        requirement = kwargs["payload"]["requirement"]
+        if requirement["requirement"] == "validated_change":
+            ref = "artifact:patch"
+            producer = "task_run_a"
+        else:
+            ref = "evidence:tests"
+            producer = "task_run_b"
+        return {
             "bindings": [
                 {
-                    "requirement": "validated_change",
-                    "requirement_kind": "completion",
+                    "requirement": requirement["requirement"],
+                    "requirement_kind": requirement["requirement_kind"],
                     "semantic_relation": "supports",
-                    "evidence_refs": ["artifact:patch"],
-                    "producer_task_run_ids": ["task_run_a"],
-                    "confidence": 0.91,
-                    "rationale": "Patch artifact semantically addresses the requested change.",
-                },
-                {
-                    "requirement": "tests_pass",
-                    "requirement_kind": "validation",
-                    "semantic_relation": "supports",
-                    "evidence_refs": ["evidence:tests"],
-                    "producer_task_run_ids": ["task_run_b"],
-                    "confidence": 0.94,
-                    "rationale": "Validation evidence semantically addresses the test requirement.",
-                },
+                    "evidence_refs": [ref],
+                    "producer_task_run_ids": [producer],
+                    "confidence": 0.92,
+                    "rationale": "Supplied evidence is semantically relevant.",
+                }
             ]
         }
-    )
 
+    reasoner = _FakeReasoner(candidate_for_call)
     proposal = MissionCompletionBindingProposalService(
         reasoner=reasoner,  # type: ignore[arg-type]
     ).propose(snapshot, catalog)
@@ -125,11 +134,27 @@ def test_reasoner_receives_only_frozen_semantics_requirements_and_catalog() -> N
     assert proposal.reason_code == "MISSION_COMPLETION_BINDING_CANDIDATE_PROPOSED"
     assert len(proposal.bindings) == 2
     assert len(proposal.proposal_sha256) == 64
-    assert len(reasoner.calls) == 1
-    payload = reasoner.calls[0]["payload"]
-    assert payload["mission"]["semantic_context"] == snapshot.semantic_context
-    assert "raw_prompt" not in str(payload)
-    assert payload["requirements"] == [
+    assert len(reasoner.calls) == 2
+    assert proposal.provenance["reasoner_calls"] == 2
+    assert proposal.provenance["binding_mode"] == "bounded_evidence_batches_v1"
+
+    seen_requirements = []
+    for call in reasoner.calls:
+        payload = call["payload"]
+        seen_requirements.append(payload["requirement"])
+        assert payload["mission"]["semantic_context"] == snapshot.semantic_context
+        assert "raw_prompt" not in str(payload)
+        assert "source_prompt_sha256" not in str(payload)
+        assert "phase_outcome_authority_sha256" not in str(payload)
+        assert len(payload["evidence_catalog"]) == 2
+        assert any(
+            "Runtime success/safety status alone" in rule
+            for rule in payload["rules"]
+        )
+        assert call["role_id"] == "mission_completion_evidence_binder"
+        assert call["max_tokens"] == 900
+
+    assert seen_requirements == [
         {
             "requirement": "validated_change",
             "requirement_kind": "completion",
@@ -142,7 +167,9 @@ def test_reasoner_receives_only_frozen_semantics_requirements_and_catalog() -> N
 
 
 def test_model_cannot_inject_truth_status_into_binding_candidate() -> None:
-    snapshot = _snapshot()
+    snapshot = _snapshot().model_copy(
+        update={"validation_requirements": []}
+    )
     catalog = _catalog(snapshot)
     reasoner = _FakeReasoner(
         {
@@ -189,7 +216,9 @@ def test_catalog_snapshot_mismatch_blocks_without_reasoner_call() -> None:
 
 
 def test_identical_binding_content_has_stable_hash_across_model_response_ids() -> None:
-    snapshot = _snapshot()
+    snapshot = _snapshot().model_copy(
+        update={"validation_requirements": []}
+    )
     catalog = _catalog(snapshot)
     candidate = {
         "bindings": [
@@ -215,3 +244,182 @@ def test_identical_binding_content_has_stable_hash_across_model_response_ids() -
     ).propose(snapshot, catalog)
 
     assert first.proposal_sha256 == second.proposal_sha256
+
+
+def _many_catalog(snapshot, count: int, *, semantic_blob: str = ""):
+    items = []
+    for index in range(count):
+        items.append(
+            MissionCompletionEvidenceItem(
+                evidence_ref=f"evidence:{index}",
+                producer_task_run_id=f"task_run_{index}",
+                phase_id="validation",
+                phase_outcome_authority_sha256=f"{index:064x}"[-64:],
+                runtime_status="completed",
+                result_status="completed",
+                runtime_truth_status="completed",
+                runtime_truth_safe_to_report_success=True,
+                phase_dependency_status="satisfied",
+                semantic_properties=(
+                    {"detail": semantic_blob}
+                    if semantic_blob
+                    else {}
+                ),
+            )
+        )
+    return MissionCompletionEvidenceCatalog(
+        mission_id=snapshot.mission_id,
+        snapshot_authority_sha256=snapshot.authority_sha256,
+        items=items,
+        authority_sha256="e" * 64,
+    )
+
+
+def test_binder_role_is_registered_and_routes_to_medium_instruct_model() -> None:
+    role = RoleRegistryService().require_role(
+        "mission_completion_evidence_binder"
+    )
+    binding = RoleModelBindingService().get_binding(
+        "mission_completion_evidence_binder"
+    )
+    route = ModelRouterService().select_model(
+        purpose="chat",
+        role_id="mission_completion_evidence_binder",
+    )
+
+    assert role.can_call_model is True
+    assert role.can_call_tools is False
+    assert role.can_execute_tools is False
+    assert role.can_write is False
+    assert role.can_patch is False
+    assert role.can_approve is False
+    assert role.output_contract == "mission_completion_binding_output"
+    assert binding is not None
+    assert binding.primary_model == "qwen2_5_7b_instruct_q5_k_m"
+    assert binding.max_latency_class == "medium"
+    assert binding.metadata["specialized_child_only"] is True
+    assert binding.metadata["truth_authority"] is False
+    assert route.status == "ok"
+    assert route.model is not None
+    assert route.model.model_id == "qwen2_5_7b_instruct_q5_k_m"
+
+
+def test_evidence_catalog_is_batched_before_reasoning() -> None:
+    snapshot = _snapshot().model_copy(
+        update={"validation_requirements": []}
+    )
+    catalog = _many_catalog(snapshot, 19)
+    reasoner = _FakeReasoner({"bindings": []})
+    service = MissionCompletionBindingProposalService(
+        reasoner=reasoner,  # type: ignore[arg-type]
+    )
+
+    proposal = service.propose(snapshot, catalog)
+
+    assert proposal.status == "candidate"
+    assert proposal.provenance["reasoner_calls"] == 3
+    assert len(reasoner.calls) == 3
+    assert [
+        len(call["payload"]["evidence_catalog"])
+        for call in reasoner.calls
+    ] == [8, 8, 3]
+    assert all(
+        service._reasoner_prompt_chars(
+            semantic_goal=call["semantic_goal"],
+            payload=call["payload"],
+        )
+        <= 9000
+        for call in reasoner.calls
+    )
+
+
+def test_reasoner_call_limit_fails_closed_before_any_model_call() -> None:
+    snapshot = _snapshot().model_copy(
+        update={"validation_requirements": []}
+    )
+    catalog = _many_catalog(snapshot, 19)
+    reasoner = _FakeReasoner({"bindings": []})
+    service = MissionCompletionBindingProposalService(
+        reasoner=reasoner,  # type: ignore[arg-type]
+    )
+    service.policy["semantic_binding"]["max_reasoner_calls"] = 2
+
+    proposal = service.propose(snapshot, catalog)
+
+    assert proposal.status == "unavailable"
+    assert (
+        proposal.reason_code
+        == "MISSION_COMPLETION_BINDING_REASONER_CALL_LIMIT_EXCEEDED"
+    )
+    assert proposal.provenance["required_reasoner_calls"] == 3
+    assert reasoner.calls == []
+
+
+def test_single_evidence_item_over_batch_budget_fails_closed() -> None:
+    snapshot = _snapshot().model_copy(
+        update={"validation_requirements": []}
+    )
+    catalog = _many_catalog(snapshot, 1, semantic_blob="x" * 12000)
+    reasoner = _FakeReasoner({"bindings": []})
+    service = MissionCompletionBindingProposalService(
+        reasoner=reasoner,  # type: ignore[arg-type]
+    )
+
+    proposal = service.propose(snapshot, catalog)
+
+    assert proposal.status == "unavailable"
+    assert (
+        proposal.reason_code
+        == "MISSION_COMPLETION_BINDING_EVIDENCE_ITEM_BUDGET_EXCEEDED"
+    )
+    assert reasoner.calls == []
+
+
+def test_model_cannot_reference_evidence_outside_current_batch() -> None:
+    snapshot = _snapshot().model_copy(
+        update={"validation_requirements": []}
+    )
+    catalog = _many_catalog(snapshot, 9)
+    reasoner = _FakeReasoner(
+        {
+            "bindings": [
+                {
+                    "requirement": "validated_change",
+                    "requirement_kind": "completion",
+                    "semantic_relation": "supports",
+                    "evidence_refs": ["evidence:8"],
+                    "producer_task_run_ids": ["task_run_8"],
+                    "confidence": 0.9,
+                    "rationale": "Out-of-batch reference.",
+                }
+            ]
+        }
+    )
+
+    proposal = MissionCompletionBindingProposalService(
+        reasoner=reasoner,  # type: ignore[arg-type]
+    ).propose(snapshot, catalog)
+
+    assert proposal.status == "invalid"
+    assert (
+        proposal.reason_code
+        == "MISSION_COMPLETION_BINDING_BATCH_SCOPE_VIOLATION"
+    )
+    assert len(reasoner.calls) == 1
+
+
+def test_requirements_with_empty_catalog_skip_model_and_compile_empty_candidate() -> None:
+    snapshot = _snapshot().model_copy(
+        update={"validation_requirements": []}
+    )
+    catalog = _many_catalog(snapshot, 0)
+    reasoner = _FakeReasoner({"bindings": []})
+
+    proposal = MissionCompletionBindingProposalService(
+        reasoner=reasoner,  # type: ignore[arg-type]
+    ).propose(snapshot, catalog)
+
+    assert proposal.status == "candidate"
+    assert proposal.bindings == []
+    assert proposal.provenance["reasoner_calls"] == 0
+    assert reasoner.calls == []

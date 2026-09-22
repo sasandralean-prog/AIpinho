@@ -255,6 +255,21 @@ roles:
     output_contract: semantic_interpreter_output
     forbidden_actions: [write_files, apply_patch, run_command, git_commit, git_push, write_memory, web_request]
 
+  mission_completion_evidence_binder:
+    enabled: true
+    description: "Relaciona requisitos congelados da missao a evidencias canonicas fornecidas, sem declarar truth ou completion."
+    purpose: "Propose bounded semantic requirement/evidence bindings for deterministic mission-completion compilation."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [semantic_binding, mission_completion_validation]
+    default_model_policy: binding_controlled
+    output_contract: mission_completion_binding_output
+    forbidden_actions: [write_files, apply_patch, run_command, git_commit, git_push, write_memory, web_request]
+
   small_code_assistant:
     enabled: true
     description: "Resume codigo e ajuda com tarefas leves sem executar."

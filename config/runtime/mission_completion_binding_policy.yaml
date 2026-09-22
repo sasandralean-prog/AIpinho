@@ -5,3 +5,8 @@ semantic_binding:
   max_evidence_refs_per_requirement: 12
   max_producers_per_requirement: 8
   max_bindings: 64
+  max_evidence_items_per_batch: 8
+  max_batch_prompt_chars: 9000
+  max_reasoner_calls: 12
+  max_bindings_per_batch: 4
+  max_output_tokens_per_batch: 900
