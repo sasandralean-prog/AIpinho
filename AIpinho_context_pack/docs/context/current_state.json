@@ -1,13 +1,13 @@
 {
-  "schema_version": "context_state.v2026-09-21-e2e-new-runtime-m10-a21",
-  "updated_at": "2026-09-21",
+  "schema_version": "context_state.v2026-09-22-e2e-new-runtime-m10-a23",
+  "updated_at": "2026-09-22",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
     "name": "sasandralean-prog/AIpinho",
     "branch": "main",
     "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
     "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d",
-    "current_main_head": "ef8011e86e27e230355b168ec69126a27ba66c38"
+    "current_main_head": "7811ebdf1d55ac6cbe5ed9cec49f364cd673ffb0"
   },
   "authorities": [
     "Human operator",
@@ -448,7 +448,12 @@
           "M10-A.21 validation is green: focused producer/action/evaluator 39/39, workflow bridge 52/52, expanded workflow/offer/demand/continuation 118/118, compileall/diff/ActionRegistry/hardcode checks clean",
           "deep-copy-only replay of task_run_3e2d068a1b004059933ecd435ebc8852 changes the build_file_context -> project_analysis dependency to ADMITTED_WITH_CONSTRAINTS with expected [true,true_with_limitations] and observed true_with_limitations while preserving four disclosures",
           "verified A.21 restart backend_restart_1789989093550 records healthy -> down -> healthy, transitions PID 13916 to 19512, returns no warnings, and leaves live runtime health ok",
-          "after A.21 the next required evidence is another fresh manual normal-interface mission; diagnostic replay does not substitute for that FireTest"
+          "after A.21 the next required evidence is another fresh manual normal-interface mission; diagnostic replay does not substitute for that FireTest",
+          "M10-A.22 and M10-A.23 share implementation/main SHA 7811ebdf1d55ac6cbe5ed9cec49f364cd673ffb0; A.22 propagates project_analysis semantic_outcome as safe_for_user_report and A.23 converts unavailable governed dependencies on non-required steps into explicit skipped terminal states while required steps remain fail-closed",
+          "M10-A.22/A.23 focused verification is 5/5; exact workflow/dependency/offer-demand/continuation regression is 127 passed / 1 deselected, with the deselected legacy optional-failure assertion reproduced unchanged on the A.21 baseline; compileall, TaskRun event-policy load, diff check and production hardcode scan are clean",
+          "fresh normal-interface task_run_51f7a878192d41e7bb1aa88b8baec2f3 proves A.22 end-to-end inside the readonly workflow: build_file_context partial is admitted with constraints into project_analysis, project_analysis partial persists safe_for_user_report=true_with_limitations, phase-5 -> phase-6 is ADMITTED_WITH_CONSTRAINTS, and project_report executes partial rather than blocking",
+          "A.23 has focused enforcement/regression proof; the fresh FireTest did not activate optional dependency skipping because its optional/runtime phases completed normally, so no E2E claim is made for that branch condition",
+          "the same fresh mission completes readonly discovery through project_report, role_pipeline_run and compose_result, then blocks continuation honestly at SEMANTIC_REASONER_ROLE_BUDGET_EXCEEDED without materializing a child TaskRun or expanding write authority; this is the next M10 diagnostic frontier"
         ],
         "plan_changed": false
       }
