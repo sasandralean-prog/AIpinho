@@ -255,6 +255,21 @@ roles:
     output_contract: semantic_interpreter_output
     forbidden_actions: [write_files, apply_patch, run_command, git_commit, git_push, write_memory, web_request]
 
+  mission_completion_requirement_extractor:
+    enabled: true
+    description: "Extrai criterios explicitos de completion e validacao da missao com evidencia textual do prompt."
+    purpose: "Propose bounded prompt-grounded mission completion and validation requirement candidates."
+    can_call_model: true
+    can_call_tools: false
+    can_execute_tools: false
+    can_write: false
+    can_patch: false
+    can_approve: false
+    allowed_purposes: [semantic_understanding, mission_completion_requirements]
+    default_model_policy: binding_controlled
+    output_contract: mission_completion_requirements_output
+    forbidden_actions: [write_files, apply_patch, run_command, git_commit, git_push, write_memory, web_request]
+
   mission_completion_evidence_binder:
     enabled: true
     description: "Relaciona requisitos congelados da missao a evidencias canonicas fornecidas, sem declarar truth ou completion."

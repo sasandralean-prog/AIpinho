@@ -1,4 +1,4 @@
-﻿schema_version: 1
+schema_version: 1
 
 real_inference:
   enabled: true
@@ -37,7 +37,7 @@ routing:
   auto_role_pipeline_roles: [speaker, interpreter, semantic_interpreter, reporter, analyst, planner, supervisor, debugger, coder, patch_planner, code_reviewer, patch_quality_reviewer, memory_curator]
   auto_role_pipeline_purposes: [chat, project_report, code_analysis, task_preview, validation, debug_trace]
   allow_auto_semantic_reasoner_inference: true
-  auto_semantic_reasoner_roles: [semantic_interpreter, mission_completion_evidence_binder]
+  auto_semantic_reasoner_roles: [semantic_interpreter, mission_completion_requirement_extractor, mission_completion_evidence_binder]
   auto_semantic_reasoner_purposes: [chat]
   fallback_to_stub_on_unavailable: true
 

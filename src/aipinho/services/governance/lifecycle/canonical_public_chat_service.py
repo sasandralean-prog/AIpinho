@@ -28,7 +28,10 @@ from aipinho.services.governance.lifecycle.public_route_lifecycle_service import
 from aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_service import ReadonlyAnalysisArtifactRuntimeService
 from aipinho.services.orchestration.task_draft_store import TaskDraftStore
 from aipinho.services.orchestration.task_preview_service import TaskPreviewService
-from aipinho.services.orchestration.workspace_fix_discovery_service import WorkspaceFixDiscoveryService
+from aipinho.services.orchestration.workspace_fix_discovery_service import (
+    MissionCompletionRequirementIngressError,
+    WorkspaceFixDiscoveryService,
+)
 from aipinho.services.runtime.phase_identity_service import PhaseIdentityService
 from aipinho.services.patching.execution_preview_compiler import ExecutionPreviewCompiler
 from aipinho.services.policy_kernel.workspace_policy_service import WorkspacePolicyService
@@ -704,12 +707,46 @@ class CanonicalPublicChatService:
             )
             return self._attach_lifecycle(response, snapshot)
 
-        execution = self.workspace_fix_discovery.execute(
-            request=request,
-            snapshot=snapshot,
-            workspace=workspace,
-            source_channel=source_channel,
-        )
+        try:
+            execution = self.workspace_fix_discovery.execute(
+                request=request,
+                snapshot=snapshot,
+                workspace=workspace,
+                source_channel=source_channel,
+            )
+        except MissionCompletionRequirementIngressError as exc:
+            response = self._base_response(
+                request,
+                status="blocked",
+                operation_type="workspace_fix_request",
+                message_type="task_status_update",
+                message=(
+                    "WORKSPACE_FIX_MISSION_CONTRACT_BLOCKED\n"
+                    "Os criterios de completion/validation da missao E2E "
+                    "nao puderam ser resolvidos com evidencia suficiente; "
+                    "nenhuma TaskRun foi iniciada."
+                ),
+                intent={
+                    "intent_type": "workspace_fix_request",
+                    "requires_task": True,
+                    "readonly_first_phase": True,
+                    "mission_execution_mode": (
+                        snapshot.intent.mission_execution_mode
+                    ),
+                },
+                policy={
+                    "reason_code": exc.reason_code,
+                    "write_approval_created": False,
+                    "runtime_status": "not_started",
+                },
+                contract_preview={
+                    "phase": "mission_contract_ingress",
+                    "continuation_status": "blocked",
+                    "continuation_reason_code": exc.reason_code,
+                },
+                requires_user_action=False,
+            )
+            return self._attach_lifecycle(response, snapshot)
         run = execution.run
         result = execution.result
         run_intent = getattr(run, "intent_map", {})

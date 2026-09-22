@@ -462,6 +462,22 @@ class MissionContractService:
             values = self._string_list(intent.get(key))
             if values:
                 context[key] = values
+        requirement_evidence = intent.get(
+            "mission_completion_requirement_evidence"
+        )
+        if isinstance(requirement_evidence, list):
+            context["mission_completion_requirement_evidence"] = [
+                dict(item)
+                for item in requirement_evidence
+                if isinstance(item, dict)
+            ]
+        requirement_resolution = intent.get(
+            "mission_completion_requirement_resolution"
+        )
+        if isinstance(requirement_resolution, dict):
+            context["mission_completion_requirement_resolution"] = dict(
+                requirement_resolution
+            )
         return {
             key: value
             for key, value in context.items()

@@ -24,6 +24,12 @@ contracts:
   debugger_explanation_output: {contract_type: plain_text, format: text, require_evidence: false}
   memory_candidate_review_output: {contract_type: plain_text, format: text, require_evidence: false}
   intent_classification_output: {contract_type: plain_text, format: text, require_evidence: false}
+  mission_completion_requirements_output:
+    contract_type: mission_completion_requirements_candidate
+    format: json
+    require_evidence: true
+    require_valid_json: true
+    required_fields: [requirements]
   mission_completion_binding_output:
     contract_type: mission_completion_binding_candidate
     format: json

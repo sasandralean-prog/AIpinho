@@ -8,12 +8,21 @@ from aipinho.schemas.runtime.task_run import TaskRun
 from aipinho.schemas.runtime.task_run_request import TaskRunRequest
 from aipinho.schemas.runtime.task_run_result import TaskRunResult
 from aipinho.services.runtime.task_runtime_service import TaskRuntimeService
+from aipinho.services.semantic_runtime.mission_completion_requirement_ingress_service import (
+    MissionCompletionRequirementIngressService,
+)
 
 
 @dataclass(frozen=True)
 class WorkspaceFixDiscoveryExecution:
     run: TaskRun
     result: TaskRunResult
+
+
+class MissionCompletionRequirementIngressError(RuntimeError):
+    def __init__(self, reason_code: str) -> None:
+        super().__init__(reason_code)
+        self.reason_code = reason_code
 
 
 class WorkspaceFixDiscoveryService:
@@ -23,8 +32,15 @@ class WorkspaceFixDiscoveryService:
     owned by the canonical TaskRuntime. Mission continuation belongs to M8.
     """
 
-    def __init__(self, runtime: TaskRuntimeService | None = None) -> None:
+    def __init__(
+        self,
+        runtime: TaskRuntimeService | None = None,
+        completion_ingress: MissionCompletionRequirementIngressService | None = None,
+    ) -> None:
         self.runtime = runtime or TaskRuntimeService()
+        self.completion_ingress = (
+            completion_ingress or MissionCompletionRequirementIngressService()
+        )
 
     def execute(
         self,
@@ -39,6 +55,18 @@ class WorkspaceFixDiscoveryService:
         primary = self._primary_workspace(resources, workspace)
         if not primary:
             raise ValueError("workspace_fix_discovery_workspace_missing")
+        completion = self.completion_ingress.resolve(
+            prompt=request.message,
+            enabled=(
+                snapshot.intent.mission_execution_mode
+                == "end_to_end_governed"
+            ),
+        )
+        if completion.status in {"unavailable", "invalid"}:
+            raise MissionCompletionRequirementIngressError(
+                completion.reason_code
+            )
+
         requested_capabilities = sorted(
             set(snapshot.intent.requested_capabilities)
         )
@@ -86,6 +114,27 @@ class WorkspaceFixDiscoveryService:
                 "semantic_intent_graph": semantic_graph,
                 "semantic_goal": request.message,
                 "raw_prompt": request.message,
+                "completion_requirements": list(
+                    completion.completion_requirements
+                ),
+                "validation_requirements": list(
+                    completion.validation_requirements
+                ),
+                "allow_limited_completion": bool(
+                    completion.allow_limited_completion
+                ),
+                "mission_completion_requirement_evidence": [
+                    item.model_dump(mode="json")
+                    for item in completion.evidence
+                ],
+                "mission_completion_requirement_resolution": {
+                    "status": completion.status,
+                    "reason_code": completion.reason_code,
+                    "provenance": dict(completion.provenance),
+                },
+                "mission_provenance_refs": list(
+                    completion.provenance.get("evidence_refs") or []
+                ),
             },
             policy_decision={
                 "status": "allowed",
