@@ -7,6 +7,7 @@ actions:
     side_effect: false
     requires_approval: false
     capability: read_workspace
+    semantic_dependency_mode: deterministic
     semantic_use_safety_dimensions: []
 
   list_directory:

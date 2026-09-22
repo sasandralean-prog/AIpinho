@@ -287,7 +287,8 @@ class TaskRunPlanner:
                 "phase_lineage": phase_lineage,
             },
             "terminal_outcome": self._continuation_model_outcome_payload(
-                phase_outcome
+                phase_outcome,
+                evidence_repair_required=bool(evidence_repair),
             ),
             "semantic_intent_graph": {
                 key: value
@@ -452,6 +453,18 @@ class TaskRunPlanner:
                 candidate_payload=candidate_payload,
                 option_map=continuation_option_map,
             )
+            if (
+                materialized_candidate is not None
+                and not materialized_candidate.get("contract_type")
+            ):
+                materialized_candidate["contract_type"] = (
+                    self._default_contract_for_option(
+                        option=continuation_option_map.get(
+                            str(candidate_payload.get("option_id") or "")
+                        )
+                        or {},
+                    )
+                )
             if materialized_candidate is None:
                 validated = None
                 reason = option_reason
@@ -504,7 +517,9 @@ class TaskRunPlanner:
             correction = {
                 "attempt": candidate_retries,
                 "reason_code": rejection_reason,
-                "rejected_candidate": candidate_payload,
+                "rejected_option_id": str(
+                    candidate_payload.get("option_id") or ""
+                ),
                 "instruction": (
                     "Produce a new candidate that satisfies all supplied "
                     "catalogs, lineage constraints, capability boundaries "
@@ -637,14 +652,23 @@ class TaskRunPlanner:
             )
             if str(item)
         }
-        if (
-            default_contract_types
-            and contract_type not in default_contract_types
-        ):
-            return (
-                None,
-                "MISSION_CONTINUATION_CONTRACT_OPTION_MISMATCH",
+        runtime_contract_types = {
+            str(item)
+            for item in list(
+                self.runtime.get("allowed_contract_types", []) or []
             )
+            if str(item)
+        }
+        if not contract_type and len(default_contract_types) == 1:
+            contract_type = next(iter(default_contract_types))
+        if default_contract_types:
+            if contract_type not in default_contract_types:
+                return (
+                    None,
+                    "MISSION_CONTINUATION_CONTRACT_OPTION_MISMATCH",
+                )
+        elif contract_type not in runtime_contract_types:
+            contract_type = ""
 
         raw_actions = candidate_payload.get(
             "requested_actions"
@@ -686,6 +710,7 @@ class TaskRunPlanner:
             {
                 **dict(candidate_payload),
                 "option_id": str(option.get("option_id") or option_id),
+                "contract_type": contract_type,
                 "runtime_profile": str(
                     option.get("runtime_profile") or ""
                 ),
@@ -696,6 +721,21 @@ class TaskRunPlanner:
             },
             None,
         )
+
+    def _default_contract_for_option(
+        self,
+        *,
+        option: dict[str, Any],
+    ) -> str:
+        allowed = set(self.runtime.get("allowed_contract_types", []) or [])
+        defaults = list(option.get("default_contract_types", []) or [])
+        for candidate in defaults:
+            if candidate in allowed:
+                return str(candidate)
+        profile_id = str(option.get("runtime_profile") or "")
+        if profile_id in {"readonly_analysis", "readonly_artifact_analysis"}:
+            return "analysis_readonly" if "analysis_readonly" in allowed else ""
+        return ""
 
     @staticmethod
     def _continuation_option_id(
@@ -1174,7 +1214,8 @@ class TaskRunPlanner:
             "source_outcome_id": str(
                 getattr(phase_outcome, "outcome_id", "") or ""
             ),
-            "focus_paths": focus_paths,
+            "focus_path_count": len(focus_paths),
+            "focus_paths": focus_paths[:12],
             "limitations": self._unique(
                 list(getattr(phase_outcome, "limitations", []) or [])
             ),
@@ -1259,15 +1300,23 @@ class TaskRunPlanner:
     @staticmethod
     def _continuation_model_outcome_payload(
         outcome: Any | None,
+        *,
+        evidence_repair_required: bool = False,
     ) -> dict[str, Any]:
         if outcome is None:
             return {}
-        return {
+        semantic_properties = dict(
+            getattr(outcome, "semantic_properties", {}) or {}
+        )
+        if evidence_repair_required:
+            semantic_properties = {
+                key: value
+                for key, value in semantic_properties.items()
+                if key != "evidence_repair_focus_paths"
+            }
+        payload = {
             "result_status": getattr(outcome, "result_status", None),
             "limitations": list(getattr(outcome, "limitations", []) or []),
-            "required_disclosures": list(
-                getattr(outcome, "required_disclosures", []) or []
-            ),
             "missing_truth": list(
                 getattr(outcome, "missing_truth", []) or []
             ),
@@ -1277,10 +1326,13 @@ class TaskRunPlanner:
             "use_safety": dict(
                 getattr(outcome, "use_safety", {}) or {}
             ),
-            "semantic_properties": dict(
-                getattr(outcome, "semantic_properties", {}) or {}
-            ),
+            "semantic_properties": semantic_properties,
         }
+        if not evidence_repair_required:
+            payload["required_disclosures"] = list(
+                getattr(outcome, "required_disclosures", []) or []
+            )
+        return payload
 
     def _continuation_option_catalog(
         self,

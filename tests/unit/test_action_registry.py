@@ -25,8 +25,12 @@ def test_semantic_dependency_mode_defaults_fail_closed_to_interpreted():
     registry = ActionRegistryService().load()
 
     assert (
-        registry.get_action("read_files").semantic_dependency_mode
+        registry.get_action("read_config").semantic_dependency_mode
         == "interpreted"
+    )
+    assert (
+        registry.get_action("read_files").semantic_dependency_mode
+        == "deterministic"
     )
     assert (
         registry.get_action("project_tree").semantic_dependency_mode

@@ -565,7 +565,7 @@ def test_bounded_candidate_retry_corrects_deterministic_rejection() -> None:
         correction["reason_code"]
         == "MISSION_CONTINUATION_OPTION_UNKNOWN"
     )
-    assert correction["rejected_candidate"]["option_id"] == (
+    assert correction["rejected_option_id"] == (
         TaskRunPlanner._continuation_option_id(
             runtime_profile="patch",
             operation_type="project_analysis",
@@ -738,6 +738,12 @@ def test_taskruntime_terminal_plans_and_executes_child_without_manual_candidate(
     assert reasoner.calls >= 1
 
 
+def test_plain_read_files_semantics_are_deterministic() -> None:
+    action = TaskRunPlanner().actions.get_action("read_files")
+    assert action.semantic_dependency_mode == "deterministic"
+    assert action.semantic_use_safety_dimensions == []
+
+
 def test_continuation_routes_to_readonly_evidence_repair_when_destructive_safety_missing() -> None:
     reasoner = FakeReasoner(
         _proposal(
@@ -800,6 +806,7 @@ def test_continuation_routes_to_readonly_evidence_repair_when_destructive_safety
     assert repair["required_use_safety"] == {
         "safe_for_destructive_action": True
     }
+    assert repair["focus_path_count"] == 2
     assert repair["focus_paths"] == [
         "src/main/A.kt",
         "src/main/B.kt",
@@ -808,6 +815,10 @@ def test_continuation_routes_to_readonly_evidence_repair_when_destructive_safety
     assert reasoner.last_kwargs is not None
     payload = reasoner.last_kwargs["payload"]
     assert payload["evidence_repair"]["required"] is True
+    assert "evidence_repair_focus_paths" not in payload[
+        "terminal_outcome"
+    ]["semantic_properties"]
+    assert "required_disclosures" not in payload["terminal_outcome"]
     options = payload["continuation_options"]
     assert options
     assert all(
