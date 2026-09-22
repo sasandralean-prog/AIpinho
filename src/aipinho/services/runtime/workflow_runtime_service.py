@@ -34,8 +34,12 @@ class WorkflowRuntimeService:
     def create_for_run(self, run: Any) -> WorkflowRuntimeInstance:
         phases: list[WorkflowPhase] = []
         dependencies: list[WorkflowPhaseDependency] = []
-        previous_phase_id: str | None = None
-        for index, step in enumerate(getattr(run.plan, "steps", []) or [], start=1):
+        phase_by_step: dict[str, WorkflowPhase] = {}
+        runtime_steps = list(getattr(run.plan, "steps", []) or [])
+        explicit_dependencies = self._explicit_step_dependencies(run)
+
+        previous_phase: WorkflowPhase | None = None
+        for index, step in enumerate(runtime_steps, start=1):
             phase_id = f"phase_{index:03d}_{self._safe_id(step.step_type or step.action)}"
             phase = WorkflowPhase(
                 phase_id=phase_id,
@@ -44,26 +48,66 @@ class WorkflowRuntimeService:
                 source_step_type=str(step.step_type),
                 action=str(step.action),
                 required=bool(getattr(step, "required", True)),
-                depends_on=[previous_phase_id] if previous_phase_id else [],
+                depends_on=[previous_phase.phase_id] if previous_phase else [],
             )
             phases.append(phase)
-            if previous_phase_id:
-                demand_compilation = self.semantic_demand_compiler.compile_for_run(
-                    run=run,
-                    consumer_phase_id=phase_id,
-                    consumer_operation_type=phase.action,
-                    source_step_id=step.step_id,
+            phase_by_step[str(step.step_id)] = phase
+
+            if previous_phase is not None:
+                is_explicit = (
+                    previous_phase.source_step_id
+                    in explicit_dependencies.get(str(step.step_id), set())
                 )
                 dependencies.append(
-                    WorkflowPhaseDependency(
-                        producer_phase_id=previous_phase_id,
-                        consumer_phase_id=phase_id,
-                        required_status="completed",
-                        demand_compilation=demand_compilation,
-                        requirements=demand_compilation.requirements,
+                    self._phase_dependency(
+                        run=run,
+                        producer=previous_phase,
+                        consumer=phase,
+                        explicit=is_explicit,
                     )
                 )
-            previous_phase_id = phase_id
+            previous_phase = phase
+
+        existing_pairs = {
+            (dependency.producer_phase_id, dependency.consumer_phase_id):
+            dependency
+            for dependency in dependencies
+        }
+        for consumer_step_id, producer_step_ids in explicit_dependencies.items():
+            consumer = phase_by_step.get(consumer_step_id)
+            if consumer is None:
+                continue
+            for producer_step_id in producer_step_ids:
+                producer = phase_by_step.get(producer_step_id)
+                if producer is None or producer.phase_id == consumer.phase_id:
+                    continue
+                pair = (producer.phase_id, consumer.phase_id)
+                existing = existing_pairs.get(pair)
+                if existing is not None:
+                    if not existing.evaluation_required:
+                        upgraded = self._phase_dependency(
+                            run=run,
+                            producer=producer,
+                            consumer=consumer,
+                            explicit=True,
+                        )
+                        existing.relation = upgraded.relation
+                        existing.evaluation_required = True
+                        existing.demand_compilation = upgraded.demand_compilation
+                        existing.requirements = upgraded.requirements
+                    continue
+                dependency = self._phase_dependency(
+                    run=run,
+                    producer=producer,
+                    consumer=consumer,
+                    explicit=True,
+                )
+                dependencies.append(dependency)
+                existing_pairs[pair] = dependency
+                consumer.depends_on = list(
+                    dict.fromkeys([*consumer.depends_on, producer.phase_id])
+                )
+
         workflow = WorkflowRuntimeInstance(
             task_id=getattr(run, "task_id", None) or getattr(run, "run_id", None),
             task_run_id=run.run_id,
@@ -79,6 +123,53 @@ class WorkflowRuntimeService:
         )
         self._refresh(workflow)
         return workflow
+
+    def _phase_dependency(
+        self,
+        *,
+        run: Any,
+        producer: WorkflowPhase,
+        consumer: WorkflowPhase,
+        explicit: bool,
+    ) -> WorkflowPhaseDependency:
+        if not explicit:
+            return WorkflowPhaseDependency(
+                producer_phase_id=producer.phase_id,
+                consumer_phase_id=consumer.phase_id,
+                relation="implicit_sequence",
+                required_status="completed",
+                evaluation_required=False,
+            )
+        demand_compilation = self.semantic_demand_compiler.compile_for_run(
+            run=run,
+            consumer_phase_id=consumer.phase_id,
+            consumer_operation_type=consumer.action,
+            source_step_id=consumer.source_step_id,
+        )
+        return WorkflowPhaseDependency(
+            producer_phase_id=producer.phase_id,
+            consumer_phase_id=consumer.phase_id,
+            relation="explicit_plan_dependency",
+            required_status="completed",
+            evaluation_required=True,
+            demand_compilation=demand_compilation,
+            requirements=demand_compilation.requirements,
+        )
+
+    @staticmethod
+    def _explicit_step_dependencies(run: Any) -> dict[str, set[str]]:
+        plan = getattr(run, "plan", None)
+        canonical = getattr(plan, "canonical_execution_plan", None)
+        steps = list(getattr(canonical, "execution_steps", []) or [])
+        return {
+            str(getattr(step, "step_id", "") or ""): {
+                str(item)
+                for item in list(getattr(step, "depends_on", []) or [])
+                if str(item)
+            }
+            for step in steps
+            if str(getattr(step, "step_id", "") or "")
+        }
 
     def can_start_phase(self, workflow: WorkflowRuntimeInstance | None, source_step_id: str) -> tuple[bool, list[str]]:
         if workflow is None:

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal
 from uuid import uuid4
 
 from pydantic import Field
@@ -30,6 +30,10 @@ class WorkflowPhaseDependency(AIpinhoModel):
     dependency_id: str = Field(default_factory=lambda: f"phase_dependency_{uuid4().hex}")
     producer_phase_id: str
     consumer_phase_id: str
+    relation: Literal[
+        "implicit_sequence",
+        "explicit_plan_dependency",
+    ] = "implicit_sequence"
     required_status: str = "completed"
     required_artifacts: list[str] = Field(default_factory=list)
     required_validations: list[str] = Field(default_factory=list)

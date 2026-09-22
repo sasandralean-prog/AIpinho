@@ -3,6 +3,7 @@ from __future__ import annotations
 from aipinho.schemas.runtime.task_completion import TaskCompletionEvaluation
 from aipinho.schemas.runtime.phase_dependency_evaluation import (
     DownstreamPhaseRequirements,
+    PhaseSemanticDemandCompilation,
 )
 from aipinho.schemas.runtime.runtime_timeline import (
     RuntimeTimeline,
@@ -24,6 +25,53 @@ from tests.support.runtime_fixtures import runtime_request
 class CompletingExecutor:
     def execute_step(self, run, step, context):
         return TaskStepOutcome(status="completed", summary={"step_type": step.step_type})
+
+
+class _StaticDemandCompiler:
+    def __init__(self, requirements: DownstreamPhaseRequirements) -> None:
+        self.requirements = requirements
+        self.calls = 0
+
+    def compile_for_run(
+        self,
+        *,
+        run,
+        consumer_phase_id: str,
+        consumer_operation_type: str,
+        source_step_id: str,
+    ) -> PhaseSemanticDemandCompilation:
+        self.calls += 1
+        requirements = self.requirements.model_copy(
+            update={
+                "consumer_phase_id": consumer_phase_id,
+                "operation_type": consumer_operation_type,
+            }
+        )
+        return PhaseSemanticDemandCompilation(
+            status="compiled",
+            consumer_phase_id=consumer_phase_id,
+            consumer_operation_type=consumer_operation_type,
+            requirements=requirements,
+            semantic_interpretation={"status": "fixture"},
+        )
+
+
+def _workflow_with_explicit_first_dependency(
+    run,
+    requirements: DownstreamPhaseRequirements,
+):
+    canonical = run.plan.canonical_execution_plan
+    assert canonical is not None
+    assert len(canonical.execution_steps) >= 2
+    first = canonical.execution_steps[0]
+    second = canonical.execution_steps[1]
+    second.depends_on = [first.step_id]
+    compiler = _StaticDemandCompiler(requirements)
+    service = WorkflowRuntimeService(
+        semantic_demand_compiler=compiler,  # type: ignore[arg-type]
+    )
+    workflow = service.create_for_run(run)
+    return service, workflow, compiler
 
 
 def test_r4_workflow_is_created_for_task_run(task_runtime_service):
@@ -66,7 +114,9 @@ def test_r4_phase_cannot_finish_without_validation_checkpoint(task_runtime_servi
     assert issues == [f"{phase.phase_id}:validation_missing"]
 
 
-def test_r5_valid_phase_dependency_allows_next_phase(task_runtime_service):
+def test_r5_implicit_sequence_allows_next_phase_without_semantic_admission(
+    task_runtime_service,
+):
     task_runtime_service.loop.executor = CompletingExecutor()
     run = task_runtime_service.create_run(runtime_request())
 
@@ -76,31 +126,11 @@ def test_r5_valid_phase_dependency_allows_next_phase(task_runtime_service):
     assert deps
     assert all(dep.status == "completed" for dep in deps)
     assert all(not dep.missing_reasons for dep in deps)
-    required_dependencies = [
-        dep
-        for dep in deps
-        if WorkflowRuntimeService().phase(
-            completed.workflow,
-            dep.producer_phase_id,
-        ).required
-    ]
-    assert required_dependencies
-    assert all(
-        dep.evaluation is not None
-        for dep in required_dependencies
-    )
-    assert all(
-        dep.admission is not None and dep.admission.authorized
-        for dep in required_dependencies
-    )
-    assert all(
-        dep.admission.consumer_task_run_id == completed.run_id
-        for dep in required_dependencies
-    )
-    assert all(
-        dep.admission.consumer_operation_id == completed.operation_id
-        for dep in required_dependencies
-    )
+    assert all(dep.relation == "implicit_sequence" for dep in deps)
+    assert all(dep.evaluation_required is False for dep in deps)
+    assert all(dep.demand_compilation is None for dep in deps)
+    assert all(dep.evaluation is None for dep in deps)
+    assert all(dep.admission is None for dep in deps)
 
 
 def test_r5_partial_phase_without_violations_can_feed_next_phase(
@@ -142,11 +172,11 @@ def test_r5_partial_phase_without_violations_can_feed_next_phase(
         and item.consumer_phase_id == consumer.phase_id
     )
     assert dependency.status == "completed"
-    assert dependency.evaluation is not None
-    assert dependency.evaluation.decision == "ADMITTED_WITH_CONSTRAINTS"
-    assert dependency.admission is not None
-    assert dependency.admission.authorized is True
-    assert dependency.admission.decision == "ADMITTED_WITH_CONSTRAINTS"
+    assert dependency.relation == "implicit_sequence"
+    assert dependency.evaluation_required is False
+    assert dependency.demand_compilation is None
+    assert dependency.evaluation is None
+    assert dependency.admission is None
 
 
 
@@ -154,21 +184,10 @@ def test_r5_partial_phase_semantic_outcome_is_preserved_for_dependency_admission
     task_runtime_service,
 ):
     run = task_runtime_service.create_run(runtime_request())
-    workflow = run.workflow
-    assert workflow is not None
-    service = WorkflowRuntimeService()
-    producer = workflow.phases[0]
-    consumer = workflow.phases[1]
-    dependency = next(
-        item
-        for item in workflow.dependencies
-        if item.producer_phase_id == producer.phase_id
-        and item.consumer_phase_id == consumer.phase_id
-    )
     requirements = DownstreamPhaseRequirements(
         contract_id="workflow_partial_static_analysis",
-        consumer_phase_id=consumer.phase_id,
-        operation_type=consumer.action,
+        consumer_phase_id="pending",
+        operation_type="pending",
         authority_source="workflow_contract",
         allowed_dependency_statuses=[
             "satisfied",
@@ -182,12 +201,23 @@ def test_r5_partial_phase_semantic_outcome_is_preserved_for_dependency_admission
         },
         evidence_required=True,
     )
-    dependency.requirements = requirements
+    service, workflow, compiler = _workflow_with_explicit_first_dependency(
+        run,
+        requirements,
+    )
+    producer = workflow.phases[0]
+    consumer = workflow.phases[1]
+    dependency = next(
+        item
+        for item in workflow.dependencies
+        if item.producer_phase_id == producer.phase_id
+        and item.consumer_phase_id == consumer.phase_id
+    )
+    assert dependency.relation == "explicit_plan_dependency"
+    assert dependency.evaluation_required is True
     assert dependency.demand_compilation is not None
-    dependency.demand_compilation.status = "compiled"
-    dependency.demand_compilation.requirements = requirements
-    dependency.evaluation = None
-    dependency.admission = None
+    assert dependency.requirements is not None
+    assert compiler.calls == 1
 
     service.start_phase_for_step(workflow, producer.source_step_id)
     service.finish_phase_for_step(
@@ -235,21 +265,10 @@ def test_r5_partial_analysis_semantic_outcome_is_preserved_for_report_dependency
     task_runtime_service,
 ):
     run = task_runtime_service.create_run(runtime_request())
-    workflow = run.workflow
-    assert workflow is not None
-    service = WorkflowRuntimeService()
-    producer = workflow.phases[0]
-    consumer = workflow.phases[1]
-    dependency = next(
-        item
-        for item in workflow.dependencies
-        if item.producer_phase_id == producer.phase_id
-        and item.consumer_phase_id == consumer.phase_id
-    )
     requirements = DownstreamPhaseRequirements(
         contract_id="workflow_partial_project_report",
-        consumer_phase_id=consumer.phase_id,
-        operation_type=consumer.action,
+        consumer_phase_id="pending",
+        operation_type="pending",
         authority_source="workflow_contract",
         allowed_dependency_statuses=[
             "satisfied",
@@ -263,12 +282,23 @@ def test_r5_partial_analysis_semantic_outcome_is_preserved_for_report_dependency
         },
         evidence_required=True,
     )
-    dependency.requirements = requirements
+    service, workflow, compiler = _workflow_with_explicit_first_dependency(
+        run,
+        requirements,
+    )
+    producer = workflow.phases[0]
+    consumer = workflow.phases[1]
+    dependency = next(
+        item
+        for item in workflow.dependencies
+        if item.producer_phase_id == producer.phase_id
+        and item.consumer_phase_id == consumer.phase_id
+    )
+    assert dependency.relation == "explicit_plan_dependency"
+    assert dependency.evaluation_required is True
     assert dependency.demand_compilation is not None
-    dependency.demand_compilation.status = "compiled"
-    dependency.demand_compilation.requirements = requirements
-    dependency.evaluation = None
-    dependency.admission = None
+    assert dependency.requirements is not None
+    assert compiler.calls == 1
 
     service.start_phase_for_step(workflow, producer.source_step_id)
     service.finish_phase_for_step(
@@ -302,6 +332,117 @@ def test_r5_partial_analysis_semantic_outcome_is_preserved_for_report_dependency
     assert safety_check.status == "satisfied"
     assert dependency.admission is not None
     assert dependency.admission.authorized is True
+
+
+def test_r5_explicit_semantic_dependency_without_required_safety_fails_closed(
+    task_runtime_service,
+):
+    run = task_runtime_service.create_run(runtime_request())
+    requirements = DownstreamPhaseRequirements(
+        contract_id="workflow_explicit_static_analysis",
+        consumer_phase_id="pending",
+        operation_type="pending",
+        authority_source="workflow_contract",
+        allowed_dependency_statuses=["satisfied", "satisfied_with_limitations"],
+        required_use_safety={
+            "safe_for_downstream_static_analysis": [
+                True,
+                "true_with_limitations",
+            ]
+        },
+        evidence_required=True,
+    )
+    service, workflow, _compiler = _workflow_with_explicit_first_dependency(
+        run,
+        requirements,
+    )
+    producer = workflow.phases[0]
+    consumer = workflow.phases[1]
+    dependency = next(
+        item
+        for item in workflow.dependencies
+        if item.producer_phase_id == producer.phase_id
+        and item.consumer_phase_id == consumer.phase_id
+    )
+
+    service.start_phase_for_step(workflow, producer.source_step_id)
+    service.finish_phase_for_step(
+        workflow,
+        producer.source_step_id,
+        status="completed",
+        validation_ref="validation_explicit_without_safety",
+        violations=[],
+        semantic_outcome={},
+    )
+
+    allowed, reasons = service.can_start_phase(
+        workflow,
+        consumer.source_step_id,
+    )
+
+    assert allowed is False
+    assert dependency.relation == "explicit_plan_dependency"
+    assert dependency.evaluation_required is True
+    assert dependency.evaluation is not None
+    assert dependency.evaluation.evaluation_status == "incomplete"
+    assert "PHASE_DEPENDENCY_REQUIRED_USE_SAFETY_UNKNOWN" in (
+        dependency.evaluation.reason_codes
+    )
+    assert dependency.admission is not None
+    assert dependency.admission.authorized is False
+    assert any(
+        "PHASE_DEPENDENCY_EVALUATION_INCOMPLETE" in reason
+        for reason in reasons
+    )
+
+
+def test_r5_nonadjacent_explicit_dependency_is_materialized_semantically(
+    task_runtime_service,
+):
+    run = task_runtime_service.create_run(runtime_request())
+    canonical = run.plan.canonical_execution_plan
+    assert canonical is not None
+    assert len(canonical.execution_steps) >= 3
+    first = canonical.execution_steps[0]
+    third = canonical.execution_steps[2]
+    third.depends_on = [first.step_id]
+    requirements = DownstreamPhaseRequirements(
+        contract_id="workflow_nonadjacent_dependency",
+        consumer_phase_id="pending",
+        operation_type="pending",
+        authority_source="workflow_contract",
+        allowed_dependency_statuses=["satisfied", "satisfied_with_limitations"],
+        evidence_required=True,
+    )
+    compiler = _StaticDemandCompiler(requirements)
+    service = WorkflowRuntimeService(
+        semantic_demand_compiler=compiler,  # type: ignore[arg-type]
+    )
+    workflow = service.create_for_run(run)
+    phase_by_step = {
+        phase.source_step_id: phase
+        for phase in workflow.phases
+    }
+    explicit = next(
+        item
+        for item in workflow.dependencies
+        if item.producer_phase_id == phase_by_step[first.step_id].phase_id
+        and item.consumer_phase_id == phase_by_step[third.step_id].phase_id
+    )
+
+    assert explicit.relation == "explicit_plan_dependency"
+    assert explicit.evaluation_required is True
+    assert explicit.demand_compilation is not None
+    assert compiler.calls == 1
+    implicit = [
+        item
+        for item in workflow.dependencies
+        if item.relation == "implicit_sequence"
+    ]
+    assert len(implicit) == len(workflow.phases) - 1
+    assert phase_by_step[first.step_id].phase_id in phase_by_step[
+        third.step_id
+    ].depends_on
 
 
 def test_r5_missing_artifact_dependency_blocks_phase(task_runtime_service):
