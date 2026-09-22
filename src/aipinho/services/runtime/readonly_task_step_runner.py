@@ -51,7 +51,46 @@ class ReadOnlyTaskStepRunner:
         return TaskStepOutcome(status="completed" if result.status == "executed_readonly" else "blocked", summary={"execution_id": result.execution_id, "workspace": result.workspace, "target_path": result.target_path, "status": result.status}, warnings=list(result.warnings), violations=list(result.violations))
 
     def _request(self, run):
-        return ProjectAnalysisRequest(workspace=run.workspace or "", goal="general_project_analysis", max_files=40, max_total_bytes=700000, include_trace=False)
+        continuation = (
+            run.intent_map.get("mission_continuation")
+            if isinstance(getattr(run, "intent_map", None), dict)
+            and isinstance(run.intent_map.get("mission_continuation"), dict)
+            else {}
+        )
+        repair = (
+            dict(continuation.get("evidence_repair") or {})
+            if isinstance(continuation.get("evidence_repair"), dict)
+            else {}
+        )
+        focus_paths = [
+            str(item)
+            for item in list(repair.get("focus_paths") or [])
+            if str(item)
+        ]
+        objective = str(
+            getattr(getattr(run, "mission_contract", None), "objective", "")
+            or run.intent_map.get("semantic_goal")
+            or ""
+        )
+        prompt = objective
+        if repair.get("required"):
+            prompt = (
+                f"{objective}\nEvidence repair: inspect the supplied focus paths "
+                "and close only the observed evidence gaps before any side effect."
+            ).strip()
+        return ProjectAnalysisRequest(
+            workspace=run.workspace or "",
+            prompt=prompt,
+            goal=(
+                "evidence_repair_analysis"
+                if repair.get("required")
+                else "general_project_analysis"
+            ),
+            focus_paths=focus_paths,
+            max_files=max(40, min(len(focus_paths), 100)),
+            max_total_bytes=700000,
+            include_trace=False,
+        )
 
     def _build_project_tree(self, run, context):
         tree = self.analysis.tree_service.build_tree_summary(self._request(run)); context.outputs["_project_tree"] = tree
@@ -65,6 +104,7 @@ class ReadOnlyTaskStepRunner:
             FileSelectionRequest(
                 workspace=request.workspace,
                 goal=request.goal,
+                semantic_query=request.prompt,
                 candidate_files=list(tree.candidate_files),
                 focus_paths=request.focus_paths,
                 max_files=request.max_files,
@@ -106,12 +146,20 @@ class ReadOnlyTaskStepRunner:
 
     def _run_project_analysis(self, run, context):
         result = self.analysis.analyze_project(self._request(run)); context.outputs["_project_analysis"] = result
-        semantic_outcome = self._project_analysis_semantic_outcome(result)
+        semantic_outcome = self._project_analysis_semantic_outcome(
+            result,
+            repair=self._evidence_repair_context(run),
+        )
         summary = {"status": result.status, "result_id": result.result_id, "structures": list(result.structures), "findings_count": len(result.findings), "finding_summaries": [{"title": item.title, "severity": item.severity, "summary": item.summary} for item in result.findings[:20]], "semantic_outcome": semantic_outcome}
         status = "completed" if result.status == "ok" else ("partial" if result.status in {"partial", "degraded"} else "blocked")
         return TaskStepOutcome(status=status, summary=summary, warnings=list(result.warnings), violations=list(result.violations), limitations=list(dict.fromkeys([*list(result.warnings), *list(result.limitations)])))
 
-    def _project_analysis_semantic_outcome(self, result) -> dict[str, Any]:
+    def _project_analysis_semantic_outcome(
+        self,
+        result,
+        *,
+        repair: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
         status = str(getattr(result, "status", "") or "")
         safe_to_continue = bool(getattr(result, "safe_to_continue", False))
         if status == "ok" and safe_to_continue:
@@ -128,10 +176,47 @@ class ReadOnlyTaskStepRunner:
         if status in {"partial", "degraded"} and "project_analysis_partial" not in limitations:
             limitations.append("project_analysis_partial")
         missing_truth = list(getattr(result, "violations", []) or [])
+        use_safety: dict[str, Any] = {
+            "safe_for_user_report": safety,
+        }
+        semantic_properties: dict[str, Any] = {}
+        repair = dict(repair or {})
+        focus_paths = [
+            str(item)
+            for item in list(repair.get("focus_paths") or [])
+            if str(item)
+        ]
+        if repair.get("required") and focus_paths:
+            bundle = getattr(result, "file_context", None)
+            included = {
+                str(getattr(item, "path", "") or "")
+                for item in list(getattr(bundle, "items", []) or [])
+                if str(getattr(item, "status", "") or "") == "included"
+                and not bool(getattr(item, "content_truncated", False))
+            }
+            unresolved = [
+                path for path in focus_paths if path not in included
+            ]
+            repair_complete = bool(
+                not unresolved
+                and safe_to_continue
+                and not missing_truth
+            )
+            use_safety["safe_for_destructive_action"] = repair_complete
+            semantic_properties.update(
+                {
+                    "evidence_repair_focus_complete": repair_complete,
+                    "evidence_repair_focus_paths": focus_paths,
+                    "evidence_repair_unresolved_paths": unresolved,
+                }
+            )
+            if unresolved:
+                limitations.append(
+                    "evidence_repair_focus_unresolved"
+                )
         return {
-            "use_safety": {
-                "safe_for_user_report": safety,
-            },
+            "use_safety": use_safety,
+            "semantic_properties": semantic_properties,
             "limitations": list(
                 dict.fromkeys(str(item) for item in limitations if str(item))
             ),
@@ -142,6 +227,16 @@ class ReadOnlyTaskStepRunner:
                 dict.fromkeys(str(item) for item in limitations if str(item))
             ),
         }
+
+    def _evidence_repair_context(self, run) -> dict[str, Any]:
+        continuation = (
+            run.intent_map.get("mission_continuation")
+            if isinstance(getattr(run, "intent_map", None), dict)
+            and isinstance(run.intent_map.get("mission_continuation"), dict)
+            else {}
+        )
+        value = continuation.get("evidence_repair")
+        return dict(value) if isinstance(value, dict) else {}
 
     def _generate_project_report(self, run, context):
         execution_metadata = self._execution_plan_metadata(run)

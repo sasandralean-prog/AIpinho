@@ -489,3 +489,42 @@ def test_taskruntime_terminal_hook_stops_at_single_operation_boundary(
         if run.parent_task_id == parent.task_id
     ]
     assert children == []
+
+
+def test_materialized_evidence_repair_child_preserves_bounded_repair_context(
+    tmp_path: Path,
+) -> None:
+    contract = _contract(tmp_path)
+    coordinator, store, parent = _coordinator(tmp_path, contract)
+    candidate = _candidate(contract).model_copy(
+        update={
+            "metadata": {
+                "evidence_repair": {
+                    "required": True,
+                    "reason_code": (
+                        "MISSION_CONTINUATION_DESTRUCTIVE_USE_EVIDENCE_REQUIRED"
+                    ),
+                    "required_use_safety": {
+                        "safe_for_destructive_action": True,
+                    },
+                    "focus_paths": ["src/A.kt", "src/B.kt"],
+                    "limitations": ["file_context_budget_or_omissions"],
+                }
+            }
+        }
+    )
+
+    result = coordinator.materialize_next_run(
+        previous_run_id=parent.run_id,
+        candidate=candidate,
+        phase_outcome=_outcome(parent),
+    )
+
+    assert result.status == "materialized"
+    child = store.get_run(result.child_task_run_id)
+    assert child is not None
+    repair = child.intent_map["mission_continuation"][
+        "evidence_repair"
+    ]
+    assert repair["required"] is True
+    assert repair["focus_paths"] == ["src/A.kt", "src/B.kt"]

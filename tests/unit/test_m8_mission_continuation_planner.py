@@ -736,3 +736,127 @@ def test_taskruntime_terminal_plans_and_executes_child_without_manual_candidate(
         "phase_001_readonly_analysis",
     ]
     assert reasoner.calls >= 1
+
+
+def test_continuation_routes_to_readonly_evidence_repair_when_destructive_safety_missing() -> None:
+    reasoner = FakeReasoner(
+        _proposal(
+            {
+                "operation_type": "project_analysis",
+                "contract_type": "analysis_readonly",
+                "runtime_profile": "readonly_analysis",
+                "requested_actions": ["read_files"],
+            }
+        )
+    )
+    planner = TaskRunPlanner(
+        semantic_reasoner=reasoner,
+        phase_demands=FakeDemands(),
+    )
+    run = _run(
+        capabilities=[
+            "read_file",
+            "modify_file",
+            "script_execution",
+            "shell_build",
+            "shell_test",
+        ],
+        semantic_graph={
+            "mutation_intent": True,
+            "execution_intent": True,
+            "requested_effects": [
+                "workspace_mutation",
+                "build_execution",
+            ],
+        },
+    )
+    phase_outcome = SimpleNamespace(
+        outcome_id="phase_outcome_partial",
+        phase_id="discovery",
+        use_safety={
+            "safe_for_downstream_static_analysis": "true_with_limitations"
+        },
+        semantic_properties={
+            "evidence_repair_focus_paths": [
+                "src/main/A.kt",
+                "src/main/B.kt",
+            ]
+        },
+        limitations=["file_context_budget_or_omissions"],
+        missing_truth=[],
+    )
+
+    result = planner.plan_continuation(
+        run=run,
+        phase_outcome=phase_outcome,
+    )
+
+    assert result.status == "planned"
+    assert result.candidate is not None
+    assert result.candidate.runtime_profile == "readonly_analysis"
+    assert result.candidate.requested_actions == ["read_files"]
+    repair = result.candidate.metadata["evidence_repair"]
+    assert repair["required"] is True
+    assert repair["required_use_safety"] == {
+        "safe_for_destructive_action": True
+    }
+    assert repair["focus_paths"] == [
+        "src/main/A.kt",
+        "src/main/B.kt",
+    ]
+
+    assert reasoner.last_kwargs is not None
+    payload = reasoner.last_kwargs["payload"]
+    assert payload["evidence_repair"]["required"] is True
+    options = payload["continuation_options"]
+    assert options
+    assert all(
+        set(item["allowed_actions"]).issubset(
+            {"read_files", "project_analysis"}
+        )
+        for item in options
+    )
+    assert not any(
+        action in {"write_files", "apply_patch", "run_command", "run_tests"}
+        for item in options
+        for action in item["allowed_actions"]
+    )
+
+
+def test_continuation_keeps_side_effect_lane_when_destructive_safety_is_proven() -> None:
+    planner = TaskRunPlanner()
+    run = _run(
+        capabilities=["read_file", "modify_file"],
+        semantic_graph={
+            "mutation_intent": True,
+            "requested_effects": ["workspace_mutation"],
+        },
+    )
+    effects = planner._unsatisfied_requested_effects(
+        run=run,
+        semantic_graph=run.intent_map["semantic_intent_graph"],
+        continuation={},
+        semantic_context={},
+    )
+    repair = planner._continuation_evidence_repair_context(
+        phase_outcome=SimpleNamespace(
+            phase_id="discovery",
+            use_safety={"safe_for_destructive_action": True},
+            semantic_properties={},
+            limitations=[],
+            missing_truth=[],
+        ),
+        unsatisfied_effects=effects,
+    )
+    options = planner._eligible_continuation_options(
+        planner._continuation_option_catalog(run),
+        unsatisfied_effects=effects,
+        evidence_repair_required=bool(repair),
+    )
+
+    assert repair == {}
+    assert any(
+        "write_files" in option["allowed_actions"]
+        or "apply_patch" in option["allowed_actions"]
+        for option in options
+    )

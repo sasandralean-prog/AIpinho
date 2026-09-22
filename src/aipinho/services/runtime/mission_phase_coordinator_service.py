@@ -596,6 +596,14 @@ class MissionPhaseCoordinatorService:
                 mode="json"
             ),
         }
+        repair = (
+            dict(candidate.metadata.get("evidence_repair") or {})
+            if isinstance(candidate.metadata, dict)
+            and isinstance(candidate.metadata.get("evidence_repair"), dict)
+            else {}
+        )
+        if repair.get("required"):
+            payload["evidence_repair"] = repair
         if evaluation is not None:
             payload["phase_dependency_evaluation"] = evaluation
         if admission is not None:

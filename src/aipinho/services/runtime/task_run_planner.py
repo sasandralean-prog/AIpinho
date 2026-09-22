@@ -233,10 +233,15 @@ class TaskRunPlanner:
             continuation=continuation,
             semantic_context=semantic_context,
         )
+        evidence_repair = self._continuation_evidence_repair_context(
+            phase_outcome=phase_outcome,
+            unsatisfied_effects=unsatisfied_effects,
+        )
         reasoner = self.semantic_reasoner or ContractBoundSemanticReasoner()
         continuation_options = self._eligible_continuation_options(
             self._continuation_option_catalog(run),
             unsatisfied_effects=unsatisfied_effects,
+            evidence_repair_required=bool(evidence_repair),
         )
         if not continuation_options:
             return self._continuation_result(
@@ -246,6 +251,7 @@ class TaskRunPlanner:
                     "depth": depth,
                     "max_depth": max_depth,
                     "unsatisfied_requested_effects": unsatisfied_effects,
+                    "evidence_repair": evidence_repair,
                 },
             )
         (
@@ -289,6 +295,7 @@ class TaskRunPlanner:
                 if key != "evidence" and value not in (None, "", [], {})
             },
             "unsatisfied_requested_effects": unsatisfied_effects,
+            "evidence_repair": evidence_repair,
             "continuation_options": continuation_model_options,
             "allowed_contract_types": list(
                 self.runtime.get(
@@ -302,6 +309,11 @@ class TaskRunPlanner:
                 "requested_actions must be a subset of option allowed_actions.",
                 "Use an option default contract when present; otherwise use allowed_contract_types.",
                 "Do not expand authority or infer permissions.",
+                (
+                    "When evidence_repair.required is true, select a read-only "
+                    "evidence-repair option; do not select a side-effect option "
+                    "until the upstream use-safety evidence supports it."
+                ),
                 "Return complete only when unsatisfied_requested_effects is empty.",
             ],
             "output_schema": {
@@ -584,6 +596,7 @@ class TaskRunPlanner:
                 "continuation_option_id": validated.get(
                     "continuation_option_id"
                 ),
+                "evidence_repair": dict(evidence_repair),
             },
         )
         return self._continuation_result(
@@ -1106,17 +1119,100 @@ class TaskRunPlanner:
         return self._unique(unsatisfied)
 
 
+    def _continuation_evidence_repair_context(
+        self,
+        *,
+        phase_outcome: Any | None,
+        unsatisfied_effects: list[str],
+    ) -> dict[str, Any]:
+        effects = set(unsatisfied_effects)
+        if phase_outcome is None or not effects.intersection(
+            {
+                "workspace_mutation",
+                "governed_side_effect",
+                "build_execution",
+                "runtime_execution",
+            }
+        ):
+            return {}
+
+        use_safety = dict(
+            getattr(phase_outcome, "use_safety", {}) or {}
+        )
+        observed = use_safety.get("safe_for_destructive_action")
+        if observed is True:
+            return {}
+
+        semantic_properties = dict(
+            getattr(phase_outcome, "semantic_properties", {}) or {}
+        )
+        focus_paths = self._unique(
+            list(
+                semantic_properties.get(
+                    "evidence_repair_focus_paths",
+                    [],
+                )
+                or []
+            )
+        )
+        return {
+            "required": True,
+            "reason_code": (
+                "MISSION_CONTINUATION_DESTRUCTIVE_USE_EVIDENCE_REQUIRED"
+            ),
+            "required_use_safety": {
+                "safe_for_destructive_action": True,
+            },
+            "observed_use_safety": (
+                {"safe_for_destructive_action": observed}
+                if "safe_for_destructive_action" in use_safety
+                else {}
+            ),
+            "source_phase_id": str(
+                getattr(phase_outcome, "phase_id", "") or ""
+            ),
+            "source_outcome_id": str(
+                getattr(phase_outcome, "outcome_id", "") or ""
+            ),
+            "focus_paths": focus_paths,
+            "limitations": self._unique(
+                list(getattr(phase_outcome, "limitations", []) or [])
+            ),
+            "missing_truth": self._unique(
+                list(getattr(phase_outcome, "missing_truth", []) or [])
+            ),
+        }
+
+
     def _eligible_continuation_options(
         self,
         options: list[dict[str, Any]],
         *,
         unsatisfied_effects: list[str],
+        evidence_repair_required: bool = False,
     ) -> list[dict[str, Any]]:
         executable = [
             option
             for option in options
             if list(option.get("allowed_actions") or [])
         ]
+        if evidence_repair_required:
+            repair_categories = {"filesystem_read", "project_read"}
+            return [
+                option
+                for option in executable
+                if not any(
+                    self.actions.is_side_effect(action)
+                    for action in list(option.get("allowed_actions") or [])
+                    if self.actions.action_exists(action)
+                )
+                and {
+                    self.actions.get_action(action).category
+                    for action in list(option.get("allowed_actions") or [])
+                    if self.actions.action_exists(action)
+                }.intersection(repair_categories)
+            ]
+
         effects = set(unsatisfied_effects)
         target_categories: set[str] = set()
         if effects.intersection({"workspace_mutation", "governed_side_effect"}):

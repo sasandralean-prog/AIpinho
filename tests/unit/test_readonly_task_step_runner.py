@@ -146,3 +146,107 @@ def test_step_runner_validate_runtime_accepts_ok_or_disabled_dependencies():
 
     assert outcome.status == "completed"
     assert outcome.summary["components"]["reports"] == "disabled"
+
+
+def test_evidence_repair_request_preserves_focus_paths_from_continuation() -> None:
+    runner = ReadOnlyTaskStepRunner()
+    run = runtime_run()
+    run.intent_map = {
+        **dict(run.intent_map or {}),
+        "mission_continuation": {
+            "evidence_repair": {
+                "required": True,
+                "focus_paths": ["src/A.kt", "src/B.kt"],
+            }
+        },
+    }
+
+    request = runner._request(run)
+
+    assert request.goal == "evidence_repair_analysis"
+    assert request.focus_paths == ["src/A.kt", "src/B.kt"]
+    assert "Evidence repair" in request.prompt
+
+
+def test_evidence_repair_marks_destructive_use_safe_only_when_focus_is_fully_resolved() -> None:
+    runner = ReadOnlyTaskStepRunner()
+    result = SimpleNamespace(
+        status="partial",
+        safe_to_continue=True,
+        warnings=["other_project_file_omitted"],
+        limitations=["analysis_scope_partial"],
+        violations=[],
+        file_context=SimpleNamespace(
+            items=[
+                SimpleNamespace(
+                    path="src/A.kt",
+                    status="included",
+                    content_truncated=False,
+                ),
+                SimpleNamespace(
+                    path="src/B.kt",
+                    status="included",
+                    content_truncated=False,
+                ),
+            ]
+        ),
+    )
+
+    semantic = runner._project_analysis_semantic_outcome(
+        result,
+        repair={
+            "required": True,
+            "focus_paths": ["src/A.kt", "src/B.kt"],
+        },
+    )
+
+    assert (
+        semantic["use_safety"]["safe_for_destructive_action"]
+        is True
+    )
+    assert (
+        semantic["semantic_properties"][
+            "evidence_repair_focus_complete"
+        ]
+        is True
+    )
+    assert semantic["semantic_properties"][
+        "evidence_repair_unresolved_paths"
+    ] == []
+
+
+def test_evidence_repair_does_not_promote_destructive_safety_when_focus_is_missing() -> None:
+    runner = ReadOnlyTaskStepRunner()
+    result = SimpleNamespace(
+        status="partial",
+        safe_to_continue=True,
+        warnings=[],
+        limitations=[],
+        violations=[],
+        file_context=SimpleNamespace(
+            items=[
+                SimpleNamespace(
+                    path="src/A.kt",
+                    status="included",
+                    content_truncated=False,
+                )
+            ]
+        ),
+    )
+
+    semantic = runner._project_analysis_semantic_outcome(
+        result,
+        repair={
+            "required": True,
+            "focus_paths": ["src/A.kt", "src/B.kt"],
+        },
+    )
+
+    assert (
+        semantic["use_safety"]["safe_for_destructive_action"]
+        is False
+    )
+    assert semantic["semantic_properties"][
+        "evidence_repair_unresolved_paths"
+    ] == ["src/B.kt"]
+    assert "evidence_repair_focus_unresolved" in semantic["limitations"]
