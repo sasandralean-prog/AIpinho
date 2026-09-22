@@ -491,6 +491,41 @@ def _snapshot() -> PhaseDependencySnapshot:
     )
 
 
+def test_limitation_resolver_uses_governed_safety_for_generic_readonly_repair() -> None:
+    requirements = DownstreamPhaseRequirements(
+        contract_id="compiled_repair",
+        consumer_phase_id="repair",
+        operation_type="workspace_analysis_readonly",
+        authority_source="compiled_task_semantics",
+        allowed_dependency_statuses=["satisfied", "satisfied_with_limitations"],
+        required_capabilities=["read_workspace"],
+        evidence_required=True,
+    )
+    snapshot = _snapshot().model_copy(
+        update={
+            "semantic_properties": {
+                "evidence_repair_focus_paths": ["src/main/A.kt"]
+            }
+        }
+    )
+    reasoner = _PayloadReasoner(lambda _kwargs: {})
+    result = LimitationCompatibilityResolverService(
+        reasoner=reasoner
+    ).resolve(
+        requirements=requirements,
+        snapshot=snapshot,
+        limitations=["file_context_budget_or_omissions"],
+    )
+
+    assert result["status"] == "accepted"
+    assert result["confidence"] == 1.0
+    assert result["provenance"]["source"] == "producer_use_safety"
+    assert result["assessments"]["file_context_budget_or_omissions"][
+        "impact"
+    ] == "COMPATIBLE_WITH_CONSTRAINT"
+    assert reasoner.last_kwargs is None
+
+
 def test_limitation_resolver_accepts_constraint_bound_compatibility() -> None:
     reasoner = _PayloadReasoner(
         lambda kwargs: {

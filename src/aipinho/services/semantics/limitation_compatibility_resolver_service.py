@@ -203,8 +203,22 @@ class LimitationCompatibilityResolverService:
         capabilities = set(requirements.required_capabilities)
         readonly_analysis = (
             "read_workspace" in capabilities
-            and "workspace_mutation" in prohibited
-            and "destructive_action" in prohibited
+            and not requirements.required_downstream_uses
+            and not requirements.required_use_safety
+            and not requirements.required_semantic_properties
+            and (
+                {
+                    "workspace_mutation",
+                    "destructive_action",
+                }.issubset(prohibited)
+                or requirements.operation_type in {
+                    "analysis_readonly",
+                    "readonly_analysis",
+                    "project_analysis",
+                    "workspace_analysis_readonly",
+                    "readonly_analysis_with_artifact_output",
+                }
+            )
         )
         if not readonly_analysis:
             return None
