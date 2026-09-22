@@ -139,6 +139,18 @@ class PhaseOutcomeRepository:
                 if str(source).startswith(prefix)
             }
 
+        intermediate_semantics = self._intermediate_semantics(result)
+        use_safety = self._merge_use_safety(
+            [
+                use_safety,
+                *[
+                    dict(item.get("use_safety") or {})
+                    for item in intermediate_semantics
+                    if isinstance(item.get("use_safety"), dict)
+                ],
+            ]
+        )
+
         artifacts = [dict(item) for item in run.produced_artifacts if isinstance(item, dict)]
         artifact_refs = [str(item.get("artifact_id")) for item in artifacts if item.get("artifact_id")]
         evidence_refs = self._unique(
@@ -159,12 +171,26 @@ class PhaseOutcomeRepository:
                 *list(result.limitations or []),
                 *list(semantic.get("limitations") or []),
                 *list(completion_meta.get("limitations") or []),
+                *[
+                    str(value)
+                    for item in intermediate_semantics
+                    for value in list(item.get("limitations") or [])
+                    if str(value)
+                ],
             ]
         )
         required_disclosures = self._unique(
             [
                 *list(semantic.get("required_disclosures") or []),
                 *list(completion_meta.get("required_disclosures") or []),
+                *[
+                    str(value)
+                    for item in intermediate_semantics
+                    for value in list(
+                        item.get("required_disclosures") or []
+                    )
+                    if str(value)
+                ],
                 *(
                     [f"runtime_truth_blocked:{runtime_truth.reason_code}"]
                     if truth_blocks_dependency and runtime_truth.reason_code
@@ -176,6 +202,12 @@ class PhaseOutcomeRepository:
             [
                 *list(semantic.get("missing_truth") or []),
                 *list(completion_meta.get("missing_truth") or []),
+                *[
+                    str(value)
+                    for item in intermediate_semantics
+                    for value in list(item.get("missing_truth") or [])
+                    if str(value)
+                ],
                 *list(runtime_truth.contradictions if truth_blocks_dependency else []),
                 *list(runtime_truth.missing_evidence if truth_blocks_dependency else []),
             ]
@@ -186,7 +218,41 @@ class PhaseOutcomeRepository:
                 *list(completion_meta.get("risk_constraints") or []),
             ]
         )
+        intermediate_properties: dict[str, Any] = {}
+        repair_unresolved_seen = False
+        repair_unresolved: list[str] = []
+        for item in intermediate_semantics:
+            properties = item.get("semantic_properties")
+            if not isinstance(properties, dict):
+                continue
+            for key, value in properties.items():
+                if key == "evidence_repair_unresolved_paths":
+                    repair_unresolved_seen = True
+                    repair_unresolved.extend(
+                        str(path)
+                        for path in list(value or [])
+                        if str(path)
+                    )
+                    continue
+                if key == "evidence_repair_focus_paths":
+                    continue
+                intermediate_properties[key] = value
+
+        file_context_summary = (
+            outputs.get("file_context_summary")
+            if isinstance(outputs.get("file_context_summary"), dict)
+            else {}
+        )
+        observed_omitted_paths = self._unique(
+            list(file_context_summary.get("omitted_files") or [])
+        )
+        if repair_unresolved_seen:
+            repair_focus_paths = self._unique(repair_unresolved)
+        else:
+            repair_focus_paths = observed_omitted_paths
+
         semantic_properties = {
+            **intermediate_properties,
             "phase_contract_status": semantic.get("phase_contract_status"),
             "artifact_sufficiency_status": semantic.get("artifact_sufficiency_status"),
             "safe_for_limited_discovery": semantic.get("safe_for_limited_discovery"),
@@ -195,6 +261,7 @@ class PhaseOutcomeRepository:
             "runtime_truth_reason_code": runtime_truth.reason_code,
             "runtime_truth_safe_to_report_success": runtime_truth.safe_to_report_success,
             "speaker_truth_status": runtime_truth.speaker_truth_status,
+            "evidence_repair_focus_paths": repair_focus_paths,
             "truth_status": (
                 run.canonical_state.truth_status
                 if run.canonical_state is not None and hasattr(run.canonical_state, "truth_status")
@@ -211,6 +278,12 @@ class PhaseOutcomeRepository:
             "reason_code": result.reason_code,
             "semantic_completion": semantic,
             "phase_dependency": phase_dependency,
+            "use_safety": use_safety,
+            "semantic_properties": semantic_properties,
+            "limitations": limitations,
+            "required_disclosures": required_disclosures,
+            "missing_truth": missing_truth,
+            "risk_constraints": risk_constraints,
             "runtime_truth": runtime_truth_payload,
             "artifact_refs": artifact_refs,
             "evidence_refs": evidence_refs,
@@ -255,6 +328,85 @@ class PhaseOutcomeRepository:
             ],
             authority_sha256=authority_sha256,
         )
+
+    def _intermediate_semantics(
+        self,
+        result: Any,
+    ) -> list[dict[str, Any]]:
+        observed: list[dict[str, Any]] = []
+        outputs = (
+            result.outputs
+            if isinstance(getattr(result, "outputs", None), dict)
+            else {}
+        )
+        for value in outputs.values():
+            if not isinstance(value, dict):
+                continue
+            semantic = value.get("semantic_outcome")
+            if isinstance(semantic, dict):
+                observed.append(dict(semantic))
+
+        for step in list(
+            getattr(result, "step_summaries", []) or []
+        ):
+            if not isinstance(step, dict):
+                continue
+            summary = step.get("output_summary")
+            if not isinstance(summary, dict):
+                continue
+            semantic = summary.get("semantic_outcome")
+            if isinstance(semantic, dict):
+                observed.append(dict(semantic))
+        return observed
+
+    def _merge_use_safety(
+        self,
+        mappings: list[dict[str, Any]],
+    ) -> dict[str, Any]:
+        values_by_key: dict[str, list[Any]] = {}
+        for mapping in mappings:
+            for key, value in mapping.items():
+                values_by_key.setdefault(str(key), []).append(value)
+
+        merged: dict[str, Any] = {}
+        for key, values in values_by_key.items():
+            merged[key] = self._conservative_safety_value(values)
+        return merged
+
+    @staticmethod
+    def _conservative_safety_value(values: list[Any]) -> Any:
+        if not values:
+            return None
+        normalized = []
+        for value in values:
+            if value is True:
+                normalized.append(("true", value))
+            elif value is False:
+                normalized.append(("false", value))
+            else:
+                text = str(value).strip().casefold()
+                if text == "true":
+                    normalized.append(("true", True))
+                elif text == "false":
+                    normalized.append(("false", False))
+                elif text == "true_with_limitations":
+                    normalized.append(
+                        ("true_with_limitations", "true_with_limitations")
+                    )
+                else:
+                    normalized.append(("unknown", value))
+
+        labels = {label for label, _ in normalized}
+        if "false" in labels:
+            return False
+        if "unknown" in labels:
+            first = normalized[0][1]
+            if all(item[1] == first for item in normalized):
+                return first
+            return False
+        if "true_with_limitations" in labels:
+            return "true_with_limitations"
+        return True
 
     def _unique(self, values: list[Any]) -> list[str]:
         return list(dict.fromkeys(str(item) for item in values if str(item)))

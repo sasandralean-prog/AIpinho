@@ -285,3 +285,160 @@ def test_phase_outcome_accepts_structured_mission_phase_alias() -> None:
         session_id="session_a",
         phase_id="discovery",
     ) is not None
+
+
+def test_phase_outcome_preserves_intermediate_semantic_safety_and_omitted_focus() -> None:
+    run, result = _fixture()
+    result.outputs["file_context_summary"] = {
+        "status": "partial",
+        "omitted_files": ["src/A.kt", "src/B.kt"],
+        "semantic_outcome": {
+            "use_safety": {
+                "safe_for_downstream_static_analysis": (
+                    "true_with_limitations"
+                )
+            },
+            "limitations": ["file_context_budget_or_omissions"],
+            "required_disclosures": [
+                "file_context_budget_or_omissions"
+            ],
+        },
+    }
+    result.step_summaries = [
+        {
+            "step_type": "run_project_analysis",
+            "output_summary": {
+                "semantic_outcome": {
+                    "use_safety": {
+                        "safe_for_user_report": "true_with_limitations"
+                    },
+                    "limitations": ["project_analysis_partial"],
+                }
+            },
+        }
+    ]
+    repository = PhaseOutcomeRepository(
+        store=_FakeStore(run, result),  # type: ignore[arg-type]
+        timelines=_FakeTimelines(),  # type: ignore[arg-type]
+        truth=_FakeTruthEngine(_truth()),  # type: ignore[arg-type]
+    )
+
+    outcome = repository.project(run_id=run.run_id)
+
+    assert outcome is not None
+    assert outcome.use_safety[
+        "safe_for_downstream_static_analysis"
+    ] == "true_with_limitations"
+    assert outcome.use_safety[
+        "safe_for_user_report"
+    ] == "true_with_limitations"
+    assert outcome.semantic_properties[
+        "evidence_repair_focus_paths"
+    ] == ["src/A.kt", "src/B.kt"]
+    assert "file_context_budget_or_omissions" in outcome.limitations
+    assert "project_analysis_partial" in outcome.limitations
+    assert (
+        "file_context_budget_or_omissions"
+        in outcome.required_disclosures
+    )
+
+
+def test_phase_outcome_prefers_explicit_unresolved_repair_paths_over_generic_omissions() -> None:
+    run, result = _fixture()
+    result.outputs["file_context_summary"] = {
+        "status": "partial",
+        "omitted_files": [
+            "src/unrelated.kt",
+            "src/B.kt",
+        ],
+    }
+    result.step_summaries = [
+        {
+            "step_type": "run_project_analysis",
+            "output_summary": {
+                "semantic_outcome": {
+                    "use_safety": {
+                        "safe_for_user_report": False
+                    },
+                    "semantic_properties": {
+                        "evidence_repair_focus_complete": False,
+                        "evidence_repair_focus_paths": [
+                            "src/A.kt",
+                            "src/B.kt",
+                        ],
+                        "evidence_repair_unresolved_paths": [
+                            "src/B.kt"
+                        ],
+                    },
+                }
+            },
+        }
+    ]
+    repository = PhaseOutcomeRepository(
+        store=_FakeStore(run, result),  # type: ignore[arg-type]
+        timelines=_FakeTimelines(),  # type: ignore[arg-type]
+        truth=_FakeTruthEngine(_truth()),  # type: ignore[arg-type]
+    )
+
+    outcome = repository.project(run_id=run.run_id)
+
+    assert outcome is not None
+    assert outcome.use_safety[
+        "safe_for_destructive_action"
+    ] is False
+    assert outcome.semantic_properties[
+        "evidence_repair_focus_complete"
+    ] is False
+    assert outcome.semantic_properties[
+        "evidence_repair_focus_paths"
+    ] == ["src/B.kt"]
+
+
+def test_phase_outcome_authority_hash_binds_projected_use_safety() -> None:
+    run, result = _fixture()
+    result.step_summaries = [
+        {
+            "output_summary": {
+                "semantic_outcome": {
+                    "use_safety": {
+                        "safe_for_user_report": False
+                    }
+                }
+            }
+        }
+    ]
+    repository = PhaseOutcomeRepository(
+        store=_FakeStore(run, result),  # type: ignore[arg-type]
+        timelines=_FakeTimelines(),  # type: ignore[arg-type]
+        truth=_FakeTruthEngine(_truth()),  # type: ignore[arg-type]
+    )
+    blocked = repository.project(run_id=run.run_id)
+    assert blocked is not None
+
+    result.step_summaries[0]["output_summary"][
+        "semantic_outcome"
+    ]["use_safety"]["safe_for_user_report"] = True
+    allowed = repository.project(run_id=run.run_id)
+    assert allowed is not None
+
+    assert blocked.authority_sha256 != allowed.authority_sha256
+    assert blocked.use_safety[
+        "safe_for_user_report"
+    ] is False
+    assert allowed.use_safety[
+        "safe_for_user_report"
+    ] is True
+
+
+def test_phase_outcome_merges_conflicting_safety_conservatively() -> None:
+    repository = PhaseOutcomeRepository()
+
+    merged = repository._merge_use_safety(
+        [
+            {"safe_for_destructive_action": True},
+            {"safe_for_destructive_action": "true_with_limitations"},
+            {"safe_for_destructive_action": False},
+        ]
+    )
+
+    assert merged["safe_for_destructive_action"] is False
