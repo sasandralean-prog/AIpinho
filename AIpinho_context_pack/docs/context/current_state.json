@@ -100,9 +100,9 @@
     "action-owned exact acceptable use-safety states constrain interpreted semantic demand"
   ],
   "current_frontier": [
-    "run a fresh manual M10 end-to-end mission through the normal AIpinho interface on the restarted A.21 code",
-    "verify project_analysis now consumes validated partial file context through ADMITTED_WITH_CONSTRAINTS rather than unknown use-safety",
-    "continue from the next genuine fail-closed boundary without widening frozen human authority or creating parallel runtime authorities"
+    "M10-A.24-A.26 semantic reasoning and prompt budget consolidation is implemented at dabb0ed24a8c485f3a7074bafa85ad253b81e621 and validated without new regressions",
+    "M10-A.27 diagnose and then correct the missing mission_completion_evidence_binder as a dedicated governed role with bounded evidence/output cardinality; do not use a blind alias or budget increase",
+    "after A.27 correction and restart, run a fresh normal-interface end-to-end mission and continue only from the next genuine fail-closed boundary without widening frozen human authority or creating parallel runtime authorities"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -453,7 +453,11 @@
           "M10-A.22/A.23 focused verification is 5/5; exact workflow/dependency/offer-demand/continuation regression is 127 passed / 1 deselected, with the deselected legacy optional-failure assertion reproduced unchanged on the A.21 baseline; compileall, TaskRun event-policy load, diff check and production hardcode scan are clean",
           "fresh normal-interface task_run_51f7a878192d41e7bb1aa88b8baec2f3 proves A.22 end-to-end inside the readonly workflow: build_file_context partial is admitted with constraints into project_analysis, project_analysis partial persists safe_for_user_report=true_with_limitations, phase-5 -> phase-6 is ADMITTED_WITH_CONSTRAINTS, and project_report executes partial rather than blocking",
           "A.23 has focused enforcement/regression proof; the fresh FireTest did not activate optional dependency skipping because its optional/runtime phases completed normally, so no E2E claim is made for that branch condition",
-          "the same fresh mission completes readonly discovery through project_report, role_pipeline_run and compose_result, then blocks continuation honestly at SEMANTIC_REASONER_ROLE_BUDGET_EXCEEDED without materializing a child TaskRun or expanding write authority; this is the next M10 diagnostic frontier"
+          "the same fresh mission completes readonly discovery through project_report, role_pipeline_run and compose_result, then blocks continuation honestly at SEMANTIC_REASONER_ROLE_BUDGET_EXCEEDED without materializing a child TaskRun or expanding write authority; this is the next M10 diagnostic frontier",
+          "M10-A.24-A.26 share implementation SHA dabb0ed24a8c485f3a7074bafa85ad253b81e621: phase-local consumer identity now overrides stale mission-level operation identity for semantic-demand cognition, model-facing vocabulary/steps are bounded, primitive continuation dependency semantics are deterministic, PromptAssembly context is counted once, and final prompt fitting preserves fixed governance envelopes",
+          "M10-A.24-A.26 validation: focused 52/52; expanded 131 passed / 3 failed with all three failures reproduced unchanged on clean f96767b6; compileall/diff/ActionRegistry/hardcode checks clean; real read-only continuation replay is planned with only deterministic safe_for_destructive_action=true",
+          "M10-A.27 diagnostic: mission_completion_evidence_binder has no role/model/output-contract registration since original M9; a real requirement-bearing synthetic proposal returns SEMANTIC_REASONER_ROLE_BINDING_UNAVAILABLE, while the current fresh FireTest does not activate the binder because it has zero completion/validation requirements",
+          "A.27 cannot be repaired by alias alone: default Qwen3 routing rejects the binder role and the unbounded evidence catalog crosses 6k prompt budget around 10 synthetic rows and 12k around 30 rows despite a catalog build limit of 1000; dedicated role plus bounded/batched evidence projection is required"
         ],
         "plan_changed": false
       }
