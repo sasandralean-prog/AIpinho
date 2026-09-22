@@ -100,9 +100,9 @@
     "action-owned exact acceptable use-safety states constrain interpreted semantic demand"
   ],
   "current_frontier": [
-    "M10-A.24-A.26 semantic reasoning and prompt budget consolidation is implemented at dabb0ed24a8c485f3a7074bafa85ad253b81e621 and validated without new regressions",
-    "M10-A.27 diagnose and then correct the missing mission_completion_evidence_binder as a dedicated governed role with bounded evidence/output cardinality; do not use a blind alias or budget increase",
-    "after A.27 correction and restart, run a fresh normal-interface end-to-end mission and continue only from the next genuine fail-closed boundary without widening frozen human authority or creating parallel runtime authorities"
+    "M10-A.27 implementation 2c916e90 adds a dedicated bounded mission_completion_evidence_binder and is validated without new regressions",
+    "promote A.27 to canonical main and perform a verified healthy -> down -> healthy backend restart before treating the new role/gate configuration as live",
+    "after restart, obtain fresh normal-interface evidence from a mission that actually freezes completion or validation requirements; do not manufacture binder activation with injected TaskRuns"
   ],
   "compatibility_surfaces": [
     "RuntimeContractsV2Service",
@@ -458,7 +458,12 @@
           "M10-A.24-A.26 validation: focused 52/52; expanded 131 passed / 3 failed with all three failures reproduced unchanged on clean f96767b6; compileall/diff/ActionRegistry/hardcode checks clean; real read-only continuation replay is planned with only deterministic safe_for_destructive_action=true",
           "M10-A.27 diagnostic: mission_completion_evidence_binder has no role/model/output-contract registration since original M9; a real requirement-bearing synthetic proposal returns SEMANTIC_REASONER_ROLE_BINDING_UNAVAILABLE, while the current fresh FireTest does not activate the binder because it has zero completion/validation requirements",
           "A.27 cannot be repaired by alias alone: default Qwen3 routing rejects the binder role and the unbounded evidence catalog crosses 6k prompt budget around 10 synthetic rows and 12k around 30 rows despite a catalog build limit of 1000; dedicated role plus bounded/batched evidence projection is required",
-          "Verified post-A.26 restart backend_restart_1790060436295 is accepted without warnings; supervisor trace supervisor_trace_55b34fa9e39f4645946e992210671df2 proves healthy -> down -> healthy, stopping PID 17344 and starting PID 17848, and live runtime health is ok"
+          "Verified post-A.26 restart backend_restart_1790060436295 is accepted without warnings; supervisor trace supervisor_trace_55b34fa9e39f4645946e992210671df2 proves healthy -> down -> healthy, stopping PID 17344 and starting PID 17848, and live runtime health is ok",
+          "M10-A.27 implementation SHA 2c916e90 closes SEMANTIC_REASONER_ROLE_BINDING_UNAVAILABLE with a dedicated subordinate mission_completion_evidence_binder bound to qwen2_5_7b_instruct_q5_k_m medium; the role has no tools, write, patch, approval or truth authority and uses a specialized semantic_reasoner_controlled_inference gate",
+          "A.27 binder cognition is one frozen requirement per call over bounded evidence batches: max 8 evidence items, 9000 prompt chars, 12 total calls, 4 bindings per batch and 900 output tokens; authority hashes stay deterministic and oversized evidence/call count fails closed before inference without truncation",
+          "Real A.27 synthetic M9 replay performs two accepted governed Qwen2.5 7B calls, returns MISSION_COMPLETION_BINDING_CANDIDATE_PROPOSED, compiles through MISSION_COMPLETION_BINDINGS_COMPILED, binds tests_pass only to evidence:tests and satisfies both synthetic requirements; provider provenance retains a non-blocking invalid_json:Expecting value warning",
+          "A.27 validation: focused binder/gate/restart 17/17; M8/M9/A.24-A.27 cross-regression 152/152; generic role suite 19 passed / 1 failed with the patch_planner failure reproduced identically on baseline f4cfcba8; compileall/diff/role-config/model-route/hardcode checks clean",
+          "The existing fresh manual FireTest has zero frozen completion/validation requirements, so it cannot activate the A.27 binder; normal-interface binder activation remains a post-restart evidence target"
         ],
         "plan_changed": false
       }
