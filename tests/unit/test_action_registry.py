@@ -74,3 +74,21 @@ actions:
 
     with pytest.raises(ConfigValidationError):
         ActionRegistryService(config_path=config).load()
+
+
+def test_primitive_continuation_actions_have_explicit_semantic_scope():
+    registry = ActionRegistryService().load()
+
+    for action in ("write_files", "run_command", "run_tests"):
+        definition = registry.get_action(action)
+        assert definition.semantic_dependency_mode == "deterministic"
+        assert definition.semantic_use_safety_dimensions == []
+
+
+def test_internal_runtime_actions_are_registered_deterministically():
+    registry = ActionRegistryService().load()
+
+    for action in ("validate_runtime", "compose_result"):
+        definition = registry.get_action(action)
+        assert definition.semantic_dependency_mode == "deterministic"
+        assert definition.semantic_use_safety_dimensions == []

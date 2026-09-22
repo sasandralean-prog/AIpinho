@@ -75,14 +75,35 @@ class PromptAssemblyService:
         warnings.extend(pack_warnings)
         trace.append(self.trace_service.item("context_packing", "ok", "context_packed", data={"input_items": len(context_items), "packed_items": len(packed_items), "omitted_items": list(budget.omitted_items)}))
 
+        safety_message = self.safety_builder.build_message(safety)
+        contract_message = self.contract_builder.build_contract_message(contract)
         messages = self._build_messages(
             request=request,
-            safety_message=self.safety_builder.build_message(safety),
+            safety_message=safety_message,
             role_message=role_message,
-            contract_message=self.contract_builder.build_contract_message(contract),
+            contract_message=contract_message,
             packed_items=packed_items,
         )
-        budget = self.budget_service.summarize_budget(messages, packed_items, budget)
+        packed_items, messages, final_fit_warnings = (
+            self._fit_context_to_final_prompt_budget(
+                request=request,
+                safety_message=safety_message,
+                role_message=role_message,
+                contract_message=contract_message,
+                packed_items=packed_items,
+                budget=budget,
+            )
+        )
+        warnings.extend(final_fit_warnings)
+        # Packed context is already rendered into developer messages above.
+        # Count the final prompt representation once instead of charging the same
+        # context both as PromptMessage content and PromptContextItem content.
+        budget = self.budget_service.summarize_budget(
+            messages,
+            packed_items,
+            budget,
+            context_already_in_messages=True,
+        )
 
         if budget.used_input_chars > budget.max_input_chars:
             budget.truncated = True
@@ -182,6 +203,68 @@ class PromptAssemblyService:
                 "model_router": self.model_router.status(),
             },
         }
+
+    def _fit_context_to_final_prompt_budget(
+        self,
+        *,
+        request: PromptAssemblyRequest,
+        safety_message: PromptMessage,
+        role_message: PromptMessage,
+        contract_message: PromptMessage,
+        packed_items: list[PromptContextItem],
+        budget,
+    ) -> tuple[list[PromptContextItem], list[PromptMessage], list[str]]:
+        items = list(packed_items)
+        warnings: list[str] = []
+
+        def build() -> list[PromptMessage]:
+            return self._build_messages(
+                request=request,
+                safety_message=safety_message,
+                role_message=role_message,
+                contract_message=contract_message,
+                packed_items=items,
+            )
+
+        messages = build()
+        while items:
+            used = self.budget_service.estimate_chars(messages=messages)
+            overflow = used - budget.max_input_chars
+            if overflow <= 0:
+                break
+
+            last = items[-1]
+            content = str(last.content or "")
+            if len(content) > overflow:
+                new_content = content[: len(content) - overflow]
+                items[-1] = last.model_copy(
+                    update={
+                        "content": new_content,
+                        "metadata": {
+                            **last.metadata,
+                            "truncated": True,
+                            "truncated_for_final_prompt_budget": True,
+                        },
+                    }
+                )
+                budget.truncated = True
+                warnings.append(
+                    "context_item_truncated_for_final_prompt_budget"
+                )
+            else:
+                removed = items.pop()
+                budget.omitted_items.append(
+                    f"{removed.item_id}:final_prompt_budget"
+                )
+                budget.truncated = True
+                warnings.append(
+                    "context_item_omitted_for_final_prompt_budget"
+                )
+            messages = build()
+
+        if self.budget_service.estimate_chars(messages=messages) > budget.max_input_chars:
+            warnings.append("fixed_prompt_budget_exceeded")
+        return items, messages, list(dict.fromkeys(warnings))
 
     def _build_messages(
         self,

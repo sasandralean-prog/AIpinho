@@ -25,8 +25,18 @@ class PromptBudgetService:
     def estimate_tokens_rough(self, chars: int) -> int:
         return max(1, (chars + 3) // 4) if chars > 0 else 0
 
-    def summarize_budget(self, messages: list[PromptMessage], context_items: list[PromptContextItem], budget: PromptBudget) -> PromptBudget:
-        used = self.estimate_chars(messages, context_items)
+    def summarize_budget(
+        self,
+        messages: list[PromptMessage],
+        context_items: list[PromptContextItem],
+        budget: PromptBudget,
+        *,
+        context_already_in_messages: bool = False,
+    ) -> PromptBudget:
+        used = self.estimate_chars(
+            messages,
+            [] if context_already_in_messages else context_items,
+        )
         budget.used_input_chars = used
         budget.estimated_tokens = self.estimate_tokens_rough(used)
         return budget

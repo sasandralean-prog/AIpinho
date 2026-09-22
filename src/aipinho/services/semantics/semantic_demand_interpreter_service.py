@@ -284,6 +284,11 @@ class SemanticDemandInterpreterService:
             for value in governed_vocabulary.get("use_safety_dimensions") or []
             if str(value)
         }
+        if (
+            bool(candidate["truth_claim_required"])
+            and "safe_for_truth_claim" not in governed_safety
+        ):
+            return {}, "SEMANTIC_DEMAND_TRUTH_REQUIREMENT_OUT_OF_SCOPE"
         if any(
             re.fullmatch(r"safe_for_[a-z][a-z0-9_]*", key) is None
             or key not in governed_safety

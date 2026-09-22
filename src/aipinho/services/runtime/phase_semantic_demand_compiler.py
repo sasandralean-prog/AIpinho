@@ -458,17 +458,50 @@ class PhaseSemanticDemandCompiler:
     ) -> dict[str, Any]:
         intent_map = dict(source_payload.get("intent_map") or {})
         projected_intent = {
-            key: value
-            for key, value in intent_map.items()
-            if key
-            not in {
-                "mission_binding",
-                "resource_scope",
-                "negative_constraints",
-                "semantic_intent_graph",
-            }
-            and value not in (None, "", [], {})
+            key: intent_map[key]
+            for key in (
+                "intent_type",
+                "operation_type",
+                "current_phase",
+                "phase_id",
+                "mission_phase",
+                "future_side_effect_intent",
+                "mission_execution_strategy",
+                "requested_deliverables",
+                "validation_requirements",
+                "completion_requirements",
+                "allow_limited_completion",
+            )
+            if key in intent_map
+            and intent_map[key] not in (None, "", [], {})
         }
+
+        projected_steps: list[dict[str, Any]] = []
+        for raw_step in list(source_payload.get("steps") or []):
+            if not isinstance(raw_step, dict):
+                continue
+            step = {
+                "action": raw_step.get("action"),
+                "required": bool(raw_step.get("required", True)),
+                "side_effect": bool(raw_step.get("side_effect", False)),
+                "required_capabilities": list(
+                    dict.fromkeys(
+                        str(item)
+                        for item in list(
+                            raw_step.get("required_capabilities") or []
+                        )
+                        if str(item)
+                    )
+                ),
+            }
+            projected_steps.append(
+                {
+                    key: value
+                    for key, value in step.items()
+                    if value not in (None, "", [], {})
+                }
+            )
+
         projected = {
             "operation_kind": source_payload.get("operation_kind"),
             "intent_map": projected_intent,
@@ -487,7 +520,7 @@ class PhaseSemanticDemandCompiler:
             "requested_deliverables": list(
                 source_payload.get("requested_deliverables") or []
             ),
-            "steps": list(source_payload.get("steps") or []),
+            "steps": projected_steps,
         }
         return {
             key: value
@@ -508,14 +541,32 @@ class PhaseSemanticDemandCompiler:
         live = dict(getattr(run, "intent_map", {}) or {})
         context: dict[str, Any] = {}
 
+        # Phase-local identity must win over the mission-level frozen identity.
+        # The frozen mission context describes the whole mission; operation/phase
+        # fields describe the current consumer and may legitimately change across
+        # TaskRuns in an end-to-end governed mission.
+        for key in (
+            "operation_type",
+            "current_phase",
+            "phase_id",
+            "mission_phase",
+        ):
+            value = live.get(key)
+            if value in (None, "", [], {}):
+                value = frozen.get(key)
+            if value not in (None, "", [], {}):
+                context[key] = value
+
+        # Mission-wide semantics stay frozen-first so continuation cannot expand
+        # authority or reinterpret the original request from mutable live state.
         for key in (
             "intent_type",
-            "operation_type",
             "future_side_effect_intent",
             "mission_execution_strategy",
             "requested_deliverables",
             "validation_requirements",
             "completion_requirements",
+            "allow_limited_completion",
         ):
             value = frozen.get(key)
             if value in (None, "", [], {}):

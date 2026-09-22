@@ -7,6 +7,7 @@ actions:
     side_effect: false
     requires_approval: false
     capability: read_workspace
+    semantic_use_safety_dimensions: []
 
   list_directory:
     aliases: [list_dir, directory_list, inspect_directory]
@@ -14,6 +15,7 @@ actions:
     side_effect: false
     requires_approval: false
     capability: read_workspace
+    semantic_use_safety_dimensions: []
 
   inspect_path:
     aliases: [path_info, stat_path, inspect_file]
@@ -22,6 +24,7 @@ actions:
     requires_approval: false
     capability: read_workspace
     semantic_dependency_mode: deterministic
+    semantic_use_safety_dimensions: []
 
   read_config:
     aliases: [config_read, inspect_config]
@@ -29,6 +32,7 @@ actions:
     side_effect: false
     requires_approval: false
     capability: read_workspace
+    semantic_use_safety_dimensions: []
 
   write_files:
     aliases: [write_file, file_write, write_workspace, filesystem_write, filesystem_write_file, file_modify, modify_file, create_file, create_directory, project_write, create_project, write_text_file, append_text_file]
@@ -36,6 +40,8 @@ actions:
     side_effect: true
     requires_approval: true
     capability: write_workspace
+    semantic_dependency_mode: deterministic
+    semantic_use_safety_dimensions: []
 
   apply_patch:
     aliases: [patch_apply, patch_apply_request]
@@ -43,6 +49,7 @@ actions:
     side_effect: true
     requires_approval: true
     capability: write_workspace
+    semantic_use_safety_dimensions: []
 
   run_command:
     aliases: [shell, run_shell, shell_execute, build_run, run_build]
@@ -50,6 +57,8 @@ actions:
     side_effect: true
     requires_approval: true
     capability: shell
+    semantic_dependency_mode: deterministic
+    semantic_use_safety_dimensions: []
 
   run_tests:
     aliases: [pytest, validation_command, test_run, run_unit_tests]
@@ -57,6 +66,8 @@ actions:
     side_effect: false
     requires_approval: false
     capability: shell
+    semantic_dependency_mode: deterministic
+    semantic_use_safety_dimensions: []
 
   use_rag:
     aliases: [rag_query, retrieve_context]
@@ -64,6 +75,7 @@ actions:
     side_effect: false
     requires_approval: false
     capability: rag
+    semantic_use_safety_dimensions: []
 
   write_memory:
     aliases: [save_memory, memory_write]
@@ -71,6 +83,7 @@ actions:
     side_effect: true
     requires_approval: true
     capability: memory_write
+    semantic_use_safety_dimensions: []
 
   git_commit:
     aliases: [commit]
@@ -78,6 +91,7 @@ actions:
     side_effect: true
     requires_approval: true
     capability: git
+    semantic_use_safety_dimensions: []
 
   git_push:
     aliases: [push]
@@ -85,6 +99,7 @@ actions:
     side_effect: true
     requires_approval: true
     capability: git
+    semantic_use_safety_dimensions: []
 
   patch_preview:
     aliases: [preview_patch, diff_preview]
@@ -93,6 +108,7 @@ actions:
     requires_approval: false
     capability: patch_preview
     semantic_dependency_mode: interpreted
+    semantic_use_safety_dimensions: []
 
   memory_read:
     aliases: [read_memory, memory_search]
@@ -100,6 +116,7 @@ actions:
     side_effect: false
     requires_approval: false
     capability: memory_read
+    semantic_use_safety_dimensions: []
 
   git_status:
     aliases: [status]
@@ -107,6 +124,7 @@ actions:
     side_effect: false
     requires_approval: false
     capability: git
+    semantic_use_safety_dimensions: []
 
   web_request:
     aliases: [http_request, fetch_url, web_search, search_web, public_fact_query]
@@ -114,6 +132,7 @@ actions:
     side_effect: true
     requires_approval: true
     capability: network
+    semantic_use_safety_dimensions: []
 
   project_tree:
     aliases: [build_project_tree]
@@ -122,6 +141,7 @@ actions:
     requires_approval: false
     capability: read_workspace
     semantic_dependency_mode: deterministic
+    semantic_use_safety_dimensions: []
 
   project_context:
     aliases: [build_file_context]
@@ -130,6 +150,7 @@ actions:
     requires_approval: false
     capability: read_workspace
     semantic_dependency_mode: deterministic
+    semantic_use_safety_dimensions: []
 
   project_analysis:
     aliases: [analyze_project]
@@ -159,3 +180,21 @@ actions:
     capability: model_inference
     semantic_dependency_mode: interpreted
     semantic_use_safety_dimensions: [safe_for_downstream_static_analysis]
+
+  validate_runtime:
+    aliases: []
+    category: runtime_validation
+    side_effect: false
+    requires_approval: false
+    capability: read_workspace
+    semantic_dependency_mode: deterministic
+    semantic_use_safety_dimensions: []
+
+  compose_result:
+    aliases: []
+    category: result_composition
+    side_effect: false
+    requires_approval: false
+    capability: read_workspace
+    semantic_dependency_mode: deterministic
+    semantic_use_safety_dimensions: []

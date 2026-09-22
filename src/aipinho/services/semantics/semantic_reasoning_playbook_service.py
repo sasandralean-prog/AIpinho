@@ -131,7 +131,6 @@ class SemanticReasoningPlaybookService:
                 "Return unresolved only when governed semantics are insufficient.",
             ],
             "governed_vocabulary": governed_vocabulary,
-            "vocabulary_binding": vocabulary.binding().model_dump(mode="json"),
             "output_construction_rules": [
                 "Use only governed identifiers and states.",
                 "Empty requirement collections are valid when no guarantee is needed.",
@@ -174,38 +173,66 @@ class SemanticReasoningPlaybookService:
                     continue
                 declared_dimensions.add(dimension)
                 exact_requirement_states[dimension] = list(states)
-        if not saw_explicit_scope:
-            return governed
 
         governed = dict(governed)
-        governed["use_safety_dimensions"] = sorted(declared_dimensions)
-        for field in (
-            "use_safety_allowed_states",
-            "use_safety_requirement_states",
-        ):
-            values = dict(governed.get(field) or {})
+        if saw_explicit_scope:
+            governed["use_safety_dimensions"] = sorted(declared_dimensions)
+            values = dict(
+                governed.get("use_safety_requirement_states") or {}
+            )
             scoped = {
                 key: value
                 for key, value in values.items()
                 if key in declared_dimensions
             }
-            if field == "use_safety_requirement_states":
-                for key, states in exact_requirement_states.items():
-                    if key not in scoped:
-                        continue
-                    base_states = list(scoped.get(key) or [])
-                    if any(state not in base_states for state in states):
-                        raise ValueError(
-                            f"action_semantic_use_safety_requirement_invalid:{key}"
-                        )
-                    scoped[key] = list(states)
-            governed[field] = scoped
-        if exact_requirement_states:
-            governed["use_safety_exact_requirement_states"] = {
-                key: list(states)
-                for key, states in sorted(exact_requirement_states.items())
-            }
-        return governed
+            for key, states in exact_requirement_states.items():
+                if key not in scoped:
+                    continue
+                base_states = list(scoped.get(key) or [])
+                if any(state not in base_states for state in states):
+                    raise ValueError(
+                        f"action_semantic_use_safety_requirement_invalid:{key}"
+                    )
+                scoped[key] = list(states)
+            governed["use_safety_requirement_states"] = scoped
+            if exact_requirement_states:
+                governed["use_safety_exact_requirement_states"] = {
+                    key: list(states)
+                    for key, states in sorted(exact_requirement_states.items())
+                }
+
+        # Model-facing vocabulary is a cognitive projection, not an authority
+        # envelope. Hashes/revisions remain verified by deterministic services,
+        # and unrelated vocabulary families are not sent to this reasoner.
+        projected = {
+            "use_safety_dimensions": list(
+                governed.get("use_safety_dimensions") or []
+            ),
+            "use_safety_requirement_states": dict(
+                governed.get("use_safety_requirement_states") or {}
+            ),
+            "downstream_use_identifiers": list(
+                governed.get("downstream_use_identifiers") or []
+            ),
+            "semantic_property_identifiers": list(
+                governed.get("semantic_property_identifiers") or []
+            ),
+            "semantic_property_requirement_states": dict(
+                governed.get("semantic_property_requirement_states") or {}
+            ),
+            "capability_identifiers": list(
+                governed.get("capability_identifiers") or []
+            ),
+            "constraint_families": list(
+                governed.get("constraint_families") or []
+            ),
+        }
+        if governed.get("use_safety_exact_requirement_states"):
+            projected["use_safety_exact_requirement_states"] = dict(
+                governed["use_safety_exact_requirement_states"]
+            )
+        return projected
+
 
     def _examples(self) -> list[dict[str, Any]]:
         return [

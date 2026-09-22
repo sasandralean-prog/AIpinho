@@ -292,6 +292,166 @@ def test_interpreted_semantic_demand_model_prompt_stays_within_role_budget() -> 
     assert "derived_evidence_" not in str(model_semantics)
 
 
+
+
+def test_phase_local_operation_identity_wins_over_frozen_mission_operation() -> None:
+    class _Capture(_SemanticInterpreter):
+        def __init__(self) -> None:
+            super().__init__()
+            self.source_payload = None
+
+        def interpret(
+            self,
+            *,
+            source_payload: dict,
+            semantic_graph: dict,
+            vocabulary=None,
+        ) -> dict:
+            self.source_payload = source_payload
+            return super().interpret(
+                source_payload=source_payload,
+                semantic_graph=semantic_graph,
+                vocabulary=vocabulary,
+            )
+
+    semantic_graph = {
+        "knowledge_output": True,
+        "mutation_intent": True,
+        "execution_intent": True,
+        "requested_effects": ["workspace_mutation", "build_execution"],
+    }
+    contract = SimpleNamespace(
+        mission_id="mission_phase_identity",
+        revision=1,
+        source_prompt_sha256="c" * 64,
+        strategy="end_to_end_governed",
+        semantic_context={
+            "intent_type": "workspace_fix_request",
+            "operation_type": "project_analysis",
+            "semantic_intent_graph": semantic_graph,
+            "future_side_effect_intent": True,
+        },
+        local_resources=[],
+        remote_resources=[],
+        negative_constraints=[],
+    )
+    capture = _Capture()
+    compiler = PhaseSemanticDemandCompiler(semantic_interpreter=capture)
+    run = _run(
+        operation_type="project_report",
+        action="project_report",
+        side_effect=False,
+        semantic_graph=semantic_graph,
+        required_capabilities=["read_workspace"],
+        intent_map={
+            "operation_type": "project_report",
+            "phase_id": "phase_001_project_report",
+            "current_phase": "phase_001_project_report",
+            "semantic_intent_graph": semantic_graph,
+        },
+        mission_contract=contract,
+    )
+
+    compilation = compiler.compile_for_run(
+        run=run,
+        consumer_phase_id="phase_001_project_report",
+        source_step_id="step_consumer",
+    )
+
+    assert compilation.status == "compiled"
+    assert capture.source_payload is not None
+    current = capture.source_payload["intent_map"]
+    assert current["operation_type"] == "project_report"
+    assert current["phase_id"] == "phase_001_project_report"
+    assert current["current_phase"] == "phase_001_project_report"
+    assert "mission_binding" not in current
+    assert "resource_scope" not in current
+
+
+def test_semantic_model_source_projects_only_cognitive_step_fields() -> None:
+    class _Capture(_SemanticInterpreter):
+        def __init__(self) -> None:
+            super().__init__()
+            self.source_payload = None
+
+        def interpret(
+            self,
+            *,
+            source_payload: dict,
+            semantic_graph: dict,
+            vocabulary=None,
+        ) -> dict:
+            self.source_payload = source_payload
+            return super().interpret(
+                source_payload=source_payload,
+                semantic_graph=semantic_graph,
+                vocabulary=vocabulary,
+            )
+
+    capture = _Capture()
+    compiler = PhaseSemanticDemandCompiler(semantic_interpreter=capture)
+    run = _run(
+        semantic_graph={
+            "knowledge_output": True,
+            "observational_intent": True,
+        },
+    )
+
+    compilation = compiler.compile_for_run(
+        run=run,
+        consumer_phase_id="consumer",
+        source_step_id="step_consumer",
+    )
+
+    assert compilation.status == "compiled"
+    assert capture.source_payload is not None
+    step = capture.source_payload["steps"][0]
+    assert set(step) <= {
+        "action",
+        "required",
+        "side_effect",
+        "required_capabilities",
+    }
+    assert "step_id" not in step
+    assert "metadata" not in step
+    assert "inputs" not in step
+    assert "expected_outputs" not in step
+
+
+def test_primitive_project_generation_actions_do_not_require_model_interpretation() -> None:
+    class _MustNotRun:
+        def interpret(self, **_kwargs):
+            raise AssertionError("semantic interpreter must not run")
+
+    compiler = PhaseSemanticDemandCompiler(
+        semantic_interpreter=_MustNotRun(),  # type: ignore[arg-type]
+    )
+    run = _run(
+        operation_type="project_generation",
+        action="write_files",
+        side_effect=True,
+        semantic_graph={
+            "mutation_intent": True,
+            "execution_intent": True,
+            "knowledge_output": True,
+        },
+        required_capabilities=["write_workspace"],
+    )
+
+    compilation = compiler.compile_for_run(
+        run=run,
+        consumer_phase_id="project_generation",
+        source_step_id="step_consumer",
+    )
+
+    assert compilation.status == "compiled"
+    assert compilation.requirements is not None
+    assert compilation.requirements.required_use_safety == {
+        "safe_for_destructive_action": [True]
+    }
+    assert compilation.semantic_interpretation["status"] == "not_required"
+
+
 def test_same_phase_number_different_plan_operations_compile_different_demands() -> None:
     compiler = PhaseSemanticDemandCompiler()
     readonly = compiler.compile_for_run(

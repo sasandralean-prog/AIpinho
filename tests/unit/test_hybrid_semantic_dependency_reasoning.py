@@ -160,12 +160,19 @@ def test_semantic_reasoning_model_view_scopes_use_safety_by_action_registry() ->
     assert governed["use_safety_exact_requirement_states"][
         "safe_for_downstream_static_analysis"
     ] == [True, "true_with_limitations"]
+    assert "vocabulary_id" not in governed
+    assert "authority_sha256" not in governed
+    assert "source_semantics_sha256" not in governed
+    assert "work_modes" not in governed
+    assert "effect_identifiers" not in governed
+    assert "evidence_domain_identifiers" not in governed
+    assert "vocabulary_binding" not in context
 
 
 def test_semantic_reasoning_model_view_preserves_legacy_vocabulary_without_scope() -> None:
     payload = {
         **_source_payload(),
-        "steps": [{"action": "memory_read", "side_effect": False}],
+        "steps": [{"action": "legacy_unregistered_action", "side_effect": False}],
     }
     context = SemanticReasoningPlaybookService().build_model_view(
         source_payload=payload,
@@ -179,6 +186,59 @@ def test_semantic_reasoning_model_view_preserves_legacy_vocabulary_without_scope
         "use_safety_dimensions"
     ]
 
+
+
+def test_model_view_explicit_empty_action_scope_does_not_expose_global_safety() -> None:
+    payload = {
+        **_source_payload(),
+        "steps": [
+            {"action": "write_files", "side_effect": True},
+            {"action": "run_command", "side_effect": True},
+            {"action": "run_tests", "side_effect": False},
+        ],
+    }
+    context = SemanticReasoningPlaybookService().build_model_view(
+        source_payload=payload,
+        vocabulary=_vocabulary(),
+    )
+
+    governed = context["governed_vocabulary"]
+    assert governed["use_safety_dimensions"] == []
+    assert governed["use_safety_requirement_states"] == {}
+
+
+def test_semantic_demand_rejects_truth_requirement_outside_action_scope() -> None:
+    service = SemanticDemandInterpreterService(
+        reasoner=_Reasoner(
+            _candidate(
+                {
+                    "truth_claim_required": True,
+                    "required_downstream_uses": [],
+                    "required_use_safety": {},
+                    "required_semantic_properties": {},
+                    "base_constraints": [],
+                    "risk_constraints": [],
+                    "rationale": "Truth demand should not escape action scope.",
+                }
+            )
+        )
+    )
+    payload = {
+        **_source_payload(),
+        "steps": [{"action": "write_files", "side_effect": True}],
+    }
+
+    result = service.interpret(
+        source_payload=payload,
+        semantic_graph=payload["semantic_intent_graph"],
+        vocabulary=_vocabulary(),
+    )
+
+    assert result["status"] == "insufficient_evidence"
+    assert (
+        result["reason_code"]
+        == "SEMANTIC_DEMAND_TRUTH_REQUIREMENT_OUT_OF_SCOPE"
+    )
 
 
 def test_semantic_demand_interpreter_expands_action_exact_acceptable_states() -> None:
@@ -279,7 +339,7 @@ def test_semantic_demand_interpreter_prunes_inapplicable_safety_dimensions() -> 
 
     legacy_payload = {
         **_source_payload(),
-        "steps": [{"action": "memory_read", "side_effect": False}],
+        "steps": [{"action": "legacy_unregistered_action", "side_effect": False}],
     }
     result = service.interpret(
         source_payload=legacy_payload,

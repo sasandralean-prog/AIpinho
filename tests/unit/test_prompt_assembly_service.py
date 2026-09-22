@@ -34,3 +34,57 @@ def test_prompt_assembly_project_report_preserves_evidence_context():
     assert assembly.purpose == "project_report"
     assert assembly.output_contract.contract_type == "markdown_report"
     assert assembly.context_items
+
+
+def test_prompt_assembly_budget_counts_final_messages_once():
+    assembly = PromptAssemblyService().assemble(
+        PromptAssemblyRequest(
+            purpose="chat",
+            role_id="speaker",
+            user_message="summarize",
+            output_contract_type="chat_response",
+            context_items=[
+                PromptContextItem(
+                    source_type="file",
+                    title="large",
+                    content="x" * 1500,
+                    priority=0.9,
+                )
+            ],
+        )
+    )
+    message_chars = sum(len(message.content) for message in assembly.messages)
+    context_chars = sum(len(item.content) for item in assembly.context_items)
+    assert context_chars == 1500
+    assert assembly.budget.used_input_chars == message_chars
+    assert assembly.budget.used_input_chars != message_chars + context_chars
+
+
+def test_prompt_assembly_reserves_space_for_fixed_prompt_envelope():
+    items = [
+        PromptContextItem(
+            source_type="file",
+            title=f"file-{index}",
+            content="x" * 4000,
+            priority=0.9,
+        )
+        for index in range(20)
+    ]
+    assembly = PromptAssemblyService().assemble(
+        PromptAssemblyRequest(
+            purpose="task_preview",
+            role_id="supervisor",
+            user_message="validate",
+            output_contract_type="validation_summary",
+            context_items=items,
+        )
+    )
+
+    message_chars = sum(len(message.content) for message in assembly.messages)
+    assert message_chars == assembly.budget.used_input_chars
+    assert message_chars <= assembly.budget.max_input_chars
+    assert "prompt_budget_exceeded" not in assembly.warnings
+    assert (
+        "context_item_truncated_for_final_prompt_budget" in assembly.warnings
+        or "context_item_omitted_for_final_prompt_budget" in assembly.warnings
+    )
