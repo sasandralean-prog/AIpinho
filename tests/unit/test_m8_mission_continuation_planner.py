@@ -667,6 +667,58 @@ def test_premature_complete_can_recover_through_bounded_candidate_correction() -
     ]
 
 
+def test_runtime_derives_contract_after_premature_complete_retry() -> None:
+    reasoner = SequencedReasoner(
+        [
+            _proposal({}, action="complete"),
+            _proposal(
+                {
+                    "operation_type": "patch_apply",
+                    "contract_type": "patch_request",
+                    "runtime_profile": "patch",
+                    "requested_actions": ["apply_patch"],
+                }
+            ),
+        ]
+    )
+    planner = TaskRunPlanner(
+        semantic_reasoner=reasoner,
+        phase_demands=FakeDemands(),
+    )
+    run = _run(
+        capabilities=["read_file", "apply_patch"],
+        semantic_graph={
+            "mutation_intent": True,
+            "requested_effects": ["workspace_mutation"],
+        },
+    )
+    phase_outcome = SimpleNamespace(
+        phase_id="analysis",
+        outcome_id="phase_outcome_safe_for_mutation",
+        use_safety={"safe_for_destructive_action": True},
+        semantic_properties={},
+        limitations=[],
+        missing_truth=[],
+    )
+
+    result = planner.plan_continuation(
+        run=run,
+        phase_outcome=phase_outcome,
+    )
+
+    assert result.status == "planned"
+    assert result.candidate is not None
+    assert result.candidate.contract_type == "patch_apply"
+    assert result.candidate.runtime_profile == "patch"
+    assert result.candidate.requested_actions == ["apply_patch"]
+    assert reasoner.calls == 2
+    assert result.provenance["candidate_rejections"] == [
+        "MISSION_CONTINUATION_PREMATURE_COMPLETE"
+    ]
+    second_payload = reasoner.kwargs_history[1]["payload"]
+    assert "contract_type" not in second_payload["output_schema"]["candidate"]
+
+
 def test_evidence_repair_without_bounded_target_blocks_before_reasoning() -> None:
     reasoner = FakeReasoner(
         _proposal(

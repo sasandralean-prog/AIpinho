@@ -14,6 +14,14 @@ class CanonicalOperationService:
         self.config_path = config_path or PATHS.config_root / "chat" / "canonical_operation_map.yaml"
         self.config = load_yaml_file(self.config_path, critical=True, root=self.config_path.parent)
 
+    def from_intent_type(self, intent_type: str) -> str:
+        return str(
+            (self.config.get("intent_types", {}) or {}).get(
+                str(intent_type),
+                "unknown",
+            )
+        )
+
     def from_intent(self, intent_map: Any) -> str:
         semantic_graph = getattr(intent_map, "semantic_intent_graph", None)
         if semantic_graph is not None:
@@ -21,12 +29,12 @@ class CanonicalOperationService:
             readonly_contract = bool(getattr(semantic_graph, "readonly_contract", False))
             if readonly_contract or state_effect in {"knowledge_only", "planning_only", "build_execution", "runtime_execution"}:
                 intent_type = str(getattr(intent_map, "intent_type", "unknown"))
-                return str((self.config.get("intent_types", {}) or {}).get(intent_type, "unknown"))
+                return self.from_intent_type(intent_type)
         action = self._action_operation(getattr(intent_map, "requested_actions", []))
         if action:
             return action
         intent_type = str(getattr(intent_map, "intent_type", "unknown"))
-        return str((self.config.get("intent_types", {}) or {}).get(intent_type, "unknown"))
+        return self.from_intent_type(intent_type)
 
     def from_router(self, operation_type: str, metadata: dict[str, Any] | None = None) -> str:
         mapped_router = (self.config.get("router_aliases", {}) or {}).get(operation_type)

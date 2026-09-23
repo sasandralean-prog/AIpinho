@@ -32,6 +32,9 @@ from aipinho.services.config_governance.workspace_permission_matrix_service impo
     WorkspacePermissionMatrixService,
 )
 from aipinho.services.policy_kernel.action_registry_service import ActionRegistryService
+from aipinho.services.prompt_intelligence.canonical_operation_service import (
+    CanonicalOperationService,
+)
 from aipinho.utils.yaml_loader import load_yaml_file
 
 class TaskRunPlanner:
@@ -43,6 +46,7 @@ class TaskRunPlanner:
         permission_matrix: WorkspacePermissionMatrixService | None = None,
         phases: PhaseIdentityService | None = None,
         semantic_vocabularies: TaskSemanticVocabularyCompilerService | None = None,
+        canonical_operations: CanonicalOperationService | None = None,
     ) -> None:
         self.runtime = load_yaml_file(PATHS.config_root / "runtime" / "task_runtime_policy.yaml", critical=True, root=PATHS.config_root / "runtime")
         self.steps = load_yaml_file(PATHS.config_root / "runtime" / "governed_task_steps.yaml", critical=True, root=PATHS.config_root / "runtime")
@@ -57,6 +61,9 @@ class TaskRunPlanner:
         self.phases = phases or PhaseIdentityService()
         self.semantic_vocabularies = (
             semantic_vocabularies or TaskSemanticVocabularyCompilerService()
+        )
+        self.canonical_operations = (
+            canonical_operations or CanonicalOperationService()
         )
 
     def plan(self, request: TaskRunRequest) -> TaskRunPlan:
@@ -353,7 +360,7 @@ class TaskRunPlanner:
             "rules": [
                 "Select one option_id; runtime identity is materialized externally.",
                 "requested_actions must be a subset of option allowed_actions.",
-                "Use an option default contract when present; otherwise use allowed_contract_types.",
+                "Runtime derives contract_type from the selected option; do not invent runtime identity.",
                 "Do not expand authority or infer permissions.",
                 (
                     "When evidence_repair.required is true, select a read-only "
@@ -366,7 +373,6 @@ class TaskRunPlanner:
                 "action": "continue|complete",
                 "candidate": {
                     "option_id": "continuation_option_id",
-                    "contract_type": "runtime_contract_type",
                     "requested_actions": ["option_allowed_action"],
                 },
                 "confidence": "number_between_0_and_1",
@@ -701,33 +707,15 @@ class TaskRunPlanner:
                 "MISSION_CONTINUATION_OPTION_UNKNOWN",
             )
 
-        contract_type = str(
-            candidate_payload.get("contract_type") or ""
-        ).strip()
-        default_contract_types = {
-            str(item)
-            for item in list(
-                option.get("default_contract_types", []) or []
+        contract_type, contract_reason = (
+            self._contract_for_continuation_option(option=option)
+        )
+        if not contract_type:
+            return (
+                None,
+                contract_reason
+                or "MISSION_CONTINUATION_CONTRACT_OPTION_UNRESOLVED",
             )
-            if str(item)
-        }
-        runtime_contract_types = {
-            str(item)
-            for item in list(
-                self.runtime.get("allowed_contract_types", []) or []
-            )
-            if str(item)
-        }
-        if not contract_type and len(default_contract_types) == 1:
-            contract_type = next(iter(default_contract_types))
-        if default_contract_types:
-            if contract_type not in default_contract_types:
-                return (
-                    None,
-                    "MISSION_CONTINUATION_CONTRACT_OPTION_MISMATCH",
-                )
-        elif contract_type not in runtime_contract_types:
-            contract_type = ""
 
         raw_actions = candidate_payload.get(
             "requested_actions"
@@ -780,6 +768,41 @@ class TaskRunPlanner:
             },
             None,
         )
+
+    def _contract_for_continuation_option(
+        self,
+        *,
+        option: dict[str, Any],
+    ) -> tuple[str, str | None]:
+        allowed = set(self.runtime.get("allowed_contract_types", []) or [])
+        defaults = self._unique(
+            [
+                item
+                for item in list(
+                    option.get("default_contract_types", []) or []
+                )
+                if str(item) in allowed
+            ]
+        )
+        operation_type = str(option.get("operation_type") or "").strip()
+        if operation_type in defaults:
+            return operation_type, None
+        mapped = [
+            contract_type
+            for contract_type in defaults
+            if self.canonical_operations.from_intent_type(contract_type)
+            == operation_type
+        ]
+        if len(mapped) == 1:
+            return mapped[0], None
+        if len(defaults) == 1:
+            return defaults[0], None
+        if not defaults:
+            fallback = self._default_contract_for_option(option=option)
+            if fallback:
+                return fallback, None
+            return "", "MISSION_CONTINUATION_CONTRACT_OPTION_UNRESOLVED"
+        return "", "MISSION_CONTINUATION_CONTRACT_OPTION_AMBIGUOUS"
 
     def _default_contract_for_option(
         self,

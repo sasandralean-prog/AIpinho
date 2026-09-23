@@ -75,6 +75,16 @@ class SemanticDemandInterpreterService:
         governed_vocabulary = dict(
             reasoning_context.get("governed_vocabulary") or {}
         )
+        governed_downstream_uses = sorted(
+            {
+                str(value)
+                for value in governed_vocabulary.get(
+                    "downstream_use_identifiers"
+                )
+                or []
+                if str(value)
+            }
+        )
         proposal = reasoner.propose_json(
             semantic_goal=(
                 "Determine the minimum upstream semantic guarantees required by "
@@ -85,7 +95,13 @@ class SemanticDemandInterpreterService:
                 "semantic_reasoning_context": reasoning_context,
                 "output_schema": {
                     "truth_claim_required": "boolean",
-                    "required_downstream_uses": "list[string]",
+                    "required_downstream_uses": {
+                        "type": "list",
+                        "item": {
+                            "type": "string",
+                            "enum": governed_downstream_uses,
+                        },
+                    },
                     "required_use_safety": "object[string,list[scalar]]",
                     "required_semantic_properties": "object[string,list[scalar]]",
                     "base_constraints": "list[string]",

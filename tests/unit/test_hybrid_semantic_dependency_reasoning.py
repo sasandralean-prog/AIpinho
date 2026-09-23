@@ -207,6 +207,44 @@ def test_model_view_explicit_empty_action_scope_does_not_expose_global_safety() 
     assert governed["use_safety_requirement_states"] == {}
 
 
+def test_semantic_demand_bounds_downstream_use_output_to_governed_vocabulary() -> None:
+    reasoner = _PayloadReasoner(
+        lambda _kwargs: {
+            "truth_claim_required": False,
+            "required_downstream_uses": [],
+            "required_use_safety": {},
+            "required_semantic_properties": {},
+            "base_constraints": [],
+            "risk_constraints": [],
+            "rationale": "No downstream use is required.",
+        }
+    )
+    service = SemanticDemandInterpreterService(reasoner=reasoner)
+
+    result = service.interpret(
+        source_payload=_source_payload(),
+        semantic_graph=_source_payload()["semantic_intent_graph"],
+        vocabulary=_vocabulary(),
+    )
+
+    assert result["status"] == "accepted"
+    assert reasoner.last_kwargs is not None
+    schema = reasoner.last_kwargs["payload"]["output_schema"][
+        "required_downstream_uses"
+    ]
+    governed = reasoner.last_kwargs["payload"][
+        "semantic_reasoning_context"
+    ]["governed_vocabulary"]["downstream_use_identifiers"]
+    assert schema == {
+        "type": "list",
+        "item": {
+            "type": "string",
+            "enum": governed,
+        },
+    }
+    assert governed == []
+
+
 def test_semantic_demand_rejects_truth_requirement_outside_action_scope() -> None:
     service = SemanticDemandInterpreterService(
         reasoner=_Reasoner(
