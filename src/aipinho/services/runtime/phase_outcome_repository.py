@@ -219,24 +219,56 @@ class PhaseOutcomeRepository:
             ]
         )
         intermediate_properties: dict[str, Any] = {}
-        repair_unresolved_seen = False
+        repair_state_seen = False
+        repair_focus_complete_values: list[bool] = []
+        repair_declared_focus: list[str] = []
         repair_unresolved: list[str] = []
         for item in intermediate_semantics:
             properties = item.get("semantic_properties")
-            if not isinstance(properties, dict):
-                continue
-            for key, value in properties.items():
-                if key == "evidence_repair_unresolved_paths":
-                    repair_unresolved_seen = True
-                    repair_unresolved.extend(
-                        str(path)
-                        for path in list(value or [])
-                        if str(path)
-                    )
-                    continue
-                if key == "evidence_repair_focus_paths":
-                    continue
-                intermediate_properties[key] = value
+            if isinstance(properties, dict):
+                for key, value in properties.items():
+                    # Backward-compatible ingestion for older persisted
+                    # semantic envelopes. Structured repair metadata is the
+                    # canonical form because semantic properties are scalar.
+                    if key == "evidence_repair_focus_complete":
+                        repair_state_seen = True
+                        if isinstance(value, bool):
+                            repair_focus_complete_values.append(value)
+                        continue
+                    if key == "evidence_repair_focus_paths":
+                        repair_state_seen = True
+                        repair_declared_focus.extend(
+                            str(path)
+                            for path in list(value or [])
+                            if str(path)
+                        )
+                        continue
+                    if key == "evidence_repair_unresolved_paths":
+                        repair_state_seen = True
+                        repair_unresolved.extend(
+                            str(path)
+                            for path in list(value or [])
+                            if str(path)
+                        )
+                        continue
+                    intermediate_properties[key] = value
+
+            repair = item.get("evidence_repair")
+            if isinstance(repair, dict) and repair.get("required"):
+                repair_state_seen = True
+                focus_complete = repair.get("focus_complete")
+                if isinstance(focus_complete, bool):
+                    repair_focus_complete_values.append(focus_complete)
+                repair_declared_focus.extend(
+                    str(path)
+                    for path in list(repair.get("focus_paths") or [])
+                    if str(path)
+                )
+                repair_unresolved.extend(
+                    str(path)
+                    for path in list(repair.get("unresolved_paths") or [])
+                    if str(path)
+                )
 
         file_context_summary = (
             outputs.get("file_context_summary")
@@ -246,8 +278,20 @@ class PhaseOutcomeRepository:
         observed_omitted_paths = self._unique(
             list(file_context_summary.get("omitted_files") or [])
         )
-        if repair_unresolved_seen:
-            repair_focus_paths = self._unique(repair_unresolved)
+        if repair_state_seen:
+            repair_focus_complete = bool(
+                repair_focus_complete_values
+                and all(repair_focus_complete_values)
+            )
+            if repair_focus_complete:
+                repair_focus_paths = []
+            elif repair_unresolved:
+                repair_focus_paths = self._unique(repair_unresolved)
+            else:
+                repair_focus_paths = self._unique(repair_declared_focus)
+            intermediate_properties[
+                "evidence_repair_focus_complete"
+            ] = repair_focus_complete
         else:
             repair_focus_paths = observed_omitted_paths
 

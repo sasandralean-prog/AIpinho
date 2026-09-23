@@ -63,6 +63,7 @@ class EvidenceRepairSemanticService:
             "safe_for_user_report": safety,
         }
         semantic_properties: dict[str, Any] = {}
+        repair_metadata: dict[str, Any] = {}
 
         repair = dict(repair or {})
         focus_paths = cls._unique(
@@ -89,19 +90,23 @@ class EvidenceRepairSemanticService:
                 and not missing_truth
             )
             use_safety["safe_for_destructive_action"] = repair_complete
-            semantic_properties.update(
-                {
-                    "evidence_repair_focus_complete": repair_complete,
-                    "evidence_repair_focus_paths": focus_paths,
-                    "evidence_repair_unresolved_paths": unresolved,
-                }
-            )
+            repair_metadata = {
+                "required": True,
+                "focus_complete": repair_complete,
+                "focus_paths": focus_paths,
+                "unresolved_paths": unresolved,
+            }
             if unresolved:
                 limitations.append("evidence_repair_focus_unresolved")
 
         return {
             "use_safety": use_safety,
             "semantic_properties": semantic_properties,
+            **(
+                {"evidence_repair": repair_metadata}
+                if repair_metadata
+                else {}
+            ),
             "limitations": cls._unique(
                 [str(item) for item in limitations if str(item)]
             ),

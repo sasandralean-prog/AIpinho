@@ -204,15 +204,9 @@ def test_evidence_repair_marks_destructive_use_safe_only_when_focus_is_fully_res
         semantic["use_safety"]["safe_for_destructive_action"]
         is True
     )
-    assert (
-        semantic["semantic_properties"][
-            "evidence_repair_focus_complete"
-        ]
-        is True
-    )
-    assert semantic["semantic_properties"][
-        "evidence_repair_unresolved_paths"
-    ] == []
+    assert semantic["semantic_properties"] == {}
+    assert semantic["evidence_repair"]["focus_complete"] is True
+    assert semantic["evidence_repair"]["unresolved_paths"] == []
 
 
 def test_evidence_repair_does_not_promote_destructive_safety_when_focus_is_missing() -> None:
@@ -246,7 +240,9 @@ def test_evidence_repair_does_not_promote_destructive_safety_when_focus_is_missi
         semantic["use_safety"]["safe_for_destructive_action"]
         is False
     )
-    assert semantic["semantic_properties"][
-        "evidence_repair_unresolved_paths"
-    ] == ["src/B.kt"]
+    assert semantic["semantic_properties"] == {}
+    assert semantic["evidence_repair"]["focus_complete"] is False
+    assert semantic["evidence_repair"]["unresolved_paths"] == [
+        "src/B.kt"
+    ]
     assert "evidence_repair_focus_unresolved" in semantic["limitations"]

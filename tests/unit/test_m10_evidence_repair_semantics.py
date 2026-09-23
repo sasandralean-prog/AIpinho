@@ -5,6 +5,9 @@ from types import SimpleNamespace
 from aipinho.services.governance.runtime.readonly_analysis_artifact_runtime_service import (
     ReadonlyAnalysisArtifactRuntimeService,
 )
+from aipinho.schemas.semantics.semantic_offer import (
+    ObservedWorkUnitSemanticOutcome,
+)
 from aipinho.services.runtime.evidence_repair_semantic_service import (
     EvidenceRepairSemanticService,
 )
@@ -103,12 +106,13 @@ def test_repair_semantics_promote_destructive_safety_only_after_full_focus() -> 
     )
 
     assert semantic["use_safety"]["safe_for_destructive_action"] is True
-    assert semantic["semantic_properties"][
-        "evidence_repair_focus_complete"
-    ] is True
-    assert semantic["semantic_properties"][
-        "evidence_repair_unresolved_paths"
-    ] == []
+    assert semantic["semantic_properties"] == {}
+    assert semantic["evidence_repair"] == {
+        "required": True,
+        "focus_complete": True,
+        "focus_paths": ["src/A.kt", "src/B.kt"],
+        "unresolved_paths": [],
+    }
 
 
 def test_repair_semantics_preserve_exact_unresolved_focus_fail_closed() -> None:
@@ -128,12 +132,17 @@ def test_repair_semantics_preserve_exact_unresolved_focus_fail_closed() -> None:
     )
 
     assert semantic["use_safety"]["safe_for_destructive_action"] is False
-    assert semantic["semantic_properties"][
-        "evidence_repair_focus_complete"
-    ] is False
-    assert semantic["semantic_properties"][
-        "evidence_repair_unresolved_paths"
-    ] == ["src/B.kt", "src/C.kt"]
+    assert semantic["semantic_properties"] == {}
+    assert semantic["evidence_repair"]["focus_complete"] is False
+    assert semantic["evidence_repair"]["focus_paths"] == [
+        "src/A.kt",
+        "src/B.kt",
+        "src/C.kt",
+    ]
+    assert semantic["evidence_repair"]["unresolved_paths"] == [
+        "src/B.kt",
+        "src/C.kt",
+    ]
     assert "evidence_repair_focus_unresolved" in semantic["limitations"]
 
 
@@ -154,7 +163,37 @@ def test_repair_semantics_do_not_promote_when_analysis_truth_is_missing() -> Non
     )
 
     assert semantic["use_safety"]["safe_for_destructive_action"] is False
-    assert semantic["semantic_properties"][
-        "evidence_repair_focus_complete"
-    ] is False
+    assert semantic["semantic_properties"] == {}
+    assert semantic["evidence_repair"]["focus_complete"] is False
+    assert semantic["evidence_repair"]["unresolved_paths"] == []
     assert semantic["missing_truth"] == ["analysis_truth_missing"]
+
+def test_repair_semantic_properties_remain_scalar_schema_compatible() -> None:
+    result = _analysis_result(
+        included=[("src/A.kt", False)],
+    )
+    semantic = EvidenceRepairSemanticService.project_analysis_outcome(
+        result,
+        repair={
+            "required": True,
+            "focus_paths": ["src/A.kt"],
+        },
+    )
+
+    observed = ObservedWorkUnitSemanticOutcome(
+        producer_work_unit_id="work_unit_repair",
+        source_step_ids=["step_repair"],
+        result_status="completed",
+        result_ref="task_run_result:repair#work_unit:repair",
+        observed_use_safety=semantic["use_safety"],
+        observed_semantic_properties=semantic["semantic_properties"],
+        limitations=semantic["limitations"],
+        missing_truth=semantic["missing_truth"],
+        required_disclosures=semantic["required_disclosures"],
+        provenance={"source": "test"},
+    )
+
+    assert observed.observed_semantic_properties == {}
+    assert observed.observed_use_safety[
+        "safe_for_destructive_action"
+    ] is True

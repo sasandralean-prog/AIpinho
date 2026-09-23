@@ -360,15 +360,15 @@ def test_phase_outcome_prefers_explicit_unresolved_repair_paths_over_generic_omi
                     "use_safety": {
                         "safe_for_user_report": False
                     },
-                    "semantic_properties": {
-                        "evidence_repair_focus_complete": False,
-                        "evidence_repair_focus_paths": [
+                    "semantic_properties": {},
+                    "evidence_repair": {
+                        "required": True,
+                        "focus_complete": False,
+                        "focus_paths": [
                             "src/A.kt",
                             "src/B.kt",
                         ],
-                        "evidence_repair_unresolved_paths": [
-                            "src/B.kt"
-                        ],
+                        "unresolved_paths": ["src/B.kt"],
                     },
                 }
             },
