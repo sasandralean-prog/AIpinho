@@ -82,6 +82,9 @@ def test_project_analysis_semantic_outcome_marks_partial_report_safe_with_limita
     assert semantic["use_safety"]["safe_for_user_report"] == (
         "true_with_limitations"
     )
+    assert semantic["use_safety"][
+        "safe_for_downstream_static_analysis"
+    ] == "true_with_limitations"
     assert "file_selection_partial" in semantic["limitations"]
     assert "analysis_scope_partial" in semantic["limitations"]
     assert "project_analysis_partial" in semantic["limitations"]
@@ -101,6 +104,9 @@ def test_project_analysis_semantic_outcome_marks_complete_report_safe():
     semantic = runner._project_analysis_semantic_outcome(result)
 
     assert semantic["use_safety"]["safe_for_user_report"] is True
+    assert semantic["use_safety"][
+        "safe_for_downstream_static_analysis"
+    ] is True
     assert semantic["limitations"] == []
     assert semantic["missing_truth"] == []
 
@@ -118,6 +124,9 @@ def test_project_analysis_semantic_outcome_marks_unsafe_result_not_reportable():
     semantic = runner._project_analysis_semantic_outcome(result)
 
     assert semantic["use_safety"]["safe_for_user_report"] is False
+    assert semantic["use_safety"][
+        "safe_for_downstream_static_analysis"
+    ] is False
     assert semantic["missing_truth"] == ["analysis_failed"]
 
 

@@ -62,6 +62,7 @@ class EvidenceRepairSemanticService:
         missing_truth = list(getattr(result, "violations", []) or [])
         use_safety: dict[str, Any] = {
             "safe_for_user_report": safety,
+            "safe_for_downstream_static_analysis": safety,
         }
         semantic_properties: dict[str, Any] = {}
         repair_metadata: dict[str, Any] = {}
