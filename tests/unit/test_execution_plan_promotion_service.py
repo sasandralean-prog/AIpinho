@@ -97,6 +97,57 @@ def test_promoted_plan_preserves_canonical_semantic_intent_source():
     assert candidate.metadata["semantic_intent_graph"] == request.intent_map["semantic_intent_graph"]
 
 
+def test_patch_preview_inherits_workspace_as_bounded_target_scope():
+    request = TaskRunRequest(
+        task_id="task_patch_preview",
+        task_run_id="run_patch_preview",
+        contract_type="patch_request",
+        operation_type="patch_preview",
+        runtime_profile="patch",
+        workspace="C:/workspace",
+        requested_actions=["patch_preview"],
+        capabilities_required=[
+            "patch_apply",
+            "write_workspace",
+            "patch_preview",
+        ],
+    )
+    task_plan = TaskRunPlan(
+        plan_id="plan_patch_preview",
+        contract_type="patch_request",
+        steps=[
+            TaskRunStep(
+                step_id="step_patch",
+                step_type="patch",
+                action="apply_patch",
+                side_effect=True,
+            )
+        ],
+        metadata={
+            "normalized_actions": ["patch_preview"],
+            "required_capabilities": [
+                "patch_apply",
+                "write_workspace",
+                "patch_preview",
+            ],
+            "runtime_profile": "patch",
+        },
+    )
+
+    candidate = ExecutionPlanPromotionService().candidate_from_task_run_plan(
+        request=request,
+        plan=task_plan,
+        workspace_context={"workspace_path": "C:/workspace"},
+    )
+
+    assert candidate.targets == ["C:/workspace"]
+    decision = ExecutionPlanPromotionService().promote(
+        candidate,
+        policy_snapshot={"status": "allowed"},
+    )
+    assert "side_effect_execution_requires_targets" not in decision.reason_codes
+
+
 def test_policy_denial_rejects_candidate_without_mutating_candidate():
     service = ExecutionPlanPromotionService()
     candidate = CandidatePlan(

@@ -24,6 +24,13 @@ class ExecutionPlanPromotionService:
         "delete_files",
         "move_files",
     }
+    TARGET_SCOPE_ACTIONS = SIDE_EFFECT_ACTIONS | {
+        "patch_preview",
+        "write_preview",
+        "file_edit_preview",
+        "move_preview",
+        "delete_preview",
+    }
 
     def candidate_from_task_run_plan(
         self,
@@ -170,7 +177,9 @@ class ExecutionPlanPromotionService:
         candidates = list(getattr(request, "target_paths", []) or [])
         if not candidates and isinstance(request.intent_map, dict):
             candidates.extend(str(item) for item in request.intent_map.get("target_paths", []) or [])
-        if not candidates and set(request.requested_actions).intersection(self.SIDE_EFFECT_ACTIONS):
+        if not candidates and set(request.requested_actions).intersection(
+            self.TARGET_SCOPE_ACTIONS
+        ):
             workspace = workspace_data.get("workspace_path") or request.workspace
             if workspace:
                 candidates.append(str(workspace))
