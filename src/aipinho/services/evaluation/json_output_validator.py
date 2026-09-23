@@ -140,8 +140,11 @@ class JSONOutputValidator:
                 if bool(schema.get("non_empty")) and not value.strip():
                     return [f"schema_non_empty_mismatch:{label}"]
                 enum = list(schema.get("enum") or [])
-                if enum and value not in enum:
+                if "enum" in schema and value not in enum:
                     return [f"schema_enum_mismatch:{label}"]
+                pattern = str(schema.get("pattern") or "")
+                if pattern and re.fullmatch(pattern, value) is None:
+                    return [f"schema_pattern_mismatch:{label}"]
                 return []
             if schema_type == "boolean":
                 return [] if isinstance(value, bool) else [f"schema_type_mismatch:{label}"]

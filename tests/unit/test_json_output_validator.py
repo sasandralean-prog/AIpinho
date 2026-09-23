@@ -66,6 +66,41 @@ def test_json_output_validator_rejects_nested_enum_mismatch():
 
 
 
+def test_json_output_validator_rejects_empty_declared_enum() -> None:
+    result = JSONOutputValidator().validate(
+        '{"uses":["invented_use"]}',
+        required_fields=["uses"],
+        json_shape={
+            "uses": {
+                "type": "list",
+                "item": {"type": "string", "enum": []},
+            }
+        },
+    )
+
+    assert result.valid is False
+    assert "schema_enum_mismatch:uses[0]" in result.violations
+
+
+def test_json_output_validator_rejects_string_pattern_mismatch() -> None:
+    result = JSONOutputValidator().validate(
+        '{"constraints":["invented prose"]}',
+        required_fields=["constraints"],
+        json_shape={
+            "constraints": {
+                "type": "list",
+                "item": {
+                    "type": "string",
+                    "pattern": "^(require_|preserve_)[a-z0-9_]*$",
+                },
+            }
+        },
+    )
+
+    assert result.valid is False
+    assert "schema_pattern_mismatch:constraints[0]" in result.violations
+
+
 def test_json_output_validator_reports_empty_string_constraint() -> None:
     result = JSONOutputValidator().validate(
         '{"rationale":""}',
