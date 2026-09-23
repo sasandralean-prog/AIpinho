@@ -34,6 +34,41 @@ def test_filesystem_read_file_text_and_truncate(tmp_path):
     assert result.side_effects is False
 
 
+def test_filesystem_read_preview_override_is_internal_only(tmp_path):
+    content = "x" * 25_000
+    (tmp_path / "large.txt").write_text(content, encoding="utf-8")
+    service = FilesystemReadService()
+
+    user_supplied = service.read_file(
+        _request(
+            "filesystem.read_file",
+            tmp_path,
+            "large.txt",
+            max_bytes=30_000,
+            content_preview_limit_override=30_000,
+        )
+    )
+    internal = service.read_file(
+        _request(
+            "filesystem.read_file",
+            tmp_path,
+            "large.txt",
+            max_bytes=30_000,
+        ),
+        content_preview_limit_override=30_000,
+    )
+
+    assert user_supplied.content_truncated is True
+    assert len(user_supplied.content or "") == service.content_preview_limit()
+    assert user_supplied.metadata["content_preview_override_used"] is False
+    assert internal.content == content
+    assert internal.content_truncated is False
+    assert internal.metadata["content_preview_override_used"] is True
+    assert internal.metadata["content_preview_policy_limit"] == (
+        service.content_preview_limit()
+    )
+
+
 def test_filesystem_blocks_binary_and_secret(tmp_path):
     (tmp_path / "binary.txt").write_bytes(b"\x00\x01\x02")
     (tmp_path / ".env").write_text("TOKEN=abc", encoding="utf-8")

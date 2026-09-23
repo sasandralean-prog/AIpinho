@@ -120,14 +120,30 @@ class FileContextBuilder:
                 },
             )
             item_started = time.monotonic()
-            result = self.execution.execute(
-                ToolExecutionRequest(
-                    tool_id="filesystem.read_file",
-                    input={"workspace": request.workspace, "path": candidate.path, "max_bytes": int(decision["bytes_requested"])},
-                    mode="readonly",
-                    include_content=True,
-                    include_trace=request.include_trace,
+            read_request = ToolExecutionRequest(
+                tool_id="filesystem.read_file",
+                input={
+                    "workspace": request.workspace,
+                    "path": candidate.path,
+                    "max_bytes": int(decision["bytes_requested"]),
+                },
+                mode="readonly",
+                include_content=True,
+                include_trace=request.include_trace,
+            )
+            preview_override = self._repair_preview_override(
+                request=request,
+                candidate=candidate,
+                decision=decision,
+                file_size=file_size,
+            )
+            result = (
+                self.execution.execute(
+                    read_request,
+                    content_preview_limit_override=preview_override,
                 )
+                if preview_override is not None
+                else self.execution.execute(read_request)
             )
             single_file_elapsed_ms = int((time.monotonic() - item_started) * 1000)
             metadata = dict(result.metadata)
@@ -265,6 +281,25 @@ class FileContextBuilder:
     def _progress(self, callback: Callable[[str, dict[str, object]], None] | None, stage: str, data: dict[str, object]) -> None:
         if callback is not None:
             callback(stage, data)
+
+    @staticmethod
+    def _repair_preview_override(
+        *,
+        request: ProjectAnalysisRequest,
+        candidate: FileSelectionCandidate,
+        decision: dict[str, object],
+        file_size: int,
+    ) -> int | None:
+        if request.goal != "evidence_repair_analysis":
+            return None
+        if candidate.path not in set(request.focus_paths or []):
+            return None
+        if str(decision.get("decision") or "") != "read":
+            return None
+        bytes_requested = int(decision.get("bytes_requested") or 0)
+        if file_size <= 0 or bytes_requested < file_size:
+            return None
+        return bytes_requested
 
     def _read_decision(
         self,

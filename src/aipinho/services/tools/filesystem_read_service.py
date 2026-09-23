@@ -58,7 +58,15 @@ class FilesystemReadService:
             entries.append({"name": child.name, "kind": "directory" if child.is_dir() else ("file" if child.is_file() else "other"), "size": child.stat().st_size if child.exists() and child.is_file() else None, "extension": child.suffix.lower() or None, "blocked": bool(blocked_reasons), "blocked_reasons": blocked_reasons})
         return ToolExecutionResult(execution_id=execution_id or f"exec_{uuid4().hex}", tool_id=request.tool_id, status="executed_readonly", action=action, capability=capability, workspace=decision.workspace, target_path=decision.target_path, content=None, metadata={**self._metadata(target), "entries": entries, "entries_returned": len(entries)}, warnings=list(dict.fromkeys([*decision.warnings, *warnings])), trace=list(decision.trace), side_effects=False, safe_to_execute=True)
 
-    def read_file(self, request: ToolExecutionRequest, *, execution_id: str | None = None, action: str = "read_files", capability: str = "read_workspace") -> ToolExecutionResult:
+    def read_file(
+        self,
+        request: ToolExecutionRequest,
+        *,
+        execution_id: str | None = None,
+        action: str = "read_files",
+        capability: str = "read_workspace",
+        content_preview_limit_override: int | None = None,
+    ) -> ToolExecutionResult:
         decision = self.path_guard.validate_read_target(str(request.input.get("workspace") or ""), str(request.input.get("path") or ""))
         if not decision.allowed:
             return self._blocked(request, decision, execution_id=execution_id, action=action, capability=capability)
@@ -67,23 +75,93 @@ class FilesystemReadService:
             return self._invalid(request, "target_not_found", decision, execution_id=execution_id, action=action, capability=capability)
         if not target.is_file():
             return self._invalid(request, "target_not_file", decision, execution_id=execution_id, action=action, capability=capability)
-        max_file_bytes = int(request.input.get("max_bytes") or self.limits.get("max_file_bytes", 200000) or 200000)
-        max_file_bytes = min(max_file_bytes, int(self.limits.get("max_file_bytes", 200000) or 200000))
+        max_file_bytes = int(
+            request.input.get("max_bytes")
+            or self.limits.get("max_file_bytes", 200000)
+            or 200000
+        )
+        max_file_bytes = min(
+            max_file_bytes,
+            int(self.limits.get("max_file_bytes", 200000) or 200000),
+        )
         sample = target.read_bytes()[: max_file_bytes + 1]
         if self.content_safety.is_binary_sample(sample[:4096]):
-            return self._blocked_with_reason(request, "binary_file", decision, execution_id=execution_id, action=action, capability=capability)
+            return self._blocked_with_reason(
+                request,
+                "binary_file",
+                decision,
+                execution_id=execution_id,
+                action=action,
+                capability=capability,
+            )
         truncated = len(sample) > max_file_bytes
         data = sample[:max_file_bytes]
         text, content_warnings = self.content_safety.decode_text(data)
-        safety = self.policy.get("safety", {}) if isinstance(self.policy.get("safety", {}), dict) else {}
-        preview_limit = int(safety.get("include_content_preview_limit", 20000) or 20000)
-        if request.include_content and len(text) > preview_limit:
+        policy_preview_limit = self.content_preview_limit()
+        preview_limit = (
+            min(
+                max(1, int(content_preview_limit_override)),
+                max_file_bytes,
+            )
+            if content_preview_limit_override is not None
+            else policy_preview_limit
+        )
+        preview_truncated = bool(
+            request.include_content and len(text) > preview_limit
+        )
+        if preview_truncated:
             text = text[:preview_limit]
             truncated = True
         content = text if request.include_content else None
         metadata = self._metadata(target)
-        metadata.update({"bytes_read": len(data), "is_binary": False, "extension": target.suffix.lower()})
-        return ToolExecutionResult(execution_id=execution_id or f"exec_{uuid4().hex}", tool_id=request.tool_id, status="executed_readonly", action=action, capability=capability, workspace=decision.workspace, target_path=decision.target_path, content=content, content_truncated=truncated, metadata=metadata, warnings=list(dict.fromkeys([*decision.warnings, *content_warnings, *( ["content_truncated"] if truncated else [] )])), trace=list(decision.trace), side_effects=False, safe_to_execute=True)
+        metadata.update(
+            {
+                "bytes_read": len(data),
+                "is_binary": False,
+                "extension": target.suffix.lower(),
+                "content_preview_limit": preview_limit,
+                "content_preview_policy_limit": policy_preview_limit,
+                "content_preview_override_used": (
+                    content_preview_limit_override is not None
+                ),
+                "content_preview_truncated": preview_truncated,
+            }
+        )
+        return ToolExecutionResult(
+            execution_id=execution_id or f"exec_{uuid4().hex}",
+            tool_id=request.tool_id,
+            status="executed_readonly",
+            action=action,
+            capability=capability,
+            workspace=decision.workspace,
+            target_path=decision.target_path,
+            content=content,
+            content_truncated=truncated,
+            metadata=metadata,
+            warnings=list(
+                dict.fromkeys(
+                    [
+                        *decision.warnings,
+                        *content_warnings,
+                        *(["content_truncated"] if truncated else []),
+                    ]
+                )
+            ),
+            trace=list(decision.trace),
+            side_effects=False,
+            safe_to_execute=True,
+        )
+
+    def content_preview_limit(self) -> int:
+        safety = (
+            self.policy.get("safety", {})
+            if isinstance(self.policy.get("safety", {}), dict)
+            else {}
+        )
+        return max(
+            1,
+            int(safety.get("include_content_preview_limit", 20000) or 20000),
+        )
 
     def _metadata(self, target: Path) -> dict[str, object]:
         exists = target.exists()
@@ -108,4 +186,9 @@ class FilesystemReadService:
         return ToolExecutionResult(execution_id=execution_id or f"exec_{uuid4().hex}", tool_id=request.tool_id, status="invalid", action=action, capability=capability, workspace=decision.workspace, target_path=decision.target_path, violations=[reason], warnings=list(decision.warnings), trace=list(decision.trace), side_effects=False, safe_to_execute=False)
 
     def status(self) -> dict[str, object]:
-        return {"status": "ok", "service": "filesystem_read", "max_file_bytes": self.limits.get("max_file_bytes")}
+        return {
+            "status": "ok",
+            "service": "filesystem_read",
+            "max_file_bytes": self.limits.get("max_file_bytes"),
+            "include_content_preview_limit": self.content_preview_limit(),
+        }

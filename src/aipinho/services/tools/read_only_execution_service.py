@@ -23,7 +23,12 @@ class ReadOnlyExecutionService:
         self.draft_store = draft_store or TaskDraftStore()
         self.task_preview_service = task_preview_service or TaskPreviewService()
 
-    def execute(self, request: ToolExecutionRequest) -> ToolExecutionResult:
+    def execute(
+        self,
+        request: ToolExecutionRequest,
+        *,
+        content_preview_limit_override: int | None = None,
+    ) -> ToolExecutionResult:
         execution_id = f"exec_{uuid4().hex}"
         decision, tool, context = self.guard.check(request)
         if tool is None or not decision.allowed:
@@ -37,7 +42,15 @@ class ReadOnlyExecutionService:
         elif tool.tool_id == "filesystem.list_directory" or tool.action == "list_directory":
             result = self.filesystem.list_directory(request, execution_id=execution_id, action=tool.action, capability=tool.capability)
         elif tool.tool_id == "filesystem.read_file" or tool.action == "read_files":
-            result = self.filesystem.read_file(request, execution_id=execution_id, action=tool.action, capability=tool.capability)
+            result = self.filesystem.read_file(
+                request,
+                execution_id=execution_id,
+                action=tool.action,
+                capability=tool.capability,
+                content_preview_limit_override=(
+                    content_preview_limit_override
+                ),
+            )
         else:
             result = ToolExecutionResult(execution_id=execution_id, tool_id=request.tool_id, status="blocked", action=tool.action, capability=tool.capability, workspace=decision.workspace, target_path=decision.target_path, violations=["adapter_not_allowed_for_readonly_execution"], side_effects=False, safe_to_execute=False)
         result.trace = [*decision.trace, *result.trace]
@@ -118,4 +131,19 @@ class ReadOnlyExecutionService:
         return self.audit.get_events(execution_id)
 
     def status(self) -> dict[str, object]:
-        return {"status": "ok", "service": "read_only_execution", "read_only_execution_enabled": True, "real_execution_enabled": True, "write_execution_enabled": False, "shell_execution_enabled": False, "patch_apply_enabled": False, "git_write_enabled": False, "memory_write_enabled": False, "rag_query_enabled": False, "llm_enabled": False, "guard": self.guard.status(), "audit": self.audit.status()}
+        return {
+            "status": "ok",
+            "service": "read_only_execution",
+            "read_only_execution_enabled": True,
+            "real_execution_enabled": True,
+            "write_execution_enabled": False,
+            "shell_execution_enabled": False,
+            "patch_apply_enabled": False,
+            "git_write_enabled": False,
+            "memory_write_enabled": False,
+            "rag_query_enabled": False,
+            "llm_enabled": False,
+            "guard": self.guard.status(),
+            "filesystem": self.filesystem.status(),
+            "audit": self.audit.status(),
+        }
