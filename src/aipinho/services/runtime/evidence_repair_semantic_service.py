@@ -39,6 +39,7 @@ class EvidenceRepairSemanticService:
         result: Any,
         *,
         repair: dict[str, Any] | None = None,
+        nonfatal_omission_reasons: list[str] | set[str] | None = None,
     ) -> dict[str, Any]:
         status = str(getattr(result, "status", "") or "")
         safe_to_continue = bool(getattr(result, "safe_to_continue", False))
@@ -81,8 +82,33 @@ class EvidenceRepairSemanticService:
                 if str(getattr(item, "status", "") or "") == "included"
                 and not bool(getattr(item, "content_truncated", False))
             }
+            nonfatal = {
+                str(item).strip().casefold()
+                for item in list(nonfatal_omission_reasons or [])
+                if str(item).strip()
+            }
+            skipped_reasons: dict[str, set[str]] = {}
+            read_plan = getattr(result, "file_read_plan", None)
+            if isinstance(read_plan, dict):
+                for item in list(read_plan.get("skipped_files") or []):
+                    if not isinstance(item, dict):
+                        continue
+                    path = str(item.get("path") or "")
+                    reason = str(item.get("reason") or "").strip().casefold()
+                    if path and reason:
+                        skipped_reasons.setdefault(path, set()).add(reason)
+
+            unavailable = [
+                path
+                for path in focus_paths
+                if path not in included
+                and skipped_reasons.get(path)
+                and skipped_reasons[path].issubset(nonfatal)
+            ]
             unresolved = [
-                path for path in focus_paths if path not in included
+                path
+                for path in focus_paths
+                if path not in included and path not in unavailable
             ]
             repair_complete = bool(
                 not unresolved
@@ -96,6 +122,11 @@ class EvidenceRepairSemanticService:
                 "focus_paths": focus_paths,
                 "unresolved_paths": unresolved,
             }
+            if unavailable:
+                repair_metadata["nonfatal_unavailable_paths"] = unavailable
+                limitations.append(
+                    "evidence_repair_nonfatal_unavailable_disclosed"
+                )
             if unresolved:
                 limitations.append("evidence_repair_focus_unresolved")
 

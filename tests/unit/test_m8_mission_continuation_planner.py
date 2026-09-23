@@ -946,6 +946,65 @@ def test_continuation_routes_to_readonly_evidence_repair_when_destructive_safety
     )
 
 
+def test_continuation_blocks_stalled_evidence_repair_before_reasoning() -> None:
+    reasoner = FakeReasoner(
+        _proposal(
+            {
+                "operation_type": "project_analysis",
+                "contract_type": "analysis_readonly",
+                "runtime_profile": "readonly_analysis",
+                "requested_actions": ["read_files"],
+            }
+        )
+    )
+    planner = TaskRunPlanner(
+        semantic_reasoner=reasoner,
+        phase_demands=FakeDemands(),
+    )
+    run = _run(
+        capabilities=["read_file", "modify_file"],
+        semantic_graph={
+            "mutation_intent": True,
+            "requested_effects": ["workspace_mutation"],
+        },
+    )
+    run.intent_map["mission_continuation"] = {
+        "depth": 4,
+        "evidence_repair": {
+            "required": True,
+            "focus_paths": ["src/A.kt", "src/B.kt"],
+        },
+    }
+    phase_outcome = SimpleNamespace(
+        outcome_id="phase_outcome_same_focus",
+        phase_id="phase_004_readonly_analysis",
+        use_safety={"safe_for_destructive_action": False},
+        semantic_properties={
+            "evidence_repair_focus_paths": ["src/B.kt", "src/A.kt"]
+        },
+        limitations=["evidence_repair_focus_unresolved"],
+        missing_truth=[],
+    )
+
+    result = planner.plan_continuation(
+        run=run,
+        phase_outcome=phase_outcome,
+    )
+
+    assert result.status == "blocked"
+    assert result.reason_code == (
+        "MISSION_CONTINUATION_EVIDENCE_REPAIR_STALLED"
+    )
+    assert reasoner.calls == 0
+    assert set(result.provenance["previous_focus_paths"]) == {
+        "src/A.kt",
+        "src/B.kt",
+    }
+    assert set(
+        result.provenance["evidence_repair"]["focus_paths"]
+    ) == {"src/A.kt", "src/B.kt"}
+
+
 def test_continuation_keeps_side_effect_lane_when_destructive_safety_is_proven() -> None:
     planner = TaskRunPlanner()
     run = _run(

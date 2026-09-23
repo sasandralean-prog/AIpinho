@@ -33,6 +33,7 @@ def _analysis_result(
     status: str = "partial",
     safe_to_continue: bool = True,
     violations: list[str] | None = None,
+    skipped_files: list[dict[str, object]] | None = None,
 ):
     return SimpleNamespace(
         status=status,
@@ -40,6 +41,9 @@ def _analysis_result(
         warnings=[],
         limitations=[],
         violations=list(violations or []),
+        file_read_plan={
+            "skipped_files": list(skipped_files or []),
+        },
         file_context=SimpleNamespace(
             items=[
                 SimpleNamespace(
@@ -66,8 +70,9 @@ def test_specialized_readonly_request_consumes_bounded_repair_focus() -> None:
 
     assert request.goal == "evidence_repair_analysis"
     assert request.focus_paths == ["src/A.kt", "src/B.kt"]
-    assert request.max_files == 40
-    assert request.max_total_bytes == 700000
+    assert request.max_files == 2
+    assert request.max_total_bytes == service.analysis.budget.max_bytes_read
+    assert request.max_file_bytes == service.analysis.budget.max_bytes_read
     assert "Evidence repair" in request.prompt
 
 
@@ -86,6 +91,7 @@ def test_specialized_readonly_request_keeps_normal_analysis_unmodified() -> None
     assert request.focus_paths == []
     assert request.max_files is None
     assert request.max_total_bytes is None
+    assert request.max_file_bytes is None
     assert request.prompt == "Inspect project"
 
 
@@ -144,6 +150,66 @@ def test_repair_semantics_preserve_exact_unresolved_focus_fail_closed() -> None:
         "src/C.kt",
     ]
     assert "evidence_repair_focus_unresolved" in semantic["limitations"]
+
+
+def test_repair_semantics_treat_only_policy_nonfatal_omissions_as_unavailable() -> None:
+    result = _analysis_result(
+        included=[("src/A.kt", False)],
+        status="partial",
+        skipped_files=[
+            {"path": "gradle/wrapper/tool.jar", "reason": "extension_not_allowed"},
+            {"path": "src/B.kt", "reason": "max_files_budget"},
+        ],
+    )
+
+    semantic = EvidenceRepairSemanticService.project_analysis_outcome(
+        result,
+        repair={
+            "required": True,
+            "focus_paths": [
+                "src/A.kt",
+                "gradle/wrapper/tool.jar",
+                "src/B.kt",
+            ],
+        },
+        nonfatal_omission_reasons={"extension_not_allowed"},
+    )
+
+    assert semantic["use_safety"]["safe_for_destructive_action"] is False
+    assert semantic["evidence_repair"]["nonfatal_unavailable_paths"] == [
+        "gradle/wrapper/tool.jar"
+    ]
+    assert semantic["evidence_repair"]["unresolved_paths"] == ["src/B.kt"]
+    assert (
+        "evidence_repair_nonfatal_unavailable_disclosed"
+        in semantic["limitations"]
+    )
+
+
+def test_repair_semantics_can_complete_with_only_policy_nonfatal_unavailable_paths() -> None:
+    result = _analysis_result(
+        included=[("src/A.kt", False)],
+        status="partial",
+        skipped_files=[
+            {"path": "gradle/wrapper/tool.jar", "reason": "extension_not_allowed"},
+        ],
+    )
+
+    semantic = EvidenceRepairSemanticService.project_analysis_outcome(
+        result,
+        repair={
+            "required": True,
+            "focus_paths": ["src/A.kt", "gradle/wrapper/tool.jar"],
+        },
+        nonfatal_omission_reasons={"extension_not_allowed"},
+    )
+
+    assert semantic["use_safety"]["safe_for_destructive_action"] is True
+    assert semantic["evidence_repair"]["focus_complete"] is True
+    assert semantic["evidence_repair"]["unresolved_paths"] == []
+    assert semantic["evidence_repair"]["nonfatal_unavailable_paths"] == [
+        "gradle/wrapper/tool.jar"
+    ]
 
 
 def test_repair_semantics_do_not_promote_when_analysis_truth_is_missing() -> None:

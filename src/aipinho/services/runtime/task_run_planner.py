@@ -251,6 +251,35 @@ class TaskRunPlanner:
                     "evidence_repair": evidence_repair,
                 },
             )
+        incoming_repair = (
+            dict(continuation.get("evidence_repair") or {})
+            if isinstance(continuation.get("evidence_repair"), dict)
+            else {}
+        )
+        current_focus = self._unique(
+            list(incoming_repair.get("focus_paths") or [])
+        )
+        next_focus = self._unique(
+            list(evidence_repair.get("focus_paths") or [])
+        )
+        if (
+            evidence_repair.get("required")
+            and incoming_repair.get("required")
+            and current_focus
+            and next_focus
+            and set(current_focus) == set(next_focus)
+        ):
+            return self._continuation_result(
+                "blocked",
+                "MISSION_CONTINUATION_EVIDENCE_REPAIR_STALLED",
+                provenance={
+                    "depth": depth,
+                    "max_depth": max_depth,
+                    "unsatisfied_requested_effects": unsatisfied_effects,
+                    "previous_focus_paths": current_focus,
+                    "evidence_repair": evidence_repair,
+                },
+            )
         reasoner = self.semantic_reasoner or ContractBoundSemanticReasoner()
         continuation_options = self._eligible_continuation_options(
             self._continuation_option_catalog(run),

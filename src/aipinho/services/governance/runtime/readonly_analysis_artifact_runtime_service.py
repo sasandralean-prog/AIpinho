@@ -2255,6 +2255,13 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 EvidenceRepairSemanticService.project_analysis_outcome(
                     analysis_result,
                     repair=EvidenceRepairSemanticService.context(run),
+                    nonfatal_omission_reasons=list(
+                        self.analysis.selection_service.settings.get(
+                            "nonfatal_omission_violations",
+                            [],
+                        )
+                        or []
+                    ),
                 )
                 if analysis_result is not None
                 else {}
@@ -6228,12 +6235,20 @@ class ReadonlyAnalysisArtifactRuntimeService:
             workspace_context=request_context,
             focus_paths=focus_paths,
             max_files=(
-                max(40, min(len(focus_paths), 100))
+                min(
+                    len(focus_paths),
+                    int(self.analysis.budget.max_files_read),
+                )
                 if repair.get("required") and focus_paths
                 else None
             ),
             max_total_bytes=(
-                700000
+                int(self.analysis.budget.max_bytes_read)
+                if repair.get("required") and focus_paths
+                else None
+            ),
+            max_file_bytes=(
+                int(self.analysis.budget.max_bytes_read)
                 if repair.get("required") and focus_paths
                 else None
             ),

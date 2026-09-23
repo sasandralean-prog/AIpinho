@@ -163,9 +163,17 @@ class ReadOnlyTaskStepRunner:
         *,
         repair: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
+        nonfatal = list(
+            self.analysis.selection_service.settings.get(
+                "nonfatal_omission_violations",
+                [],
+            )
+            or []
+        )
         return EvidenceRepairSemanticService.project_analysis_outcome(
             result,
             repair=repair,
+            nonfatal_omission_reasons=nonfatal,
         )
 
     def _evidence_repair_context(self, run) -> dict[str, Any]:
