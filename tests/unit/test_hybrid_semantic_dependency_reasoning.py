@@ -245,6 +245,39 @@ def test_semantic_demand_bounds_downstream_use_output_to_governed_vocabulary() -
     assert governed == []
 
 
+def test_semantic_demand_bounds_constraint_shape_in_output_schema() -> None:
+    reasoner = _PayloadReasoner(
+        lambda _kwargs: {
+            "truth_claim_required": False,
+            "required_downstream_uses": [],
+            "required_use_safety": {},
+            "required_semantic_properties": {},
+            "base_constraints": [],
+            "risk_constraints": [],
+            "resolution_status": "resolved",
+            "unresolved_reason_codes": [],
+            "rationale": "No additional constraint is required.",
+        }
+    )
+    service = SemanticDemandInterpreterService(reasoner=reasoner)
+
+    result = service.interpret(
+        source_payload=_source_payload(),
+        semantic_graph=_source_payload()["semantic_intent_graph"],
+        vocabulary=_vocabulary(),
+    )
+
+    assert result["status"] == "accepted"
+    assert reasoner.last_kwargs is not None
+    schema = reasoner.last_kwargs["payload"]["output_schema"]
+    for field in ("base_constraints", "risk_constraints"):
+        assert schema[field]["type"] == "list"
+        assert schema[field]["item"]["type"] == "string"
+        assert schema[field]["item"]["pattern"].startswith(
+            "^(do_not_|require_|preserve_|"
+        )
+
+
 def test_semantic_demand_rejects_truth_requirement_outside_action_scope() -> None:
     service = SemanticDemandInterpreterService(
         reasoner=_Reasoner(

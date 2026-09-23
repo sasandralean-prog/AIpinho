@@ -104,8 +104,28 @@ class SemanticDemandInterpreterService:
                     },
                     "required_use_safety": "object[string,list[scalar]]",
                     "required_semantic_properties": "object[string,list[scalar]]",
-                    "base_constraints": "list[string]",
-                    "risk_constraints": "list[string]",
+                    "base_constraints": {
+                        "type": "list",
+                        "item": {
+                            "type": "string",
+                            "pattern": (
+                                "^(do_not_|require_|preserve_|disclose_|"
+                                "prohibit_|restrict_|scope_|avoid_|must_)"
+                                "[a-z0-9_]*$"
+                            ),
+                        },
+                    },
+                    "risk_constraints": {
+                        "type": "list",
+                        "item": {
+                            "type": "string",
+                            "pattern": (
+                                "^(do_not_|require_|preserve_|disclose_|"
+                                "prohibit_|restrict_|scope_|avoid_|must_)"
+                                "[a-z0-9_]*$"
+                            ),
+                        },
+                    },
                     "resolution_status": {
                         "type": "string",
                         "enum": ["resolved", "unresolved"],
