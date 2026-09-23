@@ -60,6 +60,9 @@ from aipinho.services.governance.lifecycle.governance_lifecycle_service import (
 from aipinho.services.patching.model_assisted_patch_planner_service import ModelAssistedPatchPlannerService
 from aipinho.services.patching.patch_plan_store import PatchPlanStore
 from aipinho.services.prompt_intelligence.path_extraction_service import PathExtractionService
+from aipinho.services.runtime.evidence_repair_semantic_service import (
+    EvidenceRepairSemanticService,
+)
 from aipinho.services.runtime.task_runtime_service import TaskRuntimeService
 from aipinho.services.runtime.task_run_lifecycle_service import TaskRunLifecycleService
 from aipinho.services.runtime.phase_dependency_contract_registry import PhaseDependencyContractRegistry
@@ -1783,6 +1786,7 @@ class ReadonlyAnalysisArtifactRuntimeService:
 
         created_artifacts: list[dict[str, Any]] = []
         analysis_payload: dict[str, Any] | None = None
+        analysis_result: Any | None = None
         validation: dict[str, Any]
         status = "completed"
         started_monotonic = time.monotonic()
@@ -1863,15 +1867,18 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 self.runtime.store.update_run(run)
             self._check_phase1_budget(run.run_id, started_monotonic, stage="before_project_analysis")
             self.runtime.events.create(run.run_id, "project_analysis_started", "running", "Project analysis started.")
-            analysis_prompt = self._analysis_prompt_with_dependencies(request.message, dependency_check)
+            analysis_prompt = self._analysis_prompt_with_dependencies(
+                request.message,
+                dependency_check,
+            )
+            analysis_request = self._project_analysis_request(
+                run=run,
+                workspace=workspace,
+                analysis_prompt=analysis_prompt,
+                request_context=request_context,
+            )
             analysis_result = self.analysis.analyze_project(
-                ProjectAnalysisRequest(
-                    workspace=workspace,
-                    prompt=analysis_prompt,
-                    goal="readonly_analysis_with_artifact_output",
-                    workspace_context=request_context,
-                    include_trace=False,
-                ),
+                analysis_request,
                 cancel_requested=lambda: bool((self.runtime.store.get_run(run.run_id) or run).cancellation_requested),
             )
             self._emit_project_analysis_boundary_events(run.run_id, analysis_result)
@@ -2244,10 +2251,23 @@ class ReadonlyAnalysisArtifactRuntimeService:
                 else "failed" if result_status == "failed"
                 else "blocked"
             )
+            repair_semantic_outcome = (
+                EvidenceRepairSemanticService.project_analysis_outcome(
+                    analysis_result,
+                    repair=EvidenceRepairSemanticService.context(run),
+                )
+                if analysis_result is not None
+                else {}
+            )
             step_summary = {
                 "status": step_status,
                 "logical_paths": logical_paths,
                 "project_analysis_report": analysis_payload or {},
+                **(
+                    {"semantic_outcome": repair_semantic_outcome}
+                    if repair_semantic_outcome
+                    else {}
+                ),
                 "artifact_result": {
                     "artifact_ids": [item.get("artifact_id") for item in final_artifacts if item.get("artifact_id")],
                     "logical_paths": logical_paths,
@@ -6179,6 +6199,46 @@ class ReadonlyAnalysisArtifactRuntimeService:
         if isinstance(value, list):
             return [str(item) for item in value if item]
         return []
+
+    def _project_analysis_request(
+        self,
+        *,
+        run: Any,
+        workspace: str,
+        analysis_prompt: str,
+        request_context: dict[str, Any],
+    ) -> ProjectAnalysisRequest:
+        repair = EvidenceRepairSemanticService.context(run)
+        focus_paths = EvidenceRepairSemanticService.focus_paths(run)
+        prompt = analysis_prompt
+        if repair.get("required"):
+            prompt = (
+                f"{analysis_prompt}\nEvidence repair: inspect the supplied "
+                "focus paths and close only the observed evidence gaps "
+                "before any side effect."
+            ).strip()
+        return ProjectAnalysisRequest(
+            workspace=workspace,
+            prompt=prompt,
+            goal=(
+                "evidence_repair_analysis"
+                if repair.get("required")
+                else "readonly_analysis_with_artifact_output"
+            ),
+            workspace_context=request_context,
+            focus_paths=focus_paths,
+            max_files=(
+                max(40, min(len(focus_paths), 100))
+                if repair.get("required") and focus_paths
+                else None
+            ),
+            max_total_bytes=(
+                700000
+                if repair.get("required") and focus_paths
+                else None
+            ),
+            include_trace=False,
+        )
 
     def _analysis_payload(self, result: Any) -> dict[str, Any]:
         tree = result.tree_summary

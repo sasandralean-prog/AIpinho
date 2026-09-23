@@ -237,6 +237,20 @@ class TaskRunPlanner:
             phase_outcome=phase_outcome,
             unsatisfied_effects=unsatisfied_effects,
         )
+        if (
+            evidence_repair.get("required")
+            and not list(evidence_repair.get("focus_paths") or [])
+        ):
+            return self._continuation_result(
+                "blocked",
+                "MISSION_CONTINUATION_EVIDENCE_REPAIR_TARGET_UNAVAILABLE",
+                provenance={
+                    "depth": depth,
+                    "max_depth": max_depth,
+                    "unsatisfied_requested_effects": unsatisfied_effects,
+                    "evidence_repair": evidence_repair,
+                },
+            )
         reasoner = self.semantic_reasoner or ContractBoundSemanticReasoner()
         continuation_options = self._eligible_continuation_options(
             self._continuation_option_catalog(run),
@@ -296,7 +310,9 @@ class TaskRunPlanner:
                 if key != "evidence" and value not in (None, "", [], {})
             },
             "unsatisfied_requested_effects": unsatisfied_effects,
-            "evidence_repair": evidence_repair,
+            "evidence_repair": self._continuation_model_evidence_repair_context(
+                evidence_repair
+            ),
             "continuation_options": continuation_model_options,
             "allowed_contract_types": list(
                 self.runtime.get(
@@ -417,17 +433,43 @@ class TaskRunPlanner:
                 )
             if action == "complete":
                 if unsatisfied_effects:
-                    return self._continuation_result(
-                        "blocked",
-                        "MISSION_CONTINUATION_PREMATURE_COMPLETE",
-                        provenance={
-                            **provenance,
-                            "confidence": confidence,
-                            "unsatisfied_requested_effects": (
-                                unsatisfied_effects
-                            ),
-                        },
+                    rejection_reason = (
+                        "MISSION_CONTINUATION_PREMATURE_COMPLETE"
                     )
+                    candidate_rejections.append(rejection_reason)
+                    if candidate_retries >= candidate_retry_limit:
+                        return self._continuation_result(
+                            "blocked",
+                            rejection_reason,
+                            provenance={
+                                **provenance,
+                                "confidence": confidence,
+                                "candidate_retries": candidate_retries,
+                                "candidate_rejections": list(
+                                    candidate_rejections
+                                ),
+                                "unsatisfied_requested_effects": (
+                                    unsatisfied_effects
+                                ),
+                            },
+                        )
+                    candidate_retries += 1
+                    correction = {
+                        "attempt": candidate_retries,
+                        "reason_code": rejection_reason,
+                        "rejected_action": "complete",
+                        "unsatisfied_requested_effects": list(
+                            unsatisfied_effects
+                        ),
+                        "instruction": (
+                            "Mission completion is not valid while supplied "
+                            "requested effects remain unsatisfied. Produce a "
+                            "new action='continue' candidate using only an "
+                            "authorized continuation option. Do not repeat "
+                            "the rejected completion."
+                        ),
+                    }
+                    continue
                 return self._continuation_result(
                     "not_applicable",
                     "MISSION_CONTINUATION_PLANNER_COMPLETE",
@@ -1215,7 +1257,7 @@ class TaskRunPlanner:
                 getattr(phase_outcome, "outcome_id", "") or ""
             ),
             "focus_path_count": len(focus_paths),
-            "focus_paths": focus_paths[:12],
+            "focus_paths": focus_paths,
             "limitations": self._unique(
                 list(getattr(phase_outcome, "limitations", []) or [])
             ),
@@ -1223,6 +1265,25 @@ class TaskRunPlanner:
                 list(getattr(phase_outcome, "missing_truth", []) or [])
             ),
         }
+
+
+    @staticmethod
+    def _continuation_model_evidence_repair_context(
+        evidence_repair: dict[str, Any],
+    ) -> dict[str, Any]:
+        if not evidence_repair:
+            return {}
+        payload = dict(evidence_repair)
+        focus_paths = [
+            str(item)
+            for item in list(payload.get("focus_paths") or [])
+            if str(item)
+        ]
+        payload["focus_path_count"] = int(
+            payload.get("focus_path_count") or len(focus_paths)
+        )
+        payload["focus_paths"] = focus_paths[:12]
+        return payload
 
 
     def _eligible_continuation_options(

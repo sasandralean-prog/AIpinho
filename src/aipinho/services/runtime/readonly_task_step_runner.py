@@ -10,6 +10,9 @@ from aipinho.schemas.runtime.task_run_context import TaskRunContext
 from aipinho.schemas.runtime.task_run_step import TaskRunStep
 from aipinho.schemas.tools.tool_execution import ToolExecutionRequest
 from aipinho.services.analysis.project_analysis_service import ProjectAnalysisService
+from aipinho.services.runtime.evidence_repair_semantic_service import (
+    EvidenceRepairSemanticService,
+)
 from aipinho.services.reports.project_report_service import ProjectReportService
 from aipinho.services.roles.role_pipeline_service import RolePipelineService
 from aipinho.services.tools.read_only_execution_service import ReadOnlyExecutionService
@@ -160,83 +163,13 @@ class ReadOnlyTaskStepRunner:
         *,
         repair: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        status = str(getattr(result, "status", "") or "")
-        safe_to_continue = bool(getattr(result, "safe_to_continue", False))
-        if status == "ok" and safe_to_continue:
-            safety: bool | str = True
-        elif status in {"partial", "degraded"} and safe_to_continue:
-            safety = "true_with_limitations"
-        else:
-            safety = False
-
-        limitations = [
-            *list(getattr(result, "warnings", []) or []),
-            *list(getattr(result, "limitations", []) or []),
-        ]
-        if status in {"partial", "degraded"} and "project_analysis_partial" not in limitations:
-            limitations.append("project_analysis_partial")
-        missing_truth = list(getattr(result, "violations", []) or [])
-        use_safety: dict[str, Any] = {
-            "safe_for_user_report": safety,
-        }
-        semantic_properties: dict[str, Any] = {}
-        repair = dict(repair or {})
-        focus_paths = [
-            str(item)
-            for item in list(repair.get("focus_paths") or [])
-            if str(item)
-        ]
-        if repair.get("required") and focus_paths:
-            bundle = getattr(result, "file_context", None)
-            included = {
-                str(getattr(item, "path", "") or "")
-                for item in list(getattr(bundle, "items", []) or [])
-                if str(getattr(item, "status", "") or "") == "included"
-                and not bool(getattr(item, "content_truncated", False))
-            }
-            unresolved = [
-                path for path in focus_paths if path not in included
-            ]
-            repair_complete = bool(
-                not unresolved
-                and safe_to_continue
-                and not missing_truth
-            )
-            use_safety["safe_for_destructive_action"] = repair_complete
-            semantic_properties.update(
-                {
-                    "evidence_repair_focus_complete": repair_complete,
-                    "evidence_repair_focus_paths": focus_paths,
-                    "evidence_repair_unresolved_paths": unresolved,
-                }
-            )
-            if unresolved:
-                limitations.append(
-                    "evidence_repair_focus_unresolved"
-                )
-        return {
-            "use_safety": use_safety,
-            "semantic_properties": semantic_properties,
-            "limitations": list(
-                dict.fromkeys(str(item) for item in limitations if str(item))
-            ),
-            "missing_truth": list(
-                dict.fromkeys(str(item) for item in missing_truth if str(item))
-            ),
-            "required_disclosures": list(
-                dict.fromkeys(str(item) for item in limitations if str(item))
-            ),
-        }
+        return EvidenceRepairSemanticService.project_analysis_outcome(
+            result,
+            repair=repair,
+        )
 
     def _evidence_repair_context(self, run) -> dict[str, Any]:
-        continuation = (
-            run.intent_map.get("mission_continuation")
-            if isinstance(getattr(run, "intent_map", None), dict)
-            and isinstance(run.intent_map.get("mission_continuation"), dict)
-            else {}
-        )
-        value = continuation.get("evidence_repair")
-        return dict(value) if isinstance(value, dict) else {}
+        return EvidenceRepairSemanticService.context(run)
 
     def _generate_project_report(self, run, context):
         execution_metadata = self._execution_plan_metadata(run)

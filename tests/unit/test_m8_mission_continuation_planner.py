@@ -577,11 +577,12 @@ def test_bounded_candidate_retry_corrects_deterministic_rejection() -> None:
     ]
 
 
-def test_rejects_premature_complete_with_unsatisfied_effects() -> None:
+def test_rejects_premature_complete_with_unsatisfied_effects_after_bounded_retry() -> None:
+    reasoner = FakeReasoner(
+        _proposal({}, action="complete")
+    )
     planner = TaskRunPlanner(
-        semantic_reasoner=FakeReasoner(
-            _proposal({}, action="complete")
-        ),
+        semantic_reasoner=reasoner,
         phase_demands=FakeDemands(),
     )
     run = _run(
@@ -596,6 +597,117 @@ def test_rejects_premature_complete_with_unsatisfied_effects() -> None:
 
     assert result.status == "blocked"
     assert result.reason_code == "MISSION_CONTINUATION_PREMATURE_COMPLETE"
+    assert reasoner.calls == 2
+    assert result.provenance["candidate_retries"] == 1
+    assert result.provenance["candidate_rejections"] == [
+        "MISSION_CONTINUATION_PREMATURE_COMPLETE",
+        "MISSION_CONTINUATION_PREMATURE_COMPLETE",
+    ]
+
+
+def test_premature_complete_can_recover_through_bounded_candidate_correction() -> None:
+    reasoner = SequencedReasoner(
+        [
+            _proposal({}, action="complete"),
+            _proposal(
+                {
+                    "phase_id": "implementation",
+                    "operation_type": "patch_apply",
+                    "contract_type": "patch_apply",
+                    "runtime_profile": "patch",
+                    "requested_actions": ["apply_patch"],
+                }
+            ),
+        ]
+    )
+    planner = TaskRunPlanner(
+        semantic_reasoner=reasoner,
+        phase_demands=FakeDemands(),
+    )
+    run = _run(
+        capabilities=["read_file", "apply_patch"],
+        semantic_graph={
+            "mutation_intent": True,
+            "requested_effects": ["workspace_mutation"],
+        },
+    )
+    phase_outcome = SimpleNamespace(
+        phase_id="analysis",
+        outcome_id="phase_outcome_safe_for_mutation",
+        use_safety={"safe_for_destructive_action": True},
+        semantic_properties={},
+        limitations=[],
+        missing_truth=[],
+    )
+
+    result = planner.plan_continuation(
+        run=run,
+        phase_outcome=phase_outcome,
+    )
+
+    assert result.status == "planned"
+    assert result.candidate is not None
+    assert result.candidate.requested_actions == ["apply_patch"]
+    assert reasoner.calls == 2
+    correction = reasoner.kwargs_history[1]["payload"][
+        "candidate_correction"
+    ]
+    assert correction["reason_code"] == (
+        "MISSION_CONTINUATION_PREMATURE_COMPLETE"
+    )
+    assert correction["rejected_action"] == "complete"
+    assert correction["unsatisfied_requested_effects"] == [
+        "workspace_mutation"
+    ]
+    assert result.provenance["candidate_retries"] == 1
+    assert result.provenance["candidate_rejections"] == [
+        "MISSION_CONTINUATION_PREMATURE_COMPLETE"
+    ]
+
+
+def test_evidence_repair_without_bounded_target_blocks_before_reasoning() -> None:
+    reasoner = FakeReasoner(
+        _proposal(
+            {
+                "operation_type": "project_analysis",
+                "contract_type": "analysis_readonly",
+                "runtime_profile": "readonly_analysis",
+                "requested_actions": ["read_files"],
+            }
+        )
+    )
+    planner = TaskRunPlanner(
+        semantic_reasoner=reasoner,
+        phase_demands=FakeDemands(),
+    )
+    run = _run(
+        capabilities=["read_file", "apply_patch"],
+        semantic_graph={
+            "mutation_intent": True,
+            "requested_effects": ["workspace_mutation"],
+        },
+    )
+    phase_outcome = SimpleNamespace(
+        phase_id="analysis",
+        outcome_id="phase_outcome_without_repair_target",
+        use_safety={},
+        semantic_properties={},
+        limitations=["analysis_partial"],
+        missing_truth=[],
+    )
+
+    result = planner.plan_continuation(
+        run=run,
+        phase_outcome=phase_outcome,
+    )
+
+    assert result.status == "blocked"
+    assert result.reason_code == (
+        "MISSION_CONTINUATION_EVIDENCE_REPAIR_TARGET_UNAVAILABLE"
+    )
+    assert reasoner.calls == 0
+    assert result.provenance["evidence_repair"]["required"] is True
+    assert result.provenance["evidence_repair"]["focus_path_count"] == 0
 
 
 def test_depth_limit_blocks_without_calling_reasoner() -> None:
@@ -776,6 +888,10 @@ def test_continuation_routes_to_readonly_evidence_repair_when_destructive_safety
             ],
         },
     )
+    focus_paths = [
+        f"src/main/Focus{index:02d}.kt"
+        for index in range(20)
+    ]
     phase_outcome = SimpleNamespace(
         outcome_id="phase_outcome_partial",
         phase_id="discovery",
@@ -783,10 +899,7 @@ def test_continuation_routes_to_readonly_evidence_repair_when_destructive_safety
             "safe_for_downstream_static_analysis": "true_with_limitations"
         },
         semantic_properties={
-            "evidence_repair_focus_paths": [
-                "src/main/A.kt",
-                "src/main/B.kt",
-            ]
+            "evidence_repair_focus_paths": focus_paths
         },
         limitations=["file_context_budget_or_omissions"],
         missing_truth=[],
@@ -806,15 +919,14 @@ def test_continuation_routes_to_readonly_evidence_repair_when_destructive_safety
     assert repair["required_use_safety"] == {
         "safe_for_destructive_action": True
     }
-    assert repair["focus_path_count"] == 2
-    assert repair["focus_paths"] == [
-        "src/main/A.kt",
-        "src/main/B.kt",
-    ]
+    assert repair["focus_path_count"] == 20
+    assert repair["focus_paths"] == focus_paths
 
     assert reasoner.last_kwargs is not None
     payload = reasoner.last_kwargs["payload"]
     assert payload["evidence_repair"]["required"] is True
+    assert payload["evidence_repair"]["focus_path_count"] == 20
+    assert payload["evidence_repair"]["focus_paths"] == focus_paths[:12]
     assert "evidence_repair_focus_paths" not in payload[
         "terminal_outcome"
     ]["semantic_properties"]
