@@ -487,15 +487,8 @@ class TaskRunPlanner:
                         "attempt": candidate_retries,
                         "reason_code": rejection_reason,
                         "rejected_action": "complete",
-                        "unsatisfied_requested_effects": list(
-                            unsatisfied_effects
-                        ),
                         "instruction": (
-                            "Mission completion is not valid while supplied "
-                            "requested effects remain unsatisfied. Produce a "
-                            "new action='continue' candidate using only an "
-                            "authorized continuation option. Do not repeat "
-                            "the rejected completion."
+                            "Choose continue from the supplied options."
                         ),
                     }
                     continue
@@ -591,12 +584,7 @@ class TaskRunPlanner:
                 "rejected_option_id": str(
                     candidate_payload.get("option_id") or ""
                 ),
-                "instruction": (
-                    "Produce a new candidate that satisfies all supplied "
-                    "catalogs, lineage constraints, capability boundaries "
-                    "and deterministic rules. Do not repeat the rejected "
-                    "candidate."
-                ),
+                "instruction": "Choose a different valid supplied option.",
             }
 
         consumer_semantic_view, consumer_semantic_reason = (

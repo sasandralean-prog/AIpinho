@@ -656,9 +656,11 @@ def test_premature_complete_can_recover_through_bounded_candidate_correction() -
         "MISSION_CONTINUATION_PREMATURE_COMPLETE"
     )
     assert correction["rejected_action"] == "complete"
-    assert correction["unsatisfied_requested_effects"] == [
-        "workspace_mutation"
-    ]
+    assert "unsatisfied_requested_effects" not in correction
+    assert reasoner.kwargs_history[1]["payload"][
+        "unsatisfied_requested_effects"
+    ] == ["workspace_mutation"]
+    assert len(str(correction)) < 220
     assert result.provenance["candidate_retries"] == 1
     assert result.provenance["candidate_rejections"] == [
         "MISSION_CONTINUATION_PREMATURE_COMPLETE"
