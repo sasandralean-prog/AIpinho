@@ -656,6 +656,7 @@ class TaskRunPlanner:
             local_resource_ids=local_ids,
             remote_resource_ids=remote_ids,
             workspace_resource_id=workspace_resource_id,
+            semantic_goal=self._continuation_semantic_goal(run),
             mode=(
                 "governed"
                 if any(
@@ -685,6 +686,29 @@ class TaskRunPlanner:
             candidate=candidate,
             provenance={**provenance, "confidence": confidence},
         )
+
+    @staticmethod
+    def _continuation_semantic_goal(run) -> str:
+        plan = getattr(run, "plan", None)
+        canonical = (
+            getattr(plan, "canonical_execution_plan", None)
+            if plan is not None
+            else None
+        )
+        goal = str(getattr(canonical, "semantic_goal", "") or "").strip()
+        if goal:
+            return goal
+        intent = (
+            run.intent_map
+            if isinstance(getattr(run, "intent_map", None), dict)
+            else {}
+        )
+        for key in ("semantic_goal", "goal", "summary"):
+            value = str(intent.get(key) or "").strip()
+            if value:
+                return value
+        contract = getattr(run, "mission_contract", None)
+        return str(getattr(contract, "objective", "") or "").strip()
 
     def _materialize_continuation_option(
         self,

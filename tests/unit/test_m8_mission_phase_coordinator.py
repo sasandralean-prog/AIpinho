@@ -139,6 +139,9 @@ def _candidate(contract: MissionContract) -> MissionContinuationCandidate:
         local_resource_ids=[resource.resource_id],
         workspace_resource_id=resource.resource_id,
         mode="read_only",
+        semantic_goal=(
+            "Inspect the bounded workspace and identify the concrete codec defect."
+        ),
         requirements=DownstreamPhaseRequirements(
             contract_id="workflow_generic_readonly_followup",
             consumer_phase_id="phase_2",
@@ -185,6 +188,11 @@ def test_materializes_child_through_canonical_taskruntime(tmp_path: Path) -> Non
     assert child.mission_contract.mission_id == contract.mission_id
     assert child.mission_contract.revision == contract.revision + 1
     assert child.mission_contract.parent_authority_sha256 == contract.authority_sha256
+    assert child.intent_map["semantic_goal"] == candidate.semantic_goal
+    assert (
+        child.plan.canonical_execution_plan.semantic_goal
+        == candidate.semantic_goal
+    )
     continuation = child.intent_map["mission_continuation"]
     evaluation = continuation["phase_dependency_evaluation"]
     admission = continuation["phase_dependency_admission"]

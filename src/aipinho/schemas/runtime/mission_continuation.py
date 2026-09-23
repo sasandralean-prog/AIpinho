@@ -37,6 +37,7 @@ class MissionContinuationCandidate(AIpinhoModel):
     remote_resource_ids: list[str] = Field(default_factory=list)
     workspace_resource_id: str | None = None
     mode: str = "governed"
+    semantic_goal: str | None = None
     requirements: DownstreamPhaseRequirements
     metadata: dict[str, Any] = Field(default_factory=dict)
 

@@ -172,7 +172,14 @@ class MissionPhaseCoordinatorService:
                 runtime_profile=candidate.runtime_profile,
                 capabilities_required=runtime_capabilities,
                 requested_actions=requested_actions,
-                intent_map=base_intent,
+                intent_map={
+                    **base_intent,
+                    **(
+                        {"semantic_goal": candidate.semantic_goal}
+                        if candidate.semantic_goal
+                        else {}
+                    ),
+                },
                 mode=candidate.mode,
                 start_immediately=False,
             )
@@ -622,6 +629,11 @@ class MissionPhaseCoordinatorService:
         }
         return {
             **inherited_semantics,
+            **(
+                {"semantic_goal": candidate.semantic_goal}
+                if candidate.semantic_goal
+                else {}
+            ),
             "intent_type": str(
                 previous.intent_map.get("intent_type")
                 or candidate.operation_type

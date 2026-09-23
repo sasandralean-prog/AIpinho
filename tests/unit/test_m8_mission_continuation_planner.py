@@ -715,6 +715,7 @@ def test_runtime_derives_contract_after_premature_complete_retry() -> None:
     assert result.provenance["candidate_rejections"] == [
         "MISSION_CONTINUATION_PREMATURE_COMPLETE"
     ]
+    assert result.candidate.semantic_goal == run.mission_contract.objective
     second_payload = reasoner.kwargs_history[1]["payload"]
     assert "contract_type" not in second_payload["output_schema"]["candidate"]
 
