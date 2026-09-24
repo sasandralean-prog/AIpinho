@@ -8,9 +8,9 @@ from typing import Any
 from aipinho.core.paths import PATHS
 from aipinho.schemas.roles.role_pass_input import RolePassInput
 from aipinho.schemas.roles.role_pipeline_run import RolePipelineRun, RolePipelineRunRequest
-from aipinho.schemas.rag.integration.contracts import ContextInjectionPlan
-from aipinho.services.rag.integration.context_injection_planner import ContextInjectionPlanner
-from aipinho.services.rag.integration.context_usage_validator import ContextUsageValidator
+from aipinho.services.context.context_plan_runtime_service import (
+    ContextPlanRuntimeService,
+)
 from aipinho.services.roles.role_pass_runner import RolePassRunner
 from aipinho.services.roles.role_pipeline_audit_service import RolePipelineAuditService
 from aipinho.services.roles.role_pipeline_config_service import RolePipelineConfigService
@@ -31,6 +31,7 @@ class RolePipelineService:
         audit: RolePipelineAuditService | None = None,
         trace: RolePipelineTraceService | None = None,
         task_runs: TaskRunStore | None = None,
+        context_plans: ContextPlanRuntimeService | None = None,
     ) -> None:
         self.config_service = config_service or RolePipelineConfigService()
         self.planner = RolePipelinePlanner(self.config_service)
@@ -39,8 +40,7 @@ class RolePipelineService:
         self.trace_service = trace or RolePipelineTraceService()
         self.policy = load_yaml_file(PATHS.config_root / "roles" / "role_pipeline_policy.yaml", critical=True, root=PATHS.config_root / "roles")
         self.runs_dir = PATHS.project_root / "data" / "runtime" / "role_pipeline_runs"
-        self.context_planner = ContextInjectionPlanner()
-        self.context_validator = ContextUsageValidator()
+        self.context_plans = context_plans or ContextPlanRuntimeService()
         self.model_bindings = RoleModelBindingService()
         self.capability_resolver = CapabilityResolver(role_binding_service=self.model_bindings)
         self.task_runs = task_runs or TaskRunStore()
@@ -288,21 +288,34 @@ class RolePipelineService:
     def _context_plan_warnings(self, request: RolePipelineRunRequest) -> list[str]:
         if not request.context_injection_plan and not request.context_injection_plan_id:
             return []
-        try:
-            plan = (
-                ContextInjectionPlan.model_validate(request.context_injection_plan)
-                if request.context_injection_plan
-                else self.context_planner.get_plan(str(request.context_injection_plan_id))
-            )
-        except (ValueError, TypeError):
-            return ["context_injection_plan_invalid"]
-        if plan is None:
-            return ["context_injection_plan_not_found"]
-        validation = self.context_validator.validate_plan(plan)
-        warnings = list(validation.violations)
-        if any(item.kind == "curated_memory" for item in plan.context_items):
-            warnings.append("role_pipeline_curated_memory_blocked_by_default")
-        return list(dict.fromkeys(warnings))
+        resolution = (
+            self.context_plans.resolve_payload(request.context_injection_plan)
+            if request.context_injection_plan
+            else self.context_plans.resolve(str(request.context_injection_plan_id))
+        )
+        blocking = list(resolution.violations)
+        canonical_items = (
+            resolution.bundle.get("items", [])
+            if isinstance(resolution.bundle, dict)
+            else []
+        )
+        legacy_items = (
+            resolution.plan.get("context_items", [])
+            if resolution.source == "legacy_rag_adapter"
+            and isinstance(resolution.plan, dict)
+            else []
+        )
+        if any(
+            isinstance(item, dict) and item.get("layer") == "curated_memory"
+            for item in canonical_items
+        ) or any(
+            isinstance(item, dict) and item.get("kind") == "curated_memory"
+            for item in legacy_items
+        ):
+            blocking.append("role_pipeline_curated_memory_blocked_by_default")
+        if resolution.status == "blocked" and not blocking:
+            blocking.append("context_injection_plan_invalid")
+        return list(dict.fromkeys(blocking))
 
     def _evidence_from_report(self, report: dict[str, object]) -> list[dict[str, object]]:
         if not isinstance(report, dict):
