@@ -1,0 +1,18 @@
+schema_version: 1
+
+mission_context_handoff:
+  enabled: true
+  consumer_bindings:
+    - contract_types: [patch_request]
+      purposes: [patch_planning]
+  require_phase_artifact_refs: true
+  source_layer: attachments_artifacts
+  source_type: artifact_record
+  trust_level: cited
+  fail_closed_on_unknown_purpose: true
+  block_raw_artifact_storage_access: true
+  preserve_authority_separation: true
+
+compatibility:
+  allow_legacy_rag_plan_resolution: true
+  legacy_rag_plan_is_not_context_authority: true
