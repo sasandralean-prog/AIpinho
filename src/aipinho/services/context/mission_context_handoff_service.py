@@ -91,6 +91,15 @@ class MissionContextHandoffService:
                 return purpose
         return None
 
+    def requires_admitted_context(self) -> bool:
+        settings = self._settings()
+        return bool(
+            settings.get(
+                "require_admitted_context_for_bound_consumers",
+                True,
+            )
+        )
+
     def materialize(
         self,
         *,
