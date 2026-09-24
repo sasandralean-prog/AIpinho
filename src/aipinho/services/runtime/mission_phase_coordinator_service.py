@@ -268,6 +268,38 @@ class MissionPhaseCoordinatorService:
             else None
         )
 
+        if (
+            context_purpose
+            and self.context_handoff.requires_admitted_context()
+            and (
+                context_handoff is None
+                or context_handoff.status != "ready"
+            )
+        ):
+            reason = "MISSION_CONTINUATION_CONTEXT_HANDOFF_REQUIRED"
+            self._block_reserved(
+                reserved,
+                candidate=candidate,
+                evaluation=evaluation,
+                admission=admission.model_dump(mode="json"),
+                reason=reason,
+                context_handoff=context_handoff,
+            )
+            return MissionContinuationMaterialization(
+                status="blocked",
+                reason_code=reason,
+                decision=decision,
+                child_task_run_id=reserved.run_id,
+                child_task_id=reserved.task_id,
+                child_operation_id=reserved.operation_id,
+                child_phase=candidate.phase_id,
+                dependency_evaluation=evaluation,
+                dependency_admission=admission.model_dump(mode="json"),
+                evidence_refs=self._unique(
+                    [*decision.evidence_refs, *evaluation.evidence_refs]
+                ),
+            )
+
         bound_intent = self._intent_map(
             previous=previous,
             candidate=candidate,
@@ -280,14 +312,9 @@ class MissionPhaseCoordinatorService:
                 if isinstance(bound_intent.get("mission_continuation"), dict)
                 else {}
             )
-            continuation["context_handoff"] = {
-                "status": context_handoff.status,
-                "purpose": context_handoff.purpose,
-                "plan_id": context_handoff.plan_id,
-                "bundle_id": context_handoff.bundle_id,
-                "admitted_artifacts": list(context_handoff.admitted_artifacts),
-                "warnings": list(context_handoff.warnings),
-            }
+            continuation["context_handoff"] = (
+                self._context_handoff_payload(context_handoff)
+            )
             bound_intent["mission_continuation"] = continuation
         policy_snapshot = self._policy_snapshot_for_candidate(
             previous=previous,
@@ -694,6 +721,7 @@ class MissionPhaseCoordinatorService:
         evaluation,
         admission,
         reason: str,
+        context_handoff=None,
     ) -> None:
         continuation = self._intent_map(
             previous=self.store.get_run_by_task_id(run.parent_task_id) or run,
@@ -701,11 +729,28 @@ class MissionPhaseCoordinatorService:
             evaluation=evaluation.model_dump(mode="json"),
             admission=admission,
         )
+        if context_handoff is not None:
+            payload = continuation.get("mission_continuation")
+            if isinstance(payload, dict):
+                payload["context_handoff"] = self._context_handoff_payload(
+                    context_handoff
+                )
         run.intent_map = continuation
         if self.lifecycle.can_transition(str(run.status), "blocked"):
             run = self.lifecycle.transition(run, "blocked")
         run.blocked_reasons = self._unique([*run.blocked_reasons, reason])
         self.store.update_run(run)
+
+    @staticmethod
+    def _context_handoff_payload(context_handoff) -> dict[str, object]:
+        return {
+            "status": context_handoff.status,
+            "purpose": context_handoff.purpose,
+            "plan_id": context_handoff.plan_id,
+            "bundle_id": context_handoff.bundle_id,
+            "admitted_artifacts": list(context_handoff.admitted_artifacts),
+            "warnings": list(context_handoff.warnings),
+        }
 
     @staticmethod
     def _stored_evaluation(run):
