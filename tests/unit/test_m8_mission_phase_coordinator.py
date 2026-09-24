@@ -16,6 +16,9 @@ from aipinho.schemas.runtime.task_run import TaskRun
 from aipinho.schemas.runtime.task_run_plan import TaskRunPlan
 from aipinho.schemas.runtime.task_run_request import TaskRunRequest
 from aipinho.services.runtime.mission_contract_service import MissionContractService
+from aipinho.services.context.mission_context_handoff_service import (
+    MissionContextHandoffResult,
+)
 from aipinho.services.runtime.mission_phase_coordinator_service import MissionPhaseCoordinatorService
 from aipinho.services.runtime.task_run_store import TaskRunStore
 from aipinho.services.runtime.task_runtime_service import TaskRuntimeService
@@ -536,3 +539,51 @@ def test_materialized_evidence_repair_child_preserves_bounded_repair_context(
     ]
     assert repair["required"] is True
     assert repair["focus_paths"] == ["src/A.kt", "src/B.kt"]
+
+
+def test_required_context_handoff_blocks_reserved_child_when_context_is_unavailable(
+    tmp_path: Path,
+) -> None:
+    class BlockedContextHandoff:
+        def purpose_for(self, **_kwargs):
+            return "patch_planning"
+
+        def requires_admitted_context(self):
+            return True
+
+        def materialize(self, **_kwargs):
+            return MissionContextHandoffResult(
+                status="blocked",
+                purpose="patch_planning",
+                warnings=["mission_context_handoff_no_admissible_artifacts"],
+            )
+
+    contract = _contract(tmp_path)
+    store = TaskRunStore(root=tmp_path / f"runs_{uuid4().hex}")
+    parent = _parent(store, contract)
+    runtime = TaskRuntimeService(store=store)
+    coordinator = MissionPhaseCoordinatorService(
+        store=store,
+        runtime=runtime,
+        context_handoff=BlockedContextHandoff(),
+    )
+
+    result = coordinator.materialize_next_run(
+        previous_run_id=parent.run_id,
+        candidate=_candidate(contract),
+        phase_outcome=_outcome(parent),
+    )
+
+    assert result.status == "blocked"
+    assert result.reason_code == "MISSION_CONTINUATION_CONTEXT_HANDOFF_REQUIRED"
+    child = store.get_run(result.child_task_run_id or "")
+    assert child is not None
+    assert child.status == "blocked"
+    assert (
+        "MISSION_CONTINUATION_CONTEXT_HANDOFF_REQUIRED"
+        in child.blocked_reasons
+    )
+    handoff = child.intent_map["mission_continuation"]["context_handoff"]
+    assert handoff["status"] == "blocked"
+    assert handoff["purpose"] == "patch_planning"
+    assert "mission_context_handoff_no_admissible_artifacts" in handoff["warnings"]
