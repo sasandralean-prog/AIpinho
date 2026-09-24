@@ -84,7 +84,7 @@ class CanonicalContextPlanStore:
         )
 
     def _path(self, plan_id: str) -> Path:
-        if re.fullmatch(r"context_plan_[a-f0-9]+", str(plan_id or "")) is None:
+        if re.fullmatch(r"context_plan_[A-Za-z0-9_-]+", str(plan_id or "")) is None:
             raise ValueError("canonical_context_plan_id_invalid")
         return resolve_within_root(
             self.root / f"{plan_id}.json",
