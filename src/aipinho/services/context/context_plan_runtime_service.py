@@ -93,9 +93,30 @@ class ContextPlanRuntimeService:
             return ContextPlanResolution(status="not_applicable")
         try:
             if "bundle_id" in payload and "purpose" in payload:
-                return self._resolve_canonical(
-                    ContextInjectionPlan.model_validate(payload)
-                )
+                supplied = ContextInjectionPlan.model_validate(payload)
+                persisted = self.store.get(supplied.plan_id)
+                if persisted is None:
+                    return ContextPlanResolution(
+                        status="blocked",
+                        source="context_kernel",
+                        plan=supplied.model_dump(mode="json"),
+                        violations=[
+                            "canonical_context_injection_plan_not_persisted"
+                        ],
+                    )
+                if (
+                    persisted.model_dump(mode="json")
+                    != supplied.model_dump(mode="json")
+                ):
+                    return ContextPlanResolution(
+                        status="blocked",
+                        source="context_kernel",
+                        plan=supplied.model_dump(mode="json"),
+                        violations=[
+                            "canonical_context_injection_plan_payload_mismatch"
+                        ],
+                    )
+                return self._resolve_canonical(persisted)
         except (TypeError, ValueError):
             return ContextPlanResolution(
                 status="blocked",
