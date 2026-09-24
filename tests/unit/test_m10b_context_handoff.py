@@ -260,8 +260,10 @@ def test_context_plan_runtime_resolves_canonical_inline_payload(tmp_path):
         purpose="patch_planning",
         safe_for_prompt_assembly=True,
     )
+    store = CanonicalContextPlanStore(root=tmp_path / "plans_inline")
+    store.save(plan)
     service = ContextPlanRuntimeService(
-        store=CanonicalContextPlanStore(root=tmp_path / "plans_inline"),
+        store=store,
         bundles=_BundleRepo(bundle),
         legacy_planner=_NoLegacyPlanner(),
         legacy_validator=_NoLegacyValidator(),
@@ -320,8 +322,10 @@ def test_prompt_assembly_renders_canonical_context_without_rag_schema(tmp_path):
             )
         },
     )
+    store = CanonicalContextPlanStore(root=tmp_path / "plans_prompt")
+    store.save(plan)
     service = ContextPlanRuntimeService(
-        store=CanonicalContextPlanStore(root=tmp_path / "plans_prompt"),
+        store=store,
         bundles=_BundleRepo(bundle),
         legacy_planner=_NoLegacyPlanner(),
         legacy_validator=_NoLegacyValidator(),
@@ -376,3 +380,35 @@ def test_role_pipeline_uses_canonical_context_resolver_for_validation():
     )
 
     assert warnings == []
+
+
+def test_context_plan_runtime_rejects_unpersisted_canonical_inline_payload(
+    tmp_path,
+):
+    bundle = ContextBundle(
+        bundle_id="bundle_unpersisted",
+        request_id="request_unpersisted",
+        purpose="patch_planning",
+        scope=ContextScope(session_id="session_unpersisted"),
+        safe_for_prompt=True,
+    )
+    plan = ContextInjectionPlan(
+        plan_id="context_plan_unpersisted",
+        bundle_id=bundle.bundle_id,
+        purpose="patch_planning",
+        safe_for_prompt_assembly=True,
+    )
+    service = ContextPlanRuntimeService(
+        store=CanonicalContextPlanStore(root=tmp_path / "plans_unpersisted"),
+        bundles=_BundleRepo(bundle),
+        legacy_planner=_NoLegacyPlanner(),
+        legacy_validator=_NoLegacyValidator(),
+    )
+
+    resolved = service.resolve_payload(plan.model_dump(mode="json"))
+
+    assert resolved.status == "blocked"
+    assert (
+        "canonical_context_injection_plan_not_persisted"
+        in resolved.violations
+    )
