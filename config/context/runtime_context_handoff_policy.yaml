@@ -14,3 +14,6 @@ mission_context_handoff:
 compatibility:
   allow_legacy_rag_plan_resolution: true
   legacy_rag_plan_is_not_context_authority: true
+
+storage:
+  canonical_plan_store_path: data/runtime/context/kernel_plans
