@@ -7,6 +7,9 @@ from typing import Any
 
 from aipinho.core.paths import PATHS
 from aipinho.schemas.context.contracts import ContextInjectionPlan
+from aipinho.schemas.rag.integration.contracts import (
+    ContextInjectionPlan as LegacyRagContextInjectionPlan,
+)
 from aipinho.services.context.context_core import ContextBundleRepository
 from aipinho.services.rag.integration.context_injection_planner import ContextInjectionPlanner
 from aipinho.services.rag.integration.context_usage_validator import ContextUsageValidator
@@ -82,6 +85,36 @@ class ContextPlanRuntimeService:
     def persist(self, plan: ContextInjectionPlan) -> ContextInjectionPlan:
         return self.store.save(plan)
 
+    def resolve_payload(
+        self,
+        payload: dict[str, Any] | None,
+    ) -> ContextPlanResolution:
+        if not payload:
+            return ContextPlanResolution(status="not_applicable")
+        try:
+            if "bundle_id" in payload and "purpose" in payload:
+                return self._resolve_canonical(
+                    ContextInjectionPlan.model_validate(payload)
+                )
+        except (TypeError, ValueError):
+            return ContextPlanResolution(
+                status="blocked",
+                violations=["context_injection_plan_invalid"],
+            )
+        if not self._legacy_enabled():
+            return ContextPlanResolution(
+                status="blocked",
+                violations=["context_injection_plan_invalid"],
+            )
+        try:
+            legacy = LegacyRagContextInjectionPlan.model_validate(payload)
+        except (TypeError, ValueError):
+            return ContextPlanResolution(
+                status="blocked",
+                violations=["context_injection_plan_invalid"],
+            )
+        return self._resolve_legacy(legacy)
+
     def resolve(self, plan_id: str | None) -> ContextPlanResolution:
         if not plan_id:
             return ContextPlanResolution(status="not_applicable")
@@ -90,12 +123,7 @@ class ContextPlanRuntimeService:
         if plan is not None:
             return self._resolve_canonical(plan)
 
-        compatibility = (
-            self.config.get("compatibility", {})
-            if isinstance(self.config.get("compatibility"), dict)
-            else {}
-        )
-        if not bool(compatibility.get("allow_legacy_rag_plan_resolution", False)):
+        if not self._legacy_enabled():
             return ContextPlanResolution(
                 status="blocked",
                 violations=["context_injection_plan_not_found"],
@@ -107,12 +135,20 @@ class ContextPlanRuntimeService:
                 status="blocked",
                 violations=["context_injection_plan_not_found"],
             )
+        return self._resolve_legacy(legacy)
+
+    def _resolve_legacy(
+        self,
+        legacy: LegacyRagContextInjectionPlan,
+    ) -> ContextPlanResolution:
         validation = self.legacy_validator.validate_plan(legacy)
         evidence_context = [
             {
                 "evidence_id": item.context_item_id,
                 "artifact_id": (
-                    item.source_id if item.kind in {"evidence_item", "report_section"} else ""
+                    item.source_id
+                    if item.kind in {"evidence_item", "report_section"}
+                    else ""
                 ),
                 "logical_path": str(
                     (item.metadata or {}).get("logical_path")
@@ -135,6 +171,16 @@ class ContextPlanRuntimeService:
                 *list(validation.warnings),
                 "legacy_rag_context_plan_adapter",
             ],
+        )
+
+    def _legacy_enabled(self) -> bool:
+        compatibility = (
+            self.config.get("compatibility", {})
+            if isinstance(self.config.get("compatibility"), dict)
+            else {}
+        )
+        return bool(
+            compatibility.get("allow_legacy_rag_plan_resolution", False)
         )
 
     def _resolve_canonical(
@@ -194,16 +240,9 @@ class ContextPlanRuntimeService:
         )
 
     def status(self) -> dict[str, object]:
-        compatibility = (
-            self.config.get("compatibility", {})
-            if isinstance(self.config.get("compatibility"), dict)
-            else {}
-        )
         return {
             "status": "ok",
             "service": "context_plan_runtime",
             "canonical_owner": "context_kernel",
-            "legacy_rag_adapter_enabled": bool(
-                compatibility.get("allow_legacy_rag_plan_resolution", False)
-            ),
+            "legacy_rag_adapter_enabled": self._legacy_enabled(),
         }
