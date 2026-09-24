@@ -17,8 +17,7 @@ from aipinho.services.approvals.approval_service import ApprovalService
 from aipinho.services.orchestration.task_contract_draft_service import TaskContractDraftService
 from aipinho.services.orchestration.task_preview_service import TaskPreviewService
 from aipinho.services.policy_kernel.workspace_policy_service import WorkspacePolicyService
-from aipinho.services.rag.integration.context_injection_planner import ContextInjectionPlanner
-from aipinho.services.rag.integration.context_usage_validator import ContextUsageValidator
+from aipinho.services.context.context_plan_runtime_service import ContextPlanRuntimeService
 from aipinho.services.runtime.supervised_execution_loop import SupervisedExecutionLoop
 from aipinho.services.runtime.task_queue_service import TaskQueueService
 from aipinho.services.runtime.task_run_audit_service import TaskRunAuditService
@@ -124,8 +123,7 @@ class TaskRuntimeService:
             lifecycle=self.lifecycle,
         )
         self.audit = TaskRunAuditService(self.store)
-        self.context_planner = ContextInjectionPlanner()
-        self.context_validator = ContextUsageValidator()
+        self.context_plans = ContextPlanRuntimeService()
         draft_store = getattr(self.drafts, "store", None)
         runner = GovernedTaskStepRunner(
             task_run_store=self.store,
@@ -1736,13 +1734,32 @@ class TaskRuntimeService:
     def _validate_context_plan(self, run: TaskRun) -> None:
         if not run.context_injection_plan_id:
             return
-        context_plan = self.context_planner.get_plan(run.context_injection_plan_id)
-        if context_plan is None:
-            run.blocked_reasons.append("context_injection_plan_not_found")
+        resolution = self.context_plans.resolve(run.context_injection_plan_id)
+        run.warnings = list(
+            dict.fromkeys([*run.warnings, *resolution.warnings])
+        )
+        if resolution.status == "blocked":
+            run.blocked_reasons.extend(resolution.violations)
             return
-        context_validation = self.context_validator.validate_plan(context_plan)
-        run.blocked_reasons.extend(context_validation.violations)
-        if any(item.kind == "curated_memory" for item in context_plan.context_items):
+        run.blocked_reasons.extend(resolution.violations)
+        canonical_items = (
+            resolution.bundle.get("items", [])
+            if isinstance(resolution.bundle, dict)
+            else []
+        )
+        legacy_items = (
+            resolution.plan.get("context_items", [])
+            if resolution.source == "legacy_rag_adapter"
+            and isinstance(resolution.plan, dict)
+            else []
+        )
+        if any(
+            isinstance(item, dict) and item.get("layer") == "curated_memory"
+            for item in canonical_items
+        ) or any(
+            isinstance(item, dict) and item.get("kind") == "curated_memory"
+            for item in legacy_items
+        ):
             run.blocked_reasons.append(
                 "task_runtime_curated_memory_blocked_by_default"
             )
