@@ -170,14 +170,18 @@ class MissionContextHandoffService:
                 )
                 continue
 
+            logical_path = str(
+                (record.metadata_sanitized or {}).get("logical_path")
+                or record.filename
+            )
             source_ref = ContextSourceRef(
                 source_type=source_type,
                 source_id=artifact_id,
-                path=record.filename,
+                path=logical_path,
             )
             citation = ContextCitation(
                 source_ref=source_ref,
-                label=record.display_name or record.filename,
+                label=record.display_name or logical_path,
             )
             candidates.append(
                 ContextCandidate(
