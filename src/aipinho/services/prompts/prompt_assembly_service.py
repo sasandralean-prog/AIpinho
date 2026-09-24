@@ -302,8 +302,25 @@ class PromptAssemblyService:
         self._append_file_bundle(items, request.file_context_bundle)
         self._append_project_report(items, request.project_report)
         self._append_context_injection_plan(items, context_plan)
+        admitted_evidence = {
+            self._evidence_identity(evidence)
+            for evidence in (
+                context_plan.evidence_context
+                if context_plan is not None
+                else []
+            )
+            if self._evidence_identity(evidence)
+        }
         for index, evidence in enumerate(request.evidence):
-            self._append_dict_item(items, "evidence", f"Evidence {index + 1}", evidence, priority=0.8)
+            if self._evidence_identity(evidence) in admitted_evidence:
+                continue
+            self._append_dict_item(
+                items,
+                "evidence",
+                f"Evidence {index + 1}",
+                evidence,
+                priority=0.8,
+            )
         return items
 
     def _resolve_context_plan(
@@ -436,6 +453,22 @@ class PromptAssemblyService:
                     },
                 )
             )
+
+    @staticmethod
+    def _evidence_identity(evidence: dict[str, Any]) -> str:
+        if not isinstance(evidence, dict):
+            return ""
+        for key in (
+            "evidence_id",
+            "artifact_id",
+            "logical_path",
+            "source_path",
+            "source_id",
+        ):
+            value = str(evidence.get(key) or "").strip()
+            if value:
+                return f"{key}:{value}"
+        return ""
 
     def _append_dict_item(
         self,
