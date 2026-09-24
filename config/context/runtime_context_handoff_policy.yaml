@@ -5,14 +5,11 @@ mission_context_handoff:
   consumer_bindings:
     - contract_types: [patch_request]
       purpose: patch_planning
-  require_phase_artifact_refs: true
+  require_admitted_context_for_bound_consumers: true
   source_layer: attachments_artifacts
   source_type: artifact_record
   trust_level: cited
   candidate_priority: 8
-  fail_closed_on_unknown_purpose: true
-  block_raw_artifact_storage_access: true
-  preserve_authority_separation: true
 
 compatibility:
   allow_legacy_rag_plan_resolution: true
