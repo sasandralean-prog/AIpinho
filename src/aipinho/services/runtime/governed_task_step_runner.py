@@ -143,6 +143,14 @@ class GovernedTaskStepRunner(ReadOnlyTaskStepRunner):
                 objective=prompt,
                 source_id=run.run_id,
                 file_context_bundle=context.outputs.get("_file_context"),
+                evidence_context=(
+                    list(context.outputs.get("evidence_context") or [])
+                    if isinstance(
+                        context.outputs.get("evidence_context"),
+                        list,
+                    )
+                    else []
+                ),
                 local_resources=(
                     list(run.mission_contract.local_resources)
                     if run.mission_contract is not None
