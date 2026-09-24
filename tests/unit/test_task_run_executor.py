@@ -89,9 +89,13 @@ def test_patch_pipeline_uses_model_planner_when_local_action_is_not_targetable()
             return {"plan_id": self.plan_id, "status": self.status}
 
     class FakeModelPlanner:
+        def __init__(self):
+            self.kwargs = None
+
         def create_plan(self, **kwargs):
             from types import SimpleNamespace
 
+            self.kwargs = kwargs
             return SimpleNamespace(
                 status="ready",
                 plan=FakePlan(),
@@ -102,21 +106,32 @@ def test_patch_pipeline_uses_model_planner_when_local_action_is_not_targetable()
                 blocked_reasons=[],
             )
 
+    model_planner = FakeModelPlanner()
     runner = GovernedTaskStepRunner(
         local_actions=FakeLocalActions(),
         no_change_evidence=FakeNoChangeEvidence(),
-        model_patch_planner=FakeModelPlanner(),
+        model_patch_planner=model_planner,
     )
     runner._agent_run_id = lambda run, operation_type: "agent_run_test"
     run = runtime_run(contract_type="patch_request", operation_type="patch_preview", action="apply_patch").model_copy(
         update={"workspace": "C:/workspace", "intent_map": {"raw_prompt": "Prepare a patch preview."}}
     )
     step = run.plan.steps[0].model_copy(update={"step_type": "execute_patch_pipeline"})
+    context = runtime_context(run)
+    context.outputs["evidence_context"] = [
+        {
+            "artifact_id": "artifact_diag",
+            "logical_path": "diagnosis.md",
+            "content": "Observed decoder failure.",
+        }
+    ]
 
-    outcome = runner.run(run, step, runtime_context(run))
+    outcome = runner.run(run, step, context)
 
     assert outcome.status == "completed"
     assert outcome.summary["status"] == "patch_preview_created"
+    assert model_planner.kwargs is not None
+    assert model_planner.kwargs["evidence_context"][0]["artifact_id"] == "artifact_diag"
 
 
 def test_patch_pipeline_applies_bound_patch_plan_through_governed_tool_gateway(tmp_path):
