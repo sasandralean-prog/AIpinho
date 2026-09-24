@@ -17,6 +17,9 @@ from aipinho.schemas.runtime.phase_dependency_evaluation import (
 )
 from aipinho.schemas.runtime.phase_outcome import PhaseOutcome
 from aipinho.schemas.runtime.task_run_request import TaskRunRequest
+from aipinho.services.context.mission_context_handoff_service import (
+    MissionContextHandoffService,
+)
 from aipinho.services.governance.policy.effective_policy_decision_service import (
     EffectivePolicyDecisionService,
 )
@@ -45,6 +48,7 @@ class MissionPhaseCoordinatorService:
         policy: EffectivePolicyDecisionService | None = None,
         actions: ActionRegistryService | None = None,
         phases: PhaseIdentityService | None = None,
+        context_handoff: MissionContextHandoffService | None = None,
     ) -> None:
         self.store = store or TaskRunStore()
         self.dependencies = dependencies or PhaseDependencyEvaluationService()
@@ -52,6 +56,7 @@ class MissionPhaseCoordinatorService:
         self.policy = policy or EffectivePolicyDecisionService()
         self.actions = actions or ActionRegistryService()
         self.phases = phases or PhaseIdentityService()
+        self.context_handoff = context_handoff or MissionContextHandoffService()
         self.runtime = runtime or TaskRuntimeService(store=self.store)
         self.continuation = continuation or MissionContinuationService(
             store=self.store,
@@ -248,12 +253,42 @@ class MissionPhaseCoordinatorService:
                 ),
             )
 
+        context_purpose = self.context_handoff.purpose_for(
+            contract_type=candidate.contract_type,
+            operation_type=candidate.operation_type,
+        )
+        context_handoff = (
+            self.context_handoff.materialize(
+                outcome=outcome,
+                purpose=context_purpose,
+                child_task_id=reserved.task_id,
+                child_workspace_id=reserved.workspace_id,
+            )
+            if context_purpose
+            else None
+        )
+
         bound_intent = self._intent_map(
             previous=previous,
             candidate=candidate,
             evaluation=evaluation.model_dump(mode="json"),
             admission=admission.model_dump(mode="json"),
         )
+        if context_handoff is not None:
+            continuation = (
+                bound_intent.get("mission_continuation")
+                if isinstance(bound_intent.get("mission_continuation"), dict)
+                else {}
+            )
+            continuation["context_handoff"] = {
+                "status": context_handoff.status,
+                "purpose": context_handoff.purpose,
+                "plan_id": context_handoff.plan_id,
+                "bundle_id": context_handoff.bundle_id,
+                "admitted_artifacts": list(context_handoff.admitted_artifacts),
+                "warnings": list(context_handoff.warnings),
+            }
+            bound_intent["mission_continuation"] = continuation
         policy_snapshot = self._policy_snapshot_for_candidate(
             previous=previous,
             reserved=reserved,
@@ -270,6 +305,12 @@ class MissionPhaseCoordinatorService:
                 "project_id": reserved.project_id,
                 "intent_map": bound_intent,
                 "policy_decision": policy_snapshot,
+                "context_injection_plan_id": (
+                    context_handoff.plan_id
+                    if context_handoff is not None
+                    and context_handoff.status == "ready"
+                    else reserve_request.context_injection_plan_id
+                ),
             }
         )
         child = self.runtime.create_run(enrich_request)
