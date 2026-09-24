@@ -181,7 +181,14 @@ class ContextPlanRuntimeService:
         if not plan_id:
             return ContextPlanResolution(status="not_applicable")
 
-        plan = self.store.get(plan_id)
+        try:
+            plan = self.store.get(plan_id)
+        except ValueError:
+            return ContextPlanResolution(
+                status="blocked",
+                source="context_kernel",
+                violations=["canonical_context_plan_id_invalid"],
+            )
         if plan is not None:
             return self._resolve_canonical(plan)
 
