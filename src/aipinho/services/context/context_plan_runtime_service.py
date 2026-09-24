@@ -13,6 +13,7 @@ from aipinho.schemas.rag.integration.contracts import (
 from aipinho.services.context.context_core import ContextBundleRepository
 from aipinho.services.rag.integration.context_injection_planner import ContextInjectionPlanner
 from aipinho.services.rag.integration.context_usage_validator import ContextUsageValidator
+from aipinho.utils.safe_paths import resolve_within_root
 from aipinho.utils.yaml_loader import load_yaml_file
 
 
@@ -30,8 +31,39 @@ class ContextPlanResolution:
 class CanonicalContextPlanStore:
     """Persistence only. ContextKernel remains the context/admission authority."""
 
-    def __init__(self, root: Path | None = None) -> None:
-        self.root = root or PATHS.project_root / "data" / "runtime" / "context" / "plans"
+    def __init__(
+        self,
+        root: Path | None = None,
+        *,
+        config_path: Path | None = None,
+    ) -> None:
+        if root is not None:
+            self.root = root
+            return
+        path = (
+            config_path
+            or PATHS.config_root / "context" / "runtime_context_handoff_policy.yaml"
+        )
+        config = load_yaml_file(
+            path,
+            critical=True,
+            root=path.parent,
+        )
+        storage = (
+            config.get("storage", {})
+            if isinstance(config.get("storage"), dict)
+            else {}
+        )
+        configured = str(
+            storage.get(
+                "canonical_plan_store_path",
+                "data/runtime/context/kernel_plans",
+            )
+        )
+        self.root = resolve_within_root(
+            PATHS.project_root / configured,
+            PATHS.project_root,
+        )
 
     def save(self, plan: ContextInjectionPlan) -> ContextInjectionPlan:
         self.root.mkdir(parents=True, exist_ok=True)
