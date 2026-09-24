@@ -261,6 +261,26 @@ class ArtifactLibraryService:
         path = (PATHS.project_root / artifact.storage_path).resolve()
         exists = path.exists()
         artifact_type = self._artifact_type(artifact.filename, artifact.content_type)
+        metadata = redact_payload(
+            {
+                **artifact.metadata,
+                **(
+                    {"logical_path": artifact.logical_path}
+                    if artifact.logical_path
+                    else {}
+                ),
+                **(
+                    {"task_run_id": artifact.task_run_id}
+                    if artifact.task_run_id
+                    else {}
+                ),
+                **(
+                    {"task_id": artifact.task_id}
+                    if artifact.task_id
+                    else {}
+                ),
+            }
+        )
         return ArtifactRecordV2(
             artifact_id=artifact.artifact_id,
             filename=artifact.filename,
@@ -270,10 +290,32 @@ class ArtifactLibraryService:
             status="ready" if exists else "failed",
             artifact_type=artifact_type,
             origin_type=str(artifact.metadata.get("origin_type") or "chat") if artifact.metadata.get("origin_type") in {"chat", "sandbox", "project_factory", "autopilot", "skill", "promotion", "validation", "debugger", "manual", "system"} else "chat",
-            origin_id=artifact.message_id,
-            session_id=str(artifact.metadata.get("session_id")) if artifact.metadata.get("session_id") else None,
-            project_id=str(artifact.metadata.get("project_id")) if artifact.metadata.get("project_id") else None,
-            evidence_refs=[str(item) for item in artifact.metadata.get("evidence_refs", [])],
+            origin_id=artifact.message_id or artifact.task_run_id or artifact.owner_task_id,
+            session_id=artifact.session_id or (
+                str(artifact.metadata.get("session_id"))
+                if artifact.metadata.get("session_id")
+                else None
+            ),
+            run_id=artifact.task_run_id or artifact.owner_task_id,
+            project_id=(
+                str(artifact.metadata.get("project_id"))
+                if artifact.metadata.get("project_id")
+                else None
+            ),
+            evidence_refs=list(
+                dict.fromkeys(
+                    [
+                        *[str(item) for item in artifact.evidence_refs],
+                        *[
+                            str(item)
+                            for item in artifact.metadata.get(
+                                "evidence_refs",
+                                [],
+                            )
+                        ],
+                    ]
+                )
+            ),
             storage_path_sanitized=str(path),
             download_endpoint=f"/api/v1/artifacts/{artifact.artifact_id}/download" if exists else None,
             requires_token=True,
@@ -281,7 +323,7 @@ class ArtifactLibraryService:
             context_usable=artifact_type in {"text", "markdown_report", "json_report", "manifest", "log_sanitized"},
             error_reason=None if exists else "artifact_file_missing",
             created_at=artifact.created_at,
-            metadata_sanitized=redact_payload(artifact.metadata),
+            metadata_sanitized=metadata,
         )
 
     def _from_tool_artifact(self, artifact: ToolArtifactRecord) -> ArtifactRecordV2:
