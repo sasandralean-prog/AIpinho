@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -67,7 +68,7 @@ class CanonicalContextPlanStore:
 
     def save(self, plan: ContextInjectionPlan) -> ContextInjectionPlan:
         self.root.mkdir(parents=True, exist_ok=True)
-        path = self.root / f"{plan.plan_id}.json"
+        path = self._path(plan.plan_id)
         path.write_text(
             json.dumps(plan.model_dump(mode="json"), ensure_ascii=True, indent=2),
             encoding="utf-8",
@@ -75,11 +76,19 @@ class CanonicalContextPlanStore:
         return plan
 
     def get(self, plan_id: str) -> ContextInjectionPlan | None:
-        path = self.root / f"{plan_id}.json"
+        path = self._path(plan_id)
         if not path.exists():
             return None
         return ContextInjectionPlan.model_validate(
             json.loads(path.read_text(encoding="utf-8"))
+        )
+
+    def _path(self, plan_id: str) -> Path:
+        if re.fullmatch(r"context_plan_[a-f0-9]+", str(plan_id or "")) is None:
+            raise ValueError("canonical_context_plan_id_invalid")
+        return resolve_within_root(
+            self.root / f"{plan_id}.json",
+            self.root,
         )
 
 
