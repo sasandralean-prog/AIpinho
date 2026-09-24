@@ -303,16 +303,18 @@ class PromptAssemblyService:
         self._append_project_report(items, request.project_report)
         self._append_context_injection_plan(items, context_plan)
         admitted_evidence = {
-            self._evidence_identity(evidence)
+            identity
             for evidence in (
                 context_plan.evidence_context
                 if context_plan is not None
                 else []
             )
-            if self._evidence_identity(evidence)
+            for identity in self._evidence_identities(evidence)
         }
         for index, evidence in enumerate(request.evidence):
-            if self._evidence_identity(evidence) in admitted_evidence:
+            if admitted_evidence.intersection(
+                self._evidence_identities(evidence)
+            ):
                 continue
             self._append_dict_item(
                 items,
@@ -455,9 +457,10 @@ class PromptAssemblyService:
             )
 
     @staticmethod
-    def _evidence_identity(evidence: dict[str, Any]) -> str:
+    def _evidence_identities(evidence: dict[str, Any]) -> set[str]:
         if not isinstance(evidence, dict):
-            return ""
+            return set()
+        identities: set[str] = set()
         for key in (
             "evidence_id",
             "artifact_id",
@@ -467,8 +470,8 @@ class PromptAssemblyService:
         ):
             value = str(evidence.get(key) or "").strip()
             if value:
-                return f"{key}:{value}"
-        return ""
+                identities.add(f"{key}:{value}")
+        return identities
 
     def _append_dict_item(
         self,
