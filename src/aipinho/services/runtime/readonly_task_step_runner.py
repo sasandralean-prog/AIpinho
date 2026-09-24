@@ -212,6 +212,11 @@ class ReadOnlyTaskStepRunner:
             file_context_bundle=bundle_dict if isinstance(bundle_dict, dict) else {},
             context_injection_plan_id=run.context_injection_plan_id,
             context_injection_plan=context.outputs.get("context_injection_plan") or {},
+            evidence=(
+                list(context.outputs.get("evidence_context") or [])
+                if isinstance(context.outputs.get("evidence_context"), list)
+                else []
+            ),
             session_id=run.session_id,
             mode="run",
             model_mode="deterministic",
