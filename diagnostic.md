@@ -980,3 +980,14 @@ A próxima etapa deve produzir um plano de implementação que:
 8. só então implemente regressões e repita o E2E.
 
 O objetivo não é “fazer o FireTest passar”. O objetivo é fazer qualquer missão governada atravessar **diagnóstico → contexto → reparo → mutação → validação** sem perder significado nem ampliar autoridade.
+
+
+# M10-B.1 — Correção aplicada sobre o diagnóstico A.31–A.33
+
+**A.31 / perda de contexto:** corrigida no caminho canônico. Evidência admitida passa a ser materializada em `ContextInjectionPlan`, persistida e vinculada ao TaskRun filho; patch planner e role pipeline resolvem o mesmo plano governado em vez de reconstruir contexto por caminhos paralelos.
+
+**A.32 / responsabilidades duplicadas:** consolidada a resolução/validação do plano em serviços canônicos de handoff/runtime. O armazenamento de planos foi separado de outros stores, IDs são validados fail-closed e o prompt assembly deixa de duplicar evidência já admitida. A correção preserva a distinção entre evidência, autoridade, policy e truth.
+
+**A.33 / budgets:** B.1 reduz desperdício estrutural de contexto removendo duplicação de evidência no prompt, mas não declara encerrado todo o diagnóstico de budgets. Limites de input/output continuam devendo ser verificados pela execução E2E e por checkpoints posteriores se o runtime expuser novo gargalo.
+
+**Evidência de implementação:** `main == agent/lucio/m10-b-context-handoff == 8fa566c8db9566688fd6dd018da6810c55f739b0`. O delta desde `4e8d3614` contém 14 arquivos, +1496/-99, com regressões dedicadas em `tests/unit/test_m10b_context_handoff.py`. Próxima prova: FireTest fresh pela interface normal.

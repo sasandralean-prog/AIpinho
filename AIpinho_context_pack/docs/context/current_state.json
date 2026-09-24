@@ -1,13 +1,13 @@
 {
-  "schema_version": "context_state.v2026-09-22-e2e-new-runtime-m10-a30a",
-  "updated_at": "2026-09-22",
+  "schema_version": "context_state.v2026-09-24-m10-b1-context-handoff",
+  "updated_at": "2026-09-24",
   "authority_note": "Current production code, canonical contracts/config, RuntimeTruth and validated evidence outrank this context snapshot.",
   "repository": {
     "name": "sasandralean-prog/AIpinho",
     "branch": "main",
     "runtime_consolidation_sha": "6126a73a9ddfc054fe527174fe4df16740b9d1e0",
     "main_head_at_wave_plan": "7ad2b1532a53cd3becee7154a6e08dec28b00b0d",
-    "current_main_head": "4f0e9aea34b78f66e2d017ee8180274c4cac0cdd"
+    "current_main_head": "8fa566c8db9566688fd6dd018da6810c55f739b0"
   },
   "authorities": [
     "Human operator",
@@ -475,9 +475,9 @@
         "plan_changed": false
       }
     },
-    "latest_checkpoint": "M10-A.30.a",
-    "latest_checkpoint_status": "MERGED_AND_E2E_VALIDATED_BOUNDARY",
-    "latest_checkpoint_sha": "4f0e9aea34b78f66e2d017ee8180274c4cac0cdd"
+    "latest_checkpoint": "M10-B.1",
+    "latest_checkpoint_status": "IMPLEMENTED_PROMOTED_PENDING_FRESH_E2E",
+    "latest_checkpoint_sha": "8fa566c8db9566688fd6dd018da6810c55f739b0"
   },
   "m10_a30a_firetest": {
     "session_id": "chat_4bf2354b600a4bad9b69e6779cd96fa0",

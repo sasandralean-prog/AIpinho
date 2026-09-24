@@ -1388,3 +1388,12 @@ Do not assume a sprint is complete merely because this document describes it.
 The current-state files identify what has actually been canonized.
 
 This document identifies where the wave is going and the invariants that must not be lost.
+
+
+### M10-B.1 — Canonical governed context handoff
+
+Status: **IMPLEMENTED + PROMOTED; fresh E2E pending**. Canonical SHA: `8fa566c8db9566688fd6dd018da6810c55f739b0`.
+
+M10-B.1 converts the M10-A.31/A.32 diagnosis into one governed evidence path: admitted dependency evidence is materialized as a canonical context plan, persisted, bound to continuation TaskRuns, resolved through the canonical runtime facade, and consumed by patch planning and role prompt assembly. Artifact logical paths and provenance are preserved. Missing/invalid required plans and unadmittable bound context fail closed.
+
+The checkpoint removes duplicate context-plan storage/validation responsibilities and duplicate prompt rendering of already-admitted evidence. It does not add a parallel runtime, case-specific bypass, prompt-text authority, or model-owned policy. The next checkpoint is a fresh normal-interface E2E mission that proves the handoff under real continuation/patch-planning conditions before M10-B advances.

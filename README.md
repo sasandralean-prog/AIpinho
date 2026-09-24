@@ -190,3 +190,12 @@ The near-term engineering posture is now:
 ## Context and handoff
 
 Read `CURRENT_STATE.md`, `DOCUMENT_AUTHORITY.md`, `AIpinho_context_pack/docs/context/00_START_HERE.md`, `AIpinho_context_pack/docs/context/05_RUNTIME_ARCHITECTURE_MAP.md`, and `AIpinho_context_pack/docs/context/current_state.json`.
+
+
+## M10 current checkpoint — 2026-09-24
+
+M10-B.1 is the current canonical checkpoint at `8fa566c8db9566688fd6dd018da6810c55f739b0`. It closes the diagnosed evidence/context handoff gap without creating a parallel runtime: admitted dependency evidence is materialized into a persisted canonical context plan, bound to child TaskRuns, and consumed consistently by patch planning and role prompts.
+
+The handoff preserves artifact logical paths and provenance, validates required plan/storage identity fail-closed, and deduplicates already-admitted evidence before prompt assembly. Context transport does not grant authority: mission scope, policy, use-safety, approval and RuntimeTruth remain independently governed.
+
+The implementation is promoted to `main`; fresh normal-interface E2E proof is the next validation target. See `CURRENT_STATE.md`, `diagnostic.md`, `e2enewruntimee.md`, and `AIpinho_context_pack/docs/context/current_state.json` for the checkpoint handoff.

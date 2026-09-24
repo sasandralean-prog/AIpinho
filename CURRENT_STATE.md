@@ -191,3 +191,14 @@ Post-A.30.a restart `backend_restart_1790116962318` is accepted with no warnings
 - Mission staging is derived only from an authorized frozen remote resource and never from prompt-declared local staging metadata.
 - Staging local-resource metadata never inherits human authority; Git authority remains bound to the frozen mission remote scope.
 - Terminal parent/child TaskRun lifecycle expires staging authority without rewriting previously proven promotion truth.
+
+
+## M10-B.1 — Governed context handoff closure (2026-09-24)
+
+M10-B.1 is implemented and promoted on canonical `main` at `8fa566c8db9566688fd6dd018da6810c55f739b0` (`fix(runtime): deduplicate admitted context evidence`). The checkpoint closes the M10-A.31 diagnosis that admitted evidence could be valid at dependency admission yet disappear before patch planning / role cognition.
+
+The runtime now materializes admitted phase evidence into a canonical context plan, binds that plan to child TaskRuns, resolves it through a single context-plan runtime facade, and feeds the same governed evidence into patch planning and role prompt assembly. Canonical artifact logical paths and runtime provenance survive the handoff. Required context that cannot be resolved or admitted fails closed rather than silently degrading.
+
+The repair also removes competing context-plan storage paths, validates canonical storage identifiers without overfitting their representation, and deduplicates admitted evidence before prompt assembly. No model gains authority from the context handoff; context is evidence transport, while policy, mission authority, use-safety and RuntimeTruth remain separate authorities.
+
+Branch `agent/lucio/m10-b-context-handoff` and `main` are aligned at the same SHA. The implementation wave from diagnostic `4e8d3614` to `8fa566c8` changes 14 files (+1496/-99), including a dedicated `test_m10b_context_handoff.py` regression surface. Fresh normal-interface E2E validation remains the next evidence target; this checkpoint does not claim that proof before it is observed.
