@@ -8,6 +8,7 @@ from aipinho.schemas.artifacts.artifact_library import (
 )
 from aipinho.schemas.context.contracts import (
     ContextBundle,
+    ContextCitation,
     ContextEvidenceRef,
     ContextInjectionPlan,
     ContextItem,
@@ -294,10 +295,7 @@ def test_prompt_assembly_renders_canonical_context_without_rag_schema(tmp_path):
                 content="Observed behavior: decoder selection loses prior diagnosis.",
                 content_hash="b" * 64,
                 citations=[
-                    __import__(
-                        "aipinho.schemas.context.contracts",
-                        fromlist=["ContextCitation"],
-                    ).ContextCitation(
+                    ContextCitation(
                         citation_id="citation_prompt",
                         source_ref=source,
                         label="Diagnosis",
@@ -314,7 +312,13 @@ def test_prompt_assembly_renders_canonical_context_without_rag_schema(tmp_path):
         bundle_id=bundle.bundle_id,
         purpose="patch_planning",
         safe_for_prompt_assembly=True,
-        citation_map=bundle.citation_map,
+        citation_map={
+            "citation_prompt": ContextCitation(
+                citation_id="citation_prompt",
+                source_ref=source,
+                label="Diagnosis",
+            )
+        },
     )
     service = ContextPlanRuntimeService(
         store=CanonicalContextPlanStore(root=tmp_path / "plans_prompt"),
