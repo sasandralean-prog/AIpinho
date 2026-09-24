@@ -1,6 +1,6 @@
 # Rafa + Lúcio Working Relationship
 
-> Personal project-context document. It intentionally contains sensitive context because Rafa explicitly considers this part of the ritual of introducing a new Lúcio. Rafa has deliberately chosen the repository visibility for current working convenience. Do not repeatedly reopen that decision unless Rafa asks or the factual situation materially changes.
+> Personal AIpinho archaeology document. The portable, non-sensitive collaboration contract now lives in `Engineering_Genome/10_LUCIO_RAFA_HANDOFF.md`. This file may retain historical AIpinho context, but new repositories should not copy sensitive personal history merely to recreate continuity.
 
 ## Rafa — short presentation
 

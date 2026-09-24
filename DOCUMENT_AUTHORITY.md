@@ -89,7 +89,8 @@ These documents guide external engineering assistants working **ON** AIpinho. Th
 
 | Source | Role | Authority note |
 |---|---|---|
-| `AGENTS.md` | Canonical repository-local engineering instruction entrypoint | Shared constitution/map for repository engineering agents. Subordinate to runtime code/config/evidence for runtime truth. |
+| `AGENTS.md` | Canonical repository-local engineering instruction entrypoint | Shared map for repository engineering agents. Subordinate to runtime code/config/evidence for runtime truth. |
+| `Engineering_Genome/` | Cross-project engineering constitution, change discipline and Rafa–Lúcio handoff | Governs how engineering work should evolve; never runtime truth and never a second execution authority. |
 | `.agents/skills/` | Reusable engineering workflow procedures | Portable engineering skill layer; not runtime skills or runtime agents. |
 | `docs/engineering_agents/` | Detailed engineering operating policy | Git, platform, validation-authority, local-overlay, and handoff policy. |
 | `replit.md` | Thin Replit adapter | Points back to `AGENTS.md`; not a second constitution. |

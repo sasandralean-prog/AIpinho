@@ -4,9 +4,11 @@
 
 This directory is a continuity/orientation layer for AIpinho. It is not runtime authority and never overrides current production code, canonical contracts/configuration, Git state or validated evidence.
 
+Universal engineering principles now live in repository-root `Engineering_Genome/`. The Context Pack preserves AIpinho-specific continuity, archaeology, runtime orientation, history and current-state handoff; it should reference the Genome instead of duplicating that constitution.
+
 ## Read order
 
-For engineering assistants, read repository-root `AGENTS.md` and `DOCUMENT_AUTHORITY.md` first.
+For engineering assistants, read repository-root `AGENTS.md`, `DOCUMENT_AUTHORITY.md`, and `Engineering_Genome/00_START_HERE.md` first.
 
 1. repository-root `CURRENT_STATE.md`
 2. `00_START_HERE.md`
