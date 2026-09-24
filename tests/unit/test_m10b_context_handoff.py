@@ -337,13 +337,22 @@ def test_prompt_assembly_renders_canonical_context_without_rag_schema(tmp_path):
             role_id="coder",
             user_message="Prepare a bounded proposal.",
             context_injection_plan=plan.model_dump(mode="json"),
+            evidence=[
+                {
+                    "artifact_id": "artifact_prompt",
+                    "logical_path": "reports/diagnosis.md",
+                    "content": "Observed behavior: decoder selection loses prior diagnosis.",
+                }
+            ],
         )
     )
 
     governed = [item for item in assembly.context_items if item.title == "Governed Context"]
     assert governed
     assert "citation_prompt" in str(assembly.messages)
-    assert "decoder selection loses prior diagnosis" in str(assembly.messages)
+    marker = "decoder selection loses prior diagnosis"
+    assert marker in str(assembly.messages)
+    assert sum(message.content.count(marker) for message in assembly.messages) == 1
 
 
 def test_role_pipeline_uses_canonical_context_resolver_for_validation():
