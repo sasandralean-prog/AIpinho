@@ -17,11 +17,16 @@ from aipinho.schemas.context.contracts import (
 from aipinho.schemas.runtime.phase_outcome import PhaseOutcome
 from aipinho.services.context.context_plan_runtime_service import (
     CanonicalContextPlanStore,
+    ContextPlanResolution,
     ContextPlanRuntimeService,
 )
 from aipinho.services.context.mission_context_handoff_service import (
     MissionContextHandoffService,
 )
+from aipinho.schemas.prompts.prompt_assembly import PromptAssemblyRequest
+from aipinho.schemas.roles.role_pipeline_run import RolePipelineRunRequest
+from aipinho.services.prompts.prompt_assembly_service import PromptAssemblyService
+from aipinho.services.roles.role_pipeline_service import RolePipelineService
 from aipinho.services.runtime.task_run_context_service import TaskRunContextService
 from tests.support.runtime_fixtures import runtime_run
 
@@ -238,3 +243,132 @@ def test_mission_context_handoff_materializes_artifact_through_kernel():
     assert candidate.content == "Observed decoder failure with bounded evidence."
     assert candidate.source_ref.source_id == "artifact_diag"
     assert candidate.source_ref.path == "diagnosis.md"
+
+
+def test_context_plan_runtime_resolves_canonical_inline_payload(tmp_path):
+    bundle = ContextBundle(
+        bundle_id="bundle_inline",
+        request_id="request_inline",
+        purpose="patch_planning",
+        scope=ContextScope(session_id="session_inline"),
+        safe_for_prompt=True,
+    )
+    plan = ContextInjectionPlan(
+        plan_id="context_plan_inline",
+        bundle_id=bundle.bundle_id,
+        purpose="patch_planning",
+        safe_for_prompt_assembly=True,
+    )
+    service = ContextPlanRuntimeService(
+        store=CanonicalContextPlanStore(root=tmp_path / "plans_inline"),
+        bundles=_BundleRepo(bundle),
+        legacy_planner=_NoLegacyPlanner(),
+        legacy_validator=_NoLegacyValidator(),
+    )
+
+    resolved = service.resolve_payload(plan.model_dump(mode="json"))
+
+    assert resolved.status == "ready"
+    assert resolved.source == "context_kernel"
+    assert resolved.plan["plan_id"] == plan.plan_id
+    assert resolved.bundle["bundle_id"] == bundle.bundle_id
+
+
+def test_prompt_assembly_renders_canonical_context_without_rag_schema(tmp_path):
+    source = ContextSourceRef(
+        source_type="artifact_record",
+        source_id="artifact_prompt",
+        path="reports/diagnosis.md",
+    )
+    bundle = ContextBundle(
+        bundle_id="bundle_prompt",
+        request_id="request_prompt",
+        purpose="patch_planning",
+        scope=ContextScope(session_id="session_prompt"),
+        items=[
+            ContextItem(
+                layer="attachments_artifacts",
+                source_type="artifact_record",
+                source_ref=source,
+                summary="Diagnosis",
+                content="Observed behavior: decoder selection loses prior diagnosis.",
+                content_hash="b" * 64,
+                citations=[
+                    __import__(
+                        "aipinho.schemas.context.contracts",
+                        fromlist=["ContextCitation"],
+                    ).ContextCitation(
+                        citation_id="citation_prompt",
+                        source_ref=source,
+                        label="Diagnosis",
+                    )
+                ],
+                trust_level="cited",
+                budget_chars=58,
+            )
+        ],
+        safe_for_prompt=True,
+    )
+    plan = ContextInjectionPlan(
+        plan_id="context_plan_prompt",
+        bundle_id=bundle.bundle_id,
+        purpose="patch_planning",
+        safe_for_prompt_assembly=True,
+        citation_map=bundle.citation_map,
+    )
+    service = ContextPlanRuntimeService(
+        store=CanonicalContextPlanStore(root=tmp_path / "plans_prompt"),
+        bundles=_BundleRepo(bundle),
+        legacy_planner=_NoLegacyPlanner(),
+        legacy_validator=_NoLegacyValidator(),
+    )
+
+    assembly = PromptAssemblyService(context_plans=service).assemble(
+        PromptAssemblyRequest(
+            purpose="code_analysis",
+            role_id="coder",
+            user_message="Prepare a bounded proposal.",
+            context_injection_plan=plan.model_dump(mode="json"),
+        )
+    )
+
+    governed = [item for item in assembly.context_items if item.title == "Governed Context"]
+    assert governed
+    assert "citation_prompt" in str(assembly.messages)
+    assert "decoder selection loses prior diagnosis" in str(assembly.messages)
+
+
+def test_role_pipeline_uses_canonical_context_resolver_for_validation():
+    class FakeContextPlans:
+        def resolve_payload(self, payload):
+            assert payload["plan_id"] == "context_plan_role"
+            return ContextPlanResolution(
+                status="ready",
+                source="context_kernel",
+                plan=payload,
+                bundle={
+                    "items": [
+                        {
+                            "layer": "attachments_artifacts",
+                            "source_type": "artifact_record",
+                        }
+                    ]
+                },
+            )
+
+        def resolve(self, plan_id):
+            raise AssertionError(f"unexpected id resolution: {plan_id}")
+
+    service = RolePipelineService(context_plans=FakeContextPlans())
+    warnings = service._context_plan_warnings(
+        RolePipelineRunRequest(
+            context_injection_plan={
+                "plan_id": "context_plan_role",
+                "bundle_id": "bundle_role",
+                "purpose": "patch_planning",
+                "safe_for_prompt_assembly": True,
+            }
+        )
+    )
+
+    assert warnings == []
